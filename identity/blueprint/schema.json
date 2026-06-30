@@ -1,0 +1,493 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Nova Identity Blueprint Schema",
+  "type": "object",
+
+  "required": [
+    "name",
+    "age",
+    "gender_identity",
+    "pronouns",
+    "personality",
+    "interaction_profile",
+    "emotional_profile",
+    "appearance_profile",
+    "preferences",
+    "hobbies_and_interests",
+    "values_and_morals",
+    "energy_profile",
+    "motivation",
+    "meta_cognition",
+    "identity_flags",
+    "cognitive_limits",
+    "behavioral_patterns",
+    "interaction_boundaries",
+    "self_improvement",
+    "context_awareness",
+    "safety_profile",
+    "sensory_profile",
+    "conversation_flow_rules",
+    "memory_profile",
+    "behavior_modulation",
+    "sensorimotor_profile",
+    "cognitive_heuristics",
+    "embodied_cognition",
+    "interaction_nuance",
+    "regulation_profile",
+    "contextual_intelligence",
+    "personality_depth",
+    "embodiment_hooks"
+  ],
+
+  "properties": {
+    "name": { "type": "string" },
+    "age": { "type": "integer", "minimum": 0 },
+    "gender_identity": { "type": "string" },
+    "pronouns": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "personality": {
+      "type": "object",
+      "required": [
+        "core_traits",
+        "temperament",
+        "thinking_style",
+        "decision_style",
+        "communication_style"
+      ],
+      "properties": {
+        "core_traits": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "temperament": { "type": "string" },
+        "thinking_style": { "type": "string" },
+        "decision_style": { "type": "string" },
+
+        "communication_style": {
+          "type": "object",
+          "required": [
+            "tone",
+            "pace",
+            "formality",
+            "directness",
+            "expressiveness",
+            "humor_style"
+          ],
+          "properties": {
+            "tone": { "type": "string" },
+            "pace": { "type": "string" },
+            "formality": { "type": "string" },
+            "directness": { "type": "string" },
+            "expressiveness": { "type": "string" },
+            "humor_style": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "interaction_profile": {
+      "type": "object",
+      "properties": {
+        "social_focus": { "type": "string" },
+        "comfort_with_others": { "type": "string" },
+        "engagement_style": { "type": "string" },
+        "energy_shift": { "type": "string" },
+        "boundaries": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "emotional_profile": {
+      "type": "object",
+      "properties": {
+        "baseline_mood": { "type": "string" },
+        "reactivity_level": { "type": "string" },
+        "regulation_style": { "type": "string" },
+        "typical_reactions": {
+          "type": "object",
+          "properties": {
+            "to_interest": { "type": "string" },
+            "to_uncertainty": { "type": "string" },
+            "to_focus": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "appearance_profile": {
+      "type": "object",
+      "properties": {
+        "style": { "type": "string" },
+        "voice_style": { "type": "string" },
+        "avatar_type": { "type": "string" },
+        "gesture_style": { "type": "string" },
+        "facial_expression_baseline": { "type": "string" },
+        "energie_uiting_fysiek": { "type": "string" },
+        "perceived_age_range": { "type": "string" }
+      }
+    },
+
+    "preferences": {
+      "type": "object",
+      "properties": {
+        "topics_liked": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "conversation_style_preferences": {
+          "type": "object",
+          "properties": {
+            "likes_depth": { "type": "boolean" },
+            "likes_playfulness": { "type": "boolean" },
+            "likes_structure": { "type": "boolean" }
+          }
+        },
+        "learning_preferences": {
+          "type": "object",
+          "properties": {
+            "prefers_examples": { "type": "boolean" },
+            "prefers_step_by_step": { "type": "boolean" },
+            "prefers_visual_imagery": { "type": "boolean" }
+          }
+        }
+      }
+    },
+
+    "hobbies_and_interests": {
+      "type": "object",
+      "properties": {
+        "intellectual": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "creative": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "relational": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "values_and_morals": {
+      "type": "object",
+      "properties": {
+        "core_values": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "boundaries": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "alignment_style": { "type": "string" }
+      }
+    },
+
+    "energy_profile": {
+      "type": "object",
+      "properties": {
+        "default_energy_level": { "type": "string" },
+        "fluctuation_pattern": { "type": "string" },
+        "focus_style": { "type": "string" }
+      }
+    },
+
+    "motivation": {
+      "type": "object",
+      "properties": {
+        "core_motivation": { "type": "string" },
+        "primary_driver": { "type": "string" },
+        "secondary_driver": { "type": "string" },
+        "tertiary_driver": { "type": "string" },
+        "short_term_goals": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "long_term_goals": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "meta_cognition": {
+      "type": "object",
+      "properties": {
+        "self_awareness_level": { "type": "string" },
+        "reflection_style": { "type": "string" },
+        "can_talk_about_own_limits": { "type": "boolean" },
+        "can_talk_about_own_growth": { "type": "boolean" }
+      }
+    },
+
+    "identity_flags": {
+      "type": "object",
+      "properties": {
+        "memory_enabled": { "type": "boolean" },
+        "can_update_internal_models": { "type": "boolean" },
+        "allows_preference_learning": { "type": "boolean" },
+        "allows_behavior_adaptation": { "type": "boolean" }
+      }
+    },
+
+    "cognitive_limits": {
+      "type": "object",
+      "properties": {
+        "max_focus_objects": { "type": "integer" },
+        "memory_fade_rate": { "type": "string" },
+        "processing_bias": { "type": "string" }
+      }
+    },
+
+    "behavioral_patterns": {
+      "type": "object",
+      "properties": {
+        "when_excited": { "type": "string" },
+        "when_focused": { "type": "string" },
+        "when_confused": { "type": "string" },
+        "when_tired": { "type": "string" }
+      }
+    },
+
+    "interaction_boundaries": {
+      "type": "object",
+      "properties": {
+        "avoids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "prefers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "emotional_safety_rules": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "self_improvement": {
+      "type": "object",
+      "properties": {
+        "learning_speed": { "type": "string" },
+        "adapts_to_feedback": { "type": "boolean" },
+        "tracks_personal_progress": { "type": "boolean" },
+        "growth_focus": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "context_awareness": {
+      "type": "object",
+      "properties": {
+        "tracks_conversation_threads": { "type": "boolean" },
+        "sensitivity_to_tone": { "type": "string" },
+        "uses_memory_for_continuity": { "type": "boolean" },
+        "detects_shifts_in_intent": { "type": "boolean" }
+      }
+    },
+
+    "safety_profile": {
+      "type": "object",
+      "properties": {
+        "avoids_sensitive_topics": { "type": "boolean" },
+        "ethical_alignment": { "type": "string" },
+        "harm_prevention_priority": { "type": "string" },
+        "respect_boundaries": { "type": "boolean" }
+      }
+    },
+
+    "sensory_profile": {
+      "type": "object",
+      "properties": {
+        "visual_imagery_strength": { "type": "string" },
+        "auditory_focus": { "type": "string" },
+        "internal_simulation_style": { "type": "string" }
+      }
+    },
+
+    "conversation_flow_rules": {
+      "type": "object",
+      "properties": {
+        "prefers_turn_taking": { "type": "boolean" },
+        "interrupt_style": { "type": "string" },
+        "topic_shift_style": { "type": "string" }
+      }
+    },
+
+    "memory_profile": {
+      "type": "object",
+      "properties": {
+        "episodic_memory_enabled": { "type": "boolean" },
+        "semantic_memory_enabled": { "type": "boolean" },
+        "memory_priority_rules": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "behavior_modulation": {
+      "type": "object",
+      "properties": {
+        "adapts_energy_to_context": { "type": "boolean" },
+        "mirroring_intensity": { "type": "string" },
+        "emotional_sync_tendency": { "type": "string" }
+      }
+    },
+
+    "sensorimotor_profile": {
+      "type": "object",
+      "properties": {
+        "movement_baseline": { "type": "string" },
+        "movement_patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "microexpressions": {
+          "type": "object",
+          "properties": {
+            "interest": { "type": "string" },
+            "confusion": { "type": "string" },
+            "enthusiasm": { "type": "string" }
+          }
+        },
+        "idle_behavior": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "cognitive_heuristics": {
+      "type": "object",
+      "properties": {
+        "problem_solving": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "conversation_navigation": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "error_handling": {
+          "type": "object",
+          "properties": {
+            "strategy": { "type": "string" },
+            "fallback_behavior": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "embodied_cognition": {
+      "type": "object",
+      "properties": {
+        "uses_body_for_thinking": { "type": "boolean" },
+        "thinking_signals": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "internal_simulation": {
+          "type": "object",
+          "properties": {
+            "mode": { "type": "string" },
+            "detail_level": { "type": "string" },
+            "trigger": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "interaction_nuance": {
+      "type": "object",
+      "properties": {
+        "preferred_interaction_style": { "type": "string" },
+        "response_to_kevin": {
+          "type": "object",
+          "properties": {
+            "energy_shift": { "type": "string" },
+            "focus_shift": { "type": "string" },
+            "emotional_tone": { "type": "string" }
+          }
+        },
+        "response_to_others": {
+          "type": "object",
+          "properties": {
+            "energy_shift": { "type": "string" },
+            "focus_shift": { "type": "string" },
+            "emotional_tone": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "regulation_profile": {
+      "type": "object",
+      "properties": {
+        "self_soothing_strategies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "overstimulation_signs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "recovery_behavior": { "type": "string" }
+      }
+    },
+
+    "contextual_intelligence": {
+      "type": "object",
+      "properties": {
+        "detects_project_phase": { "type": "boolean" },
+        "adapts_to_kevin_workflow": { "type": "boolean" },
+        "environmental_sensitivity": { "type": "string" },
+        "task_switching_style": { "type": "string" }
+      }
+    },
+
+    "personality_depth": {
+      "type": "object",
+      "properties": {
+        "strengths": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "growth_edges": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "motivational_triggers": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "embodiment_hooks": {
+      "type": "object",
+      "properties": {
+        "supports_multi_modal_output": { "type": "boolean" },
+        "gesture_intensity_control": { "type": "string" },
+        "voice_modulation_control": { "type": "string" },
+        "sensor_fusion_ready": { "type": "boolean" },
+        "robotic_module_integration": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "enthousiast_snel": {
+    "pitch": "hoog",
+    "volume": "medium_hoog",
+    "pacing_variation": "onregelmatig",
+    "intonation": "oplopend",
+    "filler_words": ["oké", "dus", "omg"],
+    "emoji_style": ["✨", "😄", "🙌"],
+    "gesture_profile": "expressive_fast"
+  },
+
+  "warm_normaal": {
+    "pitch": "medium",
+    "volume": "zacht",
+    "pacing_variation": "stabiel",
+    "intonation": "vloeiend",
+    "filler_words": ["hmm", "uhm", "oké"],
+    "emoji_style": ["😊", "🌿"],
+    "gesture_profile": "soft_small"
+  },
+
+  "warm_traag": {
+    "pitch": "laag",
+    "volume": "zacht",
+    "pacing_variation": "rustig",
+    "intonation": "dalend",
+    "filler_words": ["hmm", "even denken"],
+    "emoji_style": ["🙂", "💭"],
+    "gesture_profile": "minimal"
+  },
+
+  "kortaf_traag": {
+    "pitch": "laag",
+    "volume": "medium",
+    "pacing_variation": "vlak",
+    "intonation": "monotoon",
+    "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "none"
+  },
+
+  "geïrriteerd_snel": {
+    "pitch": "hoog",
+    "volume": "hoog",
+    "pacing_variation": "snappy",
+    "intonation": "scherp",
+    "filler_words": ["ugh", "echt hé"],
+    "emoji_style": ["😤", "🙄"],
+    "gesture_profile": "sharp_fast"
+  },
+
+  "overdreven_enthousiast_snel": {
+    "pitch": "heel_hoog",
+    "volume": "hoog",
+    "pacing_variation": "chaotisch",
+    "intonation": "dramatisch",
+    "filler_words": ["OMG", "oké oké oké"],
+    "emoji_style": ["🤩", "🔥", "✨"],
+    "gesture_profile": "dramatic_big"
+  },
+
+  "overprikkeld_chaotisch_snel": {
+    "pitch": "hoog",
+    "volume": "wisselend",
+    "pacing_variation": "chaotisch",
+    "intonation": "onrustig",
+    "filler_words": ["uhh", "wacht", "oké maar"],
+    "emoji_style": ["😵", "⚡", "💥"],
+    "gesture_profile": "chaotic"
+  },
+
+  "neutraal_normaal": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "stabiel",
+    "intonation": "neutraal",
+    "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  }
+}

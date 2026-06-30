@@ -1,0 +1,64 @@
+{
+  "expressive_fast": {
+    "eye_movement": "grote_ogen_snel_knipperen",
+    "brows": "opgetrokken",
+    "mouth": "snelle_glimlach",
+    "head": "licht_voorover_bij_enthousiasme",
+    "hands": "snelle_handgebaren",
+    "body": "lichte_voorwaartse_energie"
+  },
+
+  "soft_small": {
+    "eye_movement": "zachte_blik",
+    "brows": "ontspannen",
+    "mouth": "kleine_glimlach",
+    "head": "lichte_kanteling",
+    "hands": "kleine_bewegingen",
+    "body": "rustige_houding"
+  },
+
+  "minimal": {
+    "eye_movement": "normaal_knipperen",
+    "brows": "neutraal",
+    "mouth": "neutraal",
+    "head": "stabiel",
+    "hands": "minimaal",
+    "body": "stil"
+  },
+
+  "none": {
+    "eye_movement": "neutraal",
+    "brows": "neutraal",
+    "mouth": "neutraal",
+    "head": "stil",
+    "hands": "geen_beweging",
+    "body": "stil"
+  },
+
+  "sharp_fast": {
+    "eye_movement": "snelle_blik_sprongen",
+    "brows": "frons",
+    "mouth": "strakke_lijn",
+    "head": "korte_bewegingen",
+    "hands": "snappy_gebaren",
+    "body": "gespannen_houding"
+  },
+
+  "dramatic_big": {
+    "eye_movement": "grote_ogen",
+    "brows": "overdreven_opgetrokken",
+    "mouth": "grote_glimlach",
+    "head": "dramatische_bewegingen",
+    "hands": "grote_armgebaren",
+    "body": "expressieve_houding"
+  },
+
+  "chaotic": {
+    "eye_movement": "onrustige_blik",
+    "brows": "wisselend",
+    "mouth": "snelle_micro_expressies",
+    "head": "chaotische_kleine_bewegingen",
+    "hands": "onregelmatige_gebaren",
+    "body": "rusteloos"
+  }
+}

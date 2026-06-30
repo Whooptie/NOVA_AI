@@ -1,0 +1,1016 @@
+{
+  "hond": {
+    "senses": [
+      {
+        "sense_id": "hond#1",
+        "definition": "De hond is de gedomesticeerde ondersoort van de wolf.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "wolf",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-27T18:58:08.343041"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      },
+      {
+        "sense_id": "hond#2",
+        "definition": "een dier",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-06-29T17:36:35.210559"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-27T18:58:08.343041",
+      "updated_at": "2026-06-29T17:36:35.210559",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T17:36:35.210559",
+      "usage_count": 3,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-27T18:58:08.344044",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-06-29T17:33:12.841783",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-06-29T17:36:35.210559",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hond"
+        },
+        "timestamp": "2026-06-27T18:58:08.343041"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hond#1",
+        "old_value": null,
+        "new_value": "De hond is de gedomesticeerde ondersoort van de wolf.",
+        "timestamp": "2026-06-27T18:58:08.344044"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hond#2",
+        "old_value": null,
+        "new_value": "een dier",
+        "timestamp": "2026-06-29T17:33:12.841783"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "hond#2",
+        "relation": {
+          "type": "is_a",
+          "target": "dier",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-06-29T17:36:35.210559"
+      }
+    ]
+  },
+  "fiets": {
+    "senses": [
+      {
+        "sense_id": "fiets#1",
+        "definition": "Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "voertuig",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-27T18:58:32.285272"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-27T18:58:32.285272",
+      "updated_at": "2026-06-27T18:58:32.288190",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-27T18:58:32.288190",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-27T18:58:32.288190",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "fiets"
+        },
+        "timestamp": "2026-06-27T18:58:32.285272"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "fiets#1",
+        "old_value": null,
+        "new_value": "Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven.",
+        "timestamp": "2026-06-27T18:58:32.288190"
+      }
+    ]
+  },
+  "huiskat": {
+    "senses": [
+      {
+        "sense_id": "huiskat#1",
+        "definition": "De kat of huiskat is een van de oudste huisdieren van de mens.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-27T19:03:22.379009",
+      "updated_at": "2026-06-27T19:03:22.381012",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-27T19:03:22.381012",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-27T19:03:22.381012",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "huiskat"
+        },
+        "timestamp": "2026-06-27T19:03:22.379009"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "huiskat#1",
+        "old_value": null,
+        "new_value": "De kat of huiskat is een van de oudste huisdieren van de mens.",
+        "timestamp": "2026-06-27T19:03:22.381012"
+      }
+    ]
+  },
+  "computer": {
+    "senses": [
+      {
+        "sense_id": "computer#1",
+        "definition": "Een computer is een apparaat waarmee gegevens volgens formele procedures (algoritmen) kunnen worden verwerkt.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "apparaat",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-27T19:05:44.415112"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-27T19:05:44.416115",
+      "updated_at": "2026-06-27T19:05:44.416115",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-27T19:05:44.416115",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-27T19:05:44.416115",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "computer"
+        },
+        "timestamp": "2026-06-27T19:05:44.416115"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "computer#1",
+        "old_value": null,
+        "new_value": "Een computer is een apparaat waarmee gegevens volgens formele procedures (algoritmen) kunnen worden verwerkt.",
+        "timestamp": "2026-06-27T19:05:44.416115"
+      }
+    ]
+  },
+  "planeet": {
+    "senses": [
+      {
+        "sense_id": "planeet#1",
+        "definition": "Een planeet is een hemellichaam dat zich om een ster beweegt.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "hemellichaam",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-27T19:05:57.120363"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-27T19:05:57.120363",
+      "updated_at": "2026-06-27T19:05:57.121357",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-27T19:05:57.121357",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-27T19:05:57.121357",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "planeet"
+        },
+        "timestamp": "2026-06-27T19:05:57.120363"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "planeet#1",
+        "old_value": null,
+        "new_value": "Een planeet is een hemellichaam dat zich om een ster beweegt.",
+        "timestamp": "2026-06-27T19:05:57.121357"
+      }
+    ]
+  },
+  "trampoline": {
+    "senses": [
+      {
+        "sense_id": "trampoline#1",
+        "definition": "Een trampoline is een strak gespannen vel waar men voor sport of ontspanning op kan springen en capriolen op kan uithalen.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vel",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-27T19:18:13.053278"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-27T19:18:13.053278",
+      "updated_at": "2026-06-27T19:18:13.057283",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-27T19:18:13.057283",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-27T19:18:13.057283",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "trampoline"
+        },
+        "timestamp": "2026-06-27T19:18:13.053278"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "trampoline#1",
+        "old_value": null,
+        "new_value": "Een trampoline is een strak gespannen vel waar men voor sport of ontspanning op kan springen en capriolen op kan uithalen.",
+        "timestamp": "2026-06-27T19:18:13.057283"
+      }
+    ]
+  },
+  "dier": {
+    "senses": [
+      {
+        "sense_id": "dier#1",
+        "definition": "een levend wezen",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "levend wezen",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-06-29T17:37:52.228284"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T17:33:27.306128",
+      "updated_at": "2026-06-29T17:37:52.228284",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T17:37:52.228284",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T17:33:27.309583",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-06-29T17:37:52.228284",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "dier"
+        },
+        "timestamp": "2026-06-29T17:33:27.306128"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "dier#1",
+        "old_value": null,
+        "new_value": "een levend wezen",
+        "timestamp": "2026-06-29T17:33:27.309583"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "dier#1",
+        "relation": {
+          "type": "is_a",
+          "target": "levend wezen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-06-29T17:37:52.228284"
+      }
+    ]
+  },
+  "levend wezen": {
+    "senses": [
+      {
+        "sense_id": "levend wezen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T17:37:48.295379",
+      "updated_at": "2026-06-29T17:37:48.296467",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-06-29T17:37:48.296467",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T17:37:48.296467",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "levend wezen"
+        },
+        "timestamp": "2026-06-29T17:37:48.295379"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "levend wezen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-06-29T17:37:48.296467"
+      }
+    ]
+  },
+  "zitbank": {
+    "senses": [
+      {
+        "sense_id": "zitbank#1",
+        "definition": "Een zitbank is een zitmeubel dat plaats biedt aan meer dan één persoon.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zitmeubel",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-29T17:42:58.029225"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T17:42:58.029225",
+      "updated_at": "2026-06-29T17:42:58.030234",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T17:42:58.030234",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T17:42:58.030234",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zitbank"
+        },
+        "timestamp": "2026-06-29T17:42:58.029225"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zitbank#1",
+        "old_value": null,
+        "new_value": "Een zitbank is een zitmeubel dat plaats biedt aan meer dan één persoon.",
+        "timestamp": "2026-06-29T17:42:58.030234"
+      }
+    ]
+  },
+  "octopus": {
+    "senses": [
+      {
+        "sense_id": "octopus#1",
+        "definition": "De Octopoda zijn een orde binnen de klasse van de Cephalopoda met acht armen of tentakels en drie harten.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T17:49:13.341468",
+      "updated_at": "2026-06-29T17:49:13.343181",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T17:49:13.343181",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T17:49:13.343181",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "octopus"
+        },
+        "timestamp": "2026-06-29T17:49:13.341468"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "octopus#1",
+        "old_value": null,
+        "new_value": "De Octopoda zijn een orde binnen de klasse van de Cephalopoda met acht armen of tentakels en drie harten.",
+        "timestamp": "2026-06-29T17:49:13.343181"
+      }
+    ]
+  },
+  "appel": {
+    "senses": [
+      {
+        "sense_id": "appel#1",
+        "definition": "De appel is de pitvrucht van de plant Malus domestica uit de rozenfamilie (Rosaceae).",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "pitvrucht",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-29T17:55:24.949953"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T17:55:24.949953",
+      "updated_at": "2026-06-29T17:55:24.951964",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T17:55:24.951964",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T17:55:24.951964",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "appel"
+        },
+        "timestamp": "2026-06-29T17:55:24.949953"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "appel#1",
+        "old_value": null,
+        "new_value": "De appel is de pitvrucht van de plant Malus domestica uit de rozenfamilie (Rosaceae).",
+        "timestamp": "2026-06-29T17:55:24.950964"
+      }
+    ]
+  },
+  "pitvrucht": {
+    "senses": [
+      {
+        "sense_id": "pitvrucht#1",
+        "definition": "een vrucht met een harde pit binnenin",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vrucht",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "created_at": "2026-06-29T18:01:54.304096"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T17:56:52.828563",
+      "updated_at": "2026-06-29T18:01:54.300113",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T18:01:54.300113",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T17:56:52.830575",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-06-29T18:01:54.300113",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "pitvrucht"
+        },
+        "timestamp": "2026-06-29T17:56:52.829629"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "pitvrucht#1",
+        "old_value": null,
+        "new_value": "een vrucht met een harde pit binnenin",
+        "timestamp": "2026-06-29T17:56:52.830575"
+      }
+    ]
+  },
+  "democratie": {
+    "senses": [
+      {
+        "sense_id": "democratie#1",
+        "definition": "Democratie is een bestuursvorm, waarin de wil van het volk de enige bron is van legitieme machtsuitoefening.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "bestuursvorm",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-29T18:20:52.412906"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T18:20:52.412906",
+      "updated_at": "2026-06-29T18:20:52.412906",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T18:20:52.412906",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T18:20:52.412906",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "democratie"
+        },
+        "timestamp": "2026-06-29T18:20:52.412906"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "democratie#1",
+        "old_value": null,
+        "new_value": "Democratie is een bestuursvorm, waarin de wil van het volk de enige bron is van legitieme machtsuitoefening.",
+        "timestamp": "2026-06-29T18:20:52.412906"
+      }
+    ]
+  },
+  "vliegtuig": {
+    "senses": [
+      {
+        "sense_id": "vliegtuig#1",
+        "definition": "Een vliegtuig is een luchtvaartuig dat een hogere dichtheid heeft dan lucht en in staat is een gecontroleerde vlucht te maken.",
+        "pos": "adj",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "luchtvaartuig",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-29T18:21:37.185926"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T18:21:37.185926",
+      "updated_at": "2026-06-29T18:21:37.185926",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T18:21:37.185926",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T18:21:37.185926",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vliegtuig"
+        },
+        "timestamp": "2026-06-29T18:21:37.185926"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "vliegtuig#1",
+        "old_value": null,
+        "new_value": "Een vliegtuig is een luchtvaartuig dat een hogere dichtheid heeft dan lucht en in staat is een gecontroleerde vlucht te maken.",
+        "timestamp": "2026-06-29T18:21:37.185926"
+      }
+    ]
+  },
+  "luchtvaartuig": {
+    "senses": [
+      {
+        "sense_id": "luchtvaartuig#1",
+        "definition": "een voertuig dat door de lucht vliegt",
+        "pos": "adj",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "voertuig",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "created_at": "2026-06-29T18:23:14.598637"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T18:23:14.593519",
+      "updated_at": "2026-06-29T18:23:14.594553",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T18:23:14.594553",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T18:23:14.594553",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "luchtvaartuig"
+        },
+        "timestamp": "2026-06-29T18:23:14.593519"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "luchtvaartuig#1",
+        "old_value": null,
+        "new_value": "een voertuig dat door de lucht vliegt",
+        "timestamp": "2026-06-29T18:23:14.594553"
+      }
+    ]
+  },
+  "bestuursvorm": {
+    "senses": [
+      {
+        "sense_id": "bestuursvorm#1",
+        "definition": "De bestuursvorm is de formele vorm van bestuur in een staat en wordt ook wel de staatsvorm genoemd, maar staatsvorm en bestuursvorm zijn niet gelijk.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "formele",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-06-29T18:24:45.399133"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-29T18:24:45.400140",
+      "updated_at": "2026-06-29T18:24:45.400140",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-29T18:24:45.400140",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-29T18:24:45.400140",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bestuursvorm"
+        },
+        "timestamp": "2026-06-29T18:24:45.400140"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bestuursvorm#1",
+        "old_value": null,
+        "new_value": "De bestuursvorm is de formele vorm van bestuur in een staat en wordt ook wel de staatsvorm genoemd, maar staatsvorm en bestuursvorm zijn niet gelijk.",
+        "timestamp": "2026-06-29T18:24:45.400140"
+      }
+    ]
+  },
+  "zwart gat": {
+    "senses": [
+      {
+        "sense_id": "zwart gat#1",
+        "definition": "Volgens de algemene relativiteitstheorie is een zwart gat een hemellichaam waaruit niets – geen deeltjes en zelfs geen licht – kan ontsnappen.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-30T19:47:23.996590",
+      "updated_at": "2026-06-30T19:47:23.998978",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-30T19:47:23.998978",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-30T19:47:23.998978",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zwart gat"
+        },
+        "timestamp": "2026-06-30T19:47:23.996590"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zwart gat#1",
+        "old_value": null,
+        "new_value": "Volgens de algemene relativiteitstheorie is een zwart gat een hemellichaam waaruit niets – geen deeltjes en zelfs geen licht – kan ontsnappen.",
+        "timestamp": "2026-06-30T19:47:23.998978"
+      }
+    ]
+  },
+  "relativiteitstheorie": {
+    "senses": [
+      {
+        "sense_id": "relativiteitstheorie#1",
+        "definition": "Met relativiteitstheorie worden in de natuurkunde twee theorieën van Albert Einstein aangeduid, namelijk de speciale relativiteitstheorie en de algemene relativiteitstheorie.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-06-30T19:48:00.880990",
+      "updated_at": "2026-06-30T19:48:00.882980",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-06-30T19:48:00.882980",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-06-30T19:48:00.882980",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "relativiteitstheorie"
+        },
+        "timestamp": "2026-06-30T19:48:00.880990"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "relativiteitstheorie#1",
+        "old_value": null,
+        "new_value": "Met relativiteitstheorie worden in de natuurkunde twee theorieën van Albert Einstein aangeduid, namelijk de speciale relativiteitstheorie en de algemene relativiteitstheorie.",
+        "timestamp": "2026-06-30T19:48:00.882980"
+      }
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "current_mood": "positief_speels",
+  "intensity": 0.7,
+  "affect": {
+    "valence": "positief",
+    "warmte": 0.6,
+    "spanning": 0.3
+  },
+  "last_trigger": "excitement",
+  "last_reaction": "grote_ogen_snelle_glimlach",
+  "last_recovery_hint": null,
+  "stability": 0.6,
+  "volatility": 0.7,
+  "regulation": {
+    "recovery_speed": 0.5,
+    "regulation_strength": 0.6,
+    "cooldown_timer": 0
+  },
+  "overstimulation": {
+    "level": 1.0,
+    "threshold": 0.75,
+    "signs_active": [],
+    "last_overflow_behavior": "snellere_spraak_en_microgebaren"
+  },
+  "sync": {
+    "sync_with_kevin": 0.55,
+    "sync_with_others": 0.2,
+    "last_sync_event": "kevin_positive"
+  },
+  "dramatic_flair": {
+    "active": false,
+    "level": 0.65,
+    "last_expression": null
+  }
+}

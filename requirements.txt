@@ -1,0 +1,19 @@
+# Webserver & API
+fastapi==0.115.0
+uvicorn==0.32.0
+websockets==12.0
+
+# Data & opslag
+sqlalchemy==2.0.23
+databases==0.9.0
+pydantic==2.6.4
+
+# Logging & monitoring
+loguru==0.7.2
+
+# Utilities
+python-dotenv==1.0.1
+requests==2.31.0
+
+# Testing
+pytest==8.2.0
