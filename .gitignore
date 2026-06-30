@@ -8,3 +8,4 @@ backups/
 data/*.jsonl
 engines/stockfish/*.exe
 *.xlsx
+engines/
