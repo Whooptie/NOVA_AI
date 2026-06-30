@@ -5,3 +5,6 @@ __pycache__/
 logs/
 .pytest_cache/
 backups/
+data/*.jsonl
+engines/stockfish/*.exe
+*.xlsx
