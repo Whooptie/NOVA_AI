@@ -11,7 +11,7 @@ class MemoryModule:
                  save_path=None):
         self.event_bus = event_bus
         self.max_events = max_events
-        self.max_file_size_mb = 5  # Bij hoeveel MB roteren we het logbestand?
+        self.max_file_size_mb = 50  # Bij hoeveel MB roteren we het logbestand?
 
         # ----------------------------------------------------
         # Pad bepalen
