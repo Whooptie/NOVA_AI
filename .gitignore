@@ -9,6 +9,6 @@ data/*.jsonl
 engines/stockfish/*.exe
 *.xlsx
 engines/
-.db
-.db-shm
-.db-wal
+data/*.db
+data/*.db-shm
+data/*.db-wal
