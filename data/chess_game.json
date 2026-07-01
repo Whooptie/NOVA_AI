@@ -1,4 +1,9 @@
 {
-  "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-  "moves": []
+  "fen": "rnbqkbnr/pp1p1ppp/8/2p1p3/2P1P3/8/PP1P1PPP/RNBQKBNR w KQkq - 0 3",
+  "moves": [
+    "e2e4",
+    "c7c5",
+    "c2c4",
+    "e7e5"
+  ]
 }
