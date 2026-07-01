@@ -82,6 +82,7 @@ Nova_AI/
 ├── data/
 │   ├── chess_game.json
 │   ├── chess_stats.json
+│   ├── chess_settings.json
 │   ├── interactions.jsonl
 │   └── concepts.json
 ├── logs/
@@ -118,8 +119,9 @@ Nova_AI/
 | response_pipeline.py    | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet** |
 | chat_response_engine.py | ✅ Klaar | Doorsturen van pipeline_response naar expression_inject |
 | expression_injector.py  | ✅ Klaar | Emoji, gesture, puberal flair injectie |
+| help.py                 | ✅ Klaar | Help-systeem met topic-bestanden. `help` = algemeen overzicht, `help schaken` = schaakcommando's incl. huidig niveau en denktijd. |
 | wikipedia_teacher.py    | ✅ Klaar | Nederlandse Wikipedia API, disambiguatie-afhandeling, is_a relatie-extractie, automatische fallback vanuit chat.py |
-| chess_engine.py          | ✅ Klaar | Stockfish-koppeling via python-chess (UCI). Persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten. Bordweergave met schaaksymbolen (wit/magenta). Instelbare moeilijkheidsgraad (niveau 0-20). Win/verlies statistieken (chess_stats.json). |
+| chess_engine.py          | ✅ Klaar | Stockfish-koppeling via python-chess (UCI). Persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten. Bordweergave met schaaksymbolen (wit/magenta). Instelbare moeilijkheidsgraad (niveau 0-20) + denktijd, beide persistent (chess_settings.json). Win/verlies statistieken (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
 
 ### IDENTITY
 
@@ -192,6 +194,7 @@ Nova_AI/
 | Instelbare moeilijkheidsgraad (Skill Level) | ✅ Klaar |
 | Win/verlies statistieken | ✅ Klaar |
 | Help-systeem (commando-overzicht per spel) | ✅ Klaar |
+| Auto-shutdown feature | ✅ Klaar |
 | Meerdere bordspellen (dammen, Go, ...) | ❌ Toekomst |
 ---
 

@@ -3,6 +3,8 @@
 import chess
 import chess.engine
 import json
+import threading
+import time
 from pathlib import Path
 
 C_RESET = "\033[0m"
@@ -39,8 +41,16 @@ class ChessModule:
 
         # Stockfish-engine (wordt pas gestart als nodig)
         self.engine = None
-        self.skill_level = 10  # 0 = makkelijkst, 20 = sterkst
-        self.think_time = 1.0  # seconden per zet
+        # skill_level en think_time worden geladen via load_settings()
+        self.last_move_time = None        # Tijdstip van laatste zet
+        self.inactivity_timeout = 1800   # 30 minuten in seconden
+
+        # Inactiviteitscheck starten in achtergrond
+        self._start_inactivity_watcher()
+
+        # Instellingen
+        self.settings_path = Path(r"C:\Nova_AI\data") / "chess_settings.json"
+        self.skill_level, self.think_time = self.load_settings()
 
         # Statistieken
         self.stats_path = Path(r"C:\Nova_AI\data") / "chess_stats.json"
@@ -240,6 +250,7 @@ class ChessModule:
         # Speler zet uitvoeren
         self.board.push(move)
         self.save_game()
+        self.last_move_time = time.time()
 
         if self.board.is_game_over():
             self.announce_game_over()
@@ -282,6 +293,23 @@ class ChessModule:
         })
 
     # ----------------------------------------------------
+    # Instellingen laden en opslaan
+    # ----------------------------------------------------
+    def load_settings(self):
+        if self.settings_path.exists():
+            with open(self.settings_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            return data.get("skill_level", 10), data.get("think_time", 1.0)
+        return 10, 1.0  # standaardwaarden
+
+    def save_settings(self):
+        with open(self.settings_path, "w", encoding="utf-8") as f:
+            json.dump({
+                "skill_level": self.skill_level,
+                "think_time": self.think_time
+            }, f, indent=2)
+
+    # ----------------------------------------------------
     # Statistieken laden en opslaan
     # ----------------------------------------------------
     def load_stats(self):
@@ -307,6 +335,7 @@ class ChessModule:
     def handle_difficulty(self, data, event_type=None):
         niveau = data.get("niveau", 10)
         self.skill_level = max(0, min(20, int(niveau)))
+        self.save_settings()
         self.event_bus.publish("chat_response", {
             "text": f"Moeilijkheidsgraad ingesteld op {self.skill_level}/20."
         })
@@ -314,9 +343,30 @@ class ChessModule:
     def handle_think_time(self, data, event_type=None):
         seconden = float(data.get("seconden", 1.0))
         self.think_time = max(0.1, min(10.0, seconden))
+        self.save_settings()
         self.event_bus.publish("chat_response", {
             "text": f"Denktijd ingesteld op {self.think_time} seconden per zet."
         })
+
+    # ----------------------------------------------------
+    # Inactiviteitswatcher — sluit Stockfish na X seconden stilte
+    # ----------------------------------------------------
+    def _start_inactivity_watcher(self):
+        def watcher():
+            while True:
+                time.sleep(60)  # Check elke minuut
+                if self.engine is None:
+                    continue
+                if self.last_move_time is None:
+                    continue
+                inactief = time.time() - self.last_move_time
+                if inactief >= self.inactivity_timeout:
+                    dbg(f"{C_RED}Stockfish afgesloten na inactiviteit ({int(inactief//60)} min){C_RESET}")
+                    self.engine.quit()
+                    self.engine = None
+
+        thread = threading.Thread(target=watcher, daemon=True)
+        thread.start()
 
     # ----------------------------------------------------
     # Netjes afsluiten
