@@ -166,7 +166,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 
 | Laag | Module | Status | Roadmap |
 | ---- | ------ | ------ | ------- |
-| Layer 0 | memory.py (v2.0) | ⚠️ Refactor nodig | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
+| Layer 0 | memory.py (v2.0) | 🟡 Fase 1-3 klaar, Fase 4 nog te bouwen | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
 | Layer 1 | word_associations_learner.py | ❌ Nog te bouwen | memory_layer1_roadmap.md |
 | Layer 2 | pattern_matcher.py | ❌ Nog te bouwen | memory_layer2_roadmap.md |
 | Layer 3 | semantic.py | ✅ KLAAR | semantic_roadmap.md |
@@ -176,7 +176,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | Layer 7 | emergence_engine.py | ❌ Nog te bouwen | memory_layer7_roadmap.md |
 
 **Bouwvolgorde:** Layer 0 eerst (foundation), dan 1 → 2 → 4 → 5 → 7.
-
+**Extra, buiten de 7 lagen:** een losse "User Preferences"-module (Kevin's voorkeuren/afkeuren) staat gepland — zie memory_user_preferences_roadmap.md.
 ---
 
 ## 🔄 Semantic — Status & Roadmap
@@ -234,19 +234,43 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 
 ---
 
+## 👤 User Preferences (concept, nog niet ingepland)
+
+Losse module die expliciete feiten over Kevin onthoudt (voorkeuren/afkeuren), los van Layer 1.
+
+| Fase | Omschrijving | Status |
+| ---- | ------------ | ------ |
+| 1 | Databestand + basis CRUD | ❌ Nog te bouwen |
+| 2 | Expliciet commando (onthoud:/vergeet:) | ❌ Nog te bouwen |
+| 3 | Automatische patroonherkenning | ❌ Nog te bouwen |
+| 4 | Integratie in chat.py | ❌ Nog te bouwen |
+
+Leert zowel automatisch (patroonherkenning) als expliciet (commando). Volledig beschreven in: **memory_user_preferences_roadmap.md**
+
+---
+
 ## 🌐 24/7 Daemon Mode
 
 Nova draait als **continue daemon** (niet in losse sessies).
 
 Belangrijkste gevolgen voor memory.py v2.0:
-- Persistente SQLite-connectie met WAL-mode
-- Write buffering + batching
-- Achtergrond-onderhoud timer (elke 6u: tiering, compressie, vacuum)
-- RAM groeit overdag, krimpt 's nachts (trim naar 500 events)
-- Graceful shutdown (atexit + signal handlers)
-- Crash recovery bij herstart (JSONL = source of truth)
-- Log rotation (JSONL max 50MB)
-- clock_tick in ignore_types (anti-ruis bij 24/7)
+- Persistente SQLite-connectie met WAL-mode ✅
+- Write buffering + batching ✅
+- Achtergrond-onderhoud timer (elke 6u: tiering, compressie, vacuum) ❌ Fase 4
+- RAM groeit overdag, krimpt 's nachts (trim naar 500 events) ❌ Fase 4
+- Graceful shutdown (atexit + signal handlers) ✅
+- Crash recovery bij herstart (JSONL = source of truth) ✅
+- Log rotation (JSONL max 50MB) ✅
+- clock_tick in ignore_types (anti-ruis bij 24/7) ✅
+
+### memory.py v2.0 — Fase-status
+
+| Fase | Omschrijving | Status |
+| ---- | ------------ | ------ |
+| 1 | Foundation Fix (paden, retry, log rotation) | ✅ |
+| 2 | SQLite + Daemon Basis (WAL, write buffer, graceful shutdown) | ✅ |
+| 3 | Query API (search, query, get_stats, find_similar) | ✅ |
+| 4 | Achtergrond-onderhoud timer, layer-integratie | ❌ Nog te bouwen |
 
 Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
@@ -255,11 +279,12 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 ## 🚀 Volgende stappen (in volgorde van prioriteit)
 
 1. 🔴 **weather.py** — nieuwe API-key aanmaken + naar .env (URGENT)
-2. 🟠 **memory.py v2.0** — refactor naar daemon-mode (memory_layer0_roadmap.md + addendum)
+2. 🟠 **memory.py v2.0** — Fase 4 afbouwen (achtergrond-onderhoud timer) (memory_layer0_roadmap.md + addendum)
 3. 🟡 **reboot_manager.py** — /reboot commando (10 minuten werk)
 4. 🟡 **Personality pipeline** — uitbreiden naar alle intents
 5. 🟢 **microlearning.py** — bouwen
 6. 🟢 **Layer 1** — word_associations_learner.py (na memory v2.0 klaar)
+7. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md)
 
 ---
 
@@ -277,6 +302,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 | semantic_roadmap.md | Semantic Fases 1-7 (KLAAR — referentie bewaren) |
 | semantic_extension_roadmap.md | Semantic Fases 8-13 (toekomstige uitbreidingen) |
 | reboot_hotreload_roadmap.md | Reboot + Hot Reload (3 fases) |
+| memory_user_preferences_roadmap.md | User Preferences: wat Nova over Kevin onthoudt (voorkeuren/afkeuren) |
 
 ---
 

@@ -1067,5 +1067,99 @@
         "timestamp": "2026-07-02T11:50:21.402008"
       }
     ]
+  },
+  "machine learning": {
+    "senses": [
+      {
+        "sense_id": "machine learning#1",
+        "definition": "Machinaal leren of machinelearning is een subset van kunstmatige intelligentie om via big data voorheen exclusief menselijke vormen van patroonherkenning te digitaliseren, zodat computersystemen ku...",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-02T12:19:23.511648",
+      "updated_at": "2026-07-02T12:19:23.512649",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-02T12:19:23.512649",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-02T12:19:23.512649",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "machine learning"
+        },
+        "timestamp": "2026-07-02T12:19:23.511648"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "machine learning#1",
+        "old_value": null,
+        "new_value": "Machinaal leren of machinelearning is een subset van kunstmatige intelligentie om via big data voorheen exclusief menselijke vormen van patroonherkenning te digitaliseren, zodat computersystemen ku...",
+        "timestamp": "2026-07-02T12:19:23.512649"
+      }
+    ]
+  },
+  "kunstmatige intelligentie": {
+    "senses": [
+      {
+        "sense_id": "kunstmatige intelligentie#1",
+        "definition": "Kunstmatige intelligentie (KI) of artificiële intelligentie ook wel genoemd (AI) is een brede term in de computerwetenschappen die zich specifiek richt op verschillende technieken en intelligentie ...",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-02T12:19:50.493068",
+      "updated_at": "2026-07-02T12:19:50.494071",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-02T12:19:50.494071",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-02T12:19:50.494071",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kunstmatige intelligentie"
+        },
+        "timestamp": "2026-07-02T12:19:50.493068"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kunstmatige intelligentie#1",
+        "old_value": null,
+        "new_value": "Kunstmatige intelligentie (KI) of artificiële intelligentie ook wel genoemd (AI) is een brede term in de computerwetenschappen die zich specifiek richt op verschillende technieken en intelligentie ...",
+        "timestamp": "2026-07-02T12:19:50.494071"
+      }
+    ]
   }
 }
