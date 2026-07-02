@@ -21,10 +21,12 @@ class MemoryModule:
         # Pad bepalen
         # ----------------------------------------------------
         if save_path is None:
-            # Vaste standaardlocatie: Nova's eigen datamap
-            self.save_path = Path(r"C:\Nova_AI\data") / "interactions.jsonl"
-            # Pad voor de SQLite-database (naast het JSONL-bestand)
-            self.db_path = Path(r"C:\Nova_AI\data") / "interactions.db"
+            # Portable standaardlocatie: automatisch de 'data'-map naast main.py,
+            # ongeacht op welke PC of onder welke gebruikersnaam Nova draait.
+            project_root = Path(__file__).resolve().parent.parent
+            data_dir = project_root / "data"
+            self.save_path = data_dir / "interactions.jsonl"
+            self.db_path = data_dir / "interactions.db"
         else:
             # Als er expliciet een ander pad wordt meegegeven, gebruiken we dat
             self.save_path = Path(save_path)

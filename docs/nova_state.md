@@ -103,9 +103,9 @@ Nova_AI/
 | event_bus.py     | ✅ Klaar | Stabiel, publish/subscribe + wildcard werkt |
 | module_loader.py | ✅ Klaar | Auto-discovery via pkgutil, laadtijdmeting |
 | intent_router.py | ✅ Klaar | Volledig semantic-aware. Wikipedia, synoniemen, antoniemen, relaties, definitievragen gekoppeld. handle_confirmation() nog leeg. |
-| memory.py        | ⚠️ Refactor nodig | Windows-pad hardcoded. Wordt volledig herbouwd naar v2.0 daemon-mode (zie memory roadmaps). |
+| memory.py        | ✅ Klaar | v2.0 daemon-mode volledig gebouwd (Fase 1-4): portable pad, WAL-SQLite, write-buffering, Query API, achtergrond-onderhoud (archiveren/comprimeren/VACUUM elke 6u). Fase 5 (optimalisatie/polish) nog open, lage prioriteit. |
 | patterns.py      | ✅ Klaar | Woordtelling + event-counts. Wordt later vervangen door Layer 2 (pattern_matcher.py). |
-| logger.py        | ✅ Klaar | Logt alle events naar nova.log |
+| logger.py         | ✅ Klaar | Logt enkel fouten/waarschuwingen naar nova.log (RotatingFileHandler, max 5MB × 3 backups). Volledige eventgeschiedenis zit in memory.py (data/interactions.jsonl + .db). |
 | semantic.py      | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. |
 
 ### MODULES
@@ -114,7 +114,7 @@ Nova_AI/
 | ----------------------- | -------- | ----------- |
 | time.py                 | ✅ Klaar | Zone-aware tijdsvraag |
 | zone.py                 | ✅ Klaar | Auto-timezone via IP, fallback naar OS |
-| weather.py              | ✅ Klaar | **⚠️ URGENT: API-key hardcoded én publiek geworden — nieuwe key aanmaken + naar .env** |
+| weather.py               | ✅ Klaar | API-key nu in .env (python-dotenv), stad-extractie strip't leestekens |
 | math.py                 | ✅ Klaar | Berekeningen, temperatuurconversie, wiskundige functies |
 | chat.py                 | ✅ Klaar | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig. |
 | response_pipeline.py    | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet** |
@@ -147,15 +147,17 @@ Nova_AI/
 
 ## 🐛 Bekende bugs (prioriteit)
 
-| # | Bug | Bestand | Urgentie |
-| - | --- | ------- | -------- |
-| 1 | OpenWeatherMap API-key hardcoded én gelekt in chat | weather.py | 🔴 DIRECT |
-| 2 | Windows-pad hardcoded in save_path | memory.py | 🟡 Medium (wordt opgelost in v2.0) |
-| 3 | Dode code (uitgecommentarieerde handlers) | chat.py | 🟢 Laag |
-| 4 | overstimulation.level = 1.0 als standaard | emotion_state.json | 🟢 Laag |
-| 5 | Personality/tone pipeline bypassed door weer/tijd/math/definities | response_pipeline.py | 🟡 Medium |
-| 6 | Punt aan einde van woord wordt meegenomen bij wiki-aanroep | chat.py | 🟢 Laag |
-| 7 | Oude concepts.json entries hebben geen auto_extract relaties | concepts.json | 🟢 Laag |
+| # | Bug | Bestand | Urgentie | Status |
+| - | --- | ------- | -------- | ------ |
+| 1 | OpenWeatherMap API-key hardcoded én gelekt in chat | weather.py | 🔴 DIRECT | ✅ Opgelost (2 juli 2026 — key naar .env, python-dotenv) |
+| 1b | Stad-extractie pakte leestekens mee (bv. "gent?" i.p.v. "gent") | weather.py | 🟢 Laag | ✅ Opgelost (2 juli 2026 — strip(".,!?;:") toegevoegd) |
+| 1c | Weer-intent werd niet herkend bij korte zinnen ("weer in Gent?") | intent_router.py | 🟡 Medium | ✅ Opgelost (2 juli 2026 — triggers uitgebreid + lowercase matching) |
+| 2 | Windows-pad hardcoded in save_path | memory.py | 🟡 Medium | ✅ Opgelost (2 juli 2026 — portable pad via Path(__file__), werkt op elke PC/gebruiker) |
+| 3 | Dode code (uitgecommentarieerde handlers) | chat.py | 🟢 Laag | 🔲 Open |
+| 4 | overstimulation.level = 1.0 als standaard | emotion_state.json | 🟢 Laag | 🔲 Open |
+| 5 | Personality/tone pipeline bypassed door weer/tijd/math/definities | response_pipeline.py | 🟡 Medium | 🔲 Open |
+| 6 | Punt aan einde van woord wordt meegenomen bij wiki-aanroep | chat.py | 🟢 Laag | 🔲 Open |
+| 7 | Oude concepts.json entries hebben geen auto_extract relaties | concepts.json | 🟢 Laag | 🔲 Open |
 
 ---
 
@@ -279,13 +281,12 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 ## 🚀 Volgende stappen (in volgorde van prioriteit)
 
-1. 🔴 **weather.py** — nieuwe API-key aanmaken + naar .env (URGENT)
-2. 🟡 **reboot_manager.py** — /reboot commando (10 minuten werk)
-3. 🟡 **Personality pipeline** — uitbreiden naar alle intents
-4. 🟢 **Layer 1** — word_associations_learner.py (memory v2.0 is nu volledig klaar)
-5. 🟢 **microlearning.py** — bouwen
-6. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md)
-7. 🟢 **memory.py Fase 5** — optimalisatie/polish, enkel nodig bij grote databank of trage queries (geen haast)
+1. 🟡 **reboot_manager.py** — /reboot commando (10 minuten werk)
+2. 🟡 **Personality pipeline** — uitbreiden naar alle intents
+3. 🟢 **Layer 1** — word_associations_learner.py (memory v2.0 is nu volledig klaar)
+4. 🟢 **microlearning.py** — bouwen
+5. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md)
+6. 🟢 **memory.py Fase 5** — optimalisatie/polish, enkel nodig bij grote databank of trage queries (geen haast)
 
 ---
 

@@ -155,22 +155,25 @@ class IntentRouter:
     # Weather
     # ---------------------------------------------------------
     def detect_weather(self, text):
+        t = text.lower()
         triggers = [
             "hoe is het weer",
             "wat is het weer",
             "weerbericht",
             "temperatuur",
             "is het koud",
-            "is het warm"
+            "is het warm",
+            "weer in ",      # bv. "weer in Gent?"
+            "weer vandaag",
+            "weer morgen"
         ]
-        if "weer" not in text:
+        if "weer" not in t:
             return False
-        if any(t in text for t in triggers):
+        if any(trig in t for trig in triggers):
             dbg(f"{C_BLUE}→ weather{C_RESET}")
             self.event_bus.publish("intent_weather", {"text": text})
             return True
         return False
-
     # ---------------------------------------------------------
     # Time
     # ---------------------------------------------------------
