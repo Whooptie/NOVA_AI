@@ -1,5 +1,11 @@
 # modules/weather/weather.py
+import os
 import requests
+from dotenv import load_dotenv
+
+# Laadt de variabelen uit het .env bestand in het project
+load_dotenv()
+
 
 class WeatherModule:
     def __init__(self, event_bus, api_key, default_city="Aartrijke", default_country="BE"):
@@ -19,6 +25,11 @@ class WeatherModule:
         # Neem enkel het eerste woord na "in"
         city = text.split(" in ", 1)[1].strip()
         city = city.split()[0]  # verwijder "vandaag", "morgen", etc.
+
+        # Verwijder leestekens die per ongeluk meegepakt worden
+        # (bv. "brugge." of "brugge?" of "brugge!" -> "brugge")
+        city = city.strip(".,!?;:")
+
         return city
 
     def on_weather(self, data, event_type=None):
@@ -62,7 +73,7 @@ class WeatherModule:
 
 
 def init_module(event_bus):
-    API_KEY = "66e69ca91b20017087166be6cb30767b"
+    API_KEY = os.getenv("OPENWEATHER_API_KEY")
     instance = WeatherModule(event_bus, API_KEY)
     event_bus.publish("module_loaded", {"name": "weather"})
     return instance
