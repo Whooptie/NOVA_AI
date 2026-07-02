@@ -317,6 +317,70 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Memory test-commando's
+    # ---------------------------------------------------------
+    def detect_memory(self, text):
+        t = text.strip()
+
+        # "memory stats"
+        if t.lower() == "memory stats":
+            mem = self.event_bus.modules.get("memory")
+            if not mem:
+                self.event_bus.publish("chat_response", {"text": "Memory-module niet gevonden."})
+                return True
+            stats = mem.get_stats()
+            msg = (
+                f"Memory statistieken:\n"
+                f"  Totaal events: {stats.get('totaal_events', 0)}\n"
+                f"  Periode: {stats.get('periode', 'onbekend')}\n"
+                f"  Events in RAM: {stats.get('events_in_ram', 0)}\n"
+                f"  Database grootte: {stats.get('database_grootte_mb', 0)} MB"
+            )
+            self.event_bus.publish("chat_response", {"text": msg})
+            return True
+
+        # "memory search <woord>"
+        if t.lower().startswith("memory search "):
+            keyword = t[len("memory search "):].strip()
+            mem = self.event_bus.modules.get("memory")
+            if not mem:
+                self.event_bus.publish("chat_response", {"text": "Memory-module niet gevonden."})
+                return True
+            resultaten = mem.search(keyword, limit=5)
+            if not resultaten:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Geen events gevonden met '{keyword}'."
+                })
+            else:
+                regels = [f"  [{r['event_type']}] {r['data'][:80]}" for r in resultaten]
+                msg = f"Gevonden ({len(resultaten)} resultaten voor '{keyword}'):\n" + "\n".join(regels)
+                self.event_bus.publish("chat_response", {"text": msg})
+            return True
+
+        # "memory similar <woord>"
+        if t.lower().startswith("memory similar "):
+            woord = t[len("memory similar "):].strip()
+            mem = self.event_bus.modules.get("memory")
+            if not mem:
+                self.event_bus.publish("chat_response", {"text": "Memory-module niet gevonden."})
+                return True
+            resultaten = mem.find_similar(woord, top_k=3)
+            if not resultaten:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Niets gevonden dat lijkt op '{woord}'."
+                })
+            else:
+                regels = [
+                    f"  (score {r['similarity']}) [{r['event_type']}] {r['data'][:60]}"
+                    for r in resultaten
+                ]
+                msg = f"Meest gelijkende events op '{woord}':\n" + "\n".join(regels)
+                self.event_bus.publish("chat_response", {"text": msg})
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Help
     # ---------------------------------------------------------
     def detect_help(self, text):
@@ -376,6 +440,10 @@ class IntentRouter:
 
         # 6b Help
         if self.detect_help(text):
+            return
+
+        # 6c Memory test-commando's
+        if self.detect_memory(text):
             return
 
         # 7 Math
