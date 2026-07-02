@@ -58,6 +58,17 @@ def main():
     while True:
         printed = set()
         user_input = input(f"{GREEN}Jij: {RESET}")
+
+        # Tijdelijk test-commando voor Fase 4 (mag je later weer verwijderen)
+        if user_input.lower() == "onderhoud":
+            mem = loader.loaded_modules.get("memory")
+            if mem:
+                print(f"{CYAN}Onderhoudsronde wordt gestart...{RESET}")
+                mem.run_maintenance()
+            else:
+                print(f"{RED}Memory-module niet gevonden.{RESET}")
+            continue
+            
         if user_input.lower() == "exit":
             # Chess-engine (Stockfish) netjes afsluiten, anders blijft het proces hangen
             chess_module = loader.loaded_modules.get("chess_engine")

@@ -26,6 +26,11 @@ def get_help():
 ♟️ SCHAKEN
   help schaken  (voor alle schaakcommando's)
 
+🧠 GEHEUGEN
+  memory stats                    (hoeveel events opgeslagen, hoe groot de database)
+  memory search <woord>           (zoek een woord terug in het geheugen)
+  memory similar <woord>          (vind events die lijken op een woord, ook bij typfouten)
+
 ❓ HELP
   help               (dit overzicht)
   help schaken       (schaakcommando's)
