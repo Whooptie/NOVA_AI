@@ -166,7 +166,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 
 | Laag | Module | Status | Roadmap |
 | ---- | ------ | ------ | ------- |
-| Layer 0 | memory.py (v2.0) | 🟡 Fase 1-3 klaar, Fase 4 nog te bouwen | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
+| Layer 0 | memory.py (v2.0) | ✅ KLAAR (alle 4 fases) | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
 | Layer 1 | word_associations_learner.py | ❌ Nog te bouwen | memory_layer1_roadmap.md |
 | Layer 2 | pattern_matcher.py | ❌ Nog te bouwen | memory_layer2_roadmap.md |
 | Layer 3 | semantic.py | ✅ KLAAR | semantic_roadmap.md |
@@ -257,7 +257,7 @@ Belangrijkste gevolgen voor memory.py v2.0:
 - Persistente SQLite-connectie met WAL-mode ✅
 - Write buffering + batching ✅
 - Achtergrond-onderhoud timer (elke 6u: tiering, compressie, vacuum) ❌ Fase 4
-- RAM groeit overdag, krimpt 's nachts (trim naar 500 events) ❌ Fase 4
+- RAM groeit overdag, krimpt 's nachts (trim naar 500 events) ✅
 - Graceful shutdown (atexit + signal handlers) ✅
 - Crash recovery bij herstart (JSONL = source of truth) ✅
 - Log rotation (JSONL max 50MB) ✅
@@ -270,7 +270,8 @@ Belangrijkste gevolgen voor memory.py v2.0:
 | 1 | Foundation Fix (paden, retry, log rotation) | ✅ |
 | 2 | SQLite + Daemon Basis (WAL, write buffer, graceful shutdown) | ✅ |
 | 3 | Query API (search, query, get_stats, find_similar) | ✅ |
-| 4 | Achtergrond-onderhoud timer, layer-integratie | ❌ Nog te bouwen |
+| 4 | Achtergrond-onderhoud timer, layer-integratie | ✅ Getest (archiveren, comprimeren, VACUUM, event publishing) |
+| 5 | Optimization & polish (query caching, memory leaks, concurrent access, backup, health check) | 🟢 Later — pas nodig bij grote databank/veel gelijktijdige toegang |
 
 Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
@@ -279,12 +280,12 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 ## 🚀 Volgende stappen (in volgorde van prioriteit)
 
 1. 🔴 **weather.py** — nieuwe API-key aanmaken + naar .env (URGENT)
-2. 🟠 **memory.py v2.0** — Fase 4 afbouwen (achtergrond-onderhoud timer) (memory_layer0_roadmap.md + addendum)
-3. 🟡 **reboot_manager.py** — /reboot commando (10 minuten werk)
-4. 🟡 **Personality pipeline** — uitbreiden naar alle intents
+2. 🟡 **reboot_manager.py** — /reboot commando (10 minuten werk)
+3. 🟡 **Personality pipeline** — uitbreiden naar alle intents
+4. 🟢 **Layer 1** — word_associations_learner.py (memory v2.0 is nu volledig klaar)
 5. 🟢 **microlearning.py** — bouwen
-6. 🟢 **Layer 1** — word_associations_learner.py (na memory v2.0 klaar)
-7. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md)
+6. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md)
+7. 🟢 **memory.py Fase 5** — optimalisatie/polish, enkel nodig bij grote databank of trage queries (geen haast)
 
 ---
 

@@ -44,7 +44,8 @@ class MemoryModule:
             "time_engine_response",
             "time_response",
             "date_response",
-            "module_loaded"
+            "module_loaded",
+            "memory:interaction_added"   # voorkomt oneindige lus (memory luistert naar alles, ook naar zichzelf)
         }
 
         # Zorg dat map bestaat (maakt 'm aan als hij nog niet bestaat)
@@ -55,6 +56,14 @@ class MemoryModule:
         self.buffer_max_events  = 50   # Flush na 50 events
         self.buffer_max_seconds = 5    # OF na 5 seconden
         self.last_flush = time.time()
+
+        # --- Fase 4: instellingen voor achtergrond-onderhoud ---
+        self.ram_grow_max      = 5000   # Overdag mag RAM tot dit aantal groeien
+        self.ram_keep_nightly  = 500    # 's Nachts terugbrengen naar dit aantal
+        self.archive_after_days  = 90   # Events ouder dan 3 maanden -> archief-tabel
+        self.compress_after_days = 365  # Events ouder dan 1 jaar -> gzip-bestand
+        self.maintenance_interval_hours = 6  # Elke 6 uur onderhoud draaien
+        self.maintenance_timer = None   # Wordt gezet in start_maintenance()
 
         # Persistente SQLite-connectie (wordt aangemaakt in _init_db)
         self.conn = None
@@ -67,6 +76,9 @@ class MemoryModule:
         # Graceful shutdown: buffer leegmaken bij afsluiten
         atexit.register(self._on_shutdown)
         signal.signal(signal.SIGTERM, self._on_signal)
+
+        # Fase 4: achtergrond-onderhoud starten (elke X uur)
+        self.start_maintenance()
 
     # -------------------------
     # Veilig kopiëren
@@ -100,6 +112,19 @@ class MemoryModule:
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_timestamp  ON interactions(timestamp)")
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_month      ON interactions(month)")
         self.conn.execute("CREATE INDEX IF NOT EXISTS idx_event_type ON interactions(event_type)")
+
+        # Aparte tabel voor oudere events (>3 maanden) — zelfde structuur
+        self.conn.execute("""
+            CREATE TABLE IF NOT EXISTS interactions_old (
+                id         INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp  REAL    NOT NULL,
+                month      TEXT    NOT NULL,
+                year       INTEGER NOT NULL,
+                event_type TEXT    NOT NULL,
+                data       TEXT    NOT NULL,
+                created_at REAL    NOT NULL
+            )
+        """)
         self.conn.commit()
         print("Memory: SQLite-database klaar.")
         
@@ -130,6 +155,9 @@ class MemoryModule:
         # In buffer voor SQLite (wordt in groepjes weggeschreven)
         self.write_buffer.append(event)
         self._maybe_flush()
+
+        # Laat Layers 1-7 weten dat er een nieuw event is (voor later gebruik)
+        self.event_bus.publish("memory:interaction_added", event)
 
     # -------------------------
     # Recente events voor UI
@@ -226,6 +254,7 @@ class MemoryModule:
     # -------------------------
     def _on_shutdown(self):
         """Wordt aangeroepen bij normaal afsluiten (exit, Ctrl+C)"""
+        self.stop_maintenance()
         self._flush_buffer()
         if self.conn:
             self.conn.commit()
@@ -436,6 +465,142 @@ class MemoryModule:
         gescoord.sort(key=lambda r: r["similarity"], reverse=True)
         return gescoord[:top_k]
         
+    # -------------------------
+    # Fase 4: Achtergrond-onderhoud
+    # -------------------------
+
+    def trim_ram_cache(self, keep_recent=None):
+        """
+        Houdt enkel de laatste N events in RAM (self.events).
+        Overdag mag dit groeien, 's nachts brengen we het terug.
+        """
+        if keep_recent is None:
+            keep_recent = self.ram_keep_nightly
+
+        if len(self.events) <= keep_recent:
+            return
+
+        self.events = self.events[-keep_recent:]
+        print(f"Memory: RAM-cache opgeschoond naar {keep_recent} events.")
+
+    def archive_old_events(self):
+        """
+        Verplaatst events ouder dan 'archive_after_days' van de
+        hoofdtabel naar 'interactions_old'. Blijft gewoon doorzoekbaar,
+        maar houdt de hoofdtabel klein en snel.
+        """
+        if not self.conn:
+            return
+
+        cutoff = time.time() - (self.archive_after_days * 24 * 3600)
+
+        try:
+            # Kopieer oude rijen naar interactions_old
+            self.conn.execute("""
+                INSERT INTO interactions_old
+                    (timestamp, month, year, event_type, data, created_at)
+                SELECT timestamp, month, year, event_type, data, created_at
+                FROM interactions
+                WHERE timestamp < ?
+            """, (cutoff,))
+
+            # Verwijder ze daarna uit de hoofdtabel
+            cursor = self.conn.execute(
+                "DELETE FROM interactions WHERE timestamp < ?", (cutoff,)
+            )
+            verplaatst = cursor.rowcount
+            self.conn.commit()
+
+            if verplaatst > 0:
+                print(f"Memory: {verplaatst} oude events gearchiveerd (>{self.archive_after_days} dagen).")
+        except Exception as e:
+            print("Memory archive_old_events error:", e)
+
+    def compress_ancient_events(self):
+        """
+        Events ouder dan 'compress_after_days' (standaard 1 jaar) worden
+        uit interactions_old gehaald, weggeschreven naar een gzip-bestand
+        op schijf, en daar verwijderd. Dit houdt zelfs de archief-tabel klein.
+        """
+        if not self.conn:
+            return
+
+        import gzip
+
+        cutoff = time.time() - (self.compress_after_days * 24 * 3600)
+
+        try:
+            self.conn.row_factory = sqlite3.Row
+            cursor = self.conn.execute(
+                "SELECT * FROM interactions_old WHERE timestamp < ?", (cutoff,)
+            )
+            rijen = [dict(row) for row in cursor.fetchall()]
+
+            if not rijen:
+                return
+
+            archive_dir = self.save_path.parent / "archive"
+            archive_dir.mkdir(parents=True, exist_ok=True)
+
+            timestamp_str = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+            archive_file = archive_dir / f"interactions_compressed_{timestamp_str}.jsonl.gz"
+
+            with gzip.open(archive_file, "wt", encoding="utf-8") as f:
+                for rij in rijen:
+                    f.write(json.dumps(rij) + "\n")
+
+            self.conn.execute(
+                "DELETE FROM interactions_old WHERE timestamp < ?", (cutoff,)
+            )
+            self.conn.commit()
+
+            print(f"Memory: {len(rijen)} zeer oude events gecomprimeerd naar {archive_file.name}")
+        except Exception as e:
+            print("Memory compress_ancient_events error:", e)
+
+    def vacuum_db(self):
+        """Maakt de SQLite-database weer compact nadat er veel verwijderd is."""
+        if not self.conn:
+            return
+        try:
+            self.conn.execute("VACUUM")
+            self.conn.commit()
+            print("Memory: database compact gemaakt (VACUUM).")
+        except Exception as e:
+            print("Memory vacuum_db error:", e)
+
+    def run_maintenance(self):
+        """Voert één volledige onderhoudsronde uit. Wordt elke X uur aangeroepen."""
+        try:
+            self._flush_buffer()
+            self.archive_old_events()
+            self.compress_ancient_events()
+            self.trim_ram_cache()
+            self.vacuum_db()
+            self._rotate_if_needed()
+            print("Memory: onderhoudsronde afgerond.")
+        except Exception as e:
+            print("Memory run_maintenance error:", e)
+
+    def start_maintenance(self):
+        """Start de achtergrond-timer die elke 'maintenance_interval_hours' draait."""
+        import threading
+
+        def _tick():
+            self.run_maintenance()
+            self.start_maintenance()  # plan de volgende ronde in
+
+        interval_seconds = self.maintenance_interval_hours * 3600
+        self.maintenance_timer = threading.Timer(interval_seconds, _tick)
+        self.maintenance_timer.daemon = True  # stopt automatisch als Nova stopt
+        self.maintenance_timer.start()
+
+    def stop_maintenance(self):
+        """Zet de achtergrond-timer stil (bij netjes afsluiten)."""
+        if self.maintenance_timer:
+            self.maintenance_timer.cancel()
+            self.maintenance_timer = None
+
 def init_module(event_bus):
     instance = MemoryModule(event_bus)
     event_bus.publish("module_loaded", {"name": "memory"})
