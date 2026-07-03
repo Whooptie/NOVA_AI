@@ -20,8 +20,16 @@ def get_help():
   wat betekent fotosynthese
   wiki zwart gat
   teach fotosynthese een proces waarbij planten licht omzetten
+  example appel Ik eet elke dag een appel.
   synoniemen van blij
   antoniemen van groot
+  waarvoor gebruik je een hamer
+  wat veroorzaakt regen
+  wat zijn eigenschappen van vuur
+
+🧠 REDENEREN
+  is een hond een dier
+  hond is een dier          (leert Nova de relatie, met bevestiging)
 
 ♟️ SCHAKEN
   help schaken  (voor alle schaakcommando's)

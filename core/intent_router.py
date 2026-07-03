@@ -48,6 +48,29 @@ class IntentRouter:
         return True
 
     # ---------------------------------------------------------
+    # Example-flow (voorbeeldzin toevoegen)
+    # ---------------------------------------------------------
+    def handle_example(self, text):
+        if not text.startswith("example "):
+            return False
+
+        parts = text.split(maxsplit=2)
+        if len(parts) != 3:
+            self.event_bus.publish("chat_response", {
+                "text": "Gebruik: example <woord> <voorbeeldzin>"
+            })
+            return True
+
+        word = parts[1]
+        sentence = parts[2]
+
+        self.event_bus.publish("teach_example", {
+            "word": word,
+            "sentence": sentence
+        })
+        return True
+
+    # ---------------------------------------------------------
     # Confirm-flow (teach)
     # ---------------------------------------------------------
     def handle_confirmation(self, text):
@@ -418,6 +441,10 @@ class IntentRouter:
 
         # 1 Teach
         if self.handle_teach(text):
+            return
+
+        # 1B Example
+        if self.handle_example(text):
             return
 
         # 2 Confirm

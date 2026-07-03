@@ -101,71 +101,71 @@ Nova_AI/
 ### CORE
 
 
-| Module           | Status            | Opmerkingen                                                                                                                                                                                                                 |
-| ------------------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| event_bus.py     | ✅ Klaar          | Stabiel, publish/subscribe + wildcard werkt                                                                                                                                                                                 |
-| module_loader.py | ✅ Klaar          | Auto-discovery via pkgutil, laadtijdmeting                                                                                                                                                                                  |
-| intent_router.py | ✅ Klaar          | Volledig semantic-aware. Wikipedia, synoniemen, antoniemen, relaties, definitievragen gekoppeld. handle_confirmation() nog leeg.                                                                                            |
-| memory.py        | ✅ Klaar          | v2.0 daemon-mode volledig gebouwd (Fase 1-4): portable pad, WAL-SQLite, write-buffering, Query API, achtergrond-onderhoud (archiveren/comprimeren/VACUUM elke 6u). Fase 5 (optimalisatie/polish) nog open, lage prioriteit. |
-| patterns.py      | ✅ Klaar          | Woordtelling + event-counts. Wordt later vervangen door Layer 2 (pattern_matcher.py).                                                                                                                                       |
-| logger.py        | ✅ Klaar          | Logt enkel fouten/waarschuwingen naar nova.log (RotatingFileHandler, max 5MB × 3 backups). Volledige eventgeschiedenis zit in memory.py (data/interactions.jsonl + .db).                                                   |
-| semantic.py      | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd.                                                                             |
+| Module | Status | Opmerkingen |
+| ------ | ------ | ----------- |
+| event_bus.py | ✅ Klaar | Stabiel, publish/subscribe + wildcard werkt |
+| module_loader.py| ✅ Klaar | Auto-discovery via pkgutil, laadtijdmeting |
+| intent_router.py | ✅ Klaar | Volledig semantic-aware. Wikipedia, synoniemen, antoniemen, relaties, definitievragen gekoppeld. handle_confirmation() nog leeg. |
+| memory.py | ✅ Klaar | v2.0 daemon-mode volledig gebouwd (Fase 1-4): portable pad, WAL-SQLite, write-buffering, Query API, achtergrond-onderhoud (archiveren/comprimeren/VACUUM elke 6u). Fase 5 (optimalisatie/polish) nog open, lage prioriteit. |
+| patterns.py | ✅ Klaar | Woordtelling + event-counts. Wordt later vervangen door Layer 2 (pattern_matcher.py). |
+| logger.py | ✅ Klaar | Logt enkel fouten/waarschuwingen naar nova.log (RotatingFileHandler, max 5MB × 3 backups). Volledige eventgeschiedenis zit in memory.py (data/interactions.jsonl + .db). |
+| semantic.py | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw: `teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`. |
 
 ### MODULES
 
 
-| Module                  | Status   | Opmerkingen                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| time.py                 | ✅ Klaar | Zone-aware tijdsvraag                                                                                                                                                                                                                                                                                                                                                         |
-| zone.py                 | ✅ Klaar | Auto-timezone via IP, fallback naar OS                                                                                                                                                                                                                                                                                                                                        |
-| weather.py              | ✅ Klaar | API-key in .env, huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie (morgen/overmorgen/weekdag)                                                                                                                                                                                                                                                 |
-| math.py                 | ✅ Klaar | Berekeningen, temperatuurconversie, wiskundige functies                                                                                                                                                                                                                                                                                                                       |
-| chat.py                 | ✅ Klaar | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig.                                                                                                                                                                                                                                                                                                       |
-| response_pipeline.py    | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet**                                                                                                                                                                                                                                                                                           |
-| chat_response_engine.py | ✅ Klaar | Doorsturen van pipeline_response naar expression_inject                                                                                                                                                                                                                                                                                                                       |
-| expression_injector.py  | ✅ Klaar | Emoji, gesture, puberal flair injectie                                                                                                                                                                                                                                                                                                                                        |
-| help.py                 | ✅ Klaar | Help-systeem met topic-bestanden.`help` = algemeen overzicht, `help schaken` = schaakcommando's incl. huidig niveau en denktijd.                                                                                                                                                                                                                                              |
-| wikipedia_teacher.py    | ✅ Klaar | Nederlandse Wikipedia API, disambiguatie-afhandeling, is_a relatie-extractie, automatische fallback vanuit chat.py                                                                                                                                                                                                                                                            |
-| chess_engine.py         | ✅ Klaar | Stockfish (UCI), persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten. Bordweergave met schaaksymbolen (wit/magenta). Instelbare moeilijkheidsgraad (0-20) + denktijd, beide persistent (chess_settings.json). Win/verlies statistieken (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
-| microlearning.py        | ❌ Leeg  | Bestand bestaat maar is volledig leeg — nog te bouwen                                                                                                                                                                                                                                                                                                                        |
+| Module | Status | Opmerkingen |
+| ------ | ------ | ----------- |
+| time.py | ✅ Klaar | Zone-aware tijdsvraag |
+| zone.py | ✅ Klaar | Auto-timezone via IP, fallback naar OS |
+| weather.py | ✅ Klaar | API-key in .env, huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie (morgen/overmorgen/weekdag) |
+| math.py | ✅ Klaar | Berekeningen, temperatuurconversie, wiskundige functies |
+| chat.py | ✅ Klaar | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig. |
+| response_pipeline.py | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet** |
+| chat_response_engine.py | ✅ Klaar | Doorsturen van pipeline_response naar expression_inject |
+| expression_injector.py | ✅ Klaar | Emoji, gesture, puberal flair injectie |
+| help.py | ✅ Klaar | Help-systeem met topic-bestanden. `help` = algemeen overzicht, `help schaken` = schaakcommando's incl. huidig niveau en denktijd. `algemeen.py` bijgewerkt (3 juli 2026) met `example`-commando en reasoning-sectie. |
+| wikipedia_teacher.py | ✅ Klaar | Nederlandse Wikipedia API, disambiguatie-afhandeling, is_a relatie-extractie, automatische fallback vanuit chat.py. Definitie-limiet opgetrokken naar 400 tekens, kapt nooit meer af midden in een woord. Automatische voorbeeldzin-extractie uit Wikipedia geprobeerd maar werkt nog niet betrouwbaar — vervangen door handmatig `example`-commando (zie semantic.py). |
+| chess_engine.py | ✅ Klaar | Stockfish (UCI), persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten. Bordweergave met schaaksymbolen (wit/magenta). Instelbare moeilijkheidsgraad (0-20) + denktijd, beide persistent (chess_settings.json). Win/verlies statistieken (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
+| microlearning.py | ❌ Leeg  | Bestand bestaat maar is volledig leeg — nog te bouwen |
 
 ### IDENTITY
 
 
-| Module                | Status   | Opmerkingen                                                         |
-| ----------------------- | ---------- | --------------------------------------------------------------------- |
-| loader.py             | ✅ Klaar | Laadt + valideert identity.json tegen schema.json                   |
-| identity.json         | ✅ Klaar | Volledig persoonlijkheidsprofiel                                    |
-| schema.json           | ✅ Klaar | JSON Schema validatie                                               |
-| personality_engine.py | ✅ Klaar | Traits + state + behavior modifiers                                 |
-| behavior_modifiers.py | ✅ Klaar | Energie, impulsiviteit, dramatic flair                              |
-| traits.json           | ✅ Klaar | Numerieke persoonlijkheidswaarden (0.0–1.0)                        |
-| identity_state.json   | ✅ Klaar | **overstimulation.level staat standaard op 1.0 (max) — fix nodig** |
-| emotion_engine.py     | ✅ Klaar | Trigger-gebaseerde emotie-updates                                   |
-| emotion_state.json    | ✅ Klaar | Huidige emotionele staat                                            |
-| emotion_rules.json    | ✅ Klaar | Regels voor mood-shifts, sync, dramatic flair                       |
-| tone_engine.py        | ✅ Klaar | Mood → tone → style profile                                       |
-| style_profiles.json   | ✅ Klaar | 8 stijlprofielen (emoji, gesture, pitch, volume...)                 |
-| gesture_profiles.json | ✅ Klaar | 7 gebarenprofielen voor toekomstige avatar                          |
+| Module | Status | Opmerkingen |
+| ------ | ------ | ----------- |
+| loader.py | ✅ Klaar | Laadt + valideert identity.json tegen schema.json |
+| identity.json | ✅ Klaar | Volledig persoonlijkheidsprofiel |
+| schema.json | ✅ Klaar | JSON Schema validatie |
+| personality_engine.py | ✅ Klaar | Traits + state + behavior modifiers |
+| behavior_modifiers.py | ✅ Klaar | Energie, impulsiviteit, dramatic flair |
+| traits.json | ✅ Klaar | Numerieke persoonlijkheidswaarden (0.0–1.0) |
+| identity_state.json | ✅ Klaar | **overstimulation.level staat standaard op 1.0 (max) — fix nodig** |
+| emotion_engine.py | ✅ Klaar | Trigger-gebaseerde emotie-updates |
+| emotion_state.json | ✅ Klaar | Huidige emotionele staat |
+| emotion_rules.json | ✅ Klaar | Regels voor mood-shifts, sync, dramatic flair |
+| tone_engine.py | ✅ Klaar | Mood → tone → style profile |
+| style_profiles.json | ✅ Klaar | 8 stijlprofielen (emoji, gesture, pitch, volume...) |
+| gesture_profiles.json | ✅ Klaar | 7 gebarenprofielen voor toekomstige avatar |
 
 ---
 
 ## 🐛 Bekende bugs (prioriteit)
 
 
-| #  | Bug                                                               | Bestand              | Urgentie  | Status                                                                                   |
-| ---- | ------------------------------------------------------------------- | ---------------------- | ----------- | ------------------------------------------------------------------------------------------ |
-| 1  | OpenWeatherMap API-key hardcoded én gelekt in chat               | weather.py           | 🔴 DIRECT | ✅ Opgelost (2 juli 2026 — key naar .env, python-dotenv)                                |
-| 1b | Stad-extractie pakte leestekens mee (bv. "gent?" i.p.v. "gent")   | weather.py           | 🟢 Laag   | ✅ Opgelost (2 juli 2026 — strip(".,!?;:") toegevoegd)                                  |
-| 1c | Weer-intent werd niet herkend bij korte zinnen ("weer in Gent?")  | intent_router.py     | 🟡 Medium | ✅ Opgelost (2 juli 2026 — losse woord-detectie i.p.v. vaste triggerzinnen)             |
-| 1d | Weekdagnaam kwam in het Engels terug ("Monday" i.p.v. "maandag")  | weather.py           | 🟢 Laag   | ✅ Opgelost (3 juli 2026 — eigen NL-weekdaglijst i.p.v. strftime %A)                    |
-| 2  | Windows-pad hardcoded in save_path                                | memory.py            | 🟡 Medium | ✅ Opgelost (2 juli 2026 — portable pad via Path(__file__), werkt op elke PC/gebruiker) |
-| 3  | Dode code (uitgecommentarieerde handlers)                         | chat.py              | 🟢 Laag   | 🔲 Open                                                                                  |
-| 4  | overstimulation.level = 1.0 als standaard                         | emotion_state.json   | 🟢 Laag   | 🔲 Open                                                                                  |
-| 5  | Personality/tone pipeline bypassed door weer/tijd/math/definities | response_pipeline.py | 🟡 Medium | 🔲 Open                                                                                  |
-| 6  | Punt aan einde van woord wordt meegenomen bij wiki-aanroep        | chat.py              | 🟢 Laag   | 🔲 Open                                                                                  |
-| 7  | Oude concepts.json entries hebben geen auto_extract relaties      | concepts.json        | 🟢 Laag   | 🔲 Open                                                                                  |
-
+| # | Bug | Bestand | Urgentie | Status |
+| - | --- | ------- | -------- | ------ |
+| 1  | OpenWeatherMap API-key hardcoded én gelekt in chat                                  | weather.py           | 🔴 DIRECT | ✅ Opgelost (2 juli 2026 — key naar .env, python-dotenv)                                |
+| 1b | Stad-extractie pakte leestekens mee (bv. "gent?" i.p.v. "gent")                     | weather.py           | 🟢 Laag   | ✅ Opgelost (2 juli 2026 — strip(".,!?;:") toegevoegd)                                  |
+| 1c | Weer-intent werd niet herkend bij korte zinnen ("weer in Gent?")                    | intent_router.py     | 🟡 Medium | ✅ Opgelost (2 juli 2026 — losse woord-detectie i.p.v. vaste triggerzinnen)             |
+| 1d | Weekdagnaam kwam in het Engels terug ("Monday" i.p.v. "maandag")                    | weather.py           | 🟢 Laag   | ✅ Opgelost (3 juli 2026 — eigen NL-weekdaglijst i.p.v. strftime %A)                    |
+| 2  | Windows-pad hardcoded in save_path                                                  | memory.py            | 🟡 Medium | ✅ Opgelost (2 juli 2026 — portable pad via Path(__file__), werkt op elke PC/gebruiker) |
+| 3  | Dode code (uitgecommentarieerde handlers)                                           | chat.py              | 🟢 Laag   | 🔲 Open                                                                                 |
+| 4  | overstimulation.level = 1.0 als standaard                                           | emotion_state.json   | 🟢 Laag   | 🔲 Open                                                                                 |
+| 5  | Personality/tone pipeline bypassed door weer/tijd/math/definities                   | response_pipeline.py | 🟡 Medium | 🔲 Open                                                                                 |
+| 6  | Punt aan einde van woord wordt meegenomen bij wiki-aanroep                          | chat.py              | 🟢 Laag   | 🔲 Open                                                                                 |
+| 7  | Oude concepts.json entries hebben geen auto_extract relaties                        | concepts.json        | 🟢 Laag   | 🔲 Open                                                                                 |
+| 8  | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag   | 🔲 Open — omzeild met handmatig `example`-commando                                      |
 ---
 
 ## 🌦️ Weather-module — functionaliteit (bijgewerkt 3 juli 2026)
@@ -208,10 +208,10 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | Layer 0 | memory.py (v2.0)             | ✅ KLAAR (alle 4 fases) | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
 | Layer 1 | word_associations_learner.py | ❌ Nog te bouwen        | memory_layer1_roadmap.md                                  |
 | Layer 2 | pattern_matcher.py           | ❌ Nog te bouwen        | memory_layer2_roadmap.md                                  |
-| Layer 3 | semantic.py                  | ✅ KLAAR                | semantic_roadmap.md                                       |
+| Layer 3 | semantic.py                  | ✅ KLAAR       | semantic_roadmap.md                                       |
 | Layer 4 | response_engine.py           | ❌ Nog te bouwen        | memory_layer4_roadmap.md                                  |
 | Layer 5 | context_manager.py           | ❌ Nog te bouwen        | memory_layer5_roadmap.md                                  |
-| Layer 6 | personality_engine.py        | ✅ KLAAR                | —                                                        |
+| Layer 6 | personality_engine.py        | ✅ KLAAR       | —                                                        |
 | Layer 7 | emergence_engine.py          | ❌ Nog te bouwen        | memory_layer7_roadmap.md                                  |
 
 **Bouwvolgorde:** Layer 0 eerst (foundation), dan 1 → 2 → 4 → 5 → 7.

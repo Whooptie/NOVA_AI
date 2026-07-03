@@ -971,6 +971,7 @@ class SemanticConceptsModule:
 
         event_bus.subscribe("teach_concept", self._on_teach_event)
         event_bus.subscribe("teach_pos", self._on_teach_pos)
+        event_bus.subscribe("teach_example", self._on_teach_example)
         event_bus.publish("module_loaded", {"name": "semantic"})
 
     # Publieke API
@@ -1089,6 +1090,42 @@ class SemanticConceptsModule:
 
         concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
         self.store.save()
+
+    def _on_teach_example(self, data, event_type=None):
+        word = (data.get("word") or "").strip().lower()
+        sentence = (data.get("sentence") or "").strip()
+
+        if not word or not sentence:
+            self.event_bus.publish("chat_response", {
+                "text": "Gebruik: example <woord> <voorbeeldzin>"
+            })
+            return
+
+        concept = self.store.ensure_concept(word)
+        senses = concept["senses"]
+
+        if not senses:
+            # Woord bestaat nog niet — maak een unknown sense aan
+            self.sense_engine.add_sense(word, "unknown", pos=None, source="user", confidence=0.1)
+            concept = self.store.get_concept(word)
+            senses = concept["senses"]
+
+        sense = senses[0]
+        sense.setdefault("examples", [])
+
+        if sentence in sense["examples"]:
+            self.event_bus.publish("chat_response", {
+                "text": f"Die voorbeeldzin ken ik al bij '{word}'."
+            })
+            return
+
+        sense["examples"].append(sentence)
+        concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+        self.store.save()
+
+        self.event_bus.publish("chat_response", {
+            "text": f"Voorbeeldzin toegevoegd bij '{word}': \"{sentence}\""
+        })
 
 
 def init_module(event_bus, memory_module=None):

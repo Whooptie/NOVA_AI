@@ -591,7 +591,9 @@
         "sense_id": "appel#1",
         "definition": "De appel is de pitvrucht van de plant Malus domestica uit de rozenfamilie (Rosaceae).",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Ik eet elke dag een appel."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -608,7 +610,7 @@
     ],
     "metadata": {
       "created_at": "2026-06-29T17:55:24.949953",
-      "updated_at": "2026-06-29T17:55:24.951964",
+      "updated_at": "2026-07-03T17:54:14.026608",
       "sources": [
         "user"
       ],
@@ -1068,105 +1070,11 @@
       }
     ]
   },
-  "machine learning": {
-    "senses": [
-      {
-        "sense_id": "machine learning#1",
-        "definition": "Machinaal leren of machinelearning is een subset van kunstmatige intelligentie om via big data voorheen exclusief menselijke vormen van patroonherkenning te digitaliseren, zodat computersystemen ku...",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "wikipedia",
-        "confidence": 0.8,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-02T12:19:23.511648",
-      "updated_at": "2026-07-02T12:19:23.512649",
-      "sources": [
-        "user"
-      ],
-      "last_used_at": "2026-07-02T12:19:23.512649",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-02T12:19:23.512649",
-          "confidence": 1.0
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "machine learning"
-        },
-        "timestamp": "2026-07-02T12:19:23.511648"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "user",
-        "sense_id": "machine learning#1",
-        "old_value": null,
-        "new_value": "Machinaal leren of machinelearning is een subset van kunstmatige intelligentie om via big data voorheen exclusief menselijke vormen van patroonherkenning te digitaliseren, zodat computersystemen ku...",
-        "timestamp": "2026-07-02T12:19:23.512649"
-      }
-    ]
-  },
-  "kunstmatige intelligentie": {
-    "senses": [
-      {
-        "sense_id": "kunstmatige intelligentie#1",
-        "definition": "Kunstmatige intelligentie (KI) of artificiële intelligentie ook wel genoemd (AI) is een brede term in de computerwetenschappen die zich specifiek richt op verschillende technieken en intelligentie ...",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "wikipedia",
-        "confidence": 0.8,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-02T12:19:50.493068",
-      "updated_at": "2026-07-02T12:19:50.494071",
-      "sources": [
-        "user"
-      ],
-      "last_used_at": "2026-07-02T12:19:50.494071",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-02T12:19:50.494071",
-          "confidence": 1.0
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "kunstmatige intelligentie"
-        },
-        "timestamp": "2026-07-02T12:19:50.493068"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "user",
-        "sense_id": "kunstmatige intelligentie#1",
-        "old_value": null,
-        "new_value": "Kunstmatige intelligentie (KI) of artificiële intelligentie ook wel genoemd (AI) is een brede term in de computerwetenschappen die zich specifiek richt op verschillende technieken en intelligentie ...",
-        "timestamp": "2026-07-02T12:19:50.494071"
-      }
-    ]
-  },
   "honingbeer": {
     "senses": [
       {
         "sense_id": "honingbeer#1",
-        "definition": "De Maleise beer of honingbeer is een beer uit Zuidoost-Azië.",
+        "definition": "De Maleise beer of honingbeer is een beer uit Zuidoost-Azië. In Maleisië wordt de soort biroeang of broeang genoemd.",
         "pos": "noun",
         "examples": [],
         "relations": [
@@ -1175,7 +1083,7 @@
             "target": "beer",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-07-03T11:48:22.331904"
+            "created_at": "2026-07-03T17:47:35.763145"
           }
         ],
         "source": "wikipedia",
@@ -1185,7 +1093,7 @@
     ],
     "metadata": {
       "created_at": "2026-07-03T11:48:22.331904",
-      "updated_at": "2026-07-03T11:48:22.333899",
+      "updated_at": "2026-07-03T17:47:35.763145",
       "sources": [
         "user"
       ],
@@ -1227,10 +1135,10 @@
         "relations": [
           {
             "type": "is_a",
-            "target": "beer",
+            "target": "noord",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-07-03T11:48:42.943773"
+            "created_at": "2026-07-03T17:48:48.930047"
           }
         ],
         "source": "wikipedia",
@@ -1240,7 +1148,7 @@
     ],
     "metadata": {
       "created_at": "2026-07-03T11:48:42.943773",
-      "updated_at": "2026-07-03T11:48:42.945771",
+      "updated_at": "2026-07-03T17:48:48.930047",
       "sources": [
         "user"
       ],
@@ -1269,6 +1177,53 @@
         "old_value": null,
         "new_value": "De grizzlybeer is een Noord-Amerikaanse ondersoort van de bruine beer.",
         "timestamp": "2026-07-03T11:48:42.945771"
+      }
+    ]
+  },
+  "machine learning": {
+    "senses": [
+      {
+        "sense_id": "machine learning#1",
+        "definition": "Machinaal leren of machinelearning is een subset van kunstmatige intelligentie om via big data voorheen exclusief menselijke vormen van patroonherkenning te digitaliseren, zodat computersystemen kunnen leren naar analogie van hoe mensen dat doen. Dit leerproces maakt gebruik van technieken die voortkomen uit datamining om een grote hoeveelheid gegevens te internaliseren tot AI-algoritmen.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-03T17:36:24.151650",
+      "updated_at": "2026-07-03T17:36:24.153656",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-03T17:36:24.153656",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-03T17:36:24.153656",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "machine learning"
+        },
+        "timestamp": "2026-07-03T17:36:24.151650"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "machine learning#1",
+        "old_value": null,
+        "new_value": "Machinaal leren of machinelearning is een subset van kunstmatige intelligentie om via big data voorheen exclusief menselijke vormen van patroonherkenning te digitaliseren, zodat computersystemen kunnen leren naar analogie van hoe mensen dat doen. Dit leerproces maakt gebruik van technieken die voortkomen uit datamining om een grote hoeveelheid gegevens te internaliseren tot AI-algoritmen.",
+        "timestamp": "2026-07-03T17:36:24.153656"
       }
     ]
   }
