@@ -67,25 +67,86 @@ class WikipediaTeacher:
     # ---------------------------------------------------------
     def _extract_definition(self, summary_data: dict) -> str | None:
         """
-        Haalt de eerste zin op uit de Wikipedia samenvatting.
+        Haalt de eerste volledige zin (of eerste twee zinnen) op uit de
+        Wikipedia samenvatting. Kapt nooit midden in een woord af.
         """
         extract = summary_data.get("extract", "")
         if not extract:
             return None
 
-        # Eerste zin ophalen (alles tot de eerste punt + spatie of einde)
-        sentences = re.split(r'(?<=[.!?])\s+', extract.strip())
-        if sentences:
-            first = sentences[0].strip()
-            # Doorverwijspagina detecteren
-            if "kan verwijzen naar" in first or "kan ook verwijzen" in first:
-                return None
-            # Maximaal 200 tekens — langere definities zijn niet bruikbaar
-            if len(first) > 200:
-                first = first[:197] + "..."
-            return first
+        MAX_LENGTH = 400  # opgetrokken van 200 naar 400
 
-        return None
+        # Zinnen opsplitsen
+        sentences = re.split(r'(?<=[.!?])\s+', extract.strip())
+        if not sentences:
+            return None
+
+        first = sentences[0].strip()
+
+        # Doorverwijspagina detecteren
+        if "kan verwijzen naar" in first or "kan ook verwijzen" in first:
+            return None
+
+        # Probeer de tweede zin erbij te nemen als er nog ruimte is
+        definitie = first
+        if len(sentences) > 1:
+            kandidaat = first + " " + sentences[1].strip()
+            if len(kandidaat) <= MAX_LENGTH:
+                definitie = kandidaat
+
+        # Als de definitie nog steeds te lang is, kap dan af op de laatste
+        # volledige zin die binnen de limiet past — nooit midden in een woord
+        if len(definitie) > MAX_LENGTH:
+            afgekapt = definitie[:MAX_LENGTH]
+            laatste_punt = afgekapt.rfind(". ")
+            if laatste_punt > 0:
+                definitie = afgekapt[:laatste_punt + 1]
+            else:
+                # Geen volledige zin gevonden binnen de limiet →
+                # kap af op het laatste hele woord, geen "..." meer nodig
+                laatste_spatie = afgekapt.rfind(" ")
+                if laatste_spatie > 0:
+                    definitie = afgekapt[:laatste_spatie] + "."
+                else:
+                    definitie = afgekapt
+
+        return definitie.strip()
+
+    # ---------------------------------------------------------
+    # 2B. Voorbeeldzinnen extraheren uit Wikipedia tekst
+    # ---------------------------------------------------------
+    def _extract_examples(self, word: str, summary_data: dict, definitie: str) -> list:
+        """
+        Haalt extra zinnen uit de Wikipedia-extract die het woord bevatten
+        en niet al gebruikt zijn in de definitie. Puur symbolisch:
+        geen generatie, enkel bestaande Wikipedia-tekst hergebruiken.
+        """
+        extract = summary_data.get("extract", "")
+        if not extract:
+            return []
+
+        w = word.lower()
+        zinnen = re.split(r'(?<=[.!?])\s+', extract.strip())
+
+        voorbeelden = []
+        for zin in zinnen:
+            zin = zin.strip()
+            if not zin:
+                continue
+            # Sla zinnen over die al in de definitie zitten
+            if zin in definitie:
+                continue
+            # Alleen zinnen die het woord zelf bevatten zijn nuttig als voorbeeld
+            if w not in zin.lower():
+                continue
+            # Te lange zinnen zijn onhandig als voorbeeld
+            if len(zin) > 250:
+                continue
+            voorbeelden.append(zin)
+            if len(voorbeelden) >= 2:  # max 2 voorbeeldzinnen
+                break
+
+        return voorbeelden
 
     # ---------------------------------------------------------
     # 3. is_a relaties extraheren uit de definitie
@@ -146,7 +207,8 @@ class WikipediaTeacher:
     # ---------------------------------------------------------
     # 4. Alles opslaan in Nova's woordenbrein
     # ---------------------------------------------------------
-    def _teach_word(self, word: str, definition: str, relations: list) -> str:
+    def _teach_word(self, word: str, definition: str, relations: list, examples: list = None) -> str:
+        examples = examples or []
         """
         Slaat het woord op via de SemanticConceptsModule.
         Geeft een status-bericht terug.
@@ -164,19 +226,35 @@ class WikipediaTeacher:
                    sense.get("source") == "user":
                     return f"Ik ken '{word}' al van jou — Wikipedia overschrijft dat niet."
 
+            # Bestaande Wikipedia-sense overschrijven i.p.v. dupliceren
+            for sense in existing.get("senses", []):
+                if sense.get("source") == "wikipedia":
+                    concept = self.semantic.store.get_concept(word)
+                    for s in concept["senses"]:
+                        if s.get("sense_id") == sense.get("sense_id"):
+                            s["definition"] = definition
+                            s["confidence"] = WIKI_CONFIDENCE
+                            s["relations"] = relations if relations else s.get("relations", [])
+                            s["examples"] = examples if examples else s.get("examples", [])
+                            concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+                    self.semantic.store.save()
+                    return f"Wikipedia-definitie van '{word}' bijgewerkt → {definition}"
+
         # Definitie opslaan via teach_engine
         try:
             self.semantic.teach_engine.teach(
                 word=word,
                 definition=definition
             )
-            # Source corrigeren naar wikipedia
+            # Source corrigeren naar wikipedia + voorbeeldzinnen toevoegen
             concept = self.semantic.store.get_concept(word)
             if concept and concept.get("senses"):
                 for sense in concept["senses"]:
                     if sense.get("definition") == definition:
                         sense["source"] = "wikipedia"
                         sense["confidence"] = WIKI_CONFIDENCE
+                        if examples:
+                            sense["examples"] = examples
                 self.semantic.store.save()
         except Exception as e:
             return f"Fout bij opslaan van definitie: {e}"
@@ -296,8 +374,11 @@ class WikipediaTeacher:
         # 4. Relaties extraheren
         relations = self._extract_relations(word, definition)
 
+        # 4B. Voorbeeldzinnen extraheren
+        examples = self._extract_examples(word, summary, definition)
+
         # 5. Opslaan
-        resultaat = self._teach_word(word, definition, relations)
+        resultaat = self._teach_word(word, definition, relations, examples)
 
         # 6. Antwoord tonen
         self.event_bus.publish("chat_response", {
