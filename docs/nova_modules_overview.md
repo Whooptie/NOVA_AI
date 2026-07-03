@@ -476,3 +476,25 @@
 | 474 | 3 | Security / Access | danger_action_detector.py | modules/security/ | Analyseert acties van onbekende: "Is dit gevaarlijk?" (banking access, file copying, credentials access) met danger-scoring (1-10) | Nog niet gebouwd |
 | 475 | 3 | Security / Access | contextual_threat_assessment.py | modules/security/ | Kijkt naar COMBINATIE acties: één ding is verdacht, maar meerdere samen = escalatie van gevaarsniveau | Nog niet gebouwd |
 | 476 | 3 | Security / Access | emergency_lockdown_protocol.py | modules/security/ | Danger level >= 9: instant lockdown, alert owner, screenshot maken, voice-unlock required | Nog niet gebouwd |
+| 477 | 2 | Core & Engines | memory.py | core/ | Layer 0 geheugen: WAL-SQLite, write-buffering, achtergrond-tiering (archiveren/comprimeren/VACUUM elke 6u), crash recovery, log rotation. | Gebouwd |
+| 478 | 2 | Core & Engines | patterns.py | core/ | Woordtelling + event-counts. Wordt later vervangen door Layer 2 (pattern_matcher.py). | Gebouwd |
+| 479 | 2 | Core & Engines | logger.py | core/ | Logt fouten/waarschuwingen naar nova.log (RotatingFileHandler, max 5MB × 3 backups). | Gebouwd |
+| 480 | 3 | Reasoning & Memory / Planner | semantic.py | core/ | Layer 3: volledige Reasoning Layer (chaining, inference, contradiction detection), Wikipedia AutoTeacher, relatie-extractie, Query Engine. | Gebouwd |
+| 481 | 2 | System & Control | time.py | modules/time/ | Zone-aware tijdsvraag. | Gebouwd |
+| 482 | 2 | System & Control | zone.py | modules/time/ | Auto-timezone via IP, fallback naar OS. | Gebouwd |
+| 483 | 2 | System & Control | weather.py | modules/weather/ | Huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie. | Gebouwd |
+| 484 | 2 | System & Control | math.py | modules/math/ | Berekeningen, temperatuurconversie, wiskundige functies. | Gebouwd |
+| 485 | 2 | System & Control | response_pipeline.py | modules/chat/ | Stuurt greeting + fallback door personality/tone pipeline. | Gebouwd |
+| 486 | 2 | System & Control | chat_response_engine.py | modules/chat/ | Stuurt pipeline_response door naar expression_inject. | Gebouwd |
+| 487 | 2 | System & Control | expression_injector.py | modules/chat/ | Injecteert tone/expressie in chatresponses. | Gebouwd |
+| 488 | 3 | Games & Play | chess_engine.py | modules/chess/ | Schaakmodule met Stockfish (symbolisch), natuurlijke taal zetten (NL), gekleurd bord, moeilijkheidsgraad, win/verlies-stats. | Gebouwd |
+| 489 | 2 | System & Control | help.py | modules/help/ | Centrale help-module. | Gebouwd |
+| 490 | 2 | System & Control | algemeen.py | modules/help/topics/ | Help-topic: algemene commando's. | Gebouwd |
+| 491 | 2 | System & Control | schaken.py | modules/help/topics/ | Help-topic: schaakcommando's. | Gebouwd |
+| 492 | 3 | Reasoning & Memory / Planner | wikipedia_teacher.py | modules/knowledge/ | Wikipedia AutoTeacher (Dutch), voedt semantic.py. | Gebouwd |
+| 493 | 2 | Identity & Access | loader.py | identity/blueprint/ | Laadt identity.json + schema.json (blueprint). | Gebouwd |
+| 494 | 4 | Life & Personality | personality_engine.py | identity/personality/ | Layer 6 persoonlijkheids-engine. | Gebouwd |
+| 495 | 4 | Life & Personality | behavior_modifiers.py | identity/personality/ | Past gedrag aan op basis van personality traits. | Gebouwd |
+| 496 | 4 | Life & Personality | microlearning.py | identity/personality/ | Klein leergedrag binnen personality-laag. | Nog niet gebouwd |
+| 497 | 4 | Life & Personality | emotion_engine.py | identity/emotion/ | Emotie-state en -regels. | Gebouwd |
+| 498 | 4 | Life & Personality | tone_engine.py | identity/expression/ | Toon/stijl-expressie op basis van style_profiles + gesture_profiles. | Gebouwd |

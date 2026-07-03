@@ -26,5 +26,5 @@ def get_help(chess_module=None):
   niveau 0-20            (moeilijkheidsgraad, nu: {niveau}/20)
   denktijd 1-10          (seconden per zet, nu: {denktijd}s)
 
-ℹ️ Jij speelt altijd wit, Nova speelt zwart.
+ℹ️ Jij speelt altijd wit, Nova speelt magenta.
 """.strip()
