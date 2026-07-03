@@ -1161,5 +1161,115 @@
         "timestamp": "2026-07-02T12:19:50.494071"
       }
     ]
+  },
+  "honingbeer": {
+    "senses": [
+      {
+        "sense_id": "honingbeer#1",
+        "definition": "De Maleise beer of honingbeer is een beer uit Zuidoost-Azië.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "beer",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-07-03T11:48:22.331904"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-03T11:48:22.331904",
+      "updated_at": "2026-07-03T11:48:22.333899",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-03T11:48:22.333899",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-03T11:48:22.333899",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "honingbeer"
+        },
+        "timestamp": "2026-07-03T11:48:22.331904"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "honingbeer#1",
+        "old_value": null,
+        "new_value": "De Maleise beer of honingbeer is een beer uit Zuidoost-Azië.",
+        "timestamp": "2026-07-03T11:48:22.333899"
+      }
+    ]
+  },
+  "grizzlybeer": {
+    "senses": [
+      {
+        "sense_id": "grizzlybeer#1",
+        "definition": "De grizzlybeer is een Noord-Amerikaanse ondersoort van de bruine beer.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "beer",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-07-03T11:48:42.943773"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-03T11:48:42.943773",
+      "updated_at": "2026-07-03T11:48:42.945771",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-03T11:48:42.945771",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-03T11:48:42.945771",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "grizzlybeer"
+        },
+        "timestamp": "2026-07-03T11:48:42.943773"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "grizzlybeer#1",
+        "old_value": null,
+        "new_value": "De grizzlybeer is een Noord-Amerikaanse ondersoort van de bruine beer.",
+        "timestamp": "2026-07-03T11:48:42.945771"
+      }
+    ]
   }
 }
