@@ -114,7 +114,7 @@ Nova_AI/
 | ----------------------- | -------- | ----------- |
 | time.py                 | ✅ Klaar | Zone-aware tijdsvraag |
 | zone.py                 | ✅ Klaar | Auto-timezone via IP, fallback naar OS |
-| weather.py               | ✅ Klaar | API-key nu in .env (python-dotenv), stad-extractie strip't leestekens |
+| weather.py               | ✅ Klaar | API-key in .env, huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie (morgen/overmorgen/weekdag) |
 | math.py                 | ✅ Klaar | Berekeningen, temperatuurconversie, wiskundige functies |
 | chat.py                 | ✅ Klaar | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig. |
 | response_pipeline.py    | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet** |
@@ -151,13 +151,43 @@ Nova_AI/
 | - | --- | ------- | -------- | ------ |
 | 1 | OpenWeatherMap API-key hardcoded én gelekt in chat | weather.py | 🔴 DIRECT | ✅ Opgelost (2 juli 2026 — key naar .env, python-dotenv) |
 | 1b | Stad-extractie pakte leestekens mee (bv. "gent?" i.p.v. "gent") | weather.py | 🟢 Laag | ✅ Opgelost (2 juli 2026 — strip(".,!?;:") toegevoegd) |
-| 1c | Weer-intent werd niet herkend bij korte zinnen ("weer in Gent?") | intent_router.py | 🟡 Medium | ✅ Opgelost (2 juli 2026 — triggers uitgebreid + lowercase matching) |
+| 1c | Weer-intent werd niet herkend bij korte zinnen ("weer in Gent?") | intent_router.py | 🟡 Medium | ✅ Opgelost (2 juli 2026 — losse woord-detectie i.p.v. vaste triggerzinnen) |
+| 1d | Weekdagnaam kwam in het Engels terug ("Monday" i.p.v. "maandag") | weather.py | 🟢 Laag | ✅ Opgelost (3 juli 2026 — eigen NL-weekdaglijst i.p.v. strftime %A) |
 | 2 | Windows-pad hardcoded in save_path | memory.py | 🟡 Medium | ✅ Opgelost (2 juli 2026 — portable pad via Path(__file__), werkt op elke PC/gebruiker) |
 | 3 | Dode code (uitgecommentarieerde handlers) | chat.py | 🟢 Laag | 🔲 Open |
 | 4 | overstimulation.level = 1.0 als standaard | emotion_state.json | 🟢 Laag | 🔲 Open |
 | 5 | Personality/tone pipeline bypassed door weer/tijd/math/definities | response_pipeline.py | 🟡 Medium | 🔲 Open |
 | 6 | Punt aan einde van woord wordt meegenomen bij wiki-aanroep | chat.py | 🟢 Laag | 🔲 Open |
 | 7 | Oude concepts.json entries hebben geen auto_extract relaties | concepts.json | 🟢 Laag | 🔲 Open |
+
+---
+
+## 🌦️ Weather-module — functionaliteit (bijgewerkt 3 juli 2026)
+
+`weather.py` ondersteunt nu:
+- Huidig weer (temperatuur, gevoelstemperatuur, beschrijving)
+- Luchtvochtigheid, windsnelheid
+- Zonsopgang/zonsondergang
+- Regenkans (bij voorspelling)
+- Kledingadvies (vaste drempel-zinnen, geen vrije generatie)
+- Weerwaarschuwingen bij onweer/sneeuw/extreem weer
+- Voorspelling voor: vandaag, morgen, overmorgen, specifieke weekdag (bv. "weer op maandag")
+- Beperking: max. 5 dagen vooruit (grens van gratis OpenWeatherMap API), met duidelijke foutmelding erbuiten
+
+**Architectuurnotitie:** volledig symbolisch — API-data wordt uitgelezen en in vaste Nederlandse zinsjablonen gegoten (if/else op basis van temperatuur/categorie). Geen LLM, geen vrije tekstgeneratie.
+
+**Mogelijke toekomstige uitbreidingen (nog niet gebouwd):**
+
+1. **Vergelijking met gisteren** — temperatuur van vandaag vergelijken met gisteren (vereist opslag van vorige waarde).
+
+2. **Meer weerwaarschuwingen** — `weerwaarschuwing()` uitbreiden met extra categorieën die nu nog ontbreken: mist ("Mist"), harde wind, hagel. Kleine aanpassing — enkel het `waarschuwingen`-dictionary in `weather.py` aanvullen.
+
+3. **Proactieve automatische weerwaarschuwing** (zonder dat Kevin ernaar vraagt):
+   - **Wat:** Nova checkt zelf periodiek (bv. elke 30 min) het weer voor de standaardstad, en stuurt spontaan een `chat_response` als er onweer/sneeuw/extreem weer op komst is.
+   - **Architectuur:** vereist een achtergrond-timer, vergelijkbaar met de 6-uur-cyclus in `memory.py` (tiering/maintenance). Past bij Nova's 24/7-daemon-karakter.
+   - **Symbolisch:** 100% haalbaar zonder LLM — hergebruikt dezelfde if/else-check die al in `weerwaarschuwing()` zit, plus een simpel "vandaag al gemeld?"-vlaggetje om spam te voorkomen.
+   - **Ethiek-overweging:** spontaan spreken is een vorm van handelen zonder directe vraag, maar Kevin heeft hiervoor al vooraf toestemming gegeven (3 juli 2026) — automatische waarschuwing bij noodweer (onweer/sneeuw/extreem weer) mag direct gebouwd worden zonder aparte aan/uit-instelling of bevestigingsvraag vooraf. 
+   - **Hangt samen met:** het nog te bouwen proactieve-suggesties-systeem (nog geen aparte module/roadmap voor).
 
 ---
 
