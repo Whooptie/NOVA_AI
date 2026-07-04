@@ -1,5 +1,5 @@
-| # | Fase | Module | Pad | Description | Status |
-|------|-------|--------|-----|-------------|--------|
+| # | Fase | Module | File | Pad | Description | Status |
+| - | ---- | ------ | ---- | --- | ----------- | ------ |
 | 1 | 3 | Automotive & Mobility | ev_range_tracker.py | modules/automotive/ | Houdt batterij en actieradius van elektrische wagen bij. | Nog niet gebouwd |
 | 2 | 4 | Automotive & Mobility | car_safety_monitor.py | modules/automotive/ | Analyseert rijgedrag en waarschuwt bij risico’s. | Nog niet gebouwd |
 | 3 | 3 | Automotive & Mobility | charging_tracker.py | modules/automotive/ | Houdt batterij en laadsessies bij. | Nog niet gebouwd |
@@ -214,7 +214,7 @@
 | 212 | 5 | Learning & Autonomy | parallel_reasoner.py | modules/learning/reasoners/ | Start meerdere reasoning branches tegelijk (verschillende modellen of prompt-varianten), combineert resultaten via consensus of voting. | Nog niet gebouwd |
 | 213 | 4 | Learning & Autonomy | learning_queue.py | modules/learning/ | Prioriteert wat eerst verwerkt moet worden (recent, impact, owner-marked). | Nog niet gebouwd |
 | 214 | 4 | Learning & Autonomy | feedback_ingestor.py | modules/learning/ | Slurpt “goed/fout/liever zo” uit chatknopjes of voice (“nee, zachter spreken”). Stuurt: learning/queue_add. | Nog niet gebouwd |
-| 215 | 4 | Learning & Autonomy | rag_manager.py | RAG-coördinator: haalt bewijs uit intern geheugen (vector DB) + externe bronnen (docs/web), dedupliceert, samenvat en voegt met bron & confidence toe vóór de LLM. | Nog niet gebouwd |
+| 215 | 4 | Learning & Autonomy | rag_manager.py | modules/learning/rag/ | RAG-coördinator: haalt bewijs uit intern geheugen (vector DB) + externe bronnen (docs/web), dedupliceert, samenvat en voegt met bron & confidence toe vóór de LLM. | Nog niet gebouwd |
 | 216 | 5 | Learning & Autonomy | autonomy_scorecard.py | modules/learning/ | Meet of autonome acties goed gingen (success rate, trust_score, user-happy). Hooks: leest decision_audit, trust_analyzer, feedback_ingestor. | Nog niet gebouwd |
 | 217 | 5 | Learning & Autonomy | reward_signal_aggregator.py | modules/learning/ | Combineert zachte beloningen: 👍, tijdswinst, geen fouten → 0..1 reward. Stuurt: learning/reward_update:{skill,...} → voor skill_trainer. | Nog niet gebouwd |
 | 218 | 4 | Learning & Autonomy | owner_teach_mode.py | modules/learning/ | “Leerstand”: jij markeert 1–2 voorbeelden → direct in evidence_store + prioriteit omhoog. UI: badge in approval_ui. | Nog niet gebouwd |
@@ -323,11 +323,11 @@
 | 321 | 4 | Resource & Ops | job_queue.py | modules/ops/ | eenvoudige queue met prioriteiten (chat > recs > batch). | Nog niet gebouwd |
 | 322 | 4 | Retrieval & Context | mega_context_router.py | core/memory/ | Routert extreem grote contexten slim | Nog niet gebouwd |
 | 323 | 4 | Safety & Limits | overload_guard.py | modules/safety/ | Bewaakt overprikkeling: rate/length/energy caps per modus (Kevin vs publiek). Hooks: luistert llm/request, tts/request, presence/state. | Nog niet gebouwd |
-| 324 | 4 | Safety & Limits | retention_manager.py | core/policy/ | Houdt bewaartermijnen/auto-delete bij (logs, intieme data), met audit trail. logt naar decision_audit. Guards: PUBLIC ⇒ alleen metadata; “ask-first” bij gevoelige categorieën. | Nog niet| g | b | uwd
-| 325 | 5 | Security | secret_keeper.py | core/ | Markeert geheime dingen en logt ze encrypted; beschermt tegen anderen. | Nog niet| g | b | uwd
-| 326 | 5 | Security | keychain_manager.py | core/security/ | beheert meerdere encryptiesleutels & rotaties | Nog niet| g | b | uwd
-| 327 | 6 | Security | tamper_detector.py | core/security/ | detecteert ongewenste wijzigingen in bestanden of logs | Nog niet| g | b | uwd
-| 328 | 5 | Security | intrusion_logger.py | core/security/ | noteert verdachte aanroepen (failed auth, rate spikes) | Nog niet| g | b | uwd
+| 324 | 4 | Safety & Limits | retention_manager.py | core/policy/ | Houdt bewaartermijnen/auto-delete bij (logs, intieme data), met audit trail. logt naar decision_audit. Guards: PUBLIC ⇒ alleen metadata; “ask-first” bij gevoelige categorieën. | Nog niet gebouwd |
+| 325 | 5 | Security | secret_keeper.py | core/ | Markeert geheime dingen en logt ze encrypted; beschermt tegen anderen. | Nog niet gebouwd |
+| 326 | 5 | Security | keychain_manager.py | core/security/ | beheert meerdere encryptiesleutels & rotaties | Nog niet gebouwd |
+| 327 | 6 | Security | tamper_detector.py | core/security/ | detecteert ongewenste wijzigingen in bestanden of logs | Nog niet gebouwd |
+| 328 | 5 | Security | intrusion_logger.py | core/security/ | noteert verdachte aanroepen (failed auth, rate spikes) | Nog niet gebouwd |
 | 329 | 5 | Security | sandbox_guard.py | core/security/ | monitort experimentele modules (lab/AI sandbox) | Nog niet gebouwd |
 | 330 | 5 | Self & Consciousness | self_reflector.py | core/self/ | Laat Nova reflecteren op haar acties en beslissingen; logt haar eigen leerervaringen act-level reflecties: kijkt naar beslissingen, fouten of successen, koppelt feedback aan learning_queue & growth_logger" | Nog niet gebouwd |
 | 331 | 5 | Self & Consciousness | moral_reasoner.py | core/self/ | beoordeelt morele/ethische impact van plannen of antwoorden; werkt samen met ethics_engine & trust_analyzer" | Nog niet gebouwd |
@@ -359,10 +359,10 @@
 | 357 | 5 | Social & Posting | meme_forge.py | modules/social/ | Genereert memes/gifjes | Nog niet gebouwd |
 | 358 | 6 | Social & Posting | cross_ai_sparring.py | modules/social/ | Oefent en leert door sparren met andere AI’s | Nog niet gebouwd |
 | 359 | 4 | Social & Posting | reverse_coaching.py | modules/social/ | Leert Kev door vragen terug te kaatsen | Nog niet gebouwd |
-| 360 | 4 | Style | style_limiter.py | Past cutter toe + ademstops + fragmentzinnen + emoji-level. | Nog niet gebouwd |
-| 361 | 4 | Style | response_cutter.py | Kapt te lange antwoorden af, voegt suffixjes (‘meh’, ‘idk’, …). | Nog niet gebouwd |
-| 362 | 4 | Style | anti_ramble.py | Verwijdert overbodige tangents (btw, anyway, etc.). | Nog niet gebouwd |
-| 363 | 4 | Style | style_policy.py | Enforce regels (bv. capslock, toon consistent) | Nog niet gebouwd |
+| 360 | 4 | Style | style_limiter.py | modules/style/ | Past cutter toe + ademstops + fragmentzinnen + emoji-level. | Nog niet gebouwd |
+| 361 | 4 | Style | response_cutter.py | modules/style/ | Kapt te lange antwoorden af, voegt suffixjes (‘meh’, ‘idk’, …). | Nog niet gebouwd |
+| 362 | 4 | Style | anti_ramble.py | modules/style/ | Verwijdert overbodige tangents (btw, anyway, etc.). | Nog niet gebouwd |
+| 363 | 4 | Style | style_policy.py | modules/style/ | Enforce regels (bv. capslock, toon consistent) | Nog niet gebouwd |
 | 364 | 4 | Style/Persona | persona_tuner.py | modules/style_persona/ | Past toon/mood aan op basis van voorkeuren + user hints. | Nog niet gebouwd |
 | 365 | 2 | Style/Persona | style_adapter.py | modules/style_persona/ | Style-presets (tone, slang, typstijl per mood). | Nog niet gebouwd |
 | 366 | 4 | Style/Persona | style_presets.py | modules/style_persona/ | Stijlprofielen voor toon en taalgebruik. | Nog niet gebouwd |
