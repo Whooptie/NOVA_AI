@@ -60,8 +60,10 @@ Nova_AI/
 │   │   └── topics/
 │   │       ├── algemeen.py
 │   │       └── schaken.py
-│   └── knowledge/
-│       └── wikipedia_teacher.py
+│   ├── knowledge/
+│   │   └── wikipedia_teacher.py
+│   └── learning/
+│       └── word_associations_learner.py
 ├── identity/
 │   ├── blueprint/
 │   │   ├── loader.py
@@ -87,7 +89,8 @@ Nova_AI/
 │   ├── chess_settings.json
 │   ├── interactions.jsonl
 │   ├── interactions.db
-│   └── concepts.json
+│   ├── concepts.json
+│   └── word_associations.json
 ├── logs/
 │   ├── nova.log
 │   └── concepts.jsonl
@@ -125,6 +128,7 @@ Nova_AI/
 | help.py | ✅ Klaar | Help-systeem met topic-bestanden. `help` = algemeen overzicht, `help schaken` = schaakcommando's incl. huidig niveau en denktijd. `algemeen.py` bijgewerkt (3 juli 2026) met `example`-commando en reasoning-sectie. |
 | wikipedia_teacher.py | ✅ Klaar | Nederlandse Wikipedia API, disambiguatie-afhandeling, is_a relatie-extractie, automatische fallback vanuit chat.py. Definitie-limiet opgetrokken naar 400 tekens, kapt nooit meer af midden in een woord. Automatische voorbeeldzin-extractie uit Wikipedia geprobeerd maar werkt nog niet betrouwbaar — vervangen door handmatig `example`-commando (zie semantic.py). |
 | chess_engine.py | ✅ Klaar | Stockfish (UCI), persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten. Bordweergave met schaaksymbolen (wit/magenta). Instelbare moeilijkheidsgraad (0-20) + denktijd, beide persistent (chess_settings.json). Win/verlies statistieken (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
+| word_associations_learner.py | ✅ Klaar (Layer 1, alle 5 fases) | PMI-gebaseerd associatienetwerk (data/word_associations.json). Leert van "chat_message"/"chat_response"-events (niet het gecombineerde formaat uit de originele roadmap). Publiceert `word_association:updated`, maar nog niets in Nova gebruikt dit actief — koppeling met Layer 3/4 is een volgende stap. |
 | microlearning.py | ❌ Leeg | Bestand bestaat maar is volledig leeg — nog te bouwen |
 
 ### IDENTITY
@@ -202,7 +206,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | Laag | Module | Status | Roadmap |
 | ---- | ------ | ------ | ------- |
 | Layer 0 | memory.py (v2.0) | ✅ KLAAR (alle 4 fases) | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
-| Layer 1 | word_associations_learner.py | ❌ Nog te bouwen | memory_layer1_roadmap.md |
+| Layer 1 | word_associations_learner.py | ✅ KLAAR (alle 5 fases) | memory_layer1_roadmap.md |
 | Layer 2 | pattern_matcher.py | ❌ Nog te bouwen | memory_layer2_roadmap.md |
 | Layer 3 | semantic.py | ✅ KLAAR | semantic_roadmap.md |
 | Layer 4 | response_engine.py | ❌ Nog te bouwen | memory_layer4_roadmap.md |
@@ -212,6 +216,33 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 
 **Bouwvolgorde:** Layer 0 eerst (foundation), dan 1 → 2 → 4 → 5 → 7.
 **Extra, buiten de 7 lagen:** een losse "User Preferences"-module (Kevin's voorkeuren/afkeuren) staat gepland — zie memory_user_preferences_roadmap.md
+
+### Layer 1 — Word Associations Learner (afgerond 4 juli 2026)
+
+Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
+
+| Fase | Omschrijving | Status |
+| ---- | ------------ | ------ |
+| 1 | Tokenization & filtering (NL-stopwoorden, eenvoudige lemmatizer) | ✅ |
+| 2 | Co-occurrence tellen (sliding window, window_size=5) | ✅ |
+| 3 | PMI-berekening (sigmoid-genormaliseerd naar 0-1) | ✅ |
+| 4 | Opvragen/queries (get_associations, find_related, word_distance, get_word_sentiment, get_stats) | ✅ |
+| 5 | Opslaan naar schijf (data/word_associations.json) + EventBus-publicatie | ✅ |
+
+**Belangrijke afwijkingen t.o.v. de originele roadmap (memory_layer1_roadmap.md):**
+
+- De roadmap veronderstelde dat `memory:interaction_added` één gecombineerd `{"user_input": ..., "nova_response": ...}`-object bevat. In de echte Nova luistert `memory.py` met `event_bus.subscribe("*", ...)` naar ALLE events en herverpakt elk los event (bv. `chat_message`, `chat_response`) apart. `learn_from()` filtert daarom op `event_type in ("chat_message", "chat_response")` en gebruikt de `"text"`-sleutel, niet `user_input`/`nova_response`.
+- `init_module(event_bus, config=None)` is aangepast naar `init_module(event_bus, semantic_module=None)`, omdat `module_loader.py` altijd `init_module(event_bus, sem)` aanroept voor dynamische modules (dezelfde conventie als chat.py en response_pipeline.py). Er is geen apart config-systeem — `min_word_length`/`window_size` staan vast in de code, `save_path` is een losse parameter.
+- `learn_from(self, interaction, event_type=None)` accepteert nu ook een tweede positioneel argument, omdat `event_bus.py` handlers standaard aanroept als `handler(data, event_type)`.
+- De lemmatizer is een Nederlandse *benadering* (verkleinwoorden, regelmatig meervoud, bijvoeglijke vorm op -e), geen volledige taalkundige lemmatizer — onregelmatige vervoegingen (bv. "liep" → "lopen") worden bewust niet afgevangen.
+
+**Bekend, verwacht gedrag (geen bug):**
+
+- Nova's vaste fallback-zin ("Ik weet nog niet goed... Je zei: '...'") wordt bij elk onbegrepen bericht meegeleerd, waardoor woorden als "weet", "goed", "antwoord", "leer", "graag", "zei" hoge, onderling sterke associaties opbouwen. Dit is ruis die vanzelf minder dominant wordt zodra Nova's antwoorden gevarieerder worden (latere layers).
+
+**Huidige status: passief lerend, nog niet actief gebruikt.**
+
+De module bouwt het associatienetwerk op in `data/word_associations.json` en publiceert `word_association:updated`-events, maar niets in Nova roept nog `get_associations()`/`find_related()`/`get_word_sentiment()` aan of luistert naar die events. De koppeling met Layer 3 (semantic.py) en/of Layer 4 (response_engine.py) is de logische vervolgstap om dit kennisnetwerk ook echt te laten meespelen in Nova's antwoorden.
 
 ## 🔄 Semantic — Status & Roadmap
 
@@ -318,10 +349,11 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 1. 🟡 **reboot_manager.py** — /reboot commando (10 minuten werk)
 2. 🟡 **Personality pipeline** — uitbreiden naar alle intents
-3. 🟢 **Layer 1** — word_associations_learner.py (memory v2.0 is nu volledig klaar)
+3. 🟢 **Layer 2** — pattern_matcher.py (Layer 1 is nu volledig klaar en getest)
 4. 🟢 **microlearning.py** — bouwen
 5. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md)
 6. 🟢 **memory.py Fase 5** — optimalisatie/polish, enkel nodig bij grote databank of trage queries (geen haast)
+7. 🟢 **Layer 1 ↔ Layer 3/4 koppeling** — get_associations()/find_related() daadwerkelijk laten meespelen in Nova's antwoorden (momenteel bouwt Layer 1 wel het netwerk op, maar niets gebruikt het nog actief)
 
 ---
 
