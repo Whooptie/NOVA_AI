@@ -1,0 +1,2721 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": 1783168773.4098723,
+    "total_words": 41,
+    "total_associations": 346
+  },
+  "associations": {
+    "weet": {
+      "goed": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "daarop": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "antwoord": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "leer": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "graag": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      }
+    },
+    "goed": {
+      "weet": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "daarop": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "antwoord": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "leer": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "graag": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "zei": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      }
+    },
+    "daarop": {
+      "weet": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "goed": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "antwoord": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "leer": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "graag": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "zei": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "python": {
+        "co_occurrence": 2,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "vind": {
+        "co_occurrence": 1,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.39237046469742937,
+        "confidence": 0.39237046469742937
+      },
+      "java": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "laten": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "schak": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "drink": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "koffie": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "straks": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "nova": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      }
+    },
+    "antwoord": {
+      "weet": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "goed": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "daarop": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "leer": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "graag": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "zei": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "python": {
+        "co_occurrence": 3,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.4920272221472861,
+        "confidence": 0.4920272221472861
+      },
+      "snel": {
+        "co_occurrence": 1,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168444.6752484,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "favoriet": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "vind": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.4773192425821977,
+        "confidence": 0.4773192425821977
+      },
+      "java": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "trager": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "laten": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "pot": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "schak": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "drink": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "koffie": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "maakt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "straks": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "coder": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "nova": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "stap": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      }
+    },
+    "leer": {
+      "weet": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "goed": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "daarop": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "antwoord": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "graag": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "zei": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "python": {
+        "co_occurrence": 4,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "snel": {
+        "co_occurrence": 2,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "favoriet": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "programmeertaal": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "vind": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.4773192425821977,
+        "confidence": 0.4773192425821977
+      },
+      "java": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "trager": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "laten": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "pot": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "schak": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "ontspannend": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "drink": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "koffie": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "ochtend": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "maakt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "wakker": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "straks": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "coder": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "nova": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "stap": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "slimmer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      }
+    },
+    "graag": {
+      "weet": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "goed": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "daarop": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "antwoord": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "leer": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "zei": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "python": {
+        "co_occurrence": 4,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "snel": {
+        "co_occurrence": 2,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "favoriet": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "programmeertaal": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "vind": {
+        "co_occurrence": 3,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "elegant": {
+        "co_occurrence": 1,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "java": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "trager": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "laten": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "pot": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "schak": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "ontspannend": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "drink": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "koffie": {
+        "co_occurrence": 3,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5663623243334335,
+        "confidence": 0.5663623243334335
+      },
+      "ochtend": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "maakt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "wakker": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "scherp": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "straks": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "coder": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "nova": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "stap": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "slimmer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      }
+    },
+    "zei": {
+      "goed": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "daarop": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "antwoord": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "leer": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6126632129757477,
+        "confidence": 0.6126632129757477
+      },
+      "graag": {
+        "co_occurrence": 10,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "python": {
+        "co_occurrence": 4,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "snel": {
+        "co_occurrence": 2,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "favoriet": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "programmeertaal": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "vind": {
+        "co_occurrence": 3,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "elegant": {
+        "co_occurrence": 1,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "java": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "trager": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "laten": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "pot": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "schak": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "ontspannend": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "drink": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "koffie": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "ochtend": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "maakt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "wakker": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "scherp": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "straks": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "coder": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "nova": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "stap": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "slimmer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      }
+    },
+    "python": {
+      "daarop": {
+        "co_occurrence": 2,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "antwoord": {
+        "co_occurrence": 3,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.4920272221472861,
+        "confidence": 0.4920272221472861
+      },
+      "leer": {
+        "co_occurrence": 4,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 4,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 4,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "snel": {
+        "co_occurrence": 4,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "favoriet": {
+        "co_occurrence": 2,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168716.0229802,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "programmeertaal": {
+        "co_occurrence": 2,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168716.0229802,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "vind": {
+        "co_occurrence": 4,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.5908209157406257,
+        "confidence": 0.5908209157406257
+      },
+      "elegant": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "java": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "trager": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      }
+    },
+    "snel": {
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168444.6752484,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "leer": {
+        "co_occurrence": 2,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 2,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 2,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "python": {
+        "co_occurrence": 4,
+        "first_seen": 1783168444.6752484,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "vind": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.5908209157406257,
+        "confidence": 0.5908209157406257
+      },
+      "elegant": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "favoriet": {
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "python": {
+        "co_occurrence": 2,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168716.0229802,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "programmeertaal": {
+        "co_occurrence": 2,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168716.0229802,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      }
+    },
+    "programmeertaal": {
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168715.961883,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "python": {
+        "co_occurrence": 2,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168716.0229802,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "favoriet": {
+        "co_occurrence": 2,
+        "first_seen": 1783168715.961883,
+        "last_seen": 1783168716.0229802,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      }
+    },
+    "vind": {
+      "daarop": {
+        "co_occurrence": 1,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.39237046469742937,
+        "confidence": 0.39237046469742937
+      },
+      "antwoord": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.4773192425821977,
+        "confidence": 0.4773192425821977
+      },
+      "leer": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.4773192425821977,
+        "confidence": 0.4773192425821977
+      },
+      "graag": {
+        "co_occurrence": 3,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 3,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "python": {
+        "co_occurrence": 4,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.5908209157406257,
+        "confidence": 0.5908209157406257
+      },
+      "snel": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.5908209157406257,
+        "confidence": 0.5908209157406257
+      },
+      "elegant": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.6712697635075182,
+        "confidence": 0.6712697635075182
+      },
+      "java": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.6712697635075182,
+        "confidence": 0.6712697635075182
+      },
+      "trager": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.6712697635075182,
+        "confidence": 0.6712697635075182
+      },
+      "schak": {
+        "co_occurrence": 2,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.5299149,
+        "pmi": 0.5908209157406257,
+        "confidence": 0.5908209157406257
+      },
+      "ontspannend": {
+        "co_occurrence": 2,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.5299149,
+        "pmi": 0.6712697635075182,
+        "confidence": 0.6712697635075182
+      }
+    },
+    "elegant": {
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.3533502,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "vind": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.6712697635075182,
+        "confidence": 0.6712697635075182
+      },
+      "python": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "snel": {
+        "co_occurrence": 2,
+        "first_seen": 1783168721.3533502,
+        "last_seen": 1783168721.419428,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "java": {
+      "daarop": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "trager": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "python": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "vind": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.6712697635075182,
+        "confidence": 0.6712697635075182
+      }
+    },
+    "trager": {
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.5946612,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "java": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "python": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.6387845389461123,
+        "confidence": 0.6387845389461123
+      },
+      "vind": {
+        "co_occurrence": 2,
+        "first_seen": 1783168727.5946612,
+        "last_seen": 1783168727.663642,
+        "pmi": 0.6712697635075182,
+        "confidence": 0.6712697635075182
+      }
+    },
+    "laten": {
+      "daarop": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "pot": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.1708398,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "schak": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.1708398,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "pot": {
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.106113,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "laten": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.1708398,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "schak": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.1708398,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "schak": {
+      "leer": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "laten": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.1708398,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "pot": {
+        "co_occurrence": 2,
+        "first_seen": 1783168732.106113,
+        "last_seen": 1783168732.1708398,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "daarop": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "vind": {
+        "co_occurrence": 2,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.5299149,
+        "pmi": 0.5908209157406257,
+        "confidence": 0.5908209157406257
+      },
+      "ontspannend": {
+        "co_occurrence": 2,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.5299149,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "ontspannend": {
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.4597545,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "schak": {
+        "co_occurrence": 2,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.5299149,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "vind": {
+        "co_occurrence": 2,
+        "first_seen": 1783168737.4597545,
+        "last_seen": 1783168737.5299149,
+        "pmi": 0.6712697635075182,
+        "confidence": 0.6712697635075182
+      }
+    },
+    "drink": {
+      "daarop": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "koffie": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "ochtend": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      }
+    },
+    "koffie": {
+      "antwoord": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 3,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5663623243334335,
+        "confidence": 0.5663623243334335
+      },
+      "zei": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "drink": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "ochtend": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "daarop": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "maakt": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "wakker": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "scherp": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "ochtend": {
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.6012954445405101,
+        "confidence": 0.6012954445405101
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.5604894,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "drink": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "koffie": {
+        "co_occurrence": 2,
+        "first_seen": 1783168744.5604894,
+        "last_seen": 1783168744.620541,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "maakt": {
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "koffie": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "wakker": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "scherp": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      }
+    },
+    "wakker": {
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "koffie": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "maakt": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "scherp": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      }
+    },
+    "scherp": {
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168750.9621732,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "koffie": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "maakt": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "wakker": {
+        "co_occurrence": 2,
+        "first_seen": 1783168750.9621732,
+        "last_seen": 1783168751.0309014,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      }
+    },
+    "aartrijk": {
+      "momenteel": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "onbewolkt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "gevoelstemperatuur": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "luchtvochtigheid": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "wind": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "momenteel": {
+      "aartrijk": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "onbewolkt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "gevoelstemperatuur": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "luchtvochtigheid": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "wind": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "zon": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "onbewolkt": {
+      "aartrijk": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "momenteel": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "gevoelstemperatuur": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "luchtvochtigheid": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "wind": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "zon": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "gevoelstemperatuur": {
+      "aartrijk": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "momenteel": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "onbewolkt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "luchtvochtigheid": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "wind": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "zon": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "luchtvochtigheid": {
+      "aartrijk": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "momenteel": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "onbewolkt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "gevoelstemperatuur": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "wind": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "zon": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "wind": {
+      "aartrijk": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "momenteel": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "onbewolkt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "gevoelstemperatuur": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "luchtvochtigheid": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "zon": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "zon": {
+      "momenteel": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "onbewolkt": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "gevoelstemperatuur": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "luchtvochtigheid": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "wind": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.6568444,
+        "last_seen": 1783168757.6568444,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "weer": {
+      "vandaag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "grijs": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "somber": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "vandaag": {
+      "weer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "grijs": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "somber": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "grijs": {
+      "weer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "vandaag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "somber": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "somber": {
+      "weer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "vandaag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      },
+      "grijs": {
+        "co_occurrence": 1,
+        "first_seen": 1783168757.7063754,
+        "last_seen": 1783168757.7063754,
+        "pmi": 0.8333854720659052,
+        "confidence": 0.8333854720659052
+      }
+    },
+    "straks": {
+      "daarop": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "coder": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168766.0318248,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "nova": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168766.0318248,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "coder": {
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168765.968368,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "straks": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168766.0318248,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      },
+      "nova": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168766.0318248,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "nova": {
+      "leer": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "straks": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168766.0318248,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "coder": {
+        "co_occurrence": 2,
+        "first_seen": 1783168765.968368,
+        "last_seen": 1783168766.0318248,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "daarop": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.4416110195490963,
+        "confidence": 0.4416110195490963
+      },
+      "stap": {
+        "co_occurrence": 2,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.408872,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "slimmer": {
+        "co_occurrence": 2,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.408872,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      }
+    },
+    "stap": {
+      "antwoord": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "nova": {
+        "co_occurrence": 2,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.408872,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "slimmer": {
+        "co_occurrence": 2,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.408872,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      }
+    },
+    "slimmer": {
+      "leer": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "graag": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5160674987302478,
+        "confidence": 0.5160674987302478
+      },
+      "zei": {
+        "co_occurrence": 1,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.3408723,
+        "pmi": 0.5279576139873057,
+        "confidence": 0.5279576139873057
+      },
+      "nova": {
+        "co_occurrence": 2,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.408872,
+        "pmi": 0.7143623297248921,
+        "confidence": 0.7143623297248921
+      },
+      "stap": {
+        "co_occurrence": 2,
+        "first_seen": 1783168773.3408723,
+        "last_seen": 1783168773.408872,
+        "pmi": 0.779583311613263,
+        "confidence": 0.779583311613263
+      }
+    }
+  },
+  "word_stats": {
+    "weet": {
+      "frequency": 10,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168773.3408723
+    },
+    "goed": {
+      "frequency": 10,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168773.3408723
+    },
+    "daarop": {
+      "frequency": 10,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168773.3408723
+    },
+    "antwoord": {
+      "frequency": 10,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168773.3408723
+    },
+    "leer": {
+      "frequency": 10,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168773.3408723
+    },
+    "graag": {
+      "frequency": 11,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168773.3408723
+    },
+    "zei": {
+      "frequency": 10,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168773.3408723
+    },
+    "python": {
+      "frequency": 8,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168727.663642
+    },
+    "snel": {
+      "frequency": 4,
+      "first_seen": 1783168444.6752484,
+      "last_seen": 1783168721.419428
+    },
+    "favoriet": {
+      "frequency": 2,
+      "first_seen": 1783168715.961883,
+      "last_seen": 1783168716.0229802
+    },
+    "programmeertaal": {
+      "frequency": 2,
+      "first_seen": 1783168715.961883,
+      "last_seen": 1783168716.0229802
+    },
+    "vind": {
+      "frequency": 6,
+      "first_seen": 1783168721.3533502,
+      "last_seen": 1783168737.5299149
+    },
+    "elegant": {
+      "frequency": 2,
+      "first_seen": 1783168721.3533502,
+      "last_seen": 1783168721.419428
+    },
+    "java": {
+      "frequency": 2,
+      "first_seen": 1783168727.5946612,
+      "last_seen": 1783168727.663642
+    },
+    "trager": {
+      "frequency": 2,
+      "first_seen": 1783168727.5946612,
+      "last_seen": 1783168727.663642
+    },
+    "laten": {
+      "frequency": 2,
+      "first_seen": 1783168732.106113,
+      "last_seen": 1783168732.1708398
+    },
+    "pot": {
+      "frequency": 2,
+      "first_seen": 1783168732.106113,
+      "last_seen": 1783168732.1708398
+    },
+    "schak": {
+      "frequency": 4,
+      "first_seen": 1783168732.106113,
+      "last_seen": 1783168737.5299149
+    },
+    "ontspannend": {
+      "frequency": 2,
+      "first_seen": 1783168737.4597545,
+      "last_seen": 1783168737.5299149
+    },
+    "drink": {
+      "frequency": 2,
+      "first_seen": 1783168744.5604894,
+      "last_seen": 1783168744.620541
+    },
+    "koffie": {
+      "frequency": 4,
+      "first_seen": 1783168744.5604894,
+      "last_seen": 1783168751.0309014
+    },
+    "ochtend": {
+      "frequency": 2,
+      "first_seen": 1783168744.5604894,
+      "last_seen": 1783168744.620541
+    },
+    "maakt": {
+      "frequency": 2,
+      "first_seen": 1783168750.9621732,
+      "last_seen": 1783168751.0309014
+    },
+    "wakker": {
+      "frequency": 2,
+      "first_seen": 1783168750.9621732,
+      "last_seen": 1783168751.0309014
+    },
+    "scherp": {
+      "frequency": 2,
+      "first_seen": 1783168750.9621732,
+      "last_seen": 1783168751.0309014
+    },
+    "aartrijk": {
+      "frequency": 1,
+      "first_seen": 1783168757.6568444,
+      "last_seen": 1783168757.6568444
+    },
+    "momenteel": {
+      "frequency": 1,
+      "first_seen": 1783168757.6568444,
+      "last_seen": 1783168757.6568444
+    },
+    "onbewolkt": {
+      "frequency": 1,
+      "first_seen": 1783168757.6568444,
+      "last_seen": 1783168757.6568444
+    },
+    "gevoelstemperatuur": {
+      "frequency": 1,
+      "first_seen": 1783168757.6568444,
+      "last_seen": 1783168757.6568444
+    },
+    "luchtvochtigheid": {
+      "frequency": 1,
+      "first_seen": 1783168757.6568444,
+      "last_seen": 1783168757.6568444
+    },
+    "wind": {
+      "frequency": 1,
+      "first_seen": 1783168757.6568444,
+      "last_seen": 1783168757.6568444
+    },
+    "zon": {
+      "frequency": 1,
+      "first_seen": 1783168757.6568444,
+      "last_seen": 1783168757.6568444
+    },
+    "weer": {
+      "frequency": 1,
+      "first_seen": 1783168757.7063754,
+      "last_seen": 1783168757.7063754
+    },
+    "vandaag": {
+      "frequency": 1,
+      "first_seen": 1783168757.7063754,
+      "last_seen": 1783168757.7063754
+    },
+    "grijs": {
+      "frequency": 1,
+      "first_seen": 1783168757.7063754,
+      "last_seen": 1783168757.7063754
+    },
+    "somber": {
+      "frequency": 1,
+      "first_seen": 1783168757.7063754,
+      "last_seen": 1783168757.7063754
+    },
+    "straks": {
+      "frequency": 2,
+      "first_seen": 1783168765.968368,
+      "last_seen": 1783168766.0318248
+    },
+    "coder": {
+      "frequency": 2,
+      "first_seen": 1783168765.968368,
+      "last_seen": 1783168766.0318248
+    },
+    "nova": {
+      "frequency": 4,
+      "first_seen": 1783168765.968368,
+      "last_seen": 1783168773.408872
+    },
+    "stap": {
+      "frequency": 2,
+      "first_seen": 1783168773.3408723,
+      "last_seen": 1783168773.408872
+    },
+    "slimmer": {
+      "frequency": 2,
+      "first_seen": 1783168773.3408723,
+      "last_seen": 1783168773.408872
+    }
+  }
+}

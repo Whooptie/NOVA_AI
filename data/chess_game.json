@@ -1,15 +1,9 @@
 {
-  "fen": "rn1qkb1r/1p2pppp/p4n2/2Pp2N1/7P/2P1P3/PP3PP1/RNBbKB1R w KQkq - 0 8",
+  "fen": "rnq2b1r/1p2pkpp/p4n2/2Pp4/7P/2PBP3/PP3PP1/RNBbK2R w KQ - 0 10",
   "moves": [
-    "h2h4",
-    "a7a6",
-    "e2e3",
-    "c7c6",
-    "c2c3",
-    "c6c5",
-    "d4c5",
-    "c8g4",
-    "f3g5",
-    "g4d1"
+    "f1d3",
+    "d8c8",
+    "g5f7",
+    "e8f7"
   ]
 }
