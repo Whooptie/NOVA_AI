@@ -68,6 +68,28 @@ def main():
             else:
                 print(f"{RED}Memory-module niet gevonden.{RESET}")
             continue
+
+        # Tijdelijk test-commando voor Layer 2 Fase 3-4 (mag je later weer verwijderen)
+        if user_input.lower().startswith("patronen"):
+            pm = loader.loaded_modules.get("pattern_matcher")
+            if not pm:
+                print(f"{RED}pattern_matcher-module niet gevonden.{RESET}")
+                continue
+
+            delen = user_input.split()
+            if len(delen) < 2:
+                # Geen event_type opgegeven: toon algemene stats
+                print(f"{CYAN}Layer 2 stats: {pm.get_stats()}{RESET}")
+                continue
+
+            event_type = delen[1]
+
+            print(f"{CYAN}--- Patroon voor '{event_type}' ---{RESET}")
+            print("Ruwe data:", pm.get_pattern(event_type))
+            print("Is nu actief?:", pm.is_pattern_active(event_type))
+            print("Volgende verwachte moment:", pm.predict_next_occurrence(event_type))
+            print("Anomalieën (laatste 7 dagen):", pm.get_anomalies(days=7))
+            continue
             
         if user_input.lower() == "exit":
             # Chess-engine (Stockfish) netjes afsluiten, anders blijft het proces hangen
