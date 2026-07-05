@@ -22,6 +22,22 @@ class IntentRouter:
         dbg(f"{C_GREEN}IntentRouter geladen{C_RESET}")
 
     # ---------------------------------------------------------
+    # Reboot-commando
+    # ---------------------------------------------------------
+    def detect_reboot(self, text):
+        if text.strip().lower() != "/reboot":
+            return False
+
+        dbg(f"{C_RED}→ reboot commando ontvangen{C_RESET}")
+        # Let op: GEEN chat_response event hier — dat zou pas later
+        # in main.py opgehaald worden, maar tegen die tijd bestaat dit
+        # proces al niet meer (os.execv heeft het dan al vervangen).
+        # De afscheidsboodschap gebeurt daarom rechtstreeks via print()
+        # in reboot_manager.py, want dat verschijnt wél meteen.
+        self.event_bus.publish("system:reboot", {})
+        return True
+    
+    # ---------------------------------------------------------
     # Teach-flow
     # ---------------------------------------------------------
     def handle_teach(self, text):
@@ -439,6 +455,10 @@ class IntentRouter:
         text = text.replace("×", "*")
         dbg(f"{C_RESET}Ontvangen: '{text}'")
 
+        # 0 Reboot (altijd als allereerste gecontroleerd, voorrang op alles)
+        if self.detect_reboot(text):
+            return
+        
         # 1 Teach
         if self.handle_teach(text):
             return

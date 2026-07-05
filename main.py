@@ -1,4 +1,37 @@
 # main.py
+import os
+import sys
+import ctypes
+
+# ---------------------------------------------------------------
+# ANSI-kleurcodes activeren in het Windows-console-venster
+# ---------------------------------------------------------------
+# Waarom nodig? Sinds de /reboot-fix start Nova soms op in een
+# gloednieuw Windows-console-venster (via subprocess.Popen met
+# CREATE_NEW_CONSOLE in reboot_manager.py). Zo'n nieuw venster heeft
+# niet altijd gegarandeerd "VT100/ANSI-verwerking" aanstaan — de
+# instelling die ervoor zorgt dat codes zoals \033[92m ("maak tekst
+# groen") ook echt als kleur getoond worden, in plaats van als
+# letterlijke tekst zoals "←[92m".
+#
+# Dit blokje zet die instelling expliciet AAN bij het opstarten,
+# ongeacht wat de standaardinstelling van dat venster toevallig is.
+# Op Linux/Mac doet dit niets (daar staat het altijd al aan),
+# vandaar de check "if os.name == 'nt'" (nt = Windows).
+if os.name == "nt":
+    ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
+    STD_OUTPUT_HANDLE = -11
+
+    kernel32 = ctypes.windll.kernel32
+    handle = kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
+    mode = ctypes.c_uint32()
+
+    if kernel32.GetConsoleMode(handle, ctypes.byref(mode)):
+        kernel32.SetConsoleMode(
+            handle,
+            mode.value | ENABLE_VIRTUAL_TERMINAL_PROCESSING
+        )
+
 from core.event_bus import EventBus
 from core.module_loader import ModuleLoader
 

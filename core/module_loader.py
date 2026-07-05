@@ -14,7 +14,7 @@ class ModuleLoader:
         # ----------------------------------------------------
         # 1. CORE MODULES
         # ----------------------------------------------------
-        from core import memory, semantic, patterns, logger, intent_router
+        from core import memory, semantic, patterns, logger, intent_router, reboot_manager
 
         # Memory
         start = time.time()
@@ -43,6 +43,27 @@ class ModuleLoader:
         log.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["logger"] = log
         self.event_bus.register_module("logger", log)
+
+        # Reboot manager (krijgt memory mee voor de buffer/database,
+        # en de volledige loaded_modules-dictionary zodat hij bij /reboot
+        # ELKE module met een shutdown()-methode netjes kan afsluiten —
+        # bv. chess_engine.py, die Stockfish als apart extern proces
+        # draaiend houdt. Zonder dit blijft Stockfish (en dus het oude
+        # console-venster) na een reboot gewoon actief hangen.
+        # LET OP: reboot_manager staat zelf nog niet in loaded_modules
+        # op dit moment (komt er pas na deze regels bij), dus dit geeft
+        # hem een LEVENDE referentie naar de dictionary — modules die
+        # daarna nog geladen worden (chess_engine, etc.) staan er dus
+        # automatisch ook in tegen de tijd dat /reboot ooit gebruikt wordt.
+        start = time.time()
+        reboot_mgr = reboot_manager.init_module(
+            self.event_bus,
+            memory=mem,
+            loaded_modules=self.loaded_modules
+        )
+        reboot_mgr.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["reboot_manager"] = reboot_mgr
+        self.event_bus.register_module("reboot_manager", reboot_mgr)
 
         # ----------------------------------------------------
         # 2. ZONE + TIME ENGINE (altijd eerst)
