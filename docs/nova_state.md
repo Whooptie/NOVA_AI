@@ -106,9 +106,8 @@ Nova_AI/
 
 ### CORE
 
-
 | Module            | Status                      | Opmerkingen                                                                                                                                                                                                                                                                                                                        |
-| ------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| --- | --- | --- |
 | event_bus.py      | ✅ Klaar                    | Stabiel, publish/subscribe + wildcard werkt                                                                                                                                                                                                                                                                                        |
 | module_loader.py  | ✅ Klaar                    | Auto-discovery via pkgutil, laadtijdmeting                                                                                                                                                                                                                                                                                         |
 | intent_router.py  | ✅ Klaar                    | Volledig semantic-aware. Wikipedia, synoniemen, antoniemen, relaties, definitievragen gekoppeld. handle_confirmation() nog leeg.                                                                                                                                                                                                   |
@@ -120,9 +119,8 @@ Nova_AI/
 
 ### MODULES
 
-
 | Module                       | Status                           | Opmerkingen                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------------------ | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --- | --- | --- |
 | time.py                      | ✅ Klaar                         | Zone-aware tijdsvraag                                                                                                                                                                                                                                                                                                                                                         |
 | zone.py                      | ✅ Klaar                         | Auto-timezone via IP, fallback naar OS                                                                                                                                                                                                                                                                                                                                        |
 | weather.py                   | ✅ Klaar                         | API-key in .env, huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie (morgen/overmorgen/weekdag)                                                                                                                                                                                                                                                 |
@@ -139,7 +137,6 @@ Nova_AI/
 | microlearning.py             | ❌ Leeg                          | Bestand bestaat maar is volledig leeg — nog te bouwen                                                                                                                                                                                                                                                                                                                        |
 
 ### IDENTITY
-
 
 | Module                | Status   | Opmerkingen                                                         |
 | ----------------------- | ---------- | --------------------------------------------------------------------- |
@@ -160,7 +157,6 @@ Nova_AI/
 ---
 
 ## 🐛 Bekende bugs (prioriteit)
-
 
 | #  | Bug                                                                                 | Bestand              | Urgentie  | Status                                                                                   |
 | ---- | ------------------------------------------------------------------------------------- | ---------------------- | ----------- | ------------------------------------------------------------------------------------------ |
@@ -212,7 +208,6 @@ Nova_AI/
 Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 **Layer 3 (semantic.py) en Layer 6 (personality_engine.py) zijn al klaar.**
 
-
 | Laag    | Module                       | Status                  | Roadmap                                                   |
 | --------- | ------------------------------ | ------------------------- | ----------------------------------------------------------- |
 | Layer 0 | memory.py (v2.0)             | ✅ KLAAR (alle 4 fases) | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
@@ -230,7 +225,6 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 ### Layer 1 — Word Associations Learner (afgerond 4 juli 2026)
 
 Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
-
 
 | Fase | Omschrijving                                                                                    | Status |
 | ------ | ------------------------------------------------------------------------------------------------- | -------- |
@@ -258,7 +252,6 @@ De module bouwt het associatienetwerk op in `data/word_associations.json` en pub
 ### Layer 2 — Pattern Matcher (afgerond 5 juli 2026)
 
 Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
-
 
 | Fase | Omschrijving                                                                  | Status |
 | ------ | ------------------------------------------------------------------------------- | -------- |
@@ -289,7 +282,6 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 
 ### Fases 1-7 (VOLLEDIG KLAAR ✅)
 
-
 | Fase | Omschrijving                               | Status |
 | ------ | -------------------------------------------- | -------- |
 | 1    | Datastructuur & opslag                     | ✅     |
@@ -301,7 +293,6 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 | 7    | Reasoning Layer (chaining, inference)      | ✅     |
 
 ### Fases 8-13 (Toekomst — semantic_extension_roadmap.md)
-
 
 | Fase | Omschrijving                     | Type            | Status      |
 | ------ | ---------------------------------- | ----------------- | ------------- |
@@ -317,7 +308,6 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 ---
 
 ## ♟️ Games — Status & Roadmap
-
 
 | Spel                                   | Module              | Status      | Engine                   |
 | ---------------------------------------- | --------------------- | ------------- | -------------------------- |
@@ -337,7 +327,6 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 
 ## 🔁 Reboot & Hot Reload
 
-
 | Feature                                 | Status                      | Roadmap                     |
 | ----------------------------------------- | ----------------------------- | ----------------------------- |
 | /reboot commando (full restart, ~5 sec) | ✅ Klaar en volledig getest | reboot_hotreload_roadmap.md |
@@ -352,21 +341,21 @@ Getriggerd via `/reboot` in `intent_router.py` (`detect_reboot()`, als allereers
 
 **main.py bevat nu ook een VT100-fix** (helemaal bovenaan, vóór alle imports): via `ctypes`/`SetConsoleMode` wordt `ENABLE_VIRTUAL_TERMINAL_PROCESSING` expliciet aangezet. Nodig omdat een vers Windows-console-venster (ontstaan door `subprocess.Popen` met `CREATE_NEW_CONSOLE`) niet altijd gegarandeerd ANSI-kleurcodes correct interpreteert — zonder deze fix verschenen kleurcodes soms letterlijk als tekst (`←[92m`) in plaats van als kleur.
 
-**Vier bugs gevonden en opgelost tijdens testen (5 juli 2026):**
+**Vijf bugs gevonden en opgelost tijdens testen (5 juli 2026):**
 
 1. Windows-input-probleem door `os.execv()` → opgelost met `subprocess.Popen` + eigen console-venster (zie boven).
 2. `sqlite3.ProgrammingError: Cannot operate on a closed database` bij afsluiten — `reboot_manager.py` sloot de SQLite-connectie zelf af, terwijl `memory.py`'s eigen `atexit`-hook (`_on_shutdown`) dat via `sys.exit(0)` sowieso al deed → dubbele sluiting. Opgelost door in `reboot_manager.py` enkel nog de write-buffer te flushen, en het effectieve sluiten van de connectie volledig aan `memory.py`'s eigen `atexit`-hook over te laten.
 3. Oud terminalvenster bleef na `/reboot` hangen zolang een schaakpartij actief was — Stockfish (extern UCI-proces, gestart door `chess_engine.py`) werd niet afgesloten vóór de herstart. Opgelost door `reboot_manager.py` de volledige `loaded_modules`-dictionary te laten meekrijgen van `module_loader.py`, en bij `/reboot` via `_shutdown_external_processes()` op élke module met een `shutdown()`-methode die methode aan te roepen (dus ook `chess_engine.py`, en automatisch ook toekomstige modules met externe processen zoals KataGo).
 4. `TypeError: init_module() got an unexpected keyword argument 'loaded_modules'` — bij het doorvoeren van bugfix #3 werd de klasse `RebootManager.__init__` wel aangepast om `loaded_modules` te accepteren, maar de losstaande `init_module()`-functie onderaan het bestand (die `module_loader.py` effectief aanroept) werd vergeten mee te updaten. Opgelost door ook `init_module(event_bus, memory=None, loaded_modules=None)` de parameter te laten doorgeven aan `RebootManager(...)`.
+5. `interactions.db-wal` en `interactions.db-shm` (SQLite WAL-mode hulpbestanden) bleven na afsluiten op schijf staan — onschuldig voor de data zelf (die staat er nog steeds veilig in), maar niet netjes opgeruimd. `memory.py`'s `_on_shutdown()` deed wel `commit()` + `close()`, maar geen expliciete WAL-checkpoint, waardoor SQLite het logboekbestand niet altijd automatisch leegmaakte bij het sluiten. Opgelost door vlak vóór `conn.close()` een `PRAGMA wal_checkpoint(TRUNCATE)` toe te voegen, die alle wijzigingen definitief naar `interactions.db` overzet en `-wal`/`-shm` weer naar 0 bytes brengt.
 
-Getest op 5 juli 2026: partij (schaak, inclusief actieve Stockfish-verbinding) en patronen (Layer 2) correct teruggevonden na herstart, alle modules netjes herladen en afgesloten, geen dataverlies, geen achterblijvende processen of vensters.
+Getest op 5 juli 2026: partij (schaak, inclusief actieve Stockfish-verbinding) en patronen (Layer 2) correct teruggevonden na herstart, alle modules netjes herladen en afgesloten, geen dataverlies, geen achterblijvende processen of vensters. WAL-checkpoint bij afsluiten nog te bevestigen door Kevin (verwacht: `-wal`/`-shm` verdwijnen of blijven op 0 bytes na `exit`/`/reboot`).
 
 ---
 
 ## 👤 User Preferences (concept, nog niet ingepland)
 
 Losse module die expliciete feiten over Kevin onthoudt (voorkeuren/afkeuren), los van Layer 1.
-
 
 | Fase | Omschrijving                           | Status           |
 | ------ | ---------------------------------------- | ------------------ |
@@ -396,7 +385,6 @@ Belangrijkste gevolgen voor memory.py v2.0:
 
 ### memory.py v2.0 — Fase-status
 
-
 | Fase | Omschrijving                                                                                 | Status                                                              |
 | ------ | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | 1    | Foundation Fix (paden, retry, log rotation)                                                  | ✅                                                                  |
@@ -424,7 +412,6 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 ---
 
 ## 📚 Roadmap documenten (in project)
-
 
 | Document                           | Beschrijft                                                                                                                                                                                                  |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
