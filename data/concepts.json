@@ -490,7 +490,15 @@
         "examples": [
           "Een plant is ook een levend wezen."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "dier",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -1123,6 +1131,19 @@
             "created_at": "2026-07-02T11:50:21.407071"
           }
         ],
+        "source": "auto_extract",
+        "confidence": 0.9,
+        "audit_log": []
+      },
+      {
+        "sense_id": "python#2",
+        "definition": "Een python is een grote, niet-giftige slang die zijn prooi verstikt door zich eromheen te wikkelen.",
+        "pos": "noun",
+        "examples": [
+          "De python verstopte zich tussen de bladeren.",
+          "In de dierentuin lag een python opgerold in zijn kooi."
+        ],
+        "relations": [],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -1567,7 +1588,15 @@
           "Ze las elke avond een hoofdstuk uit haar boek.",
           "Het boek stond op de bovenste plank."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "taal",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -1895,6 +1924,4119 @@
         "sense_id": "vriend#1",
         "old_value": null,
         "new_value": "Een vriend is een persoon met wie men een band van genegenheid en vertrouwen heeft, los van familie.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "melk": {
+    "senses": [
+      {
+        "sense_id": "melk#1",
+        "definition": "Melk is een witte, voedzame vloeistof die door vrouwelijke zoogdieren wordt geproduceerd, en die mensen ook drinken of verwerken tot producten zoals kaas.",
+        "pos": "noun",
+        "examples": [
+          "Ze goot melk in haar koffie.",
+          "De koeien werden 's ochtends gemolken voor de melk."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vloeistof",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "melk"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "melk#1",
+        "old_value": null,
+        "new_value": "Melk is een witte, voedzame vloeistof die door vrouwelijke zoogdieren wordt geproduceerd, en die mensen ook drinken of verwerken tot producten zoals kaas.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "brood": {
+    "senses": [
+      {
+        "sense_id": "brood#1",
+        "definition": "Brood is een voedingsmiddel gemaakt van gemalen graan (meel), water en meestal gist, dat wordt gebakken in een oven.",
+        "pos": "noun",
+        "examples": [
+          "Ze sneed een boterham van het verse brood.",
+          "Het brood rook heerlijk toen het uit de oven kwam."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "voedingsmiddel",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "brood"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "brood#1",
+        "old_value": null,
+        "new_value": "Brood is een voedingsmiddel gemaakt van gemalen graan (meel), water en meestal gist, dat wordt gebakken in een oven.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "kleur": {
+    "senses": [
+      {
+        "sense_id": "kleur#1",
+        "definition": "Kleur is de visuele eigenschap van licht die door het oog wordt waargenomen als bijvoorbeeld rood, blauw of groen, afhankelijk van de golflengte.",
+        "pos": "noun",
+        "examples": [
+          "De kleur van de lucht veranderde bij zonsondergang.",
+          "Ze koos een felle kleur voor de muur."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "eigenschap",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kleur"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kleur#1",
+        "old_value": null,
+        "new_value": "Kleur is de visuele eigenschap van licht die door het oog wordt waargenomen als bijvoorbeeld rood, blauw of groen, afhankelijk van de golflengte.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "geluid": {
+    "senses": [
+      {
+        "sense_id": "geluid#1",
+        "definition": "Geluid is een trilling die zich voortplant door lucht of een ander medium en die door het oor kan worden waargenomen.",
+        "pos": "noun",
+        "examples": [
+          "Ze hoorde een vreemd geluid buiten.",
+          "Het geluid van de trein was van ver te horen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "trilling",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "muziek",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "geluid"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "geluid#1",
+        "old_value": null,
+        "new_value": "Geluid is een trilling die zich voortplant door lucht of een ander medium en die door het oor kan worden waargenomen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "tijd": {
+    "senses": [
+      {
+        "sense_id": "tijd#1",
+        "definition": "Tijd is de voortdurende opeenvolging van momenten waarin gebeurtenissen plaatsvinden, gemeten in eenheden zoals seconden, minuten en uren.",
+        "pos": "noun",
+        "examples": [
+          "De tijd vloog voorbij tijdens het gesprek.",
+          "Hij keek op de klok om te zien hoe laat het was."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tijd"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "tijd#1",
+        "old_value": null,
+        "new_value": "Tijd is de voortdurende opeenvolging van momenten waarin gebeurtenissen plaatsvinden, gemeten in eenheden zoals seconden, minuten en uren.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "voertuig": {
+    "senses": [
+      {
+        "sense_id": "voertuig#1",
+        "definition": "Een voertuig is een constructie die gebruikt wordt om mensen of goederen te verplaatsen, meestal met wielen of via de lucht of het water.",
+        "pos": "noun",
+        "examples": [
+          "De fiets en de auto zijn allebei een voertuig.",
+          "Het voertuig reed langzaam door de smalle straat."
+        ],
+        "relations": [
+          {
+            "type": "has_part",
+            "target": "wiel",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "voertuig"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "voertuig#1",
+        "old_value": null,
+        "new_value": "Een voertuig is een constructie die gebruikt wordt om mensen of goederen te verplaatsen, meestal met wielen of via de lucht of het water.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "zoogdier": {
+    "senses": [
+      {
+        "sense_id": "zoogdier#1",
+        "definition": "Een zoogdier is een warmbloedig dier dat harige jongen zoogt met melk van de moeder.",
+        "pos": "noun",
+        "examples": [
+          "De hond en de kat zijn beide een zoogdier.",
+          "Zoogdieren voeden hun jongen met melk."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zoogdier"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zoogdier#1",
+        "old_value": null,
+        "new_value": "Een zoogdier is een warmbloedig dier dat harige jongen zoogt met melk van de moeder.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "vloeistof": {
+    "senses": [
+      {
+        "sense_id": "vloeistof#1",
+        "definition": "Een vloeistof is een stof die vloeit en de vorm van zijn houder aanneemt, maar een vast volume behoudt.",
+        "pos": "noun",
+        "examples": [
+          "Water en melk zijn beide een vloeistof.",
+          "De vloeistof morste over de tafel."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "materietoestand",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "water",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vloeistof"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "vloeistof#1",
+        "old_value": null,
+        "new_value": "Een vloeistof is een stof die vloeit en de vorm van zijn houder aanneemt, maar een vast volume behoudt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "gebouw": {
+    "senses": [
+      {
+        "sense_id": "gebouw#1",
+        "definition": "Een gebouw is een door mensen gemaakte constructie met muren en een dak, bedoeld om in te wonen, werken of verblijven.",
+        "pos": "noun",
+        "examples": [
+          "Het huis en het kantoor zijn beide een gebouw.",
+          "Het gebouw had meerdere verdiepingen."
+        ],
+        "relations": [
+          {
+            "type": "has_part",
+            "target": "deur",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "raam",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gebouw"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "gebouw#1",
+        "old_value": null,
+        "new_value": "Een gebouw is een door mensen gemaakte constructie met muren en een dak, bedoeld om in te wonen, werken of verblijven.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "plant": {
+    "senses": [
+      {
+        "sense_id": "plant#1",
+        "definition": "Een plant is een levend wezen dat meestal groen is, in de grond wortelt en via fotosynthese energie uit zonlicht haalt.",
+        "pos": "noun",
+        "examples": [
+          "De boom en het gras zijn beide een plant.",
+          "Ze goot elke week water op haar plant."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "levend wezen",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "plant"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "plant#1",
+        "old_value": null,
+        "new_value": "Een plant is een levend wezen dat meestal groen is, in de grond wortelt en via fotosynthese energie uit zonlicht haalt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "kat": {
+    "senses": [
+      {
+        "sense_id": "kat#1",
+        "definition": "Een kat is een klein roofdierzoogdier dat vaak als huisdier wordt gehouden vanwege zijn behendigheid en zelfstandige aard.",
+        "pos": "noun",
+        "examples": [
+          "De kat sprong soepel op de vensterbank.",
+          "Onze kat miauwde om eten."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zoogdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kat"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kat#1",
+        "old_value": null,
+        "new_value": "Een kat is een klein roofdierzoogdier dat vaak als huisdier wordt gehouden vanwege zijn behendigheid en zelfstandige aard.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "apparaat": {
+    "senses": [
+      {
+        "sense_id": "apparaat#1",
+        "definition": "Een apparaat is een door mensen gemaakt toestel dat gebruikt wordt om een specifieke taak of functie uit te voeren.",
+        "pos": "noun",
+        "examples": [
+          "De computer en de wasmachine zijn beide een apparaat.",
+          "Het apparaat maakte een zoemend geluid."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "computer",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "apparaat"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "apparaat#1",
+        "old_value": null,
+        "new_value": "Een apparaat is een door mensen gemaakt toestel dat gebruikt wordt om een specifieke taak of functie uit te voeren.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "hemellichaam": {
+    "senses": [
+      {
+        "sense_id": "hemellichaam#1",
+        "definition": "Een hemellichaam is een natuurlijk object in de ruimte, zoals een planeet, ster of maan.",
+        "pos": "noun",
+        "examples": [
+          "De aarde en de maan zijn beide een hemellichaam.",
+          "'s Nachts waren er veel hemellichamen zichtbaar aan de sterrenhemel."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "planeet",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "zon",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hemellichaam"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hemellichaam#1",
+        "old_value": null,
+        "new_value": "Een hemellichaam is een natuurlijk object in de ruimte, zoals een planeet, ster of maan.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "wolf": {
+    "senses": [
+      {
+        "sense_id": "wolf#1",
+        "definition": "Een wolf is een wild roofdier dat verwant is aan de hond en meestal in groepen (roedels) leeft.",
+        "pos": "noun",
+        "examples": [
+          "De wolf huilde 's nachts in het bos.",
+          "Wolven jagen vaak in een roedel."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zoogdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wolf"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "wolf#1",
+        "old_value": null,
+        "new_value": "Een wolf is een wild roofdier dat verwant is aan de hond en meestal in groepen (roedels) leeft.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "wiel": {
+    "senses": [
+      {
+        "sense_id": "wiel#1",
+        "definition": "Een wiel is een rond, draaibaar onderdeel dat gebruikt wordt om voertuigen te laten rollen en bewegen.",
+        "pos": "noun",
+        "examples": [
+          "De fiets heeft twee wielen.",
+          "Het wiel van de auto was lek."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wiel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "wiel#1",
+        "old_value": null,
+        "new_value": "Een wiel is een rond, draaibaar onderdeel dat gebruikt wordt om voertuigen te laten rollen en bewegen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "weekdier": {
+    "senses": [
+      {
+        "sense_id": "weekdier#1",
+        "definition": "Een weekdier is een ongewerveld dier met een zacht lichaam, vaak beschermd door een schelp, zoals een slak of octopus.",
+        "pos": "noun",
+        "examples": [
+          "De octopus en de slak zijn beide een weekdier.",
+          "Weekdieren leven meestal in water."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "weekdier"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "weekdier#1",
+        "old_value": null,
+        "new_value": "Een weekdier is een ongewerveld dier met een zacht lichaam, vaak beschermd door een schelp, zoals een slak of octopus.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "vrucht": {
+    "senses": [
+      {
+        "sense_id": "vrucht#1",
+        "definition": "Een vrucht is het eetbare, vaak zoete deel van een plant dat ontstaat uit de bloem en zaden bevat.",
+        "pos": "noun",
+        "examples": [
+          "De appel en de perzik zijn beide een vrucht.",
+          "De vrucht viel rijp van de boom."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "voedingsmiddel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vrucht"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "vrucht#1",
+        "old_value": null,
+        "new_value": "Een vrucht is het eetbare, vaak zoete deel van een plant dat ontstaat uit de bloem en zaden bevat.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "bestuur": {
+    "senses": [
+      {
+        "sense_id": "bestuur#1",
+        "definition": "Bestuur is het geheel van personen of instanties die verantwoordelijk zijn voor het leiden en organiseren van een staat, organisatie of gemeenschap.",
+        "pos": "noun",
+        "examples": [
+          "Het bestuur van de gemeente nam een belangrijke beslissing.",
+          "Zij maakte deel uit van het bestuur van de vereniging."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "democratie",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bestuur"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bestuur#1",
+        "old_value": null,
+        "new_value": "Bestuur is het geheel van personen of instanties die verantwoordelijk zijn voor het leiden en organiseren van een staat, organisatie of gemeenschap.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "beer": {
+    "senses": [
+      {
+        "sense_id": "beer#1",
+        "definition": "Een beer is een groot, zwaargebouwd zoogdier met dikke vacht, dat alleseter is en in verschillende soorten over de wereld voorkomt.",
+        "pos": "noun",
+        "examples": [
+          "De grizzlybeer en de honingbeer zijn beide een beer.",
+          "De beer graasde rustig langs de rivier."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zoogdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "beer"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "beer#1",
+        "old_value": null,
+        "new_value": "Een beer is een groot, zwaargebouwd zoogdier met dikke vacht, dat alleseter is en in verschillende soorten over de wereld voorkomt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "bruine beer": {
+    "senses": [
+      {
+        "sense_id": "bruine beer#1",
+        "definition": "De bruine beer is een grote berensoort met een bruine vacht, wijdverspreid over Europa, Azië en Noord-Amerika.",
+        "pos": "noun",
+        "examples": [
+          "De grizzlybeer is een ondersoort van de bruine beer.",
+          "De bruine beer leeft vaak in bossen en bergstreken."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "beer",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bruine beer"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bruine beer#1",
+        "old_value": null,
+        "new_value": "De bruine beer is een grote berensoort met een bruine vacht, wijdverspreid over Europa, Azië en Noord-Amerika.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "bouwelement": {
+    "senses": [
+      {
+        "sense_id": "bouwelement#1",
+        "definition": "Een bouwelement is een onderdeel waaruit een gebouw of constructie is opgebouwd, zoals een muur, deur of raam.",
+        "pos": "noun",
+        "examples": [
+          "De deur en het raam zijn beide een bouwelement.",
+          "Elk bouwelement van het huis werd zorgvuldig gecontroleerd."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "gebouw",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bouwelement"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bouwelement#1",
+        "old_value": null,
+        "new_value": "Een bouwelement is een onderdeel waaruit een gebouw of constructie is opgebouwd, zoals een muur, deur of raam.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "eigenschap": {
+    "senses": [
+      {
+        "sense_id": "eigenschap#1",
+        "definition": "Een eigenschap is een kenmerk of karakteristiek die iets of iemand beschrijft of onderscheidt van anderen.",
+        "pos": "noun",
+        "examples": [
+          "Kleur is een eigenschap van een voorwerp.",
+          "Geduld is een goede eigenschap om te hebben."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "kleur",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "eigenschap"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "eigenschap#1",
+        "old_value": null,
+        "new_value": "Een eigenschap is een kenmerk of karakteristiek die iets of iemand beschrijft of onderscheidt van anderen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "kunstmatige intelligentie": {
+    "senses": [
+      {
+        "sense_id": "kunstmatige intelligentie#1",
+        "definition": "Kunstmatige intelligentie is het vakgebied dat zich bezighoudt met het nabootsen of simuleren van menselijke intelligentie door computersystemen.",
+        "pos": "noun",
+        "examples": [
+          "Machine learning is een onderdeel van kunstmatige intelligentie.",
+          "Kunstmatige intelligentie wordt gebruikt in veel moderne toepassingen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "machine learning",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kunstmatige intelligentie"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kunstmatige intelligentie#1",
+        "old_value": null,
+        "new_value": "Kunstmatige intelligentie is het vakgebied dat zich bezighoudt met het nabootsen of simuleren van menselijke intelligentie door computersystemen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "kunstvorm": {
+    "senses": [
+      {
+        "sense_id": "kunstvorm#1",
+        "definition": "Een kunstvorm is een specifieke manier waarop mensen creatieve uitdrukking geven, zoals muziek, schilderkunst of literatuur.",
+        "pos": "noun",
+        "examples": [
+          "Muziek is een bekende kunstvorm.",
+          "Schilderkunst en beeldhouwkunst zijn beide een kunstvorm."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "muziek",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kunstvorm"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kunstvorm#1",
+        "old_value": null,
+        "new_value": "Een kunstvorm is een specifieke manier waarop mensen creatieve uitdrukking geven, zoals muziek, schilderkunst of literatuur.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "meubelstuk": {
+    "senses": [
+      {
+        "sense_id": "meubelstuk#1",
+        "definition": "Een meubelstuk is een verplaatsbaar voorwerp dat gebruikt wordt om een ruimte in te richten, zoals een tafel, stoel of kast.",
+        "pos": "noun",
+        "examples": [
+          "De tafel en de stoel zijn beide een meubelstuk.",
+          "Ze kocht een nieuw meubelstuk voor de woonkamer."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "huis",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "meubelstuk"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "meubelstuk#1",
+        "old_value": null,
+        "new_value": "Een meubelstuk is een verplaatsbaar voorwerp dat gebruikt wordt om een ruimte in te richten, zoals een tafel, stoel of kast.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "persoon": {
+    "senses": [
+      {
+        "sense_id": "persoon#1",
+        "definition": "Een persoon is een individuele mens met een eigen identiteit, gedachten en gevoelens.",
+        "pos": "noun",
+        "examples": [
+          "Elke persoon heeft zijn eigen mening.",
+          "Er stond een persoon aan de deur."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "mens",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "levend wezen",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "persoon"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "persoon#1",
+        "old_value": null,
+        "new_value": "Een persoon is een individuele mens met een eigen identiteit, gedachten en gevoelens.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "programmeertaal": {
+    "senses": [
+      {
+        "sense_id": "programmeertaal#1",
+        "definition": "Een programmeertaal is een formele taal waarmee mensen instructies kunnen schrijven die een computer kan uitvoeren.",
+        "pos": "noun",
+        "examples": [
+          "Python is een populaire programmeertaal.",
+          "Ze leerde een nieuwe programmeertaal voor haar project."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "taal",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "programmeertaal"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "programmeertaal#1",
+        "old_value": null,
+        "new_value": "Een programmeertaal is een formele taal waarmee mensen instructies kunnen schrijven die een computer kan uitvoeren.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "theorie": {
+    "senses": [
+      {
+        "sense_id": "theorie#1",
+        "definition": "Een theorie is een samenhangend geheel van ideeën dat verschijnselen probeert te verklaren, vaak onderbouwd door observatie of experiment.",
+        "pos": "noun",
+        "examples": [
+          "De relativiteitstheorie is een bekende natuurkundige theorie.",
+          "Zijn theorie werd door andere wetenschappers getest."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "relativiteitstheorie",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "theorie"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "theorie#1",
+        "old_value": null,
+        "new_value": "Een theorie is een samenhangend geheel van ideeën dat verschijnselen probeert te verklaren, vaak onderbouwd door observatie of experiment.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "trilling": {
+    "senses": [
+      {
+        "sense_id": "trilling#1",
+        "definition": "Een trilling is een herhalende beweging heen en weer rond een rustpunt, bijvoorbeeld van lucht bij geluid.",
+        "pos": "noun",
+        "examples": [
+          "Geluid ontstaat door een trilling in de lucht.",
+          "De snaar van de gitaar maakte een trilling."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "geluid",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "trilling"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "trilling#1",
+        "old_value": null,
+        "new_value": "Een trilling is een herhalende beweging heen en weer rond een rustpunt, bijvoorbeeld van lucht bij geluid.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "vel": {
+    "senses": [
+      {
+        "sense_id": "vel#1",
+        "definition": "Een vel is een dun, strak gespannen of plat vlak van materiaal, zoals stof, papier of rubber.",
+        "pos": "noun",
+        "examples": [
+          "De trampoline heeft een strak gespannen vel om op te springen.",
+          "Ze schreef haar naam op een vel papier."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "trampoline",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "vel#2",
+        "definition": "Het vel is de huid van een mens of dier, vooral gebruikt in uitdrukkingen over gevoeligheid of weerbaarheid.",
+        "pos": "noun",
+        "examples": [
+          "Hij heeft een dik vel en trekt zich niets aan van kritiek.",
+          "Haar vel was rood verbrand na een dag in de zon."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "lichaam",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "vel#1",
+        "old_value": null,
+        "new_value": "Een vel is een dun, strak gespannen of plat vlak van materiaal, zoals stof, papier of rubber.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "voedingsmiddel": {
+    "senses": [
+      {
+        "sense_id": "voedingsmiddel#1",
+        "definition": "Een voedingsmiddel is iets dat gegeten of gedronken wordt om het lichaam van energie en voedingsstoffen te voorzien.",
+        "pos": "noun",
+        "examples": [
+          "Brood en fruit zijn beide een voedingsmiddel.",
+          "Ze kocht verse voedingsmiddelen op de markt."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "brood",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "voedingsmiddel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "voedingsmiddel#1",
+        "old_value": null,
+        "new_value": "Een voedingsmiddel is iets dat gegeten of gedronken wordt om het lichaam van energie en voedingsstoffen te voorzien.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "zitmeubel": {
+    "senses": [
+      {
+        "sense_id": "zitmeubel#1",
+        "definition": "Een zitmeubel is een meubelstuk dat specifiek ontworpen is om op te zitten, zoals een stoel of zitbank.",
+        "pos": "noun",
+        "examples": [
+          "De stoel en de zitbank zijn beide een zitmeubel.",
+          "Ze kochten een nieuw zitmeubel voor de woonkamer."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "meubelstuk",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zitmeubel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zitmeubel#1",
+        "old_value": null,
+        "new_value": "Een zitmeubel is een meubelstuk dat specifiek ontworpen is om op te zitten, zoals een stoel of zitbank.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "algoritme": {
+    "senses": [
+      {
+        "sense_id": "algoritme#1",
+        "definition": "Een algoritme is een precieze, stapsgewijze reeks instructies die een computer volgt om een probleem op te lossen of een taak uit te voeren.",
+        "pos": "noun",
+        "examples": [
+          "Het algoritme sorteerde de lijst van klein naar groot.",
+          "Elk symbolisch onderdeel van Nova werkt volgens een vast algoritme."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "symbolische AI",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "algoritme"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "algoritme#1",
+        "old_value": null,
+        "new_value": "Een algoritme is een precieze, stapsgewijze reeks instructies die een computer volgt om een probleem op te lossen of een taak uit te voeren.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "symbolische AI": {
+    "senses": [
+      {
+        "sense_id": "symbolische AI#1",
+        "definition": "Symbolische AI is een vorm van kunstmatige intelligentie die redeneert met expliciete regels, concepten en logica, in plaats van met statistische patroonherkenning.",
+        "pos": "noun",
+        "examples": [
+          "Nova is volledig gebouwd op symbolische AI, zonder een taalmodel als kern.",
+          "Bij symbolische AI is elke beslissing te herleiden tot een duidelijke regel."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "kunstmatige intelligentie",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "symbolische AI"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "symbolische AI#1",
+        "old_value": null,
+        "new_value": "Symbolische AI is een vorm van kunstmatige intelligentie die redeneert met expliciete regels, concepten en logica, in plaats van met statistische patroonherkenning.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "neuraal netwerk": {
+    "senses": [
+      {
+        "sense_id": "neuraal netwerk#1",
+        "definition": "Een neuraal netwerk is een ML-model opgebouwd uit lagen van verbonden knopen, dat patronen leert herkennen uit grote hoeveelheden data in plaats van expliciete regels te volgen.",
+        "pos": "noun",
+        "examples": [
+          "Stockfish gebruikt een beperkt neuraal netwerk als extern hulpmiddel, niet als kern van Nova.",
+          "Een neuraal netwerk herkent patronen door te leren uit voorbeelden."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "machine learning",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "neuraal netwerk"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "neuraal netwerk#1",
+        "old_value": null,
+        "new_value": "Een neuraal netwerk is een ML-model opgebouwd uit lagen van verbonden knopen, dat patronen leert herkennen uit grote hoeveelheden data in plaats van expliciete regels te volgen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "EventBus": {
+    "senses": [
+      {
+        "sense_id": "EventBus#1",
+        "definition": "De EventBus is het centrale pub/sub-systeem in Nova's architectuur waarmee modules onderling gebeurtenissen (events) versturen en ontvangen zonder elkaar rechtstreeks aan te roepen.",
+        "pos": "noun",
+        "examples": [
+          "Elke module in Nova communiceert via de EventBus.",
+          "Wanneer een interactie wordt opgeslagen, publiceert Memory Layer 0 een event op de EventBus."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "module",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "EventBus"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "EventBus#1",
+        "old_value": null,
+        "new_value": "De EventBus is het centrale pub/sub-systeem in Nova's architectuur waarmee modules onderling gebeurtenissen (events) versturen en ontvangen zonder elkaar rechtstreeks aan te roepen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "module": {
+    "senses": [
+      {
+        "sense_id": "module#1",
+        "definition": "Een module is een op zichzelf staand onderdeel van een softwaresysteem met een eigen, afgebakende taak, dat via een vaste interface met andere onderdelen samenwerkt.",
+        "pos": "noun",
+        "examples": [
+          "Het schaakmodule van Nova gebruikt Stockfish voor de zetberekening.",
+          "Elke module in Nova wordt geladen via de module_loader."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "EventBus",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "module"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "module#1",
+        "old_value": null,
+        "new_value": "Een module is een op zichzelf staand onderdeel van een softwaresysteem met een eigen, afgebakende taak, dat via een vaste interface met andere onderdelen samenwerkt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "rood": {
+    "senses": [
+      {
+        "sense_id": "rood#1",
+        "definition": "Rood is een kleur met de langste golflengte van het zichtbare lichtspectrum, vaak geassocieerd met vuur, bloed of liefde.",
+        "pos": "adj",
+        "examples": [
+          "Ze droeg een rode jurk naar het feest.",
+          "Het stoplicht sprong op rood."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "kleur",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "rood"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "rood#1",
+        "old_value": null,
+        "new_value": "Rood is een kleur met de langste golflengte van het zichtbare lichtspectrum, vaak geassocieerd met vuur, bloed of liefde.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "blauw": {
+    "senses": [
+      {
+        "sense_id": "blauw#1",
+        "definition": "Blauw is een kleur die je ziet bij een korte golflengte van het zichtbare lichtspectrum, vaak geassocieerd met de lucht of de zee.",
+        "pos": "adj",
+        "examples": [
+          "De lucht was helder blauw vandaag.",
+          "Hij schilderde de muur blauw."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "kleur",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "blauw"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "blauw#1",
+        "old_value": null,
+        "new_value": "Blauw is een kleur die je ziet bij een korte golflengte van het zichtbare lichtspectrum, vaak geassocieerd met de lucht of de zee.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "blij": {
+    "senses": [
+      {
+        "sense_id": "blij#1",
+        "definition": "Blij is een gevoel van vreugde en tevredenheid, meestal veroorzaakt door iets positiefs dat gebeurt.",
+        "pos": "adj",
+        "examples": [
+          "Ze was blij met haar cadeau.",
+          "Hij lachte omdat hij zich blij voelde."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gevoel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "blij"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "blij#1",
+        "old_value": null,
+        "new_value": "Blij is een gevoel van vreugde en tevredenheid, meestal veroorzaakt door iets positiefs dat gebeurt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "boos": {
+    "senses": [
+      {
+        "sense_id": "boos#1",
+        "definition": "Boos is een gevoel van woede of ergernis, vaak veroorzaakt door iets oneerlijks of frustrerends.",
+        "pos": "adj",
+        "examples": [
+          "Hij werd boos toen zijn fiets gestolen was.",
+          "Ze keek boos naar de rommel op tafel."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gevoel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "boos"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "boos#1",
+        "old_value": null,
+        "new_value": "Boos is een gevoel van woede of ergernis, vaak veroorzaakt door iets oneerlijks of frustrerends.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "verdrietig": {
+    "senses": [
+      {
+        "sense_id": "verdrietig#1",
+        "definition": "Verdrietig is een gevoel van droefheid of pijn, vaak veroorzaakt door verlies of teleurstelling.",
+        "pos": "adj",
+        "examples": [
+          "Ze was verdrietig na het slechte nieuws.",
+          "Hij voelde zich verdrietig toen zijn vriend wegging."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gevoel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "verdrietig"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "verdrietig#1",
+        "old_value": null,
+        "new_value": "Verdrietig is een gevoel van droefheid of pijn, vaak veroorzaakt door verlies of teleurstelling.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "gevoel": {
+    "senses": [
+      {
+        "sense_id": "gevoel#1",
+        "definition": "Een gevoel is een emotionele toestand die iemand ervaart, zoals blijdschap, verdriet of woede, vaak veroorzaakt door een gebeurtenis of gedachte.",
+        "pos": "noun",
+        "examples": [
+          "Blij en verdrietig zijn allebei een gevoel.",
+          "Ze kon haar gevoel niet goed onder woorden brengen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "persoon",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gevoel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "gevoel#1",
+        "old_value": null,
+        "new_value": "Een gevoel is een emotionele toestand die iemand ervaart, zoals blijdschap, verdriet of woede, vaak veroorzaakt door een gebeurtenis of gedachte.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "regen": {
+    "senses": [
+      {
+        "sense_id": "regen#1",
+        "definition": "Regen is neerslag in de vorm van waterdruppels die uit wolken vallen wanneer waterdamp condenseert.",
+        "pos": "noun",
+        "examples": [
+          "De regen kletterde tegen het raam.",
+          "Ze namen een paraplu mee vanwege de regen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "wolk",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "water",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "regen"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "regen#1",
+        "old_value": null,
+        "new_value": "Regen is neerslag in de vorm van waterdruppels die uit wolken vallen wanneer waterdamp condenseert.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "zon": {
+    "senses": [
+      {
+        "sense_id": "zon#1",
+        "definition": "De zon is de ster in het centrum van ons zonnestelsel die licht en warmte levert aan de aarde.",
+        "pos": "noun",
+        "examples": [
+          "De zon scheen fel deze middag.",
+          "Ze zaten in de zon te genieten van het weer."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "hemellichaam",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zon"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zon#1",
+        "old_value": null,
+        "new_value": "De zon is de ster in het centrum van ons zonnestelsel die licht en warmte levert aan de aarde.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "wind": {
+    "senses": [
+      {
+        "sense_id": "wind#1",
+        "definition": "Wind is de beweging van lucht, veroorzaakt door verschillen in luchtdruk.",
+        "pos": "noun",
+        "examples": [
+          "De wind blies hard door de straat.",
+          "Ze voelde de koude wind op haar gezicht."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "wolk",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wind"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "wind#1",
+        "old_value": null,
+        "new_value": "Wind is de beweging van lucht, veroorzaakt door verschillen in luchtdruk.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "wolk": {
+    "senses": [
+      {
+        "sense_id": "wolk#1",
+        "definition": "Een wolk is een zichtbare massa van waterdruppels of ijskristallen die zweeft in de lucht.",
+        "pos": "noun",
+        "examples": [
+          "Er hing een grote grijze wolk aan de hemel.",
+          "De wolken pakten samen voor het onweer begon."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "water",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "regen",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wolk"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "wolk#1",
+        "old_value": null,
+        "new_value": "Een wolk is een zichtbare massa van waterdruppels of ijskristallen die zweeft in de lucht.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "hoofd": {
+    "senses": [
+      {
+        "sense_id": "hoofd#1",
+        "definition": "Het hoofd is het bovenste deel van het lichaam waarin de hersenen, ogen, oren, neus en mond zich bevinden.",
+        "pos": "noun",
+        "examples": [
+          "Ze schudde haar hoofd van nee.",
+          "Hij stootte zijn hoofd tegen de deur."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "lichaam",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hoofd"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hoofd#1",
+        "old_value": null,
+        "new_value": "Het hoofd is het bovenste deel van het lichaam waarin de hersenen, ogen, oren, neus en mond zich bevinden.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "hand": {
+    "senses": [
+      {
+        "sense_id": "hand#1",
+        "definition": "Een hand is het lichaamsdeel aan het einde van de arm, gebruikt om te grijpen, vast te houden en te voelen.",
+        "pos": "noun",
+        "examples": [
+          "Ze gaf hem een hand ter begroeting.",
+          "Hij hield het boek stevig in zijn hand."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "lichaam",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hand"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hand#1",
+        "old_value": null,
+        "new_value": "Een hand is het lichaamsdeel aan het einde van de arm, gebruikt om te grijpen, vast te houden en te voelen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "oog": {
+    "senses": [
+      {
+        "sense_id": "oog#1",
+        "definition": "Een oog is het orgaan waarmee mensen en dieren licht waarnemen en zien.",
+        "pos": "noun",
+        "examples": [
+          "Ze knipperde met haar oog tegen het felle licht.",
+          "Hij hield zijn oog op de bal gericht."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "hoofd",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "oog#2",
+        "definition": "Het oog van een storm is het rustige, kalme centrum van een orkaan of cycloon, omringd door de sterkste wind.",
+        "pos": "noun",
+        "examples": [
+          "Het was opvallend stil toen ze in het oog van de storm zaten.",
+          "Het oog van de orkaan trok langzaam over het eiland."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "wind",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "oog"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "oog#1",
+        "old_value": null,
+        "new_value": "Een oog is het orgaan waarmee mensen en dieren licht waarnemen en zien.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "hart": {
+    "senses": [
+      {
+        "sense_id": "hart#1",
+        "definition": "Het hart is het orgaan dat bloed door het lichaam pompt en zo alle organen van zuurstof voorziet.",
+        "pos": "noun",
+        "examples": [
+          "Haar hart klopte snel na het rennen.",
+          "De dokter luisterde naar zijn hart."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "lichaam",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "hart#2",
+        "definition": "Het hart van iets is het centrale, belangrijkste of meest wezenlijke deel ervan.",
+        "pos": "noun",
+        "examples": [
+          "De EventBus vormt het hart van Nova's architectuur.",
+          "Het marktplein ligt in het hart van de stad."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "EventBus",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hart"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hart#1",
+        "old_value": null,
+        "new_value": "Het hart is het orgaan dat bloed door het lichaam pompt en zo alle organen van zuurstof voorziet.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "been": {
+    "senses": [
+      {
+        "sense_id": "been#1",
+        "definition": "Een been is het lichaamsdeel waarmee mensen en veel dieren staan, lopen en rennen.",
+        "pos": "noun",
+        "examples": [
+          "Ze brak haar been tijdens het skiën.",
+          "Hij strekte zijn been na het lange zitten."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "lichaam",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "been#2",
+        "definition": "Een been is het harde, kalkhoudende skeletdeel dat het lichaam van mens of dier ondersteunt.",
+        "pos": "noun",
+        "examples": [
+          "De hond knaagde vergenoegd op een been.",
+          "Archeologen vonden oude beenderen in de grot."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "been"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "been#1",
+        "old_value": null,
+        "new_value": "Een been is het lichaamsdeel waarmee mensen en veel dieren staan, lopen en rennen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "lichaam": {
+    "senses": [
+      {
+        "sense_id": "lichaam#1",
+        "definition": "Het lichaam is het fysieke geheel van een mens of dier, opgebouwd uit organen, botten, spieren en huid.",
+        "pos": "noun",
+        "examples": [
+          "Sporten is goed voor je lichaam.",
+          "Het hoofd, de armen en de benen zijn allemaal delen van het lichaam."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "mens",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "lichaam"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "lichaam#1",
+        "old_value": null,
+        "new_value": "Het lichaam is het fysieke geheel van een mens of dier, opgebouwd uit organen, botten, spieren en huid.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "schaakbord": {
+    "senses": [
+      {
+        "sense_id": "schaakbord#1",
+        "definition": "Een schaakbord is een bord van 64 vakjes in acht rijen en acht kolommen, gebruikt om schaak op te spelen.",
+        "pos": "noun",
+        "examples": [
+          "De schaakstukken stonden klaar op het schaakbord.",
+          "Nova toont het schaakbord in kleur tijdens het spelen."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "schaak",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schaakbord"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "schaakbord#1",
+        "old_value": null,
+        "new_value": "Een schaakbord is een bord van 64 vakjes in acht rijen en acht kolommen, gebruikt om schaak op te spelen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "dammen": {
+    "senses": [
+      {
+        "sense_id": "dammen#1",
+        "definition": "Dammen is een bordspel voor twee spelers waarbij schijven diagonaal over een bord bewegen met als doel de schijven van de tegenstander te slaan.",
+        "pos": "noun",
+        "examples": [
+          "Ze speelden een partijtje dammen na het avondeten.",
+          "Bij dammen mag je een schijf slaan door erover te springen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "bordspel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "dammen"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "dammen#1",
+        "old_value": null,
+        "new_value": "Dammen is een bordspel voor twee spelers waarbij schijven diagonaal over een bord bewegen met als doel de schijven van de tegenstander te slaan.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "wandelen": {
+    "senses": [
+      {
+        "sense_id": "wandelen#1",
+        "definition": "Wandelen is te voet op een rustig tempo verplaatsen, vaak voor ontspanning of beweging.",
+        "pos": "verb",
+        "examples": [
+          "Ze gingen elke avond wandelen in het park.",
+          "Wandelen is een goede manier om te ontspannen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "been",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wandelen"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "wandelen#1",
+        "old_value": null,
+        "new_value": "Wandelen is te voet op een rustig tempo verplaatsen, vaak voor ontspanning of beweging.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "koffie": {
+    "senses": [
+      {
+        "sense_id": "koffie#1",
+        "definition": "Koffie is een warme drank gezet van gemalen, gebrande koffiebonen, vaak gedronken vanwege de cafeïne of smaak.",
+        "pos": "noun",
+        "examples": [
+          "Ze dronk elke ochtend een kop koffie.",
+          "De geur van verse koffie vulde de keuken."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "drank",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "koffie"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "koffie#1",
+        "old_value": null,
+        "new_value": "Koffie is een warme drank gezet van gemalen, gebrande koffiebonen, vaak gedronken vanwege de cafeïne of smaak.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "bordspel": {
+    "senses": [
+      {
+        "sense_id": "bordspel#1",
+        "definition": "Een bordspel is een spel dat gespeeld wordt op een bord, meestal met stukken of schijven die volgens vaste regels bewegen.",
+        "pos": "noun",
+        "examples": [
+          "Schaken en dammen zijn allebei een bordspel.",
+          "Ze speelden een bordspel tijdens de regenachtige middag."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "schaak",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "dammen",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bordspel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bordspel#1",
+        "old_value": null,
+        "new_value": "Een bordspel is een spel dat gespeeld wordt op een bord, meestal met stukken of schijven die volgens vaste regels bewegen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "drank": {
+    "senses": [
+      {
+        "sense_id": "drank#1",
+        "definition": "Een drank is een vloeistof die bedoeld is om te drinken, zoals water, melk of koffie.",
+        "pos": "noun",
+        "examples": [
+          "Koffie en thee zijn allebei een drank.",
+          "Ze bestelde een frisse drank bij de lunch."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vloeistof",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "drank"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "drank#1",
+        "old_value": null,
+        "new_value": "Een drank is een vloeistof die bedoeld is om te drinken, zoals water, melk of koffie.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "schaak": {
+    "senses": [
+      {
+        "sense_id": "schaak#1",
+        "definition": "Schaak is een bordspel voor twee spelers waarbij elk stuk zijn eigen manier van bewegen heeft, met als doel de koning van de tegenstander schaakmat te zetten.",
+        "pos": "noun",
+        "examples": [
+          "Nova kan een partij schaak spelen dankzij de Stockfish-engine.",
+          "Ze speelde elke zondag schaak met haar opa."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "bordspel",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "schaakbord",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schaak"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "schaak#1",
+        "old_value": null,
+        "new_value": "Schaak is een bordspel voor twee spelers waarbij elk stuk zijn eigen manier van bewegen heeft, met als doel de koning van de tegenstander schaakmat te zetten.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "thee": {
+    "senses": [
+      {
+        "sense_id": "thee#1",
+        "definition": "Thee is een warme drank gezet van de bladeren van de theeplant, vaak gedronken met of zonder melk en suiker.",
+        "pos": "noun",
+        "examples": [
+          "Ze zette een kop thee voor het slapengaan.",
+          "Hij dronk zijn thee met een scheutje melk."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "drank",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "thee"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "thee#1",
+        "old_value": null,
+        "new_value": "Thee is een warme drank gezet van de bladeren van de theeplant, vaak gedronken met of zonder melk en suiker.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "appelboom": {
+    "senses": [
+      {
+        "sense_id": "appelboom#1",
+        "definition": "Een appelboom is een fruitboom die appels draagt, meestal in de herfst rijp.",
+        "pos": "noun",
+        "examples": [
+          "In de tuin stond een oude appelboom.",
+          "De appelboom zat vol rijpe appels."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "boom",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "appel",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "appelboom"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "appelboom#1",
+        "old_value": null,
+        "new_value": "Een appelboom is een fruitboom die appels draagt, meestal in de herfst rijp.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "slaap": {
+    "senses": [
+      {
+        "sense_id": "slaap#1",
+        "definition": "Slaap is een natuurlijke rusttoestand waarin het lichaam en de hersenen herstellen, met verminderd bewustzijn van de omgeving.",
+        "pos": "noun",
+        "examples": [
+          "Ze had veel slaap nodig na de lange reis.",
+          "Een goede nachtrust begint met voldoende slaap."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "lichaam",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "slaap"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "slaap#1",
+        "old_value": null,
+        "new_value": "Slaap is een natuurlijke rusttoestand waarin het lichaam en de hersenen herstellen, met verminderd bewustzijn van de omgeving.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "werk": {
+    "senses": [
+      {
+        "sense_id": "werk#1",
+        "definition": "Werk is een activiteit die iemand uitvoert, meestal in ruil voor inkomen of om een taak te vervullen.",
+        "pos": "noun",
+        "examples": [
+          "Hij ging elke ochtend met de fiets naar zijn werk.",
+          "Ze had veel werk te doen deze week."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "persoon",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "werk#2",
+        "definition": "Een werk is een kunstzinnige of creatieve schepping, zoals een schilderij, boek of muziekstuk.",
+        "pos": "noun",
+        "examples": [
+          "Het museum toonde een werk van een bekende schilder.",
+          "Ze schreef een literair werk over haar jeugd."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "kunstvorm",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "werk"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "werk#1",
+        "old_value": null,
+        "new_value": "Werk is een activiteit die iemand uitvoert, meestal in ruil voor inkomen of om een taak te vervullen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "schaal": {
+    "senses": [
+      {
+        "sense_id": "schaal#1",
+        "definition": "Een schaal is een verhouding of meetsysteem waarmee de grootte, waarde of intensiteit van iets wordt uitgedrukt.",
+        "pos": "noun",
+        "examples": [
+          "De kaart had een schaal van 1 op 100.000.",
+          "Op een schaal van 1 tot 10 gaf ze het een 8."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "schaal#2",
+        "definition": "Een schaal is een apparaat om het gewicht van iets te meten, zoals een weegschaal.",
+        "pos": "noun",
+        "examples": [
+          "Ze legde de groenten op de schaal om ze te wegen.",
+          "De schaal gaf 500 gram aan."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "apparaat",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "schaal#3",
+        "definition": "Een schaal is een reeks tonen in een vaste volgorde, gebruikt als basis voor melodieën in muziek.",
+        "pos": "noun",
+        "examples": [
+          "Ze oefende elke dag de C-groot-schaal op de piano.",
+          "Een muzikale schaal bestaat meestal uit zeven tonen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "muziek",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schaal"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "schaal#1",
+        "old_value": null,
+        "new_value": "Een schaal is een verhouding of meetsysteem waarmee de grootte, waarde of intensiteit van iets wordt uitgedrukt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "taal": {
+    "senses": [
+      {
+        "sense_id": "taal#1",
+        "definition": "Een taal is een systeem van woorden, klanken en regels waarmee mensen communiceren en gedachten uitdrukken.",
+        "pos": "noun",
+        "examples": [
+          "Nederlands en Engels zijn allebei een taal.",
+          "Ze leerde een nieuwe taal om beter te kunnen reizen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "programmeertaal",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "taal"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "taal#1",
+        "old_value": null,
+        "new_value": "Een taal is een systeem van woorden, klanken en regels waarmee mensen communiceren en gedachten uitdrukken.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "geheugen": {
+    "senses": [
+      {
+        "sense_id": "geheugen#1",
+        "definition": "Geheugen is het vermogen om informatie op te slaan, te bewaren en later weer op te halen.",
+        "pos": "noun",
+        "examples": [
+          "Nova's geheugen slaat interacties op in een SQLite-database.",
+          "Hij had een goed geheugen voor namen en gezichten."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "patroon",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "geheugen"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "geheugen#1",
+        "old_value": null,
+        "new_value": "Geheugen is het vermogen om informatie op te slaan, te bewaren en later weer op te halen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "patroon": {
+    "senses": [
+      {
+        "sense_id": "patroon#1",
+        "definition": "Een patroon is een herkenbare, terugkerende regelmaat in gedrag, gegevens of vorm.",
+        "pos": "noun",
+        "examples": [
+          "Nova's pattern_matcher detecteert een patroon in hoe vaak iemand een bepaalde zin gebruikt.",
+          "Het behang had een bloemenpatroon."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "algoritme",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "patroon"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "patroon#1",
+        "old_value": null,
+        "new_value": "Een patroon is een herkenbare, terugkerende regelmaat in gedrag, gegevens of vorm.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "materietoestand": {
+    "senses": [
+      {
+        "sense_id": "materietoestand#1",
+        "definition": "Een materietoestand is een van de vormen waarin stof kan voorkomen, zoals vast, vloeibaar of gasvormig, afhankelijk van temperatuur en druk.",
+        "pos": "noun",
+        "examples": [
+          "Vloeibaar en vast zijn allebei een materietoestand.",
+          "Water verandert van materietoestand als het bevriest tot ijs."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "vloeistof",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "materietoestand"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "materietoestand#1",
+        "old_value": null,
+        "new_value": "Een materietoestand is een van de vormen waarin stof kan voorkomen, zoals vast, vloeibaar of gasvormig, afhankelijk van temperatuur en druk.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "mens": {
+    "senses": [
+      {
+        "sense_id": "mens#1",
+        "definition": "Een mens is een levend wezen van de soort Homo sapiens, met een ontwikkeld denkvermogen en taal.",
+        "pos": "noun",
+        "examples": [
+          "Een mens heeft twee benen en twee armen.",
+          "Vroeger leefden mensen in kleine gemeenschappen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "levend wezen",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "mens"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "mens#1",
+        "old_value": null,
+        "new_value": "Een mens is een levend wezen van de soort Homo sapiens, met een ontwikkeld denkvermogen en taal.",
         "timestamp": "2026-07-05T00:00:00.000000"
       }
     ]
