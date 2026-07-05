@@ -5,14 +5,15 @@
         "12": 4,
         "15": 5,
         "19": 5,
-        "20": 8
+        "20": 8,
+        "21": 6
       },
       "days": {
-        "zondag": 22
+        "zondag": 28
       },
-      "total": 22,
+      "total": 28,
       "most_common_hour": 20,
-      "confidence": 0.364,
+      "confidence": 0.286,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
@@ -28,14 +29,15 @@
         "12": 4,
         "15": 4,
         "19": 5,
-        "20": 7
+        "20": 7,
+        "21": 6
       },
       "days": {
-        "zondag": 20
+        "zondag": 26
       },
-      "total": 20,
+      "total": 26,
       "most_common_hour": 20,
-      "confidence": 0.35,
+      "confidence": 0.269,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,

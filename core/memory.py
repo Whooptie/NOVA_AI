@@ -261,6 +261,19 @@ class MemoryModule:
         self._flush_buffer()
         if self.conn:
             self.conn.commit()
+
+            # Expliciete WAL-checkpoint: zet alle wijzigingen uit het
+            # -wal logboekbestand definitief over naar interactions.db,
+            # en maakt -wal/-shm weer leeg (0 bytes). Zonder dit kunnen
+            # die twee bestanden na het afsluiten blijven bestaan —
+            # onschuldig voor je data (die zit er nog steeds veilig in),
+            # maar minder netjes op schijf. TRUNCATE is de grondigste
+            # variant: forceert het -wal bestand helemaal leeg te maken.
+            try:
+                self.conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+            except Exception as e:
+                print(f"Memory: WAL-checkpoint bij afsluiten mislukt: {e}")
+
             self.conn.close()
             self.conn = None
         print("Memory: netjes afgesloten.")
