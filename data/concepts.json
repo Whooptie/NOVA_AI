@@ -1604,5 +1604,299 @@
         "timestamp": "2026-07-05T00:00:00.000000"
       }
     ]
+  },
+  "water": {
+    "senses": [
+      {
+        "sense_id": "water#1",
+        "definition": "Water is een kleurloze, doorzichtige vloeistof die essentieel is voor al het leven op aarde en bestaat uit waterstof en zuurstof (H2O).",
+        "pos": "noun",
+        "examples": [
+          "Ze dronk een glas water na het sporten.",
+          "Het water in de rivier stroomde snel."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vloeistof",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "water"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "water#1",
+        "old_value": null,
+        "new_value": "Water is een kleurloze, doorzichtige vloeistof die essentieel is voor al het leven op aarde en bestaat uit waterstof en zuurstof (H2O).",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "boom": {
+    "senses": [
+      {
+        "sense_id": "boom#1",
+        "definition": "Een boom is een houtachtige plant met een stevige stam, takken en bladeren, die vaak vele jaren oud kan worden.",
+        "pos": "noun",
+        "examples": [
+          "In de tuin stond een grote oude boom.",
+          "De blaadjes van de boom vielen in de herfst."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "plant",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "boom"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "boom#1",
+        "old_value": null,
+        "new_value": "Een boom is een houtachtige plant met een stevige stam, takken en bladeren, die vaak vele jaren oud kan worden.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "muziek": {
+    "senses": [
+      {
+        "sense_id": "muziek#1",
+        "definition": "Muziek is een kunstvorm waarbij klanken op een geordende manier worden gecombineerd, meestal met ritme, melodie en harmonie.",
+        "pos": "noun",
+        "examples": [
+          "Hij luisterde graag naar muziek tijdens het werken.",
+          "De muziek klonk luid vanuit de speakers."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "kunstvorm",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "muziek"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "muziek#1",
+        "old_value": null,
+        "new_value": "Muziek is een kunstvorm waarbij klanken op een geordende manier worden gecombineerd, meestal met ritme, melodie en harmonie.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "huis": {
+    "senses": [
+      {
+        "sense_id": "huis#1",
+        "definition": "Een huis is een gebouw dat bedoeld is om in te wonen, meestal bestaande uit meerdere kamers.",
+        "pos": "noun",
+        "examples": [
+          "Ze woonden in een klein huis aan de rand van het dorp.",
+          "Het huis had een grote tuin met een tafel en stoelen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gebouw",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "deur",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "raam",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "huis"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "huis#1",
+        "old_value": null,
+        "new_value": "Een huis is een gebouw dat bedoeld is om in te wonen, meestal bestaande uit meerdere kamers.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "vriend": {
+    "senses": [
+      {
+        "sense_id": "vriend#1",
+        "definition": "Een vriend is een persoon met wie men een band van genegenheid en vertrouwen heeft, los van familie.",
+        "pos": "noun",
+        "examples": [
+          "Ze belde haar beste vriend om het nieuws te delen.",
+          "Een goede vriend staat altijd voor je klaar."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "persoon",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vriend"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "vriend#1",
+        "old_value": null,
+        "new_value": "Een vriend is een persoon met wie men een band van genegenheid en vertrouwen heeft, los van familie.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
   }
 }
