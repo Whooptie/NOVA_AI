@@ -5,7 +5,10 @@
         "sense_id": "hond#1",
         "definition": "De hond is de gedomesticeerde ondersoort van de wolf.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "De hond blafte naar de postbode.",
+          "Mijn hond wil elke dag wandelen."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -13,6 +16,13 @@
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-27T18:58:08.343041"
+          },
+          {
+            "type": "is_a",
+            "target": "zoogdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -23,7 +33,9 @@
         "sense_id": "hond#2",
         "definition": "een dier",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "De hond is een trouw huisdier."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -105,7 +117,10 @@
         "sense_id": "fiets#1",
         "definition": "Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Ik ga elke dag met de fiets naar het werk.",
+          "Zijn fiets stond geparkeerd voor de deur."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -113,6 +128,13 @@
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-27T18:58:32.285272"
+          },
+          {
+            "type": "has_part",
+            "target": "wiel",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -160,8 +182,19 @@
         "sense_id": "huiskat#1",
         "definition": "De kat of huiskat is een van de oudste huisdieren van de mens.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "De huiskat sliep de hele dag op de bank.",
+          "Onze huiskat jaagt graag op muizen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "kat",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": []
@@ -207,7 +240,10 @@
         "sense_id": "computer#1",
         "definition": "Een computer is een apparaat waarmee gegevens volgens formele procedures (algoritmen) kunnen worden verwerkt.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Ik werk elke dag op mijn computer.",
+          "De computer stortte plots in tijdens het opstarten."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -262,7 +298,10 @@
         "sense_id": "planeet#1",
         "definition": "Een planeet is een hemellichaam dat zich om een ster beweegt.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "De aarde is een planeet in ons zonnestelsel.",
+          "Mars is de vierde planeet vanaf de zon."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -317,7 +356,10 @@
         "sense_id": "trampoline#1",
         "definition": "Een trampoline is een strak gespannen vel waar men voor sport of ontspanning op kan springen en capriolen op kan uithalen.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "De kinderen sprongen vrolijk op de trampoline.",
+          "In de tuin staat een grote trampoline."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -372,7 +414,10 @@
         "sense_id": "dier#1",
         "definition": "een levend wezen",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Een dier heeft voedsel en water nodig om te overleven.",
+          "In de dierentuin zag ze veel verschillende dieren."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -440,12 +485,14 @@
     "senses": [
       {
         "sense_id": "levend wezen#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een levend wezen is een organisme dat groeit, zich voortplant en op prikkels reageert.",
+        "pos": "noun",
+        "examples": [
+          "Een plant is ook een levend wezen."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -489,7 +536,9 @@
         "sense_id": "zitbank#1",
         "definition": "Een zitbank is een zitmeubel dat plaats biedt aan meer dan één persoon.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "We zaten met zijn allen op de zitbank tv te kijken."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -544,8 +593,19 @@
         "sense_id": "octopus#1",
         "definition": "De Octopoda zijn een orde binnen de klasse van de Cephalopoda met acht armen of tentakels en drie harten.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "De octopus verstopte zich tussen de rotsen.",
+          "Een octopus kan van kleur veranderen om zich te camoufleren."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "weekdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": []
@@ -648,7 +708,9 @@
         "sense_id": "pitvrucht#1",
         "definition": "een vrucht met een harde pit binnenin",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Een perzik is een voorbeeld van een pitvrucht."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -707,7 +769,9 @@
         "sense_id": "democratie#1",
         "definition": "Democratie is een bestuursvorm, waarin de wil van het volk de enige bron is van legitieme machtsuitoefening.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "België is een democratie met vrije verkiezingen."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -761,8 +825,10 @@
       {
         "sense_id": "vliegtuig#1",
         "definition": "Een vliegtuig is een luchtvaartuig dat een hogere dichtheid heeft dan lucht en in staat is een gecontroleerde vlucht te maken.",
-        "pos": "adj",
-        "examples": [],
+        "pos": "noun",
+        "examples": [
+          "Het vliegtuig steeg op vanuit Brussel."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -816,8 +882,10 @@
       {
         "sense_id": "luchtvaartuig#1",
         "definition": "een voertuig dat door de lucht vliegt",
-        "pos": "adj",
-        "examples": [],
+        "pos": "noun",
+        "examples": [
+          "Een helikopter is ook een luchtvaartuig."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -872,14 +940,16 @@
         "sense_id": "bestuursvorm#1",
         "definition": "De bestuursvorm is de formele vorm van bestuur in een staat en wordt ook wel de staatsvorm genoemd, maar staatsvorm en bestuursvorm zijn niet gelijk.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Democratie en monarchie zijn voorbeelden van een bestuursvorm."
+        ],
         "relations": [
           {
             "type": "is_a",
-            "target": "formele",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:24:45.399133"
+            "target": "bestuur",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -925,10 +995,20 @@
     "senses": [
       {
         "sense_id": "zwart gat#1",
-        "definition": "Volgens de algemene relativiteitstheorie is een zwart gat een hemellichaam waaruit niets – geen deeltjes en zelfs geen licht – kan ontsnappen.",
+        "definition": "Volgens de algemene relativiteitstheorie is een zwart gat een hemellichaam waaruit niets – geen deeltjes en zelfs geen licht – kan ontsnappen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "Astronomen ontdekten een zwart gat in het centrum van de melkweg."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "hemellichaam",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": []
@@ -974,8 +1054,18 @@
         "sense_id": "relativiteitstheorie#1",
         "definition": "Met relativiteitstheorie worden in de natuurkunde twee theorieën van Albert Einstein aangeduid, namelijk de speciale relativiteitstheorie en de algemene relativiteitstheorie.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "Einstein publiceerde zijn relativiteitstheorie in het begin van de 20e eeuw."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "theorie",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": []
@@ -1021,7 +1111,9 @@
         "sense_id": "python#1",
         "definition": "een programmeertaal",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Nova is volledig geschreven in Python."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -1076,7 +1168,9 @@
         "sense_id": "honingbeer#1",
         "definition": "De Maleise beer of honingbeer is een beer uit Zuidoost-Azië. In Maleisië wordt de soort biroeang of broeang genoemd.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "De honingbeer is de kleinste berensoort ter wereld."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -1131,14 +1225,16 @@
         "sense_id": "grizzlybeer#1",
         "definition": "De grizzlybeer is een Noord-Amerikaanse ondersoort van de bruine beer.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "De grizzlybeer leeft voornamelijk in Noord-Amerika."
+        ],
         "relations": [
           {
             "type": "is_a",
-            "target": "noord",
+            "target": "bruine beer",
             "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T17:48:48.930047"
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -1186,8 +1282,18 @@
         "sense_id": "machine learning#1",
         "definition": "Machinaal leren of machinelearning is een subset van kunstmatige intelligentie om via big data voorheen exclusief menselijke vormen van patroonherkenning te digitaliseren, zodat computersystemen kunnen leren naar analogie van hoe mensen dat doen. Dit leerproces maakt gebruik van technieken die voortkomen uit datamining om een grote hoeveelheid gegevens te internaliseren tot AI-algoritmen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "Nova gebruikt geen machine learning als kern, maar wel als bijkomend hulpmiddel via Stockfish."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "kunstmatige intelligentie",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": []
@@ -1224,6 +1330,278 @@
         "old_value": null,
         "new_value": "Machinaal leren of machinelearning is een subset van kunstmatige intelligentie om via big data voorheen exclusief menselijke vormen van patroonherkenning te digitaliseren, zodat computersystemen kunnen leren naar analogie van hoe mensen dat doen. Dit leerproces maakt gebruik van technieken die voortkomen uit datamining om een grote hoeveelheid gegevens te internaliseren tot AI-algoritmen.",
         "timestamp": "2026-07-03T17:36:24.153656"
+      }
+    ]
+  },
+  "tafel": {
+    "senses": [
+      {
+        "sense_id": "tafel#1",
+        "definition": "Een tafel is een meubelstuk met een plat blad, gedragen door poten, gebruikt om spullen op te zetten of aan te werken.",
+        "pos": "noun",
+        "examples": [
+          "We aten samen aan de tafel.",
+          "Hij zette zijn laptop op de tafel."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "meubelstuk",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tafel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "tafel#1",
+        "old_value": null,
+        "new_value": "Een tafel is een meubelstuk met een plat blad, gedragen door poten, gebruikt om spullen op te zetten of aan te werken.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "deur": {
+    "senses": [
+      {
+        "sense_id": "deur#1",
+        "definition": "Een deur is een beweegbaar element waarmee een opening in een muur of meubelstuk kan worden geopend of gesloten.",
+        "pos": "noun",
+        "examples": [
+          "Ze deed de deur zachtjes dicht.",
+          "Iemand klopte op de deur."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "bouwelement",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "deur"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "deur#1",
+        "old_value": null,
+        "new_value": "Een deur is een beweegbaar element waarmee een opening in een muur of meubelstuk kan worden geopend of gesloten.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "raam": {
+    "senses": [
+      {
+        "sense_id": "raam#1",
+        "definition": "Een raam is een opening in een muur, meestal afgesloten met glas, die licht doorlaat en uitzicht geeft.",
+        "pos": "noun",
+        "examples": [
+          "Ze keek door het raam naar buiten.",
+          "Het raam stond open voor frisse lucht."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "bouwelement",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "raam"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "raam#1",
+        "old_value": null,
+        "new_value": "Een raam is een opening in een muur, meestal afgesloten met glas, die licht doorlaat en uitzicht geeft.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "stoel": {
+    "senses": [
+      {
+        "sense_id": "stoel#1",
+        "definition": "Een stoel is een zitmeubel met een rugleuning, bedoeld voor één persoon.",
+        "pos": "noun",
+        "examples": [
+          "Hij schoof zijn stoel dichter naar de tafel.",
+          "Er stond een houten stoel in de hoek."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zitmeubel",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "stoel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "stoel#1",
+        "old_value": null,
+        "new_value": "Een stoel is een zitmeubel met een rugleuning, bedoeld voor één persoon.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "boek": {
+    "senses": [
+      {
+        "sense_id": "boek#1",
+        "definition": "Een boek is een verzameling bedrukte of beschreven bladzijden die samen zijn gebonden, meestal om te lezen.",
+        "pos": "noun",
+        "examples": [
+          "Ze las elke avond een hoofdstuk uit haar boek.",
+          "Het boek stond op de bovenste plank."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "boek"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "boek#1",
+        "old_value": null,
+        "new_value": "Een boek is een verzameling bedrukte of beschreven bladzijden die samen zijn gebonden, meestal om te lezen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
       }
     ]
   }
