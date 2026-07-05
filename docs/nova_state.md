@@ -381,12 +381,13 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 1. 🟡 **reboot_manager.py** — /reboot commando (10 minuten werk)
 2. 🟡 **Personality pipeline** — uitbreiden naar alle intents
-3. 🟢 **Onderwerp/activiteit-herkenning voor Layer 2** — ontwerpvraag: hoe koppel je specifieke onderwerpen (bv. "koffie", "slapen") aan Layer 2's patroonherkenning? Layer 2 telt nu enkel event_types (chat_message/chat_response), niet de inhoud ervan. Mogelijke aanpak: `intent_router.py` (die al intents herkent) een generiek event laten publiceren per herkende intent, zodat Layer 2 dat kan meetellen — nog te ontwerpen, geen trefwoorden-lappendeken per onderwerp.
+3. 🟢 **Onderwerp/activiteit-herkenning voor Layer 2 (`topic_detected`-events)** — ontwerp uitgewerkt (5 juli 2026), nog te bouwen. Kern: `intent_router.py` publiceert bij elke herkende intent een generiek event `topic_detected:<naam>` (bv. `topic_detected:chess`, later `topic_detected:plex`). Layer 2 telt dit automatisch mee op uur/dag via hetzelfde generieke tel-mechanisme dat ze al heeft — geen aanpassing per onderwerp nodig, enkel de nieuwe event-naam toevoegen aan haar relevante-events-filter. Per nieuwe module (Plex, dammen, Go...) komt er telkens maar 1 kleine toevoeging bij (het event versturen) — geen aparte planning per onderwerp. Volledig uitgewerkt in: **topic_events_roadmap.md**.
 4. 🟢 **microlearning.py** — bouwen
 5. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md)
 6. 🟢 **memory.py Fase 5** — optimalisatie/polish, enkel nodig bij grote databank of trage queries (geen haast)
 7. 🟢 **Layer 1 ↔ Layer 3/4 koppeling** — get_associations()/find_related() daadwerkelijk laten meespelen in Nova's antwoorden (momenteel bouwt Layer 1 wel het netwerk op, maar niets gebruikt het nog actief)
 8. 🟢 **Layer 2 opruimwerk** — anomaly-drempels (MIN_OBSERVATIES_VOOR_ANOMALIE, MIN_CONFIDENCE_VOOR_ANOMALIE) en opslagfrequentie (nu elke 2 observaties) staan nog op tijdelijke, verlaagde testwaarden — terugzetten naar realistischere waarden voor normaal gebruik.
+9. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
 
 ---
 
@@ -405,6 +406,9 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 | semantic_extension_roadmap.md | Semantic Fases 8-13 (toekomstige uitbreidingen) |
 | reboot_hotreload_roadmap.md | Reboot + Hot Reload (3 fases) |
 | memory_user_preferences_roadmap.md | User Preferences: wat Nova over Kevin onthoudt (voorkeuren/afkeuren) |
+| topic_events_roadmap.md | `topic_detected`-events: hoe Layer 2 specifieke onderwerpen (schaak, Plex, ...) op tijdstip leert koppelen, en hoe Layer 4 dat later in vaste sjabloonzinnen gebruikt |
+| identity_ROADMAP.md | Identity-opbouw in 6 fases: Blueprint → Personality Engine → Emotion Engine → Expression Engine → Integration Layer → Adaptive Learning (later) |
+| intent_classifier_roadmap.md | ML-specialist naast intent_router.py: klein lokaal classificatiemodel (scikit-learn) dat nieuwe, onbekende zinnen naar een bekende intent-categorie voorspelt. Concept, nog niet ingepland in bouwvolgorde. |
 
 ---
 

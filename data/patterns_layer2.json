@@ -2,14 +2,15 @@
   "patterns": {
     "chat_response": {
       "hours": {
-        "12": 4
+        "12": 4,
+        "15": 5
       },
       "days": {
-        "zondag": 4
+        "zondag": 9
       },
-      "total": 4,
-      "most_common_hour": 12,
-      "confidence": 1.0,
+      "total": 9,
+      "most_common_hour": 15,
+      "confidence": 0.556,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
@@ -22,14 +23,15 @@
     },
     "chat_message": {
       "hours": {
-        "12": 4
+        "12": 4,
+        "15": 4
       },
       "days": {
-        "zondag": 4
+        "zondag": 8
       },
-      "total": 4,
+      "total": 8,
       "most_common_hour": 12,
-      "confidence": 1.0,
+      "confidence": 0.5,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
