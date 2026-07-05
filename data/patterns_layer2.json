@@ -3,14 +3,16 @@
     "chat_response": {
       "hours": {
         "12": 4,
-        "15": 5
+        "15": 5,
+        "19": 5,
+        "20": 8
       },
       "days": {
-        "zondag": 9
+        "zondag": 22
       },
-      "total": 9,
-      "most_common_hour": 15,
-      "confidence": 0.556,
+      "total": 22,
+      "most_common_hour": 20,
+      "confidence": 0.364,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
@@ -24,14 +26,16 @@
     "chat_message": {
       "hours": {
         "12": 4,
-        "15": 4
+        "15": 4,
+        "19": 5,
+        "20": 7
       },
       "days": {
-        "zondag": 8
+        "zondag": 20
       },
-      "total": 8,
-      "most_common_hour": 12,
-      "confidence": 0.5,
+      "total": 20,
+      "most_common_hour": 20,
+      "confidence": 0.35,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,

@@ -1,9 +1,7 @@
 {
-  "fen": "rnq2b1r/1p2pkpp/p4n2/2Pp4/7P/2PBP3/PP3PP1/RNBbK2R w KQ - 0 10",
+  "fen": "rnq1kb1r/1p2pbpp/p4n2/2PP4/6PP/3BP3/PP3P2/RNB1K2R w KQ - 1 13",
   "moves": [
-    "f1d3",
-    "d8c8",
-    "g5f7",
-    "e8f7"
+    "g2g4",
+    "h5f7"
   ]
 }

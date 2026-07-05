@@ -23,6 +23,20 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "huisdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -135,6 +149,83 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "stuur",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "zadel",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "trap",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "rem",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "ketting",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "versnelling",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "frame",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "spatbord",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "bel",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "licht",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "reflector",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -179,7 +270,7 @@
   "huiskat": {
     "senses": [
       {
-        "sense_id": "huiskat#1",
+        "sense_id": "kat#1",
         "definition": "De kat of huiskat is een van de oudste huisdieren van de mens.",
         "pos": "noun",
         "examples": [
@@ -4854,6 +4945,69 @@
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
+      },
+      {
+        "sense_id": "hart#3",
+        "definition": "Het hart is een symbool dat vaak wordt gebruikt om liefde, genegenheid of emotionele warmte uit te drukken.",
+        "pos": "noun",
+        "examples": [
+          "Ze stuurde hem een bericht met een hartje.",
+          "Het hart op de kaart symboliseert hun liefde."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "liefde",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "hart#4",
+        "definition": "In de context van kaarten of spellen verwijst het hart naar een van de vier kleuren in een standaard kaartspel, vaak aangeduid met een rood hart-symbool.",
+        "pos": "noun",
+        "examples": [
+          "Hij speelde een harten aas in het kaartspel.",
+          "De harten zijn een van de vier kleuren in het spel."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "kaartspel",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "hart#5",
+        "definition": "In de context van muziek kan het hart verwijzen naar het centrale thema of de kern van een compositie.",
+        "pos": "noun",
+        "examples": [
+          "Het hart van de symfonie ligt in de tweede beweging.",
+          "De componist benadrukte het hart van het stuk met een krachtige melodie."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "muziek",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
       }
     ],
     "metadata": {
@@ -5933,10 +6087,10 @@
     "senses": [
       {
         "sense_id": "materietoestand#1",
-        "definition": "Een materietoestand is een van de vormen waarin stof kan voorkomen, zoals vast, vloeibaar of gasvormig, afhankelijk van temperatuur en druk.",
+        "definition": "Een materietoestand is een van de vormen waarin stof kan voorkomen (zoals vast, vloeibaar of gasvormig), bepaald door de beweging en rangschikking van de deeltjes en beïnvloed door temperatuur en druk.",
         "pos": "noun",
         "examples": [
-          "Vloeibaar en vast zijn allebei een materietoestand.",
+          "Vloeibaar, vast en gasvormig zijn allemaal een materietoestand.",
           "Water verandert van materietoestand als het bevriest tot ijs."
         ],
         "relations": [
@@ -5944,6 +6098,20 @@
             "type": "related_to",
             "target": "vloeistof",
             "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "gas",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "druk",
+            "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -6037,6 +6205,920 @@
         "sense_id": "mens#1",
         "old_value": null,
         "new_value": "Een mens is een levend wezen van de soort Homo sapiens, met een ontwikkeld denkvermogen en taal.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "gas": {
+    "senses": [
+      {
+        "sense_id": "gas#1",
+        "definition": "Gas is een materietoestand waarbij deeltjes zich vrij en ver van elkaar bewegen, zonder vaste vorm of vast volume.",
+        "pos": "noun",
+        "examples": [
+          "Waterdamp is een gas.",
+          "Het gas verspreidde zich snel door de kamer."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "materietoestand",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gas"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "gas#1",
+        "old_value": null,
+        "new_value": "Gas is een materietoestand waarbij deeltjes zich vrij en ver van elkaar bewegen, zonder vaste vorm of vast volume.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "druk": {
+    "senses": [
+      {
+        "sense_id": "druk#1",
+        "definition": "Druk is de kracht die per oppervlakte-eenheid op iets wordt uitgeoefend.",
+        "pos": "noun",
+        "examples": [
+          "De luchtdruk daalde voor het onweer.",
+          "Ze verhoogde de druk op de fietsband."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "druk"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "druk#1",
+        "old_value": null,
+        "new_value": "Druk is de kracht die per oppervlakte-eenheid op iets wordt uitgeoefend.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "liefde": {
+    "senses": [
+      {
+        "sense_id": "liefde#1",
+        "definition": "Liefde is een sterk gevoel van genegenheid, warmte en verbondenheid tegenover een ander persoon, dier of zaak.",
+        "pos": "noun",
+        "examples": [
+          "Ze voelde diepe liefde voor haar familie.",
+          "Liefde kan zich op veel verschillende manieren uiten."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gevoel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "liefde"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "liefde#1",
+        "old_value": null,
+        "new_value": "Liefde is een sterk gevoel van genegenheid, warmte en verbondenheid tegenover een ander persoon, dier of zaak.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "kaartspel": {
+    "senses": [
+      {
+        "sense_id": "kaartspel#1",
+        "definition": "Een kaartspel is een spel dat gespeeld wordt met een set speelkaarten, vaak verdeeld in kleuren zoals harten, ruiten, klaveren en schoppen.",
+        "pos": "noun",
+        "examples": [
+          "Ze speelden een kaartspel tijdens de treinreis.",
+          "Het kaartspel bestond uit tweeënvijftig kaarten."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kaartspel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kaartspel#1",
+        "old_value": null,
+        "new_value": "Een kaartspel is een spel dat gespeeld wordt met een set speelkaarten, vaak verdeeld in kleuren zoals harten, ruiten, klaveren en schoppen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "huisdier": {
+    "senses": [
+      {
+        "sense_id": "huisdier#1",
+        "definition": "Een huisdier is een dier dat door mensen wordt gehouden voor gezelschap, plezier of hulp, meestal in of rond het huis.",
+        "pos": "noun",
+        "examples": [
+          "De hond en de kat zijn de meest voorkomende huisdieren.",
+          "Ze kregen een konijn als huisdier."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "dier",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "huisdier"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "huisdier#1",
+        "old_value": null,
+        "new_value": "Een huisdier is een dier dat door mensen wordt gehouden voor gezelschap, plezier of hulp, meestal in of rond het huis.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "stuur": {
+    "senses": [
+      {
+        "sense_id": "stuur#1",
+        "definition": "Het stuur is het onderdeel van een fiets of voertuig waarmee de bestuurder de richting bepaalt.",
+        "pos": "noun",
+        "examples": [
+          "Ze hield het stuur van de fiets stevig vast.",
+          "Het stuur voelde wat wiebelig aan na de reparatie."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "stuur"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "stuur#1",
+        "old_value": null,
+        "new_value": "Het stuur is het onderdeel van een fiets of voertuig waarmee de bestuurder de richting bepaalt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "zadel": {
+    "senses": [
+      {
+        "sense_id": "zadel#1",
+        "definition": "Een zadel is het zitgedeelte van een fiets of paard, waarop de berijder zit.",
+        "pos": "noun",
+        "examples": [
+          "Ze verstelde het zadel van de fiets op de juiste hoogte.",
+          "Het zadel was versleten na jaren gebruik."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zadel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zadel#1",
+        "old_value": null,
+        "new_value": "Een zadel is het zitgedeelte van een fiets of paard, waarop de berijder zit.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "trap": {
+    "senses": [
+      {
+        "sense_id": "trap#1",
+        "definition": "Een trap is het pedaal van een fiets waarop met de voeten wordt getrapt om het wiel aan te drijven.",
+        "pos": "noun",
+        "examples": [
+          "Hij duwde hard op de trap om de heuvel op te komen.",
+          "De trap van de fiets was los gaan zitten."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "trap#2",
+        "definition": "Een trap is een opeenvolging van treden waarmee men van de ene naar de andere verdieping van een gebouw kan lopen.",
+        "pos": "noun",
+        "examples": [
+          "Ze liep de trap op naar de tweede verdieping.",
+          "Pas op voor de laatste trede van de trap."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "huis",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "trap"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "trap#1",
+        "old_value": null,
+        "new_value": "Een trap is het pedaal van een fiets waarop met de voeten wordt getrapt om het wiel aan te drijven.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "rem": {
+    "senses": [
+      {
+        "sense_id": "rem#1",
+        "definition": "Een rem is het onderdeel van een fiets of voertuig waarmee de snelheid wordt verminderd of gestopt.",
+        "pos": "noun",
+        "examples": [
+          "Ze kneep hard in de rem om op tijd te stoppen.",
+          "De rem van de fiets piepte een beetje."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "rem"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "rem#1",
+        "old_value": null,
+        "new_value": "Een rem is het onderdeel van een fiets of voertuig waarmee de snelheid wordt verminderd of gestopt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "ketting": {
+    "senses": [
+      {
+        "sense_id": "ketting#1",
+        "definition": "Een ketting is een reeks aaneengeschakelde metalen schakels, gebruikt om bijvoorbeeld de trap van een fiets met het achterwiel te verbinden.",
+        "pos": "noun",
+        "examples": [
+          "De ketting van de fiets was eraf gesprongen.",
+          "Hij smeerde regelmatig de ketting om roest te voorkomen."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      },
+      {
+        "sense_id": "ketting#2",
+        "definition": "Een ketting is een sieraad bestaande uit een koord of aaneengeschakelde schakels, gedragen om de hals.",
+        "pos": "noun",
+        "examples": [
+          "Ze droeg een gouden ketting met een hangertje.",
+          "Hij kreeg de ketting cadeau van zijn oma."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ketting"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "ketting#1",
+        "old_value": null,
+        "new_value": "Een ketting is een reeks aaneengeschakelde metalen schakels, gebruikt om bijvoorbeeld de trap van een fiets met het achterwiel te verbinden.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "versnelling": {
+    "senses": [
+      {
+        "sense_id": "versnelling#1",
+        "definition": "Een versnelling is een instelling op een fiets of voertuig waarmee de verhouding tussen trapkracht en snelheid wordt aangepast.",
+        "pos": "noun",
+        "examples": [
+          "Ze schakelde naar een lagere versnelling voor de heuvel.",
+          "De fiets had zeven versnellingen."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "versnelling"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "versnelling#1",
+        "old_value": null,
+        "new_value": "Een versnelling is een instelling op een fiets of voertuig waarmee de verhouding tussen trapkracht en snelheid wordt aangepast.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "bel": {
+    "senses": [
+      {
+        "sense_id": "bel#1",
+        "definition": "Een bel is een onderdeel op een fiets dat een geluidssignaal geeft, meestal bediend met de duim.",
+        "pos": "noun",
+        "examples": [
+          "Ze rinkelde met de bel om de voetganger te waarschuwen.",
+          "De bel van zijn fiets was verroest."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bel#1",
+        "old_value": null,
+        "new_value": "Een bel is een onderdeel op een fiets dat een geluidssignaal geeft, meestal bediend met de duim.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "frame": {
+    "senses": [
+      {
+        "sense_id": "frame#1",
+        "definition": "Het frame is het dragende geraamte van een fiets, waaraan alle andere onderdelen bevestigd zijn.",
+        "pos": "noun",
+        "examples": [
+          "Het frame van de fiets was gemaakt van aluminium.",
+          "Er zat een deuk in het frame na de val."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "frame"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "frame#1",
+        "old_value": null,
+        "new_value": "Het frame is het dragende geraamte van een fiets, waaraan alle andere onderdelen bevestigd zijn.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "licht": {
+    "senses": [
+      {
+        "sense_id": "licht#1",
+        "definition": "Licht is elektromagnetische straling die door het oog kan worden waargenomen en dingen zichtbaar maakt.",
+        "pos": "noun",
+        "examples": [
+          "Het licht van de zon scheen door het raam.",
+          "Ze zette het licht van haar fiets aan voor het donker werd."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "licht"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "licht#1",
+        "old_value": null,
+        "new_value": "Licht is elektromagnetische straling die door het oog kan worden waargenomen en dingen zichtbaar maakt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "reflector": {
+    "senses": [
+      {
+        "sense_id": "reflector#1",
+        "definition": "Een reflector is een onderdeel dat licht terugkaatst, gebruikt op fietsen en voertuigen om de zichtbaarheid in het donker te vergroten.",
+        "pos": "noun",
+        "examples": [
+          "De reflector van de fiets ving het licht van de koplampen op.",
+          "Ze verving de kapotte reflector achterop haar fiets."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "reflector"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "reflector#1",
+        "old_value": null,
+        "new_value": "Een reflector is een onderdeel dat licht terugkaatst, gebruikt op fietsen en voertuigen om de zichtbaarheid in het donker te vergroten.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "spatbord": {
+    "senses": [
+      {
+        "sense_id": "spatbord#1",
+        "definition": "Een spatbord is een gebogen plaat boven het wiel van een fiets die voorkomt dat water en modder opspatten.",
+        "pos": "noun",
+        "examples": [
+          "Zonder spatbord kwam ze doornat en modderig thuis.",
+          "Het spatbord was losgeraakt van het frame."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "spatbord"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "spatbord#1",
+        "old_value": null,
+        "new_value": "Een spatbord is een gebogen plaat boven het wiel van een fiets die voorkomt dat water en modder opspatten.",
         "timestamp": "2026-07-05T00:00:00.000000"
       }
     ]
