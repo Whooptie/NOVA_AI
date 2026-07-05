@@ -42,6 +42,7 @@ class MemoryModule:
         self.ignore_types = {
             "semantic_update",
             "pattern_update",
+            "pattern:detected",   # Layer 2 (pattern_matcher.py) — voorkomt lus, zelfde reden als hieronder
             "weather_response",
             "time_engine_response",
             "time_response",

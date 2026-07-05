@@ -63,7 +63,8 @@ Nova_AI/
 │   ├── knowledge/
 │   │   └── wikipedia_teacher.py
 │   └── learning/
-│       └── word_associations_learner.py
+│       ├── word_associations_learner.py
+│       └── pattern_matcher.py
 ├── identity/
 │   ├── blueprint/
 │   │   ├── loader.py
@@ -90,7 +91,8 @@ Nova_AI/
 │   ├── interactions.jsonl
 │   ├── interactions.db
 │   ├── concepts.json
-│   └── word_associations.json
+│   ├── word_associations.json
+│   └── patterns_layer2.json
 ├── logs/
 │   ├── nova.log
 │   └── concepts.jsonl
@@ -129,6 +131,7 @@ Nova_AI/
 | wikipedia_teacher.py | ✅ Klaar | Nederlandse Wikipedia API, disambiguatie-afhandeling, is_a relatie-extractie, automatische fallback vanuit chat.py. Definitie-limiet opgetrokken naar 400 tekens, kapt nooit meer af midden in een woord. Automatische voorbeeldzin-extractie uit Wikipedia geprobeerd maar werkt nog niet betrouwbaar — vervangen door handmatig `example`-commando (zie semantic.py). |
 | chess_engine.py | ✅ Klaar | Stockfish (UCI), persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten. Bordweergave met schaaksymbolen (wit/magenta). Instelbare moeilijkheidsgraad (0-20) + denktijd, beide persistent (chess_settings.json). Win/verlies statistieken (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
 | word_associations_learner.py | ✅ Klaar (Layer 1, alle 5 fases) | PMI-gebaseerd associatienetwerk (data/word_associations.json). Leert van "chat_message"/"chat_response"-events (niet het gecombineerde formaat uit de originele roadmap). Publiceert `word_association:updated`, maar nog niets in Nova gebruikt dit actief — koppeling met Layer 3/4 is een volgende stap. |
+| pattern_matcher.py | ✅ Klaar (Layer 2, alle 5 fases) | Detecteert timing-patronen (uur/dag) voor chat_message/chat_response. Anomaly-drempels en opslagfrequentie staan nog op tijdelijke testwaarden (zie Layer 2-sectie). |
 | microlearning.py | ❌ Leeg | Bestand bestaat maar is volledig leeg — nog te bouwen |
 
 ### IDENTITY
@@ -207,7 +210,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | ---- | ------ | ------ | ------- |
 | Layer 0 | memory.py (v2.0) | ✅ KLAAR (alle 4 fases) | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
 | Layer 1 | word_associations_learner.py | ✅ KLAAR (alle 5 fases) | memory_layer1_roadmap.md |
-| Layer 2 | pattern_matcher.py | ❌ Nog te bouwen | memory_layer2_roadmap.md |
+| Layer 2 | pattern_matcher.py | ✅ KLAAR (alle 5 fases) | memory_layer2_roadmap.md |
 | Layer 3 | semantic.py | ✅ KLAAR | semantic_roadmap.md |
 | Layer 4 | response_engine.py | ❌ Nog te bouwen | memory_layer4_roadmap.md |
 | Layer 5 | context_manager.py | ❌ Nog te bouwen | memory_layer5_roadmap.md |
@@ -243,6 +246,35 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 **Huidige status: passief lerend, nog niet actief gebruikt.**
 
 De module bouwt het associatienetwerk op in `data/word_associations.json` en publiceert `word_association:updated`-events, maar niets in Nova roept nog `get_associations()`/`find_related()`/`get_word_sentiment()` aan of luistert naar die events. De koppeling met Layer 3 (semantic.py) en/of Layer 4 (response_engine.py) is de logische vervolgstap om dit kennisnetwerk ook echt te laten meespelen in Nova's antwoorden.
+
+### Layer 2 — Pattern Matcher (afgerond 5 juli 2026)
+
+Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
+
+| Fase | Omschrijving | Status |
+| ---- | ------------ | ------ |
+| 1 | Event grouping (per uur, per dag, per event_type) | ✅ |
+| 2 | Pattern detection (most_common_hour, confidence, day_frequency) | ✅ |
+| 3 | Anomaly detection (ongewone timing + gemiste events via achtergrondtimer) | ✅ |
+| 4 | Query & predictie (is_pattern_active, predict_next_occurrence, get_anomalies) | ✅ |
+| 5 | Integratie (pattern:detected event, opslaan + herladen bij opstarten) | ✅ |
+
+**Belangrijke afwijkingen t.o.v. de originele roadmap (memory_layer2_roadmap.md):**
+
+- De roadmap-voorbeelden (bv. `"reason": "sick"` bij anomalieën) suggereerden dat Nova zelf zou "weten" waarom iets afwijkt. Dat is bewust NIET gebouwd — Nova kan enkel zeggen DAT iets afwijkt (ongewone timing / gemist event), nooit waarom, want dat zou een verzonnen verklaring zijn.
+- `detect_from()` filtert bewust enkel op `event_type in ("chat_message", "chat_response")` via een `RELEVANTE_EVENT_TYPES`-set (klasse-attribuut) — zonder deze filter werden ALLE interne pipeline-events (`pipeline_response`, `expression_inject`, `module_loaded`, ...) ook meegeteld, wat 4-5 aanroepen per gebruikersbericht gaf i.p.v. 1-2, en initieel zelfs een `RecursionError` veroorzaakte (zie hieronder).
+- **Belangrijke bug, gefixt:** de eerste versie luisterde naar het letterlijke event-type `"memory:interaction_added"` als functie-argument, maar dat argument is ALTIJD die ene string (want dat is wat `memory.py` zelf publiceert) — het ECHTE, originele event_type (bv. `"chat_message"`) zit genest in `interaction["event_type"]`. Zonder deze fix, gecombineerd met het ontbreken van de `RELEVANTE_EVENT_TYPES`-filter, ontstond een oneindige recursielus tussen `memory.py` (die naar `"*"` luistert) en de events die `pattern_matcher.py` zelf publiceerde, met exponentieel groeiende geneste payloads tot een `RecursionError`.
+- `"pattern:detected"` moest expliciet toegevoegd worden aan `memory.py`'s `ignore_types`-set (naast het al bestaande `"pattern_update"`) om dezelfde recursie te voorkomen bij het Fase 5-event.
+- Anomaly-detectie (Fase 3) gebruikt vaste, door Kevin/Claude gekozen drempels (`MIN_OBSERVATIES_VOOR_ANOMALIE`, `MIN_CONFIDENCE_VOOR_ANOMALIE`) — geen geleerde/dynamische drempels. Tijdens ontwikkeling tijdelijk verlaagd (3 i.p.v. 10) om te kunnen testen; **nog terug te zetten naar een realistischere waarde (10+) voor productiegebruik.**
+- "Missing events"-detectie (Fase 3, Deel B) draait via een `threading.Timer`-achtergrondlus (zelfde patroon als `memory.py`'s `start_maintenance()`), en is een BENADERING: Layer 2 houdt enkel tellers per uur/dag bij, geen exacte tijdlijn per datum, dus "was dit exacte uur al geteld" wordt geschat, niet exact nagetrokken.
+- Opslag gebeurt momenteel elke 2 observaties (`total % 2 == 0`) i.p.v. tijdgebaseerd zoals `memory.py`'s write-buffer — tijdelijk verlaagd om te kunnen testen, **nog te herzien voor een definitieve, efficiëntere strategie.**
+- `load_from_disk()` herstelt bij opstarten expliciet de `defaultdict(int)`-structuur van `hours`/`days` (die `json.load()` anders als gewone dict teruggeeft) en zet JSON-string-sleutels van uren terug om naar integers.
+
+**Bekende, nog openstaande discussie (geen bug, architecturale keuze):**
+
+- Layer 2 telt enkel *wanneer* een event_type voorkomt (bv. `chat_message`), niet *waarover* het gaat — ze "leest" geen tekstinhoud. Een concreet voorbeeld: "ik ga koffie drinken" wordt enkel geteld als "er was een chat_message om 12u", niet als "Kevin dronk koffie om 12u". Om specifieke onderwerpen/activiteiten (koffie, slapen, ...) apart te laten bijhouden, is een tussenstap nodig die ruwe tekst omzet naar herkenbare, specifieke events — dit hoort NIET bij Layer 2 zelf (die blijft bewust simpel: enkel tellen), maar bij een latere/aparte uitbreiding, mogelijk een koppeling tussen `intent_router.py` (die al intents herkent) en Layer 2, of een aparte topic-classificatie. Nog te ontwerpen, bewust NIET meegenomen in Layer 2's 5 fases.
+
+**Tijdelijk testcommando in `main.py`:** `patronen <event_type>` (of `patronen` zonder argument voor algemene stats) toont ruwe patroondata, `is_pattern_active()`, `predict_next_occurrence()` en recente anomalieën. Mag verwijderd/vervangen worden zodra er een definitieve manier is om dit op te vragen (bv. via `help`).
 
 ## 🔄 Semantic — Status & Roadmap
 
@@ -349,11 +381,12 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 1. 🟡 **reboot_manager.py** — /reboot commando (10 minuten werk)
 2. 🟡 **Personality pipeline** — uitbreiden naar alle intents
-3. 🟢 **Layer 2** — pattern_matcher.py (Layer 1 is nu volledig klaar en getest)
+3. 🟢 **Onderwerp/activiteit-herkenning voor Layer 2** — ontwerpvraag: hoe koppel je specifieke onderwerpen (bv. "koffie", "slapen") aan Layer 2's patroonherkenning? Layer 2 telt nu enkel event_types (chat_message/chat_response), niet de inhoud ervan. Mogelijke aanpak: `intent_router.py` (die al intents herkent) een generiek event laten publiceren per herkende intent, zodat Layer 2 dat kan meetellen — nog te ontwerpen, geen trefwoorden-lappendeken per onderwerp.
 4. 🟢 **microlearning.py** — bouwen
 5. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md)
 6. 🟢 **memory.py Fase 5** — optimalisatie/polish, enkel nodig bij grote databank of trage queries (geen haast)
 7. 🟢 **Layer 1 ↔ Layer 3/4 koppeling** — get_associations()/find_related() daadwerkelijk laten meespelen in Nova's antwoorden (momenteel bouwt Layer 1 wel het netwerk op, maar niets gebruikt het nog actief)
+8. 🟢 **Layer 2 opruimwerk** — anomaly-drempels (MIN_OBSERVATIES_VOOR_ANOMALIE, MIN_CONFIDENCE_VOOR_ANOMALIE) en opslagfrequentie (nu elke 2 observaties) staan nog op tijdelijke, verlaagde testwaarden — terugzetten naar realistischere waarden voor normaal gebruik.
 
 ---
 

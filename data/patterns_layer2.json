@@ -1,0 +1,45 @@
+{
+  "patterns": {
+    "chat_response": {
+      "hours": {
+        "12": 4
+      },
+      "days": {
+        "zondag": 4
+      },
+      "total": 4,
+      "most_common_hour": 12,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 0.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 1.0
+      }
+    },
+    "chat_message": {
+      "hours": {
+        "12": 4
+      },
+      "days": {
+        "zondag": 4
+      },
+      "total": 4,
+      "most_common_hour": 12,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 0.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 1.0
+      }
+    }
+  },
+  "anomalies": []
+}
