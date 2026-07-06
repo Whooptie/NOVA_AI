@@ -121,7 +121,7 @@ python main.py
 
 ## 👤 Over dit project
 
-Nova wordt gebouwd door **Kevin** — een zelfgeleerde developer uit Brugge, België.
+Nova wordt gebouwd door **Kevin** — een zelfgeleerde developer.
 Geen voorkennis. Geen achtergrond in programmeren. Gewoon nieuwsgierigheid en doorzettingsvermogen.
 
 Dit project begon als een experiment en groeit uit tot een volwaardig lokaal AI-systeem met een geplande roadmap van 498+ modules.
