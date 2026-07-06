@@ -270,7 +270,7 @@
   "huiskat": {
     "senses": [
       {
-        "sense_id": "huiskat#1",
+        "sense_id": "kat#1",
         "definition": "De kat of huiskat is een van de oudste huisdieren van de mens.",
         "pos": "noun",
         "examples": [
@@ -281,48 +281,6 @@
           {
             "type": "is_a",
             "target": "kat",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "huisdier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "dier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "zoogdier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "levend wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "biologisch wezen",
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -384,13 +342,6 @@
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-27T19:05:44.415112"
-          },
-          {
-            "type": "is_a",
-            "target": "machine",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-27T19:05:44.415112"
           }
         ],
         "source": "wikipedia",
@@ -446,20 +397,6 @@
           {
             "type": "is_a",
             "target": "hemellichaam",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-27T19:05:57.120363"
-          },
-          {
-            "type": "is_a",
-            "target": "object in de ruimte",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-27T19:05:57.120363"
-          },
-          {
-            "type": "is_a",
-            "target": "astronomisch object",
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-27T19:05:57.120363"
@@ -521,41 +458,6 @@
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-27T19:18:13.053278"
-          },
-          {
-            "type": "is_a",
-            "target": "sporttoestel",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-27T19:18:13.053278"
-          },
-          {
-            "type": "is_a",
-            "target": "recreatieapparaat",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-27T19:18:13.053278"
-          },
-          {
-            "type": "is_a",
-            "target": "springtoestel",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-27T19:18:13.053278"
-          },
-          {
-            "type": "is_a",
-            "target": "attractie",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-27T19:18:13.053278"
-          },
-          {
-            "type": "is_a",
-            "target": "speeltoestel",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-27T19:18:13.053278"
           }
         ],
         "source": "wikipedia",
@@ -614,20 +516,6 @@
             "confidence": 1.0,
             "source": "user",
             "created_at": "2026-06-29T17:37:52.228284"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "biologisch wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -700,34 +588,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "plant",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "mens",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "biologisch wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -782,13 +642,6 @@
           {
             "type": "is_a",
             "target": "zitmeubel",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T17:42:58.029225"
-          },
-          {
-            "type": "is_a",
-            "target": "meubel",
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-29T17:42:58.029225"
@@ -850,41 +703,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "zeedier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "dier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "levend wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "biologisch wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -942,27 +760,6 @@
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-29T17:55:24.949953"
-          },
-          {
-            "type": "is_a",
-            "target": "fruit",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T17:55:24.949953"
-          },
-          {
-            "type": "is_a",
-            "target": "voedingsmiddel",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T17:55:24.949953"
-          },
-          {
-            "type": "is_a",
-            "target": "plant",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T17:55:24.949953"
           }
         ],
         "source": "wikipedia",
@@ -1017,20 +814,6 @@
           {
             "type": "is_a",
             "target": "vrucht",
-            "confidence": 0.9,
-            "source": "auto_extract",
-            "created_at": "2026-06-29T18:01:54.304096"
-          },
-          {
-            "type": "is_a",
-            "target": "voedingsmiddel",
-            "confidence": 0.9,
-            "source": "auto_extract",
-            "created_at": "2026-06-29T18:01:54.304096"
-          },
-          {
-            "type": "is_a",
-            "target": "plant",
             "confidence": 0.9,
             "source": "auto_extract",
             "created_at": "2026-06-29T18:01:54.304096"
@@ -1095,20 +878,6 @@
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-29T18:20:52.412906"
-          },
-          {
-            "type": "is_a",
-            "target": "politiek systeem",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:20:52.412906"
-          },
-          {
-            "type": "is_a",
-            "target": "regeringsvorm",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:20:52.412906"
           }
         ],
         "source": "wikipedia",
@@ -1163,34 +932,6 @@
           {
             "type": "is_a",
             "target": "luchtvaartuig",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:21:37.185926"
-          },
-          {
-            "type": "is_a",
-            "target": "voertuig",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:21:37.185926"
-          },
-          {
-            "type": "is_a",
-            "target": "transportmiddel",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:21:37.185926"
-          },
-          {
-            "type": "is_a",
-            "target": "machine",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:21:37.185926"
-          },
-          {
-            "type": "is_a",
-            "target": "technologisch apparaat",
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-06-29T18:21:37.185926"
@@ -1251,27 +992,6 @@
             "confidence": 0.9,
             "source": "auto_extract",
             "created_at": "2026-06-29T18:23:14.598637"
-          },
-          {
-            "type": "is_a",
-            "target": "transportmiddel",
-            "confidence": 0.9,
-            "source": "auto_extract",
-            "created_at": "2026-06-29T18:23:14.598637"
-          },
-          {
-            "type": "is_a",
-            "target": "machine",
-            "confidence": 0.9,
-            "source": "auto_extract",
-            "created_at": "2026-06-29T18:23:14.598637"
-          },
-          {
-            "type": "is_a",
-            "target": "technologisch apparaat",
-            "confidence": 0.9,
-            "source": "auto_extract",
-            "created_at": "2026-06-29T18:23:14.598637"
           }
         ],
         "source": "user",
@@ -1329,20 +1049,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "politiek systeem",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:24:45.400140"
-          },
-          {
-            "type": "is_a",
-            "target": "regeringsvorm",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-06-29T18:24:45.400140"
           }
         ],
         "source": "wikipedia",
@@ -1397,20 +1103,6 @@
           {
             "type": "is_a",
             "target": "hemellichaam",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object in de ruimte",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "astronomisch object",
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -1471,20 +1163,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "wetenschappelijke theorie",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "natuurkundige theorie",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -1542,20 +1220,6 @@
             "confidence": 0.9,
             "source": "auto_extract",
             "created_at": "2026-07-02T11:50:21.407071"
-          },
-          {
-            "type": "is_a",
-            "target": "software",
-            "confidence": 0.9,
-            "source": "auto_extract",
-            "created_at": "2026-07-02T11:50:21.407071"
-          },
-          {
-            "type": "is_a",
-            "target": "technologisch hulpmiddel",
-            "confidence": 0.9,
-            "source": "auto_extract",
-            "created_at": "2026-07-02T11:50:21.407071"
           }
         ],
         "source": "auto_extract",
@@ -1567,53 +1231,10 @@
         "definition": "Een python is een grote, niet-giftige slang die zijn prooi verstikt door zich eromheen te wikkelen.",
         "pos": "noun",
         "examples": [
-          "De python verstopte  zich tussen de bladeren.",
+          "De python verstopte zich tussen de bladeren.",
           "In de dierentuin lag een python opgerold in zijn kooi."
         ],
-        "relations": [
-          {
-            "type": "is_a",
-            "target": "slang",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "reptiel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "dier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "levend wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "biologisch wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          }
-        ],
+        "relations": [],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -1666,34 +1287,6 @@
           {
             "type": "is_a",
             "target": "beer",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T17:47:35.763145"
-          },
-          {
-            "type": "is_a",
-            "target": "zoogdier",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T17:47:35.763145"
-          },
-          {
-            "type": "is_a",
-            "target": "levend wezen",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T17:47:35.763145"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T17:47:35.763145"
-          },
-          {
-            "type": "is_a",
-            "target": "biologisch wezen",
             "confidence": 0.8,
             "source": "wikipedia",
             "created_at": "2026-07-03T17:47:35.763145"
@@ -1754,41 +1347,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "beer",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T11:48:42.945771"
-          },
-          {
-            "type": "is_a",
-            "target": "zoogdier",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T11:48:42.945771"
-          },
-          {
-            "type": "is_a",
-            "target": "levend wezen",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T11:48:42.945771"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T11:48:42.945771"
-          },
-          {
-            "type": "is_a",
-            "target": "biologisch wezen",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "created_at": "2026-07-03T11:48:42.945771"
           }
         ],
         "source": "wikipedia",
@@ -1904,20 +1462,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "meubel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -1971,13 +1515,6 @@
           {
             "type": "is_a",
             "target": "bouwelement",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object",
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -2037,20 +1574,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "doorzichtige structuur",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -2104,41 +1627,6 @@
           {
             "type": "is_a",
             "target": "zitmeubel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "meubel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "meubelstuk",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object om op te zitten",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "zitobject",
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -2198,83 +1686,6 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "geschreven werk",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "publicatie",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "drukwerk",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "medium",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "communicatiemiddel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "informatiebron",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "kennisdrager",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "educatief hulpmiddel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "literair werk",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "kunstwerk",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -2328,20 +1739,6 @@
           {
             "type": "is_a",
             "target": "vloeistof",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "chemische verbinding",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "natuurlijk element",
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -2457,69 +1854,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "kunst",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "expressievorm",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "creatieve uiting",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "geluidskunst",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "performing art",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "entertainment",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "culturele uiting",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "communicatiemiddel",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "taal",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -2590,41 +1924,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "has_part",
-            "target": "tafel",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "has_part",
-            "target": "stoel",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "has_part",
-            "target": "water",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "has_part",
-            "target": "boom",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "has_part",
-            "target": "muziek",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -2678,34 +1977,6 @@
           {
             "type": "is_a",
             "target": "persoon",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "mens",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "individu",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "sociale relatie",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "vertrouwenspersoon",
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -2765,27 +2036,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "voedingsmiddel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "dierlijk product",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "zuivelproduct",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -2839,48 +2089,6 @@
           {
             "type": "is_a",
             "target": "voedingsmiddel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "graanproduct",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "bakkersproduct",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "basisvoedsel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "voedingsbron",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "koolhydraatbron",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "energiebron",
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -2938,83 +2146,6 @@
             "type": "is_a",
             "target": "eigenschap",
             "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "licht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zicht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kunst",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "design",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "mode",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "decoratie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "emotie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "psychologie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "natuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fotografie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "verf",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -3080,90 +2211,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsfrequentie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidssterkte",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsgolven",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsisolatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsvervuiling",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsopname",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsbewerking",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsweergave",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsinstallatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsniveau",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidskwaliteit",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluidsbron",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -3213,71 +2260,7 @@
           "De tijd vloog voorbij tijdens het gesprek.",
           "Hij keek op de klok om te zien hoe laat het was."
         ],
-        "relations": [
-          {
-            "type": "is_a",
-            "target": "concept",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "klok",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kalender",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "uurwerk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "tijdmeting",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "tijdzone",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "tijdperk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "tijdreizen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "tijdmanagement",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          }
-        ],
+        "relations": [],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -3330,55 +2313,6 @@
             "type": "has_part",
             "target": "wiel",
             "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "has_part",
-            "target": "motor",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "has_part",
-            "target": "bestuurder",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "transportmiddel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "vervoermiddel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "machine",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "constructie",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object",
-            "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -3434,55 +2368,6 @@
           {
             "type": "is_a",
             "target": "dier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "warmbloedig dier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "zoogdierklasse",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "levend wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "levensvorm",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "dierenrijk",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "zoogdierenfamilie",
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -3549,83 +2434,6 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "melk",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "olie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "alcohol",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "sap",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "siroop",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vloeibaarheid",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vloeistofdynamica",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vloeistofdruk",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vloeistofstroom",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vloeistofmengsel",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vloeistofreservoir",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -3689,41 +2497,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "constructie",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "object",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "architectuur",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "woning",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "kantoor",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -3777,41 +2550,6 @@
           {
             "type": "is_a",
             "target": "levend wezen",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "organisme",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "levensvorm",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "flora",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "fotosynthetisch organisme",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "groen organisme",
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -3871,62 +2609,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "huisdier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hond",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "muizenjacht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kattenras",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kattenvoer",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kattenbak",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kattenkwaad",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kattenliefhebber",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -3980,97 +2662,6 @@
           {
             "type": "related_to",
             "target": "computer",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wasmachine",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "toestel",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "machine",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "instrument",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "apparatuur",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "technologie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "elektronica",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "mechanica",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "automatisering",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "robotica",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "apparaatbeheer",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "apparaatconfiguratie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "apparaatonderhoud",
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -4137,62 +2728,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "maan",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ster",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonnestelsel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "melkwegstelsel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "universum",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "astronomie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ruimtevaart",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kosmos",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -4249,76 +2784,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "roofdier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hond",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "roedel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bos",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "jacht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wild",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "natuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "dierenrijk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ecologie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "conservatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -4372,62 +2837,6 @@
           {
             "type": "part_of",
             "target": "fiets",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "auto",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "motorfiets",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "vrachtwagen",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "trein",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "fietsband",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "autoband",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "motorband",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "treinwiel",
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -4487,41 +2896,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "is_a",
-            "target": "ongewerveld dier",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "slak",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "octopus",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schelp",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "weekdierenrijk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -4578,76 +2952,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "plant",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zaad",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bloem",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruitboom",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruitsoort",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruitmand",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruitpers",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruitvlieg",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruitige smaak",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruitige geur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -4701,69 +3005,6 @@
           {
             "type": "related_to",
             "target": "democratie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "politiek",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "organisatie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gemeenschap",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "leiding",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "organisatiebeheer",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bestuursstructuur",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bestuursorgaan",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bestuursfunctie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bestuursbesluit",
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -4823,83 +3064,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "grizzlybeer",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "honingbeer",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bruine beer",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ijsbeer",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "beerachtigen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wilde dieren",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "natuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "dierenrijk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ecologie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "conservatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wildlife",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -4954,20 +3118,6 @@
             "type": "is_a",
             "target": "beer",
             "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "grizzlybeer",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ijsbeer",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -5026,76 +3176,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "constructie",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "architectuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bouwmaterialen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "constructietechniek",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bouwproces",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bouwkundige",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bouwtekening",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bouwbedrijf",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bouwplaats",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bouwvakker",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -5149,41 +3229,6 @@
           {
             "type": "related_to",
             "target": "kleur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "karakter",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kenmerk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "eigenschappenlijst",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "eigenschappenonderzoek",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "eigenschappenanalyse",
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -5243,27 +3288,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "neuraal netwerk",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "deep learning",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kunstmatige intelligentie toepassingen",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -5320,83 +3344,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schilderkunst",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "literatuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "beeldhouwkunst",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "theater",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "dans",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "film",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fotografie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "architectuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "design",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kunstgeschiedenis",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kunsttheorie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -5450,62 +3397,6 @@
           {
             "type": "related_to",
             "target": "huis",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kamer",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "interieur",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "inrichting",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meubels",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meubelmaker",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meubelontwerp",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meubelindustrie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meubelrestauratie",
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -5572,48 +3463,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "identiteit",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gedachten",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gevoelens",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "persoonlijkheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "sociale interactie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "maatschappij",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -5667,41 +3516,6 @@
           {
             "type": "is_a",
             "target": "taal",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "softwareontwikkeling",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "computerprogrammering",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "algoritme",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "compiler",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "interpreter",
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -5761,34 +3575,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wetenschap",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hypothese",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "experiment",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "observatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -5845,62 +3631,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "snaar",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trillingsfrequentie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trillingsamplitude",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trillingsenergie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trillingsdemping",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trillingsbron",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trillingssensor",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trillingsanalyse",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -5955,76 +3685,6 @@
             "type": "part_of",
             "target": "trampoline",
             "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "papier",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "stof",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "part_of",
-            "target": "rubber",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "materiaal",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oppervlak",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "textiel",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "papierindustrie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "stofindustrie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "rubberindustrie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trampoline",
-            "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -6104,97 +3764,6 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruit",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "groente",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vlees",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vis",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zuivel",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "drank",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "snack",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "maaltijd",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "voeding",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gezonde voeding",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "voedingswaarde",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "voedingssupplement",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "voedingsindustrie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -6251,69 +3820,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "stoel",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zitbank",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fauteuil",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bank",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meubelontwerp",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meubelmaker",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "interieurontwerp",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "woonkamermeubilair",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zitcomfort",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -6367,55 +3873,6 @@
           {
             "type": "related_to",
             "target": "symbolische AI",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "computerprogrammering",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "softwareontwikkeling",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "data-analyse",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "machine learning",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kunstmatige intelligentie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "optimalisatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "complexiteitstheorie",
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -6475,55 +3932,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "machine learning",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "logica",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kennisrepresentatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "expertensysteem",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "symbolische redenering",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "regelgebaseerde AI",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kennisgebaseerde systemen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -6578,69 +3986,6 @@
             "type": "related_to",
             "target": "machine learning",
             "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kunstmatige intelligentie",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "deep learning",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "knopen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lagen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "patroonherkenning",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "data-analyse",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "trainen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "voorspelling",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "algoritme",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -6699,55 +4044,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "pub/sub",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "event-driven architecture",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "asynchrone communicatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "event-driven programming",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "event queue",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "event handler",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "event listener",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -6802,55 +4098,6 @@
             "type": "related_to",
             "target": "EventBus",
             "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "module_loader",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "softwarecomponent",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "interface",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "softwarearchitectuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "componentgebaseerde ontwikkeling",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "softwareontwikkeling",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "softwaremodule",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -6909,69 +4156,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "warmte",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "passie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gevaar",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "liefde",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bloed",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "stoplicht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kleurenspectrum",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kleurentheorie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -7026,97 +4210,6 @@
             "type": "is_a",
             "target": "kleur",
             "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lucht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zee",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "koelte",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kalmte",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hemel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "water",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kleurenspectrum",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kleurentheorie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "blauwdruk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "blauw oog",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "blauw bloed",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "blauwalg",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "blauwdrukken",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -7175,34 +4268,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vreugde",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "tevredenheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "geluk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "positief gevoel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -7257,69 +4322,6 @@
             "type": "is_a",
             "target": "gevoel",
             "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "woede",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ergernis",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "frustratie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oneerlijkheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "agressie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "boosheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "irritatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "woedend",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kwaad",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -7378,69 +4380,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "droefheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "pijn",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "verlies",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "teleurstelling",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "verdriet",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "rouw",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "triestheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "depressie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "melancholie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -7495,62 +4434,6 @@
             "type": "related_to",
             "target": "persoon",
             "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "emotie",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "blijdschap",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "verdriet",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "woede",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "emotionele toestand",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gebeurtenis",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gedachte",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gevoelens",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -7616,48 +4499,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "neerslag",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "condensatie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "regenbui",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "regenboog",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "regenjas",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "regenwater",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -7714,83 +4555,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "licht",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "warmte",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "aarde",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonnestelsel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonlicht",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonne-energie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonsopgang",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonsondergang",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonnebrand",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonnepanelen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zonne-energiecentrale",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -7845,90 +4609,6 @@
             "type": "related_to",
             "target": "wolk",
             "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "regen",
-            "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "storm",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "luchtbeweging",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "luchtdrukverschil",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bries",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "windkracht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "windrichting",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "windenergie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "windmolen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "windkrachtmeter",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "windstil",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "windvlaag",
-            "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -7994,97 +4674,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lucht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "condensatie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "neerslag",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "onweer",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bewolking",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wolkensoort",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wolkformatie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wolkendek",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wolkloze hemel",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wolkloze dag",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wolkloze nacht",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wolkloze ochtend",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wolkloze avond",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -8139,83 +4728,6 @@
             "type": "part_of",
             "target": "lichaam",
             "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hersenen",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ogen",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oren",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "neus",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "mond",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gezicht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schedel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hals",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hoofdhaar",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hoofddeksel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hoofdtelefoon",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -8274,76 +4786,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "vingers",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handpalm",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handrug",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handgewricht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handbeweging",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handdruk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handafdruk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handtas",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handschoen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "handwerk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -8400,104 +4842,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "zicht",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "licht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogkleur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ooglid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogbol",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogarts",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogmeting",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogoperatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogdruppel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogcontact",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogbeweging",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogtest",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogbescherming",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "oogheelkunde",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -8517,55 +4861,6 @@
             "type": "related_to",
             "target": "wind",
             "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "storm",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "orkaan",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "cycloon",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "stormcentrum",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "stormwolk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "stormwind",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "stormregen",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -8624,69 +4919,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bloedcirculatie",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "slagader",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ader",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hartslag",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hartaanval",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hartklep",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hartspier",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hartoperatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harttransplantatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -8706,34 +4938,6 @@
             "type": "related_to",
             "target": "EventBus",
             "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "architectuur",
-            "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "centrum",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "belangrijkste deel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "wezenlijk deel",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -8757,41 +4961,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "genegenheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "emotie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "symbool",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hartje",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "liefdessymbool",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -8800,11 +4969,11 @@
       },
       {
         "sense_id": "hart#4",
-        "definition": "In de context van kaarten of spellen verwijst het hart naar een van de vier kleuren in een standaard kaartspel, vaak aangeduid met een rood hart-symbool.",
+        "definition": "Harten is een van de vier kleuren in een standaard kaartspel, weergegeven met een rood hartsymbool.",
         "pos": "noun",
         "examples": [
-          "Hij speelde een harten aas in het kaartspel.",
-          "De harten zijn een van de vier kleuren in het spel."
+          "Ze had de harten aas in haar hand.",
+          "Bij dit spel moet je harten volgen als het gespeeld wordt."
         ],
         "relations": [
           {
@@ -8816,99 +4985,8 @@
           },
           {
             "type": "related_to",
-            "target": "kleur",
-            "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten aas",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten koning",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten vrouw",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten boer",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten tien",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten negen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten acht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten zeven",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten zes",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten vijf",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten vier",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten drie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harten twee",
-            "confidence": 0.7,
+            "target": "speelkaart",
+            "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -8930,41 +5008,6 @@
             "type": "related_to",
             "target": "muziek",
             "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "compositie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "thema",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kern",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "melodie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "symfonie",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -9023,55 +5066,6 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "knie",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "voet",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "heup",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "dijbeen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "scheenbeen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kuitbeen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "enkel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -9088,44 +5082,9 @@
         ],
         "relations": [
           {
-            "type": "related_to",
-            "target": "skelet",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
+            "type": "is_a",
             "target": "bot",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "beenderen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kalk",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "botstructuur",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "botweefsel",
-            "confidence": 0.7,
+            "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -9184,90 +5143,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "dier",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "orgaan",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bot",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "spier",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "huid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gezondheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lichaamsdelen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lichaamsfuncties",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lichaamsbeweging",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lichaamsverzorging",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lichaamsgewicht",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lichaamsbouw",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -9322,55 +5197,6 @@
             "type": "part_of",
             "target": "schaak",
             "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "spel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bordspel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakstukken",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakspel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakstrategie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakopening",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakpartij",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -9485,55 +5311,6 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lichaam",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "lichaamsbeweging",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "ontspanning",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "beweging",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "park",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "natuur",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gezondheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -9588,48 +5365,6 @@
             "type": "is_a",
             "target": "drank",
             "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "cafeïne",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "smaak",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "koffiebonen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "koffiezetapparaat",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "koffiekopje",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "koffiehuis",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -9695,41 +5430,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "spel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bord",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "stukken",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schijven",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "regels",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -9784,69 +5484,6 @@
             "type": "is_a",
             "target": "vloeistof",
             "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "water",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "melk",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "koffie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "thee",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "frisdrank",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "sap",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "alcoholische drank",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "drankjes",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "drinken",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -9912,55 +5549,6 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakstukken",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakspel",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakstrategie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakopening",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakpartij",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaaktoernooi",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "schaakcomputer",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -10015,55 +5603,6 @@
             "type": "is_a",
             "target": "drank",
             "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "theeplant",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "theebladeren",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "theezakje",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "theeceremonie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "theeservies",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "theekopje",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "thee drinken",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -10129,55 +5668,6 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruit",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "tuin",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "herfst",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bloesem",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "boomgaard",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "fruitboom",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "appelboomgaard",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -10234,48 +5724,6 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "hersenen",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "rusttoestand",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "bewustzijn",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "slaapcyclus",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "slaapritme",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "slaapstoornis",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -10330,62 +5778,6 @@
             "type": "related_to",
             "target": "persoon",
             "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "taak",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "inkomen",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "arbeid",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "baan",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "carrière",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "werkplek",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "werkdag",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "werkuren",
-            "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -10458,64 +5850,7 @@
           "De kaart had een schaal van 1 op 100.000.",
           "Op een schaal van 1 tot 10 gaf ze het een 8."
         ],
-        "relations": [
-          {
-            "type": "related_to",
-            "target": "verhouding",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meetsysteem",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "grootte",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "waarde",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "intensiteit",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "kaart",
-            "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "beoordeling",
-            "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meten",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          }
-        ],
+        "relations": [],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -10532,41 +5867,6 @@
           {
             "type": "is_a",
             "target": "apparaat",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "gewicht",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "weegschaal",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "meten",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "balans",
-            "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "weeginstrument",
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
@@ -10589,55 +5889,6 @@
             "type": "related_to",
             "target": "muziek",
             "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "toonladder",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "melodie",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "harmonie",
-            "confidence": 0.5,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "muziekinstrument",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "muziektheorie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "muzieknoten",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "muziekles",
-            "confidence": 0.5,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -10696,55 +5947,6 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "communicatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "woorden",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "klanken",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "regels",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "grammatica",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "dialect",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "taalvaardigheid",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
           }
         ],
         "source": "user",
@@ -10799,55 +6001,6 @@
             "type": "related_to",
             "target": "patroon",
             "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "informatie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "opslag",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "herinnering",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "cognitie",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "leren",
-            "confidence": 0.6,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "onthouden",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
-          },
-          {
-            "type": "related_to",
-            "target": "herinneren",
-            "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
           }
@@ -11981,6 +7134,865 @@
         "sense_id": "spatbord#1",
         "old_value": null,
         "new_value": "Een spatbord is een gebogen plaat boven het wiel van een fiets die voorkomt dat water en modder opspatten.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "aarde": {
+    "senses": [
+      {
+        "sense_id": "aarde#1",
+        "definition": "De aarde is de planeet waarop mensen leven, de derde planeet vanaf de zon in ons zonnestelsel.",
+        "pos": "noun",
+        "examples": [
+          "De aarde draait in ongeveer 365 dagen om de zon.",
+          "Vanuit de ruimte ziet de aarde er blauw en groen uit."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "planeet",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "aarde"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "aarde#1",
+        "old_value": null,
+        "new_value": "De aarde is de planeet waarop mensen leven, de derde planeet vanaf de zon in ons zonnestelsel.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "maan": {
+    "senses": [
+      {
+        "sense_id": "maan#1",
+        "definition": "De maan is de natuurlijke satelliet die om de aarde draait en 's nachts licht geeft door het zonlicht te weerkaatsen.",
+        "pos": "noun",
+        "examples": [
+          "De maan scheen helder aan de nachtelijke hemel.",
+          "Er was een volle maan te zien."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "hemellichaam",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "aarde",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "maan"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "maan#1",
+        "old_value": null,
+        "new_value": "De maan is de natuurlijke satelliet die om de aarde draait en 's nachts licht geeft door het zonlicht te weerkaatsen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "ster": {
+    "senses": [
+      {
+        "sense_id": "ster#1",
+        "definition": "Een ster is een groot, gloeiend hemellichaam dat licht en warmte uitstraalt door kernfusie, zoals de zon.",
+        "pos": "noun",
+        "examples": [
+          "'s Nachts waren duizenden sterren zichtbaar aan de hemel.",
+          "De zon is de dichtstbijzijnde ster bij de aarde."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "hemellichaam",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "zon",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ster"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "ster#1",
+        "old_value": null,
+        "new_value": "Een ster is een groot, gloeiend hemellichaam dat licht en warmte uitstraalt door kernfusie, zoals de zon.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "roedel": {
+    "senses": [
+      {
+        "sense_id": "roedel#1",
+        "definition": "Een roedel is een groep wolven of andere sociale roofdieren die samen leven en jagen.",
+        "pos": "noun",
+        "examples": [
+          "De roedel wolven trok 's nachts door het bos.",
+          "Elke roedel heeft een duidelijke rangorde."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "wolf",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "roedel"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "roedel#1",
+        "old_value": null,
+        "new_value": "Een roedel is een groep wolven of andere sociale roofdieren die samen leven en jagen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "slagader": {
+    "senses": [
+      {
+        "sense_id": "slagader#1",
+        "definition": "Een slagader is een bloedvat dat zuurstofrijk bloed van het hart naar de rest van het lichaam vervoert.",
+        "pos": "noun",
+        "examples": [
+          "De arts voelde de polsslag bij de slagader in de pols.",
+          "Een verstopte slagader kan tot ernstige gezondheidsproblemen leiden."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "hart",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "slagader"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "slagader#1",
+        "old_value": null,
+        "new_value": "Een slagader is een bloedvat dat zuurstofrijk bloed van het hart naar de rest van het lichaam vervoert.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "hartslag": {
+    "senses": [
+      {
+        "sense_id": "hartslag#1",
+        "definition": "De hartslag is het ritmische kloppen van het hart, meestal gemeten in slagen per minuut.",
+        "pos": "noun",
+        "examples": [
+          "Haar hartslag versnelde tijdens het hardlopen.",
+          "De dokter mat zijn hartslag met een stethoscoop."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "hart",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hartslag"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hartslag#1",
+        "old_value": null,
+        "new_value": "De hartslag is het ritmische kloppen van het hart, meestal gemeten in slagen per minuut.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "speelkaart": {
+    "senses": [
+      {
+        "sense_id": "speelkaart#1",
+        "definition": "Een speelkaart is een kaart uit een kaartspel, met een waarde en een kleur zoals harten, ruiten, klaveren of schoppen.",
+        "pos": "noun",
+        "examples": [
+          "Hij trok een speelkaart van de stapel.",
+          "De harten aas is een bekende speelkaart."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "kaartspel",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "speelkaart"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "speelkaart#1",
+        "old_value": null,
+        "new_value": "Een speelkaart is een kaart uit een kaartspel, met een waarde en een kleur zoals harten, ruiten, klaveren of schoppen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "snaar": {
+    "senses": [
+      {
+        "sense_id": "snaar#1",
+        "definition": "Een snaar is een dunne, strak gespannen draad op een muziekinstrument die trilt en zo geluid produceert.",
+        "pos": "noun",
+        "examples": [
+          "De snaar van de gitaar knapte tijdens het optreden.",
+          "Ze stemde elke snaar zorgvuldig voor het concert."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "trilling",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "muziek",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "snaar"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "snaar#1",
+        "old_value": null,
+        "new_value": "Een snaar is een dunne, strak gespannen draad op een muziekinstrument die trilt en zo geluid produceert.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "bot": {
+    "senses": [
+      {
+        "sense_id": "bot#1",
+        "definition": "Een bot is een hard, kalkhoudend onderdeel van het skelet dat het lichaam ondersteunt en organen beschermt.",
+        "pos": "noun",
+        "examples": [
+          "Ze brak een bot in haar arm tijdens de val.",
+          "De hond begroef zijn bot in de tuin."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "lichaam",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bot"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bot#1",
+        "old_value": null,
+        "new_value": "Een bot is een hard, kalkhoudend onderdeel van het skelet dat het lichaam ondersteunt en organen beschermt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "spier": {
+    "senses": [
+      {
+        "sense_id": "spier#1",
+        "definition": "Een spier is weefsel in het lichaam dat kan samentrekken en ontspannen, waardoor beweging mogelijk wordt.",
+        "pos": "noun",
+        "examples": [
+          "Zijn spieren deden pijn na de zware training.",
+          "Ze rekte haar spieren voordat ze ging hardlopen."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "lichaam",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "spier"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "spier#1",
+        "old_value": null,
+        "new_value": "Een spier is weefsel in het lichaam dat kan samentrekken en ontspannen, waardoor beweging mogelijk wordt.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "sneeuw": {
+    "senses": [
+      {
+        "sense_id": "sneeuw#1",
+        "definition": "Sneeuw is bevroren neerslag in de vorm van witte, lichte ijskristallen die op de grond blijven liggen bij koud weer.",
+        "pos": "noun",
+        "examples": [
+          "De sneeuw viel zachtjes op straat.",
+          "De kinderen maakten een sneeuwpop van de verse sneeuw."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "wolk",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "sneeuw"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "sneeuw#1",
+        "old_value": null,
+        "new_value": "Sneeuw is bevroren neerslag in de vorm van witte, lichte ijskristallen die op de grond blijven liggen bij koud weer.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "potlood": {
+    "senses": [
+      {
+        "sense_id": "potlood#1",
+        "definition": "Een potlood is een schrijf- of tekengereedschap met een houten omhulsel rond een kern van grafiet.",
+        "pos": "noun",
+        "examples": [
+          "Ze schreef haar naam met een potlood in het schrift.",
+          "Het potlood was bijna versleten van het vele tekenen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "boek",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "potlood"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "potlood#1",
+        "old_value": null,
+        "new_value": "Een potlood is een schrijf- of tekengereedschap met een houten omhulsel rond een kern van grafiet.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "verrast": {
+    "senses": [
+      {
+        "sense_id": "verrast#1",
+        "definition": "Verrast is een gevoel van onverwachte verwondering, veroorzaakt door iets dat men niet had zien aankomen.",
+        "pos": "adj",
+        "examples": [
+          "Ze was verrast door het cadeau van haar vrienden.",
+          "Hij keek verrast op toen de deurbel ging."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gevoel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "verrast"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "verrast#1",
+        "old_value": null,
+        "new_value": "Verrast is een gevoel van onverwachte verwondering, veroorzaakt door iets dat men niet had zien aankomen.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },"winter": {
+    "senses": [
+      {
+        "sense_id": "winter#1",
+        "definition": "De winter is het koudste seizoen van het jaar, gekenmerkt door lage temperaturen, korte dagen en vaak sneeuw.",
+        "pos": "noun",
+        "examples": [
+          "In de winter viel er veel sneeuw.",
+          "Ze droeg een dikke jas om warm te blijven in de winter."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "sneeuw",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "winter"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "winter#1",
+        "old_value": null,
+        "new_value": "De winter is het koudste seizoen van het jaar, gekenmerkt door lage temperaturen, korte dagen en vaak sneeuw.",
+        "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },"school": {
+    "senses": [
+      {
+        "sense_id": "school#1",
+        "definition": "Een school is een instelling waar leerlingen les krijgen en kennis en vaardigheden aanleren.",
+        "pos": "noun",
+        "examples": [
+          "Ze fietste elke ochtend naar school.",
+          "Op school leerde hij lezen en rekenen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "boek",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-05T00:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-05T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "school"
+        },
+        "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "school#1",
+        "old_value": null,
+        "new_value": "Een school is een instelling waar leerlingen les krijgen en kennis en vaardigheden aanleren.",
         "timestamp": "2026-07-05T00:00:00.000000"
       }
     ]
