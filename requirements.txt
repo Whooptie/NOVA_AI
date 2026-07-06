@@ -1,19 +1,35 @@
-# Webserver & API
-fastapi==0.115.0
-uvicorn==0.32.0
-websockets==12.0
+# ============================================================
+# Nova AI — Python dependencies
+# ============================================================
+# Installeren via: pip install -r requirements.txt
+# Python 3.10+ vereist
+# ============================================================
 
-# Data & opslag
-sqlalchemy==2.0.23
-databases==0.9.0
-pydantic==2.6.4
+# --- Schaak ---
+python-chess>=1.999        # Stockfish interface + bordbeheer
 
-# Logging & monitoring
-loguru==0.7.2
+# --- Weer ---
+requests>=2.31.0           # OpenWeatherMap API calls
 
-# Utilities
-python-dotenv==1.0.1
-requests==2.31.0
+# --- Wikipedia ---
+wikipedia-api>=0.6.0       # Wikipedia AutoTeacher
 
-# Testing
-pytest==8.2.0
+# --- Omgevingsvariabelen ---
+python-dotenv>=1.0.1       # .env bestand lezen (API keys)
+
+# --- JSON validatie ---
+jsonschema>=4.21.0         # identity.json / schema.json validatie
+
+# --- Testing ---
+pytest>=8.2.0              # Unit tests
+
+# --- Standaardbibliotheek (geen installatie nodig) ---
+# sqlite3      — Layer 0 geheugen (ingebouwd in Python)
+# threading    — achtergrondtimers, daemon threads
+# json         — concepts.json, alle databestanden
+# re           — reguliere expressies in intent_router
+# datetime     — tijdsbewustzijn, dagpatronen
+# logging      — RotatingFileHandler
+# subprocess   — Stockfish proces, reboot
+# atexit       — graceful shutdown hooks
+# pathlib      — portabele bestandspaden
