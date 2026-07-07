@@ -6,19 +6,20 @@
         "15": 5,
         "19": 5,
         "20": 8,
-        "21": 6,
+        "21": 16,
         "16": 6
       },
       "days": {
         "zondag": 28,
-        "maandag": 6
+        "maandag": 6,
+        "dinsdag": 10
       },
-      "total": 34,
-      "most_common_hour": 20,
-      "confidence": 0.235,
+      "total": 44,
+      "most_common_hour": 21,
+      "confidence": 0.364,
       "day_frequency": {
-        "maandag": 1.0,
-        "dinsdag": 0.0,
+        "maandag": 0.955,
+        "dinsdag": 1.0,
         "woensdag": 0.0,
         "donderdag": 0.0,
         "vrijdag": 0.0,
@@ -32,24 +33,125 @@
         "15": 4,
         "19": 5,
         "20": 7,
-        "21": 6,
+        "21": 18,
         "16": 6
       },
       "days": {
         "zondag": 26,
-        "maandag": 6
+        "maandag": 6,
+        "dinsdag": 12
       },
-      "total": 32,
-      "most_common_hour": 20,
-      "confidence": 0.219,
+      "total": 44,
+      "most_common_hour": 21,
+      "confidence": 0.409,
       "day_frequency": {
-        "maandag": 1.0,
-        "dinsdag": 0.0,
+        "maandag": 0.955,
+        "dinsdag": 1.0,
         "woensdag": 0.0,
         "donderdag": 0.0,
         "vrijdag": 0.0,
         "zaterdag": 0.0,
         "zondag": 1.0
+      }
+    },
+    "topic_detected:greeting": {
+      "hours": {
+        "21": 2
+      },
+      "days": {
+        "dinsdag": 2
+      },
+      "total": 2,
+      "most_common_hour": 21,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 1.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 0.0
+      }
+    },
+    "topic_detected:time": {
+      "hours": {
+        "21": 2
+      },
+      "days": {
+        "dinsdag": 2
+      },
+      "total": 2,
+      "most_common_hour": 21,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 1.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 0.0
+      }
+    },
+    "topic_detected:chess": {
+      "hours": {
+        "21": 4
+      },
+      "days": {
+        "dinsdag": 4
+      },
+      "total": 4,
+      "most_common_hour": 21,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 1.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 0.0
+      }
+    },
+    "topic_detected:weather": {
+      "hours": {
+        "21": 2
+      },
+      "days": {
+        "dinsdag": 2
+      },
+      "total": 2,
+      "most_common_hour": 21,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 1.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 0.0
+      }
+    },
+    "topic_detected:math": {
+      "hours": {
+        "21": 2
+      },
+      "days": {
+        "dinsdag": 2
+      },
+      "total": 2,
+      "most_common_hour": 21,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 1.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 0.0
       }
     }
   },
