@@ -106,71 +106,71 @@ Nova_AI/
 
 ### CORE
 
-| Module            | Status                      | Opmerkingen                                                                                                                                                                                                                                                                                                                        |
+| Module | Status | Opmerkingen |
 | --- | --- | --- |
-| event_bus.py      | ✅ Klaar                    | Stabiel, publish/subscribe + wildcard werkt                                                                                                                                                                                                                                                                                        |
-| module_loader.py  | ✅ Klaar                    | Auto-discovery via pkgutil, laadtijdmeting                                                                                                                                                                                                                                                                                         |
-| intent_router.py  | ✅ Klaar                    | Volledig semantic-aware. Wikipedia, synoniemen, antoniemen, relaties, definitievragen gekoppeld. handle_confirmation() nog leeg.                                                                                                                                                                                                   |
-| memory.py         | ✅ Klaar                    | v2.0 daemon-mode volledig gebouwd (Fase 1-4): portable pad, WAL-SQLite, write-buffering, Query API, achtergrond-onderhoud (archiveren/comprimeren/VACUUM elke 6u). Fase 5 (optimalisatie/polish) nog open, lage prioriteit.                                                                                                        |
-| patterns.py       | ✅ Klaar                    | Woordtelling + event-counts. Wordt later vervangen door Layer 2 (pattern_matcher.py).                                                                                                                                                                                                                                              |
-| logger.py         | ✅ Klaar                    | Logt enkel fouten/waarschuwingen naar nova.log (RotatingFileHandler, max 5MB × 3 backups). Volledige eventgeschiedenis zit in memory.py (data/interactions.jsonl + .db).                                                                                                                                                          |
+| event_bus.py | ✅ Klaar | Stabiel, publish/subscribe + wildcard werkt |
+| module_loader.py | ✅ Klaar | Auto-discovery via pkgutil, laadtijdmeting |
+| intent_router.py | ✅ Klaar | Volledig semantic-aware. Wikipedia, synoniemen, antoniemen, relaties, definitievragen gekoppeld. handle_confirmation() nog leeg. |
+| memory.py | ✅ Klaar | v2.0 daemon-mode volledig gebouwd (Fase 1-4): portable pad, WAL-SQLite, write-buffering, Query API, achtergrond-onderhoud (archiveren/comprimeren/VACUUM elke 6u). Fase 5 (optimalisatie/polish) nog open, lage prioriteit. |
+| patterns.py | ✅ Klaar | Woordtelling + event-counts. Wordt later vervangen door Layer 2 (pattern_matcher.py). |
+| logger.py | ✅ Klaar | Logt enkel fouten/waarschuwingen naar nova.log (RotatingFileHandler, max 5MB × 3 backups). Volledige eventgeschiedenis zit in memory.py (data/interactions.jsonl + .db). |
 | reboot_manager.py | ✅ Klaar en volledig getest | `/reboot`-commando (Fase 1 van reboot_hotreload_roadmap.md). Sluit memory-buffer + alle modules met `shutdown()` (o.a. Stockfish via chess_engine.py) netjes af, start dan een nieuw los proces via `subprocess.Popen` + `CREATE_NEW_CONSOLE`. Zie volledige sectie "Reboot & Hot Reload" verderop voor details en opgeloste bugs. |
-| semantic.py       | ✅ VOLLEDIG KLAAR           | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw:`teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`.                                                                                        |
+| semantic.py | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw:`teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`. |
 
 ### MODULES
 
-| Module                       | Status                           | Opmerkingen                                                                                                                                                                                                                                                                                                                                                                   |
+| Module | Status | Opmerkingen |
 | --- | --- | --- |
-| time.py                      | ✅ Klaar                         | Zone-aware tijdsvraag                                                                                                                                                                                                                                                                                                                                                         |
-| zone.py                      | ✅ Klaar                         | Auto-timezone via IP, fallback naar OS                                                                                                                                                                                                                                                                                                                                        |
-| weather.py                   | ✅ Klaar                         | API-key in .env, huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie (morgen/overmorgen/weekdag)                                                                                                                                                                                                                                                 |
-| math.py                      | ✅ Klaar                         | Berekeningen, temperatuurconversie, wiskundige functies                                                                                                                                                                                                                                                                                                                       |
-| chat.py                      | ✅ Klaar                         | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig.                                                                                                                                                                                                                                                                                                       |
-| response_pipeline.py         | ✅ Klaar                         | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet**                                                                                                                                                                                                                                                                                           |
-| chat_response_engine.py      | ✅ Klaar                         | Doorsturen van pipeline_response naar expression_inject                                                                                                                                                                                                                                                                                                                       |
-| expression_injector.py       | ✅ Klaar                         | Emoji, gesture, puberal flair injectie                                                                                                                                                                                                                                                                                                                                        |
-| help.py                      | ✅ Klaar                         | Help-systeem met topic-bestanden.`help` = algemeen overzicht, `help schaken` = schaakcommando's incl. huidig niveau en denktijd. `algemeen.py` bijgewerkt (3 juli 2026) met `example`-commando en reasoning-sectie.                                                                                                                                                           |
-| wikipedia_teacher.py         | ✅ Klaar                         | Nederlandse Wikipedia API, disambiguatie-afhandeling, is_a relatie-extractie, automatische fallback vanuit chat.py. Definitie-limiet opgetrokken naar 400 tekens, kapt nooit meer af midden in een woord. Automatische voorbeeldzin-extractie uit Wikipedia geprobeerd maar werkt nog niet betrouwbaar — vervangen door handmatig`example`-commando (zie semantic.py).       |
-| chess_engine.py              | ✅ Klaar                         | Stockfish (UCI), persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten. Bordweergave met schaaksymbolen (wit/magenta). Instelbare moeilijkheidsgraad (0-20) + denktijd, beide persistent (chess_settings.json). Win/verlies statistieken (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
-| word_associations_learner.py | ✅ Klaar (Layer 1, alle 5 fases) | PMI-gebaseerd associatienetwerk (data/word_associations.json). Leert van "chat_message"/"chat_response"-events (niet het gecombineerde formaat uit de originele roadmap). Publiceert`word_association:updated`, maar nog niets in Nova gebruikt dit actief — koppeling met Layer 3/4 is een volgende stap.                                                                   |
-| pattern_matcher.py           | ✅ Klaar (Layer 2, alle 5 fases) | Detecteert timing-patronen (uur/dag) voor chat_message/chat_response. Anomaly-drempels en opslagfrequentie staan nog op tijdelijke testwaarden (zie Layer 2-sectie).                                                                                                                                                                                                          |
-| microlearning.py             | ❌ Leeg                          | Bestand bestaat maar is volledig leeg — nog te bouwen                                                                                                                                                                                                                                                                                                                        |
+| time.py | ✅ Klaar | Zone-aware tijdsvraag |
+| zone.py | ✅ Klaar | Auto-timezone via IP, fallback naar OS |
+| weather.py | ✅ Klaar | API-key in .env, huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie (morgen/overmorgen/weekdag) |
+| math.py | ✅ Klaar | Berekeningen, temperatuurconversie, wiskundige functies |
+| chat.py | ✅ Klaar | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig. |
+| response_pipeline.py | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet** |
+| chat_response_engine.p | ✅ Klaar | Doorsturen van pipeline_response naar expression_inject |
+| expression_injector.py | ✅ Klaar | Emoji, gesture, puberal flair injectie |
+| help.py | ✅ Klaar | Help-systeem met topic-bestanden. `help` = algemeen overzicht, `help schaken` = schaakcommando's incl. huidig niveau en denktijd. `algemeen.py` bijgewerkt (3 juli 2026) met `example`-commando en reasoning-sectie. |
+| wikipedia_teacher.py | ✅ Klaar | Nederlandse Wikipedia API, disambiguatie-afhandeling, is_a relatie-extractie, automatische fallback vanuit chat.py. Definitie-limiet opgetrokken naar 400 tekens, kapt nooit meer af midden in een woord. Automatische voorbeeldzin-extractie uit Wikipedia geprobeerd maar werkt nog niet betrouwbaar — vervangen door handmatig `example`-commando (zie semantic.py). |
+| chess_engine.p | ✅ Klaar | Stockfish (UCI), persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten. Bordweergave met schaaksymbolen (wit/magenta). Instelbare moeilijkheidsgraad (0-20) + denktijd, beide persistent (chess_settings.json). Win/verlies statistieken (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
+| word_associations_learner.py | ✅ Klaar (Layer 1, alle 5 fases) | PMI-gebaseerd associatienetwerk (data/word_associations.json). Leert van "chat_message"/"chat_response"-events (niet het gecombineerde formaat uit de originele roadmap). Publiceert `word_association:updated`, maar nog niets in Nova gebruikt dit actief — koppeling met Layer 3/4 is een volgende stap. |
+| pattern_matcher.py | ✅ Klaar (Layer 2, alle 5 fases) | Detecteert timing-patronen (uur/dag) voor chat_message/chat_response. Anomaly-drempels en opslagfrequentie staan nog op tijdelijke testwaarden (zie Layer 2-sectie). |
+| microlearning.py | ❌ Leeg | Bestand bestaat maar is volledig leeg — nog te bouwen |
 
 ### IDENTITY
 
-| Module                | Status   | Opmerkingen                                                         |
-| ----------------------- | ---------- | --------------------------------------------------------------------- |
-| loader.py             | ✅ Klaar | Laadt + valideert identity.json tegen schema.json                   |
-| identity.json         | ✅ Klaar | Volledig persoonlijkheidsprofiel                                    |
-| schema.json           | ✅ Klaar | JSON Schema validatie                                               |
-| personality_engine.py | ✅ Klaar | Traits + state + behavior modifiers                                 |
-| behavior_modifiers.py | ✅ Klaar | Energie, impulsiviteit, dramatic flair                              |
-| traits.json           | ✅ Klaar | Numerieke persoonlijkheidswaarden (0.0–1.0)                        |
-| identity_state.json   | ✅ Klaar | **overstimulation.level staat standaard op 1.0 (max) — fix nodig** |
-| emotion_engine.py     | ✅ Klaar | Trigger-gebaseerde emotie-updates                                   |
-| emotion_state.json    | ✅ Klaar | Huidige emotionele staat                                            |
-| emotion_rules.json    | ✅ Klaar | Regels voor mood-shifts, sync, dramatic flair                       |
-| tone_engine.py        | ✅ Klaar | Mood → tone → style profile                                       |
-| style_profiles.json   | ✅ Klaar | 8 stijlprofielen (emoji, gesture, pitch, volume...)                 |
-| gesture_profiles.json | ✅ Klaar | 7 gebarenprofielen voor toekomstige avatar                          |
+| Module | Status | Opmerkingen |
+| --- | --- | --- |
+| loader.py | ✅ Klaar | Laadt + valideert identity.json tegen schema.json |
+| identity.json | ✅ Klaar | Volledig persoonlijkheidsprofiel |
+| schema.json | ✅ Klaar | JSON Schema validatie |
+| personality_engine.py | ✅ Klaar | Traits + state + behavior modifier |
+| behavior_modifiers.py | ✅ Klaar | Energie, impulsiviteit, dramatic flair |
+| traits.json | ✅ Klaar | Numerieke persoonlijkheidswaarden (0.0–1.0) |
+| identity_state.json | ✅ Klaar | **overstimulation.level staat standaard op 1.0 (max) — fix nodig** |
+| emotion_engine.py | ✅ Klaar | Trigger-gebaseerde emotie-updates |
+| emotion_state.json | ✅ Klaar | Huidige emotionele staat |
+| emotion_rules.json | ✅ Klaar | Regels voor mood-shifts, sync, dramatic flair |
+| tone_engine.py | ✅ Klaar | Mood → tone → style profile |
+| style_profiles.json | ✅ Klaar | 8 stijlprofielen (emoji, gesture, pitch, volume...) |
+| gesture_profiles.json | ✅ Klaar | 7 gebarenprofielen voor toekomstige avatar |
 
 ---
 
 ## 🐛 Bekende bugs (prioriteit)
 
-| #  | Bug                                                                                 | Bestand              | Urgentie  | Status                                                                                   |
-| ---- | ------------------------------------------------------------------------------------- | ---------------------- | ----------- | ------------------------------------------------------------------------------------------ |
-| 1  | OpenWeatherMap API-key hardcoded én gelekt in chat                                 | weather.py           | 🔴 DIRECT | ✅ Opgelost (2 juli 2026 — key naar .env, python-dotenv)                                |
-| 1b | Stad-extractie pakte leestekens mee (bv. "gent?" i.p.v. "gent")                     | weather.py           | 🟢 Laag   | ✅ Opgelost (2 juli 2026 — strip(".,!?;:") toegevoegd)                                  |
-| 1c | Weer-intent werd niet herkend bij korte zinnen ("weer in Gent?")                    | intent_router.py     | 🟡 Medium | ✅ Opgelost (2 juli 2026 — losse woord-detectie i.p.v. vaste triggerzinnen)             |
-| 1d | Weekdagnaam kwam in het Engels terug ("Monday" i.p.v. "maandag")                    | weather.py           | 🟢 Laag   | ✅ Opgelost (3 juli 2026 — eigen NL-weekdaglijst i.p.v. strftime %A)                    |
-| 2  | Windows-pad hardcoded in save_path                                                  | memory.py            | 🟡 Medium | ✅ Opgelost (2 juli 2026 — portable pad via Path(**file**), werkt op elke PC/gebruiker) |
-| 3  | Dode code (uitgecommentarieerde handlers)                                           | chat.py              | 🟢 Laag   | 🔲 Open                                                                                  |
-| 4  | overstimulation.level = 1.0 als standaard                                           | emotion_state.json   | 🟢 Laag   | 🔲 Open                                                                                  |
-| 5  | Personality/tone pipeline bypassed door weer/tijd/math/definities                   | response_pipeline.py | 🟡 Medium | 🔲 Open                                                                                  |
-| 6  | Punt aan einde van woord wordt meegenomen bij wiki-aanroep                          | chat.py              | 🟢 Laag   | 🔲 Open                                                                                  |
-| 7  | Oude concepts.json entries hebben geen auto_extract relaties                        | concepts.json        | 🟢 Laag   | 🔲 Open                                                                                  |
-| 8  | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag   | 🔲 Open — omzeild met handmatig`example`-commando                                       |
+| # | Bug | Bestand | Urgentie | Status |
+| --- | --- | --- | --- | --- |
+| 1 | OpenWeatherMap API-key hardcoded én gelekt in chat. | weather.py | 🔴 DIRECT | ✅ Opgelost (2 juli 2026 — key naar .env, python-dotenv) |
+| 1b | Stad-extractie pakte leestekens mee (bv. "gent?" i.p.v. "gent") | weather.py | 🟢 Laag | ✅ Opgelost (2 juli 2026 — strip(".,!?;:") toegevoegd) |
+| 1c | Weer-intent werd niet herkend bij korte zinnen ("weer in Gent?") | intent_router.py | 🟡 Medium | ✅ Opgelost (2 juli 2026 — losse woord-detectie i.p.v. vaste triggerzinnen) |
+| 1d | Weekdagnaam kwam in het Engels terug ("Monday" i.p.v. "maandag") | weather.py | 🟢 Laag | ✅ Opgelost (3 juli 2026 — eigen NL-weekdaglijst i.p.v. strftime %A) |
+| 2 | Windows-pad hardcoded in save_path | memory.py | 🟡 Medium | ✅ Opgelost (2 juli 2026 — portable pad via Path(**file**), werkt op elke PC/gebruiker) |
+| 3 | Dode code (uitgecommentarieerde handlers) | chat.p | 🟢 Laag | 🔲 Open |
+| 4 | overstimulation.level = 1.0 als standaard | emotion_state.json | 🟢 Laag | 🔲 Open |
+| 5 | Personality/tone pipeline bypassed door weer/tijd/math/definities | response_pipeline.py | 🟡 Medium | 🔲 Open |
+| 6 | Punt aan einde van woord wordt meegenomen bij wiki-aanroep | chat.p | 🟢 Laag | 🔲 Open |
+| 7 | Oude concepts.json entries hebben geen auto_extract relaties | concepts.json | 🟢 Laag | 🔲 Open |
+| 8 | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag | 🔲 Open — omzeild met handmatig `example`-commando |
 
 ---
 
@@ -208,16 +208,16 @@ Nova_AI/
 Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 **Layer 3 (semantic.py) en Layer 6 (personality_engine.py) zijn al klaar.**
 
-| Laag    | Module                       | Status                  | Roadmap                                                   |
-| --------- | ------------------------------ | ------------------------- | ----------------------------------------------------------- |
-| Layer 0 | memory.py (v2.0)             | ✅ KLAAR (alle 4 fases) | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
-| Layer 1 | word_associations_learner.py | ✅ KLAAR (alle 5 fases) | memory_layer1_roadmap.md                                  |
-| Layer 2 | pattern_matcher.py           | ✅ KLAAR (alle 5 fases) | memory_layer2_roadmap.md                                  |
-| Layer 3 | semantic.py                  | ✅ KLAAR                | semantic_roadmap.md                                       |
-| Layer 4 | response_engine.py           | ❌ Nog te bouwen        | memory_layer4_roadmap.md                                  |
-| Layer 5 | context_manager.py           | ❌ Nog te bouwen        | memory_layer5_roadmap.md                                  |
-| Layer 6 | personality_engine.py        | ✅ KLAAR                | identity_ROADMAP.md                                       |
-| Layer 7 | emergence_engine.py          | ❌ Nog te bouwen        | memory_layer7_roadmap.md                                  |
+| Laag | Module | Status | Roadmap |
+| --- | --- | --- | --- |
+| Layer 0 | memory.py (v2.0) | ✅ KLAAR (alle 4 fases) | memory_layer0_roadmap.md + memory_24-7_daemon_addendum.md |
+| Layer 1 | word_associations_learner.py | ✅ KLAAR (alle 5 fases) | memory_layer1_roadmap.md |
+| Layer 2 | pattern_matcher.py | ✅ KLAAR (alle 5 fases) | memory_layer2_roadmap.md |
+| Layer 3 | semantic.py | ✅ KLAAR | semantic_roadmap.md |
+| Layer 4 | response_engine.py | ❌ Nog te bouwen | memory_layer4_roadmap.md |
+| Layer 5 | context_manager.py | ❌ Nog te bouwen | memory_layer5_roadmap.md |
+| Layer 6 | personality_engine.py | ✅ KLAAR | identity_ROADMAP.md |
+| Layer 7 | emergence_engine.py | ❌ Nog te bouwen | memory_layer7_roadmap.md |
 
 **Bouwvolgorde:** Layer 0 eerst (foundation), dan 1 → 2 → 4 → 5 → 7.
 **Extra, buiten de 7 lagen:** een losse "User Preferences"-module (Kevin's voorkeuren/afkeuren) staat gepland — zie memory_user_preferences_roadmap.md
@@ -226,13 +226,13 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 
 Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 
-| Fase | Omschrijving                                                                                    | Status |
-| ------ | ------------------------------------------------------------------------------------------------- | -------- |
-| 1    | Tokenization & filtering (NL-stopwoorden, eenvoudige lemmatizer)                                | ✅     |
-| 2    | Co-occurrence tellen (sliding window, window_size=5)                                            | ✅     |
-| 3    | PMI-berekening (sigmoid-genormaliseerd naar 0-1)                                                | ✅     |
-| 4    | Opvragen/queries (get_associations, find_related, word_distance, get_word_sentiment, get_stats) | ✅     |
-| 5    | Opslaan naar schijf (data/word_associations.json) + EventBus-publicatie                         | ✅     |
+| Fase | Omschrijving | Status |
+| --- | --- | --- |
+| 1 | Tokenization & filtering (NL-stopwoorden, eenvoudige lemmatizer) | ✅ |
+| 2 | Co-occurrence tellen (sliding window, window_size=5) | ✅ |
+| 3 | PMI-berekening (sigmoid-genormaliseerd naar 0-1) | ✅ |
+| 4 | Opvragen/queries (get_associations, find_related, word_distance, get_word_sentiment, get_stats) | ✅ |
+| 5 | Opslaan naar schijf (data/word_associations.json) + EventBus-publicatie | ✅ |
 
 **Belangrijke afwijkingen t.o.v. de originele roadmap (memory_layer1_roadmap.md):**
 
@@ -253,13 +253,13 @@ De module bouwt het associatienetwerk op in `data/word_associations.json` en pub
 
 Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 
-| Fase | Omschrijving                                                                  | Status |
-| ------ | ------------------------------------------------------------------------------- | -------- |
-| 1    | Event grouping (per uur, per dag, per event_type)                             | ✅     |
-| 2    | Pattern detection (most_common_hour, confidence, day_frequency)               | ✅     |
-| 3    | Anomaly detection (ongewone timing + gemiste events via achtergrondtimer)     | ✅     |
-| 4    | Query & predictie (is_pattern_active, predict_next_occurrence, get_anomalies) | ✅     |
-| 5    | Integratie (pattern:detected event, opslaan + herladen bij opstarten)         | ✅     |
+| Fase | Omschrijving | Status |
+| --- | --- | --- |
+| 1 | Event grouping (per uur, per dag, per event_type) | ✅ |
+| 2 | Pattern detection (most_common_hour, confidence, day_frequency) | ✅ |
+| 3 | Anomaly detection (ongewone timing + gemiste events via achtergrondtimer) | ✅ |
+| 4 | Query & predictie (is_pattern_active, predict_next_occurrence, get_anomalies) | ✅ |
+| 5 | Integratie (pattern:detected event, opslaan + herladen bij opstarten) | ✅ |
 
 **Belangrijke afwijkingen t.o.v. de originele roadmap (memory_layer2_roadmap.md):**
 
@@ -282,26 +282,26 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 
 ### Fases 1-7 (VOLLEDIG KLAAR ✅)
 
-| Fase | Omschrijving                               | Status |
-| ------ | -------------------------------------------- | -------- |
-| 1    | Datastructuur & opslag                     | ✅     |
-| 2    | Teach & Auto-Learn                         | ✅     |
-| 3    | Relation Engine                            | ✅     |
-| 4    | Query Engine                               | ✅     |
-| 5    | Integratie (intent_router, chat, pipeline) | ✅     |
-| 6    | Wikipedia-module                           | ✅     |
-| 7    | Reasoning Layer (chaining, inference)      | ✅     |
+|Fase|Omschrijving|Status|
+|---|---|---|
+|1|Datastructuur & opslag|✅|
+|2|Teach & Auto-Lear|✅|
+|3|Relation Engine|✅|
+|4|Query Engine|✅|
+|5|Integratie (intent_router, chat, pipeline)|✅|
+|6|Wikipedia-module|✅|
+|7|Reasoning Layer (chaining, inference)|✅|
 
 ### Fases 8-13 (Toekomst — semantic_extension_roadmap.md)
 
-| Fase | Omschrijving                     | Type            | Status      |
-| ------ | ---------------------------------- | ----------------- | ------------- |
-| 8    | Causal Reasoning                 | Pure symbolisch | ❌ Toekomst |
-| 9    | Temporal Semantics               | Pure symbolisch | ❌ Toekomst |
-| 10   | Uncertainty Tracking             | Pure symbolisch | ❌ Toekomst |
-| 11   | Knowledge Extraction (spaCy)     | ML              | ❌ Toekomst |
-| 12   | Semantic Similarity (embeddings) | ML              | ❌ Toekomst |
-| 13   | Graph Visualization (Plotly)     | ML              | ❌ Toekomst |
+| Fase | Omschrijving | Type | Statu |
+| --- | --- | --- | --- |
+| 8 | Causal Reasoning | Pure symbolisch | ❌ Toekomst |
+| 9 | Temporal Semantics | Pure symbolisch | ❌ Toekomst |
+| 10 | Uncertainty Tracking | Pure symbolisch | ❌ Toekomst |
+| 11 | Knowledge Extraction (spaCy) | M | ❌ Toekomst |
+| 12 | Semantic Similarity (embeddings) | M | ❌ Toekomst |
+| 13 | Graph Visualization (Plotly) | M | ❌ Toekomst |
 
 **concepts.json:** gevuld met testdata (hond, dier, appel, pitvrucht, vliegtuig, democratie...) — productiedata, niet wissen.
 
@@ -309,12 +309,12 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 
 ## ♟️ Games — Status & Roadmap
 
-| Spel                                   | Module              | Status      | Engine                   |
-| ---------------------------------------- | --------------------- | ------------- | -------------------------- |
-| Schaak                                 | chess_engine.py     | ✅ Klaar    | Stockfish (symbolisch)   |
-| Dammen                                 | checkers_engine.py  | ❌ Toekomst | Symbolic engine          |
-| Go                                     | go_engine.py        | ❌ Toekomst | KataGo (neural, bounded) |
-| Meerdere bordspellen (dammen, Go, ...) | active_game systeem | ❌ Toekomst | via IntentRouter         |
+| Spel | Modul | Statu | Engine |
+| --- | --- | --- | --- |
+| Schaa | chess_engine.py | ✅ Klaar | Stockfish (symbolisch) |
+| Damme | checkers_engine.py | ❌ Toekomst | Symbolic engine |
+| Go | go_engine.py | ❌ Toekomst | KataGo (neural, bounded) |
+| Meerdere bordspellen (dammen, Go, ...) | active_game systeem | ❌ Toekomst | via IntentRouter |
 
 **Geplande features:**
 
@@ -327,11 +327,11 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 
 ## 🔁 Reboot & Hot Reload
 
-| Feature                                 | Status                      | Roadmap                     |
-| ----------------------------------------- | ----------------------------- | ----------------------------- |
+| Feature | Status | Roadmap |
+| --- | --- | --- |
 | /reboot commando (full restart, ~5 sec) | ✅ Klaar en volledig getest | reboot_hotreload_roadmap.md |
-| /reload module (manual hot reload)      | ❌ Later                    | reboot_hotreload_roadmap.md |
-| Auto file watcher (Ctrl+S → reload)    | ❌ Veel later               | reboot_hotreload_roadmap.md |
+| /reload module (manual hot reload) | ❌ Later | reboot_hotreload_roadmap.md |
+| Auto file watcher (Ctrl+S → reload) | ❌ Veel later | reboot_hotreload_roadmap.md |
 
 **Implementatie:** `core/reboot_manager.py` — luistert naar event `system:reboot`. Bij triggeren: memory-buffer geflusht + achtergrondtimer gestopt, alle modules met een `shutdown()`-methode netjes afgesloten (via `loaded_modules`-dictionary, meegegeven door `module_loader.py`), daarna een **volledig nieuw, los proces** gestart via `subprocess.Popen(..., creationflags=CREATE_NEW_CONSOLE)`, gevolgd door `sys.exit(0)` van het oude proces. Hierdoor worden alle `.py`-bestanden én alle `.json`/`.jsonl`/`.db`-bestanden opnieuw van schijf ingelezen — geen enkele module blijft met oude code of oude data in het geheugen hangen.
 
@@ -353,16 +353,28 @@ Getest op 5 juli 2026: partij (schaak, inclusief actieve Stockfish-verbinding) e
 
 ---
 
+## 💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2
+
+Kevin's vraag (7 juli 2026): wat als hij binnen hetzelfde uur zowel schaakt als codeert, of als hij consistent rond een specifiek half uur (bv. 21u30) iets doet — kan Layer 2 dat preciezer vastleggen dan het huidige uur-niveau?
+
+**Belangrijk onderscheid, vastgesteld tijdens dit gesprek:** een fijner raster (bv. 30 of 15 minuten) lost NIET vanzelf op dat Nova ooit kan zeggen "het is 19u30, je codeert al 3u30 zonder te eten" — dat is een apart vraagstuk (duur-detectie + afwezigheid van een ander event), al uitgewerkt in **activity_awareness_roadmap.md, Deel D**. Een fijner tijdsraster lost enkel op: "op welk specifiek moment binnen het uur gebeurt dit meestal", niet "hoe lang loopt dit al" of "is er ondertussen iets anders NIET gebeurd."
+
+**Voorstel indien dit ooit gebouwd wordt:** een `minute_bucket`-veld toevoegen NAAST het bestaande `hours`-veld (bv. blokken van 30 min: `{"21:30": 4, "21:00": 1}`), puur additief — niet als vervanging. Reden: `hours` zit diep verweven doorheen `_check_ongewone_timing()` (met een vaste "4 uur"-anomaliedrempel), de achtergrondtimer (`_check_missing_events()`, draait zelf op een uur-interval), `is_pattern_active()` en `predict_next_occurrence()`. Dat allemaal laten meeschalen naar een fijner raster zou een grote herwerking zijn met weinig garantie op winst. Een aparte, optionele teller ernaast is veel kleiner en breekt niets bestaands.
+
+**Waarom nu nog niet bouwen:** met de huidige, nog kleine hoeveelheid observaties per topic zou elk 30-minuten-blok meestal maar 1 observatie hebben — de confidence-score zou dan kunstmatig op 1.0 staan zonder dat het iets betekent. Pas zinvol zodra uur-patronen na verloop van tijd al een stabiele, hoge confidence tonen én blijkt dat uur-niveau te grof is voor wat Kevin ermee wil doen.
+
+---
+
 ## 👤 User Preferences (concept, nog niet ingepland)
 
 Losse module die expliciete feiten over Kevin onthoudt (voorkeuren/afkeuren), los van Layer 1.
 
-| Fase | Omschrijving                           | Status           |
-| ------ | ---------------------------------------- | ------------------ |
-| 1    | Databestand + basis CRUD               | ❌ Nog te bouwen |
-| 2    | Expliciet commando (onthoud:/vergeet:) | ❌ Nog te bouwen |
-| 3    | Automatische patroonherkenning         | ❌ Nog te bouwen |
-| 4    | Integratie in chat.py                  | ❌ Nog te bouwen |
+| Fase | Omschrijving | Status |
+| --- | --- | --- |
+| 1 | Databestand + basis CRUD | ❌ Nog te bouwen |
+| 2 | Expliciet commando (onthoud:/vergeet:) | ❌ Nog te bouwen |
+| 3 | Automatische patroonherkenning | ❌ Nog te bouwen |
+| 4 | Integratie in chat.py | ❌ Nog te bouwen |
 
 Leert zowel automatisch (patroonherkenning) als expliciet (commando). Volledig beschreven in: **memory_user_preferences_roadmap.md**
 
@@ -385,13 +397,13 @@ Belangrijkste gevolgen voor memory.py v2.0:
 
 ### memory.py v2.0 — Fase-status
 
-| Fase | Omschrijving                                                                                 | Status                                                              |
-| ------ | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| 1    | Foundation Fix (paden, retry, log rotation)                                                  | ✅                                                                  |
-| 2    | SQLite + Daemon Basis (WAL, write buffer, graceful shutdown)                                 | ✅                                                                  |
-| 3    | Query API (search, query, get_stats, find_similar)                                           | ✅                                                                  |
-| 4    | Achtergrond-onderhoud timer, layer-integratie                                                | ✅ Getest (archiveren, comprimeren, VACUUM, event publishing)       |
-| 5    | Optimization & polish (query caching, memory leaks, concurrent access, backup, health check) | 🟢 Later — pas nodig bij grote databank/veel gelijktijdige toegang |
+| Fase | Omschrijving | Status |
+| --- | --- | --- |
+| 1 | Foundation Fix (paden, retry, log rotation) | ✅ |
+| 2 | SQLite + Daemon Basis (WAL, write buffer, graceful shutdown) | ✅ |
+| 3 | Query API (search, query, get_stats, find_similar) | ✅ |
+| 4 | Achtergrond-onderhoud timer, layer-integratie | ✅ Getest (archiveren, comprimeren, VACUUM, event publishing) |
+| 5 | Optimization & polish (query caching, memory leaks, concurrent access, backup, health check) | 🟢 Later — pas nodig bij grote databank/veel gelijktijdige toegang |
 
 Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
@@ -414,22 +426,21 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 ## 📚 Roadmap documenten (in project)
 
-| Document                           | Beschrijft                                                                                                                                                                                                  |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| memory_layer0_roadmap.md           | Layer 0: memory.py v2.0 (SQLite, tiering, query API)                                                                                                                                                        |
-| memory_24-7_daemon_addendum.md     | 24/7 daemon aanpassingen voor memory.py                                                                                                                                                                     |
-| memory_layer1_roadmap.md           | Layer 1: Word Associations Learner (PMI scoring)                                                                                                                                                            |
-| memory_layer2_roadmap.md           | Layer 2: Pattern Matcher (gedragspatronen)                                                                                                                                                                  |
-| memory_layer4_roadmap.md           | Layer 4: Response Generation Engine                                                                                                                                                                         |
-| memory_layer5_roadmap.md           | Layer 5: Context Manager (interruption logic)                                                                                                                                                               |
-| memory_layer7_roadmap.md           | Layer 7: Emergence Engine (zelfbewustzijn)                                                                                                                                                                  |
-| semantic_roadmap.md                | Semantic Fases 1-7 (KLAAR — referentie bewaren)                                                                                                                                                            |
-| semantic_extension_roadmap.md      | Semantic Fases 8-13 (toekomstige uitbreidingen)                                                                                                                                                             |
-| reboot_hotreload_roadmap.md        | Reboot + Hot Reload (3 fases)                                                                                                                                                                               |
-| memory_user_preferences_roadmap.md | User Preferences: wat Nova over Kevin onthoudt (voorkeuren/afkeuren)                                                                                                                                        |
-| topic_events_roadmap.md            | `topic_detected`-events: hoe Layer 2 specifieke onderwerpen (schaak, Plex, ...) op tijdstip leert koppelen, en hoe Layer 4 dat later in vaste sjabloonzinnen gebruikt                                       |
-| identity_ROADMAP.md                | Identity-opbouw in 6 fases: Blueprint → Personality Engine → Emotion Engine → Expression Engine → Integration Layer → Adaptive Learning (later)                                                        |
-| intent_classifier_roadmap.md       | ML-specialist naast intent_router.py: klein lokaal classificatiemodel (scikit-learn) dat nieuwe, onbekende zinnen naar een bekende intent-categorie voorspelt. Concept, nog niet ingepland in bouwvolgorde. |
+| Document | Beschrijft |
+| --- | --- |
+| memory_layer0_roadmap.md | Layer 0: memory.py v2.0 (SQLite, tiering, query API) |
+| memory_24-7_daemon_addendum.md | 24/7 daemon aanpassingen voor memory.py |
+| memory_layer1_roadmap.md | Layer 1: Word Associations Learner (PMI scoring) |
+| memory_layer2_roadmap.md | Layer 2: Pattern Matcher (gedragspatronen) |
+| memory_layer4_roadmap.md | Layer 4: Response Generation Engine |
+| memory_layer5_roadmap.md | Layer 5: Context Manager (interruption logic) |
+| memory_layer7_roadmap.md | Layer 7: Emergence Engine (zelfbewustzijn) |
+| semantic_roadmap.md | Semantic Fases 1-7 (KLAAR — referentie bewaren) |
+| semantic_extension_roadmap.m | Semantic Fases 8-13 (toekomstige uitbreidingen) |
+| reboot_hotreload_roadmap.md | Reboot + Hot Reload (3 fases) |
+| memory_user_preferences_roadmap.md | User Preferences: wat Nova over Kevin onthoudt (voorkeuren/afkeuren) |
+| topic_events_roadmap.md | `topic_detected`-events: hoe Layer 2 specifieke onderwerpen (schaak, Plex, ...) op tijdstip leert koppelen, en hoe Layer 4 dat later in vaste sjabloonzinnen gebruikt |
+| identity_ROADMAP.md | Identity-opbouw in 6 fases: Blueprint → Personality Engine → Emotion Engine → Expression Engine → Integration Layer → Adaptive Learning (later) |
 | intent_classifier_roadmap.md | ML-specialist naast intent_router.py: klein lokaal classificatiemodel (scikit-learn) dat nieuwe, onbekende zinnen naar een bekende intent-categorie voorspelt. Concept, nog niet ingepland in bouwvolgorde. |
 | activity_awareness_roadmap.md | Activiteiten herkennen via intent/scherm/camera, co-occurrence tussen activiteiten, duur-detectie + proactieve pauze-suggestie. Concept, nog niet ingepland in bouwvolgorde. |
 
