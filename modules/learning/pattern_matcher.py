@@ -134,7 +134,16 @@ class PatternMatcher:
         # niet in het functie-argument 'event_type'.
         origineel_type = interaction.get("event_type")
 
-        if origineel_type not in self.RELEVANTE_EVENT_TYPES:
+        # topic_detected:<naam> is geen vaste string, maar telkens een
+        # andere naam na de dubbele punt (bv. topic_detected:chess,
+        # topic_detected:weather, ...). Daarom kan dit niet in de vaste
+        # RELEVANTE_EVENT_TYPES-set staan, en checken we apart of de
+        # origineel_type met dat voorvoegsel begint. Alles wat begint
+        # met "topic_detected:" wordt hierdoor generiek meegeteld,
+        # ongeacht welk onderwerp erachter staat.
+        is_topic_event = origineel_type.startswith("topic_detected:")
+
+        if origineel_type not in self.RELEVANTE_EVENT_TYPES and not is_topic_event:
             return
 
         timestamp = interaction.get("timestamp")

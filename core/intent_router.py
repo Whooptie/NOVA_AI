@@ -439,6 +439,18 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Topic events (Layer 2 topic-bewustzijn)
+    # ---------------------------------------------------------
+    def _emit_topic(self, naam):
+        """
+        Stuurt een 'topic_detected:<naam>' event de EventBus op.
+        Layer 2 (pattern_matcher.py) telt dit generiek mee op uur/dag,
+        zodat er per onderwerp (schaken, weer, ...) patronen kunnen
+        ontstaan. Geen nieuwe logica hier — enkel doorgeven.
+        """
+        self.event_bus.publish(f"topic_detected:{naam}", {})
+
+    # ---------------------------------------------------------
     # Fallback
     # ---------------------------------------------------------
     def fallback(self, text):
@@ -473,30 +485,37 @@ class IntentRouter:
 
         # 3 Greeting
         if self.detect_greeting(text):
+            self._emit_topic("greeting")
             return
 
         # 4 Time
         if self.detect_time(text):
+            self._emit_topic("time")
             return
 
         # 5 Weather
         if self.detect_weather(text):
+            self._emit_topic("weather")
             return
 
         # 6 Chess (vóór math, want zetten zoals "e2e4" mogen niet als math gezien worden)
         if self.detect_chess(text):
+            self._emit_topic("chess")
             return
 
         # 6b Help
         if self.detect_help(text):
+            self._emit_topic("help")
             return
 
         # 6c Memory test-commando's
         if self.detect_memory(text):
+            self._emit_topic("memory")
             return
 
         # 7 Math
         if self.detect_math(text):
+            self._emit_topic("math")
             return
 
         # 8 Definition
