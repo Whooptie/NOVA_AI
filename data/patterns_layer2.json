@@ -6,7 +6,7 @@
         "15": 5,
         "19": 5,
         "20": 8,
-        "21": 16,
+        "21": 28,
         "16": 6,
         "17": 2
       },
@@ -14,15 +14,15 @@
         "zondag": 28,
         "maandag": 6,
         "dinsdag": 10,
-        "woensdag": 2
+        "woensdag": 14
       },
-      "total": 46,
+      "total": 58,
       "most_common_hour": 21,
-      "confidence": 0.348,
+      "confidence": 0.483,
       "day_frequency": {
-        "maandag": 0.913,
+        "maandag": 0.724,
         "dinsdag": 1.0,
-        "woensdag": 0.304,
+        "woensdag": 1.0,
         "donderdag": 0.0,
         "vrijdag": 0.0,
         "zaterdag": 0.0,
@@ -35,7 +35,7 @@
         "15": 4,
         "19": 5,
         "20": 7,
-        "21": 18,
+        "21": 26,
         "16": 6,
         "17": 2
       },
@@ -43,15 +43,15 @@
         "zondag": 26,
         "maandag": 6,
         "dinsdag": 12,
-        "woensdag": 2
+        "woensdag": 10
       },
-      "total": 46,
+      "total": 54,
       "most_common_hour": 21,
-      "confidence": 0.391,
+      "confidence": 0.481,
       "day_frequency": {
-        "maandag": 0.913,
+        "maandag": 0.778,
         "dinsdag": 1.0,
-        "woensdag": 0.304,
+        "woensdag": 1.0,
         "donderdag": 0.0,
         "vrijdag": 0.0,
         "zaterdag": 0.0,
@@ -152,6 +152,46 @@
         "maandag": 0.0,
         "dinsdag": 1.0,
         "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 0.0
+      }
+    },
+    "topic_detected:definitie": {
+      "hours": {
+        "21": 6
+      },
+      "days": {
+        "woensdag": 6
+      },
+      "total": 6,
+      "most_common_hour": 21,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 0.0,
+        "woensdag": 1.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 0.0
+      }
+    },
+    "topic_detected:help": {
+      "hours": {
+        "21": 1
+      },
+      "days": {
+        "woensdag": 1
+      },
+      "total": 1,
+      "most_common_hour": 21,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 0.0,
+        "woensdag": 1.0,
         "donderdag": 0.0,
         "vrijdag": 0.0,
         "zaterdag": 0.0,

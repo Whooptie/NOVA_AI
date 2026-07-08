@@ -33,6 +33,19 @@ class ChatModule:
     # -------------------------
     # 2. Definitievragen (ruwe tekst)
     # -------------------------
+    # SINDS LAYER 4-INTEGRATIE (8 juli 2026): dit is niet meer de
+    # hoofdroute. intent_router.py stuurt definitievragen nu EERST
+    # naar response_engine.py (Layer 4, combineert semantic +
+    # word_associations + pattern_matcher). Deze methode hier wordt
+    # pas nog aangeroepen in twee gevallen:
+    #   1) Layer 4 vond zelf niets (confidence <= 0.2) -> val terug
+    #      op de automatische Wikipedia-fallback hieronder, die nog
+    #      niet in response_engine.py zit.
+    #   2) response_engine niet geladen/beschikbaar (bv. tijdens
+    #      testen) -> dit blijft dan het volledige vangnet.
+    # De logica hieronder is BEWUST ongewijzigd gelaten (nog steeds
+    # zijn eigen get_meaning()/is_a-poging), zodat dit een volwaardig
+    # vangnet blijft, ook los van Layer 4.
     def on_definition(self, data, event_type=None):
         text = (data.get("text") or "").lower()
 

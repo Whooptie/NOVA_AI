@@ -115,6 +115,35 @@ class ModuleLoader:
             self.event_bus.register_module(mod, instance)
 
         # ----------------------------------------------------
+        # 3B. RESPONSE ENGINE (Layer 4)
+        # ----------------------------------------------------
+        # Krijgt een aparte "layers"-dictionary mee in plaats van het
+        # gebruikelijke "sem"-argument dat de andere modules krijgen,
+        # want Layer 4 heeft meerdere lagen tegelijk nodig (semantic,
+        # word_associations, pattern_matcher). Daarom kan dit niet
+        # via de generieke dynamische lus hierboven geladen worden —
+        # dat roept altijd module.init_module(event_bus, sem) aan.
+        #
+        # LET OP: dit MOET na de dynamische modules-lus staan, want
+        # word_associations_learner.py en pattern_matcher.py zitten
+        # zelf ook in "modules/" (modules/learning/) en worden dus
+        # pas hierboven, in stap 3, geladen. Zonder deze volgorde
+        # zouden loaded_modules["word_associations"] en
+        # loaded_modules["pattern_matcher"] hier nog niet bestaan.
+        from core import response_engine
+
+        start = time.time()
+        response_layers = {
+            "semantic": sem,
+            "word_associations": self.loaded_modules.get("word_associations"),
+            "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
+        }
+        resp_engine = response_engine.init_module(self.event_bus, layers=response_layers)
+        resp_engine.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["response_engine"] = resp_engine
+        self.event_bus.register_module("response_engine", resp_engine)
+        
+        # ----------------------------------------------------
         # 4. INTENT ROUTER ALS LAATSTE
         # ----------------------------------------------------
         start = time.time()

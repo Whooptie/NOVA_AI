@@ -171,6 +171,27 @@ class IntentRouter:
                     if word.startswith(art):
                         word = word[len(art):].strip()
                         break
+
+                # Layer 4 (response_engine) EERST proberen: die combineert
+                # semantic + word_associations + pattern_matcher tot één
+                # antwoord. Alleen als Layer 4 zelf geen definitie/relatie
+                # vond (confidence <= 0.2, dat is zijn "weet ik niet"-geval,
+                # zie response_engine.py), vallen we terug op de oude route
+                # via chat.py's intent_definition — want DIE heeft nog de
+                # automatische Wikipedia-fallback die Layer 4 niet heeft.
+                response_engine = self.event_bus.modules.get("response_engine")
+
+                if response_engine is not None:
+                    resultaat = response_engine.generate(word)
+
+                    if resultaat.get("confidence", 0.0) > 0.2:
+                        self.event_bus.publish("chat_response", {
+                            "text": resultaat["text"]
+                        })
+                        return True
+                    # confidence <= 0.2 -> Layer 4 wist het niet, val
+                    # door naar de oude route hieronder (met Wikipedia).
+
                 self.event_bus.publish("intent_definition", {
                     "text": text,
                     "word": word
@@ -520,6 +541,7 @@ class IntentRouter:
 
         # 8 Definition
         if self.detect_definition(text):
+            self._emit_topic("definitie")
             return
 
         # 9 Relation-flow (eerst! anders pikt relation-check het op)
