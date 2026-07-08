@@ -39,6 +39,26 @@ def get_help():
   memory search <woord>           (zoek een woord terug in het geheugen)
   memory similar <woord>          (vind events die lijken op een woord, ook bij typfouten)
 
+📊 PATRONEN (Layer 2, tijdelijk testcommando)
+  patronen                        (algemene stats: hoeveel event_types en observaties)
+  patronen <event_type>           (bv. patronen chat_message, patronen topic_detected:chess)
+                                   toont ruwe patroondata, of het patroon nu actief is,
+                                   wanneer het volgende voorkomen verwacht wordt, en
+                                   recente anomalieën)
+    Generiek (via RELEVANTE_EVENT_TYPES in pattern_matcher.py):
+      patronen chat_message
+      patronen chat_response
+
+    Per onderwerp (via _emit_topic in intent_router.py):
+      patronen topic_detected:greeting
+      patronen topic_detected:time
+      patronen topic_detected:weather
+      patronen topic_detected:chess
+      patronen topic_detected:help
+      patronen topic_detected:memory
+      patronen topic_detected:math
+      patronen topic_detected:definitie
+    
 ❓ HELP
   help               (dit overzicht)
   help schaken       (schaakcommando's)
