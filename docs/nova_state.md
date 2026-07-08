@@ -428,6 +428,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 | Document | Beschrijft |
 | --- | --- |
+| Nova_Roadmap.md | Overkoepelende/algemene roadmap van het project |
 | memory_layer0_roadmap.md | Layer 0: memory.py v2.0 (SQLite, tiering, query API) |
 | memory_24-7_daemon_addendum.md | 24/7 daemon aanpassingen voor memory.py |
 | memory_layer1_roadmap.md | Layer 1: Word Associations Learner (PMI scoring) |
@@ -436,13 +437,18 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 | memory_layer5_roadmap.md | Layer 5: Context Manager (interruption logic) |
 | memory_layer7_roadmap.md | Layer 7: Emergence Engine (zelfbewustzijn) |
 | semantic_roadmap.md | Semantic Fases 1-7 (KLAAR — referentie bewaren) |
-| semantic_extension_roadmap.m | Semantic Fases 8-13 (toekomstige uitbreidingen) |
+| semantic_extension_roadmap.md | Semantic Fases 8-13 (toekomstige uitbreidingen) |
+| semantic_architecture.md | Architectuurdocument semantic.py: engines (ConceptStore, SenseEngine, RelationEngine, TeachEngine, RelationParser, RelationFlowEngine) en hoe ze samenwerken |
+| semantic_api.md | API-referentie voor semantic.py (beschikbare functies/aanroepen) |
+| semantic_teachengine.md | Detail-documentatie van de TeachEngine binnen semantic.py |
 | reboot_hotreload_roadmap.md | Reboot + Hot Reload (3 fases) |
 | memory_user_preferences_roadmap.md | User Preferences: wat Nova over Kevin onthoudt (voorkeuren/afkeuren) |
 | topic_events_roadmap.md | `topic_detected`-events: hoe Layer 2 specifieke onderwerpen (schaak, Plex, ...) op tijdstip leert koppelen, en hoe Layer 4 dat later in vaste sjabloonzinnen gebruikt |
 | identity_ROADMAP.md | Identity-opbouw in 6 fases: Blueprint → Personality Engine → Emotion Engine → Expression Engine → Integration Layer → Adaptive Learning (later) |
+| math_roadmap.md | Roadmap voor math.py-uitbreidingen |
 | intent_classifier_roadmap.md | ML-specialist naast intent_router.py: klein lokaal classificatiemodel (scikit-learn) dat nieuwe, onbekende zinnen naar een bekende intent-categorie voorspelt. Concept, nog niet ingepland in bouwvolgorde. |
 | activity_awareness_roadmap.md | Activiteiten herkennen via intent/scherm/camera, co-occurrence tussen activiteiten, duur-detectie + proactieve pauze-suggestie. Concept, nog niet ingepland in bouwvolgorde. |
+| ml_components_overview.md | Overzicht per laag (1/2/3/4) van mogelijke bounded ML-toevoegingen — referentiedocument, geen bouwvolgorde. Layer 3 (GNN voor concepts.json) is Kevin's belangrijkste "achterhoofd"-optie, grootste ingreep van de lijst. |
 
 ---
 
