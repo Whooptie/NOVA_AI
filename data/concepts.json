@@ -1472,7 +1472,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1528,7 +1530,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1584,7 +1588,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1640,7 +1646,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1696,7 +1704,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1752,7 +1762,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1808,7 +1820,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1864,7 +1878,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1934,7 +1950,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -1990,7 +2008,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2046,7 +2066,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2102,7 +2124,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2158,7 +2182,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2221,7 +2247,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2269,7 +2297,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2325,7 +2355,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2381,7 +2413,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2444,7 +2478,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2507,7 +2543,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2563,7 +2601,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2619,7 +2659,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2675,7 +2717,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2738,7 +2782,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2794,7 +2840,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2850,7 +2898,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2906,7 +2956,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -2962,7 +3014,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3018,7 +3072,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3074,7 +3130,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3130,7 +3188,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3186,7 +3246,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3242,7 +3304,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3298,7 +3362,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3354,7 +3420,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3410,7 +3478,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3473,7 +3543,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3529,7 +3601,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3585,7 +3659,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3641,7 +3717,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3718,7 +3796,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3774,7 +3854,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3830,7 +3912,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3886,7 +3970,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3942,7 +4028,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -3998,7 +4086,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4054,7 +4144,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4110,7 +4202,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4166,7 +4260,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4222,7 +4318,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4278,7 +4376,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4334,7 +4434,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4390,7 +4492,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4446,7 +4550,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4509,7 +4615,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4565,7 +4673,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4621,7 +4731,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4684,7 +4796,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4740,7 +4854,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4796,7 +4912,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -4873,7 +4991,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5020,7 +5140,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5097,7 +5219,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5153,7 +5277,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5209,7 +5335,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5265,7 +5393,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5321,7 +5451,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5377,7 +5509,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5440,7 +5574,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5496,7 +5632,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5559,7 +5697,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5615,7 +5755,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5678,7 +5820,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5734,7 +5878,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5811,7 +5957,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5901,7 +6049,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -5957,7 +6107,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6013,7 +6165,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6069,7 +6223,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6139,7 +6295,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6195,7 +6353,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6251,7 +6411,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6299,7 +6461,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6355,7 +6519,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6403,7 +6569,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6459,7 +6627,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6515,7 +6685,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6571,7 +6743,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6648,7 +6822,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6704,7 +6880,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6773,7 +6951,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6829,7 +7009,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6885,7 +7067,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6941,7 +7125,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -6997,7 +7183,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7053,7 +7241,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7109,7 +7299,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7165,7 +7357,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7228,7 +7422,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7291,7 +7487,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7347,7 +7545,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7403,7 +7603,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7459,7 +7661,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7515,7 +7719,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7578,7 +7784,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7634,7 +7842,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7690,7 +7900,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7746,7 +7958,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7802,7 +8016,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7858,7 +8074,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7886,7 +8104,8 @@
         "timestamp": "2026-07-05T00:00:00.000000"
       }
     ]
-  },"winter": {
+  },
+  "winter": {
     "senses": [
       {
         "sense_id": "winter#1",
@@ -7913,7 +8132,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7941,7 +8162,8 @@
         "timestamp": "2026-07-05T00:00:00.000000"
       }
     ]
-  },"school": {
+  },
+  "school": {
     "senses": [
       {
         "sense_id": "school#1",
@@ -7968,7 +8190,9 @@
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
       "updated_at": "2026-07-05T00:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-05T00:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
@@ -7994,6 +8218,65 @@
         "old_value": null,
         "new_value": "Een school is een instelling waar leerlingen les krijgen en kennis en vaardigheden aanleren.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      }
+    ]
+  },
+  "laptop": {
+    "senses": [
+      {
+        "sense_id": "laptop#1",
+        "definition": "een draagbare computer",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-08T15:38:51.282050",
+      "updated_at": "2026-07-08T15:40:39.189434",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-08T15:40:39.189434",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-08T15:38:51.283051",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-08T15:40:39.189434",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "laptop"
+        },
+        "timestamp": "2026-07-08T15:38:51.282050"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "laptop#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-08T15:38:51.283051"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "laptop#1",
+        "old_value": "unknown",
+        "new_value": "een draagbare computer",
+        "timestamp": "2026-07-08T15:40:39.189434"
       }
     ]
   }

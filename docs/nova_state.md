@@ -126,7 +126,7 @@ Nova_AI/
 | weather.py | ✅ Klaar | API-key in .env, huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie (morgen/overmorgen/weekdag) |
 | math.py | ✅ Klaar | Berekeningen, temperatuurconversie, wiskundige functies |
 | chat.py | ✅ Klaar | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig. |
-| response_pipeline.py | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet** |
+| response_pipeline.py | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet.** Nieuw (8 juli 2026): `on_fallback()` roept nu ook `_auto_learn_from_sentence()` aan — filtert zelfstandige naamwoorden uit de fallback-zin (via `detect_pos`) en slaat onbekende woorden automatisch op als `unknown`-concept via `semantic.auto_learn()`. Functiewoorden (bezittelijke voornaamwoorden, vervoegingen van "gebruiken", etc.) worden expliciet uitgesloten via een stopwoordenlijst — die hoort thuis in Layer 1 (word_associations), niet in concepts.json. |
 | chat_response_engine.p | ✅ Klaar | Doorsturen van pipeline_response naar expression_inject |
 | expression_injector.py | ✅ Klaar | Emoji, gesture, puberal flair injectie |
 | help.py | ✅ Klaar | Help-systeem met topic-bestanden. `help` = algemeen overzicht, `help schaken` = schaakcommando's incl. huidig niveau en denktijd. `algemeen.py` bijgewerkt (3 juli 2026) met `example`-commando en reasoning-sectie. |
@@ -171,6 +171,7 @@ Nova_AI/
 | 6 | Punt aan einde van woord wordt meegenomen bij wiki-aanroep | chat.p | 🟢 Laag | 🔲 Open |
 | 7 | Oude concepts.json entries hebben geen auto_extract relaties | concepts.json | 🟢 Laag | 🔲 Open |
 | 8 | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag | 🔲 Open — omzeild met handmatig `example`-commando |
+| 9 | Woordsoort-detectie (`detect_pos`) kan werkwoord/zelfstandig-naamwoord-dubbelzinnigheid niet oplossen zonder zinscontext (bv. "gebruik" als werkwoord vs. zelfstandig naamwoord) | semantic.py | 🟢 Laag | ✅ Omzeild (8 juli 2026 — expliciete stopwoordenlijst in response_pipeline.py, geen structurele fix) |
 
 ---
 
