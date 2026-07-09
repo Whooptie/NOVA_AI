@@ -78,7 +78,11 @@ class ChatModule:
                 meaning = None
 
         if meaning:
-            self.event_bus.publish("chat_response", {
+            # FASE 7: via layer4_response i.p.v. rechtstreeks chat_response,
+            # zodat dit ook door response_pipeline.py's tone-keten loopt
+            # (zelfde behandeling als een antwoord dat wel via Layer 4 zelf
+            # gevonden was — consistente "warmte" voor elk definitie-antwoord).
+            self.event_bus.publish("layer4_response", {
                 "text": f"{word} betekent: {meaning}"
             })
             return
@@ -93,7 +97,7 @@ class ChatModule:
 
             if parents:
                 parent = parents[0]
-                self.event_bus.publish("chat_response", {
+                self.event_bus.publish("layer4_response", {
                     "text": f"{word} zijn een soort van {parent}."
                 })
                 return

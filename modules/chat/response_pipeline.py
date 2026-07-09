@@ -20,9 +20,10 @@ class ResponsePipeline:
         self.emotion = EmotionEngine()
         self.tone_engine = ToneEngine()
 
-        # Voor nu: alleen greeting + fallback overnemen
+        # Voor nu: greeting + fallback + Layer 4 (definitie-antwoorden)
         event_bus.subscribe("intent_greeting", self.on_greeting)
         event_bus.subscribe("intent_fallback", self.on_fallback)
+        event_bus.subscribe("layer4_response", self.on_layer4_response)
 
     def _apply_emotion_trigger(self, trigger: str):
         try:
@@ -53,7 +54,39 @@ class ResponsePipeline:
             "emotion_state": self.emotion.state
         })
 
-# -------------------------
+    # -------------------------
+    # 1B. Layer 4 (definitie-antwoorden, incl. Wikipedia-vangnet)
+    # -------------------------
+    def on_layer4_response(self, data, event_type=None):
+        """
+        Neemt een AL KLARE tekst over van Layer 4 (response_engine.py)
+        of van chat.py's Wikipedia-vangnet, en stuurt die enkel nog
+        door de tone-verrijkingsstap (emotie -> tone -> expression_
+        injector), zonder de tekst zelf te wijzigen.
+
+        BELANGRIJK: dit verzint GEEN nieuwe tekst — 'base' hieronder
+        is letterlijk wat Layer 4 (of het vangnet) al besliste. Deze
+        methode voegt enkel Nova's stemming/expressie (emoji's,
+        uitroeptekens, gestures) toe, net als bij greeting/fallback.
+        """
+        base = data.get("text", "")
+        if not base:
+            return
+
+        # Geen vaste emotion-trigger hier (zoals "excitement" bij
+        # greeting) — Layer 4-antwoorden zijn informatief van aard,
+        # dus we laten Nova's HUIDIGE emotionele staat gewoon meespelen
+        # via de tone-engine, zonder die kunstmatig te sturen.
+        tone = self.tone_engine.generate_tone(self.personality, self.emotion)
+
+        self.event_bus.publish("pipeline_response", {
+            "base_text": base,
+            "tone": tone,
+            "personality_style": self.personality.generate_response_style(),
+            "emotion_state": self.emotion.state
+        })
+
+    # -------------------------
     # 2. Fallback
     # -------------------------
     def on_fallback(self, data, event_type=None):
