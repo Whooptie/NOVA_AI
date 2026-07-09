@@ -179,13 +179,19 @@ class IntentRouter:
                 # zie response_engine.py), vallen we terug op de oude route
                 # via chat.py's intent_definition — want DIE heeft nog de
                 # automatische Wikipedia-fallback die Layer 4 niet heeft.
+                # LET OP (Fase 7): we publiceren "layer4_response" i.p.v.
+                # rechtstreeks "chat_response" — zo loopt de tekst nog
+                # door response_pipeline.py's tone-keten (emotie/tone/
+                # expression_injector), net als greeting/fallback al
+                # deden. response_pipeline.py verzint daarbij GEEN nieuwe
+                # tekst, het voegt enkel Nova's stemming/expressie toe.
                 response_engine = self.event_bus.modules.get("response_engine")
 
                 if response_engine is not None:
                     resultaat = response_engine.generate(word)
 
                     if resultaat.get("confidence", 0.0) > 0.2:
-                        self.event_bus.publish("chat_response", {
+                        self.event_bus.publish("layer4_response", {
                             "text": resultaat["text"]
                         })
                         return True

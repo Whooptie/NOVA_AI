@@ -40,16 +40,30 @@ FASE 3 (dit bestand, huidige versie):
   De echte koppeling gebeurt pas in Fase 4, wanneer intent_router.py
   het actieve topic van het gesprek meegeeft aan Layer 4.
 
+FASE 4 (klaar, live getest):
+- Integratie in module_loader.py + intent_router.py: Nova gebruikt dit
+  nu echt tijdens een gesprek. Zie nova_state.md voor details.
+
+FASE 5 (dit bestand, huidige versie):
+- Sjablonen zijn niet langer 1 vaste zin per situatie, maar een LIJST
+  van meerdere natuurlijke, warmere varianten. _kies_variant() kiest
+  er willekeurig eentje uit (zelfde principe als expression_injector.py
+  met emoji's). Dit blijft 100% symbolisch: er wordt nooit een nieuwe
+  zin gegenereerd, enkel gekozen uit vooraf geschreven varianten.
+- Doel: minder "woordenboek-gevoel", meer klinken als gesprekspartner
+  — zonder de architectuur te verraden (nog steeds geen LLM).
+
 Nog GEEN koppeling met de EventBus/intent_router — dat is stap 4.
 Voor nu is dit een losstaande klasse die je apart kan testen (zie
 test_response_engine.py).
 
 Volgende stappen (samen met Kevin, niet in dit bestand):
-- FASE 4: Echte integratie in module_loader.py + intent_router.py,
-          zodat Nova dit ook echt gebruikt tijdens een gesprek, en
-          get_timing_hint() voor het eerst echt wordt aangeroepen.
+- FASE 6: bug #10 aanpakken (senses matchen aan associaties).
+- FASE 7: tone_engine.py/personality_engine.py laten meespelen in
+          welke variant gekozen wordt.
 """
 
+import random
 from typing import Dict, Optional
 
 
@@ -77,14 +91,49 @@ class ResponseEngine:
         self.layers = layers or {}
 
         # Sjablonen: vaste Nederlandse zinnen met invulplekken.
-        # Fase 1 heeft er maar één ("definitie"); in latere fases
-        # komen er sjablonen bij voor "met_associatie" en "met_timing".
+        #
+        # FASE 5: elk sjabloon is nu een LIJST van varianten, in plaats
+        # van 1 vaste zin. _kies_variant() kiest er willekeurig eentje
+        # uit. Dit blijft 100% symbolisch/vast: er wordt niets nieuws
+        # "verzonnen" of gegenereerd, we hebben gewoon vooraf meerdere
+        # handgeschreven zinnen klaarstaan, en Nova kiest er toevallig
+        # eentje — net zoals expression_injector.py al met emoji's
+        # doet. Zo klinkt Nova minder als een woordenboek dat exact
+        # dezelfde zin blijft herhalen.
         self.templates = {
-            "definitie": "{entity} betekent: {definition}",
-            "met_associatie": "{entity} betekent: {definition} Je associeert dat trouwens vaak met '{associatie}'.",
-            "is_a_fallback": "{entity} is een soort van {parent}.",
-            "onbekend": "Ik weet nog niet wat '{entity}' betekent.",
-            "timing_hint": "Trouwens, je vraagt hier meestal rond {uur}u naar.",
+            "definitie": [
+                "{entity} betekent: {definition}",
+                "Met '{entity}' bedoel je waarschijnlijk: {definition}",
+                "Ik ken '{entity}' als: {definition}",
+                "{entity}, dat is: {definition}",
+                "Wat ik weet over '{entity}': {definition}",
+            ],
+            "met_associatie": [
+                "{entity} betekent: {definition} Trouwens, dat woord duikt bij jou vaak op samen met '{associatie}'.",
+                "Met '{entity}' bedoel je waarschijnlijk: {definition} Ik zie dat woord bij jou trouwens vaak in de buurt van '{associatie}'.",
+                "Ik ken '{entity}' als: {definition} Grappig genoeg komt dat bij jou vaak samen voor met '{associatie}'.",
+                "{entity}, dat is: {definition} Dat associeer je hier trouwens opvallend vaak met '{associatie}'.",
+                "Wat ik weet over '{entity}': {definition} Bij jou hoort daar meestal ook '{associatie}' bij.",
+            ],
+            "is_a_fallback": [
+                "{entity} is een soort van {parent}.",
+                "Ik ken geen exacte definitie van '{entity}', maar het is wel een soort {parent}.",
+                "'{entity}' hoort bij de {parent}'s, voor zover ik weet.",
+                "Zoveel weet ik: '{entity}' valt onder {parent}.",
+                "Ik ken '{entity}' vooral als een soort {parent}.",
+            ],
+            "onbekend": [
+                "Ik weet nog niet wat '{entity}' betekent.",
+                "Hmm, '{entity}' ken ik nog niet.",
+                "Dat woord, '{entity}', is nieuw voor mij.",
+                "Ik heb nog geen idee wat '{entity}' betekent.",
+                "'{entity}' zegt me nog niets, sorry.",
+            ],
+            "timing_hint": [
+                "Trouwens, je vraagt hier meestal rond {uur}u naar.",
+                "Opvallend: dit komt bij jou meestal rond {uur}u ter sprake.",
+                "Je hebt hier trouwens een patroon in — meestal rond {uur}u.",
+            ],
         }
 
         # Vanaf welke PMI-score (0.0-1.0) vinden we een associatie sterk
@@ -139,20 +188,37 @@ class ResponseEngine:
 
         return woord
 
+    def _kies_variant(self, sjabloon_naam: str, **invulwaarden) -> str:
+        """
+        Kiest willekeurig één variant uit self.templates[sjabloon_naam]
+        en vult die in met invulwaarden (bv. entity=..., definition=...).
+
+        Dit is de centrale plek waar Fase 5's "meerdere natuurlijke
+        varianten"-aanpak gebeurt — elke aanroeper (generate(),
+        get_timing_hint()) hoeft zelf niet te weten dat er meerdere
+        varianten bestaan, die roepen gewoon deze ene methode aan.
+
+        BLIJFT 100% VAST/SYMBOLISCH: random.choice() kiest enkel WELKE
+        van de vooraf geschreven zinnen gebruikt wordt — er wordt nooit
+        een nieuwe zin gegenereerd of samengesteld die niet letterlijk
+        al in self.templates staat.
+        """
+        varianten = self.templates[sjabloon_naam]
+        gekozen = random.choice(varianten)
+        return gekozen.format(**invulwaarden)
+
     def get_timing_hint(self, topic_naam: str) -> Optional[str]:
         """
         Layer 2 (pattern_matcher): geeft een timing-zinnetje terug
-        voor een TOPIC (bv. "chess", "weather" — de naam die
-        intent_router.py doorgeeft via _emit_topic(), zonder het
+        voor een TOPIC (bv. "chess", "weather", "definitie" — de naam
+        die intent_router.py doorgeeft via _emit_topic(), zonder het
         "topic_detected:"-voorvoegsel).
 
-        BELANGRIJK — dit is een LOSSTAANDE methode, nog NIET gebruikt
-        in generate(). Reden: generate() krijgt momenteel enkel een
-        los woord ("entity") binnen, geen topic-naam — en een los
-        woord zoals "python" komt bijna nooit letterlijk overeen met
-        een topic-naam zoals "chess". Deze methode wordt pas echt
-        ingeschakeld in Fase 4, wanneer intent_router.py het actieve
-        topic van het gesprek doorgeeft aan Layer 4.
+        SINDS DE LAYER 2-KOPPELING (na Fase 7): wordt nu ECHT gebruikt
+        in generate(), via _voeg_timing_hint_toe(). Gebruikt daar het
+        generieke topic "definitie" — zie _voeg_timing_hint_toe() voor
+        de volledige uitleg waarom (geen per-woord-timing, wel
+        eerlijke algemene timing over "wanneer stel je definitievragen").
 
         Geeft None terug als:
         - Layer 2 niet beschikbaar is (nog niet meegegeven in layers)
@@ -188,7 +254,37 @@ class ResponseEngine:
         if uur is None:
             return None
 
-        return self.templates["timing_hint"].format(uur=uur)
+        return self._kies_variant("timing_hint", uur=uur)
+
+    def _voeg_timing_hint_toe(self, text: str) -> str:
+        """
+        FASE (na Fase 7): koppelt get_timing_hint() eindelijk aan
+        generate() — dit was het "vergeten stuk" uit de originele
+        Layer 4-roadmap (STAP 3 in het "HOE WERKT HET"-diagram).
+
+        Gebruikt bewust het GENERIEKE topic "definitie" (hetzelfde
+        topic dat intent_router.py's _emit_topic("definitie") al bij
+        ELKE definitievraag registreert, ongeacht het specifieke
+        woord). Dit is een bewuste, eerlijke keuze: Layer 2 houdt op
+        dit moment geen per-woord-patronen bij (dus geen "je vraagt
+        vooral 's avonds naar python" — dat zou Layer 2 iets laten
+        lijken te weten wat het niet weet). Wat het WEL eerlijk kan
+        zeggen is "je stelt hier over het algemeen rond dit tijdstip
+        definitievragen" — dat is precies wat get_timing_hint("definitie")
+        teruggeeft.
+
+        Per-woord-timing (bv. "je vraagt vooral 's avonds naar python")
+        is een mogelijke latere uitbreiding, genoteerd in nova_state.md
+        onder Layer 4 / activity_awareness_roadmap.md. Zou vereisen dat
+        intent_router.py een woord-specifieke topic-naam doorgeeft aan
+        _emit_topic() i.p.v. het vaste "definitie" — deze methode hier
+        zou dan ONGEWIJZIGD blijven, enkel de aanroep in generate()
+        hieronder zou een andere topic_naam meegeven.
+        """
+        hint = self.get_timing_hint("definitie")
+        if hint:
+            return f"{text} {hint}"
+        return text
 
     # ------------------------------------------------------------
     # Publieke API
@@ -238,20 +334,23 @@ class ResponseEngine:
             associatie_woord = self._sterkste_associatie(entity)
 
             if associatie_woord:
-                text = self.templates["met_associatie"].format(
+                text = self._kies_variant(
+                    "met_associatie",
                     entity=entity,
                     definition=definition,
                     associatie=associatie_woord,
                 )
+                text = self._voeg_timing_hint_toe(text)
                 return {
                     "text": text,
                     "confidence": 0.9,
                     "sources": ["semantic", "word_associations"],
                 }
 
-            text = self.templates["definitie"].format(
-                entity=entity, definition=definition
+            text = self._kies_variant(
+                "definitie", entity=entity, definition=definition
             )
+            text = self._voeg_timing_hint_toe(text)
             return {
                 "text": text,
                 "confidence": 0.9,
@@ -266,9 +365,10 @@ class ResponseEngine:
                 parents = []
 
             if parents:
-                text = self.templates["is_a_fallback"].format(
-                    entity=entity, parent=parents[0]
+                text = self._kies_variant(
+                    "is_a_fallback", entity=entity, parent=parents[0]
                 )
+                text = self._voeg_timing_hint_toe(text)
                 return {
                     "text": text,
                     "confidence": 0.6,
@@ -276,7 +376,9 @@ class ResponseEngine:
                 }
 
         # --- Stap 3: echt niets gevonden -> eerlijk toegeven ---
-        text = self.templates["onbekend"].format(entity=entity)
+        # GEEN timing-hint hier: "ik weet het niet, trouwens je vraagt
+        # hier vaak naar" zou een vreemde, ongepaste combinatie zijn.
+        text = self._kies_variant("onbekend", entity=entity)
         return {
             "text": text,
             "confidence": 0.2,
