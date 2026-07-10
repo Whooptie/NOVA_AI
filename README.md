@@ -1,5 +1,16 @@
-
 <div align="center">
+
+# 🌟 Nova AI
+
+**Een volledig symbolische, lokale AI companion — gebouwd zonder LLM, zonder cloud.**
+
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![Privacy](https://img.shields.io/badge/Privacy-100%25%20Lokaal-2ea44f?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-In%20Ontwikkeling-orange?style=for-the-badge)
+![License](https://img.shields.io/badge/Licentie-Privé-red?style=for-the-badge)
+
+</div>
 
 ---
 
@@ -7,7 +18,7 @@
 
 Nova is een **persoonlijke AI companion** die volledig lokaal draait op je eigen machine. Ze gebruikt geen LLM (zoals ChatGPT), geen cloud en geen internet — alles gebeurt op jouw computer, door jouw regels.
 
-Nova is gebouwd op **symbolische AI**: ze leert via expliciete concepten, relaties en gedragspatronen — niet via statistisch taalmodel. Ze draait **24/7 als achtergrondproces** en kan zelf proactief reageren op patronen in jouw gedrag.
+Nova is gebouwd op **symbolische AI**: ze leert via expliciete concepten, relaties en gedragspatronen — niet via een statistisch taalmodel. Ze draait **24/7 als achtergrondproces** en kan zelf proactief reageren op patronen in jouw gedrag.
 
 > *"Geen black box. Geen cloud. Geen verrassingen."*
 
@@ -15,20 +26,20 @@ Nova is gebouwd op **symbolische AI**: ze leert via expliciete concepten, relati
 
 ## ✨ Wat kan Nova al?
 
-
-| Functie                                               | Status |
-| ------------------------------------------------------- | -------- |
-| 💬 Gesprekken voeren in natuurlijke taal              | ✅     |
-| ♟️ Schaken tegen Stockfish (met statistieken)       | ✅     |
-| 🌤️ Weersvoorspellingen opvragen                     | ✅     |
-| 📚 Wikipedia raadplegen & automatisch leren           | ✅     |
-| 🧠 Semantische concepten begrijpen (118+ concepten)   | ✅     |
-| 🔗 Woordassociaties leren via gebruik                 | ✅     |
-| 📊 Gedragspatronen herkennen (tijdstip, frequentie)   | ✅     |
-| 😊 Eigen persoonlijkheid, emoties & expressie         | ✅     |
-| 🔄 Zichzelf herstarten zonder dataverlies (`/reboot`) | ✅     |
-| 🕐 Tijdsbewustzijn (klok, datum, tijdzone)            | ✅     |
-| ➗ Wiskundige berekeningen                            | ✅     |
+| Functie | Status |
+|---|---|
+| 💬 Gesprekken voeren in natuurlijke taal | ✅ |
+| ♟️ Schaken tegen Stockfish (met statistieken & kleurenbord) | ✅ |
+| 🌤️ Weersvoorspellingen opvragen (meerdere dagen) | ✅ |
+| 📚 Wikipedia raadplegen & automatisch leren | ✅ |
+| 🧠 Semantische concepten begrijpen (133+ concepten, 147 senses) | ✅ |
+| 🔗 Woordassociaties leren via gebruik (PMI scoring) | ✅ |
+| 📊 Gedragspatronen herkennen op tijdstip & frequentie | ✅ |
+| 💡 Sjabloongebaseerde antwoorden met toonvariatie | ✅ |
+| 😊 Eigen persoonlijkheid, emoties & expressie | ✅ |
+| 🔄 Zichzelf herstarten zonder dataverlies (`/reboot`) | ✅ |
+| 🕐 Tijdsbewustzijn (klok, datum, tijdzone) | ✅ |
+| ➗ Wiskundige berekeningen | ✅ |
 
 ---
 
@@ -45,17 +56,16 @@ Gebruiker → IntentRouter → EventBus → Modules
 
 ### 🧠 Het geheugen — 7 lagen
 
-
-| Laag    | Naam                                    | Status          |
-| --------- | ----------------------------------------- | ----------------- |
-| Layer 0 | SQLite opslag (WAL, write buffering)    | ✅ Klaar        |
-| Layer 1 | Woordassociaties leerder (PMI scoring)  | ✅ Klaar        |
-| Layer 2 | Gedragspatronen (tijdstip & frequentie) | ✅ Klaar        |
-| Layer 3 | Semantische redenering                  | 🔜 Gepland      |
-| Layer 4 | Antwoordgenerator                       | 🔜 Gepland      |
-| Layer 5 | Contextbeheer                           | 🔜 Gepland      |
-| Layer 6 | *(gereserveerd)*                        | —              |
-| Layer 7 | Emergent gedrag (zelfbewustzijn)        | 🔮 Ver toekomst |
+| Laag | Naam | Status |
+|---|---|---|
+| Layer 0 | SQLite opslag (WAL, write buffering, crash recovery) | ✅ Klaar |
+| Layer 1 | Woordassociaties leerder (PMI scoring) | ✅ Klaar |
+| Layer 2 | Gedragspatronen (tijdstip, frequentie, anomaly detection) | ✅ Klaar |
+| Layer 3 | Semantische redenering (concepten, relaties, inferentie) | ✅ Klaar |
+| Layer 4 | Antwoordgenerator (sjablonen, toonvariatie, routing) | ✅ Klaar |
+| Layer 5 | Contextbeheer (interruption logic) | 🔜 Gepland |
+| Layer 6 | *(gereserveerd)* | — |
+| Layer 7 | Emergent gedrag (zelfbewustzijn) | 🔮 Ver toekomst |
 
 ### 📦 Kernmodules
 
@@ -64,15 +74,16 @@ Nova_AI/
 ├── core/
 │   ├── event_bus.py          # Centrale communicatie-backbone
 │   ├── intent_router.py      # Begrijpt wat de gebruiker bedoelt
-│   ├── memory.py             # 7-laags leergeheugen
+│   ├── memory.py             # 7-laags leergeheugen (SQLite, WAL)
 │   ├── semantic.py           # Concepten, relaties, redeneren
+│   ├── response_engine.py    # Sjabloongebaseerde antwoorden
 │   └── reboot_manager.py     # Veilig herstarten
 ├── modules/
-│   ├── chat/                 # Gespreksafhandeling
+│   ├── chat/                 # Gespreksafhandeling + toonvariatie
 │   ├── chess/                # Schaakmotor (Stockfish)
-│   ├── weather/              # Weermodule
+│   ├── weather/              # Weermodule (meerdaagse voorspelling)
 │   ├── knowledge/            # Wikipedia AutoTeacher
-│   └── learning/             # Woordassociaties & patronen
+│   └── learning/             # Woordassociaties & gedragspatronen
 ├── identity/
 │   ├── personality/          # Persoonlijkheidsmotor
 │   ├── emotion/              # Emotie-engine
@@ -89,18 +100,21 @@ Nova_AI/
 - **Nooit handelen zonder toestemming** — Nova suggereert altijd eerst
 - **Volledig transparant** — alles wordt gelogd en is inzichtelijk
 - **Open architectuur** — elk concept is leesbaar in `concepts.json`
+- **ML alleen als sensor** — externe modellen mogen helpen waarnemen, Nova beslist zelf
 
 ---
 
 ## 🚀 Op de roadmap
 
 - 🟡 Persoonlijkheidspipeline uitbreiden naar alle intents
-- 🟢 Onderwerpherkenning voor Layer 2 (`topic_detected` events)
+- 🟢 Layer 5: Contextbeheer (wanneer mag Nova onderbreken?)
 - 🟢 Gebruikersvoorkeuren-module (wat Nova over jou onthoudt)
-- 🟢 Layer 4 antwoordgenerator (sjabloongebaseerde responses)
+- 🟢 Activity Awareness (activiteiten herkennen & proactief reageren)
+- 🟢 Activity-Aware Interaction (interruption learning)
 - 🟢 Intent classifier (klein lokaal ML-model als specialist)
-- 🔮 Avatar / desktop companion (bewegende animatie)
+- 🔮 Avatar / desktop companion (bewegende animatie, lipsync)
 - 🔮 Meer bordspellen (dammen, Go)
+- 🔮 Smart home integratie (lichten, sensoren)
 - 🔮 Robotica-integratie (ver toekomst)
 
 ---
@@ -109,8 +123,8 @@ Nova_AI/
 
 - Python 3.10+
 - Windows (getest op Windows 11)
-- Stockfish engine (voor schaak)
-- OpenWeatherMap API key (voor weer)
+- Stockfish engine (voor schaak — zelf te downloaden op stockfishchess.org)
+- OpenWeatherMap API key (gratis aan te maken op openweathermap.org)
 
 ```bash
 pip install -r requirements.txt
@@ -121,7 +135,7 @@ python main.py
 
 ## 👤 Over dit project
 
-Nova wordt gebouwd door **Kevin** — een zelfgeleerde developer.
+Nova wordt gebouwd door **Kevin** — een zelfgeleerde developer uit Brugge, België.  
 Geen voorkennis. Geen achtergrond in programmeren. Gewoon nieuwsgierigheid en doorzettingsvermogen.
 
 Dit project begon als een experiment en groeit uit tot een volwaardig lokaal AI-systeem met een geplande roadmap van 498+ modules.
@@ -131,3 +145,9 @@ Dit project begon als een experiment en groeit uit tot een volwaardig lokaal AI-
 ---
 
 <div align="center">
+
+**⭐ Dit is een privéproject — niet bedoeld voor publieke installatie**
+
+*Gebouwd met Python · Aangedreven door nieuwsgierigheid · Zonder LLM*
+
+</div>
