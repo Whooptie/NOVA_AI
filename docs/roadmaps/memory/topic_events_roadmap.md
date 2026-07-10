@@ -88,13 +88,14 @@ De variabelen (`{uur}`, `{onderwerp}`, `{top_associatie}`) komen altijd **letter
 
 ## FASE-ROADMAP {#fase-roadmap}
 
-| Fase | Omschrijving | Geschat werk |
-|---|---|---|
-| 1 | `intent_router.py` uitbreiden: bij elke herkende intent ook `topic_detected:<naam>` publiceren | Klein — 1 regel per bestaande intent |
-| 2 | `pattern_matcher.py` (Layer 2): `topic_detected:*`-events toevoegen aan relevante-events-filter | Klein — uitbreiding van bestaande `RELEVANTE_EVENT_TYPES`-set |
-| 3 | Testen met minstens 2 onderwerpen (bv. schaken + weer) om te bevestigen dat losse patronen per onderwerp ontstaan | Klein |
-| 4 | Vast "recept": bij elke nieuwe module (Plex, dammen, Go...) voortaan standaard een `topic_detected`-event toevoegen | Doorlopend, geen apart project |
-| 5 | Koppeling met Layer 4 (sjabloon-antwoorden + proactief spreken via achtergrondtimer) | Later — afhankelijk van Layer 4-bouw |
+
+| Fase | Omschrijving                                                                                                       | Geschat werk                                                  |
+| ------ | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| 1    | `intent_router.py` uitbreiden: bij elke herkende intent ook `topic_detected:<naam>` publiceren                     | Klein — 1 regel per bestaande intent                         |
+| 2    | `pattern_matcher.py` (Layer 2): `topic_detected:*`-events toevoegen aan relevante-events-filter                    | Klein — uitbreiding van bestaande`RELEVANTE_EVENT_TYPES`-set |
+| 3    | Testen met minstens 2 onderwerpen (bv. schaken + weer) om te bevestigen dat losse patronen per onderwerp ontstaan  | Klein                                                         |
+| 4    | Vast "recept": bij elke nieuwe module (Plex, dammen, Go...) voortaan standaard een`topic_detected`-event toevoegen | Doorlopend, geen apart project                                |
+| 5    | Koppeling met Layer 4 (sjabloon-antwoorden + proactief spreken via achtergrondtimer)                               | Later — afhankelijk van Layer 4-bouw                         |
 
 ---
 
