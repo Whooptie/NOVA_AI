@@ -1,0 +1,67 @@
+# ============================================================
+# Nova AI — Configuratiebestand
+# ============================================================
+# LET OP: dit bestand bevat GEEN geheime sleutels (API keys,
+# wachtwoorden). Die horen in .env, niet hier.
+# config.yaml is voor instellingen die veilig zichtbaar mogen
+# zijn, ook al staat dit bestand op GitHub.
+# ============================================================
+
+systeem:
+  naam: "Nova"
+  eigenaar: "Kevin"
+  taal: "nl"
+  modus: "daemon"          # Nova draait 24/7 als achtergrondproces
+
+# --- Logging ---
+logging:
+  niveau: "WARNING"          # DEBUG / INFO / WARNING / ERROR
+  bestand: "logs/nova.log"
+  max_bestandsgrootte_mb: 5
+  aantal_backups: 3
+
+# --- Layer 0: Geheugen (memory.py) ---
+geheugen:
+  database_pad: "data/interactions.db"
+  jsonl_pad: "data/interactions.jsonl"
+  max_jsonl_grootte_mb: 50
+  onderhoud_interval_uren: 6      # archiveren/comprimeren/VACUUM
+  ram_trim_naar: 500               # aantal events dat 's nachts bewaard blijft
+
+# --- Layer 2: Gedragspatronen (pattern_matcher.py) ---
+patronen:
+  min_observaties_voor_anomalie: 3   # TIJDELIJKE testwaarde, later hoger
+  min_confidence_voor_anomalie: 0.7
+  opslag_elke_n_observaties: 2       # TIJDELIJKE testwaarde, later hoger
+
+# --- Schaken (chess_engine.py) ---
+schaken:
+  stockfish_pad: "engines/stockfish/stockfish-windows-x86-64-avx2.exe"
+  denktijd_ms: 1000
+  standaard_niveau: 10
+
+# --- Weer (weather.py) ---
+weer:
+  # De API-key zelf staat in .env als OPENWEATHER_API_KEY
+  stad: "Brugge"
+  land_code: "BE"
+  eenheden: "metric"          # metric = Celsius
+  aantal_dagen_voorspelling: 5
+
+# --- Wikipedia AutoTeacher ---
+wikipedia:
+  taal: "nl"
+  max_concepten_per_sessie: 10
+
+# --- Reboot / Hot Reload ---
+reboot:
+  nieuw_venster: true          # CREATE_NEW_CONSOLE bij herstart
+
+# --- Semantic Layer 3 ---
+semantic:
+  concepts_bestand: "data/concepts.json"
+  confidence_schaal:
+    user: 1.0
+    auto_extract: 0.9
+    wikipedia: 0.8
+    auto: 0.1
