@@ -242,9 +242,14 @@ class ChessModule:
             elif result is not None:
                 move = result
             else:
-                self.event_bus.publish("chat_response", {
-                    "text": f"Die zet is niet mogelijk in deze stand. Probeer een andere zet."
-                })
+                if self.board.is_check():
+                    self.event_bus.publish("chat_response", {
+                        "text": f"Je staat schaak! Die zet lost dat niet op. Je moet je koning redden.\n\n{self.bord_als_tekst()}"
+                    })
+                else:
+                    self.event_bus.publish("chat_response", {
+                        "text": f"Die zet is niet mogelijk in deze stand. Probeer een andere zet."
+                    })
                 return
 
         # Speler zet uitvoeren
@@ -266,8 +271,9 @@ class ChessModule:
         self.save_game()
 
         nova_zet = self.uci_to_leesbaar(result.move)
+        schaak_melding = "\n\n⚠️ Je staat schaak!" if self.board.is_check() else ""
         self.event_bus.publish("chat_response", {
-            "text": f"Jij speelde {move_text}. Ik speel {nova_zet}.\n\n{self.bord_als_tekst()}"
+            "text": f"Jij speelde {move_text}. Ik speel {nova_zet}.\n\n{self.bord_als_tekst()}{schaak_melding}"
         })
 
         if self.board.is_game_over():
@@ -278,18 +284,34 @@ class ChessModule:
     # ----------------------------------------------------
     def announce_game_over(self):
         result = self.board.result()
+
+        # Reden van einde bepalen
+        if self.board.is_checkmate():
+            reden = "schaakmat"
+        elif self.board.is_stalemate():
+            reden = "patstand"
+        elif self.board.is_insufficient_material():
+            reden = "onvoldoende materiaal om mat te zetten"
+        elif self.board.is_seventyfive_moves():
+            reden = "75-zettenregel"
+        elif self.board.is_fivefold_repetition():
+            reden = "5x dezelfde stelling herhaald"
+        else:
+            reden = "onbekende reden"
+
         if result == "1-0":
             self.stats["gewonnen"] += 1
-            bericht = "🎉 Jij wint! Goed gespeeld!"
+            bericht = f"🎉 Jij wint door {reden}! Goed gespeeld!"
         elif result == "0-1":
             self.stats["verloren"] += 1
-            bericht = "💀 Ik win deze keer. Probeer het opnieuw!"
+            bericht = f"💀 Ik win door {reden}. Probeer het opnieuw!"
         else:
             self.stats["gelijkspel"] += 1
-            bericht = "🤝 Gelijkspel!"
+            bericht = f"🤝 Gelijkspel door {reden}!"
+
         self.save_stats()
         self.event_bus.publish("chat_response", {
-            "text": f"{bericht} (Resultaat: {result})"
+            "text": f"{bericht}\n\n{self.bord_als_tekst()}"
         })
 
     # ----------------------------------------------------

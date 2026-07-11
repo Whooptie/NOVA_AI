@@ -6,9 +6,7 @@ class ChatModule:
         self.semantic = semantic_module
 
         # Luister naar intents, niet naar chat_message
-        # event_bus.subscribe("intent_greeting", self.on_greeting)
         event_bus.subscribe("intent_definition", self.on_definition)
-        # event_bus.subscribe("intent_fallback", self.on_fallback)
         event_bus.subscribe("intent_relation_check", self.on_relation_check)
         event_bus.subscribe("intent_related_to", self.on_related_to)
         event_bus.subscribe("intent_synonym", self.on_synonym)
@@ -155,7 +153,7 @@ class ChatModule:
 
         self.event_bus.publish("chat_response", {"text": msg})
 
-# -------------------------
+    # -------------------------
     # Synoniemen
     # -------------------------
     def on_synonym(self, data, event_type=None):
