@@ -270,7 +270,7 @@
   "huiskat": {
     "senses": [
       {
-        "sense_id": "kat#1",
+        "sense_id": "huiskat#1",
         "definition": "De kat of huiskat is een van de oudste huisdieren van de mens.",
         "pos": "noun",
         "examples": [
@@ -6452,7 +6452,15 @@
           "De luchtdruk daalde voor het onweer.",
           "Ze verhoogde de druk op de fietsband."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "materietoestand",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -6560,7 +6568,15 @@
           "Ze speelden een kaartspel tijdens de treinreis.",
           "Het kaartspel bestond uit tweeënvijftig kaarten."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "has_part",
+            "target": "speelkaart",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -8227,8 +8243,19 @@
         "sense_id": "laptop#1",
         "definition": "een draagbare computer",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "Ze werkte op haar laptop in het park.",
+          "De laptop moest even opladen voor hij weer aankon."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "computer",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -8284,9 +8311,12 @@
     "senses": [
       {
         "sense_id": "rust#1",
-        "definition": "Een rust is een teken dat in de muzieknotatie gebruikt wordt om een stilte van een bepaalde duur weer te geven.",
+        "definition": "Een rust is een teken dat in de muzieknotatie gebruikt wordt om een moment van stilte aan te geven.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "De partituur had een halve rust na de derde maat.",
+          "De pianist telde de rust voordat hij verder speelde."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -8298,6 +8328,27 @@
         ],
         "source": "wikipedia",
         "confidence": 0.8,
+        "audit_log": []
+      },
+      {
+        "sense_id": "rust#2",
+        "definition": "Rust is een toestand van kalmte, stilte en ontspanning, zonder inspanning of drukte.",
+        "pos": "noun",
+        "examples": [
+          "Na de drukke dag zocht ze even rust.",
+          "Het was heerlijk rustig aan het meer."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "slaap",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -8339,9 +8390,12 @@
     "senses": [
       {
         "sense_id": "alles#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Alles verwijst naar de volledige verzameling van dingen, zonder iets uit te sluiten.",
+        "pos": "pronoun",
+        "examples": [
+          "Ze had alles al ingepakt voor de reis.",
+          "Hij wilde alles weten over het project."
+        ],
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
@@ -8386,9 +8440,12 @@
     "senses": [
       {
         "sense_id": "goed#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Goed betekent van hoge kwaliteit, juist, of moreel positief, afhankelijk van de context.",
+        "pos": "adj",
+        "examples": [
+          "Dat was een goed idee.",
+          "Ze voelde zich goed na de wandeling."
+        ],
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
@@ -8433,9 +8490,12 @@
     "senses": [
       {
         "sense_id": "top#1",
-        "definition": "unknown",
+        "definition": "De top is het hoogste of verste punt van iets, zoals een berg of een ranglijst.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Ze bereikten de top van de berg bij zonsopgang.",
+          "Dit nummer stond wekenlang aan de top van de hitlijst."
+        ],
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
@@ -8480,10 +8540,21 @@
     "senses": [
       {
         "sense_id": "paard#1",
-        "definition": "unknown",
+        "definition": "Een paard is een groot, hoefdragend zoogdier dat vaak gebruikt wordt om op te rijden of als lastdier.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "Ze reed elke zaterdag paard in de manege.",
+          "Het paard galoppeerde vrolijk door de wei."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zoogdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
         "source": "auto",
         "confidence": 0.1,
         "audit_log": []
@@ -8520,6 +8591,2218 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-10T21:01:21.091285"
+      }
+    ]
+  },
+  "teken": {
+    "senses": [
+      {
+        "sense_id": "teken#1",
+        "definition": "Een teken is een symbool of markering die een betekenis of instructie overbrengt.",
+        "pos": "noun",
+        "examples": [
+          "Het verkeersbord toont een teken voor voorrang.",
+          "In de muzieknotatie staat een rustteken voor stilte."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "teken"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "teken#1",
+        "old_value": null,
+        "new_value": "Een teken is een symbool of markering die een betekenis of instructie overbrengt.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "bang": {
+    "senses": [
+      {
+        "sense_id": "bang#1",
+        "definition": "Bang is een gevoel van angst of onrust, veroorzaakt door een dreigende of onbekende situatie.",
+        "pos": "adj",
+        "examples": [
+          "Ze was bang voor het onweer.",
+          "Hij werd bang toen hij alleen thuis was in het donker."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gevoel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bang"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bang#1",
+        "old_value": null,
+        "new_value": "Bang is een gevoel van angst of onrust, veroorzaakt door een dreigende of onbekende situatie.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "kabel": {
+    "senses": [
+      {
+        "sense_id": "kabel#1",
+        "definition": "Een kabel is een draad of bundel draden die gebruikt wordt om elektriciteit of gegevens te transporteren.",
+        "pos": "noun",
+        "examples": [
+          "Ze stak de kabel in de laptop om hem op te laden.",
+          "De kabel was te kort om bij het stopcontact te komen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "laptop",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kabel"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kabel#1",
+        "old_value": null,
+        "new_value": "Een kabel is een draad of bundel draden die gebruikt wordt om elektriciteit of gegevens te transporteren.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "broer": {
+    "senses": [
+      {
+        "sense_id": "broer#1",
+        "definition": "Een broer is een mannelijk familielid dat dezelfde ouder of ouders heeft als iemand anders.",
+        "pos": "noun",
+        "examples": [
+          "Haar broer woonde in een andere stad.",
+          "Ze speelden samen buiten, broer en zus."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "persoon",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "broer"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "broer#1",
+        "old_value": null,
+        "new_value": "Een broer is een mannelijk familielid dat dezelfde ouder of ouders heeft als iemand anders.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "wifi": {
+    "senses": [
+      {
+        "sense_id": "wifi#1",
+        "definition": "Wifi is een draadloze technologie waarmee apparaten via radiogolven verbinding kunnen maken met een netwerk of het internet.",
+        "pos": "noun",
+        "examples": [
+          "De laptop verbond automatisch met de wifi thuis.",
+          "Zonder wifi kon ze geen video's meer streamen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "laptop",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wifi"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "wifi#1",
+        "old_value": null,
+        "new_value": "Wifi is een draadloze technologie waarmee apparaten via radiogolven verbinding kunnen maken met een netwerk of het internet.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "scherm": {
+    "senses": [
+      {
+        "sense_id": "scherm#1",
+        "definition": "Een scherm is het platte onderdeel van een apparaat waarop beeld getoond wordt.",
+        "pos": "noun",
+        "examples": [
+          "Het scherm van haar laptop was gebarsten.",
+          "Hij keek naar het scherm terwijl de code draaide."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "laptop",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "scherm"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "scherm#1",
+        "old_value": null,
+        "new_value": "Een scherm is het platte onderdeel van een apparaat waarop beeld getoond wordt.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "server": {
+    "senses": [
+      {
+        "sense_id": "server#1",
+        "definition": "Een server is een computer of programma dat diensten of gegevens levert aan andere apparaten (clients) via een netwerk.",
+        "pos": "noun",
+        "examples": [
+          "De server verwerkte duizenden aanvragen per seconde.",
+          "Nova's centrale brein zou op een headless server kunnen draaien."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "computer",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "server"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "server#1",
+        "old_value": null,
+        "new_value": "Een server is een computer of programma dat diensten of gegevens levert aan andere apparaten (clients) via een netwerk.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "dag": {
+    "senses": [
+      {
+        "sense_id": "dag#1",
+        "definition": "Een dag is de periode van vierentwintig uur waarin de aarde eenmaal om haar as draait.",
+        "pos": "noun",
+        "examples": [
+          "Vandaag was een drukke dag.",
+          "Een week bestaat uit zeven dagen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "tijd",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "dag"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "dag#1",
+        "old_value": null,
+        "new_value": "Een dag is de periode van vierentwintig uur waarin de aarde eenmaal om haar as draait.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "netwerk": {
+    "senses": [
+      {
+        "sense_id": "netwerk#1",
+        "definition": "Een netwerk is een verbonden geheel van apparaten of systemen die met elkaar kunnen communiceren en gegevens uitwisselen.",
+        "pos": "noun",
+        "examples": [
+          "De laptop verbond via wifi met het netwerk.",
+          "Het bedrijf had een eigen intern netwerk."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "wifi",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "server",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "netwerk"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "netwerk#1",
+        "old_value": null,
+        "new_value": "Een netwerk is een verbonden geheel van apparaten of systemen die met elkaar kunnen communiceren en gegevens uitwisselen.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "zus": {
+    "senses": [
+      {
+        "sense_id": "zus#1",
+        "definition": "Een zus is een vrouwelijk familielid dat dezelfde ouder of ouders heeft als iemand anders.",
+        "pos": "noun",
+        "examples": [
+          "Haar zus kwam elk weekend op bezoek.",
+          "Ze deelde een kamer met haar zus."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "broer",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zus"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zus#1",
+        "old_value": null,
+        "new_value": "Een zus is een vrouwelijk familielid dat dezelfde ouder of ouders heeft als iemand anders.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "code": {
+    "senses": [
+      {
+        "sense_id": "code#1",
+        "definition": "Code is een reeks instructies geschreven in een programmeertaal, die een computer kan uitvoeren.",
+        "pos": "noun",
+        "examples": [
+          "Ze schreef de code voor een nieuwe functie.",
+          "Er zat een fout in de code die de app deed crashen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "programmeertaal",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "algoritme",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "code"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "code#1",
+        "old_value": null,
+        "new_value": "Code is een reeks instructies geschreven in een programmeertaal, die een computer kan uitvoeren.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "kaas": {
+    "senses": [
+      {
+        "sense_id": "kaas#1",
+        "definition": "Kaas is een voedingsmiddel gemaakt van gestremde melk, vaak stevig van structuur en verkrijgbaar in vele smaken.",
+        "pos": "noun",
+        "examples": [
+          "Ze legde een plakje kaas op haar boterham.",
+          "De kaas rijpte maandenlang in de kelder."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "melk",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "voedingsmiddel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kaas"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kaas#1",
+        "old_value": null,
+        "new_value": "Kaas is een voedingsmiddel gemaakt van gestremde melk, vaak stevig van structuur en verkrijgbaar in vele smaken.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "trots": {
+    "senses": [
+      {
+        "sense_id": "trots#1",
+        "definition": "Trots is een gevoel van voldoening en waardering over een eigen prestatie of over iemand anders.",
+        "pos": "adj",
+        "examples": [
+          "Ze was trots op haar behaalde diploma.",
+          "Hij keek trots naar zijn zelfgebouwde project."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gevoel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "trots"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "trots#1",
+        "old_value": null,
+        "new_value": "Trots is een gevoel van voldoening en waardering over een eigen prestatie of over iemand anders.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "mes": {
+    "senses": [
+      {
+        "sense_id": "mes#1",
+        "definition": "Een mes is een gereedschap met een scherp lemmet, gebruikt om te snijden.",
+        "pos": "noun",
+        "examples": [
+          "Ze sneed de kaas met een scherp mes.",
+          "Het mes lag klaar op het aanrecht."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "mes"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "mes#1",
+        "old_value": null,
+        "new_value": "Een mes is een gereedschap met een scherp lemmet, gebruikt om te snijden.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "boven": {
+    "senses": [
+      {
+        "sense_id": "boven#1",
+        "definition": "Boven duidt een positie of richting aan die hoger ligt dan een referentiepunt.",
+        "pos": "adv",
+        "examples": [
+          "De kat zat boven op de kast.",
+          "Ze woonde boven in het huis."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "boven"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "boven#1",
+        "old_value": null,
+        "new_value": "Boven duidt een positie of richting aan die hoger ligt dan een referentiepunt.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "ei": {
+    "senses": [
+      {
+        "sense_id": "ei#1",
+        "definition": "Een ei is een ovaal omhulsel waarin het jong van een dier zich ontwikkelt, vaak gelegd door vogels of reptielen.",
+        "pos": "noun",
+        "examples": [
+          "Ze bakte een ei voor het ontbijt.",
+          "De kip legde elke dag een nieuw ei."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "voedingsmiddel",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "kip",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ei"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "ei#1",
+        "old_value": null,
+        "new_value": "Een ei is een ovaal omhulsel waarin het jong van een dier zich ontwikkelt, vaak gelegd door vogels of reptielen.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "kip": {
+    "senses": [
+      {
+        "sense_id": "kip#1",
+        "definition": "Een kip is een gedomesticeerde vogel die gehouden wordt voor de eieren en het vlees.",
+        "pos": "noun",
+        "examples": [
+          "De kip liep rond in de tuin.",
+          "Elke ochtend legde de kip een vers ei."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "ei",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "vogel",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kip"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kip#1",
+        "old_value": null,
+        "new_value": "Een kip is een gedomesticeerde vogel die gehouden wordt voor de eieren en het vlees.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "vogel": {
+    "senses": [
+      {
+        "sense_id": "vogel#1",
+        "definition": "Een vogel is een gewerveld dier met veren, vleugels en een snavel, waarvan de meeste soorten kunnen vliegen.",
+        "pos": "noun",
+        "examples": [
+          "De vogel zong vrolijk in de boom.",
+          "Elke lente bouwden de vogels hun nest opnieuw."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-11T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vogel"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "vogel#1",
+        "old_value": null,
+        "new_value": "Een vogel is een gewerveld dier met veren, vleugels en een snavel, waarvan de meeste soorten kunnen vliegen.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "vulkaan": {
+    "senses": [
+      {
+        "sense_id": "vulkaan#1",
+        "definition": "Een vulkaan is een berg waaruit gesmolten gesteente, gas en as vanuit het binnenste van de aarde naar de oppervlakte komen.",
+        "pos": "noun",
+        "examples": [
+          "De vulkaan barstte na jaren van rust plots uit.",
+          "Rondom de vulkaan lag een dikke laag as."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "berg",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-11T20:52:21.434865"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T20:45:30.083084",
+      "updated_at": "2026-07-11T20:54:04.231135",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T20:54:04.231135",
+      "usage_count": 3,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T20:45:30.084053",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T20:52:21.434865",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T20:54:04.231135",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vulkaan"
+        },
+        "timestamp": "2026-07-11T20:45:30.083084"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vulkaan#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T20:45:30.084053"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vulkaan#1",
+        "relation": {
+          "type": "is_a",
+          "target": "berg",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T20:52:21.434865"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vulkaan#1",
+        "relation": {
+          "type": "is_a",
+          "target": "berg waaruit gesmolten gesteente, gas en as vanuit het binnenste van de aarde naar de oppervlakte komen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T20:54:04.231135"
+      }
+    ]
+  },
+  "berg": {
+    "senses": [
+      {
+        "sense_id": "berg#1",
+        "definition": "Een berg is een groot, hoog en steil oprijzend deel van het aardoppervlak.",
+        "pos": "noun",
+        "examples": [
+          "Ze beklommen de berg bij zonsopgang.",
+          "Sneeuw bedekte de top van de berg."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T20:52:17.438719",
+      "updated_at": "2026-07-11T20:52:17.438719",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T20:52:17.438719",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T20:52:17.438719",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "berg"
+        },
+        "timestamp": "2026-07-11T20:52:17.438719"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "berg#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T20:52:17.438719"
+      }
+    ]
+  },
+  "tijger": {
+    "senses": [
+      {
+        "sense_id": "tijger#1",
+        "definition": "Een tijger is een groot roofdier met een oranje vacht en zwarte strepen, behorend tot de kattenfamilie.",
+        "pos": "noun",
+        "examples": [
+          "De tijger sloop geruisloos door het gras.",
+          "Tijgers leven meestal alleen, niet in groepen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "kat",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T21:15:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T20:59:11.942346",
+      "updated_at": "2026-07-11T20:59:15.632113",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T20:59:15.632113",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T20:59:11.943379",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T20:59:15.632113",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tijger"
+        },
+        "timestamp": "2026-07-11T20:59:11.942346"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "tijger#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T20:59:11.943379"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "tijger#1",
+        "relation": {
+          "type": "is_a",
+          "target": "roofdier",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T20:59:15.632113"
+      }
+    ]
+  },
+  "roofdier": {
+    "senses": [
+      {
+        "sense_id": "roofdier#1",
+        "definition": "Een roofdier is een dier dat andere dieren vangt en eet om te overleven.",
+        "pos": "noun",
+        "examples": [
+          "De leeuw is een bekend roofdier.",
+          "Roofdieren hebben vaak scherpe klauwen en tanden."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T21:15:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T20:59:11.955353",
+      "updated_at": "2026-07-11T20:59:11.955353",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T20:59:11.955353",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T20:59:11.955353",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "roofdier"
+        },
+        "timestamp": "2026-07-11T20:59:11.955353"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "roofdier#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T20:59:11.955353"
+      }
+    ]
+  },
+  "gitaar": {
+    "senses": [
+      {
+        "sense_id": "gitaar#1",
+        "definition": "Een gitaar is een snaarinstrument dat bespeeld wordt door met de vingers of een plectrum op de snaren te tokkelen.",
+        "pos": "noun",
+        "examples": [
+          "Hij speelde een liedje op zijn gitaar.",
+          "De gitaar had zes snaren."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "snaar",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T21:15:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "instrument",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-11T21:15:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T20:59:32.985684",
+      "updated_at": "2026-07-11T20:59:36.841945",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T20:59:36.841945",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T20:59:32.986694",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T20:59:36.841945",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gitaar"
+        },
+        "timestamp": "2026-07-11T20:59:32.985684"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "gitaar#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T20:59:32.986694"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "gitaar#1",
+        "relation": {
+          "type": "is_a",
+          "target": "instrument",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T20:59:36.841945"
+      }
+    ]
+  },
+  "instrument": {
+    "senses": [
+      {
+        "sense_id": "instrument#1",
+        "definition": "Een instrument is een voorwerp waarmee muziek gemaakt kan worden.",
+        "pos": "noun",
+        "examples": [
+          "De piano is een populair instrument.",
+          "Ze leerde een nieuw instrument bespelen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "muziek",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-07-11T21:15:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T20:59:32.999701",
+      "updated_at": "2026-07-11T20:59:32.999701",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T20:59:32.999701",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T20:59:32.999701",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "instrument"
+        },
+        "timestamp": "2026-07-11T20:59:32.999701"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "instrument#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T20:59:32.999701"
+      }
+    ]
+  },
+  "woestijn": {
+    "senses": [
+      {
+        "sense_id": "woestijn#1",
+        "definition": "Een woestijn is een droog, dor gebied met weinig neerslag en schaarse begroeiing.",
+        "pos": "noun",
+        "examples": [
+          "Kamelen zijn goed aangepast aan het leven in de woestijn.",
+          "Overdag is het in de woestijn erg heet."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gebied",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-11T21:15:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:00:02.150701",
+      "updated_at": "2026-07-11T21:00:04.321745",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:00:04.321745",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:00:02.151717",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:00:04.321745",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "woestijn"
+        },
+        "timestamp": "2026-07-11T21:00:02.150701"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "woestijn#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:00:02.151717"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "woestijn#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gebied",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:00:04.321745"
+      }
+    ]
+  },
+  "gebied": {
+    "senses": [
+      {
+        "sense_id": "gebied#1",
+        "definition": "Een gebied is een afgebakend stuk land of ruimte met eigen kenmerken.",
+        "pos": "noun",
+        "examples": [
+          "Dit gebied stond bekend om zijn vruchtbare grond.",
+          "Het beschermde gebied was niet toegankelijk voor bezoekers."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:00:02.163780",
+      "updated_at": "2026-07-11T21:00:02.163780",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:00:02.163780",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:00:02.163780",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gebied"
+        },
+        "timestamp": "2026-07-11T21:00:02.163780"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "gebied#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:00:02.163780"
+      }
+    ]
+  },
+  "gletsjer": {
+    "senses": [
+      {
+        "sense_id": "gletsjer#1",
+        "definition": "Een gletsjer is een grote massa ijs die zich langzaam over land beweegt.",
+        "pos": "noun",
+        "examples": [
+          "De gletsjer smolt langzaam door de opwarming van de aarde.",
+          "Ze wandelden voorzichtig over de gletsjer."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "grote massa ijs",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-11T21:00:25.781450"
+          },
+          {
+            "type": "is_a",
+            "target": "ijsmassa",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-11T21:30:14.653410"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:00:20.960120",
+      "updated_at": "2026-07-11T21:30:14.653410",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:30:14.653410",
+      "usage_count": 3,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:00:20.961077",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:00:25.781450",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:30:14.653410",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gletsjer"
+        },
+        "timestamp": "2026-07-11T21:00:20.960120"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "gletsjer#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:00:20.961077"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "gletsjer#1",
+        "relation": {
+          "type": "is_a",
+          "target": "grote massa ijs",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:00:25.781450"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "gletsjer#1",
+        "relation": {
+          "type": "is_a",
+          "target": "ijsmassa",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:30:14.653410"
+      }
+    ]
+  },
+  "grote massa ijs": {
+    "senses": [
+      {
+        "sense_id": "grote massa ijs#1",
+        "definition": "Een grote hoeveelheid samengeperst ijs die zich langzaam kan verplaatsen, zoals bij een gletsjer.",
+        "pos": "noun",
+        "examples": [
+          "De grote massa ijs bewoog nauwelijks merkbaar per jaar.",
+          "Wetenschappers bestudeerden hoe snel de grote massa ijs smolt."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "ijs",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-11T21:28:56.033821"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:00:20.974200",
+      "updated_at": "2026-07-11T21:28:56.033821",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:28:56.033821",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:00:20.974200",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:28:56.033821",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "grote massa ijs"
+        },
+        "timestamp": "2026-07-11T21:00:20.974200"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "grote massa ijs#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:00:20.974200"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "grote massa ijs#1",
+        "relation": {
+          "type": "part_of",
+          "target": "ijs",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:28:56.033821"
+      }
+    ]
+  },
+  "oase": {
+    "senses": [
+      {
+        "sense_id": "oase#1",
+        "definition": "Een oase is een vruchtbare plek in de woestijn waar water aanwezig is.",
+        "pos": "noun",
+        "examples": [
+          "Reizigers rustten uit bij de oase in de woestijn.",
+          "Rond de oase groeiden palmbomen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "plek",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T21:00:38.040042"
+          },
+          {
+            "type": "related_to",
+            "target": "woestijn",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-11T21:20:00.000000"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:00:33.071726",
+      "updated_at": "2026-07-11T21:00:38.040042",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:00:38.040042",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:00:33.072725",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:00:38.040042",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "oase"
+        },
+        "timestamp": "2026-07-11T21:00:33.071726"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "oase#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:00:33.072725"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "oase#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vruchtbare plek in de woestijn waar water aanwezig is",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:00:38.040042"
+      }
+    ]
+  },
+  "komeet": {
+    "senses": [
+      {
+        "sense_id": "komeet#1",
+        "definition": "Een komeet is een hemellichaam dat bestaat uit ijs, stof en gas.",
+        "pos": "noun",
+        "examples": [
+          "De komeet was met het blote oog zichtbaar aan de nachtelijke hemel.",
+          "De staart van de komeet werd steeds langer naarmate ze de zon naderde."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "hemellichaam",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-11T21:00:50.190504"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:00:46.895142",
+      "updated_at": "2026-07-11T21:00:50.190504",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:00:50.190504",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:00:46.896130",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:00:50.190504",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "komeet"
+        },
+        "timestamp": "2026-07-11T21:00:46.895142"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "komeet#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:00:46.896130"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "komeet#1",
+        "relation": {
+          "type": "is_a",
+          "target": "hemellichaam",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:00:50.190504"
+      }
+    ]
+  },
+  "plek": {
+    "senses": [
+      {
+        "sense_id": "plek#1",
+        "definition": "Een plek is een bepaalde locatie of positie in de ruimte.",
+        "pos": "noun",
+        "examples": [
+          "Ze zocht een rustige plek om te lezen.",
+          "Dit was de plek waar ze elkaar altijd ontmoetten."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-07-11T00:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-11T00:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T00:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "plek"
+        },
+        "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "plek#1",
+        "old_value": null,
+        "new_value": "Een plek is een bepaalde locatie of positie in de ruimte.",
+        "timestamp": "2026-07-11T00:00:00.000000"
+      }
+    ]
+  },
+  "ijs": {
+    "senses": [
+      {
+        "sense_id": "ijs#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vaste stof",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-11T21:23:58.115904"
+          },
+          {
+            "type": "is_a",
+            "target": "materietoestand",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-11T21:27:05.303796"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:23:55.222367",
+      "updated_at": "2026-07-11T21:27:05.303796",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:27:05.303796",
+      "usage_count": 3,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:23:55.223356",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:23:58.115904",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:27:05.303796",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ijs"
+        },
+        "timestamp": "2026-07-11T21:23:55.222367"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "ijs#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:23:55.223356"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "ijs#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vaste stof",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:23:58.115904"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "ijs#1",
+        "relation": {
+          "type": "is_a",
+          "target": "materietoestand",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:27:05.303796"
+      }
+    ]
+  },
+  "vaste stof": {
+    "senses": [
+      {
+        "sense_id": "vaste stof#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:23:55.235365",
+      "updated_at": "2026-07-11T21:23:55.236356",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:23:55.236356",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:23:55.236356",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vaste stof"
+        },
+        "timestamp": "2026-07-11T21:23:55.235365"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vaste stof#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:23:55.236356"
+      }
+    ]
+  },
+  "vast": {
+    "senses": [
+      {
+        "sense_id": "vast#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:27:54.929707",
+      "updated_at": "2026-07-11T21:27:54.930713",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:27:54.930713",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:27:54.930713",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vast"
+        },
+        "timestamp": "2026-07-11T21:27:54.929707"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vast#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:27:54.930713"
+      }
+    ]
+  },
+  "ijsmassa": {
+    "senses": [
+      {
+        "sense_id": "ijsmassa#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "materietoestand",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-11T21:30:26.350069"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-11T21:30:12.979370",
+      "updated_at": "2026-07-11T21:30:26.351171",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-11T21:30:26.351171",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-11T21:30:12.981396",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-11T21:30:26.351171",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ijsmassa"
+        },
+        "timestamp": "2026-07-11T21:30:12.979370"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "ijsmassa#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-11T21:30:12.980423"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "ijsmassa#1",
+        "relation": {
+          "type": "is_a",
+          "target": "materietoestand",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-11T21:30:26.351171"
       }
     ]
   }
