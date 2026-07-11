@@ -1,6 +1,7 @@
 # identity/emotion/emotion_engine.py
 import json
 import os
+import time
 
 
 class EmotionEngine:
@@ -28,6 +29,15 @@ class EmotionEngine:
         rule = self.rules["mood_shifts"][trigger]
 
         # -----------------------------
+        # OVERSTIMULATION: TIJD-DECAY
+        # -----------------------------
+        # Voordat we eventueel opnieuw ophogen: kijk hoeveel tijd er
+        # verstreken is sinds de vorige trigger, en laat het niveau
+        # geleidelijk zakken. Zo "herstelt" Nova vanzelf tijdens
+        # stiltes, i.p.v. voor altijd op hetzelfde niveau te blijven.
+        self._apply_overstimulation_decay()
+
+        # -----------------------------
         # MOOD + INTENSITY
         # -----------------------------
         self.state["current_mood"] = rule.get("target_mood", self.state["current_mood"])
@@ -52,10 +62,23 @@ class EmotionEngine:
         # OVERSTIMULATION
         # -----------------------------
         if "overflow_behavior" in rule:
+            # Trigger die Nova opjaagt (bv. excitement) → niveau stijgt
             self.state["overstimulation"]["last_overflow_behavior"] = rule["overflow_behavior"]
             self.state["overstimulation"]["level"] = self._clamp(
                 self.state["overstimulation"]["level"] + 0.15
             )
+        else:
+            # Trigger zonder overflow_behavior (bv. confusion, focus
+            # zonder piek) → kleine, natuurlijke afkoeling. Dit is de
+            # interactie-gebaseerde decay: niet elke trigger jaagt
+            # Nova op, sommige laten haar juist even bijkomen.
+            self.state["overstimulation"]["level"] = self._clamp(
+                self.state["overstimulation"]["level"] - 0.05
+            )
+
+        # Tijdstip van deze trigger onthouden voor de volgende
+        # tijd-decay-berekening.
+        self.state["overstimulation"]["last_trigger_timestamp"] = time.time()
 
         # -----------------------------
         # RECOVERY HINT
@@ -76,6 +99,47 @@ class EmotionEngine:
         # SAVE
         # -----------------------------
         self._save()
+
+    # ---------------------------------------------------------
+    #  OVERSTIMULATION: TIJD-DECAY
+    # ---------------------------------------------------------
+    def _apply_overstimulation_decay(self):
+        """
+        Laat overstimulation.level geleidelijk zakken op basis van
+        hoeveel tijd er verstreken is sinds de vorige trigger.
+        Wordt aangeroepen VOOR de nieuwe trigger verwerkt wordt, dus
+        hij werkt op de "oude" tijd -> "nu"-periode, los van wat de
+        huidige trigger zelf nog gaat doen.
+
+        Waarom hier en niet als losse achtergrond-timer: Nova's
+        hoofdlus is nu nog synchroon (blocking input() in main.py,
+        zie bekende architecturale blokkade) - een losse
+        achtergrondthread zou wel kunnen, maar dan zou hij ook de
+        JSON-file moeten wegschrijven op een moment dat apply_trigger
+        dat ook doet, wat een race condition kan geven. Berekenen bij
+        elke trigger is de veilige, eenvoudige aanpak die past bij
+        Nova's huidige architectuur.
+        """
+        last_ts = self.state["overstimulation"].get("last_trigger_timestamp")
+        if last_ts is None:
+            # Eerste trigger ooit sinds opstarten, of nog nooit
+            # opgeslagen -> niets om te decayen.
+            return
+
+        verstreken_seconden = time.time() - last_ts
+        if verstreken_seconden <= 0:
+            return
+
+        verstreken_minuten = verstreken_seconden / 60.0
+        decay_per_minuut = self.state["overstimulation"].get("decay_per_minute", 0.05)
+
+        daling = verstreken_minuten * decay_per_minuut
+        if daling <= 0:
+            return
+
+        self.state["overstimulation"]["level"] = self._clamp(
+            self.state["overstimulation"]["level"] - daling
+        )
 
     # ---------------------------------------------------------
     #  SYNC LOGICA
