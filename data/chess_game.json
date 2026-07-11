@@ -1,9 +1,21 @@
 {
-  "fen": "rnq1k2r/5b1p/pp2pp2/3P3P/4P3/3B4/PP3K2/RNB4R w - - 0 18",
+  "fen": "rn1k4/7p/5P2/pp5P/K1b2B2/3q4/PP6/RN6 w - - 0 32",
   "moves": [
-    "e3e4",
-    "c5f2",
-    "e1f2",
-    "b7b6"
+    "f3e2",
+    "d5c4",
+    "e2e1",
+    "g8g1",
+    "h1g1",
+    "c5g1",
+    "e1d2",
+    "g1d4",
+    "d2c2",
+    "d4e4",
+    "c2c3",
+    "e4d3",
+    "c3b4",
+    "a6a5",
+    "b4a4",
+    "b6b5"
   ]
 }
