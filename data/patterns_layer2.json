@@ -10,8 +10,8 @@
         "16": 10,
         "17": 2,
         "18": 10,
-        "22": 27,
-        "23": 25
+        "22": 44,
+        "23": 56
       },
       "days": {
         "zondag": 28,
@@ -20,19 +20,19 @@
         "woensdag": 16,
         "donderdag": 14,
         "vrijdag": 52,
-        "zaterdag": 48
+        "zaterdag": 96
       },
-      "total": 174,
-      "most_common_hour": 19,
-      "confidence": 0.299,
+      "total": 222,
+      "most_common_hour": 23,
+      "confidence": 0.252,
       "day_frequency": {
-        "maandag": 0.241,
-        "dinsdag": 0.402,
-        "woensdag": 0.644,
-        "donderdag": 0.563,
+        "maandag": 0.189,
+        "dinsdag": 0.315,
+        "woensdag": 0.505,
+        "donderdag": 0.441,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
-        "zondag": 1.0
+        "zondag": 0.883
       }
     },
     "chat_message": {
@@ -45,8 +45,8 @@
         "16": 10,
         "17": 2,
         "18": 8,
-        "22": 25,
-        "23": 23
+        "22": 39,
+        "23": 53
       },
       "days": {
         "zondag": 26,
@@ -55,19 +55,19 @@
         "woensdag": 12,
         "donderdag": 12,
         "vrijdag": 48,
-        "zaterdag": 46
+        "zaterdag": 90
       },
-      "total": 162,
-      "most_common_hour": 19,
-      "confidence": 0.309,
+      "total": 206,
+      "most_common_hour": 23,
+      "confidence": 0.257,
       "day_frequency": {
-        "maandag": 0.259,
-        "dinsdag": 0.519,
-        "woensdag": 0.519,
-        "donderdag": 0.519,
+        "maandag": 0.204,
+        "dinsdag": 0.408,
+        "woensdag": 0.408,
+        "donderdag": 0.408,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
-        "zondag": 1.0
+        "zondag": 0.883
       }
     },
     "topic_detected:greeting": {
@@ -121,7 +121,7 @@
     "topic_detected:chess": {
       "hours": {
         "21": 4,
-        "22": 9,
+        "22": 13,
         "23": 19,
         "19": 35,
         "20": 1
@@ -129,14 +129,14 @@
       "days": {
         "dinsdag": 4,
         "vrijdag": 28,
-        "zaterdag": 36
+        "zaterdag": 40
       },
-      "total": 68,
+      "total": 72,
       "most_common_hour": 19,
-      "confidence": 0.515,
+      "confidence": 0.486,
       "day_frequency": {
         "maandag": 0.0,
-        "dinsdag": 0.412,
+        "dinsdag": 0.389,
         "woensdag": 0.0,
         "donderdag": 0.0,
         "vrijdag": 1.0,
@@ -171,15 +171,16 @@
     "topic_detected:math": {
       "hours": {
         "21": 2,
-        "16": 1
+        "16": 1,
+        "23": 5
       },
       "days": {
         "dinsdag": 2,
-        "zaterdag": 1
+        "zaterdag": 6
       },
-      "total": 3,
-      "most_common_hour": 21,
-      "confidence": 0.667,
+      "total": 8,
+      "most_common_hour": 23,
+      "confidence": 0.625,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 1.0,
@@ -218,22 +219,24 @@
     "topic_detected:help": {
       "hours": {
         "21": 2,
-        "23": 3
+        "23": 3,
+        "22": 1
       },
       "days": {
         "woensdag": 2,
-        "vrijdag": 3
+        "vrijdag": 3,
+        "zaterdag": 1
       },
-      "total": 5,
+      "total": 6,
       "most_common_hour": 23,
-      "confidence": 0.6,
+      "confidence": 0.5,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
         "woensdag": 1.0,
         "donderdag": 0.0,
         "vrijdag": 1.0,
-        "zaterdag": 0.0,
+        "zaterdag": 1.0,
         "zondag": 0.0
       }
     }

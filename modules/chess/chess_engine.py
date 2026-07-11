@@ -154,13 +154,31 @@ class ChessModule:
                 piece_type = ptype
                 break
 
+        # Promotiestuk zoeken (bv. "pion naar e8 dame")
+        promotie_stuk = None
+        promotie_namen = {
+            "dame": chess.QUEEN, "toren": chess.ROOK,
+            "loper": chess.BISHOP, "paard": chess.KNIGHT
+        }
+        for naam, ptype in promotie_namen.items():
+            # Het laatste stukwoord in de zin (na "naar veld") is het promotiestuk
+            if t.rstrip().endswith(naam):
+                promotie_stuk = ptype
+                break
+
         # Zoek in legale zetten
         candidates = []
         for move in self.board.legal_moves:
             if move.to_square != target_square:
                 continue
             if piece_type is None or self.board.piece_type_at(move.from_square) == piece_type:
-                candidates.append(move)
+                # Bij promotiezetten: alleen de zet met het juiste promotiestuk nemen
+                if move.promotion is not None:
+                    gewenst = promotie_stuk if promotie_stuk else chess.QUEEN  # standaard: dame
+                    if move.promotion == gewenst:
+                        candidates.append(move)
+                else:
+                    candidates.append(move)
 
         if len(candidates) == 1:
             return candidates[0]  # Gevonden!
@@ -199,13 +217,12 @@ class ChessModule:
             for kolom in range(8):
                 veld = chess.square(kolom, rij)
                 stuk = self.board.piece_at(veld)
-                achtergrond = HIGHLIGHT_BG if veld in gemarkeerde_velden else ""
                 if stuk:
                     sym = symbolen.get((stuk.piece_type, stuk.color), "?")
                     kleur = WIT if stuk.color == chess.WHITE else ZWART
-                    regel += achtergrond + kleur + sym + RESET + " "
+                    regel += kleur + sym + RESET + " "
                 else:
-                    regel += achtergrond + "." + RESET + " "
+                    regel += ". "
             regels.append(regel)
         return header + "\n".join(regels)
 
@@ -247,6 +264,11 @@ class ChessModule:
         naam = stuk_namen.get(stuk, "stuk")
         veld = chess.square_name(move.to_square)
         san = self.board.san(move) if move in self.board.legal_moves else move.uci()
+
+        if move.promotion:
+            promotie_naam = stuk_namen.get(move.promotion, "dame")
+            return f"pion naar {veld}, gepromoveerd tot {promotie_naam} ({san})"
+
         return f"{naam} naar {veld} ({san})"
 
     # ----------------------------------------------------
@@ -256,13 +278,29 @@ class ChessModule:
         move_text = data.get("move", "").strip()
         move = None
 
+        # Rokade (O-O = kort, O-O-O = lang)
+        if move_text in ("O-O", "O-O-O"):
+            try:
+                move = self.board.parse_san(move_text)
+                if move not in self.board.legal_moves:
+                    move = None
+            except Exception:
+                move = None
+
+            if move is None:
+                self.event_bus.publish("chat_response", {
+                    "text": "Rokade is nu niet mogelijk (koning of toren al bewogen, of velden niet vrij/veilig)."
+                })
+                return
+
         # Eerst proberen als UCI-notatie (bv. e2e4)
-        try:
-            move = chess.Move.from_uci(move_text)
-            if move not in self.board.legal_moves:
-                move = None  # UCI herkend maar niet geldig in deze stand
-        except Exception:
-            move = None
+        if move is None:
+            try:
+                move = chess.Move.from_uci(move_text)
+                if move not in self.board.legal_moves:
+                    move = None  # UCI herkend maar niet geldig in deze stand
+            except Exception:
+                move = None
 
         # Als UCI niet lukte, probeer natuurlijke taal (bv. "paard naar f3")
         if move is None:

@@ -751,13 +751,47 @@ class RelationParser:
         right_len = len(right_lower)
         right = text[-right_len:].strip() if right_len > 0 else ""
 
+        # BUGFIX (11 juli 2026): 'right' kapte voorheen niet af bij de
+        # eerstvolgende zinsgrens, waardoor bij meerdere zinnen in één
+        # keer geplakt (bv. een alinea tekst) de HELE rest van de tekst
+        # als object werd meegenomen i.p.v. enkel de huidige zin.
+        # We knippen 'right' daarom af bij het eerste zinseinde-teken.
+        for eind_teken in [". ", "! ", "? ", "\n"]:
+            pos = right.find(eind_teken)
+            if pos != -1:
+                right = right[:pos]
+        # Ook een punt/uitroepteken/vraagteken helemaal aan het einde
+        # van 'right' zelf (laatste zin van de tekst) moet nog worden
+        # afgekapt, want de loop hierboven vindt enkel tekens MET een
+        # spatie erna.
+        right = right.rstrip(".!?").strip()
+
+        # BUGFIX 2 (11 juli 2026): zelfs binnen ÉÉN zin kan 'right' nog
+        # een bijzin bevatten (bv. "berg waaruit gesmolten gesteente
+        # ... komen"), waardoor het object voor een is_a-relatie veel
+        # te lang en beschrijvend wordt i.p.v. een kort begrip zoals
+        # "berg". We knippen 'right' daarom ook af bij de eerste
+        # bijzin-marker die met een spatie ervoor voorkomt.
+        bijzin_markers = [
+            " waaruit ", " waarbij ", " waarvan ", " waarmee ", " waarop ",
+            " waar ", " die ", " dat ", " wat ", " wie ",
+        ]
+        right_lower_check = " " + right.lower() + " "
+        cut_pos = None
+        for marker in bijzin_markers:
+            pos = right_lower_check.find(marker)
+            if pos != -1:
+                # pos is index in de met-spaties-omhulde lowercase versie,
+                # dus -1 om te corrigeren naar de echte 'right'-index
+                real_pos = pos - 1
+                if cut_pos is None or real_pos < cut_pos:
+                    cut_pos = real_pos
+        if cut_pos is not None and cut_pos > 0:
+            right = right[:cut_pos].strip()
+
         # Lidwoorden strippen
         left = self._strip_articles(left)
         right = self._strip_articles(right)
-
-        # Punt verwijderen
-        if right.endswith("."):
-            right = right[:-1].strip()
 
         if not left or not right:
             return None

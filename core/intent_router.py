@@ -335,6 +335,17 @@ class IntentRouter:
             self.event_bus.publish("intent_chess_stats", {})
             return True
 
+        # Rokade
+        if t in ["rokeer kort", "korte rokade", "rokade kort"]:
+            dbg(f"{C_GREEN}→ chess_move (rokade kort){C_RESET}")
+            self.event_bus.publish("intent_chess_move", {"move": "O-O"})
+            return True
+
+        if t in ["rokeer lang", "lange rokade", "rokade lang"]:
+            dbg(f"{C_GREEN}→ chess_move (rokade lang){C_RESET}")
+            self.event_bus.publish("intent_chess_move", {"move": "O-O-O"})
+            return True
+
         return False
 
     # ---------------------------------------------------------
@@ -352,8 +363,15 @@ class IntentRouter:
         if re.fullmatch(r"\d+(\.\d+)?\s*°[CF]", t):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
+        # BUGFIX (11 juli 2026): "tan" (en andere korte math_keywords)
+        # zaten voorheen als kale substring-check, waardoor gewone
+        # woorden die deze letters toevallig bevatten (bv. "toestand"
+        # bevat "tan") foutief als wiskunde-expressie werden herkend.
+        # We gebruiken nu woordgrenzen (\b) zodat enkel het EXACTE
+        # keyword als apart woord matcht, niet als deel van een ander
+        # woord.
         math_keywords = ["sqrt", "sin", "cos", "tan", "log", "ln", "exp", "abs", "round"]
-        if any(k in t for k in math_keywords):
+        if any(re.search(rf"\b{k}\b", t) for k in math_keywords):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
         return False

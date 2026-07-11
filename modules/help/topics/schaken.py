@@ -21,6 +21,10 @@ def get_help(chess_module=None):
   paard naar f3          (natuurlijke taal)
   e2e4                   (UCI-notatie)
   e4                     (alleen doelveld, pion wordt aangenomen)
+  pion naar e8 dame      (promotie, stuk kiezen: dame/toren/loper/paard)
+  pion naar e8           (promotie zonder stuk = automatisch dame)
+  rokeer kort             (korte rokade)
+  rokeer lang              (lange rokade)
 
 ⚙️ INSTELLINGEN
   niveau 0-20            (moeilijkheidsgraad, nu: {niveau}/20)
