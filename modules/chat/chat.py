@@ -16,7 +16,6 @@ class ChatModule:
         event_bus.subscribe("intent_properties", self.on_properties)
         event_bus.subscribe("intent_meaning", self.on_meaning)
         event_bus.subscribe("concept_learned", self.on_concept_learned)
-        event_bus.subscribe("weather_response", self.on_weather_response)
         event_bus.subscribe("intent_wiki", self.on_wiki_response)
 
     # -------------------------
@@ -279,10 +278,6 @@ class ChatModule:
         definition = data.get("definition")
         # Console logging is ok; geen chat_response hier nodig
         print(f"Nova leerde een nieuw woord: {word} → {definition}")
-
-    def on_weather_response(self, data, event_type=None):
-        text = data.get("text", "")
-        print(f"Nova: {text}")
 
     # -------------------------
     # Wikipedia

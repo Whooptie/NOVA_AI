@@ -933,7 +933,7 @@ class MathModule:
             else:
                 msg = f"Er ging iets mis: {err}"
 
-        self.event_bus.publish("math_response", {"msg": msg})
+        self.event_bus.publish("layer4_response", {"text": msg})
 
 def init_module(event_bus, semantic_module=None):
     mod = MathModule(event_bus)

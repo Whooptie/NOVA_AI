@@ -78,9 +78,9 @@ class WeatherModule:
             antwoord = self.get_forecast(city, offset)
 
         if antwoord:
-            self.event_bus.publish("chat_response", {"text": antwoord})
+            self.event_bus.publish("layer4_response", {"text": antwoord})
         else:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Ik kon het weer voor {city} niet ophalen."
             })
 

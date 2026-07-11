@@ -21,7 +21,7 @@ class TimeModule:
     def answer_time(self):
         now = self.now()
         msg = now.strftime("Het is nu %H:%M.")
-        self.event_bus.publish("chat_response", {"text": msg})
+        self.event_bus.publish("layer4_response", {"text": msg})
 
 
 def init_module(event_bus):
