@@ -7,7 +7,7 @@
         "19": 16,
         "20": 8,
         "21": 30,
-        "16": 6,
+        "16": 10,
         "17": 2,
         "18": 3,
         "22": 27,
@@ -19,18 +19,19 @@
         "dinsdag": 10,
         "woensdag": 16,
         "donderdag": 14,
-        "vrijdag": 52
+        "vrijdag": 52,
+        "zaterdag": 4
       },
-      "total": 126,
+      "total": 130,
       "most_common_hour": 21,
-      "confidence": 0.238,
+      "confidence": 0.231,
       "day_frequency": {
-        "maandag": 0.333,
-        "dinsdag": 0.556,
-        "woensdag": 0.889,
-        "donderdag": 0.778,
+        "maandag": 0.323,
+        "dinsdag": 0.538,
+        "woensdag": 0.862,
+        "donderdag": 0.754,
         "vrijdag": 1.0,
-        "zaterdag": 0.0,
+        "zaterdag": 0.215,
         "zondag": 1.0
       }
     },
@@ -41,7 +42,7 @@
         "19": 15,
         "20": 7,
         "21": 28,
-        "16": 6,
+        "16": 10,
         "17": 2,
         "18": 2,
         "22": 25,
@@ -53,18 +54,19 @@
         "dinsdag": 12,
         "woensdag": 12,
         "donderdag": 12,
-        "vrijdag": 48
+        "vrijdag": 48,
+        "zaterdag": 4
       },
-      "total": 116,
+      "total": 120,
       "most_common_hour": 21,
-      "confidence": 0.241,
+      "confidence": 0.233,
       "day_frequency": {
-        "maandag": 0.362,
-        "dinsdag": 0.724,
-        "woensdag": 0.724,
-        "donderdag": 0.724,
+        "maandag": 0.35,
+        "dinsdag": 0.7,
+        "woensdag": 0.7,
+        "donderdag": 0.7,
         "vrijdag": 1.0,
-        "zaterdag": 0.0,
+        "zaterdag": 0.233,
         "zondag": 1.0
       }
     },
@@ -93,22 +95,24 @@
     "topic_detected:time": {
       "hours": {
         "21": 2,
-        "22": 1
+        "22": 1,
+        "16": 1
       },
       "days": {
         "dinsdag": 2,
-        "vrijdag": 1
+        "vrijdag": 1,
+        "zaterdag": 1
       },
-      "total": 3,
+      "total": 4,
       "most_common_hour": 21,
-      "confidence": 0.667,
+      "confidence": 0.5,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 1.0,
         "woensdag": 0.0,
         "donderdag": 0.0,
         "vrijdag": 1.0,
-        "zaterdag": 0.0,
+        "zaterdag": 1.0,
         "zondag": 0.0
       }
     },
@@ -138,11 +142,35 @@
     "topic_detected:weather": {
       "hours": {
         "21": 2,
-        "22": 1
+        "22": 1,
+        "16": 2
       },
       "days": {
         "dinsdag": 2,
-        "vrijdag": 1
+        "vrijdag": 1,
+        "zaterdag": 2
+      },
+      "total": 5,
+      "most_common_hour": 21,
+      "confidence": 0.4,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 1.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 1.0,
+        "zaterdag": 1.0,
+        "zondag": 0.0
+      }
+    },
+    "topic_detected:math": {
+      "hours": {
+        "21": 2,
+        "16": 1
+      },
+      "days": {
+        "dinsdag": 2,
+        "zaterdag": 1
       },
       "total": 3,
       "most_common_hour": 21,
@@ -152,28 +180,8 @@
         "dinsdag": 1.0,
         "woensdag": 0.0,
         "donderdag": 0.0,
-        "vrijdag": 1.0,
-        "zaterdag": 0.0,
-        "zondag": 0.0
-      }
-    },
-    "topic_detected:math": {
-      "hours": {
-        "21": 2
-      },
-      "days": {
-        "dinsdag": 2
-      },
-      "total": 2,
-      "most_common_hour": 21,
-      "confidence": 1.0,
-      "day_frequency": {
-        "maandag": 0.0,
-        "dinsdag": 1.0,
-        "woensdag": 0.0,
-        "donderdag": 0.0,
         "vrijdag": 0.0,
-        "zaterdag": 0.0,
+        "zaterdag": 1.0,
         "zondag": 0.0
       }
     },
@@ -225,5 +233,18 @@
       }
     }
   },
-  "anomalies": []
+  "anomalies": [
+    {
+      "event_type": "topic_detected:time",
+      "type": "ongewone_timing",
+      "timestamp": 1783778584.5795238,
+      "omschrijving": "'topic_detected:time' kwam voor om 16u, terwijl dit normaal rond 21u gebeurt (confidence 0.667)."
+    },
+    {
+      "event_type": "topic_detected:weather",
+      "type": "ongewone_timing",
+      "timestamp": 1783778567.1199563,
+      "omschrijving": "'topic_detected:weather' kwam voor om 16u, terwijl dit normaal rond 21u gebeurt (confidence 0.667)."
+    }
+  ]
 }

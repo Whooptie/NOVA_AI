@@ -177,22 +177,6 @@ def main():
                     msg = data.get("text") or data.get("msg") or ""
                     print(f"{MAGENTA}Nova: {msg}{RESET}")
 
-                # Time engine
-                elif etype == "time_response":
-                    print(f"{MAGENTA}Nova: {data.get('msg')}{RESET}")
-
-                # Weather
-                elif etype == "weather_response":
-                    print(f"{MAGENTA}Nova: {data.get('msg')}{RESET}")
-
-                # Date
-                elif etype == "date_response":
-                    print(f"{MAGENTA}Nova: {data.get('msg')}{RESET}")
-                
-                # Math
-                elif etype == "math_response":
-                    print(f"{MAGENTA}Nova: {data.get('msg')}{RESET}")
-
                 # Timezone ready
                 elif etype == "time_zone_ready":
                     offset = data["offset_minutes"]
