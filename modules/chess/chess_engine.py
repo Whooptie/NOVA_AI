@@ -38,6 +38,7 @@ class ChessModule:
 
         # Het schaakbord (begint leeg = startpositie)
         self.board = chess.Board()
+        self.laatste_zet = None  # Voor highlighting op het bord
 
         # Stockfish-engine (wordt pas gestart als nodig)
         self.engine = None
@@ -55,6 +56,8 @@ class ChessModule:
         # Statistieken
         self.stats_path = Path(r"C:\Nova_AI\data") / "chess_stats.json"
         self.stats = self.load_stats()
+        if "streak" not in self.stats:
+            self.stats["streak"] = 0  # positief = jij wint op rij, negatief = jij verliest op rij
 
         # Bestaande partij terugladen indien aanwezig
         self.load_game()
@@ -172,6 +175,15 @@ class ChessModule:
         WIT  = "\033[97m"  # Fel wit
         ZWART = "\033[95m" # Huidig voor zwarte stukken
         RESET = "\033[0m"
+        GRIJS = "\033[37m"
+        HIGHLIGHT_BG = "\033[43m"  # Gele achtergrond voor laatste zet
+
+        zetnummer = self.board.fullmove_number
+        header = f"{GRIJS}Zet {zetnummer}{RESET}\n"
+
+        gemarkeerde_velden = set()
+        if self.laatste_zet:
+            gemarkeerde_velden = {self.laatste_zet.from_square, self.laatste_zet.to_square}
 
         symbolen = {
             (chess.PAWN,   True):  "♙", (chess.PAWN,   False): "♟",
@@ -181,22 +193,44 @@ class ChessModule:
             (chess.QUEEN,  True):  "♕", (chess.QUEEN,  False): "♛",
             (chess.KING,   True):  "♔", (chess.KING,   False): "♚",
         }
-        GRIJS = "\033[37m"
         regels = [f"{GRIJS}  a b c d e f g h{RESET}"]
         for rij in range(7, -1, -1):
             regel = f"{GRIJS}{rij + 1} {RESET}"
             for kolom in range(8):
                 veld = chess.square(kolom, rij)
                 stuk = self.board.piece_at(veld)
+                achtergrond = HIGHLIGHT_BG if veld in gemarkeerde_velden else ""
                 if stuk:
                     sym = symbolen.get((stuk.piece_type, stuk.color), "?")
                     kleur = WIT if stuk.color == chess.WHITE else ZWART
-                    regel += kleur + sym + RESET + " "
+                    regel += achtergrond + kleur + sym + RESET + " "
                 else:
-                    regel += ". "
+                    regel += achtergrond + "." + RESET + " "
             regels.append(regel)
-        return "\n".join(regels)
+        return header + "\n".join(regels)
 
+    # ----------------------------------------------------
+    # Materiaaltelling
+    # ----------------------------------------------------
+    def materiaal_balans(self):
+        waarden = {
+            chess.PAWN: 1, chess.KNIGHT: 3, chess.BISHOP: 3,
+            chess.ROOK: 5, chess.QUEEN: 9, chess.KING: 0
+        }
+        wit_punten = 0
+        zwart_punten = 0
+        for stuk_type in waarden:
+            wit_punten += len(self.board.pieces(stuk_type, chess.WHITE)) * waarden[stuk_type]
+            zwart_punten += len(self.board.pieces(stuk_type, chess.BLACK)) * waarden[stuk_type]
+
+        verschil = wit_punten - zwart_punten
+        if verschil > 0:
+            return f"Jij staat {verschil} punt(en) voor."
+        elif verschil < 0:
+            return f"Ik sta {abs(verschil)} punt(en) voor."
+        else:
+            return "Materiaal is gelijk."
+        
     # ----------------------------------------------------
     # UCI-zet omzetten naar leesbare tekst (bv. b8c6 → "paard naar c6")
     # ----------------------------------------------------
@@ -212,7 +246,8 @@ class ChessModule:
         stuk = self.board.piece_type_at(move.to_square)
         naam = stuk_namen.get(stuk, "stuk")
         veld = chess.square_name(move.to_square)
-        return f"{naam} naar {veld}"
+        san = self.board.san(move) if move in self.board.legal_moves else move.uci()
+        return f"{naam} naar {veld} ({san})"
 
     # ----------------------------------------------------
     # Zet verwerken
@@ -254,12 +289,19 @@ class ChessModule:
 
         # Speler zet uitvoeren
         self.board.push(move)
+        self.laatste_zet = move
         self.save_game()
         self.last_move_time = time.time()
 
         if self.board.is_game_over():
             self.announce_game_over()
             return
+
+        # Als jouw zet Nova schaak zet, dat direct melden
+        if self.board.is_check():
+            self.event_bus.publish("chat_response", {
+                "text": f"Schaak! Goede zet."
+            })
 
         # Nova's beurt (Stockfish)
         if not self.ensure_engine():
@@ -268,12 +310,14 @@ class ChessModule:
         self.engine.configure({"Skill Level": self.skill_level})
         result = self.engine.play(self.board, chess.engine.Limit(time=self.think_time))
         self.board.push(result.move)
+        self.laatste_zet = result.move
         self.save_game()
 
         nova_zet = self.uci_to_leesbaar(result.move)
         schaak_melding = "\n\n⚠️ Je staat schaak!" if self.board.is_check() else ""
+        materiaal = self.materiaal_balans()
         self.event_bus.publish("chat_response", {
-            "text": f"Jij speelde {move_text}. Ik speel {nova_zet}.\n\n{self.bord_als_tekst()}{schaak_melding}"
+            "text": f"Jij speelde {move_text}. Ik speel {nova_zet}.\n\n{self.bord_als_tekst()}\n{materiaal}{schaak_melding}"
         })
 
         if self.board.is_game_over():
@@ -301,18 +345,49 @@ class ChessModule:
 
         if result == "1-0":
             self.stats["gewonnen"] += 1
+            self.stats["streak"] = max(1, self.stats["streak"] + 1)
             bericht = f"🎉 Jij wint door {reden}! Goed gespeeld!"
         elif result == "0-1":
             self.stats["verloren"] += 1
+            self.stats["streak"] = min(-1, self.stats["streak"] - 1)
             bericht = f"💀 Ik win door {reden}. Probeer het opnieuw!"
         else:
             self.stats["gelijkspel"] += 1
+            self.stats["streak"] = 0
             bericht = f"🤝 Gelijkspel door {reden}!"
 
+        aanpassing = self._pas_niveau_aan()
         self.save_stats()
+
         self.event_bus.publish("chat_response", {
-            "text": f"{bericht}\n\n{self.bord_als_tekst()}"
+            "text": f"{bericht}\n\n{self.bord_als_tekst()}{aanpassing}"
         })
+
+    # ----------------------------------------------------
+    # Automatisch niveau/denktijd aanpassen o.b.v. streak
+    # ----------------------------------------------------
+    def _pas_niveau_aan(self):
+        streak = self.stats["streak"]
+
+        # Elke 3 overwinningen/verliezen op rij → aanpassing, daarna streak resetten
+        if streak >= 3:
+            oud_niveau = self.skill_level
+            self.skill_level = min(20, self.skill_level + 2)
+            self.think_time = min(10.0, round(self.think_time + 0.5, 1))
+            self.stats["streak"] = 0
+            self.save_settings()
+            if self.skill_level != oud_niveau:
+                return f"\n\n📈 Je wint vaak — ik verhoog mijn niveau naar {self.skill_level}/20 en denktijd naar {self.think_time}s."
+        elif streak <= -3:
+            oud_niveau = self.skill_level
+            self.skill_level = max(0, self.skill_level - 2)
+            self.think_time = max(0.1, round(self.think_time - 0.5, 1))
+            self.stats["streak"] = 0
+            self.save_settings()
+            if self.skill_level != oud_niveau:
+                return f"\n\n📉 Ik verlaag mijn niveau naar {self.skill_level}/20 en denktijd naar {self.think_time}s, succes!"
+
+        return ""
 
     # ----------------------------------------------------
     # Instellingen laden en opslaan
