@@ -477,6 +477,90 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Identiteitsvragen (Kevin vraagt iets over Nova zelf)
+    # ---------------------------------------------------------
+    def detect_identity_question(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        identity_patronen = {
+            "who": [
+                "wie ben je", "wie ben jij", "wie is nova", "wie ben jij eigenlijk",
+                "vertel over jezelf", "vertel eens over jezelf", "stel jezelf voor"
+            ],
+            "age": [
+                "hoe oud ben je", "hoe oud ben jij", "wat is je leeftijd"
+            ],
+            "character": [
+                "wat is je karakter", "hoe zou je jezelf omschrijven",
+                "hoe zou jij jezelf omschrijven", "hoe ben je", "hoe ben jij",
+                "beschrijf jezelf"
+            ],
+            "likes": [
+                "wat vind je leuk", "wat vind jij leuk", "waar hou je van",
+                "waar hou jij van", "wat vind je fijn"
+            ],
+            "hobbies": [
+                "wat zijn je hobby", "wat zijn jouw hobby", "waar hou je je mee bezig",
+                "wat doe je graag"
+            ],
+            "values": [
+                "wat zijn je waarden", "wat zijn jouw waarden", "wat vind je belangrijk",
+                "wat vind jij belangrijk"
+            ],
+            "boundaries": [
+                "wat zijn je grenzen", "wat zijn jouw grenzen", "wat doe je nooit",
+                "wat wil je niet"
+            ],
+            "current_mood": [
+                "hoe voel je je", "hoe voel jij je", "hoe gaat het met je",
+                "hoe gaat het met jou", "hoe is het met je", "wat is je stemming"
+            ],
+            "excitement": [
+                "wat maakt je enthousiast", "waar word je blij van", "waar word jij blij van"
+            ],
+            "uncertainty": [
+                "waar word je onzeker van", "wat maakt je onzeker"
+            ],
+            "motivation": [
+                "waarom doe je dit", "waarom doe jij dit", "wat is je doel",
+                "wat drijft je", "wat motiveert je"
+            ],
+            "long_term_goals": [
+                "wat wil je bereiken", "wat wil jij bereiken",
+                "wat zijn je doelen op lange termijn"
+            ],
+            "strengths": [
+                "waar ben je goed in", "waar ben jij goed in", "wat zijn je sterktes"
+            ],
+            "growth": [
+                "waar wil je nog in groeien", "waar wil jij nog in groeien",
+                "wat zijn je groeipunten"
+            ],
+            "communication_style": [
+                "hoe communiceer je het liefst", "heb je gevoel voor humor",
+                "heb jij gevoel voor humor"
+            ],
+            "bond_with_kevin": [
+                "wat vind je van mij", "wat vind jij van mij", "hoe is onze band"
+            ],
+            "self_awareness": [
+                "ken je je eigen grenzen", "ken jij je eigen grenzen", "besef je je grenzen"
+            ],
+            "can_grow": [
+                "kan je groeien", "kan jij groeien", "kan jij nog veranderen",
+                "kan je nog veranderen"
+            ],
+        }
+
+        for sub_intent, zinnen in identity_patronen.items():
+            for zin in zinnen:
+                if zin in t:
+                    self.event_bus.publish("intent_identity", {"sub_intent": sub_intent})
+                    return True
+
+        return False
+    
+    # ---------------------------------------------------------
     # Memory test-commando's
     # ---------------------------------------------------------
     def detect_memory(self, text):
@@ -630,6 +714,11 @@ class IntentRouter:
         # 6c Memory test-commando's
         if self.detect_memory(text):
             self._emit_topic("memory")
+            return
+
+        # 6d Identiteitsvragen (Kevin vraagt iets over Nova zelf)
+        if self.detect_identity_question(text):
+            self._emit_topic("identity")
             return
 
         # 7 Math

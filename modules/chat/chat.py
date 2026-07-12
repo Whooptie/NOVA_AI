@@ -1,5 +1,7 @@
 # modules/chat/chat.py
 
+from identity import self_query
+
 class ChatModule:
     def __init__(self, event_bus, semantic_module=None):
         self.event_bus = event_bus
@@ -19,6 +21,7 @@ class ChatModule:
         event_bus.subscribe("intent_meaning", self.on_meaning)
         event_bus.subscribe("concept_learned", self.on_concept_learned)
         event_bus.subscribe("intent_wiki", self.on_wiki_response)
+        event_bus.subscribe("intent_identity", self.on_identity_question)
 
     # -------------------------
     # 1. Begroetingen
@@ -323,6 +326,56 @@ class ChatModule:
             self.event_bus.publish("layer4_response", {
                 "text": f"Dat woord ken ik nog niet. Je kan het me leren met: teach {word} <betekenis>"
             })
+
+    # -------------------------
+    # 5B. Identiteitsvragen (Kevin vraagt iets over Nova zelf)
+    # -------------------------
+    def on_identity_question(self, data, event_type=None):
+        """
+        Reageert op een herkende identiteitsvraag (sub_intent uit
+        intent_router.py's detect_identity_question) en publiceert het
+        antwoord via layer4_response, zodat de tone-pipeline er nog
+        warmte/emoji overheen legt -- zelfde behandeling als
+        definitie-antwoorden.
+        """
+        sub_intent = data.get("sub_intent")
+
+        antwoord_functies = {
+            "who": self_query.antwoord_wie_ben_je,
+            "age": self_query.antwoord_leeftijd,
+            "character": self_query.antwoord_karakter,
+            "likes": self_query.antwoord_wat_vind_je_leuk,
+            "hobbies": self_query.antwoord_hobbies,
+            "values": self_query.antwoord_waarden,
+            "boundaries": self_query.antwoord_grenzen,
+            "excitement": self_query.antwoord_enthousiasme,
+            "uncertainty": self_query.antwoord_onzekerheid,
+            "motivation": self_query.antwoord_motivatie,
+            "long_term_goals": self_query.antwoord_lange_termijn_doelen,
+            "strengths": self_query.antwoord_sterktes,
+            "growth": self_query.antwoord_groeipunten,
+            "communication_style": self_query.antwoord_communicatiestijl,
+            "bond_with_kevin": self_query.antwoord_band_met_kevin,
+            "self_awareness": self_query.antwoord_eigen_grenzen_kennen,
+            "can_grow": self_query.antwoord_kan_groeien,
+        }
+
+        if sub_intent == "current_mood":
+            # Enige uitzondering: dit leest LIVE emotie-state, niet de
+            # vaste blueprint. response_pipeline.py maakt bij zijn eigen
+            # init_module() al een EmotionEngine aan (self.emotion) --
+            # die halen we hier op via de EventBus-moduleregistratie
+            # (module_loader.py registreert elke module onder zijn
+            # bestandsnaam, dus "response_pipeline" voor
+            # modules/chat/response_pipeline.py).
+            pipeline = self.event_bus.modules.get("response_pipeline")
+            emotion_engine = getattr(pipeline, "emotion", None) if pipeline else None
+            tekst = self_query.antwoord_huidig_gevoel(emotion_engine)
+        else:
+            functie = antwoord_functies.get(sub_intent)
+            tekst = functie() if functie else "Daar heb ik eigenlijk geen goed antwoord op."
+
+        self.event_bus.publish("layer4_response", {"text": tekst})
 
     # -------------------------
     # 6. Concept learned (logging / feedback)
