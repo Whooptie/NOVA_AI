@@ -70,6 +70,7 @@ Nova_AI/
 │       ├── word_associations_learner.py
 │       └── pattern_matcher.py
 ├── identity/
+│   ├── self_query.py
 │   ├── blueprint/
 │   │   ├── loader.py
 │   │   ├── identity.json
@@ -157,6 +158,7 @@ Nova_AI/
 | tone_engine.py | ✅ Klaar | Mood → tone → style profile |
 | style_profiles.json | ✅ Klaar | 8 stijlprofielen (emoji, gesture, pitch, volume...) |
 | gesture_profiles.json | ✅ Klaar | 7 gebarenprofielen voor toekomstige avatar |
+| self_query.py | ✅ Klaar | Zelfkennis-laag (12 juli 2026) — beantwoordt vragen over Nova zelf op basis van identity.json + live emotion_state |
 
 ---
 
@@ -521,7 +523,10 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
     - **`behavior_modifiers.py`** (`BehaviorModifiers`) wordt aangemaakt in `PersonalityEngine.__init__()`, maar geen van zijn methodes (`apply_energy_modulation()`, `apply_impulsivity()`, `apply_dramatic_flair()`) wordt ooit ergens aangeroepen — volledig dode klasse in de praktijk.
 
     Geen bug — dit is nooit "verkeerd" gebouwd, gewoon nog niet de volgende bouwfase. Hoort thuis bij **Layer 6 (Personality Engine)** volgens `identity_ROADMAP.md`, met raakvlakken naar **Layer 7 (Emergent Behaviors)** voor de niet-gebruikte `dramatic_flair`/`sync_with_kevin`/`behavior_modifiers`-mechanismen. Nog niet ingepland — apart op te pakken wanneer Layer 6/7 aan de beurt zijn.
+
+    **Aanvulling (12 juli 2026):** los van dit werkpunt is er wél een nieuwe, kleinere identity-gerelateerde laag bijgekomen: `identity/self_query.py` leest `identity.json` (via de bestaande `loader.py`) en de live `emotion_state.json` uit om vragen als "wie ben je"/"wat vind je leuk"/"hoe voel je je" te beantwoorden. Dit is GEEN oplossing van bovenstaand werkpunt — `personality_engine.py` en `behavior_modifiers.py` blijven net zo ongebruikt als hierboven beschreven — maar een apart, direct pad van vaste blueprint-velden naar spreektekst, zonder over de personality/behavior-laag te lopen. Zie sectie "Zelfkennis-laag" verderop voor details.
 12. ✅ **Fundamentele voorwaarde voor proactief gedrag: `main.py`'s blocking `input()`-lus — opgelost (12 juli 2026).** Achtergrondthread + directe EventBus-subscriber op `chat_response` gebouwd en getest met een eerste echte proactieve feature (`session_watcher.py`, pauze-melding na inactiviteitsdrempel). Volledige uitleg van het patroon in de nieuwe sectie **"Proactief spreken — het achtergrondthread-patroon"** hieronder.
+13. ✅ **Zelfkennis-laag — Nova kan vragen over zichzelf beantwoorden — gebouwd en getest (12 juli 2026).** Nieuw bestand `identity/self_query.py` (17 `antwoord_*()`-functies, laadt `identity.json` via de bestaande `load_identity_blueprint()`) + `detect_identity_question()` in `intent_router.py` (18 herkende categorieën, publiceert `intent_identity` met `sub_intent`) + `on_identity_question()`-handler in `chat.py` (routeert naar de juiste functie, antwoord via `layer4_response`). Enige uitzondering op "leest identity.json": de stemmingsvraag ("hoe voel je je") leest de LEVENDE `EmotionEngine.state` via `response_pipeline`, niet de statische blueprint. **Architecturale les:** `identity/` wordt niet gescand door `module_loader.py`'s dynamische lus (die doet enkel `modules/`), dus `self_query.py` laadt zijn data op module-niveau bij import, niet via een `init_module()`-conventie die hier nooit aangeroepen zou worden. Getest en werkend: "wie ben je", "wat is je doel", "waar ben je goed in", "hoe voel je je" geven correct de juiste blueprint-/live-data terug.
 
 ---
 

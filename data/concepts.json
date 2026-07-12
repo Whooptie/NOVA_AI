@@ -1485,6 +1485,13 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "part_of",
+            "target": "keuken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -1775,6 +1782,13 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -1963,6 +1977,13 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "keuken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -2137,6 +2158,13 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "snijden",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -2730,6 +2758,13 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "fornuis",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -3867,6 +3902,13 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -9307,6 +9349,13 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-11T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "snijden",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -9580,6 +9629,13 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-11T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -9645,6 +9701,13 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-11T00:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -11546,6 +11609,13 @@
             "confidence": 1.0,
             "source": "user",
             "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "part_of",
+            "target": "keuken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
           }
         ],
         "source": "user",
@@ -11970,6 +12040,53 @@
         "old_value": null,
         "new_value": "Hakken is met een mes of bijl in stukken snijden, vaak met kracht.",
         "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "wie": {
+    "senses": [
+      {
+        "sense_id": "wie#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T20:57:08.252656",
+      "updated_at": "2026-07-12T20:57:08.253644",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T20:57:08.253644",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T20:57:08.253644",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wie"
+        },
+        "timestamp": "2026-07-12T20:57:08.252656"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "wie#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T20:57:08.253644"
       }
     ]
   }
