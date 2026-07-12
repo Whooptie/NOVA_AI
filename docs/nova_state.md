@@ -227,6 +227,9 @@ Resultaat: van een hele alinea wordt nu enkel het eerste, korte kernbegrip overg
 **2. `detect_math()` (intent_router.py) — geen woordgrenzen bij math_keywords.**
 De check `if any(k in t for k in math_keywords)` gebruikte een kale substring-check zonder woordgrenzen. Hierdoor werd het woord "toestand" (bevat "tan") foutief herkend als de wiskundefunctie `tan()`, waardoor bv. "IJs is een materietoestand" naar de math-module werd gerouteerd in plaats van als relatie-leerzin herkend te worden. Fix: `re.search(rf"\b{k}\b", t)` i.p.v. de kale `in`-check.
 
+**3. `detect_relation_check()`, `detect_part_of_check()`, `detect_subtypes_query()` (intent_router.py) — ontbrekende `_emit_topic()`-aanroepen.**
+Ontdekt bij het bijwerken van `algemeen.py`'s help-tekst (12 juli 2026): drie routes in `route()` misten de verplichte `self._emit_topic(...)`-aanroep uit het vaste recept (zie "Architectuurprincipes om te onthouden" verderop). `detect_part_of_check` en `detect_subtypes_query` waren nieuw van vandaag en misten 'm simpelweg nog. **Belangrijker: `detect_relation_check` (de originele "is een hond een dier"-vraag) miste deze aanroep al langer, onopgemerkt** — dit was dus geen regressie van vandaag, maar een al langer bestaand, stil gat. Fix: alle drie routes emitten nu een topic (`relatie`, `part_of`, `subtypes`). `algemeen.py`'s patronen-sectie is aangevuld met deze drie nieuwe `topic_detected:*`-namen, en de REDENEREN-sectie met de nieuwe part_of/subtypes-commando's.
+
 ---
 
 ## 🌦️ Weather-module — functionaliteit (bijgewerkt 3 juli 2026)
