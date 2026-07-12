@@ -403,6 +403,68 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Part-of-check ("is een snaar onderdeel van een orkest",
+    # "zit een wiel in een fiets") — analoog aan detect_relation_check,
+    # maar voor part_of i.p.v. is_a. Nieuw (11 juli 2026).
+    # ---------------------------------------------------------
+    def detect_part_of_check(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        # 1. "is een X onderdeel van een Y" / "is een X een onderdeel van Y"
+        m = re.match(r"is\s+een\s+(\w+)\s+(?:een\s+)?onderdeel\s+van\s+(?:een\s+)?([\w\s]+)", t)
+        if m:
+            self.event_bus.publish("intent_part_of_check", {
+                "source": m.group(1).strip(),
+                "target": m.group(2).strip()
+            })
+            return True
+
+        # 2. "zit een X in een Y"
+        m = re.match(r"zit\s+een\s+(\w+)\s+in\s+(?:een\s+)?([\w\s]+)", t)
+        if m:
+            self.event_bus.publish("intent_part_of_check", {
+                "source": m.group(1).strip(),
+                "target": m.group(2).strip()
+            })
+            return True
+
+        return False
+    
+    # ---------------------------------------------------------
+    # Subtypes-vraag ("welke soorten dier ken je", "noem soorten
+    # van dier", "wat zijn allemaal dieren") — omgekeerde is_a-
+    # lookup. Nieuw (12 juli 2026).
+    # ---------------------------------------------------------
+    def detect_subtypes_query(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        # 1. "welke soorten X ken je" / "welke soorten van X ken je"
+        m = re.match(r"welke\s+soorten\s+(?:van\s+)?(\w+)\s+ken\s+je", t)
+        if m:
+            self.event_bus.publish("intent_subtypes_query", {
+                "target": m.group(1).strip()
+            })
+            return True
+
+        # 2. "noem soorten van X" / "noem soorten X"
+        m = re.match(r"noem\s+soorten\s+(?:van\s+)?(\w+)", t)
+        if m:
+            self.event_bus.publish("intent_subtypes_query", {
+                "target": m.group(1).strip()
+            })
+            return True
+
+        # 3. "wat zijn allemaal X" (bv. "wat zijn allemaal dieren")
+        m = re.match(r"wat\s+zijn\s+allemaal\s+([\w\s]+)", t)
+        if m:
+            self.event_bus.publish("intent_subtypes_query", {
+                "target": m.group(1).strip()
+            })
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Memory test-commando's
     # ---------------------------------------------------------
     def detect_memory(self, text):
@@ -576,6 +638,14 @@ class IntentRouter:
         if self.detect_relation_check(text):
             return
 
+        # 10b Part-of-check (nieuw, 11 juli 2026)
+        if self.detect_part_of_check(text):
+            return
+
+        # 10c Subtypes-vraag (nieuw, 12 juli 2026)
+        if self.detect_subtypes_query(text):
+            return
+        
         # Sense-choice (antwoord met nummer)
         if text.isdigit():
             if self.semantic:

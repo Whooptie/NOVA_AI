@@ -7790,6 +7790,13 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "part_of",
+            "target": "gitaar",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T10:56:22.005354"
           }
         ],
         "source": "user",
@@ -7799,15 +7806,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-12T10:56:22.005354",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-07-12T10:56:22.005354",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-07-12T10:56:22.005354",
           "confidence": 1.0
         }
       ]
@@ -7828,6 +7839,17 @@
         "old_value": null,
         "new_value": "Een snaar is een dunne, strak gespannen draad op een muziekinstrument die trilt en zo geluid produceert.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "snaar#1",
+        "relation": {
+          "type": "part_of",
+          "target": "gitaar",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-12T10:56:22.005354"
       }
     ]
   },
@@ -9942,6 +9964,13 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-11T21:15:00.000000"
+          },
+          {
+            "type": "part_of",
+            "target": "orkest",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T10:59:06.456349"
           }
         ],
         "source": "user",
@@ -9951,12 +9980,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-11T20:59:32.985684",
-      "updated_at": "2026-07-11T20:59:36.841945",
+      "updated_at": "2026-07-12T10:59:06.456349",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-07-11T20:59:36.841945",
-      "usage_count": 2,
+      "last_used_at": "2026-07-12T10:59:06.456349",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-07-11T20:59:32.986694",
@@ -9965,6 +9994,10 @@
         {
           "timestamp": "2026-07-11T20:59:36.841945",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-07-12T10:59:06.456349",
+          "confidence": 1.0
         }
       ]
     },
@@ -9995,6 +10028,17 @@
           "confidence": 1.0
         },
         "timestamp": "2026-07-11T20:59:36.841945"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "gitaar#1",
+        "relation": {
+          "type": "part_of",
+          "target": "orkest",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-12T10:59:06.456349"
       }
     ]
   },
@@ -10554,9 +10598,12 @@
     "senses": [
       {
         "sense_id": "ijs#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "IJs is water dat door bevriezing van vloeibare naar vaste vorm is overgegaan.",
+        "pos": "noun",
+        "examples": [
+          "Het water bevroor tot ijs bij min tien graden.",
+          "De kinderen gleden uit op het gladde ijs."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -10564,17 +10611,10 @@
             "confidence": 1.0,
             "source": "user",
             "created_at": "2026-07-11T21:23:58.115904"
-          },
-          {
-            "type": "is_a",
-            "target": "materietoestand",
-            "confidence": 1.0,
-            "source": "user",
-            "created_at": "2026-07-11T21:27:05.303796"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -10646,12 +10686,23 @@
     "senses": [
       {
         "sense_id": "vaste stof#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "definition": "Een vaste stof is een materietoestand waarbij de deeltjes stevig aan elkaar vastzitten en een vaste vorm en volume behouden.",
+        "pos": "noun",
+        "examples": [
+          "IJs is een voorbeeld van een vaste stof.",
+          "Een steen blijft een vaste stof, ook bij verhitting tot op zekere hoogte."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "materietoestand",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-12T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -10693,9 +10744,12 @@
     "senses": [
       {
         "sense_id": "vast#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Vast betekent stevig, onbeweeglijk of ononderbroken, en beschrijft ook een materietoestand met een vaste vorm.",
+        "pos": "adj",
+        "examples": [
+          "De tafel stond vast tegen de muur.",
+          "Bij kamertemperatuur is water vloeibaar, maar bij bevriezing wordt het vast."
+        ],
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
@@ -10740,9 +10794,12 @@
     "senses": [
       {
         "sense_id": "ijsmassa#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een ijsmassa is een grote, samenhangende hoeveelheid ijs, zoals die bijvoorbeeld in een gletsjer voorkomt.",
+        "pos": "noun",
+        "examples": [
+          "De ijsmassa bewoog nauwelijks merkbaar per jaar.",
+          "Wetenschappers maten de dikte van de ijsmassa."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -10752,8 +10809,8 @@
             "created_at": "2026-07-11T21:30:26.350069"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -10803,6 +10860,64 @@
           "confidence": 1.0
         },
         "timestamp": "2026-07-11T21:30:26.351171"
+      }
+    ]
+  },
+  "orkest": {
+    "senses": [
+      {
+        "sense_id": "orkest#1",
+        "definition": "Een orkest is een groep muzikanten die samen instrumentale muziek uitvoeren, vaak onder leiding van een dirigent.",
+        "pos": "noun",
+        "examples": [
+          "Het orkest speelde een symfonie van Beethoven.",
+          "Ze speelde viool in het orkest van de school."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "muziek",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-12T00:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T10:59:03.974852",
+      "updated_at": "2026-07-12T10:59:03.975850",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T10:59:03.975850",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T10:59:03.975850",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "orkest"
+        },
+        "timestamp": "2026-07-12T10:59:03.974852"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "orkest#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T10:59:03.975850"
       }
     ]
   }

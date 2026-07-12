@@ -8,6 +8,8 @@ class ChatModule:
         # Luister naar intents, niet naar chat_message
         event_bus.subscribe("intent_definition", self.on_definition)
         event_bus.subscribe("intent_relation_check", self.on_relation_check)
+        event_bus.subscribe("intent_part_of_check", self.on_part_of_check)
+        event_bus.subscribe("intent_subtypes_query", self.on_subtypes_query)
         event_bus.subscribe("intent_related_to", self.on_related_to)
         event_bus.subscribe("intent_synonym", self.on_synonym)
         event_bus.subscribe("intent_antonym", self.on_antonym)
@@ -126,6 +128,53 @@ class ChatModule:
 
         self.event_bus.publish("chat_response", {"text": msg})
 
+    # -------------------------
+    # 3B. Part-of check (nieuw, 11 juli 2026, analoog aan
+    # on_relation_check hierboven maar voor part_of-ketens)
+    # -------------------------
+    def on_part_of_check(self, data, event_type=None):
+        source = data.get("source")
+        target = data.get("target")
+
+        if not source or not target:
+            self.event_bus.publish("chat_response", {
+                "text": "Ik begrijp de onderdeel-vraag niet helemaal."
+            })
+            return
+
+        if self.semantic and hasattr(self.semantic, "explain_part_of"):
+            msg = self.semantic.explain_part_of(source, target)
+        else:
+            msg = f"Ik kan nog niet controleren of '{source}' onderdeel is van '{target}'."
+
+        self.event_bus.publish("chat_response", {"text": msg})
+
+    # -------------------------
+    # 3C. Subtypes-vraag (nieuw, 12 juli 2026, omgekeerde is_a-lookup)
+    # -------------------------
+    def on_subtypes_query(self, data, event_type=None):
+        target = data.get("target")
+
+        if not target:
+            self.event_bus.publish("chat_response", {
+                "text": "Van welke categorie wil je de soorten weten?"
+            })
+            return
+
+        subtypes = []
+        if self.semantic and hasattr(self.semantic, "get_all_subtypes"):
+            try:
+                subtypes = self.semantic.get_all_subtypes(target)
+            except Exception:
+                subtypes = []
+
+        if subtypes:
+            msg = f"Soorten van {target} die ik ken: {', '.join(subtypes)}."
+        else:
+            msg = f"Ik ken nog geen soorten van {target}."
+
+        self.event_bus.publish("chat_response", {"text": msg})
+        
     # -------------------------
     # 4. Related-to vragen
     # -------------------------

@@ -1,6 +1,6 @@
 # 🧠 Nova — State of the Project
 
-> Laatste update: 11 juli 2026
+> Laatste update: 12 juli 2026
 > Doel van dit bestand: altijd als eerste uploaden in een nieuw Claude-gesprek zodat context volledig is.
 
 ---
@@ -116,7 +116,7 @@ Nova_AI/
 | patterns.py | ✅ Klaar | Woordtelling + event-counts. Wordt later vervangen door Layer 2 (pattern_matcher.py). |
 | logger.py | ✅ Klaar | Logt enkel fouten/waarschuwingen naar nova.log (RotatingFileHandler, max 5MB × 3 backups). Volledige eventgeschiedenis zit in memory.py (data/interactions.jsonl + .db). |
 | reboot_manager.py | ✅ Klaar en volledig getest | `/reboot`-commando (Fase 1 van reboot_hotreload_roadmap.md). Sluit memory-buffer + alle modules met `shutdown()` (o.a. Stockfish via chess_engine.py) netjes af, start dan een nieuw los proces via `subprocess.Popen` + `CREATE_NEW_CONSOLE`. Zie volledige sectie "Reboot & Hot Reload" verderop voor details en opgeloste bugs. |
-| semantic.py | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw:`teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`. |
+| semantic.py | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw:`teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`. **Nieuw (12 juli 2026):** `part_of_chained`/`explain_part_of` (analoog aan is_a_chained/explain_is_a, keten-redenering voor part_of-relaties) en `get_all_subtypes` (omgekeerde is_a-lookup: alle concepten die direct/via keten naar een categorie verwijzen) — beide gebouwd, getest en werkend. Zie sectie "Reasoning Engine — Fase 7.1b/7.5" verderop. |
 | response_engine.py | ✅ Klaar (Layer 4, Fase 1-5 + 7) | Combineert semantic + word_associations + pattern_matcher tot sjabloon-antwoorden voor definitievragen. Zie volledige sectie "Layer 4" onder 7-Laags Memory Architectuur. |
 
 ### MODULES
@@ -176,6 +176,56 @@ Nova_AI/
 | 9 | Woordsoort-detectie (`detect_pos`) kan werkwoord/zelfstandig-naamwoord-dubbelzinnigheid niet oplossen zonder zinscontext (bv. "gebruik" als werkwoord vs. zelfstandig naamwoord) | semantic.py | 🟢 Laag | ✅ Omzeild (8 juli 2026 — expliciete stopwoordenlijst in response_pipeline.py, geen structurele fix) |
 | 10 | Layer 1 (`word_associations_learner.py`) houdt geen rekening met senses: bij een meerduidig woord (bv. "python" = zowel de slang als de programmeertaal) worden alle co-occurrences door elkaar geteld, ongeacht welke betekenis bedoeld was in de zin. Ontdekt tijdens Layer 4-testen (8 juli 2026): `response_engine.py` toonde de definitie van "python" als slang, aangevuld met de associatie "snel" — die associatie komt vermoedelijk uit gesprekken over de programmeertaal, niet het dier. Layer 1 werkt puur op tekst-co-occurrence en heeft geen besef van `semantic.py`'s sense-systeem (`get_senses()`). Geen bug in `response_engine.py` zelf — die geeft gewoon correct door wat Layer 1 teruggeeft. Live opnieuw bevestigd (8 juli 2026) met "hond" (2 senses) en "hart" (5 senses) in Kevin's echte `concepts.json`. | word_associations_learner.py | 🟢 Laag | 🔲 Open — wacht op disambiguatie-laag (`user_preferences.py`), zie Layer 4-sectie |
 | 11 | Nova's `emotion_state.json` stond structureel op een hoge `overstimulation.level` — elk antwoord, ongeacht onderwerp, kreeg het "overprikkeld_chaotisch_snel"-sjabloon (😵⚡💥) van `tone_engine.py`. Twee samenhangende oorzaken gevonden: (1) startwaarde stond op 1.0 (max), ver boven de threshold van 0.75 — Nova begon dus al overprikkeld bij het opstarten; (2) `emotion_engine.py` had geen enkel pad naar beneden — `apply_trigger()` verhoogde `overstimulation.level` bij triggers met `overflow_behavior` (bv. `excitement`, `focus`) met +0.15, maar niets liet het ooit weer zakken. | emotion_engine.py / Layer 6 | 🟡 Medium | ✅ Opgelost (11 juli 2026 — startwaarde naar 0.1 in `emotion_state.json`; `_apply_overstimulation_decay()` toegevoegd aan `emotion_engine.py` met TWEE decay-vormen die samenwerken: (a) tijd-gebaseerd — `last_trigger_timestamp` bijgehouden, elke minuut stilte laat het niveau zakken met `decay_per_minute` (standaard 0.05, instelbaar in `emotion_state.json` zonder code te wijzigen); (b) interactie-gebaseerd — triggers ZONDER `overflow_behavior` (bv. `confusion`) geven nu ook -0.05. Live getest: Nova start rustig bij `enthousiast_snel`, en bij snel herhaalde `excitement`-triggers (sneller dan de decay kan bijbenen) schakelt ze terecht over naar `overprikkeld_chaotisch_snel` — het systeem is nu omkeerbaar i.p.v. permanent vast te zitten.) |
+
+---
+
+## 🧩 Reasoning Engine — Fase 7.1b/7.5 uitbreidingen (12 juli 2026)
+
+Twee nieuwe, symbolische uitbreidingen op de bestaande Reasoning Engine (`semantic.py`, `ReasoningEngine`-klasse), gebouwd en getest in dezelfde sessie waarin een reeks bugs in `RelationParser.parse_relation()` en `intent_router.py`'s `detect_math()` werden gevonden en gefixt (zie apart, hieronder).
+
+### part_of_chained / explain_part_of (sectie 7.1b)
+
+Analoog aan het al bestaande `is_a_chained`/`explain_is_a`, maar volgt uitsluitend `part_of`-relaties i.p.v. `is_a`. Drie nieuwe onderdelen:
+
+- `part_of_chained()` + `explain_part_of()` in `ReasoningEngine` (semantic.py)
+- `part_of()` + `explain_part_of()` doorverwijzingen in `SemanticConceptsModule`-facade (semantic.py) — deze schakel ontbrak eerst en veroorzaakte een korte, snel gevonden bug (`hasattr(semantic, "explain_part_of")` gaf `False` terug)
+- `detect_part_of_check()` in `intent_router.py` — herkent "is X onderdeel van Y" en "zit X in Y"
+- `on_part_of_check()` handler in `chat.py`
+
+**Getest:** live in Nova, met de keten `snaar → part_of → gitaar → part_of → orkest`. Vraag "is een snaar onderdeel van een orkest?" gaf correct: *"Ja, een snaar is onderdeel van orkest, want: snaar → gitaar → orkest."*
+
+### get_all_subtypes (sectie 7.5)
+
+Omgekeerde `is_a`-lookup: geeft alle concepten terug die (direct of via een keten) naar een gegeven categorie verwijzen. **Let op:** dit is niet hetzelfde als de `is_a`-relatie zelf omdraaien (dat zou inhoudelijk fout zijn — "dier is_a grizzlybeer" klopt niet) — het is een aparte query die de bestaande relatie-graaf omgekeerd doorloopt door alle concepten te checken met de al bestaande `is_a_chained()`.
+
+- `get_all_subtypes()` in `ReasoningEngine` (semantic.py)
+- Doorverwijzing in `SemanticConceptsModule`-facade
+- `detect_subtypes_query()` in `intent_router.py` — herkent "welke soorten X ken je", "noem soorten van X", "wat zijn allemaal X"
+- `on_subtypes_query()` handler in `chat.py`
+
+**Getest:** live in Nova, "welke soorten dier ken je?" gaf correct 16 concepten terug (hond, huiskat, octopus, honingbeer, grizzlybeer, zoogdier, kat, wolf, weekdier, beer, bruine beer, paard, kip, vogel, tijger, roofdier).
+
+### Losse uitbreidingsideeën (niet ingepland)
+
+Tijdens dit gesprek kwamen 6 losse vervolgideeën naar boven (get_all_parts, related_to_chained, part_of-contradictiedetectie, multi-hop vragen, "waarom niet"-uitleg, concept-vergelijkingen). Deze zijn **niet volledig identiek** aan de bestaande Fase 8-10 in `semantic_extension_roadmap.md`, en daarom apart vastgelegd in een nieuw document: **reasoning_engine_ideeen_roadmap.md** — puur een ideeënbak, geen bouwvolgorde.
+
+---
+
+## 🐞 Bugfixes buiten de reguliere bug-tabel (11-12 juli 2026)
+
+Tijdens het testen van bovenstaande Reasoning Engine-uitbreidingen kwamen twee onafhankelijke, niet eerder gedocumenteerde bugs naar boven:
+
+**1. `RelationParser.parse_relation()` (semantic.py) — geen zin-/bijzin-afkapping.**
+Bij het leren van een `is_a`-relatie uit een langere tekst (bv. een geplakte alinea van meerdere zinnen) werd het object niet afgekapt bij de eerste zinsgrens, waardoor de VOLLEDIGE rest van de tekst als relatie-target werd opgeslagen. Voorbeeld: "Een vulkaan is een berg waaruit... [nog 4 zinnen]" werd letterlijk als één object opgeslagen. Twee deel-fixes:
+- Afkapping bij zinseinde-tekens (`. `, `! `, `? `, newline)
+- Afkapping bij bijzin-markers (`waaruit`, `waarbij`, `waarvan`, `waarmee`, `waarop`, `waar`, `die`, `dat`, `wat`, `wie`)
+
+Resultaat: van een hele alinea wordt nu enkel het eerste, korte kernbegrip overgehouden (bv. "vulkaan is_a berg" i.p.v. de volledige alinea). Bekende, geaccepteerde beperking: bij meerdere leerbare zinnen in één geplakte tekst wordt enkel de eerste zin verwerkt, de rest wordt genegeerd (geen crash, gewoon geen actie) — dit was nooit anders en is geen regressie.
+
+**Opruiming nodig geweest:** Nova's `ensure_concept`-mechanisme (hetzelfde dat `levend wezen` ooit als auto-placeholder aanmaakte) had de kapotte, te lange test-targets automatisch als eigen concepten vastgelegd in `concepts.json` — inclusief één concept met een 470 tekens lange naam. Deze zijn achteraf handmatig opgeruimd.
+
+**2. `detect_math()` (intent_router.py) — geen woordgrenzen bij math_keywords.**
+De check `if any(k in t for k in math_keywords)` gebruikte een kale substring-check zonder woordgrenzen. Hierdoor werd het woord "toestand" (bevat "tan") foutief herkend als de wiskundefunctie `tan()`, waardoor bv. "IJs is een materietoestand" naar de math-module werd gerouteerd in plaats van als relatie-leerzin herkend te worden. Fix: `re.search(rf"\b{k}\b", t)` i.p.v. de kale `in`-check.
 
 ---
 
@@ -493,6 +543,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 - interruption_learning_roadmap.md — Activity-Aware Interaction: (1) leren wanneer Nova mag storen tijdens een activiteit (confidence-score per activiteit, generiek), (2) variatie in formulering zodat het niet mechanisch aanvoelt, (3) contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — dit laatste vereist een aparte sensor/integratie-laag voor alledaagse acties die nog geen Nova-event zijn. Concept (9 juli 2026), nog niet ingepland; hangt af van Activity Awareness Deel A en Layer 5 Fase 1-2.
 - ml_components_overview.md — Overzicht per laag (1/2/3/4) van mogelijke bounded ML-toevoegingen — referentiedocument, geen bouwvolgorde. Layer 3 (GNN voor concepts.json) is Kevin's belangrijkste "achterhoofd"-optie, grootste ingreep van de lijst.
 - llm_codegen_tool_roadmap.md — Claude API als externe tool: (1) fallback/missing-intent tracking blijft 100% symbolisch in Nova zelf, (2) Claude API als codeer-tool ("live typen" in VSCode) en voor fallback-log-analyse — beide altijd Kevin-getriggerd, nooit autonoom binnen Nova's daemon-loop. Bevat kernprincipe "wie beslist wanneer" en uitleg waarom de kale API geen geheugen heeft tussen aanroepen. Concept (11 juli 2026), nog niet ingepland.
+- reasoning_engine_ideeen_roadmap.md — Losse ideeënbak (géén bouwvolgorde) voor 6 mogelijke Reasoning Engine-uitbreidingen: get_all_parts, related_to_chained, part_of-contradictiedetectie, multi-hop vragen combineren, "waarom niet"-uitleg bij negatief antwoord, concept-vergelijkingen. Ontstaan tijdens het bouwen van part_of_chained/get_all_subtypes (12 juli 2026); deels overlap met semantic_extension_roadmap.md Fase 7.4/8, deels compleet nieuw.
 
 ---
 
