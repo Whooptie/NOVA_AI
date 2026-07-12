@@ -521,16 +521,27 @@
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
+      },
+      {
+        "sense_id": "dier#2",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-06-29T17:33:27.306128",
-      "updated_at": "2026-06-29T17:37:52.228284",
+      "updated_at": "2026-07-12T17:50:55.727715",
       "sources": [
-        "user"
+        "user",
+        "auto"
       ],
-      "last_used_at": "2026-06-29T17:37:52.228284",
-      "usage_count": 2,
+      "last_used_at": "2026-07-12T17:50:55.727715",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-06-29T17:33:27.309583",
@@ -539,6 +550,10 @@
         {
           "timestamp": "2026-06-29T17:37:52.228284",
           "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-07-12T17:50:55.727715",
+          "confidence": 0.1
         }
       ]
     },
@@ -569,6 +584,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-06-29T17:37:52.228284"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "dier#2",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T17:50:55.727715"
       }
     ]
   },
@@ -9397,6 +9420,48 @@
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
+      },
+      {
+        "sense_id": "mes#2",
+        "definition": "Een mes is een stuk keukengerei met een scherp lemmet, gebruikt om voedsel te snijden.",
+        "pos": "noun",
+        "examples": [
+          "Kevin snijdt de tomaat met een mes.",
+          "Het mes ligt op de snijplank."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "keukengerei",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "snijden",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "property_of",
+            "target": "scherp",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "snijplank",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
       }
     ],
     "metadata": {
@@ -9430,6 +9495,14 @@
         "old_value": null,
         "new_value": "Een mes is een gereedschap met een scherp lemmet, gebruikt om te snijden.",
         "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "mes#2",
+        "old_value": null,
+        "new_value": "Een mes is een stuk keukengerei met een scherp lemmet, gebruikt om voedsel te snijden.",
+        "timestamp": "2026-07-12T18:33:00.000000"
       }
     ]
   },
@@ -10918,6 +10991,985 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-12T10:59:03.975850"
+      }
+    ]
+  },
+  "welke": {
+    "senses": [
+      {
+        "sense_id": "welke#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T17:50:55.702977",
+      "updated_at": "2026-07-12T17:50:55.703958",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T17:50:55.703958",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T17:50:55.703958",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "welke"
+        },
+        "timestamp": "2026-07-12T17:50:55.702977"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "welke#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T17:50:55.703958"
+      }
+    ]
+  },
+  "ken": {
+    "senses": [
+      {
+        "sense_id": "ken#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T17:50:55.742649",
+      "updated_at": "2026-07-12T17:50:55.742649",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T17:50:55.742649",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T17:50:55.742649",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ken"
+        },
+        "timestamp": "2026-07-12T17:50:55.742649"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "ken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T17:50:55.742649"
+      }
+    ]
+  },
+  "waarop": {
+    "senses": [
+      {
+        "sense_id": "waarop#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T17:57:19.439249",
+      "updated_at": "2026-07-12T17:57:19.440250",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T17:57:19.440250",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T17:57:19.440250",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "waarop"
+        },
+        "timestamp": "2026-07-12T17:57:19.439249"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "waarop#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T17:57:19.440250"
+      }
+    ]
+  },
+  "lijkt": {
+    "senses": [
+      {
+        "sense_id": "lijkt#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T17:57:19.464268",
+      "updated_at": "2026-07-12T17:57:19.465264",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T17:57:19.465264",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T17:57:19.465264",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "lijkt"
+        },
+        "timestamp": "2026-07-12T17:57:19.464268"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "lijkt#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T17:57:19.465264"
+      }
+    ]
+  },
+  "synoniem": {
+    "senses": [
+      {
+        "sense_id": "synoniem#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T17:57:47.382157",
+      "updated_at": "2026-07-12T17:57:47.383151",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T17:57:47.383151",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T17:57:47.383151",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "synoniem"
+        },
+        "timestamp": "2026-07-12T17:57:47.382157"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "synoniem#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T17:57:47.383151"
+      }
+    ]
+  },
+  "tegenovergestelde": {
+    "senses": [
+      {
+        "sense_id": "tegenovergestelde#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T17:57:57.528736",
+      "updated_at": "2026-07-12T17:57:57.528736",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T17:57:57.528736",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T17:57:57.528736",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tegenovergestelde"
+        },
+        "timestamp": "2026-07-12T17:57:57.528736"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "tegenovergestelde#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T17:57:57.528736"
+      }
+    ]
+  },
+  "eigenschappen": {
+    "senses": [
+      {
+        "sense_id": "eigenschappen#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T17:58:24.645721",
+      "updated_at": "2026-07-12T17:58:24.647757",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-12T17:58:24.647757",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T17:58:24.647757",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "eigenschappen"
+        },
+        "timestamp": "2026-07-12T17:58:24.645721"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "eigenschappen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-12T17:58:24.647757"
+      }
+    ]
+  },
+  "keuken": {
+    "senses": [
+      {
+        "sense_id": "keuken#1",
+        "definition": "Een keuken is een ruimte in een huis waar eten wordt klaargemaakt.",
+        "pos": "noun",
+        "examples": [
+          "Kevin staat in de keuken pasta te koken.",
+          "De keuken heeft een fornuis en een koelkast."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "huis",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "keuken"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "keuken#1",
+        "old_value": null,
+        "new_value": "Een keuken is een ruimte in een huis waar eten wordt klaargemaakt.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "keukengerei": {
+    "senses": [
+      {
+        "sense_id": "keukengerei#1",
+        "definition": "Keukengerei is gereedschap dat gebruikt wordt om eten te bereiden.",
+        "pos": "noun",
+        "examples": [
+          "Een mes, een pan en een snijplank zijn keukengerei."
+        ],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "keukengerei"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "keukengerei#1",
+        "old_value": null,
+        "new_value": "Keukengerei is gereedschap dat gebruikt wordt om eten te bereiden.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "snijplank": {
+    "senses": [
+      {
+        "sense_id": "snijplank#1",
+        "definition": "Een snijplank is een plat oppervlak waarop je met een mes voedsel snijdt.",
+        "pos": "noun",
+        "examples": [
+          "Kevin snijdt de ui op de snijplank."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "keukengerei",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "snijden",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "mes",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "snijplank"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "snijplank#1",
+        "old_value": null,
+        "new_value": "Een snijplank is een plat oppervlak waarop je met een mes voedsel snijdt.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "pan": {
+    "senses": [
+      {
+        "sense_id": "pan#1",
+        "definition": "Een pan is keukengerei waarin je eten verhit op een fornuis.",
+        "pos": "noun",
+        "examples": [
+          "De pan staat op het fornuis met kokende soep."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "keukengerei",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "fornuis",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "pan"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "pan#1",
+        "old_value": null,
+        "new_value": "Een pan is keukengerei waarin je eten verhit op een fornuis.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "fornuis": {
+    "senses": [
+      {
+        "sense_id": "fornuis#1",
+        "definition": "Een fornuis is een keukenapparaat dat warmte levert om eten te koken of bakken.",
+        "pos": "noun",
+        "examples": [
+          "Het fornuis staat aan om de soep te verwarmen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "apparaat",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "part_of",
+            "target": "keuken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "causes",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "fornuis"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "fornuis#1",
+        "old_value": null,
+        "new_value": "Een fornuis is een keukenapparaat dat warmte levert om eten te koken of bakken.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "koken": {
+    "senses": [
+      {
+        "sense_id": "koken#1",
+        "definition": "Koken is het bereiden van eten door het te verhitten.",
+        "pos": "noun",
+        "examples": [
+          "Kevin is pasta aan het koken.",
+          "Ze koken elke avond samen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "fornuis",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "koken"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "koken#1",
+        "old_value": null,
+        "new_value": "Koken is het bereiden van eten door het te verhitten.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "scherp": {
+    "senses": [
+      {
+        "sense_id": "scherp#1",
+        "definition": "Scherp betekent dat iets makkelijk kan snijden of prikken.",
+        "pos": "noun",
+        "examples": [
+          "Het mes is heel scherp.",
+          "Wees voorzichtig, dat lemmet is scherp."
+        ],
+        "relations": [
+          {
+            "type": "antonym",
+            "target": "stomp",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "property_of",
+            "target": "mes",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "scherp"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "scherp#1",
+        "old_value": null,
+        "new_value": "Scherp betekent dat iets makkelijk kan snijden of prikken.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "stomp": {
+    "senses": [
+      {
+        "sense_id": "stomp#1",
+        "definition": "Stomp betekent dat iets niet scherp is en dus moeilijk snijdt.",
+        "pos": "noun",
+        "examples": [
+          "Dit mes is stomp geworden na jaren gebruik."
+        ],
+        "relations": [
+          {
+            "type": "antonym",
+            "target": "scherp",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "stomp"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "stomp#1",
+        "old_value": null,
+        "new_value": "Stomp betekent dat iets niet scherp is en dus moeilijk snijdt.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "snijden": {
+    "senses": [
+      {
+        "sense_id": "snijden#1",
+        "definition": "Snijden is met een scherp voorwerp iets in stukken verdelen.",
+        "pos": "noun",
+        "examples": [
+          "Ze snijdt het brood in plakjes."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "hakken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "snijden"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "snijden#1",
+        "old_value": null,
+        "new_value": "Snijden is met een scherp voorwerp iets in stukken verdelen.",
+        "timestamp": "2026-07-12T18:33:00.000000"
+      }
+    ]
+  },
+  "hakken": {
+    "senses": [
+      {
+        "sense_id": "hakken#1",
+        "definition": "Hakken is met een mes of bijl in stukken snijden, vaak met kracht.",
+        "pos": "noun",
+        "examples": [
+          "Kevin hakt de wortels in kleine stukjes."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "snijden",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "koken",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "bot",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T18:33:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-12T18:33:00.000000",
+      "updated_at": "2026-07-12T18:33:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-12T18:33:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-12T18:33:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "user",
+        "new_value": {
+          "word": "hakken"
+        },
+        "timestamp": "2026-07-12T18:33:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hakken#1",
+        "old_value": null,
+        "new_value": "Hakken is met een mes of bijl in stukken snijden, vaak met kracht.",
+        "timestamp": "2026-07-12T18:33:00.000000"
       }
     ]
   }

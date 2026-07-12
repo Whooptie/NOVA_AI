@@ -138,6 +138,18 @@ class IntentRouter:
                 word = t[len(p):].strip().rstrip("?.")
                 self.event_bus.publish("intent_properties", {"word": word})
                 return True
+            
+        # Waarop lijkt X (related_to)
+        for p in ["waarop lijkt ", "waar lijkt ", "wat lijkt op "]:
+            if t.startswith(p):
+                word = t[len(p):].strip().rstrip("?.")
+                for art in ["de ", "het ", "een "]:
+                    if word.startswith(art):
+                        word = word[len(art):].strip()
+                        break
+                self.event_bus.publish("intent_related_to", {"word": word})
+                return True
+
         # Wikipedia opzoeken
         for p in ["wiki ", "leer wikipedia ", "zoek op "]:
             if t.startswith(p):

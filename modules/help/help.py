@@ -26,7 +26,11 @@ class HelpModule:
         else:
             tekst = algemeen.get_help()
 
-        self.event_bus.publish("chat_response", {"text": tekst})
+        # instant=True: dit is een lang, opgemaakt overzicht (meerdere
+        # regels, emoji-kopjes), geen gesproken zin. Typewriter-effect
+        # zou hier alleen maar onnodig lang duren, dus we tonen dit
+        # in één keer i.p.v. letter per letter.
+        self.event_bus.publish("chat_response", {"text": tekst, "instant": True})
 
 
 def init_module(event_bus, semantic_module=None):
