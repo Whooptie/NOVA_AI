@@ -434,6 +434,41 @@ class ReasoningEngine:
         return False, []
 
     # ---------------------------------------------------------
+    # 7.1b Chaining — is A onderdeel van B, via tussenstappen?
+    # ---------------------------------------------------------
+    def part_of_chained(self, source: str, target: str, _visited: set = None) -> tuple[bool, list]:
+        """
+        Zoekt of source → target bestaat via part_of ketens.
+        Geeft terug: (gevonden: bool, pad: list)
+        Voorbeeld: snaar → part_of → gitaar → part_of → orkest
+                   part_of_chained("snaar", "orkest") -> True, ["snaar", "gitaar", "orkest"]
+        Analoog aan is_a_chained, maar volgt uitsluitend part_of-relaties.
+        """
+        if _visited is None:
+            _visited = set()
+
+        source = source.lower().strip()
+        target = target.lower().strip()
+
+        if source == target:
+            return True, [source]
+
+        if source in _visited or len(_visited) >= self.MAX_DEPTH:
+            return False, []
+
+        _visited.add(source)
+
+        direct = self.relation_engine.get_relations(source, relation_type="part_of")
+        for parent in direct:
+            if parent == target:
+                return True, [source, target]
+            found, pad = self.part_of_chained(parent, target, _visited)
+            if found:
+                return True, [source] + pad
+
+        return False, []
+    
+    # ---------------------------------------------------------
     # 7.2 Inference — oorzaak-ketens doordenken
     # ---------------------------------------------------------
     def causes_chained(self, source: str, target: str, _visited: set = None) -> tuple[bool, list]:
@@ -528,6 +563,50 @@ class ReasoningEngine:
         stappen = " → ".join(pad)
         return f"Ja, {source} leidt uiteindelijk tot {target}, via: {stappen}."
 
+    def explain_part_of(self, source: str, target: str) -> str:
+        """
+        Geeft een leesbare uitleg van het part_of-redeneerpad.
+        Voorbeeld: "een snaar is onderdeel van een orkest, want:
+        snaar → gitaar → orkest"
+        Analoog aan explain_is_a, maar voor part_of-ketens.
+        """
+        found, pad = self.part_of_chained(source, target)
+        if not found:
+            return f"Ik kan niet bewijzen dat '{source}' onderdeel is van '{target}'."
+
+        if len(pad) == 2:
+            return f"Ja, een {source} is onderdeel van {target}."
+
+        stappen = " → ".join(pad)
+        return f"Ja, een {source} is onderdeel van {target}, want: {stappen}."
+
+    # ---------------------------------------------------------
+    # 7.5 Omgekeerde is_a-lookup — alle subtypes van een categorie
+    # ---------------------------------------------------------
+    def get_all_subtypes(self, target: str) -> list:
+        """
+        Geeft alle concepten terug die (direct of via een is_a-keten)
+        naar 'target' verwijzen. Dit is NIET hetzelfde als de is_a-
+        relatie omdraaien (dat zou inhoudelijk fout zijn) — het is een
+        aparte, omgekeerde doorloop van de bestaande relatie-graaf.
+        Voorbeeld: get_all_subtypes("dier") -> ["hond", "kat", "wolf",
+        "grizzlybeer", "bruine beer", "beer", "zoogdier", ...]
+        Nieuw (12 juli 2026), analoog qua opzet aan is_a_chained maar
+        dan "achterstevoren": we doorlopen ALLE concepten en houden
+        enkel diegene over waarvoor is_a_chained(concept, target) waar
+        is.
+        """
+        target = target.lower().strip()
+        subtypes = []
+
+        for word in self.store.concepts.keys():
+            if word == target:
+                continue
+            found, _ = self.is_a_chained(word, target)
+            if found:
+                subtypes.append(word)
+
+        return subtypes
 
 # ---------------------------------------------------------
 # 5. TeachEngine
@@ -1043,6 +1122,20 @@ class SemanticConceptsModule:
     def explain_is_a(self, source, target):
         return self.reasoning_engine.explain_is_a(source, target)
 
+    def part_of(self, source, target):
+        # Analoog aan is_a hierboven: eerst directe check, dan chaining.
+        # Nieuw (11 juli 2026), samen met explain_part_of.
+        if target in self.relation_engine.get_relations(source, relation_type="part_of"):
+            return True
+        found, _ = self.reasoning_engine.part_of_chained(source, target)
+        return found
+
+    def explain_part_of(self, source, target):
+        return self.reasoning_engine.explain_part_of(source, target)
+    
+    def get_all_subtypes(self, target):
+        return self.reasoning_engine.get_all_subtypes(target)
+    
     def explain_causes(self, source, target):
         return self.reasoning_engine.explain_causes(source, target)
 
