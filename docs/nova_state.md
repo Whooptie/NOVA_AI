@@ -43,6 +43,8 @@ Nova_AI/
 │   ├── semantic.py
 │   └── response_engine.py
 ├── modules/
+│   ├── activity/
+│   │   └── session_watcher.py
 │   ├── time/
 │   │   ├── time.py
 │   │   └── zone.py
@@ -517,7 +519,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
     - **`behavior_modifiers.py`** (`BehaviorModifiers`) wordt aangemaakt in `PersonalityEngine.__init__()`, maar geen van zijn methodes (`apply_energy_modulation()`, `apply_impulsivity()`, `apply_dramatic_flair()`) wordt ooit ergens aangeroepen — volledig dode klasse in de praktijk.
 
     Geen bug — dit is nooit "verkeerd" gebouwd, gewoon nog niet de volgende bouwfase. Hoort thuis bij **Layer 6 (Personality Engine)** volgens `identity_ROADMAP.md`, met raakvlakken naar **Layer 7 (Emergent Behaviors)** voor de niet-gebruikte `dramatic_flair`/`sync_with_kevin`/`behavior_modifiers`-mechanismen. Nog niet ingepland — apart op te pakken wanneer Layer 6/7 aan de beurt zijn.
-12. 🔴 **Fundamentele voorwaarde voor proactief gedrag: `main.py`'s blocking `input()`-lus.**
+12. ✅ **Fundamentele voorwaarde voor proactief gedrag: `main.py`'s blocking `input()`-lus — opgelost (12 juli 2026).** Achtergrondthread + directe EventBus-subscriber op `chat_response` gebouwd en getest met een eerste echte proactieve feature (`session_watcher.py`, pauze-melding na inactiviteitsdrempel). Volledige uitleg van het patroon in de nieuwe sectie **"Proactief spreken — het achtergrondthread-patroon"** hieronder.
 
 ---
 
@@ -547,6 +549,25 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 - ml_components_overview.md — Overzicht per laag (1/2/3/4) van mogelijke bounded ML-toevoegingen — referentiedocument, geen bouwvolgorde. Layer 3 (GNN voor concepts.json) is Kevin's belangrijkste "achterhoofd"-optie, grootste ingreep van de lijst.
 - llm_codegen_tool_roadmap.md — Claude API als externe tool: (1) fallback/missing-intent tracking blijft 100% symbolisch in Nova zelf, (2) Claude API als codeer-tool ("live typen" in VSCode) en voor fallback-log-analyse — beide altijd Kevin-getriggerd, nooit autonoom binnen Nova's daemon-loop. Bevat kernprincipe "wie beslist wanneer" en uitleg waarom de kale API geen geheugen heeft tussen aanroepen. Concept (11 juli 2026), nog niet ingepland.
 - reasoning_engine_ideeen_roadmap.md — Losse ideeënbak (géén bouwvolgorde) voor 6 mogelijke Reasoning Engine-uitbreidingen: get_all_parts, related_to_chained, part_of-contradictiedetectie, multi-hop vragen combineren, "waarom niet"-uitleg bij negatief antwoord, concept-vergelijkingen. Ontstaan tijdens het bouwen van part_of_chained/get_all_subtypes (12 juli 2026); deels overlap met semantic_extension_roadmap.md Fase 7.4/8, deels compleet nieuw.
+
+---
+
+## 🧵 Proactief spreken — het achtergrondthread-patroon (sinds 12 juli 2026)
+
+**Probleem dat dit oplost:** `main.py`'s hoofdlus draait rond een blocking `input()`-aanroep. Zolang die op Kevin's toetsaanslag wacht, staat de rest van het programma stil — Nova kon dus nooit uit zichzelf iets zeggen (reminders, pauze-suggesties, straks Layer 5-meldingen), enkel reageren nadat Kevin al iets typte.
+
+**Oplossing — twee losse onderdelen die samenwerken:**
+
+1. **Een `daemon=True`-achtergrondthread in `main.py`** (`achtergrond_loop()`), gestart via `threading.Thread(...)` vlak na het laden van de modules. Deze thread loopt volledig onafhankelijk van de `input()`-lus en kan op elk moment code aanroepen — voorlopig enkel `session_watcher.check_pauze()` elke 60 seconden, maar dit is de plek waar Layer 5 straks op aansluit.
+2. **Een rechtstreekse EventBus-subscriber op `chat_response`** (`on_chat_response()` in `main.py`, geregistreerd via `bus.subscribe("chat_response", on_chat_response)`). Dit was de kern van de fix: de oude aanpak printte `chat_response`-berichten enkel via polling in de hoofdlus (`mem.get_recent_events()`, pas uitgevoerd **na** dat Kevin zelf iets typte) — een proactief bericht van de achtergrondthread bleef daardoor onzichtbaar in de memory-buffer liggen tot Kevin toevallig weer iets intypte. Met een directe subscriber print het bericht **onmiddellijk**, ongeacht welke thread het publiceerde. De oude polling-tak voor `etype == "chat_response"` in de hoofdlus is bewust leeggemaakt (`pass`) om dubbel printen te voorkomen — alle andere event-types (`semantic_update`, `pattern_update`, `time_zone_ready`) lopen nog gewoon via de oude polling-weg.
+
+**Het "verse prompt"-mechanisme (`wachten_op_input`):** een proactief bericht dat verschijnt terwijl Kevin's `Jij: `-prompt al op het scherm staat, oogt rommelig — de prompt-tekst raakt visueel "begraven" onder Nova's nieuwe tekst. Opgelost met een globale vlag `wachten_op_input`, die `True` is exact zolang de hoofdthread binnen de `input()`-aanroep zit. `on_chat_response()` controleert deze vlag na het printen: staat hij op `True`, dan was dit bericht proactief (van de achtergrondthread) en wordt de `Jij: `-prompt handmatig opnieuw getekend. Komt het bericht als normaal antwoord op Kevin's eigen typen, dan staat de vlag op `False` en gebeurt er niets extra — de volgende `input()`-aanroep toont vanzelf een nieuwe prompt.
+
+**Bekende, geaccepteerde beperking:** als Kevin *net* een paar letters aan het typen is op het exacte moment dat een proactief bericht binnenkomt, kan die halfgetypte tekst nog even kort door elkaar lopen met Nova's output vóór de prompt zich herstelt. Dit is een inherente grens van `input()` in een console-app zonder externe libraries zoals `prompt_toolkit` — geen bug, bewust geaccepteerd als aanvaardbare edge case voor een lokale terminal-tool.
+
+**Eerste proactieve feature gebouwd op dit patroon: `modules/activity/session_watcher.py`.** Houdt via `time.time()` bij hoe lang de sessie loopt sinds start (of sinds de vorige melding), en publiceert éénmalig een `chat_response`-event zodra `PAUZE_DREMPEL_SECONDEN` (standaard 1800 = 30 min) overschreden is. Puur symbolisch — enkel tijd bijhouden en vergelijken, geen ML. Volgt de standaard `init_module(event_bus, sem=None)`-conventie, dus automatisch opgepikt door `module_loader.py`'s dynamische lus.
+
+**Voor toekomstige proactieve modules (zoals Layer 5 straks):** dit patroon is nu de vaste weg. Nieuwe proactieve logica hoort in een aparte module met een `check_*()`-achtige methode, aangeroepen vanuit `achtergrond_loop()` in `main.py`, die zelf `event_bus.publish("chat_response", {...})` of `event_bus.publish("layer4_response", {...})` publiceert — nooit rechtstreeks `print()` vanuit de achtergrondthread zelf, anders mis je de tone-pipeline en het "verse prompt"-mechanisme.
 
 ---
 

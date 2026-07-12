@@ -1,7 +1,10 @@
 # main.py
+
 import os
 import sys
 import ctypes
+import time
+import threading
 
 # ---------------------------------------------------------------
 # ANSI-kleurcodes activeren in het Windows-console-venster
@@ -43,12 +46,87 @@ CYAN = "\033[96m"
 MAGENTA = "\033[95m"
 RESET = "\033[0m"
 
+# Hoe snel Nova "typt" — tijd in seconden tussen elke letter.
+# Kleiner getal = sneller. Pas dit gerust aan naar smaak.
+TYPEWRITER_SNELHEID = 0.04
+
+def print_nova_typewriter(tekst):
+    """
+    Print Nova's antwoord met een typewriter-effect: 'Nova: ' verschijnt
+    direct in 1 blok, en de rest van de zin komt daarna letter per letter.
+    """
+    # "Nova: " blijft in 1 keer verschijnen — geen vertraging hier
+    print(f"{MAGENTA}Nova: {RESET}", end="", flush=True)
+
+    # De rest van de tekst letter per letter
+    for letter in tekst:
+        print(f"{MAGENTA}{letter}{RESET}", end="", flush=True)
+        time.sleep(TYPEWRITER_SNELHEID)
+
+    print()  # nieuwe regel op het einde, anders plakt de volgende prompt eraan vast
+
+# Houdt bij of de hoofdthread op dit moment op input() staat te wachten.
+# Nodig om te weten of we na een proactief bericht de "Jij: "-prompt
+# opnieuw moeten tekenen (enkel relevant als we ECHT aan het wachten
+# zijn — niet wanneer Nova toch al een normaal antwoord aan het geven is).
+wachten_op_input = False
+
+def on_chat_response(data, event_type=None):
+    """
+    Rechtstreekse subscriber op 'chat_response' — print onmiddellijk,
+    ongeacht welke thread (hoofdthread via input(), of de achtergrond-
+    thread via een proactieve module zoals session_watcher) dit event
+    publiceert. Dit is nodig omdat de oude polling-aanpak (via
+    mem.get_recent_events() in de hoofdlus) enkel afgaat NADAT Kevin
+    zelf een bericht typt — een proactief bericht van de achtergrond-
+    thread zou anders onzichtbaar in de memory-buffer blijven liggen
+    tot de volgende keer dat Kevin toevallig iets intypt.
+    """
+    msg = data.get("text") or data.get("msg") or ""
+    print_nova_typewriter(msg)
+
+    # Als de hoofdthread op dit moment op input() staat te wachten,
+    # betekent dit dat DIT bericht proactief kwam (van de achtergrond-
+    # thread) — de "Jij: "-prompt is dan al geprint maar raakt nu
+    # visueel "begraven" onder Nova's bericht. We tekenen hem opnieuw
+    # zodat het weer duidelijk is waar Kevin kan typen.
+    if wachten_op_input:
+        print(f"{GREEN}Jij: {RESET}", end="", flush=True)
+
+def achtergrond_loop(loader):
+    """
+    Draait continu op de achtergrond, los van de input()-lus in main().
+    Checkt elke 60 seconden of er een proactieve melding nodig is
+    (voorlopig enkel de pauze-check van session_watcher).
+    """
+    while True:
+        time.sleep(60)
+
+        watcher = loader.loaded_modules.get("session_watcher")
+        if watcher:
+            try:
+                watcher.check_pauze()
+            except Exception as e:
+                print(f"[Achtergrondthread] Fout in check_pauze(): {e}")
+
 def main():
+    global wachten_op_input
     bus = EventBus()
 
     # Modules laden
     loader = ModuleLoader(bus)
     loader.discover_and_load()
+
+    # Rechtstreeks abonneren op chat_response, zodat berichten
+    # ONMIDDELLIJK geprint worden, ook als ze van de achtergrondthread
+    # komen (proactieve meldingen), niet pas nadat Kevin zelf typt.
+    bus.subscribe("chat_response", on_chat_response)
+
+    # Achtergrondthread starten — laat Nova proactief kunnen spreken
+    # terwijl de hoofdthread op input() wacht (bv. pauze-meldingen).
+    # daemon=True zorgt dat deze thread automatisch stopt zodra Nova stopt.
+    bg_thread = threading.Thread(target=achtergrond_loop, args=(loader,), daemon=True)
+    bg_thread.start()
 
     # Tijdzone automatisch activeren
     zone = loader.event_bus.modules.get("zone")
@@ -88,9 +166,13 @@ def main():
 
     
 
+    global wachten_op_input
+
     while True:
         printed = set()
+        wachten_op_input = True
         user_input = input(f"{GREEN}Jij: {RESET}")
+        wachten_op_input = False
 
         # Tijdelijk test-commando voor Fase 4 (mag je later weer verwijderen)
         if user_input.lower() == "onderhoud":
@@ -172,10 +254,13 @@ def main():
                     print("  Events:", counts)
                     print("  Top woorden:", words)
 
-                # Chat responses (uniform: altijd 'text')
+                # Chat responses worden nu NIET meer hier geprint —
+                # dat gebeurt via de rechtstreekse on_chat_response()
+                # subscriber hierboven (nodig voor proactieve berichten
+                # van de achtergrondthread). We slaan dit event-type
+                # hier gewoon over om dubbel printen te voorkomen.
                 elif etype == "chat_response":
-                    msg = data.get("text") or data.get("msg") or ""
-                    print(f"{MAGENTA}Nova: {msg}{RESET}")
+                    pass
 
                 # Timezone ready
                 elif etype == "time_zone_ready":
