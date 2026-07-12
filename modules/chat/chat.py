@@ -114,7 +114,7 @@ class ChatModule:
         target = data.get("target")
 
         if not source or not target:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": "Ik begrijp de relatie niet helemaal."
             })
             return
@@ -126,7 +126,7 @@ class ChatModule:
         else:
             msg = f"Nee, een {source} is geen {target}."
 
-        self.event_bus.publish("chat_response", {"text": msg})
+        self.event_bus.publish("layer4_response", {"text": msg})
 
     # -------------------------
     # 3B. Part-of check (nieuw, 11 juli 2026, analoog aan
@@ -137,7 +137,7 @@ class ChatModule:
         target = data.get("target")
 
         if not source or not target:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": "Ik begrijp de onderdeel-vraag niet helemaal."
             })
             return
@@ -147,7 +147,7 @@ class ChatModule:
         else:
             msg = f"Ik kan nog niet controleren of '{source}' onderdeel is van '{target}'."
 
-        self.event_bus.publish("chat_response", {"text": msg})
+        self.event_bus.publish("layer4_response", {"text": msg})
 
     # -------------------------
     # 3C. Subtypes-vraag (nieuw, 12 juli 2026, omgekeerde is_a-lookup)
@@ -156,7 +156,7 @@ class ChatModule:
         target = data.get("target")
 
         if not target:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": "Van welke categorie wil je de soorten weten?"
             })
             return
@@ -173,7 +173,7 @@ class ChatModule:
         else:
             msg = f"Ik ken nog geen soorten van {target}."
 
-        self.event_bus.publish("chat_response", {"text": msg})
+        self.event_bus.publish("layer4_response", {"text": msg})
         
     # -------------------------
     # 4. Related-to vragen
@@ -182,7 +182,7 @@ class ChatModule:
         word = data.get("word")
 
         if not word:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": "Waarop lijkt wat precies?"
             })
             return
@@ -199,23 +199,24 @@ class ChatModule:
         else:
             msg = f"Ik weet niet waarop {word} lijkt."
 
-        self.event_bus.publish("chat_response", {"text": msg})
+        self.event_bus.publish("layer4_response", {"text": msg})
 
     # -------------------------
     # Synoniemen
     # -------------------------
     def on_synonym(self, data, event_type=None):
         word = (data.get("word") or "").strip()
+
         if not word:
-            self.event_bus.publish("chat_response", {"text": "Welk woord bedoel je?"})
+            self.event_bus.publish("layer4_response", {"text": "Welk woord bedoel je?"})
             return
         results = self.semantic.get_synonyms(word) if self.semantic else []
         if results:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Synoniemen van '{word}': {', '.join(results)}."
             })
         else:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Ik ken geen synoniemen van '{word}'."
             })
 
@@ -224,16 +225,17 @@ class ChatModule:
     # -------------------------
     def on_antonym(self, data, event_type=None):
         word = (data.get("word") or "").strip()
+        
         if not word:
-            self.event_bus.publish("chat_response", {"text": "Welk woord bedoel je?"})
+            self.event_bus.publish("layer4_response", {"text": "Welk woord bedoel je?"})
             return
         results = self.semantic.get_antonyms(word) if self.semantic else []
         if results:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Het tegenovergestelde van '{word}': {', '.join(results)}."
             })
         else:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Ik ken geen tegendeel van '{word}'."
             })
 
@@ -242,16 +244,17 @@ class ChatModule:
     # -------------------------
     def on_used_for(self, data, event_type=None):
         word = (data.get("word") or "").strip()
+
         if not word:
-            self.event_bus.publish("chat_response", {"text": "Welk woord bedoel je?"})
+            self.event_bus.publish("layer4_response", {"text": "Welk woord bedoel je?"})
             return
         results = self.semantic.get_used_for(word) if self.semantic else []
         if results:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"'{word}' gebruik je voor: {', '.join(results)}."
             })
         else:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Ik weet nog niet waarvoor '{word}' gebruikt wordt."
             })
 
@@ -260,16 +263,17 @@ class ChatModule:
     # -------------------------
     def on_causes(self, data, event_type=None):
         word = (data.get("word") or "").strip()
+
         if not word:
-            self.event_bus.publish("chat_response", {"text": "Welk woord bedoel je?"})
+            self.event_bus.publish("layer4_response", {"text": "Welk woord bedoel je?"})
             return
         results = self.semantic.get_causes(word) if self.semantic else []
         if results:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"'{word}' veroorzaakt: {', '.join(results)}."
             })
         else:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Ik weet niet wat '{word}' veroorzaakt."
             })
 
@@ -278,16 +282,17 @@ class ChatModule:
     # -------------------------
     def on_properties(self, data, event_type=None):
         word = (data.get("word") or "").strip()
+
         if not word:
-            self.event_bus.publish("chat_response", {"text": "Welk woord bedoel je?"})
+            self.event_bus.publish("layer4_response", {"text": "Welk woord bedoel je?"})
             return
         results = self.semantic.get_properties(word) if self.semantic else []
         if results:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Eigenschappen van '{word}': {', '.join(results)}."
             })
         else:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Ik ken geen eigenschappen van '{word}'."
             })
 
@@ -298,7 +303,7 @@ class ChatModule:
         word = data.get("word")
 
         if not word:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": "Welk woord bedoel je precies?"
             })
             return
@@ -311,11 +316,11 @@ class ChatModule:
                 meaning = None
 
         if meaning:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"{word} betekent: {meaning}"
             })
         else:
-            self.event_bus.publish("chat_response", {
+            self.event_bus.publish("layer4_response", {
                 "text": f"Dat woord ken ik nog niet. Je kan het me leren met: teach {word} <betekenis>"
             })
 

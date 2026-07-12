@@ -83,7 +83,13 @@ def on_chat_response(data, event_type=None):
     tot de volgende keer dat Kevin toevallig iets intypt.
     """
     msg = data.get("text") or data.get("msg") or ""
-    print_nova_typewriter(msg)
+
+    # instant=True (bv. help.py) betekent: lang, opgemaakt overzicht,
+    # geen gesproken zin — toon in 1 keer, geen typewriter-effect.
+    if data.get("instant"):
+        print(f"{MAGENTA}Nova: {msg}{RESET}")
+    else:
+        print_nova_typewriter(msg)
 
     # Als de hoofdthread op dit moment op input() staat te wachten,
     # betekent dit dat DIT bericht proactief kwam (van de achtergrond-

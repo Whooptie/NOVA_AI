@@ -14,7 +14,7 @@ class SessionWatcher:
 
     # Na hoeveel seconden zonder pauze stuurt Nova een melding?
     # 1800 seconden = 30 minuten. Zet dit tijdelijk lager (bv. 60) om te testen.
-    PAUZE_DREMPEL_SECONDEN = 60
+    PAUZE_DREMPEL_SECONDEN = 1800
 
     def __init__(self, event_bus):
         self.event_bus = event_bus
