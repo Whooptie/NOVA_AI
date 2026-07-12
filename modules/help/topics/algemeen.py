@@ -29,7 +29,11 @@ def get_help():
 
 🧠 REDENEREN
   is een hond een dier
-  hond is een dier          (leert Nova de relatie, met bevestiging)
+  hond is een dier                    (leert Nova de relatie, met bevestiging)
+  is een snaar onderdeel van een gitaar
+  snaar is onderdeel van een gitaar   (leert Nova de part_of-relatie, met bevestiging)
+  welke soorten dier ken je
+  noem soorten van dier
 
 ♟️ SCHAKEN
   help schaken  (voor alle schaakcommando's)
@@ -58,6 +62,9 @@ def get_help():
       patronen topic_detected:memory
       patronen topic_detected:math
       patronen topic_detected:definitie
+      patronen topic_detected:relatie
+      patronen topic_detected:part_of
+      patronen topic_detected:subtypes
     
 ❓ HELP
   help               (dit overzicht)

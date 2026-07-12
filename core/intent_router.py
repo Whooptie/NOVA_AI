@@ -636,14 +636,17 @@ class IntentRouter:
 
         # 10 Relation-check
         if self.detect_relation_check(text):
+            self._emit_topic("relatie")
             return
 
         # 10b Part-of-check (nieuw, 11 juli 2026)
         if self.detect_part_of_check(text):
+            self._emit_topic("part_of")
             return
 
         # 10c Subtypes-vraag (nieuw, 12 juli 2026)
         if self.detect_subtypes_query(text):
+            self._emit_topic("subtypes")
             return
         
         # Sense-choice (antwoord met nummer)
