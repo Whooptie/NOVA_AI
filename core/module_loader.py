@@ -142,6 +142,37 @@ class ModuleLoader:
         resp_engine.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["response_engine"] = resp_engine
         self.event_bus.register_module("response_engine", resp_engine)
+
+        # ----------------------------------------------------
+        # 3C. CONTEXT MANAGER (Layer 5)
+        # ----------------------------------------------------
+        # Zelfde reden als response_engine hierboven: krijgt een
+        # "layers"-dictionary mee i.p.v. de standaard "sem"-parameter,
+        # dus niet via de automatische dynamische scan (stap 3) te
+        # laden. Moet hier staan, NA pattern_matcher (dynamische
+        # modules-stap), zodat loaded_modules["pattern_matcher"] al
+        # bestaat op het moment dat context_manager hem nodig heeft.
+        from modules.context import context_manager
+
+        start = time.time()
+        context_layers = {
+            "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
+        }
+        ctx_mgr = context_manager.init_module(self.event_bus, layers=context_layers)
+        ctx_mgr.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["context_manager"] = ctx_mgr
+        self.event_bus.register_module("context_manager", ctx_mgr)
+
+        # session_watcher (Layer 5-consument): werd hierboven al geladen
+        # via de dynamische modules-scan (stap 3), VOOR context_manager
+        # bestond. We prikken de referentie hier alsnog handmatig in,
+        # zodat session_watcher.check_pauze() Layer 5 kan raadplegen
+        # vóór hij een pauze-melding stuurt. Geen aparte
+        # init_module()-aanroep nodig — enkel het attribuut bijwerken
+        # op de instance die al bestaat.
+        watcher = self.loaded_modules.get("session_watcher")
+        if watcher is not None:
+            watcher.context_manager = ctx_mgr
         
         # ----------------------------------------------------
         # 4. INTENT ROUTER ALS LAATSTE
