@@ -1,6 +1,6 @@
 # 🧠 Nova — State of the Project
 
-> Laatste update: 12 juli 2026
+> Laatste update: 13 juli 2026
 > Doel van dit bestand: altijd als eerste uploaden in een nieuw Claude-gesprek zodat context volledig is.
 
 ---
@@ -66,9 +66,11 @@ Nova_AI/
 │   │       └── schaken.py
 │   ├── knowledge/
 │   │   └── wikipedia_teacher.py
-│   └── learning/
-│       ├── word_associations_learner.py
-│       └── pattern_matcher.py
+│   ├── learning/
+│   │   ├── word_associations_learner.py
+│   │   └── pattern_matcher.py
+│   └── context/
+│       └── context_manager.py
 ├── identity/
 │   ├── self_query.py
 │   ├── blueprint/
@@ -97,7 +99,8 @@ Nova_AI/
 │   ├── interactions.db
 │   ├── concepts.json
 │   ├── word_associations.json
-│   └── patterns_layer2.json
+│   ├── patterns_layer2.json
+│   └── context_log.jsonl
 ├── logs/
 │   ├── nova.log
 │   └── concepts.jsonl
@@ -140,6 +143,7 @@ Nova_AI/
 | word_associations_learner.py | ✅ Klaar (Layer 1, alle 5 fases) | PMI-gebaseerd associatienetwerk (data/word_associations.json). Leert van "chat_message"/"chat_response"-events (niet het gecombineerde formaat uit de originele roadmap). Publiceert `word_association:updated`; sinds Layer 4 (8 juli 2026) wordt `find_related()` ook actief gebruikt in Nova's antwoorden. |
 | pattern_matcher.py | ✅ Klaar (Layer 2, alle 5 fases) | Detecteert timing-patronen (uur/dag) voor chat_message/chat_response. Anomaly-drempels en opslagfrequentie staan nog op tijdelijke testwaarden (zie Layer 2-sectie). |
 | microlearning.py | ❌ Leeg | Bestand bestaat maar is volledig leeg — nog te bouwen |
+| context_manager.py | ✅ Fase 1 KLAAR (Layer 5) | Combineert tijd + pattern_matcher tot interruption-advies (`should_interrupt`). Krijgt net als response_engine.py een `layers`-dictionary mee, dus handmatig geladen (niet via dynamische scan). Zie sectie "Layer 5" onder 7-Laags Memory Architectuur. |
 
 ### IDENTITY
 
@@ -221,8 +225,8 @@ Tijdens het testen van bovenstaande Reasoning Engine-uitbreidingen kwamen twee o
 
 **1. `RelationParser.parse_relation()` (semantic.py) — geen zin-/bijzin-afkapping.**
 Bij het leren van een `is_a`-relatie uit een langere tekst (bv. een geplakte alinea van meerdere zinnen) werd het object niet afgekapt bij de eerste zinsgrens, waardoor de VOLLEDIGE rest van de tekst als relatie-target werd opgeslagen. Voorbeeld: "Een vulkaan is een berg waaruit... [nog 4 zinnen]" werd letterlijk als één object opgeslagen. Twee deel-fixes:
-- Afkapping bij zinseinde-tekens (`. `, `! `, `? `, newline)
-- Afkapping bij bijzin-markers (`waaruit`, `waarbij`, `waarvan`, `waarmee`, `waarop`, `waar`, `die`, `dat`, `wat`, `wie`)
+    - Afkapping bij zinseinde-tekens (`. `, `! `, `? `, newline)
+    - Afkapping bij bijzin-markers (`waaruit`, `waarbij`, `waarvan`, `waarmee`, `waarop`, `waar`, `die`, `dat`, `wat`, `wie`)
 
 Resultaat: van een hele alinea wordt nu enkel het eerste, korte kernbegrip overgehouden (bv. "vulkaan is_a berg" i.p.v. de volledige alinea). Bekende, geaccepteerde beperking: bij meerdere leerbare zinnen in één geplakte tekst wordt enkel de eerste zin verwerkt, de rest wordt genegeerd (geen crash, gewoon geen actie) — dit was nooit anders en is geen regressie.
 
@@ -277,7 +281,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | Layer 2 | pattern_matcher.py | ✅ KLAAR (alle 5 fases) | memory_layer2_roadmap.md |
 | Layer 3 | semantic.py | ✅ KLAAR | semantic_roadmap.md |
 | Layer 4 | response_engine.py | ✅ KLAAR (Fase 1-5, 7; Fase 6 uitgesteld) | memory_layer4_roadmap.md |
-| Layer 5 | context_manager.py | ❌ Nog te bouwen | memory_layer5_roadmap.md |
+| Layer 5 | context_manager.py | ✅ Fase 1 KLAAR (tijd + Layer 2-koppeling, interruption-logica) — Fase 2-5 nog te bouwen | memory_layer5_roadmap.md |
 | Layer 6 | personality_engine.py | ✅ KLAAR | identity_ROADMAP.md |
 | Layer 7 | emergence_engine.py | ❌ Nog te bouwen | memory_layer7_roadmap.md |
 
@@ -371,6 +375,33 @@ Nieuw bestand `core/response_engine.py`. Combineert Layer 3 (semantic), Layer 1 
 
 **Getest:** los (`test_response_engine.py` tegen echte `concepts.json`), end-to-end binnen de echte Nova (6 representatieve concepten: hond, appel, python, democratie, zwart gat, blablabla), en de volledige tone-keten inclusief live emoji/stemmings-integratie.
 
+### Layer 5 — Context Manager, Fase 1 (afgerond 13 juli 2026)
+
+Eerste, symbolische basisversie gebouwd en getest — enkel tijd + Layer 2 (pattern_matcher.py) gecombineerd tot een simpele interruption-beslissing. Geen mouse/keyboard-tracking, geen webcam/presence-detectie, geen identiteitsherkenning — die blijven latere, aparte fases (en sommige vereisen bounded ML, zoals gezichtsherkenning, wat expliciet NIET in dit bestand zit).
+
+**Nieuw bestand:** `modules/context/context_manager.py`. Volgt NIET de standaard dynamische module_loader-conventie (`init_module(event_bus, sem)`) — krijgt net als `response_engine.py` een `layers`-dictionary mee (met `pattern_matcher` erin), en wordt daarom HANDMATIG geladen in `module_loader.py`, na de dynamische modules-stap (zodat `pattern_matcher` al bestaat).
+
+**Kernlogica (`_bepaal_interrupt()`):**
+    - 3+ anomalieën vandaag (via `pattern_matcher.get_anomalies(days=1)`) → `should_interrupt = False`
+    - Gebruikelijk moment volgens Layer 2 (via `pattern_matcher.is_pattern_active("chat_message")`) → `should_interrupt = True`
+    - Geen sterke aanwijzing in beide richtingen → standaard `True` (nog geen reden om terughoudend te zijn)
+
+Elke beslissing krijgt ook een `reden`-veld (bv. `"te veel anomalieën vandaag (>=3)"`), puur voor debug/nazicht — wordt niet voorgelezen aan Kevin.
+
+**Opslag:** `data/context_log.jsonl` — een append-only geschiedenis van elke berekende context (JSON Lines, 1 regel per `get_current()`-aanroep), afgekapt op 2000 regels. BELANGRIJK verschil met `patterns_layer2.json`: dit is GEEN state die bij opstarten opnieuw ingeladen wordt — Layer 5 herberekent zijn context altijd live; enkel de geschiedenis van beslissingen wordt bewaard, voor Kevin's nazicht.
+
+**Koppeling met `session_watcher.py` (eerste echte consument van Layer 5):** `check_pauze()` roept nu `context_manager.can_interrupt()` op vóór hij zijn pauze-melding publiceert. Als Layer 5 het afraadt, wordt de melding stilzwijgend uitgesteld (niet geannuleerd — `laatste_melding_time` wordt dan NIET bijgewerkt, dus de check probeert het de volgende minuut opnieuw) en verschijnt er een console-print `[SESSION_WATCHER] Pauze-melding uitgesteld door Layer 5 (...)`, enkel zichtbaar voor Kevin, niet voorgelezen door Nova. `context_manager` ontbreken mag nooit blokkeren: als de referentie `None` is (bv. laadvolgorde-probleem), wordt `mag_onderbreken = True` verondersteld — Layer 5 ontbreken mag de bestaande pauze-functionaliteit nooit stiller maken dan voorheen.
+
+**Laadvolgorde-afhankelijkheid:** `session_watcher` wordt geladen via de dynamische modules-scan (stap 3, vóór `context_manager` bestaat). `module_loader.py` "prikt" daarom de `context_manager`-referentie pas ná stap 3C handmatig in bij de al bestaande `session_watcher`-instance (`watcher.context_manager = ctx_mgr`), in plaats van dit via een constructor-argument te doen.
+
+**Debug-commando's in `main.py`:** `context` (huidige beslissing + reden) en `context geschiedenis [n]` (laatste n regels uit `context_log.jsonl`, standaard 10).
+
+**Getest (13 juli 2026):** beide paden bevestigd — normale/gebruikelijke situatie geeft `should_interrupt: True`, en een geforceerd scenario met 3 nepanomalieën (los testscript `test_forceer_anomalieen.py`, niet onderdeel van Nova zelf) geeft correct `should_interrupt: False` met de juiste reden.
+
+**Nog te bouwen (Fase 2-5, memory_layer5_roadmap.md):** activiteit-tracking (coding/gaming via window-detectie — symbolisch haalbaar), focus-detectie (mouse/keyboard-activiteit — symbolisch haalbaar), aanwezigheid via webcam (dit VEREIST bounded ML zoals gezichtsherkenning — expliciet een latere, aparte stap, geen kern-Layer 5-code), verfijnde interruption-logica op basis van dat alles.
+
+---
+
 ## 🔄 Semantic — Status & Roadmap
 
 ### Fases 1-7 (VOLLEDIG KLAAR ✅)
@@ -388,7 +419,7 @@ Nieuw bestand `core/response_engine.py`. Combineert Layer 3 (semantic), Layer 1 
 ### Fases 8-13 (Toekomst — semantic_extension_roadmap.md)
 
 | Fase | Omschrijving                      | Type              | Status        |
-| --- | --- | --- | ------------- |
+| --- | --- | --- | --- |
 | 8    | Causal Reasoning                  | Pure symbolisch   | ❌ Toekomst   |
 | 9    | Temporal Semantics                | Pure symbolisch   | ❌ Toekomst   |
 | 10   | Uncertainty Tracking              | Pure symbolisch   | ❌ Toekomst   |
@@ -515,7 +546,8 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 6. 🟢 **Layer 2 opruimwerk** — anomaly-drempels (MIN_OBSERVATIES_VOOR_ANOMALIE, MIN_CONFIDENCE_VOOR_ANOMALIE) en opslagfrequentie (nu elke 2 observaties) staan nog op tijdelijke, verlaagde testwaarden — terugzetten naar realistischere waarden voor normaal gebruik. **Bekende bijwerking hiervan (7 juli 2026, geen bug, bestaand tijdelijk gedrag):** `save_to_disk()` wordt enkel aangeroepen als `total` van een event_type even is (`% 2 == 0`). Bij een oneven `total` (bv. na 1 of 3 observaties van een `topic_detected:*`-event) toont `patterns_layer2.json` op schijf dus tijdelijk een lager aantal dan wat `patronen <event_type>` live in het geheugen toont. Dit lost zichzelf op zodra deze opslagfrequentie later realistischer gemaakt wordt (zie hierboven), maar is voor nu iets om bij te houden tijdens testen: het JSON-bestand is niet altijd de meest actuele bron, het live geheugen wel.
 7. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
 8. 🟢 **Activity Awareness (activiteiten herkennen, correleren, proactief reageren)** — concept uitgewerkt (6 juli 2026), nog niet ingepland. Kern: generiek `"ik ga <activiteit>"`-patroon in intent_router.py publiceert `activity_started`-events die Layer 2 al generiek meetelt; daarnaast co-occurrence tussen activiteiten (bv. koffie + coderen) en duur-detectie met drempelwaarde voor proactieve pauze-suggesties — beide pure statistiek/timer-logica, geen ML. Optioneel scherm-detectie (psutil, geen ML) en camera-detectie (vereist extern vision-model als sensor, met privacy-ontwerp vooraf). Ook: mogelijke uitbreiding naar per-woord-timing voor Layer 4 (zie Layer 4-sectie). Volledig uitgewerkt in: **activity_awareness_roadmap.md**.
-9. 🟢 **Activity-Aware Interaction (interruption learning + contextuele suggesties)** — concept uitgewerkt (9 juli 2026), nog niet ingepland. Bouwt voort op Activity Awareness + Layer 5: leert per activiteit een confidence-score op ("mag ik storen tijdens coderen?"), met vaste sjabloonvariatie zodat het niet elke keer identiek klinkt. Aparte, grotere uitbreiding: contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — puur co-occurrence-tellen zoals Activity Awareness Deel C, maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md**.
+9. 🟢 **Activity-Aware Interaction (interruption learning + contextuele suggesties)** — concept uitgewerkt (9 juli 2026), nog niet ingepland. Bouwt voort op Activity Awareness + Layer 5 (Layer 5 Fase 1 is intussen klaar, zie hieronder — Fase 2+ met activiteit-tracking ontbreekt nog): leert per activiteit een confidence-score op ("mag ik storen tijdens coderen?"), met vaste sjabloonvariatie zodat het niet elke keer identiek klinkt. Aparte, grotere uitbreiding: contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — puur co-occurrence-tellen zoals Activity Awareness Deel C, maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md**.
+13.5 ✅ **Layer 5 Fase 1 (Context Manager, basis)** — gebouwd en getest (13 juli 2026). Zie sectie "Layer 5 — Context Manager, Fase 1" onder 7-Laags Memory Architectuur voor volledige details.
 10. ✅ **emotion_engine.py decay/recovery-mechanisme** — opgelost (11 juli 2026), zie bug #4/#11. `overstimulation.level` heeft nu zowel tijd- als interactie-gebaseerde decay.
 11. 🟡 **Layer 6/7 — identity-blueprint grotendeels niet aangesloten op de tone-pipeline.** Ontdekt tijdens bug #4/#11-onderzoek (11 juli 2026): er ligt een rijk uitgewerkt fundament klaar dat niet of nauwelijks gebruikt wordt in de praktijk:
     - **`identity.json`** (volledige blueprint: `regulation_profile`, `overstimulation_signs`, `recovery_behavior`, `sensorimotor_profile`, `embodied_cognition`, `interaction_nuance`, enz.) wordt door `loader.py` ingeladen en tegen `schema.json` gevalideerd, maar buiten die validatie leest niemand deze velden ooit uit om er gedrag op te baseren.

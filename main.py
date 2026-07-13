@@ -189,6 +189,42 @@ def main():
             else:
                 print(f"{RED}Memory-module niet gevonden.{RESET}")
             continue
+        
+        # Tijdelijk test-commando voor Layer 5 Fase 1 (mag je later weer verwijderen)
+        if user_input.lower() == "context":
+            ctx_mgr = loader.loaded_modules.get("context_manager")
+            if not ctx_mgr:
+                print(f"{RED}context_manager-module niet gevonden.{RESET}")
+                continue
+            print(f"{CYAN}{ctx_mgr.get_context_summary()}{RESET}")
+            continue
+
+        # Tijdelijk test-commando: geschiedenis van Layer 5-beslissingen
+        # (mag je later weer verwijderen). Gebruik: "context geschiedenis"
+        # of "context geschiedenis 20" voor een ander aantal regels.
+        if user_input.lower().startswith("context geschiedenis"):
+            ctx_mgr = loader.loaded_modules.get("context_manager")
+            if not ctx_mgr:
+                print(f"{RED}context_manager-module niet gevonden.{RESET}")
+                continue
+
+            delen = user_input.split()
+            aantal = 10
+            if len(delen) >= 3 and delen[2].isdigit():
+                aantal = int(delen[2])
+
+            regels = ctx_mgr.get_recent_log(aantal=aantal)
+            if not regels:
+                print(f"{CYAN}Nog geen geschiedenis beschikbaar.{RESET}")
+                continue
+
+            print(f"{CYAN}--- Laatste {len(regels)} Layer 5-beslissing(en) ---{RESET}")
+            for regel in regels:
+                tijd = regel.get("time", "?")
+                should_interrupt = regel.get("should_interrupt")
+                reden = regel.get("reden", "?")
+                print(f"  {tijd} — mag onderbreken: {should_interrupt} — reden: {reden}")
+            continue
 
         # Tijdelijk test-commando voor Layer 2 Fase 3-4 (mag je later weer verwijderen)
         if user_input.lower().startswith("patronen"):
