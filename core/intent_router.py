@@ -490,6 +490,21 @@ class IntentRouter:
             "age": [
                 "hoe oud ben je", "hoe oud ben jij", "wat is je leeftijd"
             ],
+            "is_ai": [
+                "ben je een ai", "ben jij een ai", "ben je ai", "ben jij ai",
+                "ben je een robot", "ben jij een robot", "ben je robot", "ben jij robot",
+                "ben je kunstmatige intelligentie", "ben jij kunstmatige intelligentie",
+                "ben je een computer", "ben jij een computer",
+            ],
+            "is_human": [
+                "ben je een mens", "ben jij een mens", "ben je mens", "ben jij mens",
+                "ben je echt", "ben jij echt",
+            ],
+            "what_are_you": [
+                "besef je dat je een programma bent", "besef jij dat je een programma bent",
+                "wat ben je eigenlijk", "wat ben jij eigenlijk",
+                "wat voor soort programma ben je", "wat voor soort programma ben jij",
+            ],
             "character": [
                 "wat is je karakter", "hoe zou je jezelf omschrijven",
                 "hoe zou jij jezelf omschrijven", "hoe ben je", "hoe ben jij",

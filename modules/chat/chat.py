@@ -342,6 +342,9 @@ class ChatModule:
 
         antwoord_functies = {
             "who": self_query.antwoord_wie_ben_je,
+            "what_are_you": self_query.antwoord_wat_ben_je,
+            "is_ai": self_query.antwoord_is_ai,
+            "is_human": self_query.antwoord_is_geen_mens,
             "age": self_query.antwoord_leeftijd,
             "character": self_query.antwoord_karakter,
             "likes": self_query.antwoord_wat_vind_je_leuk,
