@@ -398,7 +398,34 @@ Elke beslissing krijgt ook een `reden`-veld (bv. `"te veel anomalieën vandaag (
 
 **Getest (13 juli 2026):** beide paden bevestigd — normale/gebruikelijke situatie geeft `should_interrupt: True`, en een geforceerd scenario met 3 nepanomalieën (los testscript `test_forceer_anomalieen.py`, niet onderdeel van Nova zelf) geeft correct `should_interrupt: False` met de juiste reden.
 
-**Nog te bouwen (Fase 2-5, memory_layer5_roadmap.md):** activiteit-tracking (coding/gaming via window-detectie — symbolisch haalbaar), focus-detectie (mouse/keyboard-activiteit — symbolisch haalbaar), aanwezigheid via webcam (dit VEREIST bounded ML zoals gezichtsherkenning — expliciet een latere, aparte stap, geen kern-Layer 5-code), verfijnde interruption-logica op basis van dat alles.
+**Nog te bouwen (Fase 3-5, memory_layer5_roadmap.md):** focus-detectie (mouse/keyboard-activiteit — symbolisch haalbaar), aanwezigheid via webcam (dit VEREIST bounded ML zoals gezichtsherkenning — expliciet een latere, aparte stap, geen kern-Layer 5-code), verfijnde interruption-logica op basis van dat alles.
+
+#### Layer 5 — Fase 2: Activity Tracking (afgerond 13 juli 2026)
+
+Activiteit-detectie toegevoegd — WELK PROGRAMMA nu actief is (voorgrondvenster), en hoe lang al. Nog steeds 100% symbolisch: leest enkel af welk venster focus heeft via `pygetwindow`, classificeert niets met ML.
+
+**Nieuw bestand:** `modules/context/activity_detector.py`. Volgt WEL de standaard dynamische module_loader-conventie (`init_module(event_bus, sem)`) — in tegenstelling tot `context_manager.py`, want dit bestand heeft geen `layers`-dictionary nodig (het publiceert enkel events, leest geen andere lagen uit). Wordt dus automatisch opgepikt door de bestaande `pkgutil`-scan, geen aparte handmatige laadstap nodig zoals bij `context_manager.py` zelf.
+
+**Vereist extern pakket:** `pygetwindow` (`pip install pygetwindow`). Bewust NIET `psutil` gebruikt voor de detectie zelf — `psutil` kent enkel DRAAIENDE processen, niet welk venster op de VOORGROND staat (focus heeft), en dat onderscheid is precies waar het om gaat ("Chrome staat open ergens" ≠ "Chrome is het venster waarin Kevin nu werkt"). Zonder `pygetwindow` geïnstalleerd print het bestand een duidelijke waarschuwing bij opstarten en valt netjes terug op `"unknown"` — geen crash.
+
+**`ACTIVITEIT_MAPPING`:** een dictionary (venstertitel/procesnaam-fragment → activiteit-label) die Kevin zelf verder aanvult. Volgorde is belangrijk — eerste match wint.
+
+**Belangrijke architecturale nuance, ontdekt tijdens live testen (13 juli 2026): `talking_to_nova` vs. `coding`.** Nova's eigen consolevenster toont `"python.exe"` als titel wanneer los opgestart (bv. via een gewoon PowerShell-venster), inclusief bij een nieuw venster geopend via `/reboot` (`reboot_manager.py`'s `subprocess.Popen` + `CREATE_NEW_CONSOLE`) — dat zou zonder onderscheid ALTIJD als "coding" geteld worden, ook al is Kevin gewoon met Nova aan het praten, niet aan het coderen. Opgelost door een apart label `"talking_to_nova"` te geven aan `"python.exe"`/`"nova_ai"`-matches, bewust NIET opgenomen in `context_manager.py`'s `STORINGSGEVOELIGE_ACTIVITEITEN` — praten met Nova blijft dus altijd onderbreekbaar, ongeacht duur. Enkel echte code-editors (`"code.exe"`, `"visual studio code"`, `"pycharm"`) tellen als `"coding"`. **Nuance hierbij:** als Nova draait in VS Code's geïntegreerde terminal (i.p.v. een los PowerShell-venster), toont Windows de VS Code-venstertitel (bv. `"bestand.json - Nova_AI - Visual Studio Code"`), die matcht op `"visual studio code"` → wordt dus terecht als `"coding"` geteld, want Kevin zit dan sowieso in VS Code te werken.
+
+**Uitbreiding `context_manager.py`:** `get_current()` haalt nu ook `activity` + `activity_duration_minutes` op bij `activity_detector.detect_activity()`. Nieuwe instelling `CODING_ONDERBREEK_DREMPEL_MINUTEN = 15` (teruggezet naar deze productiewaarde na testen, tijdelijk op 0.1/1 gezet tijdens ontwikkeling) en `STORINGSGEVOELIGE_ACTIVITEITEN = {"coding"}`. `_bepaal_interrupt()` uitgebreid: 15+ minuten ononderbroken `"coding"` → `should_interrupt = False`, met voorrang op de "gebruikelijk moment"-regel (een actieve coding-sessie is een sterker signaal dan enkel "dit is meestal een chat-moment").
+
+**Laadvolgorde-aanpassing in `module_loader.py`:** `context_layers`-dictionary in stap 3C bevat nu ook `"activity_detector": self.loaded_modules.get("activity_detector")`, naast `pattern_matcher`.
+
+**Nieuw debug-commando in `main.py`:** `activiteit debug` — toont de ruwe venstertitel/procesnaam plus het herkende label, gebruikt om de `talking_to_nova`/`coding`-nuance hierboven te ontdekken en te verifiëren.
+
+**Getest (13 juli 2026), drie scenario's stuk voor stuk bevestigd:**
+- Los PowerShell-venster met Nova erin → `talking_to_nova`, `should_interrupt` blijft altijd `True` ongeacht duur
+- VS Code met Nova in geïntegreerde terminal → correct herkend als `coding`
+- Duur-teller loopt logisch op (0.0 → 0.6 → 1.2 min, met tijdelijk verlaagde testdrempel) en `should_interrupt` slaat op het juiste moment om naar `False`, met de juiste `reden`-tekst
+
+**Nog te bouwen (Fase 3-5):** focus-detectie (mouse/keyboard), aanwezigheid via webcam (ML-stap), verfijnde interruption-logica.
+
+---
 
 ---
 
@@ -547,7 +574,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 7. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
 8. 🟢 **Activity Awareness (activiteiten herkennen, correleren, proactief reageren)** — concept uitgewerkt (6 juli 2026), nog niet ingepland. Kern: generiek `"ik ga <activiteit>"`-patroon in intent_router.py publiceert `activity_started`-events die Layer 2 al generiek meetelt; daarnaast co-occurrence tussen activiteiten (bv. koffie + coderen) en duur-detectie met drempelwaarde voor proactieve pauze-suggesties — beide pure statistiek/timer-logica, geen ML. Optioneel scherm-detectie (psutil, geen ML) en camera-detectie (vereist extern vision-model als sensor, met privacy-ontwerp vooraf). Ook: mogelijke uitbreiding naar per-woord-timing voor Layer 4 (zie Layer 4-sectie). Volledig uitgewerkt in: **activity_awareness_roadmap.md**.
 9. 🟢 **Activity-Aware Interaction (interruption learning + contextuele suggesties)** — concept uitgewerkt (9 juli 2026), nog niet ingepland. Bouwt voort op Activity Awareness + Layer 5 (Layer 5 Fase 1 is intussen klaar, zie hieronder — Fase 2+ met activiteit-tracking ontbreekt nog): leert per activiteit een confidence-score op ("mag ik storen tijdens coderen?"), met vaste sjabloonvariatie zodat het niet elke keer identiek klinkt. Aparte, grotere uitbreiding: contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — puur co-occurrence-tellen zoals Activity Awareness Deel C, maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md**.
-13.5 ✅ **Layer 5 Fase 1 (Context Manager, basis)** — gebouwd en getest (13 juli 2026). Zie sectie "Layer 5 — Context Manager, Fase 1" onder 7-Laags Memory Architectuur voor volledige details.
+13.5 ✅ **Layer 5 Fase 1 + Fase 2 (Context Manager + Activity Tracking)** — gebouwd en getest (13 juli 2026). Fase 1: tijd + Layer 2-koppeling. Fase 2: activiteit-detectie via venstertitel (`activity_detector.py`, `pygetwindow`), incl. onderscheid `coding` vs. `talking_to_nova`. Zie sectie "Layer 5 — Context Manager" onder 7-Laags Memory Architectuur voor volledige details.
 10. ✅ **emotion_engine.py decay/recovery-mechanisme** — opgelost (11 juli 2026), zie bug #4/#11. `overstimulation.level` heeft nu zowel tijd- als interactie-gebaseerde decay.
 11. 🟡 **Layer 6/7 — identity-blueprint grotendeels niet aangesloten op de tone-pipeline.** Ontdekt tijdens bug #4/#11-onderzoek (11 juli 2026): er ligt een rijk uitgewerkt fundament klaar dat niet of nauwelijks gebruikt wordt in de praktijk:
     - **`identity.json`** (volledige blueprint: `regulation_profile`, `overstimulation_signs`, `recovery_behavior`, `sensorimotor_profile`, `embodied_cognition`, `interaction_nuance`, enz.) wordt door `loader.py` ingeladen en tegen `schema.json` gevalideerd, maar buiten die validatie leest niemand deze velden ooit uit om er gedrag op te baseren.
