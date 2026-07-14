@@ -149,14 +149,15 @@ class ModuleLoader:
         # Zelfde reden als response_engine hierboven: krijgt een
         # "layers"-dictionary mee i.p.v. de standaard "sem"-parameter,
         # dus niet via de automatische dynamische scan (stap 3) te
-        # laden. Moet hier staan, NA pattern_matcher (dynamische
-        # modules-stap), zodat loaded_modules["pattern_matcher"] al
-        # bestaat op het moment dat context_manager hem nodig heeft.
+        # laden. Moet hier staan, NA pattern_matcher EN activity_detector
+        # (beide dynamische modules-stap), zodat loaded_modules[...]
+        # al bestaat op het moment dat context_manager ze nodig heeft.
         from modules.context import context_manager
 
         start = time.time()
         context_layers = {
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
+            "activity_detector": self.loaded_modules.get("activity_detector"),
         }
         ctx_mgr = context_manager.init_module(self.event_bus, layers=context_layers)
         ctx_mgr.__load_time_ms__ = int((time.time() - start) * 1000)

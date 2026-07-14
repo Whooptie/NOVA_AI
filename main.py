@@ -103,7 +103,8 @@ def achtergrond_loop(loader):
     """
     Draait continu op de achtergrond, los van de input()-lus in main().
     Checkt elke 60 seconden of er een proactieve melding nodig is
-    (voorlopig enkel de pauze-check van session_watcher).
+    (session_watcher), en detecteert elke 60 seconden ook de huidige
+    activiteit (Layer 5, Fase 2).
     """
     while True:
         time.sleep(60)
@@ -114,6 +115,17 @@ def achtergrond_loop(loader):
                 watcher.check_pauze()
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in check_pauze(): {e}")
+
+        # Layer 5, Fase 2: activiteit periodiek detecteren, zodat
+        # Layer 2 (pattern_matcher.py) dit als event_type kan meetellen
+        # en context_manager.py altijd een vers "duration_minutes" heeft
+        # klaarstaan, ook als er ondertussen niemand "context" typt.
+        activity_detector = loader.loaded_modules.get("activity_detector")
+        if activity_detector:
+            try:
+                activity_detector.detect_activity()
+            except Exception as e:
+                print(f"[Achtergrondthread] Fout in detect_activity(): {e}")
 
 def main():
     global wachten_op_input
@@ -188,6 +200,20 @@ def main():
                 mem.run_maintenance()
             else:
                 print(f"{RED}Memory-module niet gevonden.{RESET}")
+            continue
+        
+        # Tijdelijk debug-commando: toont de RUWE venstertitel die
+        # pygetwindow ziet, om te checken waarom activity "unknown" is
+        # (mag je later weer verwijderen)
+        if user_input.lower() == "activiteit debug":
+            ad = loader.loaded_modules.get("activity_detector")
+            if not ad:
+                print(f"{RED}activity_detector-module niet gevonden.{RESET}")
+                continue
+            info = ad.detect_activity()
+            print(f"{CYAN}Ruwe venstertitel: {info.get('raw_window_title')!r}{RESET}")
+            print(f"{CYAN}Ruwe procesnaam: {info.get('raw_process_name')!r}{RESET}")
+            print(f"{CYAN}Herkend als: {info.get('activity')}{RESET}")
             continue
         
         # Tijdelijk test-commando voor Layer 5 Fase 1 (mag je later weer verwijderen)
