@@ -8,15 +8,21 @@ Bepaalt WAT NU BELANGRIJK IS en WANNEER NOVA MAG SPREKEN.
 Fase 1 (afgerond): tijd + Layer 2 (pattern_matcher.py) combineren tot
 een simpele "mag ik nu spreken"-beslissing.
 
-Fase 2 (dit bestand, nieuw): activiteit (activity_detector.py) erbij
-betrekken — WELK PROGRAMMA nu open staat, en hoe lang al. Nog steeds
-100% symbolisch: activity_detector.py LEEST enkel af welk venster
-voorgrond heeft (via pygetwindow), er wordt niets geraden of
-geclassificeerd met ML.
+Fase 2 (afgerond): activiteit (activity_detector.py) erbij betrekken —
+WELK PROGRAMMA nu open staat, en hoe lang al.
 
-GEEN mouse/keyboard-tracking (Fase 3), GEEN webcam/presence-detectie
-(Fase 4, en dát VEREIST wél bounded ML), GEEN identiteitsherkenning —
-dat blijven latere, aparte fases.
+Fase 3 (dit bestand, nieuw): focus (focus_detector.py) erbij betrekken
+— HOELANG GELEDEN was er systeemwijde muis/toetsenbord-input. Dit
+verfijnt Fase 2: "coding" telt nu enkel als storingsgevoelig als er
+OOK recent input was — staat VS Code enkel nog open terwijl Kevin al
+weg is van zijn bureau, dan mag Nova gewoon weer onderbreken.
+
+Nog steeds 100% symbolisch: focus_detector.py gebruikt Windows' eigen
+GetLastInputInfo()-API (via ctypes) om enkel WANNEER de laatste input
+was op te vragen — geen keylogging, geen inhoud, geen ML.
+
+GEEN webcam/presence-detectie (Fase 4, en dát VEREIST wél bounded ML),
+GEEN identiteitsherkenning — dat blijven latere, aparte fases.
 
 Opslag: elke berekende context wordt weggeschreven naar
 data/context_log.jsonl — een append-only GESCHIEDENIS, geen "state"
@@ -32,13 +38,14 @@ import json
 
 class ContextManager:
     """
-    Layer 5: Context Manager (Fase 1 + Fase 2)
+    Layer 5: Context Manager (Fase 1 + Fase 2 + Fase 3)
 
     Verzamelt op elk moment:
     - het huidige tijdstip
     - of dit een "gebruikelijk" moment is volgens Layer 2 (patronen)
     - recente anomalieën (Layer 2)
     - de huidige activiteit + duur (Fase 2, via activity_detector.py)
+    - het focus-niveau (Fase 3, via focus_detector.py)
 
     En berekent daaruit een simpele context + interruption-advies.
     Elke beslissing wordt ook gelogd naar schijf (context_log.jsonl).
@@ -52,22 +59,23 @@ class ContextManager:
 
     # Vanaf hoeveel minuten ononderbroken "coding"-activiteit gaan we
     # onderbreken extra afraden? Dit is een bewust simpele, vaste
-    # drempel (Fase 2) — geen geleerde/dynamische waarde. Latere fases
-    # (focus-detectie) kunnen dit verfijnen.
+    # drempel — geen geleerde/dynamische waarde.
     CODING_ONDERBREEK_DREMPEL_MINUTEN = 15
 
     # Activiteiten waarbij we extra terughoudend zijn met onderbreken.
     # Uitbreidbaar: voeg hier gerust "gaming" of andere labels aan toe
     # zodra je dat wil, telkens gekoppeld aan de mapping in
     # activity_detector.py's ACTIVITEIT_MAPPING.
-    #
-    # BEWUST NIET "talking_to_nova" hierin: dat label betekent dat
-    # Kevin Nova's eigen consolevenster open heeft (ook na /reboot,
-    # dat opent een NIEUW venster met dezelfde "python.exe"-titel via
-    # reboot_manager.py's CREATE_NEW_CONSOLE) — dus letterlijk al met
-    # Nova aan het praten. Dat moet ALTIJD onderbreekbaar blijven,
-    # nooit door de coding-drempel geblokkeerd worden.
     STORINGSGEVOELIGE_ACTIVITEITEN = {"coding"}
+
+    # Fase 3: welke focus-niveaus tellen als "Kevin is er echt niet
+    # meer actief mee bezig"? Bij deze niveaus mag Nova gewoon weer
+    # onderbreken, ZELFS tijdens een storingsgevoelige activiteit —
+    # het venster staat wel open, maar er is te lang geen input geweest.
+    FOCUS_NIVEAUS_ZONDER_ACTIEVE_AANWEZIGHEID = {
+        "mogelijk_afwezig",
+        "waarschijnlijk_weg",
+    }
 
     # Hoeveel regels mag context_log.jsonl maximaal bevatten? Ouder dan
     # dit wordt afgekapt (oudste eerst weg), zodat het bestand niet
@@ -110,6 +118,7 @@ class ContextManager:
 
         pattern_matcher = self.layers.get("pattern_matcher")
         activity_detector = self.layers.get("activity_detector")
+        focus_detector = self.layers.get("focus_detector")
 
         is_gebruikelijk_moment = False
         anomalieen_vandaag = []
@@ -140,17 +149,35 @@ class ContextManager:
                 activiteit_label = activiteit_info.get("activity", "unknown")
                 activiteit_duur_minuten = activiteit_info.get("duration_minutes", 0.0)
             except Exception:
-                # activity_detector.py ontbreekt psutil/pygetwindow, of
+                # activity_detector.py ontbreekt pygetwindow, of
                 # een ander onverwacht probleem — nooit Layer 5 laten
                 # crashen, gewoon terugvallen op "unknown".
                 activiteit_label = "unknown"
                 activiteit_duur_minuten = 0.0
+
+        # --- Fase 3: focus ophalen ---
+        focus_niveau = "onbekend"
+        seconden_sinds_input = None
+
+        if focus_detector is not None:
+            try:
+                focus_info = focus_detector.get_focus_info()
+                focus_niveau = focus_info.get("focus_level", "onbekend")
+                seconden_sinds_input = focus_info.get("seconds_since_input")
+            except Exception:
+                # focus_detector.py niet op Windows, of onverwachte
+                # fout — nooit Layer 5 laten crashen, terugvallen op
+                # "onbekend" (wat _bepaal_interrupt() als "geen sterke
+                # aanwijzing" behandelt, niet als "zeker afwezig").
+                focus_niveau = "onbekend"
+                seconden_sinds_input = None
 
         should_interrupt, reden = self._bepaal_interrupt(
             is_gebruikelijk_moment,
             anomalieen_vandaag,
             activiteit_label,
             activiteit_duur_minuten,
+            focus_niveau,
         )
 
         context = {
@@ -160,6 +187,8 @@ class ContextManager:
             "aantal_anomalieen_vandaag": len(anomalieen_vandaag),
             "activity": activiteit_label,
             "activity_duration_minutes": activiteit_duur_minuten,
+            "focus_level": focus_niveau,
+            "seconds_since_input": seconden_sinds_input,
             "should_interrupt": should_interrupt,
             "reden": reden,
         }
@@ -179,41 +208,59 @@ class ContextManager:
         anomalieen_vandaag,
         activiteit_label,
         activiteit_duur_minuten,
+        focus_niveau,
     ):
         """
-        Simpele, symbolische regel (Fase 1 + Fase 2):
+        Simpele, symbolische regel (Fase 1 + Fase 2 + Fase 3):
 
         - Zijn er vandaag al veel anomalieën geweest (bv. 3 of meer)?
-          Dan wordt Nova voorzichtiger.
-        - Fase 2, NIEUW: zit je al een tijdje (>= drempel) in een
-          storingsgevoelige activiteit (bv. "coding")? Dan raadt Layer 5
-          onderbreken ook af — dit heeft VOORRANG op "gebruikelijk
-          moment", want actief aan het coderen zijn is een sterker
-          signaal dan enkel "dit is meestal een chat-moment".
+          Dan wordt Nova voorzichtiger. Dit heeft ALTIJD voorrang.
+        - Zit je al een tijdje (>= drempel) in een storingsgevoelige
+          activiteit (bv. "coding")? Dan raadt Layer 5 onderbreken af
+          — MAAR (Fase 3, NIEUW) enkel als er ook nog recente input
+          was. Is het focus-niveau "mogelijk_afwezig" of
+          "waarschijnlijk_weg" (te lang geen muis/toetsenbord-input),
+          dan mag Nova alsnog onderbreken: het venster staat wel open,
+          maar Kevin is er waarschijnlijk niet meer echt mee bezig.
         - Is dit een gebruikelijk moment (bv. Kevin chat hier meestal
           op dit uur)? Dan mag Nova gewoon spreken.
-        - Standaard (geen patroon-data, geen anomalieën): gewoon
-          toelaten.
+        - Standaard: gewoon toelaten.
 
         Geeft een tuple terug: (should_interrupt: bool, reden: str).
 
         Dit blijft een EENVOUDIGE regel — geen gewogen score, geen ML.
-        Latere fases (focus-detectie, aanwezigheid) kunnen dit verder
-        verfijnen.
+        Fase 4 (aanwezigheid via webcam) kan dit verder verfijnen, maar
+        dat vereist wel bounded ML (gezichtsherkenning).
         """
         if len(anomalieen_vandaag) >= 3:
             return False, "te veel anomalieën vandaag (>=3)"
 
-        if (
+        is_storingsgevoelige_activiteit = (
             activiteit_label in self.STORINGSGEVOELIGE_ACTIVITEITEN
             and activiteit_duur_minuten >= self.CODING_ONDERBREEK_DREMPEL_MINUTEN
-        ):
-            return (
-                False,
-                f"al {activiteit_duur_minuten:.0f} min bezig met "
-                f"'{activiteit_label}' (drempel: "
-                f"{self.CODING_ONDERBREEK_DREMPEL_MINUTEN} min)",
-            )
+        )
+
+        if is_storingsgevoelige_activiteit:
+            if focus_niveau in self.FOCUS_NIVEAUS_ZONDER_ACTIEVE_AANWEZIGHEID:
+                # Venster staat open, maar geen recente input — Kevin
+                # is er waarschijnlijk niet meer actief mee bezig.
+                # Val NIET terug op de coding-blokkade; ga gewoon door
+                # naar de normale gebruikelijk-moment-check hieronder.
+                pass
+            else:
+                # focus_niveau is "actief" of "onbekend" — bij
+                # "onbekend" (bv. geen Windows, of API-fout) kiezen we
+                # BEWUST de voorzichtige kant: liever niet onderbreken
+                # dan een gok wagen, zelfde filosofie als de rest van
+                # Layer 5 (nooit een crash/onzekerheid laten leiden tot
+                # onbedoeld gedrag).
+                return (
+                    False,
+                    f"al {activiteit_duur_minuten:.0f} min bezig met "
+                    f"'{activiteit_label}' (drempel: "
+                    f"{self.CODING_ONDERBREEK_DREMPEL_MINUTEN} min), "
+                    f"focus: {focus_niveau}",
+                )
 
         if is_gebruikelijk_moment:
             return True, "gebruikelijk moment volgens Layer 2"
@@ -318,12 +365,15 @@ class ContextManager:
         'context'-testcommando in main.py).
         """
         ctx = self.get_current()
+        seconden = ctx.get("seconds_since_input")
+        seconden_tekst = f"{seconden:.0f}s" if seconden is not None else "onbekend"
         return (
             f"Tijd: {ctx['hour']}u — "
             f"Gebruikelijk moment: {ctx['is_gebruikelijk_moment']} — "
             f"Anomalieën vandaag: {ctx['aantal_anomalieen_vandaag']} — "
             f"Activiteit: {ctx['activity']} "
             f"({ctx['activity_duration_minutes']:.1f} min) — "
+            f"Focus: {ctx['focus_level']} (laatste input: {seconden_tekst}) — "
             f"Mag onderbreken: {ctx['should_interrupt']} "
             f"(reden: {ctx['reden']})"
         )
@@ -334,15 +384,17 @@ def init_module(event_bus, layers=None):
     LET OP — dit bestand volgt NIET de standaard dynamische
     module_loader-conventie (init_module(event_bus, sem)), net zoals
     response_engine.py dat ook niet doet. De reden is dezelfde: Layer 5
-    heeft een "layers"-dictionary nodig (met pattern_matcher EN
-    activity_detector erin), geen losse "sem"-parameter.
+    heeft een "layers"-dictionary nodig (met pattern_matcher,
+    activity_detector EN focus_detector erin), geen losse
+    "sem"-parameter.
 
     Daarom moet dit bestand, net als response_engine.py, HANDMATIG
     geladen worden in module_loader.py — NIET via de automatische
     pkgutil-scan in stap 3. Concreet: dit hoort in module_loader.py
-    op een plek NA het laden van pattern_matcher.py EN activity_detector.py
-    (beide dynamische modules-stap), zodat self.loaded_modules.get(...)
-    al bestaat op het moment dat context_manager geladen wordt.
+    op een plek NA het laden van pattern_matcher.py, activity_detector.py
+    EN focus_detector.py (alle drie dynamische modules-stap), zodat
+    self.loaded_modules.get(...) al bestaat op het moment dat
+    context_manager geladen wordt.
     """
     instance = ContextManager(event_bus, layers=layers)
     if event_bus is not None:

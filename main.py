@@ -127,6 +127,32 @@ def achtergrond_loop(loader):
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in detect_activity(): {e}")
 
+        # Layer 5, Fase 3: focus ook periodiek detecteren — dit is
+        # BELANGRIJK om op een moment te meten waarop Kevin NIET zelf
+        # net een commando aan het typen is (typen telt zelf als
+        # input, en zou de meting dus altijd "actief" tonen). Deze
+        # achtergrondmeting geeft daarom een eerlijker beeld dan enkel
+        # via het "context"/"focus debug"-commando.
+        focus_detector = loader.loaded_modules.get("focus_detector")
+        if focus_detector:
+            try:
+                focus_detector.get_focus_info()
+            except Exception as e:
+                print(f"[Achtergrondthread] Fout in get_focus_info(): {e}")
+
+        # Layer 5: ook de volledige context (incl. should_interrupt-
+        # beslissing) periodiek laten berekenen en loggen, zodat
+        # context_log.jsonl een eerlijke, ongestoorde geschiedenis
+        # bijhoudt — niet enkel momenten waarop Kevin zelf "context"
+        # typte (wat de focus-meting zou vervuilen, want typen is zelf
+        # input).
+        context_manager = loader.loaded_modules.get("context_manager")
+        if context_manager:
+            try:
+                context_manager.get_current()
+            except Exception as e:
+                print(f"[Achtergrondthread] Fout in context_manager.get_current(): {e}")
+
 def main():
     global wachten_op_input
     bus = EventBus()
@@ -214,6 +240,17 @@ def main():
             print(f"{CYAN}Ruwe venstertitel: {info.get('raw_window_title')!r}{RESET}")
             print(f"{CYAN}Ruwe procesnaam: {info.get('raw_process_name')!r}{RESET}")
             print(f"{CYAN}Herkend als: {info.get('activity')}{RESET}")
+            continue
+        
+        # Tijdelijk debug-commando: toont ruwe focus-info (Fase 3)
+        if user_input.lower() == "focus debug":
+            fd = loader.loaded_modules.get("focus_detector")
+            if not fd:
+                print(f"{RED}focus_detector-module niet gevonden.{RESET}")
+                continue
+            info = fd.get_focus_info()
+            print(f"{CYAN}Seconden sinds laatste input: {info.get('seconds_since_input')}{RESET}")
+            print(f"{CYAN}Focus-niveau: {info.get('focus_level')}{RESET}")
             continue
         
         # Tijdelijk test-commando voor Layer 5 Fase 1 (mag je later weer verwijderen)
