@@ -158,6 +158,7 @@ class ModuleLoader:
         context_layers = {
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
             "activity_detector": self.loaded_modules.get("activity_detector"),
+            "focus_detector": self.loaded_modules.get("focus_detector"),
         }
         ctx_mgr = context_manager.init_module(self.event_bus, layers=context_layers)
         ctx_mgr.__load_time_ms__ = int((time.time() - start) * 1000)

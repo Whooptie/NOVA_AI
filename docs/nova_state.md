@@ -423,9 +423,34 @@ Activiteit-detectie toegevoegd — WELK PROGRAMMA nu actief is (voorgrondvenster
 - VS Code met Nova in geïntegreerde terminal → correct herkend als `coding`
 - Duur-teller loopt logisch op (0.0 → 0.6 → 1.2 min, met tijdelijk verlaagde testdrempel) en `should_interrupt` slaat op het juiste moment om naar `False`, met de juiste `reden`-tekst
 
-**Nog te bouwen (Fase 3-5):** focus-detectie (mouse/keyboard), aanwezigheid via webcam (ML-stap), verfijnde interruption-logica.
+**Nog te bouwen (Fase 4-5):** aanwezigheid via webcam (dit VEREIST bounded ML zoals gezichtsherkenning — expliciet een latere, aparte stap), verfijnde interruption-logica op basis van dat alles.
 
----
+#### Layer 5 — Fase 3: Focus Detection (afgerond 15 juli 2026)
+
+Focus-detectie toegevoegd — HOELANG GELEDEN was er systeemwijde muis-/toetsenbordactiviteit. Lost een gat op dat Fase 2 liet liggen: een venster kan lang "open" staan (bv. 20 min "coding" volgens Fase 2) terwijl Kevin er allang niet meer actief mee bezig is. Nog steeds 100% symbolisch: gebruikt Windows' eigen `GetLastInputInfo()`-API via `ctypes` om enkel WANNEER de laatste input was op te vragen — geen keylogging, geen inhoud, geen ML.
+
+**Nieuw bestand:** `modules/context/focus_detector.py`. Volgt, net als `activity_detector.py`, de standaard dynamische module_loader-conventie (`init_module(event_bus, sem)`) — geen `layers`-dictionary nodig, automatisch opgepikt door de bestaande `pkgutil`-scan.
+
+**Kern:** `GetLastInputInfo()` + `GetTickCount()` (beide Win32 via `ctypes`) → aantal seconden sinds laatste input, systeemwijd (niet per venster — Windows biedt geen ingebouwde manier om input per programma te meten zonder een veel ingrijpendere hook; bewust aanvaarde beperking). Windows-only: op andere platformen geeft dit altijd "geen info" terug, geen crash.
+
+**Drempels (`_bepaal_focus_niveau()`):** vaste, symbolische grenzen — `< 120s` → `"actief"`, `120-600s` → `"mogelijk_afwezig"`, `> 600s` → `"waarschijnlijk_weg"`, geen info → `"onbekend"`.
+
+**Uitbreiding `context_manager.py`:** `get_current()` haalt nu ook `focus_level` + `seconds_since_input` op. `_bepaal_interrupt()` uitgebreid: als een storingsgevoelige activiteit (bv. `coding`) de tijdsdrempel haalt, wordt nu EERST gecheckt of `focus_level` in `FOCUS_NIVEAUS_ZONDER_ACTIEVE_AANWEZIGHEID` (`mogelijk_afwezig`/`waarschijnlijk_weg`) zit — zo ja, dan vervalt de coding-blokkade alsnog en valt de beslissing terug op de normale gebruikelijk-moment-regel. Bij `focus_level: "onbekend"` (bv. API-fout) wordt bewust de voorzichtige kant gekozen (net als bij `coding` zonder afwezigheid): niet onderbreken.
+
+**Belangrijke transparantie-nuance (besproken met Kevin, 15 juli 2026):** dit is GEEN keylogger en GEEN schermopname — enkel *wanneer* de laatste input was (1 timestamp), nooit *wat* er getypt/geklikt werd of *wat* er op het scherm te zien is. `activity_detector.py` leest enkel de venstertitel (bv. programmanaam), nooit de inhoud van dat venster. Alles blijft lokaal in `data/context_log.jsonl`, nergens naar buiten verstuurd.
+
+**Laadvolgorde-aanpassing in `module_loader.py`:** `context_layers`-dictionary in stap 3C bevat nu ook `"focus_detector": self.loaded_modules.get("focus_detector")`.
+
+**Periodieke polling toegevoegd aan `main.py`'s `achtergrond_loop()`:** naast `activity_detector.detect_activity()` nu ook `focus_detector.get_focus_info()` ÉN `context_manager.get_current()` zelf, elke minuut. Dit was nodig omdat een handmatige test via het `context`/`focus debug`-commando de meting altijd vervuilde — het TYPEN van het commando telt zelf als input, dus gaf altijd `0.0s`/`"actief"` terug, ongeacht hoelang je voordien niets deed. Enkel via de achtergrondthread (die niet typt) kan de meting eerlijk zijn.
+
+**Nieuw debug-commando in `main.py`:** `focus debug` — toont ruwe `seconds_since_input` + `focus_level`. Kanttekening: dit commando zelf is dus niet geschikt om afwezigheid te testen (zie hierboven); enkel bruikbaar om te bevestigen dat de API werkt op het moment van typen (geeft dan altijd `actief` terug).
+
+**Getest (15 juli 2026), via de achtergrondthread (niet handmatig, om vervuiling te vermijden):**
+- Focus-teller loopt eerlijk op zonder input (bv. 62s → 122s → 182s → ... telkens +60s, exact het pollinginterval)
+- Drempel-overgang bevestigd op het exacte grensmoment: bij 62s (< 120s) → `actief`; bij 122s (≥ 120s) → `mogelijk_afwezig`
+- **Combinatietest met Fase 2 (het hoofddoel van Fase 3):** VS Code 16+ minuten open gehouden (ruim boven de 15 min coding-drempel) mét periodes zonder input → `focus_level: "mogelijk_afwezig"` → `should_interrupt` bleef `True`, in plaats van `False` zoals Fase 2 alleen zou geven. Bevestigt dat de coding-blokkade correct vervalt zodra er geen actieve aanwezigheid meer is, ondanks dat het venster nog openstaat.
+
+**Nog te bouwen (Fase 4-5):** aanwezigheid via webcam (dit VEREIST bounded ML zoals gezichtsherkenning — expliciet een latere, aparte stap), verfijnde interruption-logica op basis van dat alles.
 
 ---
 
@@ -574,7 +599,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 7. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
 8. 🟢 **Activity Awareness (activiteiten herkennen, correleren, proactief reageren)** — concept uitgewerkt (6 juli 2026), nog niet ingepland. Kern: generiek `"ik ga <activiteit>"`-patroon in intent_router.py publiceert `activity_started`-events die Layer 2 al generiek meetelt; daarnaast co-occurrence tussen activiteiten (bv. koffie + coderen) en duur-detectie met drempelwaarde voor proactieve pauze-suggesties — beide pure statistiek/timer-logica, geen ML. Optioneel scherm-detectie (psutil, geen ML) en camera-detectie (vereist extern vision-model als sensor, met privacy-ontwerp vooraf). Ook: mogelijke uitbreiding naar per-woord-timing voor Layer 4 (zie Layer 4-sectie). Volledig uitgewerkt in: **activity_awareness_roadmap.md**.
 9. 🟢 **Activity-Aware Interaction (interruption learning + contextuele suggesties)** — concept uitgewerkt (9 juli 2026), nog niet ingepland. Bouwt voort op Activity Awareness + Layer 5 (Layer 5 Fase 1 is intussen klaar, zie hieronder — Fase 2+ met activiteit-tracking ontbreekt nog): leert per activiteit een confidence-score op ("mag ik storen tijdens coderen?"), met vaste sjabloonvariatie zodat het niet elke keer identiek klinkt. Aparte, grotere uitbreiding: contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — puur co-occurrence-tellen zoals Activity Awareness Deel C, maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md**.
-13.5 ✅ **Layer 5 Fase 1 + Fase 2 (Context Manager + Activity Tracking)** — gebouwd en getest (13 juli 2026). Fase 1: tijd + Layer 2-koppeling. Fase 2: activiteit-detectie via venstertitel (`activity_detector.py`, `pygetwindow`), incl. onderscheid `coding` vs. `talking_to_nova`. Zie sectie "Layer 5 — Context Manager" onder 7-Laags Memory Architectuur voor volledige details.
+13.5 ✅ **Layer 5 Fase 1 + Fase 2 + Fase 3 (Context Manager, Activity Tracking, Focus Detection)** — gebouwd en getest (13-15 juli 2026). Fase 1: tijd + Layer 2-koppeling. Fase 2: activiteit-detectie via venstertitel (`activity_detector.py`, `pygetwindow`), incl. onderscheid `coding` vs. `talking_to_nova`. Fase 3: focus-detectie via systeemwijde input-timing (`focus_detector.py`, `GetLastInputInfo`) — temperen van de coding-blokkade zodra er geen actieve aanwezigheid meer is. Zie sectie "Layer 5 — Context Manager" onder 7-Laags Memory Architectuur voor volledige details.
 10. ✅ **emotion_engine.py decay/recovery-mechanisme** — opgelost (11 juli 2026), zie bug #4/#11. `overstimulation.level` heeft nu zowel tijd- als interactie-gebaseerde decay.
 11. 🟡 **Layer 6/7 — identity-blueprint grotendeels niet aangesloten op de tone-pipeline.** Ontdekt tijdens bug #4/#11-onderzoek (11 juli 2026): er ligt een rijk uitgewerkt fundament klaar dat niet of nauwelijks gebruikt wordt in de praktijk:
     - **`identity.json`** (volledige blueprint: `regulation_profile`, `overstimulation_signs`, `recovery_behavior`, `sensorimotor_profile`, `embodied_cognition`, `interaction_nuance`, enz.) wordt door `loader.py` ingeladen en tegen `schema.json` gevalideerd, maar buiten die validatie leest niemand deze velden ooit uit om er gedrag op te baseren.
