@@ -99,15 +99,32 @@ def on_chat_response(data, event_type=None):
     if wachten_op_input:
         print(f"{GREEN}Jij: {RESET}", end="", flush=True)
 
+# Layer 5, Fase 4: hoeveel keer van de 60-seconden-loop moet er
+# verstrijken vóór de webcam gecheckt wordt? De webcam is trager en
+# zwaarder dan de andere sensors (het lampje flikkert bovendien elke
+# keer mee, zie het gesprek met Kevin op 16 juli 2026), dus dit draait
+# NIET elke minuut zoals activity/focus, maar veel spaarzamer.
+#
+# LET OP VOOR LATER AANPASSEN: dit is gewoon 1 getal. Waarde = hoeveel
+# minuten er tussen elke webcam-check zitten (5 = elke 5 minuten,
+# 15 = elke 15 minuten, 1 = elke minuut).
+PRESENCE_CHECK_INTERVAL_MINUTEN = 5
+
+
 def achtergrond_loop(loader):
     """
     Draait continu op de achtergrond, los van de input()-lus in main().
     Checkt elke 60 seconden of er een proactieve melding nodig is
     (session_watcher), en detecteert elke 60 seconden ook de huidige
-    activiteit (Layer 5, Fase 2).
+    activiteit + focus (Layer 5, Fase 2-3). De webcam-aanwezigheids-
+    check (Fase 4) gebeurt spaarzamer, elke
+    PRESENCE_CHECK_INTERVAL_MINUTEN minuten, niet elke minuut.
     """
+    aantal_loops = 0
+
     while True:
         time.sleep(60)
+        aantal_loops += 1
 
         watcher = loader.loaded_modules.get("session_watcher")
         if watcher:
@@ -139,6 +156,22 @@ def achtergrond_loop(loader):
                 focus_detector.get_focus_info()
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in get_focus_info(): {e}")
+
+        # Layer 5, Fase 4: webcam-aanwezigheid, ENKEL elke
+        # PRESENCE_CHECK_INTERVAL_MINUTEN minuten (spaarzamer dan de
+        # rest — zie uitleg bij de constante hierboven). We roepen
+        # HIER context_manager.update_presence_info() aan (niet
+        # presence_detector rechtstreeks) — die methode roept
+        # presence_detector zelf aan EN onthoudt het resultaat, zodat
+        # get_current() (dat wel elke minuut draait) de webcam niet
+        # zelf hoeft te openen.
+        if aantal_loops % PRESENCE_CHECK_INTERVAL_MINUTEN == 0:
+            context_manager_voor_presence = loader.loaded_modules.get("context_manager")
+            if context_manager_voor_presence:
+                try:
+                    context_manager_voor_presence.update_presence_info()
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in update_presence_info(): {e}")
 
         # Layer 5: ook de volledige context (incl. should_interrupt-
         # beslissing) periodiek laten berekenen en loggen, zodat
@@ -252,6 +285,35 @@ def main():
             print(f"{CYAN}Seconden sinds laatste input: {info.get('seconds_since_input')}{RESET}")
             print(f"{CYAN}Focus-niveau: {info.get('focus_level')}{RESET}")
             continue
+
+        # Tijdelijk debug-commando: forceert NU een webcam-meting
+        # (Fase 4), i.p.v. te wachten op het volgende interval
+        if user_input.lower() == "presence debug":
+            pd = loader.loaded_modules.get("presence_detector")
+            if not pd:
+                print(f"{RED}presence_detector-module niet gevonden.{RESET}")
+                continue
+            print(f"{CYAN}Webcam wordt gecheckt (lampje kan even flikkeren)...{RESET}")
+            info = pd.detect_presence()
+            print(f"{CYAN}Aantal gezichten: {info.get('faces_detected')}{RESET}")
+            print(f"{CYAN}Alleen: {info.get('is_alone')}{RESET}")
+            continue
+
+        # Tijdelijk debug-commando: forceert NU een webcam-meting EN
+        # laat context_manager die meteen onthouden (net als
+        # update_presence_info() dat anders pas na
+        # PRESENCE_CHECK_INTERVAL_MINUTEN zou doen) — zo kan je de
+        # volledige keten testen zonder te wachten (mag je later
+        # weer verwijderen)
+        if user_input.lower() == "presence debug context":
+            ctx_mgr = loader.loaded_modules.get("context_manager")
+            if not ctx_mgr:
+                print(f"{RED}context_manager-module niet gevonden.{RESET}")
+                continue
+            print(f"{CYAN}Webcam wordt gecheckt EN doorgegeven aan context_manager...{RESET}")
+            ctx_mgr.update_presence_info()
+            print(f"{CYAN}{ctx_mgr.get_context_summary()}{RESET}")
+            continue
         
         # Tijdelijk test-commando voor Layer 5 Fase 1 (mag je later weer verwijderen)
         if user_input.lower() == "context":
@@ -317,6 +379,11 @@ def main():
             if chess_module and hasattr(chess_module, "shutdown"):
                 print(f"{CYAN}Stockfish wordt afgesloten...{RESET}")
                 chess_module.shutdown()
+
+            # Presence-detector (MediaPipe) netjes afsluiten
+            presence_module = loader.loaded_modules.get("presence_detector")
+            if presence_module and hasattr(presence_module, "shutdown"):
+                presence_module.shutdown()
             break
 
         # Teach-flow wordt nu volledig afgehandeld door IntentRouter

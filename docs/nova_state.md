@@ -1,6 +1,6 @@
 # 🧠 Nova — State of the Project
 
-> Laatste update: 13 juli 2026
+> Laatste update: 16 juli 2026
 > Doel van dit bestand: altijd als eerste uploaden in een nieuw Claude-gesprek zodat context volledig is.
 
 ---
@@ -70,7 +70,10 @@ Nova_AI/
 │   │   ├── word_associations_learner.py
 │   │   └── pattern_matcher.py
 │   └── context/
-│       └── context_manager.py
+│       ├── context_manager.py
+│       ├── activity_detector.py
+│       ├── focus_detector.py
+│       └── presence_detector.py
 ├── identity/
 │   ├── self_query.py
 │   ├── blueprint/
@@ -101,6 +104,8 @@ Nova_AI/
 │   ├── word_associations.json
 │   ├── patterns_layer2.json
 │   └── context_log.jsonl
+│   └── models/
+│       └── blaze_face_short_range.tflite
 ├── logs/
 │   ├── nova.log
 │   └── concepts.jsonl
@@ -143,7 +148,10 @@ Nova_AI/
 | word_associations_learner.py | ✅ Klaar (Layer 1, alle 5 fases) | PMI-gebaseerd associatienetwerk (data/word_associations.json). Leert van "chat_message"/"chat_response"-events (niet het gecombineerde formaat uit de originele roadmap). Publiceert `word_association:updated`; sinds Layer 4 (8 juli 2026) wordt `find_related()` ook actief gebruikt in Nova's antwoorden. |
 | pattern_matcher.py | ✅ Klaar (Layer 2, alle 5 fases) | Detecteert timing-patronen (uur/dag) voor chat_message/chat_response. Anomaly-drempels en opslagfrequentie staan nog op tijdelijke testwaarden (zie Layer 2-sectie). |
 | microlearning.py | ❌ Leeg | Bestand bestaat maar is volledig leeg — nog te bouwen |
-| context_manager.py | ✅ Fase 1 KLAAR (Layer 5) | Combineert tijd + pattern_matcher tot interruption-advies (`should_interrupt`). Krijgt net als response_engine.py een `layers`-dictionary mee, dus handmatig geladen (niet via dynamische scan). Zie sectie "Layer 5" onder 7-Laags Memory Architectuur. |
+| context_manager.py | ✅ Fase 1-4 KLAAR (Layer 5) | Combineert tijd + pattern_matcher + activity/focus/presence-detectors tot interruption-advies (`should_interrupt`). Krijgt net als response_engine.py een `layers`-dictionary mee, dus handmatig geladen (niet via dynamische scan). Zie sectie "Layer 5" onder 7-Laags Memory Architectuur. |
+| activity_detector.py | ✅ Klaar (Layer 5, Fase 2) | Detecteert actief venster/proces via `pygetwindow` (venstertitel), vertaalt naar activiteit-label (`coding`, `talking_to_nova`, ...). Standaard dynamische module_loader-conventie, geen `layers`-dictionary nodig. |
+| focus_detector.py | ✅ Klaar (Layer 5, Fase 3) | Detecteert seconden sinds laatste systeemwijde muis/toetsenbord-input via Windows' `GetLastInputInfo()` (ctypes). Geen keylogging — enkel timing, geen inhoud. Windows-only. |
+| presence_detector.py | ✅ Klaar (Layer 5, Fase 4) | Detecteert aanwezigheid (niet identiteit) via webcam, MediaPipe Tasks API (`FaceDetector`, model: BlazeFace short range, lokaal `.task`-bestand vereist in `data/models/`). Eerste bounded ML-tool in Layer 5. |
 
 ### IDENTITY
 
@@ -281,7 +289,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | Layer 2 | pattern_matcher.py | ✅ KLAAR (alle 5 fases) | memory_layer2_roadmap.md |
 | Layer 3 | semantic.py | ✅ KLAAR | semantic_roadmap.md |
 | Layer 4 | response_engine.py | ✅ KLAAR (Fase 1-5, 7; Fase 6 uitgesteld) | memory_layer4_roadmap.md |
-| Layer 5 | context_manager.py | ✅ Fase 1 KLAAR (tijd + Layer 2-koppeling, interruption-logica) — Fase 2-5 nog te bouwen | memory_layer5_roadmap.md |
+| Layer 5 | context_manager.py + activity/focus/presence_detector.py | ✅ Fase 1-4 KLAAR (tijd, activiteit, focus, aanwezigheid) — enkel Fase 5 (verfijnde combinatie-logica) nog te bouwen | memory_layer5_roadmap.md |
 | Layer 6 | personality_engine.py | ✅ KLAAR | identity_ROADMAP.md |
 | Layer 7 | emergence_engine.py | ❌ Nog te bouwen | memory_layer7_roadmap.md |
 
@@ -375,7 +383,7 @@ Nieuw bestand `core/response_engine.py`. Combineert Layer 3 (semantic), Layer 1 
 
 **Getest:** los (`test_response_engine.py` tegen echte `concepts.json`), end-to-end binnen de echte Nova (6 representatieve concepten: hond, appel, python, democratie, zwart gat, blablabla), en de volledige tone-keten inclusief live emoji/stemmings-integratie.
 
-### Layer 5 — Context Manager, Fase 1 (afgerond 13 juli 2026)
+### Layer 5 — Context Manager (Fase 1-4 afgerond, 13-16 juli 2026)
 
 Eerste, symbolische basisversie gebouwd en getest — enkel tijd + Layer 2 (pattern_matcher.py) gecombineerd tot een simpele interruption-beslissing. Geen mouse/keyboard-tracking, geen webcam/presence-detectie, geen identiteitsherkenning — die blijven latere, aparte fases (en sommige vereisen bounded ML, zoals gezichtsherkenning, wat expliciet NIET in dit bestand zit).
 
@@ -397,8 +405,6 @@ Elke beslissing krijgt ook een `reden`-veld (bv. `"te veel anomalieën vandaag (
 **Debug-commando's in `main.py`:** `context` (huidige beslissing + reden) en `context geschiedenis [n]` (laatste n regels uit `context_log.jsonl`, standaard 10).
 
 **Getest (13 juli 2026):** beide paden bevestigd — normale/gebruikelijke situatie geeft `should_interrupt: True`, en een geforceerd scenario met 3 nepanomalieën (los testscript `test_forceer_anomalieen.py`, niet onderdeel van Nova zelf) geeft correct `should_interrupt: False` met de juiste reden.
-
-**Nog te bouwen (Fase 3-5, memory_layer5_roadmap.md):** focus-detectie (mouse/keyboard-activiteit — symbolisch haalbaar), aanwezigheid via webcam (dit VEREIST bounded ML zoals gezichtsherkenning — expliciet een latere, aparte stap, geen kern-Layer 5-code), verfijnde interruption-logica op basis van dat alles.
 
 #### Layer 5 — Fase 2: Activity Tracking (afgerond 13 juli 2026)
 
@@ -422,8 +428,6 @@ Activiteit-detectie toegevoegd — WELK PROGRAMMA nu actief is (voorgrondvenster
 - Los PowerShell-venster met Nova erin → `talking_to_nova`, `should_interrupt` blijft altijd `True` ongeacht duur
 - VS Code met Nova in geïntegreerde terminal → correct herkend als `coding`
 - Duur-teller loopt logisch op (0.0 → 0.6 → 1.2 min, met tijdelijk verlaagde testdrempel) en `should_interrupt` slaat op het juiste moment om naar `False`, met de juiste `reden`-tekst
-
-**Nog te bouwen (Fase 4-5):** aanwezigheid via webcam (dit VEREIST bounded ML zoals gezichtsherkenning — expliciet een latere, aparte stap), verfijnde interruption-logica op basis van dat alles.
 
 #### Layer 5 — Fase 3: Focus Detection (afgerond 15 juli 2026)
 
@@ -450,7 +454,33 @@ Focus-detectie toegevoegd — HOELANG GELEDEN was er systeemwijde muis-/toetsenb
 - Drempel-overgang bevestigd op het exacte grensmoment: bij 62s (< 120s) → `actief`; bij 122s (≥ 120s) → `mogelijk_afwezig`
 - **Combinatietest met Fase 2 (het hoofddoel van Fase 3):** VS Code 16+ minuten open gehouden (ruim boven de 15 min coding-drempel) mét periodes zonder input → `focus_level: "mogelijk_afwezig"` → `should_interrupt` bleef `True`, in plaats van `False` zoals Fase 2 alleen zou geven. Bevestigt dat de coding-blokkade correct vervalt zodra er geen actieve aanwezigheid meer is, ondanks dat het venster nog openstaat.
 
-**Nog te bouwen (Fase 4-5):** aanwezigheid via webcam (dit VEREIST bounded ML zoals gezichtsherkenning — expliciet een latere, aparte stap), verfijnde interruption-logica op basis van dat alles.
+#### Layer 5 — Fase 4: Presence Detection (afgerond 16 juli 2026)
+
+Aanwezigheidsdetectie toegevoegd via webcam — de EERSTE Layer 5-fase die een extern ML-model gebruikt (MediaPipe Face Detection), in tegenstelling tot Fase 1-3 die allemaal pure Python/OS-API's waren. Dit is bewust en correct volgens Nova's architectuurprincipe: het model is een BOUNDED, EXTERNAL SPECIALIST TOOL — levert enkel "aantal gezichten" terug, Nova's symbolische kern beslist zelf wat ze ermee doet. Puur AANWEZIGHEID (hoeveel gezichten?), GEEN IDENTITEIT (wiens gezicht?) — dat laatste blijft een latere, aparte uitbreiding (Kevin's presence/identiteits-roadmap, nog te schrijven, incl. Windows Hello-koppeling en stemherkenning-ideeën die al besproken zijn).
+
+**Modelkeuze (afweging met Kevin, 16 juli 2026):** MediaPipe gekozen boven RetinaFace na vergelijking — voor dit scenario (1 gezicht, dichtbij, webcam, goed licht) is MediaPipe ruim voldoende nauwkeurig, officieel Google-onderhouden (`pip install mediapipe`), en snel genoeg. RetinaFace's extra precisie is gericht op drukke scenes met kleine/verre/gedeeltelijk verborgen gezichten — irrelevant voor Kevin's gebruik, en vereist bovendien handmatige ONNX-conversie via minder onderhouden community-repo's.
+
+**BELANGRIJKE TECHNISCHE NOOT — MediaPipe API-breuk:** MediaPipe verwijderde de oude "Solutions"-API (`mp.solutions.face_detection`) volledig vanaf versie 0.10.35 (bevestigd via `test_mediapipe_debug.py`: `hasattr(mp, "solutions")` → `False`). `presence_detector.py` gebruikt daarom de nieuwe **Tasks API** (`mp.tasks.vision.FaceDetector`), die een apart, lokaal `.task`-modelbestand vereist (niet meer intern meegeleverd). Model: BlazeFace "short range" (bedoeld voor gezichten < 2 meter, precies een laptop-webcam), gedownload van `https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite` naar `data/models/blaze_face_short_range.tflite`. **Als dit bestand ontbreekt, print `presence_detector.py` een duidelijke waarschuwing en valt netjes terug op "geen info" — geen crash.**
+
+**Nieuw bestand:** `modules/context/presence_detector.py`. Volgt de standaard dynamische module_loader-conventie (geen `layers`-dictionary nodig). Webcam gaat telkens open/dicht PER meting (niet continu open) — zo blijft het cameralampje niet permanent branden en blijft de webcam vrij voor andere apps tussendoor. Heeft een `shutdown()`-methode (net als `chess_engine.py` voor Stockfish), aangeroepen bij `exit` in `main.py`.
+
+**Belangrijke terminologie-nuance (16 juli 2026):** `is_alone` betekent "is NOVA alleen" (niemand om tegen te praten), NIET "is Kevin sociaal alleen in de kamer". Kevin's eigen gezicht telt dus mee als "iemand aanwezig" — 1 gezicht (Kevin) → `is_alone: False` → Nova mag spreken. 0 gezichten → `is_alone: True` → Nova is "alleen", niemand om tegen te praten.
+
+**Uitbreiding `context_manager.py`:** nieuwe methode `update_presence_info()`, BEWUST APART van `get_current()` — `get_current()` opent NOOIT zelf de webcam (dat zou het lampje bij elke minuutcheck laten flikkeren). In plaats daarvan onthoudt `context_manager` een `_laatst_bekende_presence`, enkel bijgewerkt via `update_presence_info()`, die vanuit `main.py` spaarzaam wordt aangeroepen (zie hieronder). Als een meting faalt (webcam-hik), wordt de vorige laatst-bekende waarde NIET overschreven met "onbekend" — een tijdelijke hik mag een goede laatste meting niet wissen.
+
+**Nieuwe regel in `_bepaal_interrupt()` (na afweging met Kevin — Optie B gekozen):** is er NIEMAND aanwezig (`is_alleen is True`)? Dan mag Nova NIET onderbreken — spreken heeft geen zin als er niemand is om het te zien/horen, dat zou enkel een misplaatste, opgestapelde melding worden tegen de tijd dat Kevin terugkomt. Deze regel staat vlak NA de anomalie-check maar VOOR de coding/focus-logica (webcam-info is een directer, feitelijker signaal dan input-timing). `is_alleen is True` wordt EXPLICIET gecheckt (niet `if is_alleen`), zodat `None` (geen info) nooit per ongeluk als "niemand aanwezig" behandeld wordt.
+
+**Nieuwe instelling in `main.py`:** `PRESENCE_CHECK_INTERVAL_MINUTEN = 5` (instelbare constante, makkelijk later aan te passen). Webcam-check gebeurt SPAARZAMER dan activity/focus (elke 5 min i.p.v. elke minuut) — bewuste keuze na gesprek met Kevin: het cameralampje flikkert onvermijdelijk mee bij elke ECHTE meting (hardwarematig gekoppeld aan de sensor, geen software-instelling die dit kan omzeilen — bewuste privacybescherming, niet iets om te omzeilen). `achtergrond_loop()` houdt een `aantal_loops`-teller bij en roept `context_manager.update_presence_info()` aan (niet `presence_detector` rechtstreeks) enkel elke N loops.
+
+**Nieuw debug-commando's in `main.py`:** `presence debug` (forceert een meting, toont ruw resultaat, logt NIET naar context_log.jsonl — gaat niet via context_manager) en `presence debug context` (forceert een meting ÉN laat context_manager die onthouden via update_presence_info(), toont volledige summary — gebruikt om de volledige keten te testen zonder 5 minuten te wachten).
+
+**Bekende, bewust geaccepteerde cosmetische eigenaardigheid:** MediaPipe 0.10.35 print ongevraagd, ongedocumenteerde Google-telemetrie-foutmeldingen naar de console (`E0000 ... portable_clearcut_uploader.cc ... Failed to send to clearcut ...`), plus onschuldige TFLite/XNNPACK-initialisatielogs. Bevestigd via community GitHub-issues (`google-ai-edge/mediapipe#6291`, `#4991`) dat dit een bekend, niet-officieel-oplosbaar probleem is sinds ergens tussen MediaPipe 0.10.21-0.10.35 — geen referentie naar "clearcut" bestaat in de open-source MediaPipe-repo, en de PyPI-pakketten zijn intern bij Google gebouwd. De upload FAALT altijd (`FAILED_PRECONDITION`), maar een netwerkverbindingspoging naar `play.googleapis.com` (216.239.*) werd door een andere gebruiker bevestigd via Wireshark. **Mitigatie:** Windows Firewall-regel ingesteld (`New-NetFirewallRule -DisplayName "Block MediaPipe Clearcut Telemetry" -Direction Outbound -RemoteAddress 216.239.32.0/19 -Action Block`) — blokkeert de daadwerkelijke netwerkverbinding volledig, ongeacht wat MediaPipe intern probeert. De console-rommel zelf blijft zichtbaar (meerdere pogingen tot onderdrukking via `GLOG_minloglevel`/OS-niveau stderr-redirect faalden — Windows' consolelaag bleek te broos voor dat soort low-level trucs, gaf `OSError: [WinError 1] Onjuiste functie`) — bewust geaccepteerd als puur cosmetisch, functioneel onschadelijk zolang de firewall-regel actief blijft.
+
+**Getest (16 juli 2026):**
+- `presence debug` alleen (zonder context-koppeling): 1 gezicht correct gedetecteerd bij aanwezig zijn, 0 bij wegkijken/wegdraaien
+- `presence debug context` (volledige keten): `Gezichten: 1` → `Mag onderbreken: True`; `Gezichten: 0` → `Mag onderbreken: False` met reden `"niemand aanwezig volgens webcam (Fase 4)"` — bevestigt de volledige, correcte werking van de nieuwe regel
+
+**Nog te bouwen (Fase 5):** verfijnde interruption-logica op basis van alle sensoren samen (Layer 2 + activiteit + focus + aanwezigheid), mogelijk gewogen i.p.v. de huidige simpele if/else-volgorde.
 
 ---
 
@@ -598,8 +628,8 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 6. 🟢 **Layer 2 opruimwerk** — anomaly-drempels (MIN_OBSERVATIES_VOOR_ANOMALIE, MIN_CONFIDENCE_VOOR_ANOMALIE) en opslagfrequentie (nu elke 2 observaties) staan nog op tijdelijke, verlaagde testwaarden — terugzetten naar realistischere waarden voor normaal gebruik. **Bekende bijwerking hiervan (7 juli 2026, geen bug, bestaand tijdelijk gedrag):** `save_to_disk()` wordt enkel aangeroepen als `total` van een event_type even is (`% 2 == 0`). Bij een oneven `total` (bv. na 1 of 3 observaties van een `topic_detected:*`-event) toont `patterns_layer2.json` op schijf dus tijdelijk een lager aantal dan wat `patronen <event_type>` live in het geheugen toont. Dit lost zichzelf op zodra deze opslagfrequentie later realistischer gemaakt wordt (zie hierboven), maar is voor nu iets om bij te houden tijdens testen: het JSON-bestand is niet altijd de meest actuele bron, het live geheugen wel.
 7. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
 8. 🟢 **Activity Awareness (activiteiten herkennen, correleren, proactief reageren)** — concept uitgewerkt (6 juli 2026), nog niet ingepland. Kern: generiek `"ik ga <activiteit>"`-patroon in intent_router.py publiceert `activity_started`-events die Layer 2 al generiek meetelt; daarnaast co-occurrence tussen activiteiten (bv. koffie + coderen) en duur-detectie met drempelwaarde voor proactieve pauze-suggesties — beide pure statistiek/timer-logica, geen ML. Optioneel scherm-detectie (psutil, geen ML) en camera-detectie (vereist extern vision-model als sensor, met privacy-ontwerp vooraf). Ook: mogelijke uitbreiding naar per-woord-timing voor Layer 4 (zie Layer 4-sectie). Volledig uitgewerkt in: **activity_awareness_roadmap.md**.
-9. 🟢 **Activity-Aware Interaction (interruption learning + contextuele suggesties)** — concept uitgewerkt (9 juli 2026), nog niet ingepland. Bouwt voort op Activity Awareness + Layer 5 (Layer 5 Fase 1 is intussen klaar, zie hieronder — Fase 2+ met activiteit-tracking ontbreekt nog): leert per activiteit een confidence-score op ("mag ik storen tijdens coderen?"), met vaste sjabloonvariatie zodat het niet elke keer identiek klinkt. Aparte, grotere uitbreiding: contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — puur co-occurrence-tellen zoals Activity Awareness Deel C, maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md**.
-13.5 ✅ **Layer 5 Fase 1 + Fase 2 + Fase 3 (Context Manager, Activity Tracking, Focus Detection)** — gebouwd en getest (13-15 juli 2026). Fase 1: tijd + Layer 2-koppeling. Fase 2: activiteit-detectie via venstertitel (`activity_detector.py`, `pygetwindow`), incl. onderscheid `coding` vs. `talking_to_nova`. Fase 3: focus-detectie via systeemwijde input-timing (`focus_detector.py`, `GetLastInputInfo`) — temperen van de coding-blokkade zodra er geen actieve aanwezigheid meer is. Zie sectie "Layer 5 — Context Manager" onder 7-Laags Memory Architectuur voor volledige details.
+9. 🟢 **Activity-Aware Interaction (interruption learning + contextuele suggesties)** — concept uitgewerkt (9 juli 2026), nog niet ingepland. Bouwt voort op Activity Awareness + Layer 5 (Layer 5 Fase 1-4 zijn intussen klaar, zie punt 13.5 hieronder): leert per activiteit een confidence-score op ("mag ik storen tijdens coderen?"), met vaste sjabloonvariatie zodat het niet elke keer identiek klinkt. Aparte, grotere uitbreiding: contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — puur co-occurrence-tellen zoals Activity Awareness Deel C, maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md**.
+13.5 ✅ **Layer 5 Fase 1-4 (Context Manager, Activity/Focus/Presence Detection)** — gebouwd en getest (13-16 juli 2026). Fase 1: tijd + Layer 2-koppeling. Fase 2: activiteit-detectie via venstertitel (`activity_detector.py`, `pygetwindow`). Fase 3: focus-detectie via input-timing (`focus_detector.py`, `GetLastInputInfo`). Fase 4: aanwezigheidsdetectie via webcam (`presence_detector.py`, MediaPipe Tasks API — eerste bounded ML-tool in Layer 5). Enkel Fase 5 (verfijnde combinatie-logica) nog te bouwen. Zie sectie "Layer 5 — Context Manager" onder 7-Laags Memory Architectuur voor volledige details.
 10. ✅ **emotion_engine.py decay/recovery-mechanisme** — opgelost (11 juli 2026), zie bug #4/#11. `overstimulation.level` heeft nu zowel tijd- als interactie-gebaseerde decay.
 11. 🟡 **Layer 6/7 — identity-blueprint grotendeels niet aangesloten op de tone-pipeline.** Ontdekt tijdens bug #4/#11-onderzoek (11 juli 2026): er ligt een rijk uitgewerkt fundament klaar dat niet of nauwelijks gebruikt wordt in de praktijk:
     - **`identity.json`** (volledige blueprint: `regulation_profile`, `overstimulation_signs`, `recovery_behavior`, `sensorimotor_profile`, `embodied_cognition`, `interaction_nuance`, enz.) wordt door `loader.py` ingeladen en tegen `schema.json` gevalideerd, maar buiten die validatie leest niemand deze velden ooit uit om er gedrag op te baseren.
