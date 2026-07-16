@@ -21,7 +21,7 @@
     "threshold": 0.75,
     "signs_active": [],
     "last_overflow_behavior": "snellere_spraak_en_microgebaren",
-    "last_trigger_timestamp": 1784055183.5041685,
+    "last_trigger_timestamp": 1784224052.3725953,
     "decay_per_minute": 0.05
   },
   "sync": {

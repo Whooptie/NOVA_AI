@@ -14,3 +14,4 @@ data/*.db-shm
 data/*.db-wal
 data/interactions.jsonl
 data/archive
+*.tflite
