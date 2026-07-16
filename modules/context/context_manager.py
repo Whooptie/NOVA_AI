@@ -30,6 +30,23 @@ GEEN identiteitsherkenning (wie is dit specifiek) — dat blijft een
 latere, aparte uitbreiding (Kevin's presence/identiteits-roadmap, nog
 te schrijven), net als Windows Hello-koppeling en stemherkenning.
 
+Fase 5 (dit bestand, nieuw): interruption logic afgerond — Layer 5 is
+hiermee VOLLEDIG. De oude "eerste match wint"-volgorde in
+_bepaal_interrupt() is vervangen door een gewogen SCORE-systeem: elk
+signaal (anomalieën, storingsgevoelige activiteit + focus, gebruikelijk
+moment) levert vaste, symbolische punten op, die samen opgeteld worden
+tot 1 totaalscore t.o.v. INTERRUPT_SCORE_DREMPEL. "Niemand aanwezig"
+(Fase 4) blijft BEWUST een harde stopregel, GEEN scoreregel — spreken
+tegen een lege kamer heeft nooit zin, ongeacht de score. Daarnaast is
+een nieuw advies-veld "response_style" toegevoegd ("kort"/"normaal"/
+"uitgebreid") — puur berekend/gepubliceerd, nog NIET aangesloten op
+response_engine.py/expression_injector.py (zie _bepaal_response_style()
+voor de volledige, eerlijke toelichting). Dit blijft 100% symbolisch:
+vaste, door Kevin gekozen getallen die simpelweg opgeteld worden — GEEN
+ML, geen geleerde gewichten. Dat "leren" (bv. via Kevin's feedback op
+onderbrekingen) is een bewuste, latere, aparte stap, zie
+interruption_learning_roadmap.md.
+
 Opslag: elke berekende context wordt weggeschreven naar
 data/context_log.jsonl — een append-only GESCHIEDENIS, geen "state"
 die bij opstarten opnieuw ingeladen wordt. Layer 5 herberekent zijn
@@ -44,7 +61,8 @@ import json
 
 class ContextManager:
     """
-    Layer 5: Context Manager (Fase 1 + Fase 2 + Fase 3 + Fase 4)
+    Layer 5: Context Manager (Fase 1 + Fase 2 + Fase 3 + Fase 4 + Fase 5
+    — VOLLEDIG AFGEROND)
 
     Verzamelt op elk moment:
     - het huidige tijdstip
@@ -54,8 +72,10 @@ class ContextManager:
     - het focus-niveau (Fase 3, via focus_detector.py)
     - aanwezigheid (Fase 4, via presence_detector.py)
 
-    En berekent daaruit een simpele context + interruption-advies.
-    Elke beslissing wordt ook gelogd naar schijf (context_log.jsonl).
+    En berekent daaruit (Fase 5) een gewogen score-gebaseerde context +
+    interruption-advies + response_style-advies. Elke beslissing wordt
+    ook gelogd naar schijf (context_log.jsonl), inclusief de volledige
+    score-opbouw in het "reden"-veld voor nazicht/debug door Kevin.
     """
 
     # Welk event_type gebruiken we als basis om te bepalen of NU een
@@ -67,7 +87,7 @@ class ContextManager:
     # Vanaf hoeveel minuten ononderbroken "coding"-activiteit gaan we
     # onderbreken extra afraden? Dit is een bewust simpele, vaste
     # drempel — geen geleerde/dynamische waarde.
-    CODING_ONDERBREEK_DREMPEL_MINUTEN = 15
+    CODING_ONDERBREEK_DREMPEL_MINUTEN = 0.1
 
     # Activiteiten waarbij we extra terughoudend zijn met onderbreken.
     # Uitbreidbaar: voeg hier gerust "gaming" of andere labels aan toe
@@ -88,6 +108,44 @@ class ContextManager:
     # dit wordt afgekapt (oudste eerst weg), zodat het bestand niet
     # onbeperkt groeit bij een 24/7-daemon.
     MAX_LOG_REGELS = 2000
+
+    # ------------------------------------------------------------
+    # Fase 5: gewogen score-systeem voor de interruption-beslissing
+    # ------------------------------------------------------------
+    # In plaats van de oude "eerste match wint"-volgorde (Fase 1-4)
+    # telt Fase 5 punten op: elk signaal draagt een vast gewicht bij
+    # aan een totaalscore. Positief = pleit VOOR onderbreken, negatief
+    # = pleit TEGEN onderbreken. Aan het einde bepaalt de totaalscore,
+    # vergeleken met INTERRUPT_SCORE_DREMPEL, het uiteindelijke advies.
+    #
+    # BELANGRIJK: dit blijft 100% symbolisch — vaste, door Kevin zelf
+    # gekozen getallen die gewoon opgeteld worden. Geen ML, geen
+    # geleerde gewichten. Dat is een BEWUSTE latere, aparte stap (zie
+    # interruption_learning_roadmap.md), niet iets wat Fase 5 zelf doet.
+    #
+    # "Niemand aanwezig" (Fase 4) blijft hier BEWUST BUITEN: dat is
+    # geen scoreregel maar een harde stopregel (zie _bepaal_interrupt),
+    # want spreken tegen een lege kamer heeft nooit zin, ongeacht hoe
+    # hoog de rest van de score zou uitvallen.
+    SCORE_GEBRUIKELIJK_MOMENT = +2
+    SCORE_ONGEBRUIKELIJK_MOMENT = -1
+    SCORE_STORINGSGEVOELIGE_ACTIVITEIT_ACTIEF = -3
+    SCORE_STORINGSGEVOELIGE_ACTIVITEIT_MAAR_AFWEZIG = +1
+    SCORE_ANOMALIE_PER_STUK = -2
+    MAX_ANOMALIE_SCORE_AFTREK = -6  # nooit meer dan dit aftrekken
+
+    # Vanaf welke totaalscore mag Nova onderbreken? Lager dan dit
+    # (strikt kleiner) betekent should_interrupt = False.
+    INTERRUPT_SCORE_DREMPEL = 0
+
+    # Fase 5: response_style — HOE zou Nova best antwoorden, los van
+    # OF ze mag onderbreken? Dit is puur een advies-veld dat Fase 5
+    # berekent en publiceert; het effectief GEBRUIKEN om antwoorden
+    # in te korten is nog niet aangesloten (zie toelichting bij
+    # _bepaal_response_style() hieronder).
+    RESPONSE_STYLE_KORT = "kort"
+    RESPONSE_STYLE_NORMAAL = "normaal"
+    RESPONSE_STYLE_UITGEBREID = "uitgebreid"
 
     def __init__(self, event_bus, layers=None):
         self.event_bus = event_bus
@@ -214,6 +272,18 @@ class ContextManager:
             is_alleen,
         )
 
+        # Fase 5, NIEUW: response_style — zie _bepaal_response_style()
+        # voor de volledige uitleg (incl. de eerlijke kanttekening dat
+        # dit nog NIET effectief gebruikt wordt om antwoorden aan te
+        # passen, enkel berekend/gepubliceerd wordt).
+        response_style = self._bepaal_response_style(
+            should_interrupt,
+            activiteit_label,
+            activiteit_duur_minuten,
+            focus_niveau,
+            is_alleen,
+        )
+
         context = {
             "time": nu.isoformat(),
             "hour": nu.hour,
@@ -226,6 +296,7 @@ class ContextManager:
             "faces_detected": aantal_gezichten,
             "is_alone": is_alleen,
             "should_interrupt": should_interrupt,
+            "response_style": response_style,
             "reden": reden,
         }
 
@@ -283,47 +354,61 @@ class ContextManager:
         is_alleen,
     ):
         """
-        Simpele, symbolische regel (Fase 1 + Fase 2 + Fase 3 + Fase 4):
+        Fase 5: gewogen score-systeem (vervangt de oude "eerste match
+        wint"-volgorde uit Fase 1-4).
 
-        - Zijn er vandaag al veel anomalieën geweest (bv. 3 of meer)?
-          Dan wordt Nova voorzichtiger. Dit heeft ALTIJD voorrang.
-        - Fase 4, NIEUW: is er NIEMAND aanwezig volgens de webcam
-          (is_alleen == True)? Dan mag Nova NIET onderbreken — spreken
-          heeft geen zin als er niemand is om het te zien/horen; dat
-          zou enkel een misplaatste, opgestapelde melding worden tegen
-          de tijd dat Kevin terugkomt. Dit heeft voorrang op de
-          coding/focus-logica hieronder (webcam-info is een sterker,
-          directer signaal dan input-timing).
-        - Zit je al een tijdje (>= drempel) in een storingsgevoelige
-          activiteit (bv. "coding")? Dan raadt Layer 5 onderbreken af
-          — MAAR enkel als er ook nog recente input was (Fase 3). Is
-          het focus-niveau "mogelijk_afwezig"/"waarschijnlijk_weg",
-          dan mag Nova alsnog onderbreken.
-        - Is dit een gebruikelijk moment (bv. Kevin chat hier meestal
-          op dit uur)? Dan mag Nova gewoon spreken.
-        - Standaard: gewoon toelaten.
+        WERKING: elk signaal levert een vast, symbolisch puntenaantal
+        op (zie de SCORE_*-constantes hierboven), positief of negatief.
+        Alle punten worden opgeteld tot 1 totaalscore. Ligt die score
+        op of boven INTERRUPT_SCORE_DREMPEL, dan mag Nova onderbreken;
+        eronder niet. Dit vervangt de vroegere aanpak waarbij de EERSTE
+        regel die matchte meteen alles besliste — nu wegen meerdere
+        signalen tegelijk mee (bv. "wel een gebruikelijk moment, MAAR
+        ook al een tijdje aan het coderen" geeft nu een eerlijke
+        combinatie van beide, in plaats van dat de coding-regel alles
+        overschaduwt).
 
-        Geeft een tuple terug: (should_interrupt: bool, reden: str).
+        UITZONDERING — "niemand aanwezig" blijft een HARDE STOPREGEL,
+        GEEN scoreregel: als is_alleen is True, wordt er NOOIT
+        onderbroken, ongeacht hoe hoog de rest van de score zou zijn.
+        Reden: spreken tegen een lege kamer heeft simpelweg geen nut,
+        dat is geen kwestie van "een beetje minder overtuigend" maar
+        van "compleet zinloos op dit moment". Dit blijft daarom, net
+        als in Fase 4, VOOR de score-berekening gecheckt.
 
         BELANGRIJK: is_alleen kan None zijn (nog geen enkele geslaagde
-        webcam-meting gehad sinds opstarten, of presence_detector niet
-        beschikbaar). We behandelen None BEWUST als "geen info", NIET
-        als "iemand is aanwezig" — een ontbrekende meting mag nooit
-        stilzwijgend aangenomen worden als "alles is oké, ga door".
-        Maar we behandelen None ook niet als "niemand aanwezig" (dat
-        zou net zo verkeerd zijn in de andere richting) — vandaar dat
-        we hier expliciet `is_alleen is True` checken, niet gewoon
-        `if is_alleen`.
+        webcam-meting gehad, of presence_detector niet beschikbaar).
+        We behandelen None BEWUST als "geen info", niet als "iemand
+        is aanwezig" — vandaar `is_alleen is True`, niet `if is_alleen`.
 
-        Dit blijft een EENVOUDIGE regel — geen gewogen score, geen ML.
-        Fase 5 (verfijnde interruption-logica) kan dit verder verfijnen.
+        Geeft een tuple terug: (should_interrupt: bool, reden: str).
+        De reden bevat nu ook de volledige score-opbouw, zodat Kevin
+        in context_log.jsonl exact kan navertellen HOE een beslissing
+        tot stand kwam — dit is precies waarom dit systeem symbolisch
+        blijft i.p.v. ML: elke beslissing is stap voor stap leesbaar,
+        in tegenstelling tot de "zwarte doos" van geleerde gewichten.
         """
-        if len(anomalieen_vandaag) >= 3:
-            return False, "te veel anomalieën vandaag (>=3)"
-
+        # --- Harde stopregel: niemand aanwezig (blijft VOOR de score) ---
         if is_alleen is True:
-            return False, "niemand aanwezig volgens webcam (Fase 4)"
+            return False, "niemand aanwezig volgens webcam (Fase 4) — harde stopregel, geen score"
 
+        # --- Score opbouwen: elke regel voegt een (label, punten)-paar toe ---
+        score_onderdelen = []
+
+        # 1) Anomalieën vandaag — hoe meer, hoe negatiever, met een plafond
+        #    (MAX_ANOMALIE_SCORE_AFTREK) zodat 1 extreme dag niet oneindig
+        #    kan doorwegen.
+        aantal_anomalieen = len(anomalieen_vandaag)
+        if aantal_anomalieen > 0:
+            aftrek = max(
+                self.SCORE_ANOMALIE_PER_STUK * aantal_anomalieen,
+                self.MAX_ANOMALIE_SCORE_AFTREK,
+            )
+            score_onderdelen.append(
+                (f"{aantal_anomalieen} anomalie(ën) vandaag", aftrek)
+            )
+
+        # 2) Storingsgevoelige activiteit (bv. coding) + duur + focus
         is_storingsgevoelige_activiteit = (
             activiteit_label in self.STORINGSGEVOELIGE_ACTIVITEITEN
             and activiteit_duur_minuten >= self.CODING_ONDERBREEK_DREMPEL_MINUTEN
@@ -332,28 +417,106 @@ class ContextManager:
         if is_storingsgevoelige_activiteit:
             if focus_niveau in self.FOCUS_NIVEAUS_ZONDER_ACTIEVE_AANWEZIGHEID:
                 # Venster staat open, maar geen recente input — Kevin
-                # is er waarschijnlijk niet meer actief mee bezig.
-                # Val NIET terug op de coding-blokkade; ga gewoon door
-                # naar de normale gebruikelijk-moment-check hieronder.
-                pass
+                # is er waarschijnlijk niet meer actief mee bezig. Dit
+                # telt dus juist LICHT POSITIEF mee (venster open, maar
+                # afwezig is geen reden meer om terughoudend te zijn).
+                score_onderdelen.append(
+                    (
+                        f"'{activiteit_label}' al {activiteit_duur_minuten:.0f} min, "
+                        f"maar focus: {focus_niveau} (waarschijnlijk afwezig)",
+                        self.SCORE_STORINGSGEVOELIGE_ACTIVITEIT_MAAR_AFWEZIG,
+                    )
+                )
             else:
-                # focus_niveau is "actief" of "onbekend" — bij
-                # "onbekend" (bv. geen Windows, of API-fout) kiezen we
-                # BEWUST de voorzichtige kant: liever niet onderbreken
-                # dan een gok wagen.
-                return (
-                    False,
-                    f"al {activiteit_duur_minuten:.0f} min bezig met "
-                    f"'{activiteit_label}' (drempel: "
-                    f"{self.CODING_ONDERBREEK_DREMPEL_MINUTEN} min), "
-                    f"focus: {focus_niveau}",
+                # focus_niveau is "actief" of "onbekend" — bij "onbekend"
+                # (bv. geen Windows, API-fout) kiezen we bewust de
+                # voorzichtige kant: dit telt gewoon mee als storend.
+                score_onderdelen.append(
+                    (
+                        f"'{activiteit_label}' al {activiteit_duur_minuten:.0f} min "
+                        f"(drempel: {self.CODING_ONDERBREEK_DREMPEL_MINUTEN} min), "
+                        f"focus: {focus_niveau}",
+                        self.SCORE_STORINGSGEVOELIGE_ACTIVITEIT_ACTIEF,
+                    )
                 )
 
+        # 3) Gebruikelijk moment volgens Layer 2
         if is_gebruikelijk_moment:
-            return True, "gebruikelijk moment volgens Layer 2"
+            score_onderdelen.append(
+                ("gebruikelijk moment volgens Layer 2", self.SCORE_GEBRUIKELIJK_MOMENT)
+            )
+        else:
+            score_onderdelen.append(
+                ("ongebruikelijk moment volgens Layer 2", self.SCORE_ONGEBRUIKELIJK_MOMENT)
+            )
 
-        # Geen sterke aanwijzing in beide richtingen: standaard toelaten.
-        return True, "geen sterke aanwijzing, standaard toegelaten"
+        # --- Totaalscore optellen ---
+        totaalscore = sum(punten for _, punten in score_onderdelen)
+
+        should_interrupt = totaalscore >= self.INTERRUPT_SCORE_DREMPEL
+
+        # Leesbare reden: score-opbouw + eindresultaat, voor
+        # nazicht/debug door Kevin (context_log.jsonl / "context"-commando).
+        opbouw_tekst = ", ".join(
+            f"{label}: {punten:+d}" for label, punten in score_onderdelen
+        )
+        reden = (
+            f"score {totaalscore:+d} (drempel {self.INTERRUPT_SCORE_DREMPEL:+d}) — "
+            f"{opbouw_tekst}"
+        )
+
+        return should_interrupt, reden
+
+    def _bepaal_response_style(
+        self,
+        should_interrupt,
+        activiteit_label,
+        activiteit_duur_minuten,
+        focus_niveau,
+        is_alleen,
+    ):
+        """
+        Fase 5, NIEUW: response_style — een advies over HOE Nova best
+        zou antwoorden, los van OF ze mag onderbreken. Puur symbolisch,
+        zelfde soort vaste regels als _bepaal_interrupt().
+
+        BELANGRIJK, EERLIJKHEID OVER WAT DIT (NOG NIET) IS: dit veld
+        wordt hier enkel BEREKEND en gepubliceerd in "context:updated"
+        — het daadwerkelijk GEBRUIKEN ervan om Nova's antwoorden echt
+        korter/uitgebreider te maken vereist een aparte integratiestap
+        in response_engine.py/expression_injector.py (Layer 4/6), die
+        dit NIET automatisch oppikt enkel omdat dit veld nu bestaat.
+        Dit is bewust dezelfde situatie als personality_engine.py's
+        output nu: klaar om op aan te sluiten, nog niet aangesloten.
+
+        Regels (simpel, uitbreidbaar):
+        - Mag Nova sowieso niet onderbreken? Dan is de vraag "hoe"
+          niet relevant — "normaal" als neutrale standaardwaarde.
+        - Storingsgevoelige activiteit (coding) met actieve focus?
+          Dan kort, want Kevin is duidelijk met iets anders bezig.
+        - Rustig moment, geen storingsgevoelige activiteit, focus
+          "mogelijk_afwezig"/"waarschijnlijk_weg" (Kevin heeft dus
+          tijd, geen druk venster open)? Dan uitgebreid mag.
+        - Standaard: normaal.
+        """
+        if not should_interrupt:
+            return self.RESPONSE_STYLE_NORMAAL
+
+        is_storingsgevoelige_activiteit = (
+            activiteit_label in self.STORINGSGEVOELIGE_ACTIVITEITEN
+            and activiteit_duur_minuten >= self.CODING_ONDERBREEK_DREMPEL_MINUTEN
+        )
+
+        if is_storingsgevoelige_activiteit and focus_niveau == "actief":
+            return self.RESPONSE_STYLE_KORT
+
+        if (
+            not is_storingsgevoelige_activiteit
+            and focus_niveau in self.FOCUS_NIVEAUS_ZONDER_ACTIEVE_AANWEZIGHEID
+        ):
+            return self.RESPONSE_STYLE_UITGEBREID
+
+        return self.RESPONSE_STYLE_NORMAAL
 
     # ------------------------------------------------------------------
     # Opslag: geschiedenis van beslissingen (append-only logboek)
@@ -466,7 +629,8 @@ class ContextManager:
             f"({ctx['activity_duration_minutes']:.1f} min) — "
             f"Focus: {ctx['focus_level']} (laatste input: {seconden_tekst}) — "
             f"Gezichten: {gezichten_tekst} — "
-            f"Mag onderbreken: {ctx['should_interrupt']} "
+            f"Mag onderbreken: {ctx['should_interrupt']} — "
+            f"Response-stijl: {ctx.get('response_style', '?')} "
             f"(reden: {ctx['reden']})"
         )
 
