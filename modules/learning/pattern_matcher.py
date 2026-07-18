@@ -59,11 +59,19 @@ class PatternMatcher:
     # TIJDELIJK verlaagd naar 3 om makkelijk te kunnen testen — later
     # (als alles werkt) zetten we dit terug naar een realistischere
     # waarde zoals 10 of hoger.
-    MIN_OBSERVATIES_VOOR_ANOMALIE = 3
+    MIN_OBSERVATIES_VOOR_ANOMALIE = 10
 
     # Onder welke confidence-drempel beschouwen we een patroon als
     # "sterk genoeg" om afwijkingen tegen te toetsen?
     MIN_CONFIDENCE_VOOR_ANOMALIE = 0.6
+
+    # FASE 5 (definitief, 18 juli 2026): hoe vaak (in seconden) wordt
+    # patterns_layer2.json weggeschreven naar schijf, via een eigen
+    # achtergrondtimer? Zelfde principe als memory.py's write-buffer:
+    # niet meer bij élke observatie opslaan (dat was de tijdelijke
+    # "% 2 == 0"-aanpak), maar periodiek — enkel als er sinds de vorige
+    # keer ook echt iets veranderd is (zie self._dirty).
+    SAVE_INTERVAL_SECONDS = 300  # elke 5 minuten
 
     def __init__(self, event_bus=None, semantic_module=None):
         self.event_bus = event_bus
@@ -106,11 +114,19 @@ class PatternMatcher:
         self.missing_event_check_interval_seconds = 3600  # elk uur
         self.missing_event_timer = None
 
+        # FASE 5 (definitief, 18 juli 2026): houdt bij of er sinds de
+        # laatste keer opslaan iets veranderd is. Voorkomt dat de
+        # achtergrondtimer nutteloos naar schijf schrijft als er in de
+        # tussentijd geen enkele nieuwe observatie is binnengekomen.
+        self._dirty = False
+        self.save_timer = None
+
         if self.event_bus is not None:
             self.event_bus.subscribe("memory:interaction_added", self.detect_from)
 
-        # Start de achtergrondtimer meteen bij het opstarten van Nova.
+        # Start de achtergrondtimers meteen bij het opstarten van Nova.
         self.start_missing_event_checks()
+        self.start_save_timer()
 
     # ------------------------------------------------------------------
     # FASE 1: Event grouping
@@ -188,11 +204,12 @@ class PatternMatcher:
                 "pattern": self.patterns[event_type]
             })
 
-        # Tijdelijk: elke 2 observaties opslaan, zodat je tijdens het
-        # testen snel resultaat ziet. Later vervangen we dit
-        # door iets efficiënter (tijdgebaseerd, zoals memory.py doet).
-        if self.patterns[event_type]["total"] % 2 == 0:
-            self.save_to_disk()
+        # FASE 5 (definitief, 18 juli 2026): niet meer direct opslaan bij
+        # elke observatie (dat was de tijdelijke "% 2 == 0"-aanpak). We
+        # markeren enkel dat er iets veranderd is — het echte wegschrijven
+        # gebeurt periodiek via de achtergrondtimer (start_save_timer()),
+        # zelfde patroon als memory.py's write-buffer.
+        self._dirty = True
 
     # ------------------------------------------------------------------
     # FASE 2: Pattern detection (frequentie + confidence)
@@ -408,6 +425,62 @@ class PatternMatcher:
         if self.missing_event_timer:
             self.missing_event_timer.cancel()
             self.missing_event_timer = None
+
+    # ------------------------------------------------------------------
+    # FASE 5 (definitief, 18 juli 2026): tijdgebaseerd opslaan
+    # ------------------------------------------------------------------
+
+    def start_save_timer(self):
+        """
+        Start de achtergrond-timer die periodiek patterns_layer2.json
+        wegschrijft — zelfde patroon als start_missing_event_checks()
+        hierboven en memory.py's start_maintenance(): een herhalende
+        threading.Timer die zichzelf telkens opnieuw plant.
+
+        Slaat enkel ECHT op als self._dirty True is (er is sinds de
+        vorige tick minstens 1 nieuwe observatie bijgekomen) — anders
+        schrijven we onnodig een ongewijzigd bestand naar schijf.
+        """
+        def _tick():
+            try:
+                if self._dirty:
+                    self.save_to_disk()
+                    self._dirty = False
+            except Exception as e:
+                print(f"[PATTERN_MATCHER] Fout bij periodiek opslaan: {e}")
+            self.start_save_timer()  # volgende ronde inplannen
+
+        self.save_timer = threading.Timer(
+            self.SAVE_INTERVAL_SECONDS, _tick
+        )
+        self.save_timer.daemon = True  # stopt automatisch als Nova stopt
+        self.save_timer.start()
+
+    def stop_save_timer(self):
+        """Zet de opslag-achtergrondtimer stil (bij netjes afsluiten)."""
+        if self.save_timer:
+            self.save_timer.cancel()
+            self.save_timer = None
+
+    def shutdown(self):
+        """
+        Wordt aangeroepen bij het netjes afsluiten van Nova (/reboot of
+        manueel stoppen), zelfde conventie als chess_engine.py's
+        shutdown() voor Stockfish.
+
+        Belangrijk: omdat opslaan nu periodiek gebeurt (elke
+        SAVE_INTERVAL_SECONDS) i.p.v. bij elke observatie, kunnen er op
+        het moment van afsluiten nog "verse" wijzigingen in het geheugen
+        zitten die de laatste timer-tick nog niet heeft weggeschreven.
+        Zonder deze shutdown()-aanroep zou die laatste data verloren
+        gaan. Slaat daarom, ONGEACHT self._dirty, altijd één laatste
+        keer definitief op, en zet beide achtergrondtimers netjes stil.
+        """
+        self.stop_missing_event_checks()
+        self.stop_save_timer()
+        self.save_to_disk()
+        self._dirty = False
+        print("[PATTERN_MATCHER] Netjes afgesloten, laatste stand opgeslagen.")
 
     # ------------------------------------------------------------------
     # FASE 4: Query & predictie
