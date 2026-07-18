@@ -16,7 +16,11 @@ class ResponsePipeline:
         self.semantic = semantic_module
 
         # Eigen stateful engines
-        self.personality = PersonalityEngine()
+        # event_bus meegeven aan PersonalityEngine (Layer 6, Fase 5):
+        # nodig zodat update_state() "identity_state:updated" kan
+        # publiceren, wat memory.py automatisch oppikt via zijn
+        # bestaande wildcard-subscribe.
+        self.personality = PersonalityEngine(event_bus=event_bus)
         self.emotion = EmotionEngine()
         self.tone_engine = ToneEngine()
 
@@ -31,11 +35,42 @@ class ResponsePipeline:
         except Exception:
             pass
 
+    def _get_response_style(self):
+        """
+        Haalt Layer 5's response_style-advies op ("kort"/"normaal"/
+        "uitgebreid") via context_manager, als die beschikbaar is.
+
+        BELANGRIJK: dit bestand (response_pipeline.py) kent
+        context_manager niet automatisch — het wordt nooit als
+        argument doorgegeven aan ResponsePipeline.__init__(). We
+        halen het daarom op via event_bus.modules (dezelfde manier
+        waarop main.py bv. "zone" opvraagt), zodat we geen wijziging
+        nodig hebben in module_loader.py of hoe deze klasse
+        geïnitialiseerd wordt.
+
+        Geeft "normaal" terug als context_manager (nog) niet
+        beschikbaar is of er iets misgaat — nooit een crash, gewoon
+        een neutrale, veilige standaardwaarde.
+        """
+        try:
+            ctx_mgr = self.event_bus.modules.get("context_manager")
+            if ctx_mgr is None:
+                return "normaal"
+            ctx = ctx_mgr.get_current()
+            return ctx.get("response_style", "normaal")
+        except Exception:
+            return "normaal"
+
     # -------------------------
     # 1. Greeting
     # -------------------------
     def on_greeting(self, data, event_type=None):
-        sender = data.get("sender", "jij")
+        # Layer 6, stap 5 (17 juli 2026): "Kevin" i.p.v. het vage "jij"
+        # als fallback — intent_router.py stuurt normaal altijd al een
+        # sender mee via presence_detector.get_current_speaker(), dus
+        # deze default wordt in de praktijk zelden bereikt, maar moet
+        # wel consistent zijn met de rest van de aanspreekvorm-stijl.
+        sender = data.get("sender", "Kevin")
 
         # 1) Emotion: excitement bij greeting
         self._apply_emotion_trigger("excitement")
@@ -51,7 +86,8 @@ class ResponsePipeline:
             "base_text": base,
             "tone": tone,
             "personality_style": self.personality.generate_response_style(),
-            "emotion_state": self.emotion.state
+            "emotion_state": self.emotion.state,
+            "response_style": self._get_response_style()
         })
 
     # -------------------------
@@ -83,7 +119,8 @@ class ResponsePipeline:
             "base_text": base,
             "tone": tone,
             "personality_style": self.personality.generate_response_style(),
-            "emotion_state": self.emotion.state
+            "emotion_state": self.emotion.state,
+            "response_style": self._get_response_style()
         })
 
     # -------------------------
@@ -111,7 +148,8 @@ class ResponsePipeline:
             "base_text": base,
             "tone": tone,
             "personality_style": self.personality.generate_response_style(),
-            "emotion_state": self.emotion.state
+            "emotion_state": self.emotion.state,
+            "response_style": self._get_response_style()
         })
 
     # -------------------------

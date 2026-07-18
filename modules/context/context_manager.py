@@ -87,7 +87,7 @@ class ContextManager:
     # Vanaf hoeveel minuten ononderbroken "coding"-activiteit gaan we
     # onderbreken extra afraden? Dit is een bewust simpele, vaste
     # drempel — geen geleerde/dynamische waarde.
-    CODING_ONDERBREEK_DREMPEL_MINUTEN = 0.1
+    CODING_ONDERBREEK_DREMPEL_MINUTEN = 15
 
     # Activiteiten waarbij we extra terughoudend zijn met onderbreken.
     # Uitbreidbaar: voeg hier gerust "gaming" of andere labels aan toe
@@ -480,18 +480,27 @@ class ContextManager:
         zou antwoorden, los van OF ze mag onderbreken. Puur symbolisch,
         zelfde soort vaste regels als _bepaal_interrupt().
 
-        BELANGRIJK, EERLIJKHEID OVER WAT DIT (NOG NIET) IS: dit veld
-        wordt hier enkel BEREKEND en gepubliceerd in "context:updated"
-        — het daadwerkelijk GEBRUIKEN ervan om Nova's antwoorden echt
-        korter/uitgebreider te maken vereist een aparte integratiestap
-        in response_engine.py/expression_injector.py (Layer 4/6), die
-        dit NIET automatisch oppikt enkel omdat dit veld nu bestaat.
-        Dit is bewust dezelfde situatie als personality_engine.py's
-        output nu: klaar om op aan te sluiten, nog niet aangesloten.
+        AANGESLOTEN (17 juli 2026, Layer 6-koppeling): response_style
+        wordt nu ECHT gebruikt door expression_injector.py om Nova's
+        antwoorden effectief korter/uitgebreider te maken. Zie
+        response_pipeline.py/chat_response_engine.py/
+        expression_injector.py voor de volledige keten.
+
+        BELANGRIJK ONDERSCHEID should_interrupt vs. response_style:
+        should_interrupt gaat over PROACTIEF spreken (mag Nova zelf
+        het initiatief nemen, bv. session_watcher's pauze-melding).
+        response_style gaat over HOE een antwoord klinkt ALS er
+        sowieso een antwoord komt — bv. omdat Kevin zelf een vraag
+        stelde. Die twee vragen zijn onafhankelijk van elkaar: Kevin
+        kan tijdens het coderen best een korte vraag stellen, en dan
+        is "kort" precies het juiste advies, ook al zou Nova uit
+        zichzelf op dat moment niet onderbreken. Vandaar dat
+        response_style hieronder NIET meer automatisch "normaal"
+        teruggeeft zodra should_interrupt False is — should_interrupt
+        wordt hier bewust niet meer gebruikt, enkel activiteit/focus/
+        aanwezigheid bepalen response_style.
 
         Regels (simpel, uitbreidbaar):
-        - Mag Nova sowieso niet onderbreken? Dan is de vraag "hoe"
-          niet relevant — "normaal" als neutrale standaardwaarde.
         - Storingsgevoelige activiteit (coding) met actieve focus?
           Dan kort, want Kevin is duidelijk met iets anders bezig.
         - Rustig moment, geen storingsgevoelige activiteit, focus
@@ -499,9 +508,6 @@ class ContextManager:
           tijd, geen druk venster open)? Dan uitgebreid mag.
         - Standaard: normaal.
         """
-        if not should_interrupt:
-            return self.RESPONSE_STYLE_NORMAAL
-
         is_storingsgevoelige_activiteit = (
             activiteit_label in self.STORINGSGEVOELIGE_ACTIVITEITEN
             and activiteit_duur_minuten >= self.CODING_ONDERBREEK_DREMPEL_MINUTEN

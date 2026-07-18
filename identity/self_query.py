@@ -44,6 +44,7 @@ intent_router.py herkende, en publiceert het resultaat via
 """
 
 import random
+from datetime import datetime, date
 
 from identity.blueprint.loader import load_identity_blueprint
 
@@ -108,34 +109,105 @@ def _kies(varianten):
 # ---------------------------------------------------------------------
 
 def antwoord_wie_ben_je():
+    """
+    Bugfix (17 juli 2026, Layer 6 stap 6): las voorheen het statische
+    "age"-veld uit identity.json, dat sinds stap 2 van de karakter-
+    herziening bewust op null staat (age_calculated: true) -- dit gaf
+    dus altijd de fallback "onbekend" terug ("Ik ben Nova, onbekend
+    jaar..."). Gebruikt nu _bereken_leeftijd_tekst() (zie
+    antwoord_leeftijd() hierboven), zodat dit meteen ook een correcte,
+    live berekende waarde toont i.p.v. het kapotte oude gedrag.
+    """
     naam = _veilig_pad(_identity_data, "name", fallback="Nova")
-    leeftijd = _veilig_pad(_identity_data, "age", fallback="onbekend")
     traits = _veilig_pad(_identity_data, "personality", "core_traits", fallback=[])
     traits_zin = _lijst_naar_zin(traits) if isinstance(traits, list) else traits
 
-    varianten = [
-        f"Ik ben {naam}, {leeftijd} jaar. Ik zou mezelf omschrijven als {traits_zin}.",
-        f"Ik heet {naam}. Als ik mezelf moet beschrijven: {traits_zin}.",
-        f"Mijn naam is {naam}. Ik ben vooral {traits_zin}.",
-    ]
+    leeftijd_tekst = _bereken_leeftijd_tekst()
+
+    if leeftijd_tekst:
+        varianten = [
+            f"Ik ben {naam}, ik besta nu zo'n {leeftijd_tekst}. Ik zou mezelf omschrijven als {traits_zin}.",
+            f"Ik heet {naam}, gebouwd zo'n {leeftijd_tekst} geleden. Als ik mezelf moet beschrijven: {traits_zin}.",
+            f"Mijn naam is {naam}. Ik ben vooral {traits_zin}.",
+        ]
+    else:
+        varianten = [
+            f"Ik ben {naam}. Ik zou mezelf omschrijven als {traits_zin}.",
+            f"Ik heet {naam}. Als ik mezelf moet beschrijven: {traits_zin}.",
+            f"Mijn naam is {naam}. Ik ben vooral {traits_zin}.",
+        ]
     return _kies(varianten)
+
+
+def _bereken_leeftijd_tekst():
+    """
+    Layer 6, stap 6 (17 juli 2026): berekent LIVE hoelang Nova al
+    bestaat, vanaf built_on (identity.json) tot vandaag. Puur
+    symbolisch datum-rekenwerk (datetime.date-aftrekking), GEEN ML,
+    geen schatting -- een exacte, deterministische berekening die bij
+    elke aanroep opnieuw gebeurt, zodat dit nooit een verouderend,
+    los vastgelegd getal wordt zoals de oude "age": 18 dat was.
+
+    Geeft een leesbare tekstfractie terug (bv. "4 maanden" of "126
+    dagen"), GEEN volledige zin -- antwoord_leeftijd() hieronder bouwt
+    daar de uiteindelijke spreektalige zin omheen.
+    """
+    bouwdatum_str = _veilig_pad(_identity_data, "built_on", fallback=None)
+    if not bouwdatum_str:
+        return None
+
+    try:
+        bouwdatum = datetime.strptime(bouwdatum_str, "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        return None
+
+    vandaag = date.today()
+    dagen = (vandaag - bouwdatum).days
+
+    if dagen < 0:
+        # built_on ligt in de toekomst (bv. per ongeluk verkeerd
+        # ingevuld) -- eerlijk "0 dagen" i.p.v. een onzinnig negatief
+        # getal.
+        return "0 dagen"
+
+    if dagen < 60:
+        return f"{dagen} dagen"
+
+    maanden = dagen // 30
+    if maanden < 24:
+        return f"{maanden} maanden"
+
+    jaren = maanden // 12
+    overige_maanden = maanden % 12
+    if overige_maanden == 0:
+        return f"{jaren} jaar"
+    return f"{jaren} jaar en {overige_maanden} maanden"
 
 
 def antwoord_leeftijd():
     """
-    Geeft de bouwdatum van Nova terug (built_on in identity.json),
-    niet langer een leeftijd in jaren. Naam bewust ongewijzigd gelaten
-    zodat de aanroep vanuit chat.py (antwoord_functies-tabel) niet
-    hoeft te wijzigen.
+    Geeft zowel de bouwdatum als de LIVE berekende tijd sinds die
+    datum terug (17 juli 2026, Layer 6 stap 6) -- Kevin's expliciete
+    keuze voor "beide". Naam bewust ongewijzigd gelaten zodat de
+    aanroep vanuit chat.py (antwoord_functies-tabel) niet hoeft te
+    wijzigen.
     """
     bouwdatum = _veilig_pad(_identity_data, "built_on", fallback=None)
     if bouwdatum is None:
         return "Ik weet eigenlijk niet meer precies wanneer ik gebouwd ben."
 
+    leeftijd_tekst = _bereken_leeftijd_tekst()
+    if leeftijd_tekst is None:
+        varianten = [
+            f"Ik ben gebouwd op {bouwdatum}.",
+            f"Mijn bouwdatum is {bouwdatum}.",
+        ]
+        return _kies(varianten)
+
     varianten = [
-        f"Ik ben gebouwd op {bouwdatum}.",
-        f"Mijn bouwdatum is {bouwdatum}.",
-        f"Ik besta sinds {bouwdatum}.",
+        f"Ik ben gebouwd op {bouwdatum} -- dat is intussen {leeftijd_tekst} geleden.",
+        f"Mijn bouwdatum is {bouwdatum}. Ik besta dus zo'n {leeftijd_tekst}.",
+        f"Ik besta sinds {bouwdatum}, ondertussen {leeftijd_tekst}.",
     ]
     return _kies(varianten)
 

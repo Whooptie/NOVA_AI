@@ -28,13 +28,15 @@ class ChatResponseEngine:
         tone = data.get("tone", {})
         personality_style = data.get("personality_style", {})
         emotion_state = data.get("emotion_state", {})
+        response_style = data.get("response_style", "normaal")
 
         # Geen extra flair hier – dat doet ExpressionInjector
         self.event_bus.publish("expression_inject", {
             "text": base,
             "tone": tone,
             "personality": personality_style,
-            "emotion": emotion_state
+            "emotion": emotion_state,
+            "response_style": response_style
         })
 
 

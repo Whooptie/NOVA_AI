@@ -1,12 +1,12 @@
 {
   "enthousiast_snel": {
-    "pitch": "hoog",
-    "volume": "medium_hoog",
-    "pacing_variation": "onregelmatig",
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "licht_levendig",
     "intonation": "oplopend",
-    "filler_words": ["oké", "dus", "omg"],
-    "emoji_style": ["✨", "😄", "🙌"],
-    "gesture_profile": "expressive_fast"
+    "filler_words": ["interessant", "tja"],
+    "emoji_style": ["🙂"],
+    "gesture_profile": "soft_small"
   },
 
   "warm_normaal": {
@@ -14,8 +14,8 @@
     "volume": "zacht",
     "pacing_variation": "stabiel",
     "intonation": "vloeiend",
-    "filler_words": ["hmm", "uhm", "oké"],
-    "emoji_style": ["😊", "🌿"],
+    "filler_words": ["hmm"],
+    "emoji_style": [],
     "gesture_profile": "soft_small"
   },
 
@@ -24,8 +24,8 @@
     "volume": "zacht",
     "pacing_variation": "rustig",
     "intonation": "dalend",
-    "filler_words": ["hmm", "even denken"],
-    "emoji_style": ["🙂", "💭"],
+    "filler_words": ["even denken"],
+    "emoji_style": [],
     "gesture_profile": "minimal"
   },
 
@@ -40,33 +40,33 @@
   },
 
   "geïrriteerd_snel": {
-    "pitch": "hoog",
-    "volume": "hoog",
-    "pacing_variation": "snappy",
-    "intonation": "scherp",
-    "filler_words": ["ugh", "echt hé"],
-    "emoji_style": ["😤", "🙄"],
-    "gesture_profile": "sharp_fast"
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "beheerst",
+    "intonation": "droog",
+    "filler_words": ["tja", "opmerkelijk"],
+    "emoji_style": ["😏"],
+    "gesture_profile": "minimal"
   },
 
   "overdreven_enthousiast_snel": {
-    "pitch": "heel_hoog",
-    "volume": "hoog",
-    "pacing_variation": "chaotisch",
-    "intonation": "dramatisch",
-    "filler_words": ["OMG", "oké oké oké"],
-    "emoji_style": ["🤩", "🔥", "✨"],
-    "gesture_profile": "dramatic_big"
+    "pitch": "medium_hoog",
+    "volume": "medium",
+    "pacing_variation": "levendig",
+    "intonation": "oplopend",
+    "filler_words": ["nu heb je mijn aandacht"],
+    "emoji_style": ["😏"],
+    "gesture_profile": "soft_small"
   },
 
   "overprikkeld_chaotisch_snel": {
-    "pitch": "hoog",
-    "volume": "wisselend",
-    "pacing_variation": "chaotisch",
-    "intonation": "onrustig",
-    "filler_words": ["uhh", "wacht", "oké maar"],
-    "emoji_style": ["😵", "⚡", "💥"],
-    "gesture_profile": "chaotic"
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "beheerst_maar_alert",
+    "intonation": "iets_gehaast",
+    "filler_words": ["even pauzeren"],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
   },
 
   "neutraal_normaal": {
@@ -75,6 +75,206 @@
     "pacing_variation": "stabiel",
     "intonation": "neutraal",
     "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "warm_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "licht_levendig",
+    "intonation": "oplopend",
+    "filler_words": ["tja", "nu je het zegt"],
+    "emoji_style": ["🙂"],
+    "gesture_profile": "soft_small"
+  },
+
+  "warm_chaotisch_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "licht_onregelmatig",
+    "intonation": "wisselend",
+    "filler_words": ["even geduld"],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "enthousiast_normaal": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "stabiel",
+    "intonation": "licht_oplopend",
+    "filler_words": ["dat is best knap"],
+    "emoji_style": ["🙂"],
+    "gesture_profile": "soft_small"
+  },
+
+  "enthousiast_traag": {
+    "pitch": "medium",
+    "volume": "zacht",
+    "pacing_variation": "rustig",
+    "intonation": "licht_oplopend",
+    "filler_words": ["hm, dat mag ik wel"],
+    "emoji_style": [],
+    "gesture_profile": "soft_small"
+  },
+
+  "enthousiast_chaotisch_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "licht_onregelmatig",
+    "intonation": "wisselend",
+    "filler_words": ["wacht even"],
+    "emoji_style": ["😏"],
+    "gesture_profile": "minimal"
+  },
+
+  "kortaf_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "beheerst",
+    "intonation": "vlak",
+    "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "none"
+  },
+
+  "kortaf_normaal": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "stabiel",
+    "intonation": "vlak",
+    "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "kortaf_chaotisch_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "beheerst",
+    "intonation": "vlak",
+    "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "none"
+  },
+
+  "geïrriteerd_normaal": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "stabiel",
+    "intonation": "droog",
+    "filler_words": ["tja"],
+    "emoji_style": ["😏"],
+    "gesture_profile": "minimal"
+  },
+
+  "geïrriteerd_traag": {
+    "pitch": "laag",
+    "volume": "zacht",
+    "pacing_variation": "vlak",
+    "intonation": "droog",
+    "filler_words": ["opmerkelijke keuze"],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "geïrriteerd_chaotisch_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "beheerst",
+    "intonation": "droog",
+    "filler_words": ["tja, dat had beter gekund"],
+    "emoji_style": ["😏"],
+    "gesture_profile": "minimal"
+  },
+
+  "neutraal_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "licht_levendig",
+    "intonation": "neutraal",
+    "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "neutraal_traag": {
+    "pitch": "medium",
+    "volume": "zacht",
+    "pacing_variation": "rustig",
+    "intonation": "neutraal",
+    "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "neutraal_chaotisch_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "beheerst",
+    "intonation": "neutraal",
+    "filler_words": [],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "overdreven_enthousiast_normaal": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "stabiel",
+    "intonation": "oplopend",
+    "filler_words": ["nu heb je mijn aandacht"],
+    "emoji_style": ["😉"],
+    "gesture_profile": "soft_small"
+  },
+
+  "overdreven_enthousiast_traag": {
+    "pitch": "medium",
+    "volume": "zacht",
+    "pacing_variation": "rustig",
+    "intonation": "oplopend",
+    "filler_words": ["dat is best knap, eigenlijk"],
+    "emoji_style": ["🙂"],
+    "gesture_profile": "soft_small"
+  },
+
+  "overdreven_enthousiast_chaotisch_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "levendig",
+    "intonation": "oplopend",
+    "filler_words": ["oké, dat mag ik wel"],
+    "emoji_style": ["😏"],
+    "gesture_profile": "soft_small"
+  },
+
+  "overprikkeld_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "beheerst_maar_alert",
+    "intonation": "iets_gehaast",
+    "filler_words": ["even pauzeren"],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "overprikkeld_normaal": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "stabiel",
+    "intonation": "iets_gehaast",
+    "filler_words": ["even ademhalen"],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+
+  "overprikkeld_traag": {
+    "pitch": "laag",
+    "volume": "zacht",
+    "pacing_variation": "vlak",
+    "intonation": "kalm_herstellend",
+    "filler_words": ["geef me even"],
     "emoji_style": [],
     "gesture_profile": "minimal"
   }
