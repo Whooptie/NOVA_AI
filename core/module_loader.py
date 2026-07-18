@@ -178,6 +178,34 @@ class ModuleLoader:
             watcher.context_manager = ctx_mgr
         
         # ----------------------------------------------------
+        # 3D. MICROLEARNING (Layer 6, Fase 6 — Adaptive Learning)
+        # ----------------------------------------------------
+        # Staat, net als self_query.py, in identity/ i.p.v. modules/,
+        # dus wordt NIET gevonden door de dynamische scan in stap 3
+        # hierboven (die doorzoekt enkel modules.__path__). Handmatig
+        # geladen, net als response_engine/context_manager — maar in
+        # tegenstelling tot die twee heeft microlearning.py geen
+        # aparte "layers"-dictionary nodig, enkel event_bus, dus de
+        # aanroep blijft simpel.
+        #
+        # MOET vóór intent_router hieronder staan: microlearning.py's
+        # __init__ subscribet op "raw_user_message", een event dat
+        # intent_router.py's route()-methode publiceert. De volgorde
+        # van SUBSCRIBEN maakt op zich niet uit (event_bus.py's
+        # publish() loopt gewoon alle huidige subscribers af op het
+        # moment van publiceren, niet op het moment van subscriben),
+        # maar microlearning.py moet wel al in loaded_modules staan
+        # zodat het via event_bus.modules vindbaar is voor eventuele
+        # toekomstige code die het rechtstreeks wil aanspreken.
+        from identity.personality import microlearning
+
+        start = time.time()
+        micro = microlearning.init_module(self.event_bus)
+        micro.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["microlearning"] = micro
+        self.event_bus.register_module("microlearning", micro)
+
+        # ----------------------------------------------------
         # 4. INTENT ROUTER ALS LAATSTE
         # ----------------------------------------------------
         start = time.time()

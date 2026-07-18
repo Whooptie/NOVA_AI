@@ -709,6 +709,20 @@ class IntentRouter:
         text = text.replace("×", "*")
         dbg(f"{C_RESET}Ontvangen: '{text}'")
 
+        # Layer 6, Fase 6 (Adaptive Learning, 17 juli 2026): elk ruw
+        # bericht van Kevin publiceren als apart, algemeen event, VOOR
+        # de eigenlijke intent-routing begint. Nodig omdat er tot nu
+        # toe geen centraal "elk bericht"-event bestond — enkel
+        # intent_fallback bevatte de ruwe tekst, en dat mist elk
+        # bericht dat WEL een herkende intent triggert (bv. "dank je
+        # Nova" zou als greeting/fallback gerouteerd worden, maar
+        # microlearning.py moet ALLE berichten kunnen zien om
+        # frustratie/waardering/interesse/kilte te herkennen, niet
+        # enkel de onherkende). Puur een extra publicatie, verandert
+        # niets aan de bestaande routing hieronder.
+        if text:
+            self.event_bus.publish("raw_user_message", {"text": text})
+
         # 0 Reboot (altijd als allereerste gecontroleerd, voorrang op alles)
         if self.detect_reboot(text):
             return
