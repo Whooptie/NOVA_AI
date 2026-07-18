@@ -400,6 +400,16 @@ def main():
             presence_module = loader.loaded_modules.get("presence_detector")
             if presence_module and hasattr(presence_module, "shutdown"):
                 presence_module.shutdown()
+
+            # Pattern Matcher (Layer 2) netjes afsluiten — sinds de
+            # overstap naar tijdgebaseerd opslaan (18 juli 2026) kan er
+            # tussen de laatste save-timer-tick en nu nog niet-
+            # opgeslagen data in het geheugen zitten. shutdown() dwingt
+            # één laatste, definitieve save af, zodat "exit" niet stil
+            # de laatste minuten aan patronen laat verdwijnen.
+            pattern_module = loader.loaded_modules.get("pattern_matcher")
+            if pattern_module and hasattr(pattern_module, "shutdown"):
+                pattern_module.shutdown()
             break
 
         # Teach-flow wordt nu volledig afgehandeld door IntentRouter

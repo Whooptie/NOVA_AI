@@ -20,4 +20,4 @@
 {"text": "test bericht 17", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:16"}
 {"text": "test bericht 18", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:17"}
 {"text": "test bericht 19", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:18"}
-{"text": "test bericht 20", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:19"}
+{"text": "test bericht 20", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:19"}{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-18T21:26:12.135863"}
