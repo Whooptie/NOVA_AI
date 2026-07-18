@@ -1,13 +1,13 @@
 {
   "current_mood": "positief_speels",
-  "intensity": 0.7,
+  "intensity": 0.5,
   "affect": {
     "valence": "positief",
     "warmte": 0.6,
     "spanning": 0.3
   },
   "last_trigger": "excitement",
-  "last_reaction": "grote_ogen_snelle_glimlach",
+  "last_reaction": "kleine_glimlach_alertere_blik",
   "last_recovery_hint": null,
   "stability": 0.6,
   "volatility": 0.7,
@@ -17,11 +17,11 @@
     "cooldown_timer": 0
   },
   "overstimulation": {
-    "level": 0.15,
+    "level": 0.4896096630891163,
     "threshold": 0.75,
     "signs_active": [],
-    "last_overflow_behavior": "snellere_spraak_en_microgebaren",
-    "last_trigger_timestamp": 1784224052.3725953,
+    "last_overflow_behavior": "iets_sneller_pratend",
+    "last_trigger_timestamp": 1784363692.8500872,
     "decay_per_minute": 0.05
   },
   "sync": {

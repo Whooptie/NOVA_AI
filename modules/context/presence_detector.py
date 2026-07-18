@@ -213,6 +213,34 @@ class PresenceDetector:
             if camera is not None:
                 camera.release()
 
+    def get_current_speaker(self):
+        """
+        Layer 6, stap 5 (17 juli 2026): geeft de naam terug van wie er
+        nu waarschijnlijk met Nova praat.
+
+        BEWUST SYMBOLISCH, GEEN IDENTITEITSHERKENNING: dit bestand
+        (presence_detector.py) doet AL gezichts-AANWEZIGHEID via
+        MediaPipe (detect_presence() hierboven) — maar dat is enkel
+        "hoeveel gezichten", nooit "wiens gezicht". Echte identiteits-
+        herkenning staat in Kevin's roadmap als aparte, latere
+        uitbreiding (vereist een zwaarder ML-model dan de huidige
+        detectie) en wordt hier NIET stiekem gesimuleerd.
+
+        Voor nu geldt een simpele, eerlijke symbolische aanname: Nova
+        draait lokaal op Kevin's eigen PC, dus wie er typt IS Kevin,
+        tenzij er ooit een apart login/identificatie-mechanisme bij
+        komt. Geen enkele slimme logica hier, gewoon een vaste waarde.
+
+        WAAROM DEZE METHODE HIER STAAT (en niet hardcoded in
+        intent_router.py): als er later WEL echte gezichtsherkenning
+        bijkomt, hoeft ENKEL deze ene methode aangepast te worden (bv.
+        om het resultaat van een nieuw ML-herkenningsmodel terug te
+        geven) — elke plek die nu al get_current_speaker() aanroept
+        (bv. intent_router.py's detect_greeting()) blijft dan
+        ongewijzigd, want die roept gewoon dezelfde functienaam aan.
+        """
+        return "Kevin"
+
     def shutdown(self):
         """
         Nette opruiming bij het afsluiten van Nova.

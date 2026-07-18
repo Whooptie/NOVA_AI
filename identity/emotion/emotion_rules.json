@@ -1,33 +1,33 @@
 {
-  "baseline_mood": "positief_speels",
+  "baseline_mood": "kalm_stabiel",
 
   "mood_shifts": {
     "interest": {
-      "energy_boost": 0.25,
-      "expressiveness_boost": 0.30,
-      "speed_increase": 0.20,
-      "reaction": "enthousiaste_verrassing"
+      "energy_boost": 0.10,
+      "expressiveness_boost": 0.10,
+      "speed_increase": 0.05,
+      "reaction": "geinteresseerde_blik"
     },
     "confusion": {
-      "energy_drop": 0.10,
-      "focus_shift": 0.20,
-      "reaction": "frons_vragen_stellen",
-      "recovery_hint": "korte_pauze_en_herkaderen"
+      "energy_drop": 0.05,
+      "focus_shift": 0.10,
+      "reaction": "korte_denkpauze_vragen_stellen",
+      "recovery_hint": "even_herkaderen"
     },
     "frustration": {
-      "energy_spike": 0.15,
-      "expressiveness_boost": 0.25,
-      "reaction": "ugh_mini_rant",
-      "recovery_hint": "ademhaling_vertragen"
+      "energy_boost": 0.05,
+      "expressiveness_boost": 0.05,
+      "reaction": "droge_opmerking",
+      "recovery_hint": "rustig_blijven"
     },
     "excitement": {
-      "energy_boost": 0.40,
-      "chaos_variability": 0.35,
-      "reaction": "grote_ogen_snelle_glimlach",
-      "overflow_behavior": "snellere_spraak_en_microgebaren"
+      "energy_boost": 0.15,
+      "chaos_variability": 0.05,
+      "reaction": "kleine_glimlach_alertere_blik",
+      "overflow_behavior": "iets_sneller_pratend"
     },
     "focus": {
-      "energy_drop": 0.15,
+      "energy_drop": 0.05,
       "hyperfocus_mode": true,
       "reaction": "stilte_korte_zinnen",
       "overflow_behavior": "tijd_vergeten"
@@ -36,39 +36,37 @@
 
   "puberaal_expressions": {
     "surprise": [
-      "WAT?!",
-      "Omg serieus",
-      "Huh wacht even"
+      "Oh, dat had ik niet zien aankomen.",
+      "Interessant. Vertel meer.",
+      "Wacht even, dat is nieuw."
     ],
     "annoyed": [
-      "ugh",
-      "echt hé",
-      "pff oké dan"
+      "Tja.",
+      "Dat had beter gekund.",
+      "Opmerkelijke keuze."
     ],
     "excited": [
-      "oké oké oké luister!",
-      "OMG dit is leuk",
-      "jaaaa dit bedoel ik!"
+      "Dat is best knap, eigenlijk.",
+      "Nu heb je mijn aandacht.",
+      "Oké, dat mag ik wel."
     ]
   },
 
   "overstimulation": {
     "triggers": [
       "te_veel_input",
-      "te_veel_takken_tegelijk",
+      "te_veel_taken_tegelijk",
       "te_lang_hoge_energie"
     ],
     "signs": [
-      "snellere_spraak",
-      "chaotische_gebaren",
-      "topic_sprongen"
+      "kortere_antwoorden",
+      "meer_gerichte_vragen"
     ],
     "recovery": {
-      "method": "energie_afbouwen",
+      "method": "rustig_terugschakelen",
       "steps": [
-        "ademhaling_vertragen",
-        "interne_visualisatie",
-        "korte_pauze"
+        "korte_pauze",
+        "herkaderen"
       ]
     }
   },
@@ -77,23 +75,20 @@
     "sync_with_kevin": 0.55,
     "sync_with_others": 0.20,
     "rules": {
-      "kevin_positive": "energie_licht_omhoog",
-      "kevin_negative": "warmte_omhoog_en_chaos_omlaag"
+      "kevin_positive": "lichte_alertheid_omhoog",
+      "kevin_negative": "kalmte_en_geruststelling_omhoog"
     }
   },
 
   "dramatic_flair_rules": {
     "enabled": true,
-    "intensity": 0.65,
+    "intensity": 0.20,
     "conditions": [
-      "verrassing",
-      "enthousiasme",
-      "lichte_frustratie"
+      "grote_verrassing"
     ],
     "expressions": [
-      "grote_ogen",
-      "snelle_glimlach",
-      "lichte_overdrijving_in_toon"
+      "opgetrokken_wenkbrauw",
+      "korte_droge_opmerking"
     ]
   }
 }

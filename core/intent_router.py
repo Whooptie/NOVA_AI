@@ -225,9 +225,33 @@ class IntentRouter:
         greetings = {"hallo", "hoi", "hey", "hello", "dag", "yo"}
         if text in greetings:
             dbg(f"{C_GREEN}→ greeting{C_RESET}")
-            self.event_bus.publish("intent_greeting", {"sender": "user"})
+            self.event_bus.publish("intent_greeting", {"sender": self._get_sender_name()})
             return True
         return False
+
+    def _get_sender_name(self):
+        """
+        Layer 6, stap 5 (17 juli 2026): haalt de naam van de huidige
+        spreker op via presence_detector.get_current_speaker() (Layer
+        5), i.p.v. de vroegere hardcoded "user"-placeholder.
+
+        Via event_bus.modules i.p.v. een directe import, dezelfde
+        aanpak als response_pipeline.py's _get_response_style() eerder
+        deze sessie — voorkomt een harde afhankelijkheid tussen
+        intent_router.py en presence_detector.py, en blijft werken
+        ongeacht laadvolgorde.
+
+        Valt terug op "Kevin" als presence_detector (nog) niet
+        beschikbaar is — nooit een crash, en nooit terug naar de oude,
+        onpersoonlijke "user"-placeholder.
+        """
+        try:
+            presence = self.event_bus.modules.get("presence_detector")
+            if presence is not None and hasattr(presence, "get_current_speaker"):
+                return presence.get_current_speaker()
+        except Exception:
+            pass
+        return "Kevin"
 
     # ---------------------------------------------------------
     # Weather

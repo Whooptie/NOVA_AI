@@ -6,7 +6,20 @@ from identity.personality.behavior_modifiers import BehaviorModifiers
 
 
 class PersonalityEngine:
-    def __init__(self):
+    def __init__(self, event_bus=None):
+        # Layer 6, Fase 5 (Integration Layer, "identity_state → memory"):
+        # event_bus wordt hier NIEUW meegegeven, zodat update_state()
+        # straks een event kan publiceren zodra Nova's stemming/energie
+        # verandert. memory.py (core/memory.py) subscribet al op "*"
+        # (event_bus.subscribe("*", self.on_event)) en slaat AUTOMATISCH
+        # alles op wat gepubliceerd wordt — er is dus GEEN wijziging
+        # nodig in memory.py zelf, enkel hier een nieuw event publiceren.
+        #
+        # event_bus=None blijft toegestaan (bv. voor losse tests van
+        # PersonalityEngine zonder volledige Nova-opstart) — in dat
+        # geval wordt er gewoon niets gepubliceerd, geen crash.
+        self.event_bus = event_bus
+
         # blueprint (statisch)
         self.blueprint = load_identity_blueprint()
 
@@ -41,6 +54,22 @@ class PersonalityEngine:
         if "energy_drop" in rules:
             self.state["current_energy"] -= rules["energy_drop"]
 
+        # Bugfix (17 juli 2026, vervolg op de apply_energy_modulation()-
+        # gewichtenfix): energy_boost/energy_drop hierboven clampten
+        # nooit zelf — dat gebeurde pas helemaal aan het einde via
+        # _clamp_state(). Vroeger was dat onschadelijk (de te-hoge
+        # tussenwaarde werd simpelweg pas aan het eind teruggezet).
+        # Sinds apply_energy_modulation() ECHT wordt aangeroepen,
+        # rekent die met deze tussenwaarde als invoer — een tussen-
+        # waarde van bv. 1.30 (0.9 + energy_boost 0.40) leverde daar
+        # nog steeds >1.0 op, en bleef dus telkens tegen de bovengrens
+        # plakken. Met deze tussentijdse clamp krijgt
+        # apply_energy_modulation() altijd een eerlijke, al-begrensde
+        # waarde te verwerken, en kan het evenwicht (~0.90 bij Kevin's
+        # huidige traits) zich ook bij herhaalde triggers stabiliseren
+        # in plaats van steeds opnieuw naar 1.0 te worden geduwd.
+        self.state["current_energy"] = max(0.0, min(1.0, self.state["current_energy"]))
+
         if "expressiveness_boost" in rules:
             self.state["expressive_intensity"] += rules["expressiveness_boost"]
 
@@ -51,8 +80,60 @@ class PersonalityEngine:
         self.state["emotion_engine_state"]["last_reaction"] = rules.get("reaction", None)
         self.state["emotion_engine_state"]["last_recovery"] = rules.get("recovery_hint", None)
 
+        # Layer 6, laatste stuk (17 juli 2026): BehaviorModifiers werd
+        # in __init__() al aangemaakt (self.modifiers), maar zijn 3
+        # methodes werden nooit ergens aangeroepen — traits.json's
+        # impulsivity/dramatic_flair/energy_level hadden dus GEEN
+        # invloed op identity_state.json, enkel de vaste JSON-waarden
+        # golden. Nu wordt de state bij elke trigger herberekend op
+        # basis van de traits, VOOR de clamp hieronder (belangrijk:
+        # apply_energy_modulation()'s som (0.7+0.3+0.2=1.2×) kan anders
+        # tijdelijk boven 1.0 uitkomen — _clamp_state() vangt dit op).
+        self.modifiers.apply_energy_modulation()
+        self.modifiers.apply_impulsivity()
+        self.modifiers.apply_dramatic_flair()
+
         self._clamp_state()
         self._save_state()
+        self._publish_state_update(trigger)
+
+    def _publish_state_update(self, trigger: str):
+        """
+        Layer 6, Fase 5: publiceert "identity_state:updated" telkens
+        Nova's stemming/energie/impulsiviteit verandert. memory.py
+        vangt dit AUTOMATISCH op via zijn bestaande wildcard-subscribe
+        (event_bus.subscribe("*", ...)) en slaat het net als elk ander
+        event op in interactions.jsonl/interactions.db — "identity_
+        state:updated" staat NIET in memory.py's ignore_types, dus
+        hoeft daar niets voor aangepast te worden.
+
+        We sturen enkel een COMPACTE samenvatting mee (niet de volledige
+        self.state-dictionary) — de relevante, doorzoekbare velden voor
+        Kevin om later op terug te kunnen zoeken (bv. "wanneer was Nova
+        overprikkeld"), zonder de hele geneste identity_state.json-
+        structuur 1-op-1 te dupliceren in memory's opslag.
+
+        Faalt dit ooit (event_bus is None, of een onverwachte fout) —
+        dan gewoon stilzwijgend niets doen. Dit mag NOOIT de rest van
+        update_state() laten crashen; het opslaan van identity_state.json
+        zelf (_save_state(), hierboven al gebeurd) is de belangrijke
+        stap, dit is puur een extra, niet-kritieke logging-stap erbovenop.
+        """
+        if self.event_bus is None:
+            return
+
+        try:
+            self.event_bus.publish("identity_state:updated", {
+                "trigger": trigger,
+                "current_mood": self.state.get("current_mood"),
+                "current_energy": self.state.get("current_energy"),
+                "expressive_intensity": self.state.get("expressive_intensity"),
+                "impulsivity_modulation": self.state.get("impulsivity_modulation"),
+                "dramatic_flair_state": self.state.get("dramatic_flair_state"),
+                "overstimulation_level": self.state.get("overstimulation_level"),
+            })
+        except Exception:
+            pass
 
     def generate_response_style(self):
         energy = self.state["current_energy"]

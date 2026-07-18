@@ -41,11 +41,22 @@
 
   "properties": {
     "name": { "type": "string" },
-    "age": { "type": "integer", "minimum": 0 },
+    "age": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
     "gender_identity": { "type": "string" },
     "pronouns": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "address_style": {
+      "type": "object",
+      "properties": {
+        "addresses_kevin_as": { "type": "string" },
+        "uses_name_frequency": { "type": "string" },
+        "tone_note": { "type": "string" }
+      }
     },
 
     "personality": {

@@ -62,18 +62,29 @@ class EmotionEngine:
         # OVERSTIMULATION
         # -----------------------------
         if "overflow_behavior" in rule:
-            # Trigger die Nova opjaagt (bv. excitement) → niveau stijgt
+            # Trigger die Nova opjaagt (bv. excitement) → niveau stijgt.
+            # Bugfix/karakterherziening (17 juli 2026): was +0.15, wat
+            # met de OUDE hyperactieve persoonlijkheid al rap opliep,
+            # maar met de NIEUWE kalme, zelfregulerende Nova (traits.json:
+            # self_regulation 0.85, chaotic_variability 0.15) helemaal
+            # niet meer paste — 5 gewone berichten duwden haar al tegen
+            # de 0.75-drempel aan. Verlaagd naar +0.06, zodat het
+            # realistisch 10+ snelle triggers kost voor ze überhaupt
+            # richting overprikkeld gaat, in plaats van 5.
             self.state["overstimulation"]["last_overflow_behavior"] = rule["overflow_behavior"]
             self.state["overstimulation"]["level"] = self._clamp(
-                self.state["overstimulation"]["level"] + 0.15
+                self.state["overstimulation"]["level"] + 0.06
             )
         else:
             # Trigger zonder overflow_behavior (bv. confusion, focus
             # zonder piek) → kleine, natuurlijke afkoeling. Dit is de
             # interactie-gebaseerde decay: niet elke trigger jaagt
             # Nova op, sommige laten haar juist even bijkomen.
+            # Verhoogd van -0.05 naar -0.08 (17 juli 2026): past bij
+            # een Nova die zichzelf sneller reguleert (self_regulation
+            # 0.85 in de nieuwe traits.json).
             self.state["overstimulation"]["level"] = self._clamp(
-                self.state["overstimulation"]["level"] - 0.05
+                self.state["overstimulation"]["level"] - 0.08
             )
 
         # Tijdstip van deze trigger onthouden voor de volgende
@@ -131,7 +142,11 @@ class EmotionEngine:
             return
 
         verstreken_minuten = verstreken_seconden / 60.0
-        decay_per_minuut = self.state["overstimulation"].get("decay_per_minute", 0.05)
+        # Verhoogd van 0.05 naar 0.10 per minuut (17 juli 2026,
+        # karakterherziening): een kalmere, zelfregulerende Nova
+        # herstelt ook sneller tijdens stiltes, i.p.v. even traag
+        # als de oude hyperactieve versie.
+        decay_per_minuut = self.state["overstimulation"].get("decay_per_minute", 0.10)
 
         daling = verstreken_minuten * decay_per_minuut
         if daling <= 0:

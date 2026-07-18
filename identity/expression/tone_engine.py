@@ -99,7 +99,7 @@ class ToneEngine:
     # ---------------------------------------------------------
     def _apply_personality_modifiers(self, tone, traits):
         impulsivity = traits.get("impulsivity", 0.5)
-        warmth = traits.get("warmth", 0.5)
+        warmth = traits.get("social_warmth", 0.5)
 
         # Impulsiviteit → snellere pacing + meer expressie
         tone["expressiveness"] += impulsivity * 0.2
@@ -148,7 +148,53 @@ class ToneEngine:
 
         if key in self.style_profiles:
             tone.update(self.style_profiles[key])
+            self._apply_gesture_data(tone)
+            return tone
 
+        # Fallback (Layer 6, 17 juli 2026): geen enkele nieuwe
+        # mood/pace-combinatie mag nog stil zonder emoji_style/
+        # gesture_profile blijven zoals "warm_snel" dat was vóór
+        # style_profiles.json aangevuld werd. Als de EXACTE key
+        # ontbreekt (bv. een combinatie die Kevin later nog niet
+        # expliciet heeft ingevuld), zoeken we de EERSTE bestaande
+        # key die met dezelfde 'tone' begint — beter een profiel dat
+        # qua stemming klopt maar qua pace niet exact overeenkomt,
+        # dan helemaal geen profiel.
+        prefix = f"{tone['tone']}_"
+        for bestaande_key, profiel in self.style_profiles.items():
+            if bestaande_key.startswith(prefix):
+                print(f"STYLE KEY FALLBACK: '{key}' bestaat niet, gebruik '{bestaande_key}'")
+                tone.update(profiel)
+                return tone
+
+        # Nog steeds niets gevonden (compleet nieuwe 'tone'-waarde,
+        # nog nergens gedefinieerd) — dan pas echt niets toepassen,
+        # net als voorheen.
+        print(f"STYLE KEY: '{key}' — geen enkel profiel gevonden, ook niet via fallback")
         return tone
+
+    def _apply_gesture_data(self, tone):
+        """
+        Layer 6, gesture-koppeling (17 juli 2026): tot nu toe werd
+        gesture_profiles.json wel ingeladen (self.gesture_profiles),
+        maar NERGENS gekoppeld aan de uiteindelijke tone-dictionary —
+        expression_injector.py's _inject_gestures() zocht altijd naar
+        tone["gesture_data"], die nooit gevuld werd, dus die stap deed
+        in de praktijk nooit iets. Dit vult 'm nu, op basis van de
+        gesture_profile-key die _apply_style_profile() hierboven al
+        in tone['gesture_profile'] gezet heeft.
+
+        BEWUST GEEN fallback zoals bij _apply_style_profile(): als de
+        exacte gesture-key niet bestaat, blijft tone['gesture_data']
+        gewoon leeg — expression_injector.py's eigen "geen data? dan
+        geen tekst-hint"-logica vangt dat al netjes op, een fallback
+        zou hier enkel onnodige complexiteit toevoegen.
+        """
+        gesture_key = tone.get("gesture_profile")
+        if not gesture_key or not self.gesture_profiles:
+            return
+
+        if gesture_key in self.gesture_profiles:
+            tone["gesture_data"] = self.gesture_profiles[gesture_key]
 
     

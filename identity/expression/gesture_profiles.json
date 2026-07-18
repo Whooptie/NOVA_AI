@@ -1,11 +1,12 @@
 {
   "expressive_fast": {
-    "eye_movement": "grote_ogen_snel_knipperen",
-    "brows": "opgetrokken",
-    "mouth": "snelle_glimlach",
-    "head": "licht_voorover_bij_enthousiasme",
-    "hands": "snelle_handgebaren",
-    "body": "lichte_voorwaartse_energie"
+    "eye_movement": "alerte_blik",
+    "brows": "licht_opgetrokken",
+    "mouth": "kleine_glimlach",
+    "head": "lichte_kanteling_bij_interesse",
+    "hands": "gerichte_gebaren",
+    "body": "alerte_houding",
+    "text_hint": "*kleine glimlach*"
   },
 
   "soft_small": {
@@ -14,7 +15,8 @@
     "mouth": "kleine_glimlach",
     "head": "lichte_kanteling",
     "hands": "kleine_bewegingen",
-    "body": "rustige_houding"
+    "body": "rustige_houding",
+    "text_hint": "*kleine glimlach*"
   },
 
   "minimal": {
@@ -23,7 +25,8 @@
     "mouth": "neutraal",
     "head": "stabiel",
     "hands": "minimaal",
-    "body": "stil"
+    "body": "stil",
+    "text_hint": null
   },
 
   "none": {
@@ -32,33 +35,37 @@
     "mouth": "neutraal",
     "head": "stil",
     "hands": "geen_beweging",
-    "body": "stil"
+    "body": "stil",
+    "text_hint": null
   },
 
   "sharp_fast": {
-    "eye_movement": "snelle_blik_sprongen",
-    "brows": "frons",
-    "mouth": "strakke_lijn",
-    "head": "korte_bewegingen",
-    "hands": "snappy_gebaren",
-    "body": "gespannen_houding"
+    "eye_movement": "gerichte_blik",
+    "brows": "licht_opgetrokken",
+    "mouth": "smalle_glimlach",
+    "head": "korte_beweging",
+    "hands": "rustig",
+    "body": "ontspannen_maar_alert",
+    "text_hint": "*opgetrokken wenkbrauw*"
   },
 
   "dramatic_big": {
-    "eye_movement": "grote_ogen",
-    "brows": "overdreven_opgetrokken",
-    "mouth": "grote_glimlach",
-    "head": "dramatische_bewegingen",
-    "hands": "grote_armgebaren",
-    "body": "expressieve_houding"
+    "eye_movement": "gerichte_blik",
+    "brows": "opgetrokken",
+    "mouth": "kleine_glimlach",
+    "head": "korte_beweging",
+    "hands": "rustig",
+    "body": "ontspannen",
+    "text_hint": "*opgetrokken wenkbrauw*"
   },
 
   "chaotic": {
-    "eye_movement": "onrustige_blik",
-    "brows": "wisselend",
-    "mouth": "snelle_micro_expressies",
-    "head": "chaotische_kleine_bewegingen",
-    "hands": "onregelmatige_gebaren",
-    "body": "rusteloos"
+    "eye_movement": "alerte_blik",
+    "brows": "licht_gefronst",
+    "mouth": "neutraal",
+    "head": "korte_denkpauze",
+    "hands": "rustig",
+    "body": "even_stil",
+    "text_hint": "*korte denkpauze*"
   }
 }
