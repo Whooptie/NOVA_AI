@@ -43,6 +43,40 @@ class PersonalityEngine:
         # behavior modifiers
         self.modifiers = BehaviorModifiers(self.traits, self.state)
 
+        # Layer 6, Fase 6 onderdeel 5 (17 juli 2026): live-koppeling
+        # met microlearning.py. Zonder dit zou een trait-verschuiving
+        # wel op schijf terechtkomen (microlearning.py schrijft naar
+        # hetzelfde traits.json), maar PersonalityEngine's eigen
+        # self.traits — die al bij __init__() is ingelezen en sindsdien
+        # enkel in het geheugen leeft — zou dat nooit weten, dus Nova's
+        # gedrag zou pas na een herstart van main.py meebewegen.
+        #
+        # event_bus kan hier None zijn (bv. losse tests) — dan gewoon
+        # geen subscribe, geen crash, precies zoals bij
+        # _publish_state_update() eerder in dit bestand.
+        if self.event_bus is not None:
+            self.event_bus.subscribe("trait_shifted", self._on_trait_shifted)
+
+    def _on_trait_shifted(self, data, event_type=None):
+        """
+        Houdt self.traits (in-memory) synchroon zodra microlearning.py
+        een trait daadwerkelijk laat verschuiven. We lezen hier BEWUST
+        NIET het hele traits.json opnieuw in (dat zou een onnodige
+        schijf-operatie zijn voor elke verschuiving, en een race
+        condition riskeren als microlearning.py het bestand op dat
+        moment nog aan het wegschrijven is) — we passen enkel de ene,
+        specifieke trait aan met de waarde die microlearning.py zelf
+        al berekend en gevalideerd heeft (binnen de min/max-grenzen
+        uit adaptive_rules.json).
+        """
+        try:
+            trait_naam = data.get("trait")
+            nieuwe_waarde = data.get("nieuwe_waarde")
+            if trait_naam is not None and nieuwe_waarde is not None:
+                self.traits[trait_naam] = nieuwe_waarde
+        except Exception:
+            pass
+
     def update_state(self, trigger: str):
         if trigger not in self.emotion_rules["mood_shifts"]:
             return

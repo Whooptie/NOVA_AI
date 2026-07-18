@@ -324,6 +324,22 @@ def main():
             print(f"{CYAN}{ctx_mgr.get_context_summary()}{RESET}")
             continue
 
+        # Tijdelijk test-commando voor Layer 6 Fase 6 (Adaptive
+        # Learning, 17 juli 2026) — toont de LIVE, in-memory
+        # traits-waarden van response_pipeline.personality, om te
+        # bevestigen dat een trait-verschuiving door microlearning.py
+        # (via het "trait_shifted"-event) ook echt zonder herstart
+        # zichtbaar wordt. Mag je later weer verwijderen.
+        if user_input.lower() == "traits":
+            resp_pipeline = loader.loaded_modules.get("response_pipeline")
+            if not resp_pipeline:
+                print(f"{RED}response_pipeline-module niet gevonden.{RESET}")
+                continue
+            print(f"{CYAN}--- Live traits (in-memory, personality_engine.traits) ---{RESET}")
+            for naam, waarde in resp_pipeline.personality.traits.items():
+                print(f"{CYAN}  {naam}: {waarde}{RESET}")
+            continue
+
         # Tijdelijk test-commando: geschiedenis van Layer 5-beslissingen
         # (mag je later weer verwijderen). Gebruik: "context geschiedenis"
         # of "context geschiedenis 20" voor een ander aantal regels.

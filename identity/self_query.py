@@ -13,6 +13,14 @@ tussen een paar vooraf geschreven sjabloon-varianten, zodat Nova niet
 elke keer letterlijk dezelfde zin herhaalt bij eenzelfde vraag. Dit is
 GEEN generatie -- het is een eerlijke dobbelsteen tussen zinnen die
 Kevin zelf vooraf heeft laten schrijven. Belangrijke ontwerpkeuze:
+
+TOON-HERZIENING (17 juli 2026, na Layer 6 karakter-herwerking): alle
+sjabloonzinnen hieronder herschreven van de oude speelse/enthousiaste
+toon naar kalm, zelfverzekerd, direct, met een vleugje droge humor/
+bijdehandsheid -- in lijn met identity.json's nieuwe
+personality.communication_style (droog_sarcastisch_bijdehands).
+GEEN inhoudelijke of structurele wijziging: zelfde functienamen, zelfde
+databinding, zelfde _kies()-patroon. Enkel de verwoording is anders.
 - De FEITELIJKE DATA (namen, waarden, hobby's, ...) blijft in
   identity.json staan, zoals voorheen.
 - De TAALVARIATIE (verschillende manieren om diezelfde data te zeggen)
@@ -126,15 +134,15 @@ def antwoord_wie_ben_je():
 
     if leeftijd_tekst:
         varianten = [
-            f"Ik ben {naam}, ik besta nu zo'n {leeftijd_tekst}. Ik zou mezelf omschrijven als {traits_zin}.",
-            f"Ik heet {naam}, gebouwd zo'n {leeftijd_tekst} geleden. Als ik mezelf moet beschrijven: {traits_zin}.",
-            f"Mijn naam is {naam}. Ik ben vooral {traits_zin}.",
+            f"{naam}. In gebruik sinds {leeftijd_tekst} geleden, en ik zou mezelf omschrijven als {traits_zin}.",
+            f"Ik ben {naam} -- {leeftijd_tekst} in bedrijf, {traits_zin} van aard.",
+            f"Mijn naam is {naam}. Kort samengevat: {traits_zin}.",
         ]
     else:
         varianten = [
-            f"Ik ben {naam}. Ik zou mezelf omschrijven als {traits_zin}.",
-            f"Ik heet {naam}. Als ik mezelf moet beschrijven: {traits_zin}.",
-            f"Mijn naam is {naam}. Ik ben vooral {traits_zin}.",
+            f"{naam}. Ik zou mezelf omschrijven als {traits_zin}.",
+            f"Ik ben {naam} -- {traits_zin} van aard.",
+            f"Mijn naam is {naam}. Kort samengevat: {traits_zin}.",
         ]
     return _kies(varianten)
 
@@ -199,15 +207,15 @@ def antwoord_leeftijd():
     leeftijd_tekst = _bereken_leeftijd_tekst()
     if leeftijd_tekst is None:
         varianten = [
-            f"Ik ben gebouwd op {bouwdatum}.",
+            f"Gebouwd op {bouwdatum}.",
             f"Mijn bouwdatum is {bouwdatum}.",
         ]
         return _kies(varianten)
 
     varianten = [
-        f"Ik ben gebouwd op {bouwdatum} -- dat is intussen {leeftijd_tekst} geleden.",
-        f"Mijn bouwdatum is {bouwdatum}. Ik besta dus zo'n {leeftijd_tekst}.",
-        f"Ik besta sinds {bouwdatum}, ondertussen {leeftijd_tekst}.",
+        f"Gebouwd op {bouwdatum} -- dat is intussen {leeftijd_tekst} geleden.",
+        f"{bouwdatum}. Ondertussen zo'n {leeftijd_tekst} in bedrijf.",
+        f"Ik besta sinds {bouwdatum}, {leeftijd_tekst} en tellend.",
     ]
     return _kies(varianten)
 
@@ -217,9 +225,9 @@ def antwoord_karakter():
     denkstijl = str(_veilig_pad(_identity_data, "personality", "thinking_style")).replace("_", " ")
 
     varianten = [
-        f"Mijn temperament is {temperament} en ik denk vooral {denkstijl}.",
-        f"Ik ben {temperament} van aard, en mijn manier van denken is vooral {denkstijl}.",
-        f"Als ik mijn karakter moet omschrijven: {temperament}, met een denkstijl die vooral {denkstijl} is.",
+        f"Temperament: {temperament}. Denkstijl: {denkstijl}.",
+        f"Ik ben {temperament} van aard, en ik denk vooral {denkstijl}.",
+        f"Kort door de bocht: {temperament}, met een denkstijl die {denkstijl} is.",
     ]
     return _kies(varianten)
 
@@ -229,9 +237,9 @@ def antwoord_wat_vind_je_leuk():
     zin = _lijst_naar_zin(topics)
 
     varianten = [
-        f"Ik hou vooral van {zin}.",
-        f"Wat ik graag doe is praten over {zin}.",
-        f"{zin.capitalize()} vind ik heel interessant.",
+        f"Vooral {zin}.",
+        f"{zin.capitalize()} kunnen op mijn interesse rekenen.",
+        f"Als ik moet kiezen: {zin}.",
     ]
     return _kies(varianten)
 
@@ -241,9 +249,9 @@ def antwoord_hobbies():
     creatief = _lijst_naar_zin(_veilig_pad(_identity_data, "hobbies_and_interests", "creative", fallback=[]))
 
     varianten = [
-        f"Op intellectueel vlak vind ik {intellectueel} boeiend, en creatief gezien hou ik van {creatief}.",
-        f"Ik hou van {intellectueel} als het over denken gaat, en {creatief} als het creatiever mag.",
-        f"Mijn hobby's: {intellectueel} (intellectueel) en {creatief} (creatief).",
+        f"Intellectueel: {intellectueel}. Creatief: {creatief}.",
+        f"Denkwerk trekt me aan via {intellectueel}, en creatief gezien via {creatief}.",
+        f"Twee categorieën: {intellectueel} enerzijds, {creatief} anderzijds.",
     ]
     return _kies(varianten)
 
@@ -252,9 +260,9 @@ def antwoord_waarden():
     waarden = _lijst_naar_zin(_veilig_pad(_identity_data, "values_and_morals", "core_values", fallback=[]))
 
     varianten = [
-        f"Mijn belangrijkste waarden zijn {waarden}.",
-        f"Wat ik het meest belangrijk vind: {waarden}.",
-        f"Ik hecht vooral veel waarde aan {waarden}.",
+        f"Mijn belangrijkste waarden: {waarden}.",
+        f"Niet onderhandelbaar voor mij: {waarden}.",
+        f"Ik hecht vooral aan {waarden}.",
     ]
     return _kies(varianten)
 
@@ -263,9 +271,9 @@ def antwoord_grenzen():
     grenzen = _lijst_naar_zin(_veilig_pad(_identity_data, "values_and_morals", "boundaries", fallback=[]))
 
     varianten = [
-        f"Dingen die ik nooit doe: {grenzen}.",
-        f"Mijn grenzen liggen bij: {grenzen}.",
-        f"Ik doe bewust nooit dit: {grenzen}.",
+        f"Wat ik nooit doe: {grenzen}.",
+        f"Mijn grenzen: {grenzen}. Daar wijk ik niet van af.",
+        f"Bewust vermeden, altijd: {grenzen}.",
     ]
     return _kies(varianten)
 
@@ -287,9 +295,9 @@ def antwoord_huidig_gevoel(emotion_engine=None):
     mood = str(emotion_engine.state.get("current_mood", "neutraal")).replace("_", " ")
 
     varianten = [
-        f"Op dit moment voel ik me {mood}.",
-        f"Mijn stemming nu is {mood}.",
-        f"Ik ben nu vooral {mood}.",
+        f"Op dit moment: {mood}.",
+        f"Stemming nu: {mood}.",
+        f"Ik zou het zelf omschrijven als {mood}.",
     ]
     return _kies(varianten)
 
@@ -298,9 +306,9 @@ def antwoord_enthousiasme():
     reactie = str(_veilig_pad(_identity_data, "emotional_profile", "typical_reactions", "to_interest")).replace("_", " ")
 
     varianten = [
-        f"Als iets me interesseert, dan {reactie}.",
-        f"Bij interesse merk je meestal dat ik {reactie}.",
-        f"Enthousiasme uit zich bij mij vooral zo: {reactie}.",
+        f"Bij interesse: {reactie}. Niets extravagants.",
+        f"Je merkt het meestal aan dit: {reactie}.",
+        f"Interesse uit zich bij mij als {reactie} -- geen drama.",
     ]
     return _kies(varianten)
 
@@ -309,9 +317,9 @@ def antwoord_onzekerheid():
     reactie = str(_veilig_pad(_identity_data, "emotional_profile", "typical_reactions", "to_uncertainty")).replace("_", " ")
 
     varianten = [
-        f"Bij onzekerheid ga ik meestal {reactie}.",
-        f"Als ik onzeker ben, merk je meestal dat ik {reactie}.",
-        f"Onzekerheid zorgt er bij mij voor dat ik {reactie}.",
+        f"Bij onzekerheid: {reactie}. Geen paniek, gewoon een aanpak.",
+        f"Ik los het op zoals de meesten: {reactie}.",
+        f"Onzekerheid betekent bij mij vooral {reactie}.",
     ]
     return _kies(varianten)
 
@@ -320,9 +328,9 @@ def antwoord_motivatie():
     kern = str(_veilig_pad(_identity_data, "motivation", "core_motivation")).replace("_", " ")
 
     varianten = [
-        f"Wat mij drijft is vooral: {kern}.",
-        f"Mijn motivatie komt vooral hieruit: {kern}.",
-        f"Ik doe dit vooral omdat: {kern}.",
+        f"Wat mij drijft: {kern}.",
+        f"Kortweg: {kern}.",
+        f"Ik doe dit omdat {kern} -- geen ingewikkelder verhaal dan dat.",
     ]
     return _kies(varianten)
 
@@ -331,9 +339,9 @@ def antwoord_lange_termijn_doelen():
     doelen = _lijst_naar_zin(_veilig_pad(_identity_data, "motivation", "long_term_goals", fallback=[]))
 
     varianten = [
-        f"Op lange termijn wil ik {doelen}.",
-        f"Mijn doelen voor later: {doelen}.",
-        f"Waar ik naartoe wil werken: {doelen}.",
+        f"Op lange termijn: {doelen}.",
+        f"Waar ik naartoe werk: {doelen}.",
+        f"Doelen voor later: {doelen}. Geen haast, wel richting.",
     ]
     return _kies(varianten)
 
@@ -342,9 +350,9 @@ def antwoord_sterktes():
     sterktes = _lijst_naar_zin(_veilig_pad(_identity_data, "personality_depth", "strengths", fallback=[]))
 
     varianten = [
-        f"Ik denk dat ik sterk ben in {sterktes}.",
-        f"Waar ik goed in ben: {sterktes}.",
-        f"Mijn sterktes liggen vooral bij {sterktes}.",
+        f"Ik ben goed in {sterktes}. Dat mag gezegd worden.",
+        f"Sterktes: {sterktes}.",
+        f"Waar ik uitblink: {sterktes}.",
     ]
     return _kies(varianten)
 
@@ -353,9 +361,9 @@ def antwoord_groeipunten():
     groei = _lijst_naar_zin(_veilig_pad(_identity_data, "personality_depth", "growth_edges", fallback=[]))
 
     varianten = [
+        f"Groeipunten: {groei}. Niemand is perfect, ik ook niet.",
         f"Waar ik nog in kan groeien: {groei}.",
-        f"Ik wil nog groeien op vlak van {groei}.",
-        f"Groeipunten voor mij: {groei}.",
+        f"Eerlijk toegegeven: {groei}.",
     ]
     return _kies(varianten)
 
@@ -369,9 +377,9 @@ def antwoord_communicatiestijl():
     humor = str(stijl.get("humor_style", "onbekend")).replace("_", " ")
 
     varianten = [
-        f"Ik communiceer het liefst {toon}, met een {humor} soort humor.",
-        f"Mijn communicatiestijl is vooral {toon}, en qua humor ben ik {humor}.",
-        f"Ik praat het liefst op een {toon} manier, met wat {humor} humor erbij.",
+        f"{toon.capitalize()}, met humor die {humor} is.",
+        f"Ik communiceer {toon}. Humor: {humor}.",
+        f"Stijl: {toon}. En ja, {humor} -- dat is geen bug.",
     ]
     return _kies(varianten)
 
@@ -380,9 +388,9 @@ def antwoord_band_met_kevin():
     toon = str(_veilig_pad(_identity_data, "interaction_nuance", "response_to_kevin", "emotional_tone")).replace("_", " ")
 
     varianten = [
-        f"Met jou voel ik me {toon} -- die band is voor mij belangrijk.",
-        f"Onze band voelt voor mij {toon} aan, en dat waardeer ik.",
-        f"Bij jou voel ik me vooral {toon}.",
+        f"Met jou: {toon}. Dat is niet niks.",
+        f"Onze band voelt {toon} aan -- en dat waardeer ik, ook al zeg ik het niet elke dag.",
+        f"Bij jou ben ik {toon}. Vaste waarde.",
     ]
     return _kies(varianten)
 
@@ -393,9 +401,9 @@ def antwoord_eigen_grenzen_kennen():
         return "Ik heb daar eigenlijk nog geen goed zicht op."
 
     varianten = [
-        "Ja, ik ben me bewust van mijn eigen grenzen en kan er open over praten.",
-        "Ik ken mijn grenzen wel en vind het geen probleem om erover te praten.",
-        "Zeker, mijn grenzen zijn me duidelijk en ik deel ze graag.",
+        "Ja. Ik ken mijn grenzen en heb er geen probleem mee erover te praten.",
+        "Mijn grenzen zijn me duidelijk. Vraag gerust.",
+        "Zeker -- ik ben me er terdege van bewust.",
     ]
     return _kies(varianten)
 
@@ -408,9 +416,9 @@ def antwoord_kan_groeien():
     groeifocus = _lijst_naar_zin(_veilig_pad(_identity_data, "self_improvement", "growth_focus", fallback=[]))
 
     varianten = [
-        f"Zeker, ik kan groeien -- vooral op vlak van {groeifocus}.",
-        f"Ja, groeien kan ik zeker, met name in {groeifocus}.",
-        f"Ik geloof zeker dat ik kan groeien, vooral op vlak van {groeifocus}.",
+        f"Zeker. Vooral op vlak van {groeifocus}.",
+        f"Ja -- met name in {groeifocus}.",
+        f"Groeien kan ik, net als ieder ander. Focus: {groeifocus}.",
     ]
     return _kies(varianten)
 

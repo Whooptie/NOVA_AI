@@ -2,8 +2,8 @@
   "patterns": {
     "chat_response": {
       "hours": {
-        "12": 10,
-        "15": 13,
+        "12": 18,
+        "15": 17,
         "19": 82,
         "20": 35,
         "21": 30,
@@ -21,16 +21,16 @@
         "woensdag": 16,
         "donderdag": 16,
         "vrijdag": 82,
-        "zaterdag": 124
+        "zaterdag": 136
       },
-      "total": 358,
+      "total": 370,
       "most_common_hour": 19,
-      "confidence": 0.229,
+      "confidence": 0.222,
       "day_frequency": {
-        "maandag": 0.43,
-        "dinsdag": 0.196,
-        "woensdag": 0.313,
-        "donderdag": 0.313,
+        "maandag": 0.416,
+        "dinsdag": 0.189,
+        "woensdag": 0.303,
+        "donderdag": 0.303,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
         "zondag": 1.0
@@ -38,8 +38,8 @@
     },
     "chat_message": {
       "hours": {
-        "12": 10,
-        "15": 7,
+        "12": 18,
+        "15": 11,
         "19": 77,
         "20": 34,
         "21": 28,
@@ -57,16 +57,16 @@
         "woensdag": 12,
         "donderdag": 14,
         "vrijdag": 78,
-        "zaterdag": 116
+        "zaterdag": 128
       },
-      "total": 318,
+      "total": 330,
       "most_common_hour": 19,
-      "confidence": 0.242,
+      "confidence": 0.233,
       "day_frequency": {
-        "maandag": 0.44,
-        "dinsdag": 0.264,
-        "woensdag": 0.264,
-        "donderdag": 0.308,
+        "maandag": 0.424,
+        "dinsdag": 0.255,
+        "woensdag": 0.255,
+        "donderdag": 0.297,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
         "zondag": 1.0
@@ -329,16 +329,17 @@
         "22": 4,
         "23": 2,
         "18": 7,
-        "10": 3
+        "10": 3,
+        "12": 8
       },
       "days": {
         "zondag": 6,
         "maandag": 7,
-        "zaterdag": 3
+        "zaterdag": 11
       },
-      "total": 16,
-      "most_common_hour": 18,
-      "confidence": 0.438,
+      "total": 24,
+      "most_common_hour": 12,
+      "confidence": 0.333,
       "day_frequency": {
         "maandag": 1.0,
         "dinsdag": 0.0,

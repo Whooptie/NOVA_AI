@@ -1,0 +1,23 @@
+{"text": "oke", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0061, "bron": "woordenlijst", "tijdstip": "2026-07-18T15:56:37.539133"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0615, "bron": "model_fallback", "tijdstip": "2026-07-18T16:10:17.482320"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0615, "bron": "model_fallback", "tijdstip": "2026-07-18T16:12:17.711590"}
+{"text": "test bericht 1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:00"}
+{"text": "test bericht 2", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:01"}
+{"text": "test bericht 3", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:02"}
+{"text": "test bericht 4", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:03"}
+{"text": "test bericht 5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:04"}
+{"text": "test bericht 6", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:05"}
+{"text": "test bericht 7", "signaal": "focus", "model_signaal": "focus", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:06"}
+{"text": "test bericht 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:07"}
+{"text": "test bericht 9", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:08"}
+{"text": "test bericht 10", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:09"}
+{"text": "test bericht 11", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:10"}
+{"text": "test bericht 12", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:11"}
+{"text": "test bericht 13", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:12"}
+{"text": "test bericht 14", "signaal": "focus", "model_signaal": "focus", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:13"}
+{"text": "test bericht 15", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:14"}
+{"text": "test bericht 16", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:15"}
+{"text": "test bericht 17", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:16"}
+{"text": "test bericht 18", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:17"}
+{"text": "test bericht 19", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:18"}
+{"text": "test bericht 20", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:19"}
