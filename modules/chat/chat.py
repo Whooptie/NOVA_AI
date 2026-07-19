@@ -72,6 +72,18 @@ class ChatModule:
                 word = word[len(art):].strip()
                 break
 
+        # Bugfix #6 (18 juli 2026): losse leestekens aan het einde van
+        # het woord verwijderen (punt, vraagteken, uitroepteken, komma,
+        # ...). ".strip()" hierboven verwijdert enkel WITRUIMTE, geen
+        # leestekens — een zin als "wat is een gitaar." gaf dus tot nu
+        # toe het woord "gitaar." door aan get_meaning()/is_a-check/
+        # Wikipedia, in plaats van het schone "gitaar". Dit gebeurt
+        # bewust hier, VOOR het woord ergens gebruikt wordt (get_meaning,
+        # is_a-relaties, en de Wikipedia-fallback verderop) — zo is elke
+        # afnemer van dit woord automatisch veilig, zonder dat elk
+        # bestand het zelf apart moet stripping.
+        word = word.strip(".,!?;:")
+
         meaning = None
         if self.semantic and hasattr(self.semantic, "get_meaning"):
             try:

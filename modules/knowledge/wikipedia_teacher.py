@@ -314,7 +314,14 @@ class WikipediaTeacher:
         return None
 
     def on_wiki(self, data, event_type=None):
-        word = (data.get("word") or "").strip().lower()
+        # Bugfix #6 (18 juli 2026): defensief vangnet. chat.py stript
+        # nu zelf al leestekens vóór dit event gepubliceerd wordt (zie
+        # on_definition()), maar deze strip staat hier ALSNOG bij —
+        # mocht een andere module ooit rechtstreeks een "intent_wiki"-
+        # event sturen zonder via chat.py te lopen, dan blijft dit
+        # bestand toch veilig, zonder van chat.py's interne volgorde
+        # afhankelijk te zijn.
+        word = (data.get("word") or "").strip().lower().strip(".,!?;:")
         auto = data.get("auto", False)
 
         if not word:
