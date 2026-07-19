@@ -21,3 +21,7 @@
 {"text": "test bericht 18", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:17"}
 {"text": "test bericht 19", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:18"}
 {"text": "test bericht 20", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:19"}{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-18T21:26:12.135863"}
+{"text": "wat betekent hond!", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-07-19T12:41:28.889558"}
+{"text": "wat is fysica?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0664, "bron": "model_fallback", "tijdstip": "2026-07-19T12:41:55.107753"}
+{"text": "teach fiets Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven.", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0584, "bron": "model_fallback", "tijdstip": "2026-07-19T13:02:09.739637"}
+{"text": "teach zeilboot Een zeilboot is een vaartuig dat wordt voortgestuwd door de wind.", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0591, "bron": "model_fallback", "tijdstip": "2026-07-19T13:05:12.233498"}

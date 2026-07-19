@@ -229,21 +229,25 @@
           }
         ],
         "source": "wikipedia",
-        "confidence": 0.8,
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-06-27T18:58:32.285272",
-      "updated_at": "2026-06-27T18:58:32.288190",
+      "updated_at": "2026-07-19T11:02:09.764642",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-06-27T18:58:32.288190",
-      "usage_count": 1,
+      "last_used_at": "2026-07-19T11:02:09.764642",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-06-27T18:58:32.288190",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-07-19T11:02:09.764642",
           "confidence": 1.0
         }
       ]
@@ -264,6 +268,14 @@
         "old_value": null,
         "new_value": "Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven.",
         "timestamp": "2026-06-27T18:58:32.288190"
+      },
+      {
+        "event_type": "confidence_update",
+        "source": "user",
+        "sense_id": "fiets#1",
+        "old_value": 0.8,
+        "new_value": 1.0,
+        "timestamp": "2026-07-19T11:02:09.764642"
       }
     ]
   },
@@ -12792,6 +12804,61 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-18T14:26:44.942081"
+      }
+    ]
+  },
+  "zeilboot": {
+    "senses": [
+      {
+        "sense_id": "zeilboot#1",
+        "definition": "Een zeilboot is een vaartuig dat wordt voortgestuwd door de wind.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vaartuig",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "created_at": "2026-07-19T11:05:12.293071"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-19T11:05:12.262866",
+      "updated_at": "2026-07-19T11:05:12.263865",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-19T11:05:12.263865",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-19T11:05:12.263865",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zeilboot"
+        },
+        "timestamp": "2026-07-19T11:05:12.262866"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zeilboot#1",
+        "old_value": null,
+        "new_value": "Een zeilboot is een vaartuig dat wordt voortgestuwd door de wind.",
+        "timestamp": "2026-07-19T11:05:12.263865"
       }
     ]
   }

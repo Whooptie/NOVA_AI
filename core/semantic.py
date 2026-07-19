@@ -701,6 +701,33 @@ class TeachEngine:
         "een vrucht met een harde pit" → is_a: vrucht
         "een dier dat blaft"           → is_a: dier
         "een soort voertuig"           → is_a: voertuig
+
+        Bugfix #7 (18 juli 2026): uitgebreid met twee nieuwe patronen.
+        De oorspronkelijke drie patronen hierboven verwachten allemaal
+        dat de definitie LETTERLIJK BEGINT met "een ..." — maar bijna
+        elke Wikipedia-definitie in concepts.json volgt in de praktijk
+        het patroon "[Het woord zelf] is een X die/dat/...", waarbij
+        het woord zelf eerst genoemd wordt. Bijvoorbeeld:
+          "Een fiets is een voertuig dat..."    → is_a: voertuig
+          "Een planeet is een hemellichaam..."  → is_a: hemellichaam
+          "De Octopoda zijn een orde binnen..." → is_a: orde
+        Geen van de eerste drie patronen ving dit op, waardoor bijna
+        alle Wikipedia-afkomstige definities nooit een automatische
+        is_a-relatie kregen. Patroon 4/5/6 hieronder lossen dit op.
+
+        Daarnaast zijn "waarmee/waarin/waaruit/waardoor/waarop/
+        waarvoor" toegevoegd naast het bestaande losse "waar", omdat
+        definities zoals "een apparaat waarmee gegevens..." anders
+        gemist werden (het samengestelde voorzetsel-woord matchte niet
+        met enkel "waar" gevolgd door een woordgrens).
+
+        BEWUST NIET meegenomen (te onbetrouwbaar voor pure regex,
+        apart werkpuntje voor later): definities met een bijvoeglijk
+        naamwoord vlak na "een" en vóór het echte target-zelfstandig-
+        naamwoord, zoals "een grote, niet-giftige slang" (target zou
+        "slang" moeten zijn, niet "grote"). Dat vraagt een POS-check
+        per woord (via detect_pos()) i.p.v. een simpele regex-match,
+        en verhoogt het risico op foute matches — bewust uitgesteld.
         """
         import re
         t = definition.lower().strip()
@@ -708,10 +735,19 @@ class TeachEngine:
         bijvoeglijk = {"groot", "klein", "lang", "breed", "hoog", "laag", "oud",
                        "nieuw", "goed", "slecht", "bekend", "veel", "weinig"}
 
+        # Voorzetsel-achtige woorden waarop een relatieve bijzin kan
+        # volgen — inclusief de samengestelde "waar+voorzetsel"-vormen
+        # (waarmee, waarin, waaruit, waardoor, waarop, waarvoor), die
+        # voorheen ontbraken naast het losse "waar".
+        volgwoorden = (
+            r"met|die|dat|van|voor|uit|waar|om"
+            r"|waarmee|waarin|waaruit|waardoor|waarop|waarvoor"
+        )
+
         target = None
 
-        # "een X met/die/dat/van/voor/uit..."
-        m = re.match(r"een\s+(\w+)\s+(?:met|die|dat|van|voor|uit|waar|om)\b", t)
+        # "een X met/die/dat/van/voor/uit/waar(mee/in/...)/om..."
+        m = re.match(rf"een\s+(\w+)\s+(?:{volgwoorden})\b", t)
         if m:
             target = m.group(1)
 
@@ -724,6 +760,29 @@ class TeachEngine:
         # "een X" alleen (zonder extra woorden)
         if not target:
             m = re.match(r"een\s+(\w+)$", t)
+            if m:
+                target = m.group(1)
+
+        # NIEUW — Patroon 4: "[...] is een X met/die/dat/waarmee/..."
+        # Het woord zelf staat voorop de zin ("Een fiets IS EEN
+        # voertuig dat..."), dus we zoeken niet vanaf het begin van de
+        # zin (re.match) maar ergens IN de zin (re.search).
+        if not target:
+            m = re.search(rf"\bis\s+een\s+(\w+)\s+(?:{volgwoorden})\b", t)
+            if m:
+                target = m.group(1)
+
+        # NIEUW — Patroon 5: "[...] zijn een X met/die/dat/..." (voor
+        # meervoud-onderwerpen, bv. "De Octopoda ZIJN EEN orde binnen...")
+        if not target:
+            m = re.search(rf"\bzijn\s+een\s+(\w+)\s+(?:{volgwoorden})\b", t)
+            if m:
+                target = m.group(1)
+
+        # NIEUW — Patroon 6: "[...] is een X" zonder vervolg (kortere
+        # definities zonder relatieve bijzin erna)
+        if not target:
+            m = re.search(r"\bis\s+een\s+(\w+)$", t)
             if m:
                 target = m.group(1)
 
