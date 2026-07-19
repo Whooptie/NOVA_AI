@@ -25,3 +25,11 @@
 {"text": "wat is fysica?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0664, "bron": "model_fallback", "tijdstip": "2026-07-19T12:41:55.107753"}
 {"text": "teach fiets Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven.", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0584, "bron": "model_fallback", "tijdstip": "2026-07-19T13:02:09.739637"}
 {"text": "teach zeilboot Een zeilboot is een vaartuig dat wordt voortgestuwd door de wind.", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0591, "bron": "model_fallback", "tijdstip": "2026-07-19T13:05:12.233498"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:25:07.009553"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:27:36.768764"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:31:16.279070"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:33:32.864172"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:48:50.193895"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:59:21.449264"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T20:28:01.102539"}
+{"text": "wat is het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0832, "bron": "model_fallback", "tijdstip": "2026-07-19T20:28:22.847142"}

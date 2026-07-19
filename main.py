@@ -110,6 +110,12 @@ def on_chat_response(data, event_type=None):
 # 15 = elke 15 minuten, 1 = elke minuut).
 PRESENCE_CHECK_INTERVAL_MINUTEN = 5
 
+# Hoe vaak Nova zelf het weer checkt voor een proactieve waarschuwing
+# (onweer/sneeuw/extreem/mist/hagel/harde wind) — zie weather.py's
+# check_proactieve_waarschuwing(). Net als bij PRESENCE hierboven: gewoon
+# 1 getal, hoeveel minuten tussen elke check (30 = elke 30 minuten).
+WEATHER_CHECK_INTERVAL_MINUTEN = 30
+
 
 def achtergrond_loop(loader):
     """
@@ -185,6 +191,20 @@ def achtergrond_loop(loader):
                 context_manager.get_current()
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in context_manager.get_current(): {e}")
+
+        # Proactieve weerwaarschuwing — ENKEL elke
+        # WEATHER_CHECK_INTERVAL_MINUTEN minuten (zelfde soort spaarzame
+        # aanpak als PRESENCE hierboven, geen externe API elke minuut
+        # aanroepen). Meldt zelf max. 1x per dag per stad (zie
+        # weather.py's _al_gemeld_vandaag()), dus geen risico op spam
+        # ook al draait deze check regelmatig door.
+        if aantal_loops % WEATHER_CHECK_INTERVAL_MINUTEN == 0:
+            weather = loader.loaded_modules.get("weather")
+            if weather:
+                try:
+                    weather.check_proactieve_waarschuwing()
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in check_proactieve_waarschuwing(): {e}")
 
 def main():
     global wachten_op_input
