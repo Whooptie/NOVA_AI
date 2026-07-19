@@ -43,6 +43,7 @@ Nova_AI/
 │   ├── semantic.py
 │   └── response_engine.py
 ├── modules/
+│   ├── paths.py
 │   ├── activity/
 │   │   └── session_watcher.py
 │   ├── time/
@@ -114,6 +115,7 @@ Nova_AI/
 │   ├── concepts.json
 │   ├── word_associations.json
 │   ├── patterns_layer2.json
+│   ├── weather_history.json
 │   └── context_log.jsonl
 │   └── models/
 │       └── blaze_face_short_range.tflite
@@ -140,6 +142,7 @@ Nova_AI/
 | reboot_manager.py | ✅ Klaar en volledig getest | `/reboot`-commando (Fase 1 van reboot_hotreload_roadmap.md). Sluit memory-buffer + alle modules met `shutdown()` (o.a. Stockfish via chess_engine.py) netjes af, start dan een nieuw los proces via `subprocess.Popen` + `CREATE_NEW_CONSOLE`. Zie volledige sectie "Reboot & Hot Reload" verderop voor details en opgeloste bugs. |
 | semantic.py | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw:`teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`. **Nieuw (12 juli 2026):** `part_of_chained`/`explain_part_of` (analoog aan is_a_chained/explain_is_a, keten-redenering voor part_of-relaties) en `get_all_subtypes` (omgekeerde is_a-lookup: alle concepten die direct/via keten naar een categorie verwijzen) — beide gebouwd, getest en werkend. Zie sectie "Reasoning Engine — Fase 7.1b/7.5" verderop. |
 | response_engine.py | ✅ Klaar (Layer 4, Fase 1-5 + 7) | Combineert semantic + word_associations + pattern_matcher tot sjabloon-antwoorden voor definitievragen. Zie volledige sectie "Layer 4" onder 7-Laags Memory Architectuur. |
+| paths.py | ✅ Klaar (nieuw, 19 juli 2026) | `get_project_root(__file__)` — zoekt vanaf elk modulebestand omhoog naar de map met `main.py`, i.p.v. een vast aantal `.parent`-stappen te tellen. Voorkomt stille padfouten bij modules op verschillende nestingdiepte. Staat in `modules/`, niet `core/` (fysieke locatie), maar functioneel een core-hulpmodule — vandaar hier vermeld. Eerste gebruiker: `weather.py`. Zie sectie "modules/paths.py" verderop. |
 
 ### MODULES
 
@@ -257,7 +260,26 @@ Ontdekt bij het bijwerken van `algemeen.py`'s help-tekst (12 juli 2026): drie ro
 
 ---
 
-## 🌦️ Weather-module — functionaliteit (bijgewerkt 3 juli 2026)
+## 🗂️ `modules/paths.py` — centrale project-root bepaling (nieuw, 19 juli 2026)
+
+Los hulpbestand met één functie: `get_project_root(vanaf_bestand)`.
+
+**Waarom dit bestaat:** modules die een eigen data-bestand in de hoofd-`data/`-map nodig hebben (zoals `weather.py`'s geschiedenisbestand) moeten vanaf hun eigen locatie (bv. `modules/weather/weather.py`) omhoog naar de project-root (`C:\Nova_AI`). Dat met een vast aantal `.parent.parent.parent`-stappen doen is fragiel: verhuist een module ooit dieper of ondieper in de mappenstructuur, dan breekt dat stilzwijgend — geen foutmelding, gewoon een verkeerd pad waar iets fout weggeschreven wordt.
+
+**Hoe het werkt:** `get_project_root()` start bij het aanroepende bestand (geef altijd `__file__` mee) en zoekt automatisch omhoog door de mappenstructuur tot ze een map vindt met `main.py` erin — dat IS de project-root, ongeacht hoe diep de module genest zit. Vindt ze `main.py` nergens (bv. bij een bestand buiten het Nova-project), dan geeft ze bewust een duidelijke `RuntimeError` i.p.v. stil een fout pad te gebruiken.
+
+**Gebruik in een module:**
+```python
+from modules.paths import get_project_root
+PROJECT_ROOT = get_project_root(__file__)
+data_pad = PROJECT_ROOT / "data" / "mijn_bestand.json"
+```
+
+**Eerste gebruiker:** `weather.py` (zie hieronder) voor `self.history_path`. Toekomstige modules met eigen data-bestanden gebruiken dit voortaan ook, in plaats van zelf `.parent`-niveaus te tellen.
+
+---
+
+## 🌦️ Weather-module — functionaliteit (bijgewerkt 19 juli 2026)
 
 `weather.py` ondersteunt nu:
 
@@ -266,23 +288,47 @@ Ontdekt bij het bijwerken van `algemeen.py`'s help-tekst (12 juli 2026): drie ro
 - Zonsopgang/zonsondergang
 - Regenkans (bij voorspelling)
 - Kledingadvies (vaste drempel-zinnen, geen vrije generatie)
-- Weerwaarschuwingen bij onweer/sneeuw/extreem weer
+- Weerwaarschuwingen bij onweer/sneeuw/extreem weer/mist/hagel/harde wind/hitte/gladheid (zie uitgebreide notitie hieronder)
 - Voorspelling voor: vandaag, morgen, overmorgen, specifieke weekdag (bv. "weer op maandag")
 - Beperking: max. 5 dagen vooruit (grens van gratis OpenWeatherMap API), met duidelijke foutmelding erbuiten
+- Vergelijking met gisteren: bij een huidig-weer-opvraging vergelijkt Nova de temperatuur met de vorige meting, en voegt een zin toe zoals "Dat is 4.4°C kouder dan gisteren." Vergelijkt enkel als de vorige meting écht van gisteren is (niet ouder) — anders wordt de vergelijking stilzwijgend weggelaten.
+- Proactieve automatische weerwaarschuwing: Nova checkt zelf elke 30 minuten (`WEATHER_CHECK_INTERVAL_MINUTEN` in `main.py`) via de achtergrondthread of er iets te melden is, en spreekt spontaan zonder dat Kevin ernaar vraagt. Zie uitgebreide sectie hieronder.
 
-**Architectuurnotitie:** volledig symbolisch — API-data wordt uitgelezen en in vaste Nederlandse zinsjablonen gegoten (if/else op basis van temperatuur/categorie). Geen LLM, geen vrije tekstgeneratie.
+**Architectuurnotitie:** volledig symbolisch — API-data wordt uitgelezen en in vaste Nederlandse zinsjablonen gegoten (if/else op basis van temperatuur/categorie/ID/windsnelheid/neerslag). Geen LLM, geen vrije tekstgeneratie. De "vergelijking met gisteren" en de proactieve waarschuwing zijn eveneens puur symbolisch: hetzelfde JSON-bestandje (`data/weather_history.json`) met per stad de laatst-gemeten temperatuur + datum + laatste-waarschuwing-datum, en simpele if/else-vergelijkingen.
 
-**Mogelijke toekomstige uitbreidingen (nog niet gebouwd):**
+**`weerwaarschuwing()` uitgebreid (19 juli 2026):** herschreven om vijf signalen te combineren i.p.v. één vaste dictionary-lookup:
+- `main_categorie` (bestaand) → onweer, sneeuw, extreem, **plus nieuw: mist/fog/haze**
+- `weather_id` (nieuw) → specifieke OpenWeatherMap-conditiecode 906 = hagel, los van de hoofdcategorie herkend (hagel zit niet in een aparte `main`-categorie bij OWM)
+- `windsnelheid` (nieuw) → harde-windwaarschuwing vanaf drempel `WIND_DREMPEL_MS = 15` (m/s, ~54 km/u, Kevin's keuze 19 juli 2026)
+- `temperatuur` (nieuw) → hittewaarschuwing vanaf drempel `HITTE_DREMPEL_C = 27` (°C, Kevin's keuze 19 juli 2026). Hitte zit niet in een aparte OWM-categorie zoals onweer/sneeuw — een hittegolf toont zich gewoon als `"Clear"` met een hoge `temp`-waarde, vandaar een eigen temperatuurdrempel i.p.v. een categorie-lookup.
+- `heeft_neerslag` (nieuw) → i.c.m. `temperatuur`, gladheidswaarschuwing. Drempel: temperatuur tussen `GLADHEID_MIN_C = 0` en `GLADHEID_MAX_C = 2` (°C) SAMEN met neerslag — droge kou alleen geeft geen glad wegdek. Nieuwe hulpmethode `_heeft_neerslag(data, main_categorie)` bepaalt dit op basis van OWM's `rain`/`snow`-velden (enkel aanwezig als er ook echt neerslag gemeten is) én de hoofdcategorie (Rain/Drizzle/Snow) — bewust iets ruimer dan strikt noodzakelijk, om gladheid niet te missen. Kevin's keuze qua venster, 19 juli 2026.
 
-1. **Vergelijking met gisteren** — temperatuur van vandaag vergelijken met gisteren (vereist opslag van vorige waarde).
-2. **Meer weerwaarschuwingen** — `weerwaarschuwing()` uitbreiden met extra categorieën die nu nog ontbreken: mist ("Mist"), harde wind, hagel. Kleine aanpassing — enkel het `waarschuwingen`-dictionary in `weather.py` aanvullen.
-3. **Proactieve automatische weerwaarschuwing** (zonder dat Kevin ernaar vraagt):
+Elk signaal is een **onafhankelijke check** — er is geen minimum-aantal nodig om te triggeren, 1 actief signaal volstaat al voor een waarschuwing. Bij meerdere tegelijk-actieve signalen worden ze samengevoegd in één natuurlijke zin (bv. "Let op: er wordt onweer verwacht en er wordt hagel verwacht en er wordt harde wind verwacht.") in plaats van aparte meldingen.
 
-   - **Wat:** Nova checkt zelf periodiek (bv. elke 30 min) het weer voor de standaardstad, en stuurt spontaan een `chat_response` als er onweer/sneeuw/extreem weer op komst is.
-   - **Architectuur:** vereist een achtergrond-timer, vergelijkbaar met de 6-uur-cyclus in `memory.py` (tiering/maintenance). Past bij Nova's 24/7-daemon-karakter.
-   - **Symbolisch:** 100% haalbaar zonder LLM — hergebruikt dezelfde if/else-check die al in `weerwaarschuwing()` zit, plus een simpel "vandaag al gemeld?"-vlaggetje om spam te voorkomen.
-   - **Ethiek-overweging:** spontaan spreken is een vorm van handelen zonder directe vraag, maar Kevin heeft hiervoor al vooraf toestemming gegeven (3 juli 2026) — automatische waarschuwing bij noodweer (onweer/sneeuw/extreem weer) mag direct gebouwd worden zonder aparte aan/uit-instelling of bevestigingsvraag vooraf.
-   - **Hangt samen met:** het nog te bouwen proactieve-suggesties-systeem (nog geen aparte module/roadmap voor).
+**Eerlijkheid over hagel-detectie:** de gratis OpenWeatherMap-API geeft hagel niet altijd expliciet als code 906 — vaak zit lichte hagel binnen een gewone thunderstorm-code (200-232) zonder apart vermeld te worden. Dit is een grens van de gratis databron, niet symbolisch op te lossen zonder een duurdere API-laag. De hagel-detectie werkt dus wél, maar vangt niet elke hagelbui.
+
+**Eerlijkheid over gladheid bij voorspellingen:** in `get_forecast()` (5-daagse voorspelling) is de `_heeft_neerslag()`-check minder betrouwbaar dan bij huidig weer — de 3-uurs-voorspellingsblokken geven soms geen `rain`/`snow`-veld door zelfs bij een kans op neerslag (dat zit dan enkel in het aparte `pop`-regenkans-veld). De categorie-check vangt dit gedeeltelijk op, maar niet perfect. Eerlijke beperking van de gratis voorspellings-API, geen fout in de logica zelf.
+
+**Proactieve automatische weerwaarschuwing — volledige werking (19 juli 2026):**
+- **Nieuwe methodes in `weather.py`:** `get_current_location_city()` (IP-locatie via ipinfo.io, zelfde soort bron als `modules/time/zone.py`'s tijdzone-detectie), `check_proactieve_waarschuwing()` (hoofdmethode), `_check_waarschuwing_voor_stad()`, `_al_gemeld_vandaag()`, `_markeer_gemeld()`, `_heeft_neerslag()`.
+- **Welke steden gecheckt worden:** standaardstad altijd, plus de IP-gedetecteerde locatie **enkel als die een andere stad is** dan de standaardstad — voorkomt een dubbele melding wanneer Kevin gewoon thuis zit (het overgrote deel van de tijd).
+- **`main.py`-koppeling:** nieuwe constante `WEATHER_CHECK_INTERVAL_MINUTEN = 30`, en een nieuwe check in `achtergrond_loop()` (`if aantal_loops % WEATHER_CHECK_INTERVAL_MINUTEN == 0`), zelfde patroon als de bestaande `PRESENCE_CHECK_INTERVAL_MINUTEN`-check. Roept `weather.check_proactieve_waarschuwing()` aan, in een try/except zodat een fout hier de rest van de achtergrondlus nooit kan blokkeren.
+- **Spam-preventie:** max. 1 melding per dag per stad, via een nieuw veld `laatste_waarschuwing_datum` in `data/weather_history.json` (zelfde bestand als de gisteren-vergelijking, geen nieuw bestand nodig). Blijft de waarschuwing de hele dag actief (bv. aanhoudend onweer), dan wordt ze toch maar 1x gemeld — bewuste, simpele keuze, geen "opnieuw melden bij wijziging van weertype" ingebouwd.
+- **Wanneer komt een melding binnen:** bij een eigen vraag ("wat is het weer") onmiddellijk, geen dagelijkse limiet. Proactief (zonder vraag): binnen max. 30 minuten nadat een waarschuwing actief wordt, via de achtergrondthread — verschijnt vanzelf in Nova's venster dankzij het bestaande "verse prompt"-mechanisme, ongeacht wat Kevin op dat moment aan het doen is.
+- **Publiceert via** `layer4_response` (net als de rest van `weather.py`), dus loopt door dezelfde tone-pipeline als een gewoon weerantwoord.
+- **Ethiek:** spontaan spreken zonder vraag is al eerder goedgekeurd door Kevin (3 juli 2026) voor noodweer — geen aparte aan/uit-instelling of bevestigingsvraag vooraf nodig.
+
+**Test-bestanden (19 juli 2026):**
+- `test_weerwaarschuwing.py` — los testscript in de projectroot, GEEN onderdeel van Nova's daemon. Roept `weerwaarschuwing()` rechtstreeks aan met verzonnen scenario's (dummy EventBus, geen echte API-call). 18 scenario's (categorieën, hagel, windsnelheid, hitte, gladheid — incl. randgevallen op alle drempelgrenzen en combinaties van meerdere waarschuwingen tegelijk). Live getest, alle 18 geslaagd.
+- `test_proactieve_waarschuwing.py` — los testscript, test de ECHTE OpenWeatherMap- en ipinfo.io-API's (geen mock), toont de volledige `weather_history.json`-inhoud voor/na, en bevestigt de "max. 1x per dag per stad"-regel door 2x na elkaar te draaien. Live getest: eerste run met tijdelijk verlaagde winddrempel gaf correct 2 meldingen (standaardstad Aartrijke + IP-locatie Brugge), tweede run direct daarna gaf terecht 0 nieuwe meldingen.
+
+**Mogelijke toekomstige uitbreidingen (nog niet gebouwd, geen prioriteit):**
+
+1. ~~Vergelijking met gisteren~~ ✅ Gebouwd (19 juli 2026, zie hierboven).
+2. ~~Meer weerwaarschuwingen (mist/harde wind/hagel/hitte/gladheid)~~ ✅ Gebouwd (19 juli 2026, zie hierboven).
+3. ~~Proactieve automatische weerwaarschuwing~~ ✅ Gebouwd (19 juli 2026, zie hierboven).
+4. **Mogelijke verfijning:** opnieuw melden als het weertype tijdens de dag wijzigt (bv. 's ochtends onweer gemeld, 's avonds komt er apart zware sneeuw bij) — nu blijft het bij max. 1 melding/dag/stad ongeacht wijzigingen. Nog niet besproken of dit gewenst is.
+5. **Overwogen maar bewust niet gebouwd (19 juli 2026):** meerdere vaste locaties tegelijk volgen (bv. ook familie's stad), instelbare drempels via spraak (eigen instellingen-bestand + intent nodig, zoals chess_settings.json). Kevin gaf aan dat de huidige opzet (standaardstad + IP-locatie) voldoende is.
 
 ---
 
