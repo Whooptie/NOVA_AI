@@ -14,6 +14,16 @@
 
 ---
 
+## 🤖 Wat is Nova?
+
+Nova is een **persoonlijke AI companion** die volledig lokaal draait op mijn eigen machine. Ze gebruikt geen LLM (zoals ChatGPT), geen cloud en geen internet — alles gebeurt lokaal, door mijn eigen regels.
+
+Nova is gebouwd op **symbolische AI**: ze leert via expliciete concepten, relaties en gedragspatronen — niet via een statistisch taalmodel. Ze draait **24/7 als achtergrondproces** en kan zelf proactief reageren op patronen in mijn gedrag.
+
+> *"Geen black box. Geen cloud. Geen verrassingen."*
+
+---
+
 ## 💬 Nova in actie
 
 ```text
@@ -39,16 +49,6 @@
          
          Zet 1. Wit aan zet
 ```
-
----
-
-## 🤖 Wat is Nova?
-
-Nova is een **persoonlijke AI companion** die volledig lokaal draait op mijn eigen machine. Ze gebruikt geen LLM (zoals ChatGPT), geen cloud en geen internet — alles gebeurt lokaal, door mijn eigen regels.
-
-Nova is gebouwd op **symbolische AI**: ze leert via expliciete concepten, relaties en gedragspatronen — niet via een statistisch taalmodel. Ze draait **24/7 als achtergrondproces** en kan zelf proactief reageren op patronen in mijn gedrag.
-
-> *"Geen black box. Geen cloud. Geen verrassingen."*
 
 ---
 
