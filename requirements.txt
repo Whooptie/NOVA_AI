@@ -20,6 +20,13 @@ python-dotenv>=1.0.1       # .env bestand lezen (API keys)
 # --- JSON validatie ---
 jsonschema>=4.21.0         # identity.json / schema.json validatie
 
+# --- Layer 5: Context & Activity Awareness ---
+pygetwindow>=0.0.9         # activity_detector.py — actief venster/proces detecteren
+mediapipe>=0.10.9          # presence_detector.py — BlazeFace gezichtsdetectie (bounded ML-tool, geen LLM)
+
+# --- Layer 6: Personality / Adaptive Learning ---
+scikit-learn>=1.4.0        # train_classifier.py / microlearning.py — signal_model.pkl (bounded ML-classifier, geen LLM)
+
 # --- Testing ---
 pytest>=8.2.0              # Unit tests
 
@@ -33,3 +40,5 @@ pytest>=8.2.0              # Unit tests
 # subprocess   — Stockfish proces, reboot
 # atexit       — graceful shutdown hooks
 # pathlib      — portabele bestandspaden
+# ctypes       — focus_detector.py (Windows GetLastInputInfo)
+# pickle       — signal_model.pkl in-/uitladen

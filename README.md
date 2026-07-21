@@ -8,7 +8,7 @@
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![Privacy](https://img.shields.io/badge/Privacy-100%25%20Lokaal-2ea44f?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-In%20Ontwikkeling-orange?style=for-the-badge)
-![License](https://img.shields.io/badge/Licentie-Privé-red?style=for-the-badge)
+![License](https://img.shields.io/badge/Licentie-Bekijkbaar%2C%20niet%20herbruikbaar-red?style=for-the-badge)
 
 </div>
 
@@ -16,9 +16,9 @@
 
 ## 🤖 Wat is Nova?
 
-Nova is een **persoonlijke AI companion** die volledig lokaal draait op je eigen machine. Ze gebruikt geen LLM (zoals ChatGPT), geen cloud en geen internet — alles gebeurt op jouw computer, door jouw regels.
+Nova is een **persoonlijke AI companion** die volledig lokaal draait op mijn eigen machine. Ze gebruikt geen LLM (zoals ChatGPT), geen cloud en geen internet — alles gebeurt lokaal, door mijn eigen regels.
 
-Nova is gebouwd op **symbolische AI**: ze leert via expliciete concepten, relaties en gedragspatronen — niet via een statistisch taalmodel. Ze draait **24/7 als achtergrondproces** en kan zelf proactief reageren op patronen in jouw gedrag.
+Nova is gebouwd op **symbolische AI**: ze leert via expliciete concepten, relaties en gedragspatronen — niet via een statistisch taalmodel. Ze draait **24/7 als achtergrondproces** en kan zelf proactief reageren op patronen in mijn gedrag.
 
 > *"Geen black box. Geen cloud. Geen verrassingen."*
 
@@ -64,7 +64,7 @@ Gebruiker → IntentRouter → EventBus → Modules
 | Layer 3 | Semantische redenering (concepten, relaties, inferentie) | ✅ Klaar |
 | Layer 4 | Antwoordgenerator (sjablonen, toonvariatie, routing) | ✅ Klaar |
 | Layer 5 | Contextbeheer (interruption logic) | 🔜 Gepland |
-| Layer 6 | *(gereserveerd)* | — |
+| Layer 6 | Persoonlijkheid & emotie-engine | ✅ Klaar |
 | Layer 7 | Emergent gedrag (zelfbewustzijn) | 🔮 Ver toekomst |
 
 ### 📦 Kernmodules
@@ -95,7 +95,7 @@ Nova_AI/
 
 ## 🔒 Privacy & Principes
 
-- **100% lokaal** — geen data verlaat jouw machine
+- **100% lokaal** — geen data verlaat mijn machine
 - **Geen LLM** — geen OpenAI, geen Gemini, geen cloud-AI
 - **Nooit handelen zonder toestemming** — Nova suggereert altijd eerst
 - **Volledig transparant** — alles wordt gelogd en is inzichtelijk
@@ -104,11 +104,19 @@ Nova_AI/
 
 ---
 
+## ⚠️ Over de databestanden in deze repository
+
+Deze repo bevat **niet enkel code**, maar ook Nova's echte, groeiende geheugen: bestanden zoals `concepts.json`, `word_associations.json`, `patterns_layer2.json` en alles onder `identity/personality/`. Dit zijn **geen voorbeeld- of testdata** — het is Nova's opgebouwde kennis en persoonlijkheid uit echte gesprekken met mij.
+
+Deze repository dient in de eerste plaats als **persoonlijke backup**, en is publiek gemaakt zodat anderen kunnen meekijken in de bouw van het project — niet als kant-en-klaar installeerbaar pakket voor eigen gebruik.
+
+---
+
 ## 🚀 Op de roadmap
 
 - 🟡 Persoonlijkheidspipeline uitbreiden naar alle intents
 - 🟢 Layer 5: Contextbeheer (wanneer mag Nova onderbreken?)
-- 🟢 Gebruikersvoorkeuren-module (wat Nova over jou onthoudt)
+- 🟢 Gebruikersvoorkeuren-module (wat Nova over mij onthoudt)
 - 🟢 Activity Awareness (activiteiten herkennen & proactief reageren)
 - 🟢 Activity-Aware Interaction (interruption learning)
 - 🟢 Intent classifier (klein lokaal ML-model als specialist)
@@ -131,11 +139,13 @@ pip install -r requirements.txt
 python main.py
 ```
 
+> Let op: dit project is niet bedoeld om zomaar te klonen en te laten draaien — het is nauw verweven met mijn eigen paden, instellingen en persoonlijke databestanden.
+
 ---
 
 ## 👤 Over dit project
 
-Nova wordt gebouwd door **Kevin** — een zelfgeleerde developer uit Brugge, België.  
+Nova wordt gebouwd door **Kevin** — een zelfgeleerde developer uit Brugge, België.
 Geen voorkennis. Geen achtergrond in programmeren. Gewoon nieuwsgierigheid en doorzettingsvermogen.
 
 Dit project begon als een experiment en groeit uit tot een volwaardig lokaal AI-systeem met een geplande roadmap van 498+ modules.
@@ -146,7 +156,7 @@ Dit project begon als een experiment en groeit uit tot een volwaardig lokaal AI-
 
 <div align="center">
 
-**⭐ Dit is een privéproject — niet bedoeld voor publieke installatie**
+**⭐ Deze code is publiek zichtbaar, maar niet vrij te gebruiken — zie LICENSE.txt**
 
 *Gebouwd met Python · Aangedreven door nieuwsgierigheid · Zonder LLM*
 
