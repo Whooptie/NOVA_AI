@@ -8,9 +8,37 @@
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 ![Privacy](https://img.shields.io/badge/Privacy-100%25%20Lokaal-2ea44f?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-In%20Ontwikkeling-orange?style=for-the-badge)
-![License](https://img.shields.io/badge/Licentie-Bekijkbaar%2C%20niet%20herbruikbaar-red?style=for-the-badge)
+![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red?style=for-the-badge)
 
 </div>
+
+---
+
+## 💬 Nova in actie
+
+```text
+[Kevin]  wat is een gitaar?
+[Nova]   Een gitaar is een snaarinstrument, Kevin. 
+         Wordt vaak van hout gemaakt. 🎸
+
+[Kevin]  weer in Brugge
+[Nova]   In Brugge is het 18°C en bewolkt. 
+         Regenkans: 40% — neem een paraplu mee! ☔
+
+[Kevin]  schaak bord
+[Nova]   
+         8  ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜
+         7  ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟
+         6  . . . . . . . .
+         5  . . . . . . . .
+         4  . . . . . . . .
+         3  . . . . . . . .
+         2  ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙
+         1  ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
+            a b c d e f g h
+         
+         Zet 1. Wit aan zet
+```
 
 ---
 
@@ -43,6 +71,19 @@ Nova is gebouwd op **symbolische AI**: ze leert via expliciete concepten, relati
 
 ---
 
+## 🔍 Wat maakt Nova anders?
+
+| Kenmerk | ChatGPT / LLM | Nova (Symbolisch) |
+|---|---|---|
+| **Kennisbron** | Miljarden parameters (black box) | Expliciete concepten (`concepts.json`) |
+| **Leren** | Fine-tunen (duur, duur) | `teach`-commando (direct) |
+| **Redeneren** | Statistische gok | Chaining (`is_a_chained`) |
+| **Privacy** | Data naar cloud | 100% lokaal |
+| **Uitlegbaarheid** | "We weten niet waarom" | Elk antwoord is traceerbaar |
+| **Werkt offline?** | Nee | Ja |
+
+---
+
 ## 🏗️ Architectuur
 
 Nova is gebouwd rond een centrale **EventBus** — een publish/subscribe systeem waarbij alle modules met elkaar communiceren zonder directe afhankelijkheden.
@@ -66,6 +107,35 @@ Gebruiker → IntentRouter → EventBus → Modules
 | Layer 5 | Contextbeheer (interruption logic) | 🔜 Gepland |
 | Layer 6 | Persoonlijkheid & emotie-engine | ✅ Klaar |
 | Layer 7 | Emergent gedrag (zelfbewustzijn) | 🔮 Ver toekomst |
+
+
+## 💻 Hoe het werkt — een voorbeeld
+
+Nova leert via expliciete concepten. Geen statistiek, geen giswerk.
+
+```python
+# Kevin leert Nova een nieuw concept
+> teach: een gitaar is een snaarinstrument
+
+# Nova slaat dit op in concepts.json
+{
+  "gitaar": {
+    "senses": [{
+      "definition": "een snaarinstrument",
+      "relations": {"is_a": ["snaarinstrument"]}
+    }]
+  }
+}
+
+# Later stelt Kevin een vraag
+> is een gitaar een instrument?
+
+# Nova redeneert:
+# gitaar → is_a → snaarinstrument → is_a → instrument
+# Antwoord: "Ja, een gitaar is een instrument."
+```
+
+---
 
 ### 📦 Kernmodules
 
@@ -92,6 +162,7 @@ Nova_AI/
 ```
 
 ---
+
 
 ## 🔒 Privacy & Principes
 

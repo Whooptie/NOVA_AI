@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "description": "Layer 6 Fase 6, onderdeel 1: vast ijkpunt-testsetje. Een nieuwe, hertrainde modelversie wordt ENKEL actief als ze hierop minstens even goed scoort als de huidige versie — voorkomt dat automatische hertraining het model per ongeluk laat verslechteren (drift). NOOIT gebruiken als trainingsdata zelf — moet apart blijven van training_data.json om een eerlijke, onafhankelijke test te zijn.",
+    "created": "17 juli 2026"
+  },
+  "voorbeelden": [
+    {"text": "dit blijft maar crashen, zo irritant", "signaal": "frustratie"},
+    {"text": "waarom lukt dit gewoon niet", "signaal": "frustratie"},
+    {"text": "dankjewel, precies opgelost", "signaal": "waardering"},
+    {"text": "goed zo, dat scheelt me veel tijd", "signaal": "waardering"},
+    {"text": "boeiend, hoe zit dat systeem precies in elkaar", "signaal": "interesse"},
+    {"text": "leuk weetje, wist ik nog niet", "signaal": "interesse"},
+    {"text": "ik volg de logica niet helemaal", "signaal": "verwarring"},
+    {"text": "welke stap bedoel je nou precies", "signaal": "verwarring"},
+    {"text": "oké prima", "signaal": "kilte"},
+    {"text": "tof", "signaal": "kilte"},
+    {"text": "wat is 5 keer 12", "signaal": "neutraal"},
+    {"text": "reboot jezelf even", "signaal": "neutraal"},
+
+    {"text": "ik ga even helemaal focussen op dit stuk code", "signaal": "focus"},
+    {"text": "stil even, ik ben aan het doorwerken", "signaal": "focus"},
+    {"text": "laat me even geconcentreerd hieraan werken", "signaal": "focus"},
+    {"text": "ik zit nu even helemaal in de flow", "signaal": "focus"},
+    {"text": "geen afleiding nu, ik moet dit afmaken", "signaal": "focus"},
+    {"text": "ik ben even helemaal gefocust bezig", "signaal": "focus"},
+    {"text": "laat me even niet storen, ik werk door", "signaal": "focus"}
+  ]
+}
