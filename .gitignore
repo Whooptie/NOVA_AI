@@ -14,3 +14,10 @@ data/*.db-shm
 data/*.db-wal
 data/interactions.jsonl
 data/archive
+data/models/blobs
+data/models/manifests
+data/*.json
+!data/chess_settings.json
+identity/personality/*.json
+identity/personality/*.jsonl
+identity/personality/*.pkl
