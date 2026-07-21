@@ -33,3 +33,12 @@
 {"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:59:21.449264"}
 {"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T20:28:01.102539"}
 {"text": "wat is het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0832, "bron": "model_fallback", "tijdstip": "2026-07-19T20:28:22.847142"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:37.284653"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:42.131604"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:45.267634"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:48.249398"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:51.269013"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:54.173418"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:57.369318"}
+{"text": "python is snel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0331, "bron": "model_fallback", "tijdstip": "2026-07-21T13:12:24.093445"}
+{"text": "emergence", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0, "bron": "model_fallback", "tijdstip": "2026-07-21T13:13:40.311624"}

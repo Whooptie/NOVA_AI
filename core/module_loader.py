@@ -135,7 +135,7 @@ class ModuleLoader:
         start = time.time()
         response_layers = {
             "semantic": sem,
-            "word_associations": self.loaded_modules.get("word_associations"),
+            "word_associations": self.loaded_modules.get("word_associations_learner"),
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
         }
         resp_engine = response_engine.init_module(self.event_bus, layers=response_layers)
@@ -204,6 +204,35 @@ class ModuleLoader:
         micro.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["microlearning"] = micro
         self.event_bus.register_module("microlearning", micro)
+
+        # ----------------------------------------------------
+        # 3E. EMERGENCE ENGINE (Layer 7)
+        # ----------------------------------------------------
+        # Zelfde reden als response_engine (3B) en context_manager (3C)
+        # hierboven: krijgt een "layers"-dictionary mee, dus niet via
+        # de automatische dynamische scan (stap 3) te laden. Moet NA
+        # word_associations (stap 3), pattern_matcher (stap 3) en
+        # semantic ("sem", stap 1) staan, zodat loaded_modules[...]
+        # al bestaat op het moment dat emergence_engine ze nodig heeft.
+        #
+        # In deze eerste versie (Fase 1a) gebruikt emergence_engine
+        # enkel "word_associations" — de andere lagen staan hier al
+        # wel vast in de dictionary klaar voor latere uitbreidingen
+        # (tijdspatroon/Layer 2, kennisdichtheid/Layer 3, personality
+        # drift/Layer 6), zodat module_loader.py dan niet opnieuw
+        # aangepast moet worden.
+        from modules.experimental import emergence_engine
+
+        start = time.time()
+        emergence_layers = {
+            "semantic": sem,
+            "word_associations": self.loaded_modules.get("word_associations_learner"),
+            "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
+        }
+        emergence = emergence_engine.init_module(self.event_bus, layers=emergence_layers)
+        emergence.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["emergence_engine"] = emergence
+        self.event_bus.register_module("emergence_engine", emergence)
 
         # ----------------------------------------------------
         # 4. INTENT ROUTER ALS LAATSTE

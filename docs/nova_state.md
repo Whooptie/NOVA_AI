@@ -346,7 +346,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | Layer 4 | response_engine.py | ✅ KLAAR (Fase 1-5, 7; Fase 6 uitgesteld) | memory_layer4_roadmap.md |
 | Layer 5 | context_manager.py + activity/focus/presence_detector.py | ✅ KLAAR (alle 5 fases — tijd, activiteit, focus, aanwezigheid, gewogen interruption-logic) | memory_layer5_roadmap.md |
 | Layer 6 | personality_engine.py | ✅ KLAAR | identity_ROADMAP.md |
-| Layer 7 | emergence_engine.py | ❌ Nog te bouwen | memory_layer7_roadmap.md |
+| Layer 7 | emergence_engine.py | 🟡 IN OPBOUW (Fase 1a: skelet + insight-type 1 van 3-4) | memory_layer7_roadmap.md |
 
 **Bouwvolgorde:** Layer 0 eerst (foundation), dan 1 → 2 → 4 → 5 → 7.
 **Extra, buiten de 7 lagen:** een losse "User Preferences"-module (Kevin's voorkeuren/afkeuren) staat gepland — zie memory_user_preferences_roadmap.md
@@ -670,6 +670,35 @@ Beide bevestigd met live cijfers (energie convergeert nu stabiel naar een evenwi
 
 ---
 
+### Layer 7 — Emergence Engine (Fase 1a gestart, 20 juli 2026 — IN OPBOUW 🟡)
+
+Architectuurbeslissingen vastgelegd in overleg vóór het bouwen (zie `layer7_startbericht.md`, niet in dit bestand maar apart bewaard):
+- **Harde grens ML vs. symbolisch:** insight-hérkenning (patronen/clusters vinden) mag later een bounded ML-specialist worden, net als de geplande intent classifier. De output-táál (de sjabloonzin die Nova zegt) blijft ALTIJD sjabloon-gebaseerd — geen LLM/generatie. ML mag dus ooit "wat is belangrijk" herkennen, nooit "hoe zeg ik dit" verzinnen.
+- **Scope eerste versie:** max 3-4 insight-types (topic-frequentie/Layer 1, tijdspatroon/Layer 2, kennisdichtheid/Layer 3, evt. personality drift/Layer 6), niet alles tegelijk.
+- **Sjablonen klein gehouden:** ~4-6 opening-, ~4-6 midden-, 2-3 afsluitingsvarianten per insight-type, voor manueel controleerbare coherentie.
+- **Timing (mag Nova nu spreken) en inhoud-feedback (was dit insight juist) zijn twee gescheiden mechanismen** — timing hoort bij de nog te bouwen Activity-Aware Interaction, niet bij Layer 7 zelf.
+
+**Nieuw bestand:** `modules/experimental/emergence_engine.py`. Krijgt, net als `response_engine.py` (Layer 4) en `context_manager.py` (Layer 5), een `layers`-dictionary mee bij `init_module(event_bus, layers)` — dus HANDMATIG geladen in `module_loader.py` (nieuwe stap 3E, na stap 3D/microlearning, vóór de intent_router), niet via de dynamische module_loader-scan.
+
+**Fase 1a — skelet + insight-type 1 (sterkste woordverband via Layer 1), afgerond en getest (20 juli 2026):**
+
+- `analyze_topic_frequency()`: zoekt het sterkste, BETROUWBARE woordpaar over de hele Layer 1-dataset. Belangrijke correctie tijdens het bouwen: Layer 1's `get_stats()["strongest_associations"]` alleen gebruiken (zoals de oorspronkelijke roadmap-skeleton deed) koos stelselmatig eenmalige toevalstreffers (PMI wordt onbetrouwbaar hoog bij woorden die maar 1x samen voorkwamen), in plaats van een echt terugkerend patroon. Opgelost door het RUWE `associations`-attribuut rechtstreeks uit te lezen (dat wél `co_occurrence` bevat) en een TWEEDE drempel toe te voegen naast de bestaande PMI-confidence (`MIN_CONFIDENCE_WOORDVERBAND = 0.5`): `MIN_CO_OCCURRENCE_WOORDVERBAND = 5`, vaste symbolische waarden, geen geleerde/dynamische drempel.
+- Sjabloonsysteem (`_formuleer_woordverband()`): opening + midden + afsluiting, willekeurig gekozen via `random.choice()`, zelfde patroon als Layer 4 Fase 5's `_kies_variant()`. 5 openingen, 5 middenstukken, 3 afsluitingen.
+- `reflect()` publiceert `emergence:insight` per gevonden insight — **nog GEEN listener die dit doorstuurt naar `layer4_response`** (bewust een latere, aparte stap: eerst deze basis testen). Nova zegt dus nog niets proactief over deze inzichten.
+- `feedback(insight_type, success)` is bewust nog een LEGE STUB — publiceert enkel `emergence:learned_success`/`emergence:learned_failure`, slaat nog niets op. Latere stap: een echt opslagbestand (`insight_feedback.json` of SQLite-tabel), bijgehouden PER INSIGHT-TYPE.
+- Tijdelijk testcommando in `main.py`: `emergence` (roept `reflect()` handmatig aan, toont tekst + confidence per insight) en `emergence debug` (toont ruwe status van de `layers`-dictionary, gebruikt om bug #21 in `nova_changelog.md` te ontdekken).
+
+**Bijvangst tijdens het testen: bug #21 gevonden (zie `nova_changelog.md`).** `module_loader.py` vroeg Layer 1 overal op met de verkeerde dictionary-key (`"word_associations"` i.p.v. de echte `"word_associations_learner"`), waardoor zowel Layer 7 als — sinds 8 juli al — Layer 4's personal touch nooit echt werkten. Nu gefixt op beide plekken (stap 3B en 3E).
+
+**Nog te doen (Fase 1b en verder, geen bouwvolgorde vastgelegd):**
+- Overige 2-3 insight-types: tijdspatroon (Layer 2), kennisdichtheid (Layer 3), evt. personality drift (Layer 6)
+- Listener `emergence:insight` → `layer4_response`, met confidence-gate (voorstel uit `layer7_startbericht.md`: > 0.85)
+- Eenvoudige, tijdelijke timing-check (aangezien Activity-Aware Interaction nog niet bestaat) — of voorlopig gewoon altijd mogen spreken tot die module er is
+- `feedback()` echt laten opslaan, per insight-type
+
+---
+
+
 ## 🔄 Semantic — Status & Roadmap
 
 ### Fases 1-7 (VOLLEDIG KLAAR ✅)
@@ -808,9 +837,8 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 3. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
 4. 🟢 **Activity Awareness (activiteiten herkennen, correleren, proactief reageren)** — concept uitgewerkt (6 juli 2026), nog niet ingepland. Kern: generiek `"ik ga <activiteit>"`-patroon in intent_router.py publiceert `activity_started`-events die Layer 2 al generiek meetelt; daarnaast co-occurrence tussen activiteiten (bv. koffie + coderen) en duur-detectie met drempelwaarde voor proactieve pauze-suggesties — beide pure statistiek/timer-logica, geen ML. Optioneel scherm-detectie (psutil, geen ML) en camera-detectie (vereist extern vision-model als sensor, met privacy-ontwerp vooraf). Ook: mogelijke uitbreiding naar per-woord-timing voor Layer 4 (zie Layer 4-sectie). Volledig uitgewerkt in: **activity_awareness_roadmap.md**.
 5. 🟢 **Activity-Aware Interaction (interruption learning + contextuele suggesties)** — concept uitgewerkt (9 juli 2026), nog niet ingepland. Bouwt voort op Activity Awareness + Layer 5 (Layer 5 Fase 1-5 zijn intussen VOLLEDIG klaar): leert per activiteit een confidence-score op ("mag ik storen tijdens coderen?"), met vaste sjabloonvariatie zodat het niet elke keer identiek klinkt. Aparte, grotere uitbreiding: contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — puur co-occurrence-tellen zoals Activity Awareness Deel C, maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. **Belangrijke nuance (16 juli 2026, na afronding Layer 5 Fase 5):** Kevin's wens dat "Nova zelf leert wanneer ze wel/niet mag storen" hoort HIER thuis, niet in Layer 5 zelf — Fase 5 legt enkel de vaste score-gewichten vast (zie Layer 5-sectie); dit werkpunt zou die gewichten leren aanpassen op basis van Kevin's feedback, blijft daarbij mogelijk 100% symbolisch (tellen i.p.v. ML). Volledig uitgewerkt in: **interruption_learning_roadmap.md**.
-6. 🟢 **`behavior_modifiers.py`-koppeling** — `BehaviorModifiers` (`apply_energy_modulation()`, `apply_impulsivity()`, `apply_dramatic_flair()`) blijft ongebruikt, bewust niet meegenomen bij de Layer 6-koppeling van 17 juli 2026. Klein, nog open werkpunt.
 
-*(Afgeronde werkpunten verplaatst naar `nova_changelog.md`, 18 juli 2026 — inclusief Personality pipeline deel 1+2, microlearning.py, Layer 2 opruimwerk, Layer 5 Fase 1-5, Layer 6-integratie response_style, emotion_engine decay, Layer 6 identity-blueprint-koppeling, en het achtergrondthread-patroon.)*
+*(Afgeronde werkpunten verplaatst naar `nova_changelog.md`, 18 juli 2026 — inclusief Personality pipeline deel 1+2, microlearning.py, Layer 2 opruimwerk, Layer 5 Fase 1-5, Layer 6-integratie response_style, emotion_engine decay, Layer 6 identity-blueprint-koppeling, het achtergrondthread-patroon, en de `behavior_modifiers.py`-koppeling — zie changelog voor de correctie hierover.)*
 
 ---
 
