@@ -271,6 +271,40 @@ def main():
         user_input = input(f"{GREEN}Jij: {RESET}")
         wachten_op_input = False
 
+        # Tijdelijk debug-commando (mag later weer verwijderd worden):
+        # toont exact wat self.layers bevat, om het "dubbele laadweg"
+        # -vermoeden te bevestigen/ontkrachten.
+        if user_input.lower() == "emergence debug":
+            emergence = loader.loaded_modules.get("emergence_engine")
+            if not emergence:
+                print(f"{RED}emergence_engine-module niet gevonden.{RESET}")
+                continue
+            print(f"{CYAN}{emergence.debug_layers_status()}{RESET}")
+            continue
+
+        # Tijdelijk test-commando voor Layer 7 Fase 1a (mag je later
+        # weer verwijderen). Roept reflect() handmatig aan — er is nog
+        # GEEN automatische achtergrond-trigger en nog GEEN listener
+        # die dit doorstuurt naar layer4_response, dus dit commando is
+        # voorlopig de enige manier om te zien wat Layer 7 zou zeggen.
+        if user_input.lower() == "emergence":
+            emergence = loader.loaded_modules.get("emergence_engine")
+            if not emergence:
+                print(f"{RED}emergence_engine-module niet gevonden.{RESET}")
+                continue
+
+            resultaten = emergence.reflect()
+            if not resultaten:
+                print(f"{CYAN}Nog geen insight — waarschijnlijk te weinig data "
+                      f"(bv. nog geen woordassociatie boven de confidence-drempel).{RESET}")
+                continue
+
+            print(f"{CYAN}--- Layer 7: {len(resultaten)} insight(en) ---{RESET}")
+            for r in resultaten:
+                print(f"{CYAN}  type: {r['insight_type']} — confidence: {r['confidence']:.2f}{RESET}")
+                print(f"{CYAN}  tekst: {r['text']}{RESET}")
+            continue
+
         # Tijdelijk test-commando voor Fase 4 (mag je later weer verwijderen)
         if user_input.lower() == "onderhoud":
             mem = loader.loaded_modules.get("memory")

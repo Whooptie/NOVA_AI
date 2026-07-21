@@ -12861,5 +12861,146 @@
         "timestamp": "2026-07-19T11:05:12.263865"
       }
     ]
+  },
+  "snel": {
+    "senses": [
+      {
+        "sense_id": "snel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-21T11:12:24.226395",
+      "updated_at": "2026-07-21T11:12:24.227395",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-21T11:12:24.227395",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-21T11:12:24.227395",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "snel"
+        },
+        "timestamp": "2026-07-21T11:12:24.226395"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "snel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-21T11:12:24.227395"
+      }
+    ]
+  },
+  "elegant": {
+    "senses": [
+      {
+        "sense_id": "elegant#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-21T11:13:19.160600",
+      "updated_at": "2026-07-21T11:13:19.161596",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-21T11:13:19.161596",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-21T11:13:19.161596",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "elegant"
+        },
+        "timestamp": "2026-07-21T11:13:19.160600"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "elegant#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-21T11:13:19.161596"
+      }
+    ]
+  },
+  "emergence": {
+    "senses": [
+      {
+        "sense_id": "emergence#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-21T11:13:40.355786",
+      "updated_at": "2026-07-21T11:13:40.356848",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-21T11:13:40.356848",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-21T11:13:40.356848",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "emergence"
+        },
+        "timestamp": "2026-07-21T11:13:40.355786"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "emergence#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-21T11:13:40.356848"
+      }
+    ]
   }
 }
