@@ -228,6 +228,7 @@ class ModuleLoader:
             "semantic": sem,
             "word_associations": self.loaded_modules.get("word_associations_learner"),
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
+            "microlearning": self.loaded_modules.get("microlearning"),
         }
         emergence = emergence_engine.init_module(self.event_bus, layers=emergence_layers)
         emergence.__load_time_ms__ = int((time.time() - start) * 1000)

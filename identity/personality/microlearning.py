@@ -437,6 +437,22 @@ class MicroLearning:
                 pass
 
     # ---------------------------------------------------------
+    # Publieke API (voor andere modules, bv. Layer 7 emergence_engine.py)
+    # ---------------------------------------------------------
+    def get_growth_metrics(self) -> dict:
+        """
+        Geeft de per-trait groei-tellers terug (positive_count/
+        negative_count/total_shifts/last_shift/last_shift_direction).
+
+        Geeft de AL INGELEZEN, levende self.metrics["traits"]-dict
+        terug — geen nieuwe schijf-lezing nodig, want deze data wordt
+        toch al bij elke wijziging bijgewerkt via _save_metrics().
+        Bewust een kopie (dict(...)) i.p.v. de originele referentie,
+        zodat een aanroeper deze data nooit per ongeluk kan wijzigen.
+        """
+        return dict(self.metrics.get("traits", {}))
+
+    # ---------------------------------------------------------
     # 6. Opslaan
     # ---------------------------------------------------------
     def _save_metrics(self):
