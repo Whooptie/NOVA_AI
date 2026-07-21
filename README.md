@@ -1,17 +1,5 @@
 <div align="center">
 
-# 🌟 Nova AI
-
-**A fully symbolic, local AI companion — built without an LLM, without the cloud.**
-
-![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local-2ea44f?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge)
-![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red?style=for-the-badge)
-
-</div>
-
 ---
 
 ## 🤖 What is Nova?
@@ -54,33 +42,35 @@ Nova is built on **symbolic AI**: she learns through explicit concepts, relation
 
 ## ✨ What can Nova already do?
 
-| Feature | Status |
-|---|---|
-| 💬 Natural language conversation | ✅ |
-| ♟️ Playing chess against Stockfish (with stats & colored board) | ✅ |
-| 🌤️ Weather forecasts (multiple days) | ✅ |
-| 📚 Consulting Wikipedia & auto-learning | ✅ |
-| 🧠 Understanding semantic concepts (133+ concepts, 147 senses) | ✅ |
-| 🔗 Learning word associations through use (PMI scoring) | ✅ |
-| 📊 Recognizing behavioral patterns by time & frequency | ✅ |
-| 💡 Template-based responses with tone variation | ✅ |
-| 😊 Own personality, emotions & expression | ✅ |
-| 🔄 Restarting itself without data loss (`/reboot`) | ✅ |
-| 🕐 Time awareness (clock, date, timezone) | ✅ |
-| ➗ Mathematical calculations | ✅ |
+
+| Feature                                                           | Status |
+| ------------------------------------------------------------------- | -------- |
+| 💬 Natural language conversation                                  | ✅     |
+| ♟️ Playing chess against Stockfish (with stats & colored board) | ✅     |
+| 🌤️ Weather forecasts (multiple days)                            | ✅     |
+| 📚 Consulting Wikipedia & auto-learning                           | ✅     |
+| 🧠 Understanding semantic concepts (133+ concepts, 147 senses)    | ✅     |
+| 🔗 Learning word associations through use (PMI scoring)           | ✅     |
+| 📊 Recognizing behavioral patterns by time & frequency            | ✅     |
+| 💡 Template-based responses with tone variation                   | ✅     |
+| 😊 Own personality, emotions & expression                         | ✅     |
+| 🔄 Restarting itself without data loss (`/reboot`)                | ✅     |
+| 🕐 Time awareness (clock, date, timezone)                         | ✅     |
+| ➗ Mathematical calculations                                      | ✅     |
 
 ---
 
 ## 🔍 What makes Nova different?
 
-| Trait | ChatGPT / LLM | Nova (Symbolic) |
-|---|---|---|
+
+| Trait                | ChatGPT / LLM                      | Nova (Symbolic)                     |
+| ---------------------- | ------------------------------------ | ------------------------------------- |
 | **Knowledge source** | Billions of parameters (black box) | Explicit concepts (`concepts.json`) |
-| **Learning** | Fine-tuning (slow, expensive) | `teach` command (instant) |
-| **Reasoning** | Statistical guessing | Chaining (`is_a_chained`) |
-| **Privacy** | Data sent to the cloud | 100% local |
-| **Explainability** | "We don't know why" | Every answer is traceable |
-| **Works offline?** | No | Yes |
+| **Learning**         | Fine-tuning (slow, expensive)      | `teach` command (instant)           |
+| **Reasoning**        | Statistical guessing               | Chaining (`is_a_chained`)           |
+| **Privacy**          | Data sent to the cloud             | 100% local                          |
+| **Explainability**   | "We don't know why"                | Every answer is traceable           |
+| **Works offline?**   | No                                 | Yes                                 |
 
 ---
 
@@ -97,16 +87,17 @@ User → IntentRouter → EventBus → Modules
 
 ### 🧠 The memory — 7 layers
 
-| Layer | Name | Status |
-|---|---|---|
-| Layer 0 | SQLite storage (WAL, write buffering, crash recovery) | ✅ Done |
-| Layer 1 | Word associations learner (PMI scoring) | ✅ Done |
-| Layer 2 | Behavioral patterns (timing, frequency, anomaly detection) | ✅ Done |
-| Layer 3 | Semantic reasoning (concepts, relations, inference) | ✅ Done |
-| Layer 4 | Response generator (templates, tone variation, routing) | ✅ Done |
-| Layer 5 | Context management (interruption logic) | 🔜 Planned |
-| Layer 6 | Personality & emotion engine | ✅ Done |
-| Layer 7 | Emergent behavior (self-awareness) | 🔮 Far future |
+
+| Layer   | Name                                                       | Status        |
+| --------- | ------------------------------------------------------------ | --------------- |
+| Layer 0 | SQLite storage (WAL, write buffering, crash recovery)      | ✅ Done       |
+| Layer 1 | Word associations learner (PMI scoring)                    | ✅ Done       |
+| Layer 2 | Behavioral patterns (timing, frequency, anomaly detection) | ✅ Done       |
+| Layer 3 | Semantic reasoning (concepts, relations, inference)        | ✅ Done       |
+| Layer 4 | Response generator (templates, tone variation, routing)    | ✅ Done       |
+| Layer 5 | Context management (interruption logic)                    | 🔜 Planned    |
+| Layer 6 | Personality & emotion engine                               | ✅ Done       |
+| Layer 7 | Emergent behavior (self-awareness)                         | 🔮 Far future |
 
 ## 💻 How it works — an example
 
@@ -214,7 +205,7 @@ python main.py
 
 ## 👤 About this project
 
-Nova is being built by **Kevin** — a self-taught developer from Bruges, Belgium.
+Nova is being built by **Kevin** — a self-taught developer from Belgium.
 No prior knowledge. No programming background. Just curiosity and persistence.
 
 This project started as an experiment and is growing into a full local AI system with a planned roadmap of 498+ modules.
@@ -224,9 +215,3 @@ This project started as an experiment and is growing into a full local AI system
 ---
 
 <div align="center">
-
-**⭐ This code is publicly visible, but not free to use — see LICENSE.txt**
-
-*Built with Python · Powered by curiosity · No LLM*
-
-</div>
