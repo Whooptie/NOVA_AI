@@ -1,63 +1,63 @@
-NOVA AI — LICENTIE (Bekijkbaar, niet herbruikbaar)
-====================================================
+NOVA AI — LICENSE (Viewable, Not Reusable)
+============================================
 
 Copyright (c) 2025-2026 Kevin (Whooptie)
-Alle rechten voorbehouden.
+All rights reserved.
 
 ---
 
-OVER DEZE REPOSITORY
+ABOUT THIS REPOSITORY
 
-Deze repository is publiek zichtbaar zodat anderen het project
-kunnen bekijken, er inspiratie uit kunnen halen, en kunnen volgen
-hoe Nova gebouwd wordt. Publiek zichtbaar betekent echter niet
-publiek herbruikbaar — er is bewust géén open-source licentie
-(zoals MIT of Apache) op deze code van toepassing.
-
----
-
-WAT IS TOEGESTAAN
-
-- De code bekijken, lezen en er persoonlijk uit leren.
-- Kleine fragmenten citeren met bronvermelding (bv. in een blogpost
-  of forumdiscussie over het project).
+This repository is publicly visible so that others can view the
+project, draw inspiration from it, and follow how Nova is being
+built. Publicly visible does not mean publicly reusable — there
+is deliberately no open-source license (such as MIT or Apache)
+applied to this code.
 
 ---
 
-WAT NIET IS TOEGESTAAN
+WHAT IS ALLOWED
 
-Zonder uitdrukkelijke schriftelijke toestemming van de auteur is
-het verboden om:
-
-1. Deze code (geheel of gedeeltelijk) te kopiëren, forken of
-   herdistribueren met als doel een eigen versie te bouwen.
-2. De software te gebruiken als basis voor andere projecten
-   (geen afgeleide werken).
-3. De software commercieel te gebruiken of te verkopen.
-4. De architectuur, modules of datastructuren na te bootsen voor
-   commerciële doeleinden.
+- Viewing and reading the code, and learning from it personally.
+- Quoting small fragments with attribution (e.g. in a blog post
+  or forum discussion about the project).
 
 ---
 
-BELANGRIJK — PERSOONLIJKE DATA
+WHAT IS NOT ALLOWED
 
-Sommige databestanden in deze repository (bijvoorbeeld concepts.json,
-word_associations.json, patterns_layer2.json en de bestanden onder
-identity/personality/) zijn Nova's persoonlijke leergeheugen,
-opgebouwd tijdens gesprekken met de auteur. Dit zijn geen
-voorbeeld- of testbestanden. Behandel deze data niet als publiek
-herbruikbare dataset.
+Without the author's express written permission, it is prohibited
+to:
+
+1. Copy, fork, or redistribute this code (in whole or in part)
+   with the intent of building your own version.
+2. Use the software as a basis for other projects
+   (no derivative works).
+3. Use the software commercially or sell it.
+4. Replicate the architecture, modules, or data structures for
+   commercial purposes.
 
 ---
 
-GEEN GARANTIE
+IMPORTANT — PERSONAL DATA
 
-Deze software wordt getoond "zoals ze is", zonder enige garantie
-van welke aard dan ook. De auteur is niet aansprakelijk voor enige
-schade die voortvloeit uit het gebruik of bekijken van deze software.
+Some data files in this repository (for example concepts.json,
+word_associations.json, patterns_layer2.json, and the files under
+identity/personality/) are Nova's personal learned memory, built
+up through conversations with the author. These are not sample
+or test files. Do not treat this data as a publicly reusable
+dataset.
+
+---
+
+NO WARRANTY
+
+This software is provided "as is", without warranty of any kind.
+The author is not liable for any damages arising from the use or
+viewing of this software.
 
 ---
 
 CONTACT
 
-Voor vragen of toestemmingsverzoeken: via GitHub @Whooptie
+For questions or permission requests: via GitHub @Whooptie
