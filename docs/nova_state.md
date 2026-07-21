@@ -346,7 +346,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | Layer 4 | response_engine.py | ✅ KLAAR (Fase 1-5, 7; Fase 6 uitgesteld) | memory_layer4_roadmap.md |
 | Layer 5 | context_manager.py + activity/focus/presence_detector.py | ✅ KLAAR (alle 5 fases — tijd, activiteit, focus, aanwezigheid, gewogen interruption-logic) | memory_layer5_roadmap.md |
 | Layer 6 | personality_engine.py | ✅ KLAAR | identity_ROADMAP.md |
-| Layer 7 | emergence_engine.py | 🟡 IN OPBOUW (Fase 1a: skelet + insight-type 1 van 3-4) | memory_layer7_roadmap.md |
+| Layer 7 | emergence_engine.py | 🟡 IN OPBOUW (Fase 1a-1d: skelet + alle 4 insight-types klaar; listener/timing/feedback nog te bouwen) | memory_layer7_roadmap.md |
 
 **Bouwvolgorde:** Layer 0 eerst (foundation), dan 1 → 2 → 4 → 5 → 7.
 **Extra, buiten de 7 lagen:** een losse "User Preferences"-module (Kevin's voorkeuren/afkeuren) staat gepland — zie memory_user_preferences_roadmap.md
@@ -670,34 +670,55 @@ Beide bevestigd met live cijfers (energie convergeert nu stabiel naar een evenwi
 
 ---
 
-### Layer 7 — Emergence Engine (Fase 1a gestart, 20 juli 2026 — IN OPBOUW 🟡)
+### Layer 7 — Emergence Engine (Fase 1a-1d afgerond, 20 juli 2026 — IN OPBOUW 🟡)
 
 Architectuurbeslissingen vastgelegd in overleg vóór het bouwen (zie `layer7_startbericht.md`, niet in dit bestand maar apart bewaard):
 - **Harde grens ML vs. symbolisch:** insight-hérkenning (patronen/clusters vinden) mag later een bounded ML-specialist worden, net als de geplande intent classifier. De output-táál (de sjabloonzin die Nova zegt) blijft ALTIJD sjabloon-gebaseerd — geen LLM/generatie. ML mag dus ooit "wat is belangrijk" herkennen, nooit "hoe zeg ik dit" verzinnen.
-- **Scope eerste versie:** max 3-4 insight-types (topic-frequentie/Layer 1, tijdspatroon/Layer 2, kennisdichtheid/Layer 3, evt. personality drift/Layer 6), niet alles tegelijk.
+- **Scope eerste versie:** max 3-4 insight-types (topic-frequentie/Layer 1, tijdspatroon/Layer 2, kennisdichtheid/Layer 3, evt. personality drift/Layer 6), niet alles tegelijk. **Alle 4 zijn inmiddels gebouwd.**
 - **Sjablonen klein gehouden:** ~4-6 opening-, ~4-6 midden-, 2-3 afsluitingsvarianten per insight-type, voor manueel controleerbare coherentie.
 - **Timing (mag Nova nu spreken) en inhoud-feedback (was dit insight juist) zijn twee gescheiden mechanismen** — timing hoort bij de nog te bouwen Activity-Aware Interaction, niet bij Layer 7 zelf.
 
-**Nieuw bestand:** `modules/experimental/emergence_engine.py`. Krijgt, net als `response_engine.py` (Layer 4) en `context_manager.py` (Layer 5), een `layers`-dictionary mee bij `init_module(event_bus, layers)` — dus HANDMATIG geladen in `module_loader.py` (nieuwe stap 3E, na stap 3D/microlearning, vóór de intent_router), niet via de dynamische module_loader-scan.
+**Nieuw bestand:** `modules/experimental/emergence_engine.py`. Krijgt, net als `response_engine.py` (Layer 4) en `context_manager.py` (Layer 5), een `layers`-dictionary mee bij `init_module(event_bus, layers)` — dus HANDMATIG geladen in `module_loader.py` (stap 3E, na stap 3D/microlearning, vóór de intent_router), niet via de dynamische module_loader-scan. `layers`-dict bevat inmiddels: `semantic`, `word_associations`, `pattern_matcher`, `microlearning`.
 
-**Fase 1a — skelet + insight-type 1 (sterkste woordverband via Layer 1), afgerond en getest (20 juli 2026):**
+**Fase 1a — insight-type 1: sterkste woordverband (Layer 1), afgerond en getest (20 juli 2026):**
 
 - `analyze_topic_frequency()`: zoekt het sterkste, BETROUWBARE woordpaar over de hele Layer 1-dataset. Belangrijke correctie tijdens het bouwen: Layer 1's `get_stats()["strongest_associations"]` alleen gebruiken (zoals de oorspronkelijke roadmap-skeleton deed) koos stelselmatig eenmalige toevalstreffers (PMI wordt onbetrouwbaar hoog bij woorden die maar 1x samen voorkwamen), in plaats van een echt terugkerend patroon. Opgelost door het RUWE `associations`-attribuut rechtstreeks uit te lezen (dat wél `co_occurrence` bevat) en een TWEEDE drempel toe te voegen naast de bestaande PMI-confidence (`MIN_CONFIDENCE_WOORDVERBAND = 0.5`): `MIN_CO_OCCURRENCE_WOORDVERBAND = 5`, vaste symbolische waarden, geen geleerde/dynamische drempel.
 - Sjabloonsysteem (`_formuleer_woordverband()`): opening + midden + afsluiting, willekeurig gekozen via `random.choice()`, zelfde patroon als Layer 4 Fase 5's `_kies_variant()`. 5 openingen, 5 middenstukken, 3 afsluitingen.
+
+**Fase 1b — insight-type 2: sterkste tijdspatroon (Layer 2), afgerond en getest (20 juli 2026):**
+
+- `analyze_timing_pattern()`: gebruikt Layer 2's `get_all_patterns()` (niet `get_stats()`, die geeft geen per-patroon-info terug) om het event_type met de hoogste `confidence` te vinden, mits `total >= pattern_matcher.MIN_OBSERVATIES_VOOR_ANOMALIE` — bewust dezelfde betrouwbaarheidsdrempel hergebruikt die Layer 2 zelf al gebruikt voor anomalieën, i.p.v. een nieuwe losse waarde te verzinnen.
+- **Onderwerp-vertaling nodig:** `intent_router.py`'s `_emit_topic()` gebruikt bewust de Engelse, interne categorienaam (bv. `"chess"`, zie `topic_events_roadmap.md`) — zonder vertaling zou een Nederlandse sjabloonzin een los Engels woord tonen. Nieuwe `_topic_naam_labels`-opzoektabel (voorlopig enkel `"chess" → "schaken"`) lost dit op; onbekende/nieuwe topics vallen netjes terug op hun kale naam.
+- `_onderwerp_label()` vertaalt ook `"chat_message"`/`"chat_response"` naar `"onze gesprekken"`.
+
+**Fase 1c — insight-type 3: kennisdichtheid (Layer 3), afgerond en getest (20 juli 2026):**
+
+- `analyze_knowledge_density()`: `semantic.py`'s publieke API (`SemanticConceptsModule`) heeft GEEN `get_stats()`. Gebruikt daarom het publieke (niet-underscore) attribuut `semantic_module.store.concepts` rechtstreeks (zelfde aanpak als Layer 1's `associations`-attribuut) — telt per concept het TOTAAL aantal relaties over ALLE senses samen, mits dat totaal minstens `MIN_RELATIES_VOOR_KENNISDICHTHEID = 3` haalt (voorkomt dat een concept met 1 relatie al als "meeste kennis" geldt).
+- Live bevestigd tegen Kevin's echte `concepts.json`: "fiets" (13 relaties) als sterkste resultaat.
+
+**Fase 1d — optioneel insight-type 4: personality drift (Layer 6), afgerond en getest (20 juli 2026):**
+
+- **Belangrijke eerlijkheidscorrectie tijdens het bouwen:** dit meet NIET "hoeveel is een trait afgeweken van zijn originele startwaarde" — `traits.json` bevat enkel de HUIDIGE waarden, geen startwaarden, dus die berekening was met de beschikbare data niet eerlijk te maken. In plaats daarvan gebruikt `analyze_personality_drift()` `growth_metrics.json`'s `total_shifts` — welke trait het VAAKST daadwerkelijk is bijgesteld (niet enkel hoe vaak een signaal geteld werd, dat leidt pas tot een shift bij het bereiken van de drempel). Bij een gelijkstand in `total_shifts` beslist de meest recente `last_shift`-timestamp.
+- **Architectuurkeuze (afgewogen met Kevin):** `personality_engine.py` leest `growth_metrics.json` zelf niet in — enkel `microlearning.py` doet dat. Om de bestaande laag-scheiding te behouden (elke laag praat met een ándere laag via een publiek object/methode, nooit door rechtstreeks een ander laag zijn interne bestand te lezen), kreeg `microlearning.py` een nieuwe, kleine publieke methode `get_growth_metrics()` — geeft de al-ingelezen, levende `self.metrics["traits"]`-dict terug (als kopie, tegen per-ongeluk-wijzigen). Geen nieuwe schijf-lezing nodig.
+- `microlearning` toegevoegd aan `module_loader.py`'s `emergence_layers`-dictionary (stap 3E) — geen andere wijziging in de laadvolgorde nodig, stap 3D (microlearning) liep al vóór stap 3E.
+- Nieuwe `_trait_labels`-opzoektabel vertaalt interne trait-namen (bv. `"reflection_depth"`) naar leesbaar Nederlands (`"hoe diep ik nadenk"`) — zelfde patroon als de topic-naam-vertaling uit Fase 1b.
+- Live bevestigd tegen Kevin's echte `growth_metrics.json`: "hoe diep ik nadenk" (`reflection_depth`, 1 shift, meest recente timestamp) wint een gelijkstand met `social_warmth` (ook 1 shift, oudere timestamp).
+
+**Gemeenschappelijk aan alle 4 insight-types:**
 - `reflect()` publiceert `emergence:insight` per gevonden insight — **nog GEEN listener die dit doorstuurt naar `layer4_response`** (bewust een latere, aparte stap: eerst deze basis testen). Nova zegt dus nog niets proactief over deze inzichten.
 - `feedback(insight_type, success)` is bewust nog een LEGE STUB — publiceert enkel `emergence:learned_success`/`emergence:learned_failure`, slaat nog niets op. Latere stap: een echt opslagbestand (`insight_feedback.json` of SQLite-tabel), bijgehouden PER INSIGHT-TYPE.
-- Tijdelijk testcommando in `main.py`: `emergence` (roept `reflect()` handmatig aan, toont tekst + confidence per insight) en `emergence debug` (toont ruwe status van de `layers`-dictionary, gebruikt om bug #21 in `nova_changelog.md` te ontdekken).
+- Tijdelijk testcommando in `main.py`: `emergence` (roept `reflect()` handmatig aan, toont tekst + confidence per insight) en `emergence debug` (toont ruwe status van de `layers`-dictionary).
 
 **Bijvangst tijdens het testen: bug #21 gevonden (zie `nova_changelog.md`).** `module_loader.py` vroeg Layer 1 overal op met de verkeerde dictionary-key (`"word_associations"` i.p.v. de echte `"word_associations_learner"`), waardoor zowel Layer 7 als — sinds 8 juli al — Layer 4's personal touch nooit echt werkten. Nu gefixt op beide plekken (stap 3B en 3E).
 
-**Nog te doen (Fase 1b en verder, geen bouwvolgorde vastgelegd):**
-- Overige 2-3 insight-types: tijdspatroon (Layer 2), kennisdichtheid (Layer 3), evt. personality drift (Layer 6)
-- Listener `emergence:insight` → `layer4_response`, met confidence-gate (voorstel uit `layer7_startbericht.md`: > 0.85)
+**Bijvangst tijdens het testen (Fase 1b): eigen fout van Claude, direct gevonden en gefixt.** Bij het opruimen van een dubbele `_onderwerp_label()`-definitie werd per ongeluk ook de functie-header van `analyze_topic_frequency()` verwijderd, waardoor `emergence` crashte met een `AttributeError`. Hersteld en sindsdien elke uitbreiding end-to-end getest (alle insight-types tegelijk via `reflect()`, niet enkel apart) vóór het bestand werd doorgegeven — geen vergelijkbaar probleem meer opgetreden bij Fase 1c/1d.
+
+**Nog te doen:**
+- Listener `emergence:insight` → `layer4_response`, met confidence-gate (voorstel uit `layer7_startbericht.md`: > 0.85) — LET OP: `kennisdichtheid` en `personality_drift` gebruiken een ANDER soort "confidence" (ruw aantal relaties/shifts, geen 0-1-score) dan `woordverband`/`tijdspatroon` (PMI/Layer 2-confidence, wél 0-1) — een uniforme confidence-gate moet hier rekening mee houden, nog niet opgelost.
 - Eenvoudige, tijdelijke timing-check (aangezien Activity-Aware Interaction nog niet bestaat) — of voorlopig gewoon altijd mogen spreken tot die module er is
 - `feedback()` echt laten opslaan, per insight-type
 
 ---
-
 
 ## 🔄 Semantic — Status & Roadmap
 
