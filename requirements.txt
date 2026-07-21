@@ -1,44 +1,44 @@
 # ============================================================
 # Nova AI — Python dependencies
 # ============================================================
-# Installeren via: pip install -r requirements.txt
-# Python 3.10+ vereist
+# Install via: pip install -r requirements.txt
+# Python 3.10+ required
 # ============================================================
 
-# --- Schaak ---
-python-chess>=1.999        # Stockfish interface + bordbeheer
+# --- Chess ---
+python-chess>=1.999        # Stockfish interface + board management
 
-# --- Weer ---
+# --- Weather ---
 requests>=2.31.0           # OpenWeatherMap API calls
 
 # --- Wikipedia ---
 wikipedia-api>=0.6.0       # Wikipedia AutoTeacher
 
-# --- Omgevingsvariabelen ---
-python-dotenv>=1.0.1       # .env bestand lezen (API keys)
+# --- Environment variables ---
+python-dotenv>=1.0.1       # Reads the .env file (API keys)
 
-# --- JSON validatie ---
-jsonschema>=4.21.0         # identity.json / schema.json validatie
+# --- JSON validation ---
+jsonschema>=4.21.0         # identity.json / schema.json validation
 
 # --- Layer 5: Context & Activity Awareness ---
-pygetwindow>=0.0.9         # activity_detector.py — actief venster/proces detecteren
-mediapipe>=0.10.9          # presence_detector.py — BlazeFace gezichtsdetectie (bounded ML-tool, geen LLM)
+pygetwindow>=0.0.9         # activity_detector.py — active window/process detection
+mediapipe>=0.10.9          # presence_detector.py — BlazeFace face detection (bounded ML tool, not an LLM)
 
 # --- Layer 6: Personality / Adaptive Learning ---
-scikit-learn>=1.4.0        # train_classifier.py / microlearning.py — signal_model.pkl (bounded ML-classifier, geen LLM)
+scikit-learn>=1.4.0        # train_classifier.py / microlearning.py — signal_model.pkl (bounded ML classifier, not an LLM)
 
 # --- Testing ---
 pytest>=8.2.0              # Unit tests
 
-# --- Standaardbibliotheek (geen installatie nodig) ---
-# sqlite3      — Layer 0 geheugen (ingebouwd in Python)
-# threading    — achtergrondtimers, daemon threads
-# json         — concepts.json, alle databestanden
-# re           — reguliere expressies in intent_router
-# datetime     — tijdsbewustzijn, dagpatronen
+# --- Standard library (no installation needed) ---
+# sqlite3      — Layer 0 memory (built into Python)
+# threading    — background timers, daemon threads
+# json         — concepts.json, all data files
+# re           — regular expressions in intent_router
+# datetime     — time awareness, day patterns
 # logging      — RotatingFileHandler
-# subprocess   — Stockfish proces, reboot
+# subprocess   — Stockfish process, reboot
 # atexit       — graceful shutdown hooks
-# pathlib      — portabele bestandspaden
+# pathlib      — portable file paths
 # ctypes       — focus_detector.py (Windows GetLastInputInfo)
-# pickle       — signal_model.pkl in-/uitladen
+# pickle       — loading/saving signal_model.pkl
