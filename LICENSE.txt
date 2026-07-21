@@ -1,35 +1,36 @@
-NOVA AI — PERSOONLIJKE GEBRUIKSLICENTIE
-=======================================
+NOVA AI — LICENTIE (Bekijkbaar, niet herbruikbaar)
+====================================================
 
 Copyright (c) 2025-2026 Kevin (Whooptie)
 Alle rechten voorbehouden.
 
 ---
 
-DIT IS EEN PRIVÉPROJECT
+OVER DEZE REPOSITORY
 
-Deze software, inclusief alle bijbehorende broncode, documentatie,
-databestanden en architectuurbeslissingen, is het exclusieve eigendom
-van de auteur en is NIET gelicenseerd voor publiek gebruik,
-distributie, modificatie of commerciële toepassing.
+Deze repository is publiek zichtbaar zodat anderen het project
+kunnen bekijken, er inspiratie uit kunnen halen, en kunnen volgen
+hoe Nova gebouwd wordt. Publiek zichtbaar betekent echter niet
+publiek herbruikbaar — er is bewust géén open-source licentie
+(zoals MIT of Apache) op deze code van toepassing.
 
 ---
 
 WAT IS TOEGESTAAN
 
-- Persoonlijk gebruik door de eigenaar (Kevin) op eigen hardware.
-- Inzage door personen die daar expliciet toestemming voor hebben
-  gekregen van de eigenaar.
+- De code bekijken, lezen en er persoonlijk uit leren.
+- Kleine fragmenten citeren met bronvermelding (bv. in een blogpost
+  of forumdiscussie over het project).
 
 ---
 
 WAT NIET IS TOEGESTAAN
 
-Zonder uitdrukkelijke schriftelijke toestemming van de eigenaar is
+Zonder uitdrukkelijke schriftelijke toestemming van de auteur is
 het verboden om:
 
-1. Deze software of delen ervan te kopiëren, distribueren of
-   publiek te maken.
+1. Deze code (geheel of gedeeltelijk) te kopiëren, forken of
+   herdistribueren met als doel een eigen versie te bouwen.
 2. De software te gebruiken als basis voor andere projecten
    (geen afgeleide werken).
 3. De software commercieel te gebruiken of te verkopen.
@@ -38,11 +39,22 @@ het verboden om:
 
 ---
 
+BELANGRIJK — PERSOONLIJKE DATA
+
+Sommige databestanden in deze repository (bijvoorbeeld concepts.json,
+word_associations.json, patterns_layer2.json en de bestanden onder
+identity/personality/) zijn Nova's persoonlijke leergeheugen,
+opgebouwd tijdens gesprekken met de auteur. Dit zijn geen
+voorbeeld- of testbestanden. Behandel deze data niet als publiek
+herbruikbare dataset.
+
+---
+
 GEEN GARANTIE
 
-Deze software wordt geleverd "zoals ze is", zonder enige garantie
+Deze software wordt getoond "zoals ze is", zonder enige garantie
 van welke aard dan ook. De auteur is niet aansprakelijk voor enige
-schade die voortvloeit uit het gebruik van deze software.
+schade die voortvloeit uit het gebruik of bekijken van deze software.
 
 ---
 
