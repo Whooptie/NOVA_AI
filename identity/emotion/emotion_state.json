@@ -17,11 +17,11 @@
     "cooldown_timer": 0
   },
   "overstimulation": {
-    "level": 0.4032734535137812,
+    "level": 0.06,
     "threshold": 0.75,
     "signs_active": [],
     "last_overflow_behavior": "iets_sneller_pratend",
-    "last_trigger_timestamp": 1784630937.3967018,
+    "last_trigger_timestamp": 1784747209.2383573,
     "decay_per_minute": 0.05
   },
   "sync": {

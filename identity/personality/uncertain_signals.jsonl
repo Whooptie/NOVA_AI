@@ -42,3 +42,18 @@
 {"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:57.369318"}
 {"text": "python is snel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0331, "bron": "model_fallback", "tijdstip": "2026-07-21T13:12:24.093445"}
 {"text": "emergence", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0, "bron": "model_fallback", "tijdstip": "2026-07-21T13:13:40.311624"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:22:38.415694"}
+{"text": "ik ga koffie zetten", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:23:16.303986"}
+{"text": "ik ga gamen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:23:27.682741"}
+{"text": "ik ga lezen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:23:31.749809"}
+{"text": "ik ga slapen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:26:25.802209"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:10.306160"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:28.095966"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:45.492049"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:06:55.051626"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:10:08.999411"}
+{"text": "nee", "signaal": "kilte", "model_signaal": "neutraal", "marge": 0.0, "bron": "woordenlijst", "tijdstip": "2026-07-22T21:12:05.094145"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:23:31.437993"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:41:47.423449"}
+{"text": "ik ga slapen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:43:48.341796"}
+{"text": "ik ga lezen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:49:55.092525"}

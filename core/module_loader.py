@@ -14,7 +14,7 @@ class ModuleLoader:
         # ----------------------------------------------------
         # 1. CORE MODULES
         # ----------------------------------------------------
-        from core import memory, semantic, patterns, logger, intent_router, reboot_manager
+        from core import memory, semantic, patterns, logger, intent_router, reboot_manager, pending_question, interruption_tracker
 
         # Memory
         start = time.time()
@@ -64,6 +64,30 @@ class ModuleLoader:
         reboot_mgr.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["reboot_manager"] = reboot_mgr
         self.event_bus.register_module("reboot_manager", reboot_mgr)
+
+        # Pending Question (kortlevend "wacht ik op een antwoord?"-
+        # geheugen, zie core/pending_question.py). MOET vóór
+        # intent_router (sectie 4) geladen zijn, want intent_router
+        # gaat dit bij elk bericht raadplegen via
+        # event_bus.modules.get("pending_question"). Geen "sem"-
+        # parameter nodig, net als memory/patterns/logger hierboven.
+        start = time.time()
+        pending_q = pending_question.init_module(self.event_bus)
+        pending_q.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["pending_question"] = pending_q
+        self.event_bus.register_module("pending_question", pending_q)
+
+        # Interruption Tracker (Activity-Aware Interaction, zie
+        # core/interruption_tracker.py) -- houdt per activiteit een
+        # confidence-score bij (hoe vaak mocht Nova storen). Geen
+        # harde laadvolgorde-eis t.o.v. andere modules hier, maar
+        # logisch gegroepeerd bij pending_question (allebei kleine,
+        # gedeelde hulpmodules zonder "layers"-dictionary).
+        start = time.time()
+        interruption = interruption_tracker.init_module(self.event_bus)
+        interruption.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["interruption_tracker"] = interruption
+        self.event_bus.register_module("interruption_tracker", interruption)
 
         # ----------------------------------------------------
         # 2. ZONE + TIME ENGINE (altijd eerst)
@@ -137,6 +161,7 @@ class ModuleLoader:
             "semantic": sem,
             "word_associations": self.loaded_modules.get("word_associations_learner"),
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
+            "interruption_tracker": self.loaded_modules.get("interruption_tracker"),
         }
         resp_engine = response_engine.init_module(self.event_bus, layers=response_layers)
         resp_engine.__load_time_ms__ = int((time.time() - start) * 1000)
@@ -229,6 +254,7 @@ class ModuleLoader:
             "word_associations": self.loaded_modules.get("word_associations_learner"),
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
             "microlearning": self.loaded_modules.get("microlearning"),
+            "context_manager": self.loaded_modules.get("context_manager"),
         }
         emergence = emergence_engine.init_module(self.event_bus, layers=emergence_layers)
         emergence.__load_time_ms__ = int((time.time() - start) * 1000)

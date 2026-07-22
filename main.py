@@ -139,6 +139,14 @@ def achtergrond_loop(loader):
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in check_pauze(): {e}")
 
+            # Activity-Aware Interaction (22 juli 2026): checkt of de
+            # actieve activiteit al lang genoeg loopt om Nova's "mag
+            # ik storen?"-vraag te triggeren.
+            try:
+                watcher.check_activity_interruption()
+            except Exception as e:
+                print(f"[Achtergrondthread] Fout in check_activity_interruption(): {e}")
+
         # Layer 5, Fase 2: activiteit periodiek detecteren, zodat
         # Layer 2 (pattern_matcher.py) dit als event_type kan meetellen
         # en context_manager.py altijd een vers "duration_minutes" heeft
@@ -282,11 +290,14 @@ def main():
             print(f"{CYAN}{emergence.debug_layers_status()}{RESET}")
             continue
 
-        # Tijdelijk test-commando voor Layer 7 Fase 1a (mag je later
-        # weer verwijderen). Roept reflect() handmatig aan — er is nog
-        # GEEN automatische achtergrond-trigger en nog GEEN listener
-        # die dit doorstuurt naar layer4_response, dus dit commando is
-        # voorlopig de enige manier om te zien wat Layer 7 zou zeggen.
+        # Tijdelijk test-commando voor Layer 7 (mag je later weer
+        # verwijderen). Roept reflect() handmatig aan — er is nog GEEN
+        # automatische achtergrond-trigger (timing-gate volgt pas met
+        # Activity-Aware Interaction), dus dit commando is voorlopig de
+        # enige manier om reflect() te triggeren. Insights die hun eigen
+        # LAYER4_DREMPELS-grens halen, worden via layer4_response ook
+        # ECHT hardop door Nova uitgesproken (met stemming/emoji's),
+        # los van de debug-regels hieronder.
         if user_input.lower() == "emergence":
             emergence = loader.loaded_modules.get("emergence_engine")
             if not emergence:
@@ -303,6 +314,41 @@ def main():
             for r in resultaten:
                 print(f"{CYAN}  type: {r['insight_type']} — confidence: {r['confidence']:.2f}{RESET}")
                 print(f"{CYAN}  tekst: {r['text']}{RESET}")
+            continue
+
+        # Tijdelijk debug-commando: toont de opgeslagen feedback-
+        # statistieken per insight-type (insight_feedback.json).
+        # Zonder argument: toont alles. Met argument: enkel dat type.
+        if user_input.lower().startswith("emergence feedback"):
+            emergence = loader.loaded_modules.get("emergence_engine")
+            if not emergence:
+                print(f"{RED}emergence_engine-module niet gevonden.{RESET}")
+                continue
+
+            delen = user_input.split()
+            # delen[0] = "emergence", delen[1] = "feedback", delen[2:] = rest
+
+            if len(delen) == 2:
+                # "emergence feedback" zonder verder argument: alles tonen
+                if not emergence.feedback_data:
+                    print(f"{CYAN}Nog geen feedback opgeslagen.{RESET}")
+                else:
+                    print(f"{CYAN}--- Feedback per insight-type ---{RESET}")
+                    for insight_type, stats in emergence.feedback_data.items():
+                        print(f"{CYAN}  {insight_type}: {stats}{RESET}")
+                continue
+
+            if len(delen) == 4 and delen[3].lower() in ("ok", "slecht"):
+                # "emergence feedback <type> <ok|slecht>": feedback geven
+                insight_type = delen[2]
+                success = delen[3].lower() == "ok"
+                emergence.feedback(insight_type, success=success)
+                print(f"{CYAN}Feedback opgeslagen voor '{insight_type}': "
+                      f"{'success' if success else 'failure'}.{RESET}")
+                continue
+
+            print(f"{RED}Gebruik: 'emergence feedback' (overzicht) of "
+                  f"'emergence feedback <type> <ok|slecht>' (feedback geven).{RESET}")
             continue
 
         # Tijdelijk test-commando voor Fase 4 (mag je later weer verwijderen)
@@ -421,6 +467,59 @@ def main():
                 print(f"  {tijd} — mag onderbreken: {should_interrupt} — reden: {reden}")
             continue
 
+        # Tijdelijk debug-commando voor Activity-Aware Interaction
+        # (mag je later weer verwijderen). Gebruik: "interruption test
+        # <activiteit> <ja|nee> <aantal>" -- bv. "interruption test
+        # coderen ja 5" registreert 5x een toegestane interruption
+        # voor "coderen", zonder te moeten wachten op de echte
+        # tijdsdrempel. Puur om beslis_interruption_gedrag()'s
+        # hoge/lage-confidence-gedrag snel te kunnen testen.
+        if user_input.lower().startswith("interruption test"):
+            tracker = loader.loaded_modules.get("interruption_tracker")
+            if not tracker:
+                print(f"{RED}interruption_tracker-module niet gevonden.{RESET}")
+                continue
+
+            delen = user_input.split()
+            if len(delen) < 4:
+                print(f"{RED}Gebruik: interruption test <activiteit> <ja|nee> <aantal>{RESET}")
+                continue
+
+            activiteit = delen[2]
+            antwoord = delen[3].lower()
+            aantal = int(delen[4]) if len(delen) >= 5 and delen[4].isdigit() else 1
+            toegestaan = antwoord in ("ja", "yes", "true")
+
+            for _ in range(aantal):
+                tracker.record_feedback(activiteit, toegestaan)
+
+            print(
+                f"{CYAN}{aantal}x geregistreerd: activiteit='{activiteit}', "
+                f"toegestaan={toegestaan}{RESET}"
+            )
+            print(f"{CYAN}Huidig patroon: {tracker.get_pattern(activiteit)}{RESET}")
+            continue
+
+        # Tijdelijk debug-commando: toont wat beslis_interruption_gedrag()
+        # NU zou teruggeven voor een activiteit, zonder te wachten op
+        # de tijdsdrempel (mag je later weer verwijderen). Gebruik:
+        # "interruption gedrag <activiteit>"
+        if user_input.lower().startswith("interruption gedrag"):
+            resp_engine = loader.loaded_modules.get("response_engine")
+            if not resp_engine:
+                print(f"{RED}response_engine-module niet gevonden.{RESET}")
+                continue
+
+            delen = user_input.split()
+            if len(delen) < 3:
+                print(f"{RED}Gebruik: interruption gedrag <activiteit>{RESET}")
+                continue
+
+            activiteit = delen[2]
+            beslissing = resp_engine.beslis_interruption_gedrag(activiteit)
+            print(f"{CYAN}Beslissing voor '{activiteit}': {beslissing}{RESET}")
+            continue
+
         # Tijdelijk test-commando voor Layer 2 Fase 3-4 (mag je later weer verwijderen)
         if user_input.lower().startswith("patronen"):
             pm = loader.loaded_modules.get("pattern_matcher")
@@ -464,6 +563,13 @@ def main():
             pattern_module = loader.loaded_modules.get("pattern_matcher")
             if pattern_module and hasattr(pattern_module, "shutdown"):
                 pattern_module.shutdown()
+
+            # Interruption Tracker (Activity-Aware Interaction) netjes
+            # afsluiten — veiligheidsnet, ook al slaat record_feedback()
+            # zelf al meteen op bij elke aanroep.
+            interruption_module = loader.loaded_modules.get("interruption_tracker")
+            if interruption_module and hasattr(interruption_module, "shutdown"):
+                interruption_module.shutdown()
             break
 
         # Teach-flow wordt nu volledig afgehandeld door IntentRouter

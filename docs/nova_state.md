@@ -41,7 +41,9 @@ Nova_AI/
 │   ├── logger.py
 │   ├── reboot_manager.py
 │   ├── semantic.py
-│   └── response_engine.py
+│   ├── response_engine.py
+│   ├── pending_question.py
+│   └── interruption_tracker.py
 ├── modules/
 │   ├── paths.py
 │   ├── activity/
@@ -115,6 +117,7 @@ Nova_AI/
 │   ├── concepts.json
 │   ├── word_associations.json
 │   ├── patterns_layer2.json
+│   ├── interruption_patterns.json
 │   ├── weather_history.json
 │   └── context_log.jsonl
 │   └── models/
@@ -143,6 +146,8 @@ Nova_AI/
 | semantic.py | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw:`teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`. **Nieuw (12 juli 2026):** `part_of_chained`/`explain_part_of` (analoog aan is_a_chained/explain_is_a, keten-redenering voor part_of-relaties) en `get_all_subtypes` (omgekeerde is_a-lookup: alle concepten die direct/via keten naar een categorie verwijzen) — beide gebouwd, getest en werkend. Zie sectie "Reasoning Engine — Fase 7.1b/7.5" verderop. |
 | response_engine.py | ✅ Klaar (Layer 4, Fase 1-5 + 7) | Combineert semantic + word_associations + pattern_matcher tot sjabloon-antwoorden voor definitievragen. Zie volledige sectie "Layer 4" onder 7-Laags Memory Architectuur. |
 | paths.py | ✅ Klaar (nieuw, 19 juli 2026) | `get_project_root(__file__)` — zoekt vanaf elk modulebestand omhoog naar de map met `main.py`, i.p.v. een vast aantal `.parent`-stappen te tellen. Voorkomt stille padfouten bij modules op verschillende nestingdiepte. Staat in `modules/`, niet `core/` (fysieke locatie), maar functioneel een core-hulpmodule — vandaar hier vermeld. Eerste gebruiker: `weather.py`. Zie sectie "modules/paths.py" verderop. |
+| pending_question.py | ✅ Klaar en getest (22 juli 2026) | Activity-Aware Interaction: kortlevend "wacht ik op een antwoord?"-geheugen (`set`/`is_open`/`get_type`/`clear`, met automatisch verval). Geen permanente opslag, bewust in-memory. Bereikbaar via `event_bus.modules.get("pending_question")`. Handmatig geladen in `module_loader.py` (net als memory/patterns/logger), want `core/` wordt niet door de dynamische scan gevonden. Zie sectie "Activity-Aware Interaction" verderop. |
+| interruption_tracker.py | ✅ Klaar en getest (22 juli 2026) | Activity-Aware Interaction: houdt per activiteit een confidence-score bij (hoe vaak mocht Nova storen tijdens deze activiteit). API: `record_feedback()`/`get_confidence()`/`get_pattern()`/`has_enough_data()`. Slaat direct op bij elke `record_feedback()`-aanroep (geen write-buffer, feedback komt van nature weinig voor) in `data/interruption_patterns.json`. Handmatig geladen in `module_loader.py`, zelfde reden als pending_question.py. Zie sectie "Activity-Aware Interaction" verderop. |
 
 ### MODULES
 
@@ -346,7 +351,7 @@ Nova heeft een volledig uitgewerkt 7-laags geheugen systeem.
 | Layer 4 | response_engine.py | ✅ KLAAR (Fase 1-5, 7; Fase 6 uitgesteld) | memory_layer4_roadmap.md |
 | Layer 5 | context_manager.py + activity/focus/presence_detector.py | ✅ KLAAR (alle 5 fases — tijd, activiteit, focus, aanwezigheid, gewogen interruption-logic) | memory_layer5_roadmap.md |
 | Layer 6 | personality_engine.py | ✅ KLAAR | identity_ROADMAP.md |
-| Layer 7 | emergence_engine.py | 🟡 IN OPBOUW (Fase 1a-1d: skelet + alle 4 insight-types klaar; listener/timing/feedback nog te bouwen) | memory_layer7_roadmap.md |
+| Layer 7 | emergence_engine.py | ✅ KLAAR (alle 4 insight-types + confidence-gate + timing-gate + feedback-opslag, 22 juli 2026) | memory_layer7_roadmap.md |
 
 **Bouwvolgorde:** Layer 0 eerst (foundation), dan 1 → 2 → 4 → 5 → 7.
 **Extra, buiten de 7 lagen:** een losse "User Preferences"-module (Kevin's voorkeuren/afkeuren) staat gepland — zie memory_user_preferences_roadmap.md
@@ -670,15 +675,15 @@ Beide bevestigd met live cijfers (energie convergeert nu stabiel naar een evenwi
 
 ---
 
-### Layer 7 — Emergence Engine (Fase 1a-1d afgerond, 20 juli 2026 — IN OPBOUW 🟡)
+### Layer 7 — Emergence Engine (VOLLEDIG AFGEROND, 22 juli 2026 ✅)
 
 Architectuurbeslissingen vastgelegd in overleg vóór het bouwen (zie `layer7_startbericht.md`, niet in dit bestand maar apart bewaard):
 - **Harde grens ML vs. symbolisch:** insight-hérkenning (patronen/clusters vinden) mag later een bounded ML-specialist worden, net als de geplande intent classifier. De output-táál (de sjabloonzin die Nova zegt) blijft ALTIJD sjabloon-gebaseerd — geen LLM/generatie. ML mag dus ooit "wat is belangrijk" herkennen, nooit "hoe zeg ik dit" verzinnen.
-- **Scope eerste versie:** max 3-4 insight-types (topic-frequentie/Layer 1, tijdspatroon/Layer 2, kennisdichtheid/Layer 3, evt. personality drift/Layer 6), niet alles tegelijk. **Alle 4 zijn inmiddels gebouwd.**
+- **Scope eerste versie:** max 3-4 insight-types (topic-frequentie/Layer 1, tijdspatroon/Layer 2, kennisdichtheid/Layer 3, evt. personality drift/Layer 6), niet alles tegelijk. **Alle 4 zijn gebouwd.**
 - **Sjablonen klein gehouden:** ~4-6 opening-, ~4-6 midden-, 2-3 afsluitingsvarianten per insight-type, voor manueel controleerbare coherentie.
-- **Timing (mag Nova nu spreken) en inhoud-feedback (was dit insight juist) zijn twee gescheiden mechanismen** — timing hoort bij de nog te bouwen Activity-Aware Interaction, niet bij Layer 7 zelf.
+- **Timing (mag Nova nu spreken) en inhoud-feedback (was dit insight juist) zijn twee gescheiden mechanismen.** Nadat Activity-Aware Interaction op 22 juli 2026 volledig werd afgerond (in een aparte chat), is de timing-gate hier alsnog aangesloten — zie eigen sectie hieronder.
 
-**Nieuw bestand:** `modules/experimental/emergence_engine.py`. Krijgt, net als `response_engine.py` (Layer 4) en `context_manager.py` (Layer 5), een `layers`-dictionary mee bij `init_module(event_bus, layers)` — dus HANDMATIG geladen in `module_loader.py` (stap 3E, na stap 3D/microlearning, vóór de intent_router), niet via de dynamische module_loader-scan. `layers`-dict bevat inmiddels: `semantic`, `word_associations`, `pattern_matcher`, `microlearning`.
+**Nieuw bestand:** `modules/experimental/emergence_engine.py`. Krijgt, net als `response_engine.py` (Layer 4) en `context_manager.py` (Layer 5), een `layers`-dictionary mee bij `init_module(event_bus, layers)` — dus HANDMATIG geladen in `module_loader.py` (stap 3E, na stap 3D/microlearning, vóór de intent_router), niet via de dynamische module_loader-scan. `layers`-dict bevat: `semantic`, `word_associations`, `pattern_matcher`, `microlearning`.
 
 **Fase 1a — insight-type 1: sterkste woordverband (Layer 1), afgerond en getest (20 juli 2026):**
 
@@ -704,19 +709,38 @@ Architectuurbeslissingen vastgelegd in overleg vóór het bouwen (zie `layer7_st
 - Nieuwe `_trait_labels`-opzoektabel vertaalt interne trait-namen (bv. `"reflection_depth"`) naar leesbaar Nederlands (`"hoe diep ik nadenk"`) — zelfde patroon als de topic-naam-vertaling uit Fase 1b.
 - Live bevestigd tegen Kevin's echte `growth_metrics.json`: "hoe diep ik nadenk" (`reflection_depth`, 1 shift, meest recente timestamp) wint een gelijkstand met `social_warmth` (ook 1 shift, oudere timestamp).
 
+**Confidence-gate → `layer4_response`, afgerond en getest (20 juli 2026):**
+
+- **Eerlijkheidsprobleem opgelost vóór het bouwen:** de 4 insight-types gebruiken GEEN uniforme 0-1-confidence-schaal — `woordverband`/`tijdspatroon` gebruiken echte PMI/Layer 2-confidence (0-1), maar `kennisdichtheid`/`personality_drift` gebruiken een ruw AANTAL (relaties/shifts) als "confidence". Eén vaste drempel (bv. ">0.85" voor alles) zou dus oneerlijk zijn geweest. Opgelost met `LAYER4_DREMPELS`: een aparte, per-insight-type drempel — `woordverband`/`tijdspatroon`: 0.85, `kennisdichtheid`: 8, `personality_drift`: 3. Vaste, symbolische startwaarden (net als Layer 2's drempels), bewust HOGER dan de bestaande MIN_*-drempels die bepalen of iets ÜBERHAUPT als insight telt ("noemenswaardig genoeg om te onthouden" is een lagere lat dan "sterk genoeg om hardop te zeggen").
+- **Architectuurkeuze:** de gate-logica zit RECHTSTREEKS in `reflect()` (geen aparte `event_bus.subscribe("emergence:insight", ...)`-listener) — `reflect()` is de enige plek die dit event ooit publiceert, dus een aparte subscribe zou alleen onnodige indirectie toevoegen zonder ontkoppelingsvoordeel. Anders dan bv. `personality_engine.py`'s subscribe op `trait_shifted` (een event van een ANDERE module, `microlearning.py`) — daar is een listener wél de juiste keuze.
+- Insights die hun drempel halen worden, naast het bestaande `emergence:insight`-event, ook naar `layer4_response` gepubliceerd (`{"text": tekst}`) — de universele route naar Nova's tone-pipeline (zie `layer4_response`-sectie hierboven). Onbekende insight-types (nog geen drempel ingesteld) worden defensief NOOIT doorgelaten.
+- Live bevestigd tegen Kevin's echte data (20 juli 2026): `woordverband` (0.92) en `kennisdichtheid` (13) haalden hun drempel en werden door Nova hardop uitgesproken (met stemming/emoji's via de tone-pipeline); `tijdspatroon` (0.49) en `personality_drift` (1) haalden hun drempel niet en bleven stil (enkel intern bijgehouden via `emergence:insight`).
+
+**`feedback()` echte opslag, afgerond en getest (20 juli 2026):**
+
+- Vervangt de eerdere lege stub. Slaat per insight-TYPE (niet per losse insight-tekst, zoals afgesproken in `layer7_startbericht.md`) `success_count`/`failure_count`/`last_feedback`/`last_result` op in `data/insight_feedback.json` — bewust plat JSON-bestand, zelfde filosofie als `word_associations.json`/`patterns_layer2.json`/`growth_metrics.json`.
+- Gebruikt `modules/paths.py`'s `get_project_root(__file__)` voor het bestandspad (zelfde conventie als `weather.py`, de eerste gebruiker sinds 19 juli 2026) — geen zelf-geteld aantal `.parent`-niveaus.
+- Defensief tegen een corrupt/ontbrekend bestand: begint gewoon met een lege dict i.p.v. te crashen.
+- Nog NIET gebruikt: toekomstige insights houden nog geen rekening met deze feedback-scores (bv. om een insight-type met veel "failure" tijdelijk te onderdrukken) — dat was in `layer7_startbericht.md` ook niet als vereiste genoemd, enkel de opslag zelf was de vraag.
+- Tijdelijke testcommando's in `main.py`: `emergence feedback` (overzicht van alle opgeslagen statistieken) en `emergence feedback <type> <ok|slecht>` (feedback geven). Live bevestigd: correcte opslag en persistentie over Nova-herstarts heen.
+
 **Gemeenschappelijk aan alle 4 insight-types:**
-- `reflect()` publiceert `emergence:insight` per gevonden insight — **nog GEEN listener die dit doorstuurt naar `layer4_response`** (bewust een latere, aparte stap: eerst deze basis testen). Nova zegt dus nog niets proactief over deze inzichten.
-- `feedback(insight_type, success)` is bewust nog een LEGE STUB — publiceert enkel `emergence:learned_success`/`emergence:learned_failure`, slaat nog niets op. Latere stap: een echt opslagbestand (`insight_feedback.json` of SQLite-tabel), bijgehouden PER INSIGHT-TYPE.
 - Tijdelijk testcommando in `main.py`: `emergence` (roept `reflect()` handmatig aan, toont tekst + confidence per insight) en `emergence debug` (toont ruwe status van de `layers`-dictionary).
 
 **Bijvangst tijdens het testen: bug #21 gevonden (zie `nova_changelog.md`).** `module_loader.py` vroeg Layer 1 overal op met de verkeerde dictionary-key (`"word_associations"` i.p.v. de echte `"word_associations_learner"`), waardoor zowel Layer 7 als — sinds 8 juli al — Layer 4's personal touch nooit echt werkten. Nu gefixt op beide plekken (stap 3B en 3E).
 
-**Bijvangst tijdens het testen (Fase 1b): eigen fout van Claude, direct gevonden en gefixt.** Bij het opruimen van een dubbele `_onderwerp_label()`-definitie werd per ongeluk ook de functie-header van `analyze_topic_frequency()` verwijderd, waardoor `emergence` crashte met een `AttributeError`. Hersteld en sindsdien elke uitbreiding end-to-end getest (alle insight-types tegelijk via `reflect()`, niet enkel apart) vóór het bestand werd doorgegeven — geen vergelijkbaar probleem meer opgetreden bij Fase 1c/1d.
+**Bijvangst tijdens het testen (Fase 1b): eigen fout van Claude, direct gevonden en gefixt.** Bij het opruimen van een dubbele `_onderwerp_label()`-definitie werd per ongeluk ook de functie-header van `analyze_topic_frequency()` verwijderd, waardoor `emergence` crashte met een `AttributeError`. Hersteld en sindsdien elke uitbreiding end-to-end getest (alle insight-types tegelijk via `reflect()`, niet enkel apart) vóór het bestand werd doorgegeven — geen vergelijkbaar probleem meer opgetreden bij Fase 1c/1d, de confidence-gate, of de feedback-opslag.
 
-**Nog te doen:**
-- Listener `emergence:insight` → `layer4_response`, met confidence-gate (voorstel uit `layer7_startbericht.md`: > 0.85) — LET OP: `kennisdichtheid` en `personality_drift` gebruiken een ANDER soort "confidence" (ruw aantal relaties/shifts, geen 0-1-score) dan `woordverband`/`tijdspatroon` (PMI/Layer 2-confidence, wél 0-1) — een uniforme confidence-gate moet hier rekening mee houden, nog niet opgelost.
-- Eenvoudige, tijdelijke timing-check (aangezien Activity-Aware Interaction nog niet bestaat) — of voorlopig gewoon altijd mogen spreken tot die module er is
-- `feedback()` echt laten opslaan, per insight-type
+**Timing-gate → `context_manager.can_interrupt()`, afgerond en getest (22 juli 2026):**
+
+- Nieuwe helper `_mag_nu_spreken()`: raadpleegt `context_manager.can_interrupt()` — dezelfde activiteit-ONAFHANKELIJKE check die `session_watcher.check_pauze()` ook al gebruikt voor de pauze-melding (combineert tijd/focus/aanwezigheid/gebruikelijk-moment tot één boolean).
+- **Bewust NIET gebruikt:** `interruption_tracker.py`/`response_engine.beslis_interruption_gedrag()` — dat mechanisme is specifiek gebouwd rond een MET-NAAM-GENOEMDE, lopende activiteit (bv. "coderen") en genereert daarbij zelf zijn eigen vraag-tekst. Layer 7 heeft al een kant-en-klare insight-tekst en wil enkel weten "is dit sowieso een geschikt algemeen moment" — geen activiteit-specifieke vraag.
+- `context_manager` toegevoegd aan `module_loader.py`'s `emergence_layers`-dictionary (stap 3E) — laadvolgorde klopte al (context_manager wordt geladen in stap 3C, ruim vóór stap 3E).
+- Fail-open bij een ontbrekende of crashende `context_manager` (zelfde defensieve aanpak als `session_watcher.check_pauze()`) — liever een keer te veel spreken dan de hele Engine laten crashen of onterecht blijven zwijgen enkel omdat één laag ontbreekt.
+- De gate zit vóór de `layer4_response`-publish, NA de bestaande confidence-gate — een insight moet dus ZOWEL zijn `LAYER4_DREMPELS`-grens halen ALS `_mag_nu_spreken() == True` zijn om daadwerkelijk hardop gezegd te worden. Faalt één van de twee, dan blijft het insight nog steeds gewoon intern bijgehouden via `emergence:insight`.
+- **Live bevestigd (22 juli 2026):** met `woordverband` (0.92) en `kennisdichtheid` (13) die beide hun confidence-drempel haalden, bleef Nova toch stil op een moment waarop `context context`-commando `Mag onderbreken: False` toonde (reden: "ongebruikelijk moment volgens Layer 2: -1", om 21u). Bevestigt dat Layer 5 en Layer 7 correct onafhankelijk van elkaar samenwerken: Layer 7 bepaalt WAT gezegd zou worden, Layer 5 bepaalt OF dat nu mag.
+
+**Met de timing-gate is Layer 7 — en daarmee de volledige 7-laags geheugenarchitectuur (Layer 0 t/m 7) — nu volledig afgerond.**
 
 ---
 
@@ -856,10 +880,10 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 1. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md). Groeiend takenpakket: expliciete voorkeuren (ik hou van/haat X), disambiguatie-keuzes voor meerduidige woorden (zie bug #10, Layer 4-sectie), en mogelijk een feedback-loop voor Layer 4-antwoorden.
 2. 🟢 **memory.py Fase 5** — optimalisatie/polish, enkel nodig bij grote databank of trage queries (geen haast)
 3. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
-4. 🟢 **Activity Awareness (activiteiten herkennen, correleren, proactief reageren)** — concept uitgewerkt (6 juli 2026), nog niet ingepland. Kern: generiek `"ik ga <activiteit>"`-patroon in intent_router.py publiceert `activity_started`-events die Layer 2 al generiek meetelt; daarnaast co-occurrence tussen activiteiten (bv. koffie + coderen) en duur-detectie met drempelwaarde voor proactieve pauze-suggesties — beide pure statistiek/timer-logica, geen ML. Optioneel scherm-detectie (psutil, geen ML) en camera-detectie (vereist extern vision-model als sensor, met privacy-ontwerp vooraf). Ook: mogelijke uitbreiding naar per-woord-timing voor Layer 4 (zie Layer 4-sectie). Volledig uitgewerkt in: **activity_awareness_roadmap.md**.
-5. 🟢 **Activity-Aware Interaction (interruption learning + contextuele suggesties)** — concept uitgewerkt (9 juli 2026), nog niet ingepland. Bouwt voort op Activity Awareness + Layer 5 (Layer 5 Fase 1-5 zijn intussen VOLLEDIG klaar): leert per activiteit een confidence-score op ("mag ik storen tijdens coderen?"), met vaste sjabloonvariatie zodat het niet elke keer identiek klinkt. Aparte, grotere uitbreiding: contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — puur co-occurrence-tellen zoals Activity Awareness Deel C, maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. **Belangrijke nuance (16 juli 2026, na afronding Layer 5 Fase 5):** Kevin's wens dat "Nova zelf leert wanneer ze wel/niet mag storen" hoort HIER thuis, niet in Layer 5 zelf — Fase 5 legt enkel de vaste score-gewichten vast (zie Layer 5-sectie); dit werkpunt zou die gewichten leren aanpassen op basis van Kevin's feedback, blijft daarbij mogelijk 100% symbolisch (tellen i.p.v. ML). Volledig uitgewerkt in: **interruption_learning_roadmap.md**.
+4. 🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
+5. 🟢 **Test-commando's herwerken naar help.py** — idee (22 juli 2026, nog niet ingepland): de groeiende verzameling tijdelijke debug-commando's in `main.py` (`context`, `patronen`, `interruption test`, `interruption gedrag`, `traits`, ...) verplaatsen naar een eigen topic-bestand in `help.py`'s structuur, i.p.v. steeds losse `if user_input.lower() == ...`-blokken in `main.py` te blijven stapelen.
 
-*(Afgeronde werkpunten verplaatst naar `nova_changelog.md`, 18 juli 2026 — inclusief Personality pipeline deel 1+2, microlearning.py, Layer 2 opruimwerk, Layer 5 Fase 1-5, Layer 6-integratie response_style, emotion_engine decay, Layer 6 identity-blueprint-koppeling, het achtergrondthread-patroon, en de `behavior_modifiers.py`-koppeling — zie changelog voor de correctie hierover.)*
+*(Afgeronde werkpunten verplaatst naar `nova_changelog.md`, 18 juli 2026 — inclusief Personality pipeline deel 1+2, microlearning.py, Layer 2 opruimwerk, Layer 5 Fase 1-5, Layer 6-integratie response_style, emotion_engine decay, Layer 6 identity-blueprint-koppeling, het achtergrondthread-patroon, de `behavior_modifiers.py`-koppeling, en Activity Awareness Deel A — zie changelog voor details.)*
 
 ---
 
@@ -906,6 +930,8 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 **Bekende, geaccepteerde beperking:** als Kevin *net* een paar letters aan het typen is op het exacte moment dat een proactief bericht binnenkomt, kan die halfgetypte tekst nog even kort door elkaar lopen met Nova's output vóór de prompt zich herstelt. Dit is een inherente grens van `input()` in een console-app zonder externe libraries zoals `prompt_toolkit` — geen bug, bewust geaccepteerd als aanvaardbare edge case voor een lokale terminal-tool.
 
 **Eerste proactieve feature gebouwd op dit patroon: `modules/activity/session_watcher.py`.** Houdt via `time.time()` bij hoe lang de sessie loopt sinds start (of sinds de vorige melding), en publiceert éénmalig een `chat_response`-event zodra `PAUZE_DREMPEL_SECONDEN` (standaard 1800 = 30 min) overschreden is. Puur symbolisch — enkel tijd bijhouden en vergelijken, geen ML. Volgt de standaard `init_module(event_bus, sem=None)`-conventie, dus automatisch opgepikt door `module_loader.py`'s dynamische lus.
+
+**Tweede feature op dit patroon, sinds 22 juli 2026: Activity-Aware Interaction.** `session_watcher.py` luistert nu ook via een wildcard-subscribe (`event_bus.subscribe("*", ...)`) naar alle `activity_started:<naam>`-events en houdt bij welke activiteit nu loopt en sinds wanneer (`self.actieve_activiteit`/`self.activiteit_start_tijd`). Een nieuwe methode `check_activity_interruption()` (aangeroepen vanuit `achtergrond_loop()`, elke 60 sec, zelfde ritme als `check_pauze()`) checkt of de activiteit al `INTERRUPTION_VRAAG_DREMPEL_MINUTEN` loopt (tijdelijk op 1 gezet om te testen, uiteindelijk 15) en zo ja, roept `pending_question.set("mag_ik_storen", ...)` aan + publiceert proactief `"Mag ik storen?"`. Een aparte listener (`_on_pending_answered()`, op event `pending_question:answered`) verwerkt Kevin's antwoord en roept `interruption_tracker.record_feedback(activiteit, toegestaan, tijd_sinds_start)` aan. Live bevestigd (22 juli 2026): volledig circuit van "ik ga coderen" tot geregistreerde feedback in `interruption_patterns.json` werkt zonder fouten.
 
 **Voor toekomstige proactieve modules (zoals Layer 5 straks):** dit patroon is nu de vaste weg. Nieuwe proactieve logica hoort in een aparte module met een `check_*()`-achtige methode, aangeroepen vanuit `achtergrond_loop()` in `main.py`, die zelf `event_bus.publish("chat_response", {...})` of `event_bus.publish("layer4_response", {...})` publiceert — nooit rechtstreeks `print()` vanuit de achtergrondthread zelf, anders mis je de tone-pipeline en het "verse prompt"-mechanisme.
 
