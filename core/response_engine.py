@@ -134,6 +134,31 @@ class ResponseEngine:
                 "Opvallend: dit komt bij jou meestal rond {uur}u ter sprake.",
                 "Je hebt hier trouwens een patroon in — meestal rond {uur}u.",
             ],
+            # Activity-Aware Interaction (22 juli 2026, stap 7 -- variatie
+            # in formulering, interruption_learning_roadmap.md Deel 2):
+            # ruime sjabloonlijsten zodat Nova niet elke keer letterlijk
+            # dezelfde zin herhaalt. _kies_variant() kiest willekeurig,
+            # exact hetzelfde principe als "definitie"/"met_associatie"
+            # hierboven -- 100% symbolisch, geen generatie.
+            "interruption_vraag": [
+                "Mag ik storen?",
+                "Heb je even?",
+                "Stoor ik als ik nu iets zeg?",
+                "Even een momentje?",
+                "Kan ik je heel even onderbreken?",
+                "Heb je een minuutje?",
+                "Is dit een goed moment?",
+                "Zeg het maar als het niet uitkomt, maar heb je even?",
+            ],
+            "interruption_ga_door": [
+                "Lukt het? Kan ik helpen?",
+                "Hoe gaat het ermee?",
+                "Alles onder controle?",
+                "Kom je er goed uit?",
+                "Nog steeds lekker bezig?",
+                "Hoe staat het ervoor?",
+                "Alles naar wens?",
+            ],
         }
 
         # Vanaf welke PMI-score (0.0-1.0) vinden we een associatie sterk
@@ -144,6 +169,18 @@ class ResponseEngine:
         # 0.5 is bewust dezelfde drempel als Layer 1's eigen
         # min_confidence-conventie (zie word_associations_learner.py).
         self.MIN_ASSOCIATIE_SCORE = 0.5
+
+        # Activity-Aware Interaction (interruption_learning_roadmap.md,
+        # 22 juli 2026): vanaf welke confidence-score (interruption_
+        # tracker.py) beschouwen we het patroon als "duidelijk genoeg"
+        # om NIET meer te vragen? Symmetrisch gekozen, besproken met
+        # Kevin: >= 0.8 is duidelijk genoeg om altijd door te gaan,
+        # <= 0.2 duidelijk genoeg om altijd stil te blijven. Alles
+        # daartussen (of te weinig data) blijft het voorzichtige
+        # "vraag eerst"-gedrag, zelfde principe als
+        # pattern_matcher.py's MIN_OBSERVATIES_VOOR_ANOMALIE.
+        self.INTERRUPTION_CONFIDENCE_HOOG = 0.8
+        self.INTERRUPTION_CONFIDENCE_LAAG = 0.2
 
     # ------------------------------------------------------------
     # Interne hulpmethodes
@@ -383,6 +420,86 @@ class ResponseEngine:
             "text": text,
             "confidence": 0.2,
             "sources": [],
+        }
+
+    def beslis_interruption_gedrag(self, activiteit: str) -> Dict:
+        """
+        Activity-Aware Interaction (interruption_learning_roadmap.md,
+        22 juli 2026): beslist wat Nova moet doen zodra de tijdsdrempel
+        voor een activiteit bereikt is. Raadpleegt interruption_tracker
+        (Layer "Activity-Aware Interaction") voor de confidence-score
+        van deze specifieke activiteit.
+
+        Dit is PURE if/else op een geteld getal -- geen generatie, geen
+        interpretatie van TOON of motivatie (zie interruption_learning_
+        roadmap.md, sectie "Eerlijkheid"). session_watcher.py roept dit
+        aan en VOERT de teruggegeven actie uit -- deze methode zelf
+        publiceert niets op de EventBus, exact dezelfde scheiding als
+        de rest van dit bestand (Layer 4 beslist/formuleert, andere
+        modules handelen).
+
+        Geeft een dict terug:
+            {
+                "actie": "vraag_eerst" | "ga_gewoon_door" | "blijf_stil",
+                "tekst": str of None,
+                "confidence": float of None,
+            }
+
+        - "vraag_eerst": te weinig observaties (has_enough_data ==
+          False) OF confidence in de onzekere middenzone. Voorzichtig
+          standaardgedrag, zoals de roadmap voorschrijft: "onvoldoende
+          observaties -> val terug op voorzichtig gedrag: altijd eerst
+          vragen". "tekst" bevat dan de vraag zelf.
+        - "ga_gewoon_door": confidence >= INTERRUPTION_CONFIDENCE_HOOG.
+          Nova hoeft niet meer te vragen, mag gewoon een korte,
+          betrokken vervolgzin geven. "tekst" bevat die zin.
+        - "blijf_stil": confidence <= INTERRUPTION_CONFIDENCE_LAAG.
+          Nova zegt HELEMAAL NIETS -- "tekst" is dan None.
+        """
+        tracker = self.layers.get("interruption_tracker")
+
+        if tracker is None or not tracker.has_enough_data(activiteit):
+            return {
+                "actie": "vraag_eerst",
+                "tekst": self._kies_variant("interruption_vraag"),
+                "confidence": None,
+            }
+
+        try:
+            confidence = tracker.get_confidence(activiteit)
+        except Exception:
+            # Zelfde principe als bij Layer 1/2/3 hierboven: een
+            # opzoekfout mag Nova's gedrag nooit laten crashen --
+            # gewoon terugvallen op het voorzichtige standaardgedrag.
+            confidence = None
+
+        if confidence is None:
+            return {
+                "actie": "vraag_eerst",
+                "tekst": self._kies_variant("interruption_vraag"),
+                "confidence": None,
+            }
+
+        if confidence >= self.INTERRUPTION_CONFIDENCE_HOOG:
+            return {
+                "actie": "ga_gewoon_door",
+                "tekst": self._kies_variant("interruption_ga_door"),
+                "confidence": confidence,
+            }
+
+        if confidence <= self.INTERRUPTION_CONFIDENCE_LAAG:
+            return {
+                "actie": "blijf_stil",
+                "tekst": None,
+                "confidence": confidence,
+            }
+
+        # Middenzone: nog niet duidelijk genoeg naar één kant, blijf
+        # bij het voorzichtige gedrag.
+        return {
+            "actie": "vraag_eerst",
+            "tekst": self._kies_variant("interruption_vraag"),
+            "confidence": confidence,
         }
 
 

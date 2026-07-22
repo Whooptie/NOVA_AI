@@ -681,6 +681,171 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Activity Awareness (Deel A) — "ik ga <activiteit>"
+    # ---------------------------------------------------------
+    # Generiek patroon: werkt voor ONBEPERKT veel activiteiten, geen
+    # aparte code nodig per nieuwe activiteit. Publiceert een
+    # "activity_started"-event dat Layer 2 (pattern_matcher.py) en
+    # later Layer 5/Activity-Aware Interaction gebruiken.
+    # 100% symbolisch: puur patroonherkenning + een klein
+    # synoniemen-tabelletje, geen ML/generatie.
+
+    # Klein, uitbreidbaar tabelletje: spreektaal-variant -> vaste,
+    # genormaliseerde activiteitsnaam. Puur onderhoud van een lijst,
+    # geen nieuwe logica. Nieuwe activiteiten die hier niet in staan
+    # werken nog steeds -- ze krijgen dan gewoon hun eigen letterlijke
+    # naam als sleutel.
+    ACTIVITEIT_SYNONIEMEN = {
+        "koffiezetten": "koffie",
+        "koffie zetten": "koffie",
+        "koffie drinken": "koffie",
+        "netflixen": "netflix",
+        "netflix kijken": "netflix",
+        "gamen": "gamen",
+        "games spelen": "gamen",
+        "coderen": "coderen",
+        "programmeren": "coderen",
+        "code schrijven": "coderen",
+    }
+
+    def detect_activity(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        prefixes = ["ik ga ", "ik ga nu ", "ik begin met ", "ik start met "]
+        for p in prefixes:
+            if t.startswith(p):
+                activiteit = t[len(p):].strip()
+                if not activiteit:
+                    return False
+
+                # Zelfde patroon als topic_detected:<naam> (zie
+                # _emit_topic()): de activiteitsnaam zit IN de
+                # event-type-string zelf, niet enkel in de data-dict.
+                # Zo kan pattern_matcher.py (Layer 2) dit generiek
+                # herkennen via dezelfde prefix-check die het al
+                # gebruikt voor topic_detected, zonder aparte logica
+                # per event-soort.
+                dbg(f"{C_MAGENTA}→ activity_started:{activiteit}{C_RESET}")
+                self.event_bus.publish(f"activity_started:{activiteit}", {
+                    "naam": activiteit,
+                    "tijd": self._huidige_tijd_iso()
+                })
+                return True
+
+        return False
+
+    def _huidige_tijd_iso(self):
+        """Kleine helper zodat detect_activity() niet zelf datetime
+        hoeft te importeren bovenaan het bestand -- lokale import,
+        enkel gebruikt wanneer een activiteit ook echt herkend wordt."""
+        from datetime import datetime
+        return datetime.now().isoformat()
+
+    # ---------------------------------------------------------
+    # Pending Question — antwoord op Nova's eigen vraag verwerken
+    # ---------------------------------------------------------
+    # Bewust EEN EIGEN, losstaande woordenlijst hier -- NIET de
+    # signal_classifier uit microlearning.py, want die herkent iets
+    # anders (frustratie/waardering/interesse/verwarring/focus/kilte,
+    # bedoeld om traits.json langzaam bij te sturen), geen bevestiging/
+    # ontkenning. Een apart model zou hier overkill zijn: dit is een
+    # kleine, gesloten set korte woorden zonder de taalkundige
+    # dubbelzinnigheid die een classifier zou rechtvaardigen. 100%
+    # symbolisch: woordenlijst-matching, geen ML, geen toon/sentiment-
+    # interpretatie (zie interruption_learning_roadmap.md's
+    # eerlijkheids-sectie: Nova mag DAT iets bevestigd/geweigerd werd
+    # zien, nooit HOE geïrriteerd of enthousiast dat klonk).
+    BEVESTIGING_WOORDEN = {
+        "ja", "jup", "jep", "yep", "yes", "joa", "jow",
+        "oke", "oké", "ok", "okay", "okee", "okeej",
+        "zeker", "zeker weten", "zeker wel",
+        "tuurlijk", "natuurlijk", "vanzelfsprekend",
+        "prima", "goed", "prima hoor", "goed hoor",
+        "graag", "graag gedaan", "graag wel",
+        "yolo", "toch wel", "waarom niet",
+        "kom maar", "ga je gang", "zeg het maar",
+        "mag", "mag wel", "is goed", "is oke", "is oké",
+    }
+
+    ONTKENNING_WOORDEN = {
+        "nee", "neu", "nope", "no", "non",
+        "nee hoor", "neu hoor", "liever niet",
+        "nu niet", "niet nu", "later", "straks liever",
+        "niet nodig", "hoeft niet", "laat maar",
+        "niet storen", "wacht liever", "wacht nog even",
+        "nog niet", "een andere keer", "niet echt",
+    }
+
+    def _interpreteer_ja_nee(self, text):
+        """
+        Geeft "bevestiging", "ontkenning" of None terug (bij twijfel/
+        onherkend) op basis van woordenlijst-matching. Geen ML, geen
+        confidence-score -- gewoon een letterlijke match tegen een
+        vaste set, zoals hierboven beschreven.
+        """
+        t = text.lower().strip().rstrip("?.!")
+
+        if t in self.BEVESTIGING_WOORDEN:
+            return "bevestiging"
+        if t in self.ONTKENNING_WOORDEN:
+            return "ontkenning"
+
+        # Ook een korte zin die MET zo'n woord begint accepteren
+        # (bv. "ja hoor, ga je gang" -- niet enkel exacte matches),
+        # zolang de zin kort blijft. Een lange, inhoudelijke zin die
+        # toevallig met "ja" begint ("ja, ik denk dat het weer...")
+        # willen we NIET als kort bevestigingsantwoord meepikken --
+        # vandaar de lengte-grens.
+        if len(t.split()) <= 4:
+            for woord in self.BEVESTIGING_WOORDEN:
+                if t.startswith(woord):
+                    return "bevestiging"
+            for woord in self.ONTKENNING_WOORDEN:
+                if t.startswith(woord):
+                    return "ontkenning"
+
+        return None
+
+    def _verwerk_pending_antwoord(self, text):
+        """
+        Wordt aangeroepen VOORDAT de normale intent-routing draait,
+        enkel als pending_question.is_open() True is. Interpreteert
+        het antwoord en publiceert "pending_question:answered" -- de
+        module die de vraag stelde (bv. straks de interruption-
+        tracker) luistert daarop en weet zelf wat ermee te doen op
+        basis van "vraag_type". Dit mechanisme zelf beslist nooit wat
+        het antwoord BETEKENT voor de rest van Nova, het levert enkel
+        het geïnterpreteerde signaal af.
+
+        Geeft True terug als het bericht als antwoord behandeld is
+        (dus de normale routing NIET meer moet draaien), anders False.
+        """
+        pending = self.event_bus.modules.get("pending_question")
+        if pending is None or not pending.is_open():
+            return False
+
+        vraag_type = pending.get_type()
+        signaal = self._interpreteer_ja_nee(text)
+
+        if signaal is None:
+            # Onherkend antwoord -- de vraag blijft open staan (mag
+            # nog steeds verlopen via de verval-tijd), Kevin krijgt
+            # een kans om het nog eens duidelijker te zeggen. We
+            # sturen HIER niets door naar de normale routing, want een
+            # onduidelijk antwoord op een net gestelde vraag moet niet
+            # als een volledig los, nieuw bericht behandeld worden.
+            dbg(f"{C_YELLOW}→ pending_question: onherkend antwoord op '{vraag_type}'{C_RESET}")
+            return True
+
+        dbg(f"{C_YELLOW}→ pending_question:answered ({vraag_type} → {signaal}){C_RESET}")
+        self.event_bus.publish("pending_question:answered", {
+            "vraag_type": vraag_type,
+            "signaal": signaal
+        })
+        pending.clear()
+        return True
+
+    # ---------------------------------------------------------
     # Topic events (Layer 2 topic-bewustzijn)
     # ---------------------------------------------------------
     def _emit_topic(self, naam):
@@ -722,6 +887,13 @@ class IntentRouter:
         # niets aan de bestaande routing hieronder.
         if text:
             self.event_bus.publish("raw_user_message", {"text": text})
+
+        # -1 Pending question (nieuw) -- MOET voor ALLES anders
+        # gecontroleerd worden, zelfs voor reboot: als Nova net een
+        # vraag stelde en Kevin antwoordt "ja", mag dat nooit als een
+        # gewoon, los bericht door de rest van de routing lopen.
+        if self._verwerk_pending_antwoord(text):
+            return
 
         # 0 Reboot (altijd als allereerste gecontroleerd, voorrang op alles)
         if self.detect_reboot(text):
@@ -802,6 +974,16 @@ class IntentRouter:
         if self.detect_subtypes_query(text):
             self._emit_topic("subtypes")
             return
+
+        # 10d Activity Awareness Deel A (nieuw) — "ik ga <activiteit>"
+        # Bewust hier, NA alle specifieke intents (weer, schaken, math,
+        # definities...) en VOOR de fallback: een zin als "ik ga
+        # slapen" mag nooit een specifiekere, al bestaande intent
+        # overschrijven, maar moet wel vóór de kale fallback gevangen
+        # worden.
+        if self.detect_activity(text):
+            self._emit_topic("activity")
+            return
         
         # Sense-choice (antwoord met nummer)
         if text.isdigit():
@@ -809,7 +991,12 @@ class IntentRouter:
                 self.semantic.handle_sense_choice(text)
             return
 
-        # Confirm-flow voor semantic
+        # Confirm-flow voor semantic. LET OP: als er een pending
+        # question open stond, is dit bericht al hierboven (stap -1)
+        # afgehandeld en heeft return al plaatsgevonden -- deze regel
+        # wordt dus enkel bereikt als er GEEN pending question actief
+        # was, bv. een "ja"/"nee" als antwoord op een semantic-vraag
+        # ("bedoel je zin A of B?").
         if text in ("ja", "nee"):
             if self.semantic:
                 self.semantic.handle_confirm(text)

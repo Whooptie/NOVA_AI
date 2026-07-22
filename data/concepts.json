@@ -13002,5 +13002,52 @@
         "timestamp": "2026-07-21T11:13:40.356848"
       }
     ]
+  },
+  "hoor": {
+    "senses": [
+      {
+        "sense_id": "hoor#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-22T19:25:44.387668",
+      "updated_at": "2026-07-22T19:25:44.389702",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-22T19:25:44.389702",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-22T19:25:44.389702",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hoor"
+        },
+        "timestamp": "2026-07-22T19:25:44.387668"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "hoor#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-22T19:25:44.389702"
+      }
+    ]
   }
 }

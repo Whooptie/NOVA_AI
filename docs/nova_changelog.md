@@ -78,4 +78,53 @@ Zie de volledige sectie "Layer 6 — Personality/Identity écht aangesloten op d
 ## 📌 Nog open (blijven in `nova_state.md`, hier enkel ter referentie)
 
 - Bug #8, #9, #10
-- Werkpunt: User preferences-module, memory.py Fase 5, Intent classifier, Activity Awareness, Activity-Aware Interaction, `behavior_modifiers.py`-koppeling
+- Werkpunt: User preferences-module, memory.py Fase 5, Intent classifier, Contextuele suggesties tussen activiteiten (Activity-Aware Interaction Deel 4), Test-commando's herwerken naar help.py
+
+## ✅ Activity Awareness Deel A — afgerond en getest (22 juli 2026)
+
+Generiek `"ik ga <activiteit>"`-patroon gebouwd in `intent_router.py`, nieuwe `detect_activity()`-methode: herkent voorvoegsels ("ik ga ", "ik ga nu ", "ik begin met ", "ik start met "), haalt de activiteit eruit, zoekt op in een klein `ACTIVITEIT_SYNONIEMEN`-tabelletje (bv. "koffie zetten" → "koffie"; onbekende activiteiten vallen terug op hun letterlijke tekst). Publiceert `activity_started:<naam>` — BEWUST in hetzelfde `<event>:<naam>`-formaat als `topic_detected:<naam>` (niet de activiteit enkel in de data-dict), zodat Layer 2 dit generiek kan herkennen zonder aparte logica per event-soort. `pattern_matcher.py`'s prefix-check (`is_topic_event`) kreeg er een `is_activity_event`-check naast, zelfde patroon.
+
+Ook `_emit_topic("activity")` toegevoegd in `route()`, consistent met alle andere herkende intents.
+
+**Live getest en bevestigd (22 juli 2026):** 3x "ik ga coderen" getypt → `activity_started:coderen` correct 3x geteld in `pattern_matcher.py`, zowel in-memory (via het bestaande `patronen`-commando in `main.py`, dat AL generiek was en geen wijziging nodig had) als op schijf in `patterns_layer2.json` na `exit`. Synoniemen ("koffie zetten" → "koffie") en onbekende activiteiten ("lezen") ook apart getest en bevestigd correct.
+
+**Bestanden gewijzigd:** `intent_router.py` (nieuwe `detect_activity()` + `_huidige_tijd_iso()`-helper + aanroep in `route()` als stap 10d, na alle specifieke intents en vóór fallback), `pattern_matcher.py` (prefix-check uitgebreid met `is_activity_event`).
+
+**Nog NIET gebouwd (blijft in `activity_awareness_roadmap.md` als toekomstig werk):** co-occurrence tussen activiteiten (Deel C), duur-detectie/pauze-suggestie (Deel D), scherm-detectie (Deel B). Enkel Deel A is nu klaar — dat was de harde afhankelijkheid voor Activity-Aware Interaction, niet de volledige Activity Awareness-roadmap.
+
+## ✅ Activity-Aware Interaction — kerncircuit gebouwd en live getest (22 juli 2026)
+
+Drie nieuwe/gewijzigde bestanden, samen een volledig werkend "mag ik storen?"-circuit:
+
+**`core/pending_question.py` (nieuw bestand).** Kortlevend, in-memory "wacht ik op een antwoord?"-geheugen — bewust GEEN permanente opslag, verdwijnt bij herstart. API: `set(vraag_type, verval_seconden)`, `is_open()`, `get_type()`, `clear()`. Automatisch verval ingebouwd in `is_open()` zelf. Handmatig toegevoegd aan `module_loader.py` (sectie 1, CORE MODULES) — `core/` wordt niet door de dynamische `pkgutil`-scan gevonden, zelfde les als eerder bij `self_query.py`/`microlearning.py` in `identity/`.
+
+**`core/interruption_tracker.py` (nieuw bestand).** Houdt per activiteit `totaal_pogingen`/`aantal_toegestaan`/`confidence` bij, opgeslagen in `data/interruption_patterns.json`. API: `record_feedback(activiteit, toegestaan, tijd_sinds_start)`, `get_confidence(activiteit)` (geeft `None` terug bij te weinig data), `get_pattern(activiteit)`, `has_enough_data(activiteit, min_observaties=5)`. Slaat bij ELKE `record_feedback()`-aanroep direct op (geen write-buffer/timer zoals `pattern_matcher.py` — feedback komt van nature weinig voor, dus geen prestatie-reden voor uitstel). Ook handmatig toegevoegd aan `module_loader.py`, naast `pending_question`.
+
+**`intent_router.py` uitgebreid.** Nieuwe stap "-1" helemaal bovenaan `route()` (vóór zelfs reboot): checkt via `event_bus.modules.get("pending_question").is_open()` of er een openstaande vraag is. Zo ja: nieuwe methode `_verwerk_pending_antwoord()` interpreteert de tekst via een EIGEN, losstaande `BEVESTIGING_WOORDEN`/`ONTKENNING_WOORDEN`-woordenlijst (bewust NIET de `microlearning.py`-signal_classifier hergebruikt — die classificeert frustratie/waardering/interesse/verwarring/focus/kilte voor `traits.json`, geen ja/nee, en zou als bijwerking ongewenst traits beïnvloeden; voor een simpele bevestiging/ontkenning is een woordenlijst bovendien voldoende, geen taalkundige dubbelzinnigheid die ML zou rechtvaardigen). Bij een herkend antwoord: publiceert `pending_question:answered` met `vraag_type`+`signaal`, wist de pending question. Bij onherkend antwoord: blijft open staan (kan alsnog verlopen). De bestaande `if text in ("ja", "nee"): semantic.handle_confirm(...)`-regel blijft ongewijzigd bestaan als fallback voor het geval er GEEN pending question actief is (bv. een semantic-disambiguatievraag).
+
+**`modules/activity/session_watcher.py` uitgebreid.** Nieuwe wildcard-subscribe op `activity_started:<naam>` houdt `self.actieve_activiteit`/`self.activiteit_start_tijd` bij. Nieuwe methode `check_activity_interruption()` (aangeroepen vanuit `main.py`'s `achtergrond_loop()`, elke 60 sec) checkt of de activiteit lang genoeg loopt (`INTERRUPTION_VRAAG_DREMPEL_MINUTEN`, tijdelijk op 1 voor testen, uiteindelijk 15) en roept dan `pending_question.set("mag_ik_storen", verval_seconden=120)` aan + publiceert proactief `"Mag ik storen?"`. Nieuwe listener `_on_pending_answered()` (event `pending_question:answered`, gefilterd op `vraag_type == "mag_ik_storen"`) roept `interruption_tracker.record_feedback(...)` aan met de juiste activiteit, toegestaan-boolean en verstreken tijd.
+
+**Live getest en bevestigd (22 juli 2026), volledig scenario:** "ik ga coderen" getypt → na ingestelde drempel verscheen proactief "Mag ik storen?" zonder dat Kevin iets typte → "ja" getypt → console bevestigde `pending_question:answered (mag_ik_storen → bevestiging)` én `interruption_feedback geregistreerd: activiteit='coderen', toegestaan=True` → `data/interruption_patterns.json` bevatte correct `{"coderen": {"totaal_pogingen": 1, "aantal_toegestaan": 1, "confidence": 1.0, ...}}`. Geen crashes, geen onverwacht gedrag bij normale berichten (bevestigd dat bestaande routing ongewijzigd blijft zolang er geen pending question actief is).
+
+### Vervolg en afronding (22 juli 2026, zelfde dag): Layer 4-integratie + variatie + opruimen
+
+**`response_engine.py` uitgebreid met `beslis_interruption_gedrag(activiteit)`.** Nieuwe publieke methode, los van de bestaande `generate()` (die blijft specifiek voor definitievragen — geen vermenging van twee verschillende verantwoordelijkheden). Raadpleegt `interruption_tracker.has_enough_data()`/`get_confidence()` en geeft één van drie acties terug:
+- `"vraag_eerst"` — te weinig data OF confidence in de middenzone (0.2 < confidence < 0.8). Voorzichtig standaardgedrag.
+- `"ga_gewoon_door"` — confidence ≥ 0.8 (`INTERRUPTION_CONFIDENCE_HOOG`). Nova slaat de vraag over, geeft meteen een korte, betrokken vervolgzin. Geen `pending_question` gezet — er is immers geen vraag om op te antwoorden.
+- `"blijf_stil"` — confidence ≤ 0.2 (`INTERRUPTION_CONFIDENCE_LAAG`). Nova zegt helemaal niets.
+
+Drempelwaarden (0.8/0.2) bewust symmetrisch gekozen, besproken met Kevin — vereist een écht duidelijk, herhaald patroon vóór Nova stopt met vragen, blijft aan de voorzichtige kant (fout-positief storen is vervelender dan een keer te veel vragen).
+
+`session_watcher.py`'s `check_activity_interruption()` aangepast: roept nu `response_engine.beslis_interruption_gedrag()` aan i.p.v. zelf onvoorwaardelijk te vragen, en voert de teruggegeven actie uit (vraagt/praat door/blijft stil). `module_loader.py`'s `response_layers`-dictionary kreeg er `"interruption_tracker"` bij.
+
+**Variatie in formulering (Deel 2 van de roadmap) toegevoegd.** `"interruption_vraag"` (8 varianten, o.a. "Mag ik storen?", "Heb je even?", "Is dit een goed moment?") en `"interruption_ga_door"` (7 varianten, o.a. "Lukt het? Kan ik helpen?", "Hoe staat het ervoor?", "Alles naar wens?") toegevoegd aan `response_engine.py`'s sjabloon-dictionary, gebruikt via de al bestaande `_kies_variant()` (zelfde principe als "definitie"/"met_associatie" — 100% symbolisch, willekeurige keuze uit vooraf geschreven zinnen, geen generatie).
+
+**Tijdelijke debug-commando's toegevoegd aan `main.py`** (blijven bewust staan, zoals de andere test-commando's): `interruption test <activiteit> <ja|nee> <aantal>` (registreert direct feedback zonder te wachten op de tijdsdrempel) en `interruption gedrag <activiteit>` (toont wat `beslis_interruption_gedrag()` nu zou teruggeven). Kevin overweegt deze en de andere losse test-commando's (`context`, `patronen`, `traits`, ...) later te herwerken naar een eigen topic-bestand in `help.py`'s structuur — zie "Volgende stappen" in `nova_state.md`.
+
+**Live getest en bevestigd (22 juli 2026), alle drie de gedragingen:** `coderen` (6/7 toegestaan, confidence 0.8571) → `ga_gewoon_door`, willekeurige variant getoond bij herhaalde aanroepen (bevestigd: "Hoe staat het ervoor?", "Kom je er goed uit?", "Hoe gaat het ermee?", "Alles naar wens?" kwamen alle vier voorbij). `gamen` (0/5 toegestaan, confidence 0.0) → `blijf_stil`, geen tekst. `lezen` (3/5 toegestaan, confidence 0.6) → `vraag_eerst`, correct in de middenzone. **Volledige, natuurlijke flow bevestigd:** "ik ga coderen" getypt in de echte chat → Nova reageerde proactief met "Lukt het? Kan ik helpen?" (geen "Mag ik storen?" meer) — exact het adaptieve gedrag uit het oorspronkelijke voorbeeldscenario.
+
+**Opruimen:** `INTERRUPTION_VRAAG_DREMPEL_MINUTEN` teruggezet van de testwaarde 1 naar de definitieve 15 minuten.
+
+**Status: Activity-Aware Interaction Deel 1-3 (interruption learning + generiek per activiteit + variatie in formulering) volledig afgerond en getest.** Enkel Deel 4 (contextuele suggesties tussen activiteiten, bv. Plex → lichten dimmen) blijft open — apart, groter werkpunt met een eigen sensor/integratie-afhankelijkheid, zie `nova_state.md`'s "Volgende stappen".
+
+**Bestanden gewijzigd (volledig overzicht, beide sessies 22 juli 2026):** `core/pending_question.py` (nieuw), `core/interruption_tracker.py` (nieuw), `core/response_engine.py` (`beslis_interruption_gedrag()` + sjablonen + drempel-constantes), `intent_router.py` (nieuwe stap -1 in `route()` + `_verwerk_pending_antwoord()` + `_interpreteer_ja_nee()` + woordenlijsten), `modules/activity/session_watcher.py` (activiteit-tracking + `check_activity_interruption()` + `_on_pending_answered()`), `module_loader.py` (twee nieuwe core-modules + `interruption_tracker` in `response_layers`), `main.py` (`achtergrond_loop()` roept nu ook `check_activity_interruption()` aan; `exit`-blok sluit `interruption_tracker` netjes af; twee nieuwe debug-commando's).

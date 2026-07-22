@@ -32,27 +32,28 @@ Wat dit bestand NOG NIET doet (latere, aparte stappen):
   dit afgeweken van de originele startwaarde" — dat laatste is met de
   beschikbare data (traits.json bevat geen startwaarden) niet eerlijk
   te berekenen.
-- Nog GEEN listener die "emergence:insight" naar "layer4_response"
-  doorstuurt (met confidence-gate). Dit event wordt nu enkel
-  gepubliceerd, niemand luistert er nog naar — dus Nova zegt er nog
-  NIETS over. Dat is bewust: eerst deze basis testen, dan pas de
-  tone-pipeline erbij koppelen.
-- Nog GEEN timing-gate (mag Nova dit NU zeggen). Activity-Aware
-  Interaction bestaat nog niet. Dit wordt in een latere stap
-  opgelost — voorlopig is er simpelweg geen automatische trigger,
-  Kevin roept "reflect()" zelf handmatig aan (bv. via een testcommando
-  in main.py) om te zien wat de Engine zou zeggen.
-- `feedback()` is een LEGE STUB — publiceert enkel een event, slaat
-  niets op. Wordt in een latere stap uitgebreid met een echt
-  opslagbestand (insight_feedback.json of SQLite-tabel), bijgehouden
-  PER INSIGHT-TYPE (niet per losse insight-tekst).
+- De confidence-gate naar "layer4_response" is GEBOUWD (elk insight-
+  type heeft zijn eigen LAYER4_DREMPELS-grens, want de 4 insight-types
+  gebruiken GEEN uniforme 0-1-confidence-schaal).
+- De TIMING-GATE is GEBOUWD (22 juli 2026): _mag_nu_spreken() vraagt
+  context_manager.can_interrupt() vóór een insight via layer4_response
+  hardop gezegd wordt. Nu Activity-Aware Interaction volledig is
+  afgerond, hoeft reflect() niet langer enkel handmatig aangeroepen te
+  worden om veilig te zijn — al blijft er voorlopig nog GEEN
+  automatische achtergrond-trigger die reflect() vanzelf aanroept.
+- `feedback()` slaat ECHT op naar insight_feedback.json, per
+  insight-TYPE (niet per losse insight-tekst).
 
 Alles hier is pure Python-logica (dictionary-opvragingen, sorteren,
 random.choice op vaste tekstlijsten) — geen ML, geen LLM.
 """
 
+import json
 import random
+from datetime import datetime
 from typing import Dict, List, Optional
+
+from modules.paths import get_project_root
 
 
 class EmergenceEngine:
@@ -70,6 +71,20 @@ class EmergenceEngine:
 
         # Laatst gegenereerde inzichten, puur voor debug/nazicht.
         self.insights: List[Dict] = []
+
+        # ─────────────────────────────────
+        # Feedback-opslag (insight_feedback.json)
+        # ─────────────────────────────────
+        # Zelfde padconventie als weather.py (eerste gebruiker,
+        # 19 juli 2026): get_project_root(__file__) i.p.v. zelf
+        # .parent-niveaus tellen — voorkomt stille padfouten als deze
+        # module ooit dieper/ondieper genest wordt. Bewust plat
+        # JSON-bestand, zelfde filosofie als word_associations.json/
+        # patterns_layer2.json/growth_metrics.json — geen SQLite nodig,
+        # dit groeit traag (één update per feedback-aanroep).
+        project_root = get_project_root(__file__)
+        self._feedback_path = project_root / "data" / "insight_feedback.json"
+        self.feedback_data: Dict = self._load_feedback()
 
         # ─────────────────────────────────
         # Sjablonen — sterkste woordassociatie (Layer 1)
@@ -246,6 +261,50 @@ class EmergenceEngine:
             "energy_level": "energieniveau",
             "dramatic_flair": "dramatische flair",
         }
+
+        # ─────────────────────────────────
+        # Confidence-gate: vanaf welke drempel mag Nova een insight
+        # ECHT HARDOP zeggen (via layer4_response), i.p.v. het enkel
+        # intern bij te houden (via emergence:insight)?
+        # ─────────────────────────────────
+        # BELANGRIJKE EERLIJKHEIDSNOTITIE: de 4 insight-types gebruiken
+        # GEEN uniforme 0-1-confidence-schaal.
+        # - woordverband/tijdspatroon: echte 0-1 PMI/Layer 2-confidence
+        # - kennisdichtheid/personality_drift: ruw AANTAL (relaties/
+        #   shifts) als confidence, GEEN 0-1-schaal
+        # Eén vaste drempel (bv. "> 0.85") voor alle types zou dus
+        # oneerlijk zijn: een concept met 13 relaties heeft
+        # confidence 13.00, dat zegt niets over betrouwbaarheid op
+        # dezelfde manier als PMI dat doet. Daarom: EEN APARTE drempel
+        # per insight-type, elk aansluitend bij zijn eigen schaal.
+        #
+        # Vaste, symbolische waarden (net als Layer 2's bestaande
+        # drempels) — geen wiskundig "bewezen optimale" getallen,
+        # gewoon een bewuste, aanpasbare eerste keuze. Bewust HOGER
+        # dan de bestaande MIN_*-drempels die al bepalen of iets
+        # ÜBERHAUPT als insight telt (bv. MIN_CONFIDENCE_WOORDVERBAND
+        # = 0.5): "insight noemenswaardig genoeg om te ONTHOUDEN" is
+        # een lagere lat dan "sterk genoeg om HARDOP te ZEGGEN".
+        self.LAYER4_DREMPELS = {
+            "woordverband": 0.85,
+            "tijdspatroon": 0.85,
+            "kennisdichtheid": 8,
+            "personality_drift": 3,
+        }
+
+    def _haalt_layer4_drempel(self, insight_type: str, confidence) -> bool:
+        """
+        Toetst of een insight zijn eigen, insight-type-specifieke
+        drempel haalt om via layer4_response ECHT hardop gezegd te
+        worden. Onbekende insight-types (nog geen drempel ingesteld)
+        worden defensief NOOIT doorgelaten — veiliger om een nieuw
+        insight-type stil te houden dan per ongeluk te vroeg te laten
+        spreken zonder dat er bewust over een drempel is nagedacht.
+        """
+        drempel = self.LAYER4_DREMPELS.get(insight_type)
+        if drempel is None:
+            return False
+        return confidence >= drempel
 
     def _trait_label(self, trait_naam: str) -> str:
         """
@@ -645,17 +704,64 @@ class EmergenceEngine:
 
         return insights
 
+    def _mag_nu_spreken(self) -> bool:
+        """
+        Timing-gate (22 juli 2026): activiteit-ONAFHANKELIJKE check of
+        dit sowieso een geschikt moment is om iets hardop te zeggen.
+
+        Gebruikt context_manager.can_interrupt() — dezelfde check die
+        session_watcher.check_pauze() ook al gebruikt (combineert tijd/
+        focus/aanwezigheid/gebruikelijk-moment tot één boolean). Bewust
+        GEEN gebruik van interruption_tracker.py/response_engine.py's
+        beslis_interruption_gedrag(): dat is specifiek gebouwd rond een
+        MET-NAAM-GENOEMDE, lopende activiteit (bv. "coderen") en
+        genereert daarbij ook nog zijn eigen vraag-tekst — Layer 7 heeft
+        geen activiteit nodig te noemen en heeft al een kant-en-klare
+        insight-tekst, dus dat mechanisme past hier niet.
+
+        Fail-open als context_manager ontbreekt (bv. nog niet geladen)
+        — zelfde defensieve aanpak als session_watcher.check_pauze()
+        bij een ontbrekende context_manager: liever een keer te veel
+        spreken dan de hele Engine laten crashen of onnodig zwijgen
+        enkel omdat één laag toevallig ontbreekt.
+        """
+        context_manager = self.layers.get("context_manager")
+        if context_manager is None:
+            return True
+
+        try:
+            return context_manager.can_interrupt()
+        except Exception:
+            return True
+
     def reflect(self) -> List[Dict]:
         """
         Voert een volledige reflectie-ronde uit: analyseert alle
         beschikbare lagen, formuleert elk insight via de juiste
         sjabloon-methode, en publiceert "emergence:insight" per insight.
 
-        Publiceert NIETS naar "layer4_response" — dat is bewust een
-        latere, aparte stap (zie module-docstring). Dit event heeft
-        dus voorlopig nog geen luisteraar; reflect() is voorlopig enkel
-        handmatig/via een testcommando aan te roepen, geen automatische
-        achtergrond-trigger.
+        Insights die hun eigen, insight-type-specifieke LAYER4_DREMPELS
+        -grens halen EN waarvoor het een geschikt moment is (zie
+        _mag_nu_spreken()), worden OOK naar "layer4_response"
+        gepubliceerd — dat is de universele route naar Nova's
+        tone-pipeline (zie nova_state.md, sinds 11 juli 2026 niet meer
+        exclusief voor Layer 4).
+
+        TIMING-GATE (22 juli 2026, na afronding van Activity-Aware
+        Interaction): raadpleegt context_manager.can_interrupt() —
+        dezelfde activiteit-ONAFHANKELIJKE check die session_watcher.
+        check_pauze() ook al gebruikt voor de pauze-melding (combineert
+        tijd/focus/aanwezigheid/gebruikelijk-moment tot één boolean).
+        BEWUST NIET interruption_tracker.py/beslis_interruption_gedrag()
+        gebruikt — dat mechanisme is specifiek ontworpen rond EEN
+        LOPENDE, MET-NAAM-GENOEMDE activiteit (bv. "coderen") en
+        genereert zelf zijn eigen vraag-tekst; Layer 7 heeft al een
+        kant-en-klare insight-tekst en wil enkel weten "is dit sowieso
+        een geschikt algemeen moment", niet "mag ik deze specifieke
+        activiteit onderbreken". Ontbreekt context_manager (bv. nog
+        niet geladen) — dan mag Nova gewoon spreken (fail-open, zelfde
+        defensieve aanpak als session_watcher.check_pauze() bij een
+        ontbrekende context_manager).
         """
         ruwe_insights = self.analyze_meta_patterns()
         geformuleerd = []
@@ -685,6 +791,10 @@ class EmergenceEngine:
 
             if self.event_bus is not None:
                 self.event_bus.publish("emergence:insight", resultaat)
+
+                if self._haalt_layer4_drempel(insight["type"], insight["confidence"]) \
+                        and self._mag_nu_spreken():
+                    self.event_bus.publish("layer4_response", {"text": tekst})
 
         self.insights = geformuleerd
         return geformuleerd
@@ -719,27 +829,89 @@ class EmergenceEngine:
         }
 
     # ─────────────────────────────────
-    # Feedback (LEGE STUB — latere uitbreiding)
+    # Feedback (echte opslag, per insight-type)
     # ─────────────────────────────────
+
+    def _load_feedback(self) -> Dict:
+        """
+        Leest insight_feedback.json in, indien aanwezig. Bestaat het
+        bestand nog niet (eerste keer draaien) — begin gewoon met een
+        lege dict, geen crash. Zelfde defensieve aanpak als
+        pattern_matcher.py's load_from_disk().
+        """
+        if not self._feedback_path.exists():
+            return {}
+
+        try:
+            with open(self._feedback_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            # Corrupt of onleesbaar bestand: eerlijk met een lege
+            # dict verdergaan i.p.v. de hele module te laten crashen.
+            # Het bestand wordt bij de eerstvolgende feedback()-
+            # aanroep gewoon opnieuw (correct) weggeschreven.
+            return {}
+
+    def _save_feedback(self):
+        """
+        Schrijft self.feedback_data weg naar insight_feedback.json.
+        Maakt de data-map aan indien nodig (zou al moeten bestaan,
+        maar defensief voor het geval dit ooit als allereerste module
+        met een eigen databestand draait op een verse installatie).
+        """
+        self._feedback_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(self._feedback_path, "w", encoding="utf-8") as f:
+            json.dump(self.feedback_data, f, indent=2, ensure_ascii=False)
 
     def feedback(self, insight_type: str, success: bool):
         """
-        LET OP: dit is bewust nog een LEGE STUB.
+        Houdt PER INSIGHT-TYPE (niet per losse insight-tekst, zoals
+        afgesproken in layer7_startbericht.md) een succes/falen-teller
+        bij in insight_feedback.json — zelfde platte-JSON-filosofie als
+        word_associations.json/patterns_layer2.json/growth_metrics.json.
 
-        Publiceert enkel een event, slaat nog NIETS op naar schijf.
-        Een latere stap breidt dit uit met een echt opslagbestand
-        (bv. insight_feedback.json of een SQLite-tabel) dat per
-        insight-TYPE (niet per losse insight-tekst) een succes/falen-
-        score bijhoudt.
+        Nog NIET gebruikt: toekomstige insights houden op dit moment
+        nog GEEN rekening met deze feedback-scores (bv. om een
+        insight-type met veel "failure" tijdelijk te onderdrukken) —
+        dat was in layer7_startbericht.md ook niet als vereiste
+        genoemd ("zodat toekomstige insights DAARMEE REKENING KUNNEN
+        HOUDEN" impliceert een latere, optionele uitbreiding, geen
+        onderdeel van deze stap). Dit bouwt enkel de opslag zelf.
 
         insight_type: bv. "woordverband" — het TYPE, niet de exacte
-        gegenereerde zin (zoals afgesproken in layer7_startbericht.md).
+        gegenereerde zin.
         """
-        if self.event_bus is None:
-            return
+        if insight_type not in self.feedback_data:
+            self.feedback_data[insight_type] = {
+                "success_count": 0,
+                "failure_count": 0,
+                "last_feedback": None,
+                "last_result": None,
+            }
 
-        event_naam = "emergence:learned_success" if success else "emergence:learned_failure"
-        self.event_bus.publish(event_naam, {"insight_type": insight_type})
+        entry = self.feedback_data[insight_type]
+        if success:
+            entry["success_count"] += 1
+            entry["last_result"] = "success"
+        else:
+            entry["failure_count"] += 1
+            entry["last_result"] = "failure"
+        entry["last_feedback"] = datetime.now().isoformat()
+
+        self._save_feedback()
+
+        if self.event_bus is not None:
+            event_naam = "emergence:learned_success" if success else "emergence:learned_failure"
+            self.event_bus.publish(event_naam, {"insight_type": insight_type})
+
+    def get_feedback_stats(self, insight_type: str) -> Optional[Dict]:
+        """
+        Geeft de feedback-tellers voor één insight-type terug, of None
+        als er nog nooit feedback voor gegeven is. Handig voor
+        debug/nazicht (bv. een toekomstig `emergence feedback`-
+        testcommando in main.py).
+        """
+        return self.feedback_data.get(insight_type)
 
 
 def init_module(event_bus, layers=None):
