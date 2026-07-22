@@ -95,9 +95,9 @@ User → IntentRouter → EventBus → Modules
 | Layer 2 | Behavioral patterns (timing, frequency, anomaly detection) | ✅ Done       |
 | Layer 3 | Semantic reasoning (concepts, relations, inference)        | ✅ Done       |
 | Layer 4 | Response generator (templates, tone variation, routing)    | ✅ Done       |
-| Layer 5 | Context management (interruption logic)                    | 🔜 Planned    |
+| Layer 5 | Context management (interruption logic)                    | ✅ Done       |
 | Layer 6 | Personality & emotion engine                               | ✅ Done       |
-| Layer 7 | Emergent behavior (self-awareness)                         | 🔮 Far future |
+| Layer 7 | Emergent behavior (self-awareness)                         | ✅ Done       |
 
 ## 💻 How it works — an example
 
