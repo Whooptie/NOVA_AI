@@ -293,32 +293,34 @@ class ResponseEngine:
 
         return self._kies_variant("timing_hint", uur=uur)
 
-    def _voeg_timing_hint_toe(self, text: str) -> str:
+    def _voeg_timing_hint_toe(self, text: str, entity: str = "") -> str:
         """
-        FASE (na Fase 7): koppelt get_timing_hint() eindelijk aan
-        generate() — dit was het "vergeten stuk" uit de originele
-        Layer 4-roadmap (STAP 3 in het "HOE WERKT HET"-diagram).
+        Koppelt get_timing_hint() aan generate() — dit was het
+        "vergeten stuk" uit de originele Layer 4-roadmap (STAP 3 in
+        het "HOE WERKT HET"-diagram).
 
-        Gebruikt bewust het GENERIEKE topic "definitie" (hetzelfde
-        topic dat intent_router.py's _emit_topic("definitie") al bij
-        ELKE definitievraag registreert, ongeacht het specifieke
-        woord). Dit is een bewuste, eerlijke keuze: Layer 2 houdt op
-        dit moment geen per-woord-patronen bij (dus geen "je vraagt
-        vooral 's avonds naar python" — dat zou Layer 2 iets laten
-        lijken te weten wat het niet weet). Wat het WEL eerlijk kan
-        zeggen is "je stelt hier over het algemeen rond dit tijdstip
-        definitievragen" — dat is precies wat get_timing_hint("definitie")
-        teruggeeft.
+        PER-WOORD-TIMING (uitbreiding, zie intent_router.py's route()):
+        gebruikt nu het topic "definitie_<entity>" — hetzelfde
+        woord-specifieke topic dat intent_router.py sinds deze
+        uitbreiding publiceert via _emit_topic(f"definitie_{woord}").
+        Layer 2 (pattern_matcher.py) telt élk "topic_detected:"-voorvoegsel
+        al generiek mee (zie RELEVANTE_EVENT_TYPES-check daar), dus deze
+        nieuwe, fijnmazigere topic-naam werkt zonder dat pattern_matcher.py
+        zelf iets hoeft te weten of te wijzigen.
 
-        Per-woord-timing (bv. "je vraagt vooral 's avonds naar python")
-        is een mogelijke latere uitbreiding, genoteerd in nova_state.md
-        onder Layer 4 / activity_awareness_roadmap.md. Zou vereisen dat
-        intent_router.py een woord-specifieke topic-naam doorgeeft aan
-        _emit_topic() i.p.v. het vaste "definitie" — deze methode hier
-        zou dan ONGEWIJZIGD blijven, enkel de aanroep in generate()
-        hieronder zou een andere topic_naam meegeven.
+        Als 'entity' leeg is (defensief, zou niet mogen voorkomen bij een
+        normale aanroep vanuit generate()) valt dit terug op het oude,
+        generieke topic "definitie" — zodat dit nooit stil een
+        AttributeError of lege topic-naam kan geven.
+
+        Belangrijke eerlijkheidsgrens: dit blijft PER WOORD, niet per
+        SENSE (zie Bug #10 in nova_state.md — "python" als slang vs.
+        programmeertaal wordt hier niet uit elkaar gehouden). Dat is een
+        apart, groter werkpunt (disambiguatie-laag), niet iets wat deze
+        kleine uitbreiding oplost of pretendeert op te lossen.
         """
-        hint = self.get_timing_hint("definitie")
+        topic_naam = f"definitie_{entity}" if entity else "definitie"
+        hint = self.get_timing_hint(topic_naam)
         if hint:
             return f"{text} {hint}"
         return text
@@ -377,7 +379,7 @@ class ResponseEngine:
                     definition=definition,
                     associatie=associatie_woord,
                 )
-                text = self._voeg_timing_hint_toe(text)
+                text = self._voeg_timing_hint_toe(text, entity=entity)
                 return {
                     "text": text,
                     "confidence": 0.9,
@@ -387,7 +389,7 @@ class ResponseEngine:
             text = self._kies_variant(
                 "definitie", entity=entity, definition=definition
             )
-            text = self._voeg_timing_hint_toe(text)
+            text = self._voeg_timing_hint_toe(text, entity=entity)
             return {
                 "text": text,
                 "confidence": 0.9,
@@ -405,7 +407,7 @@ class ResponseEngine:
                 text = self._kies_variant(
                     "is_a_fallback", entity=entity, parent=parents[0]
                 )
-                text = self._voeg_timing_hint_toe(text)
+                text = self._voeg_timing_hint_toe(text, entity=entity)
                 return {
                     "text": text,
                     "confidence": 0.6,
