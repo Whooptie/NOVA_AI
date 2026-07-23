@@ -8,6 +8,7 @@ from datetime import datetime
 import sqlite3
 import atexit
 import signal
+import threading
 from difflib import SequenceMatcher
 
 class MemoryModule:
@@ -37,6 +38,7 @@ class MemoryModule:
 
         # Alleen events sinds laatste read (voor UI)
         self.recent = []
+        self.max_recent = 500  # Fase 5: bovengrens tegen onbeperkte RAM-groei
 
         # Event types die we NIET opslaan
         self.ignore_types = {
@@ -70,6 +72,25 @@ class MemoryModule:
 
         # Persistente SQLite-connectie (wordt aangemaakt in _init_db)
         self.conn = None
+
+        # --- Fase 5: caching voor get_stats() ---
+        self._stats_cache = None
+        self._stats_cache_time = 0
+        self._stats_cache_seconds = 120  # Hoelang een gecachet resultaat geldig blijft
+
+        # --- Fase 5: bescherming tegen gelijktijdige toegang vanuit meerdere threads ---
+        # (bv. hoofdthread + achtergrondthread + de 6-uurlijkse onderhoudstimer,
+        # die allemaal op hetzelfde moment self.conn of de gedeelde lijsten
+        # zouden kunnen aanraken)
+        self.lock = threading.Lock()
+
+        # --- Fase 5: back-up instellingen ---
+        self.backup_dir = data_dir / "backups" if save_path is None else self.save_path.parent / "backups"
+        self.backup_keep_count = 7  # Hoeveel back-ups we maximaal bewaren
+
+        # --- Fase 5: health check drempelwaarden ---
+        self.health_max_buffer_stil_seconden = 300  # Write-buffer mag max 5 min ongeflushed blijven
+        self.health_max_write_buffer_size = 500      # Als de buffer hierboven komt, is er iets mis met flushen
 
         # SQLite-database aanmaken (of openen als hij al bestaat)
         self._init_db()
@@ -144,24 +165,41 @@ class MemoryModule:
             "data": self.safe_copy(data)
         }
 
-        # Bewaar in RAM
-        self.events.append(event)
-        self.recent.append(event)
+        # Fase 5: alles wat de gedeelde lijsten (events/recent/write_buffer)
+        # aanraakt, gebeurt binnen de lock — zodat twee threads (bv. hoofd-
+        # thread + achtergrondthread) hier nooit tegelijk aan zitten.
+        with self.lock:
+            # Bewaar in RAM
+            self.events.append(event)
+            self.recent.append(event)
 
-        # FIFO trim
-        if len(self.events) > self.max_events:
-            self.events.pop(0)
+            # FIFO trim
+            if len(self.events) > self.max_events:
+                self.events.pop(0)
 
-        # Append naar JSONL (meteen, veiligheidsnet)
+            # Fase 5: self.recent begrenzen — voorkomt onbeperkte RAM-groei als
+            # get_recent_events() lang niet wordt aangeroepen (bv. Kevin typt
+            # dagenlang niets terwijl achtergrondprocessen wel events blijven
+            # genereren). Dit is puur het "nog te tonen"-postvakje, GEEN verlies
+            # van Nova's permanente geheugen — dat blijft altijd in
+            # interactions.jsonl/interactions.db staan.
+            if len(self.recent) > self.max_recent:
+                self.recent.pop(0)
+
+            # In buffer voor SQLite (wordt in groepjes weggeschreven)
+            self.write_buffer.append(event)
+
+        # Append naar JSONL (meteen, veiligheidsnet) — bewust BUITEN de lock:
+        # dit is een bestandsschrijving met eigen retry-logica, geen gedeelde
+        # lijst, en zou anders de lock onnodig lang bezet houden.
         self.append_to_disk(event)
 
-        # In buffer voor SQLite (wordt in groepjes weggeschreven)
-        self.write_buffer.append(event)
+        # _maybe_flush() bepaalt zelf of er geflusht moet worden, en doet dat
+        # via _flush_buffer() (die z'n eigen lock-bescherming heeft, zie verder)
         self._maybe_flush()
 
         # Laat Layers 1-7 weten dat er een nieuw event is (voor later gebruik)
         self.event_bus.publish("memory:interaction_added", event)
-
     # -------------------------
     # Recente events voor UI
     # -------------------------
@@ -226,31 +264,32 @@ class MemoryModule:
             self._flush_buffer()
 
     def _flush_buffer(self):
-        if not self.write_buffer:
-            return
-        try:
-            rijen = []
-            for e in self.write_buffer:
-                ts = e["timestamp"]
-                dt = datetime.fromtimestamp(ts)
-                rijen.append((
-                    ts,
-                    dt.strftime("%Y-%m"),
-                    dt.year,
-                    e["event_type"],
-                    json.dumps(e["data"]),
-                    time.time()
-                ))
-            self.conn.executemany("""
-                INSERT INTO interactions
-                    (timestamp, month, year, event_type, data, created_at)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, rijen)
-            self.conn.commit()
-            self.write_buffer.clear()
-            self.last_flush = time.time()
-        except Exception as e:
-            print("Memory SQLite flush error:", e)
+        with self.lock:
+            if not self.write_buffer:
+                return
+            try:
+                rijen = []
+                for e in self.write_buffer:
+                    ts = e["timestamp"]
+                    dt = datetime.fromtimestamp(ts)
+                    rijen.append((
+                        ts,
+                        dt.strftime("%Y-%m"),
+                        dt.year,
+                        e["event_type"],
+                        json.dumps(e["data"]),
+                        time.time()
+                    ))
+                self.conn.executemany("""
+                    INSERT INTO interactions
+                        (timestamp, month, year, event_type, data, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, rijen)
+                self.conn.commit()
+                self.write_buffer.clear()
+                self.last_flush = time.time()
+            except Exception as e:
+                print("Memory SQLite flush error:", e)
 
     # -------------------------
     # Graceful shutdown
@@ -302,6 +341,8 @@ class MemoryModule:
             return []
 
         # Zorg dat alles wat nog in de buffer zit ook echt doorzoekbaar is
+        # (_flush_buffer() heeft z'n eigen lock, dus bewust NIET binnen onze
+        # lock hier aangeroepen — anders zou de lock twee keer genomen worden)
         self._flush_buffer()
 
         sql = "SELECT * FROM interactions WHERE data LIKE ?"
@@ -315,14 +356,15 @@ class MemoryModule:
         sql += " ORDER BY timestamp DESC LIMIT ?"
         params.append(limit)
 
-        try:
-            self.conn.row_factory = sqlite3.Row
-            cursor = self.conn.execute(sql, params)
-            resultaten = [dict(row) for row in cursor.fetchall()]
-            return resultaten
-        except Exception as e:
-            print("Memory search error:", e)
-            return []
+        with self.lock:
+            try:
+                self.conn.row_factory = sqlite3.Row
+                cursor = self.conn.execute(sql, params)
+                resultaten = [dict(row) for row in cursor.fetchall()]
+                return resultaten
+            except Exception as e:
+                print("Memory search error:", e)
+                return []
 
     def query(self, filters):
         """
@@ -345,6 +387,7 @@ class MemoryModule:
         if not self.conn:
             return []
 
+        # _flush_buffer() heeft z'n eigen lock — bewust buiten onze lock hier
         self._flush_buffer()
 
         sql = "SELECT * FROM interactions WHERE 1=1"
@@ -387,13 +430,14 @@ class MemoryModule:
         sql += " LIMIT ?"
         params.append(limit)
 
-        try:
-            self.conn.row_factory = sqlite3.Row
-            cursor = self.conn.execute(sql, params)
-            return [dict(row) for row in cursor.fetchall()]
-        except Exception as e:
-            print("Memory query error:", e)
-            return []
+        with self.lock:
+            try:
+                self.conn.row_factory = sqlite3.Row
+                cursor = self.conn.execute(sql, params)
+                return [dict(row) for row in cursor.fetchall()]
+            except Exception as e:
+                print("Memory query error:", e)
+                return []
 
     def _get_columns(self):
         """Hulpfunctie: welke kolommen heeft de interactions-tabel echt?"""
@@ -403,48 +447,70 @@ class MemoryModule:
         except Exception:
             return []
 
-    def get_stats(self):
+    def get_stats(self, force_refresh=False):
         """
         Geeft statistieken terug over het volledige geheugen.
+
+        Wordt 120 seconden gecached (Fase 5 — optimalisatie): bij herhaalde
+        aanroepen binnen die periode wordt de databank niet opnieuw bevraagd,
+        gewoon het vorige resultaat teruggegeven. Zet force_refresh=True om
+        de cache te negeren en altijd verse cijfers te berekenen.
 
         Voorbeeld:
             stats = memory.get_stats()
             print(stats)
+
+            stats_vers = memory.get_stats(force_refresh=True)
         """
         if not self.conn:
             return {}
 
+        # Cache gebruiken indien nog geldig en geen force_refresh gevraagd
+        cache_leeftijd = time.time() - self._stats_cache_time
+        if (not force_refresh
+                and self._stats_cache is not None
+                and cache_leeftijd < self._stats_cache_seconds):
+            return self._stats_cache
+
+        # _flush_buffer() heeft z'n eigen lock — bewust buiten onze lock hier
         self._flush_buffer()
 
-        try:
-            cursor = self.conn.execute("SELECT COUNT(*) FROM interactions")
-            totaal = cursor.fetchone()[0]
+        with self.lock:
+            try:
+                cursor = self.conn.execute("SELECT COUNT(*) FROM interactions")
+                totaal = cursor.fetchone()[0]
 
-            cursor = self.conn.execute(
-                "SELECT MIN(timestamp), MAX(timestamp) FROM interactions"
-            )
-            min_ts, max_ts = cursor.fetchone()
+                cursor = self.conn.execute(
+                    "SELECT MIN(timestamp), MAX(timestamp) FROM interactions"
+                )
+                min_ts, max_ts = cursor.fetchone()
 
-            date_range = None
-            if min_ts and max_ts:
-                date_range = [
-                    datetime.fromtimestamp(min_ts).strftime("%Y-%m-%d"),
-                    datetime.fromtimestamp(max_ts).strftime("%Y-%m-%d")
-                ]
+                date_range = None
+                if min_ts and max_ts:
+                    date_range = [
+                        datetime.fromtimestamp(min_ts).strftime("%Y-%m-%d"),
+                        datetime.fromtimestamp(max_ts).strftime("%Y-%m-%d")
+                    ]
 
-            db_size_mb = 0
-            if self.db_path.exists():
-                db_size_mb = round(self.db_path.stat().st_size / (1024 * 1024), 2)
+                db_size_mb = 0
+                if self.db_path.exists():
+                    db_size_mb = round(self.db_path.stat().st_size / (1024 * 1024), 2)
 
-            return {
-                "totaal_events": totaal,
-                "periode": date_range,
-                "events_in_ram": len(self.events),
-                "database_grootte_mb": db_size_mb
-            }
-        except Exception as e:
-            print("Memory get_stats error:", e)
-            return {}
+                resultaat = {
+                    "totaal_events": totaal,
+                    "periode": date_range,
+                    "events_in_ram": len(self.events),
+                    "database_grootte_mb": db_size_mb
+                }
+
+                # Cache bijwerken voor volgende aanroepen
+                self._stats_cache = resultaat
+                self._stats_cache_time = time.time()
+
+                return resultaat
+            except Exception as e:
+                print("Memory get_stats error:", e)
+                return {}
 
     def find_similar(self, text, top_k=5, min_ratio=0.6):
         """
@@ -460,16 +526,17 @@ class MemoryModule:
         if not self.conn:
             return []
 
+        # _flush_buffer() heeft z'n eigen lock — bewust buiten onze lock hier
         self._flush_buffer()
 
-        try:
-            cursor = self.conn.execute("SELECT * FROM interactions ORDER BY timestamp DESC LIMIT 500")
-            self.conn.row_factory = sqlite3.Row
-            cursor = self.conn.execute("SELECT * FROM interactions ORDER BY timestamp DESC LIMIT 500")
-            rijen = [dict(row) for row in cursor.fetchall()]
-        except Exception as e:
-            print("Memory find_similar error:", e)
-            return []
+        with self.lock:
+            try:
+                self.conn.row_factory = sqlite3.Row
+                cursor = self.conn.execute("SELECT * FROM interactions ORDER BY timestamp DESC LIMIT 500")
+                rijen = [dict(row) for row in cursor.fetchall()]
+            except Exception as e:
+                print("Memory find_similar error:", e)
+                return []
 
         gescoord = []
         for rij in rijen:
@@ -493,10 +560,11 @@ class MemoryModule:
         if keep_recent is None:
             keep_recent = self.ram_keep_nightly
 
-        if len(self.events) <= keep_recent:
-            return
+        with self.lock:
+            if len(self.events) <= keep_recent:
+                return
 
-        self.events = self.events[-keep_recent:]
+            self.events = self.events[-keep_recent:]
         print(f"Memory: RAM-cache opgeschoond naar {keep_recent} events.")
 
     def archive_old_events(self):
@@ -510,27 +578,28 @@ class MemoryModule:
 
         cutoff = time.time() - (self.archive_after_days * 24 * 3600)
 
-        try:
-            # Kopieer oude rijen naar interactions_old
-            self.conn.execute("""
-                INSERT INTO interactions_old
-                    (timestamp, month, year, event_type, data, created_at)
-                SELECT timestamp, month, year, event_type, data, created_at
-                FROM interactions
-                WHERE timestamp < ?
-            """, (cutoff,))
+        with self.lock:
+            try:
+                # Kopieer oude rijen naar interactions_old
+                self.conn.execute("""
+                    INSERT INTO interactions_old
+                        (timestamp, month, year, event_type, data, created_at)
+                    SELECT timestamp, month, year, event_type, data, created_at
+                    FROM interactions
+                    WHERE timestamp < ?
+                """, (cutoff,))
 
-            # Verwijder ze daarna uit de hoofdtabel
-            cursor = self.conn.execute(
-                "DELETE FROM interactions WHERE timestamp < ?", (cutoff,)
-            )
-            verplaatst = cursor.rowcount
-            self.conn.commit()
+                # Verwijder ze daarna uit de hoofdtabel
+                cursor = self.conn.execute(
+                    "DELETE FROM interactions WHERE timestamp < ?", (cutoff,)
+                )
+                verplaatst = cursor.rowcount
+                self.conn.commit()
 
-            if verplaatst > 0:
-                print(f"Memory: {verplaatst} oude events gearchiveerd (>{self.archive_after_days} dagen).")
-        except Exception as e:
-            print("Memory archive_old_events error:", e)
+                if verplaatst > 0:
+                    print(f"Memory: {verplaatst} oude events gearchiveerd (>{self.archive_after_days} dagen).")
+            except Exception as e:
+                print("Memory archive_old_events error:", e)
 
     def compress_ancient_events(self):
         """
@@ -545,45 +614,171 @@ class MemoryModule:
 
         cutoff = time.time() - (self.compress_after_days * 24 * 3600)
 
-        try:
-            self.conn.row_factory = sqlite3.Row
-            cursor = self.conn.execute(
-                "SELECT * FROM interactions_old WHERE timestamp < ?", (cutoff,)
-            )
-            rijen = [dict(row) for row in cursor.fetchall()]
+        with self.lock:
+            try:
+                self.conn.row_factory = sqlite3.Row
+                cursor = self.conn.execute(
+                    "SELECT * FROM interactions_old WHERE timestamp < ?", (cutoff,)
+                )
+                rijen = [dict(row) for row in cursor.fetchall()]
 
-            if not rijen:
-                return
+                if not rijen:
+                    return
 
-            archive_dir = self.save_path.parent / "archive"
-            archive_dir.mkdir(parents=True, exist_ok=True)
+                archive_dir = self.save_path.parent / "archive"
+                archive_dir.mkdir(parents=True, exist_ok=True)
 
-            timestamp_str = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-            archive_file = archive_dir / f"interactions_compressed_{timestamp_str}.jsonl.gz"
+                timestamp_str = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+                archive_file = archive_dir / f"interactions_compressed_{timestamp_str}.jsonl.gz"
 
-            with gzip.open(archive_file, "wt", encoding="utf-8") as f:
-                for rij in rijen:
-                    f.write(json.dumps(rij) + "\n")
+                with gzip.open(archive_file, "wt", encoding="utf-8") as f:
+                    for rij in rijen:
+                        f.write(json.dumps(rij) + "\n")
 
-            self.conn.execute(
-                "DELETE FROM interactions_old WHERE timestamp < ?", (cutoff,)
-            )
-            self.conn.commit()
+                self.conn.execute(
+                    "DELETE FROM interactions_old WHERE timestamp < ?", (cutoff,)
+                )
+                self.conn.commit()
 
-            print(f"Memory: {len(rijen)} zeer oude events gecomprimeerd naar {archive_file.name}")
-        except Exception as e:
-            print("Memory compress_ancient_events error:", e)
+                print(f"Memory: {len(rijen)} zeer oude events gecomprimeerd naar {archive_file.name}")
+            except Exception as e:
+                print("Memory compress_ancient_events error:", e)
 
     def vacuum_db(self):
         """Maakt de SQLite-database weer compact nadat er veel verwijderd is."""
         if not self.conn:
             return
+        with self.lock:
+            try:
+                self.conn.execute("VACUUM")
+                self.conn.commit()
+                print("Memory: database compact gemaakt (VACUUM).")
+            except Exception as e:
+                print("Memory vacuum_db error:", e)
+
+    def backup_data(self):
+        """
+        Maakt een kopie van interactions.db en interactions.jsonl in
+        data/backups/, met een tijdstempel in de bestandsnaam. Ruimt
+        daarna oudere back-ups op, houdt enkel de laatste
+        'backup_keep_count' over.
+
+        Puur symbolisch (shutil.copy2, standaard in Python) — geen ML.
+        """
+        import shutil
+
         try:
-            self.conn.execute("VACUUM")
-            self.conn.commit()
-            print("Memory: database compact gemaakt (VACUUM).")
+            self.backup_dir.mkdir(parents=True, exist_ok=True)
+
+            timestamp_str = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+
+            with self.lock:
+                if self.db_path.exists():
+                    doel_db = self.backup_dir / f"interactions_{timestamp_str}.db"
+                    shutil.copy2(self.db_path, doel_db)
+
+                if self.save_path.exists():
+                    doel_jsonl = self.backup_dir / f"interactions_{timestamp_str}.jsonl"
+                    shutil.copy2(self.save_path, doel_jsonl)
+
+            print(f"Memory: back-up gemaakt ({timestamp_str}).")
+            self._cleanup_old_backups()
+
         except Exception as e:
-            print("Memory vacuum_db error:", e)
+            print("Memory backup_data error:", e)
+
+    def _cleanup_old_backups(self):
+        """
+        Houdt enkel de laatste 'backup_keep_count' back-ups over.
+        Telt .db en .jsonl apart (elke onderhoudsronde maakt er één van elk).
+        """
+        try:
+            for extensie in (".db", ".jsonl"):
+                bestanden = sorted(
+                    self.backup_dir.glob(f"interactions_*{extensie}"),
+                    key=lambda p: p.stat().st_mtime,
+                    reverse=True  # Nieuwste eerst
+                )
+                te_verwijderen = bestanden[self.backup_keep_count:]
+                for bestand in te_verwijderen:
+                    bestand.unlink()
+                    print(f"Memory: oude back-up verwijderd ({bestand.name}).")
+        except Exception as e:
+            print("Memory _cleanup_old_backups error:", e)
+
+    def health_check(self):
+        """
+        Controleert of memory.py er gezond bijstaat. Puur symbolisch:
+        een reeks losse ja/nee-checks, geen ML.
+
+        Geeft een dictionary terug:
+            {
+                "status": "ok" of "problemen",
+                "problemen": [...],   # lijst met omschrijvingen, leeg als alles ok is
+                "details": {...}      # ruwe cijfers voor wie dieper wil kijken
+            }
+        """
+        problemen = []
+
+        # Check 1: is de SQLite-connectie er nog?
+        if not self.conn:
+            problemen.append("Geen actieve databankverbinding (self.conn is None).")
+
+        # Check 2: reageert de databank nog echt (geen corruptie)?
+        databank_ok = False
+        if self.conn:
+            try:
+                with self.lock:
+                    self.conn.execute("SELECT 1").fetchone()
+                databank_ok = True
+            except Exception as e:
+                problemen.append(f"Databank reageert niet correct: {e}")
+
+        # Check 3: staat de write-buffer abnormaal lang stil (flush hapert)?
+        seconden_sinds_flush = time.time() - self.last_flush
+        if seconden_sinds_flush > self.health_max_buffer_stil_seconden and self.write_buffer:
+            problemen.append(
+                f"Write-buffer al {seconden_sinds_flush:.0f} sec niet geflusht "
+                f"terwijl er {len(self.write_buffer)} event(s) in wachten."
+            )
+
+        # Check 4: is de write-buffer abnormaal groot (flush lijkt vast te lopen)?
+        if len(self.write_buffer) > self.health_max_write_buffer_size:
+            problemen.append(
+                f"Write-buffer bevat {len(self.write_buffer)} events, "
+                f"boven de verwachte grens van {self.health_max_write_buffer_size}."
+            )
+
+        # Check 5: bestaat het JSONL-logbestand nog?
+        jsonl_bestaat = self.save_path.exists()
+        if not jsonl_bestaat:
+            problemen.append(f"JSONL-logbestand niet gevonden op {self.save_path}.")
+
+        # Check 6: bestaat de databank nog op schijf?
+        db_bestaat = self.db_path.exists()
+        if not db_bestaat:
+            problemen.append(f"SQLite-databank niet gevonden op {self.db_path}.")
+
+        # Check 7: draait de onderhoudstimer nog?
+        if self.maintenance_timer is None:
+            problemen.append("Onderhoudstimer is niet actief (self.maintenance_timer is None).")
+
+        status = "ok" if not problemen else "problemen"
+
+        return {
+            "status": status,
+            "problemen": problemen,
+            "details": {
+                "databank_bereikbaar": databank_ok,
+                "seconden_sinds_laatste_flush": round(seconden_sinds_flush, 1),
+                "write_buffer_grootte": len(self.write_buffer),
+                "events_in_ram": len(self.events),
+                "recent_in_ram": len(self.recent),
+                "jsonl_bestaat": jsonl_bestaat,
+                "db_bestaat": db_bestaat,
+                "onderhoudstimer_actief": self.maintenance_timer is not None
+            }
+        }
 
     def run_maintenance(self):
         """Voert één volledige onderhoudsronde uit. Wordt elke X uur aangeroepen."""
@@ -594,14 +789,13 @@ class MemoryModule:
             self.trim_ram_cache()
             self.vacuum_db()
             self._rotate_if_needed()
+            self.backup_data()
             print("Memory: onderhoudsronde afgerond.")
         except Exception as e:
             print("Memory run_maintenance error:", e)
 
     def start_maintenance(self):
         """Start de achtergrond-timer die elke 'maintenance_interval_hours' draait."""
-        import threading
-
         def _tick():
             self.run_maintenance()
             self.start_maintenance()  # plan de volgende ronde in

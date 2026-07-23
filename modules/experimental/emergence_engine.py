@@ -292,6 +292,72 @@ class EmergenceEngine:
             "personality_drift": 3,
         }
 
+        # ─────────────────────────────────
+        # Feedback-gebaseerde drempel-aanpassing (23 juli 2026)
+        # ─────────────────────────────────
+        # Maakt de vaste LAYER4_DREMPELS-waarde hierboven zachtjes
+        # verschuifbaar op basis van Kevin's feedback (zie feedback()),
+        # zonder ooit een insight-type volledig te blokkeren. Bij elke
+        # "slecht"-beoordeling schuift de effectieve drempel een klein
+        # stapje omhoog (moeilijker te halen); bij elke "ok" schuift ze
+        # een stapje terug omlaag. Een plafond zorgt dat dit nooit meer
+        # dan een bepaald percentage boven het origineel kan komen —
+        # bewust GEEN blokkade, enkel een geleidelijke, omkeerbare rem.
+        #
+        # Stap en plafond zijn relatief (percentage van de originele
+        # drempel), niet een vast getal — nodig omdat de 4 insight-
+        # types compleet verschillende schalen gebruiken (0-1 voor
+        # woordverband/tijdspatroon, ruwe aantallen voor kennisdichtheid/
+        # personality_drift). Eenzelfde vast getal (bv. "+0.05") zou op
+        # de aantal-schaal nagenoeg onzichtbaar zijn en op de 0-1-schaal
+        # juist enorm.
+        self.FEEDBACK_STAP_PERCENTAGE = 0.05    # 5% van de originele drempel, per feedback-moment
+        self.FEEDBACK_PLAFOND_PERCENTAGE = 0.20  # nooit meer dan 20% boven het origineel
+        self.FEEDBACK_MIN_OBSERVATIES = 5        # onder dit aantal: nog geen aanpassing, te weinig data
+
+    def _effectieve_drempel(self, insight_type: str) -> Optional[float]:
+        """
+        Berekent de EFFECTIEVE drempel voor dit insight-type: de vaste
+        LAYER4_DREMPELS-waarde, zachtjes aangepast op basis van Kevin's
+        feedback-geschiedenis (zie feedback()/insight_feedback.json).
+
+        Werking:
+        - Minder dan FEEDBACK_MIN_OBSERVATIES feedback-momenten in
+          totaal? -> nog te weinig data, gewoon de originele drempel
+          teruggeven, geen aanpassing.
+        - Anders: het VERSCHIL tussen failure_count en success_count
+          bepaalt hoeveel stapjes we verschuiven (kan ook NEGATIEF zijn
+          als er meer "ok" dan "slecht" was -> drempel zakt dan zelfs
+          een beetje ONDER het origineel, wat net zo gewenst is: een
+          insight-type dat het goed doet, mag iets makkelijker spreken).
+        - Elke stap = FEEDBACK_STAP_PERCENTAGE van de originele drempel.
+        - Begrensd tussen origineel - plafond en origineel + plafond.
+
+        Geeft None terug als insight_type niet in LAYER4_DREMPELS zit
+        (onbekend type — zelfde defensieve houding als voorheen).
+        """
+        origineel = self.LAYER4_DREMPELS.get(insight_type)
+        if origineel is None:
+            return None
+
+        stats = self.feedback_data.get(insight_type)
+        if not stats:
+            return origineel
+
+        totaal = stats.get("success_count", 0) + stats.get("failure_count", 0)
+        if totaal < self.FEEDBACK_MIN_OBSERVATIES:
+            return origineel
+
+        verschil = stats.get("failure_count", 0) - stats.get("success_count", 0)
+        stap_grootte = origineel * self.FEEDBACK_STAP_PERCENTAGE
+        plafond = origineel * self.FEEDBACK_PLAFOND_PERCENTAGE
+
+        verschuiving = verschil * stap_grootte
+        # Begrenzen tussen -plafond en +plafond
+        verschuiving = max(-plafond, min(plafond, verschuiving))
+
+        return origineel + verschuiving
+
     def _haalt_layer4_drempel(self, insight_type: str, confidence) -> bool:
         """
         Toetst of een insight zijn eigen, insight-type-specifieke
@@ -300,8 +366,13 @@ class EmergenceEngine:
         worden defensief NOOIT doorgelaten — veiliger om een nieuw
         insight-type stil te houden dan per ongeluk te vroeg te laten
         spreken zonder dat er bewust over een drempel is nagedacht.
+
+        Gebruikt sinds 23 juli 2026 de FEEDBACK-AANGEPASTE drempel
+        (_effectieve_drempel) i.p.v. rechtstreeks LAYER4_DREMPELS — zie
+        die methode voor de volledige uitleg van hoe Kevin's feedback
+        de drempel geleidelijk en omkeerbaar kan bijstellen.
         """
-        drempel = self.LAYER4_DREMPELS.get(insight_type)
+        drempel = self._effectieve_drempel(insight_type)
         if drempel is None:
             return False
         return confidence >= drempel

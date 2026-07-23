@@ -1,6 +1,7 @@
 # modules/chat/chat.py
 
 from identity import self_query
+from identity import self_architecture
 
 class ChatModule:
     def __init__(self, event_bus, semantic_module=None):
@@ -22,6 +23,7 @@ class ChatModule:
         event_bus.subscribe("concept_learned", self.on_concept_learned)
         event_bus.subscribe("intent_wiki", self.on_wiki_response)
         event_bus.subscribe("intent_identity", self.on_identity_question)
+        event_bus.subscribe("intent_self_architecture", self.on_self_architecture_question)
 
     # -------------------------
     # 1. Begroetingen
@@ -390,6 +392,23 @@ class ChatModule:
             functie = antwoord_functies.get(sub_intent)
             tekst = functie() if functie else "Daar heb ik eigenlijk geen goed antwoord op."
 
+        self.event_bus.publish("layer4_response", {"text": tekst})
+
+    # -------------------------
+    # 5C. Self-architecture (nieuw, 23 juli 2026) -- Kevin vraagt hoe
+    # Nova werkt (geheugen, denken, leren, privacy, architectuur), in
+    # tegenstelling tot on_identity_question hierboven (wie ze is).
+    # -------------------------
+    def on_self_architecture_question(self, data, event_type=None):
+        """
+        Reageert op een herkende architectuur-vraag (topic uit
+        intent_router.py's detect_self_architecture) en publiceert het
+        antwoord via layer4_response -- zelfde behandeling als
+        on_identity_question hierboven, zodat Nova's toon er ook hier
+        doorheen schemert.
+        """
+        topic = data.get("topic")
+        tekst = self_architecture.get_uitleg(topic)
         self.event_bus.publish("layer4_response", {"text": tekst})
 
     # -------------------------

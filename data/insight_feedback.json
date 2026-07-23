@@ -1,8 +1,8 @@
 {
   "woordverband": {
-    "success_count": 1,
-    "failure_count": 1,
-    "last_feedback": "2026-07-22T20:03:30.036398",
-    "last_result": "failure"
+    "success_count": 6,
+    "failure_count": 7,
+    "last_feedback": "2026-07-23T21:06:31.809313",
+    "last_result": "success"
   }
 }

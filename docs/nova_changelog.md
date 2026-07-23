@@ -41,6 +41,27 @@
 
 ---
 
+## ✅ self_architecture.py — nieuwe zelfkennis-laag: HOE Nova werkt (23 juli 2026)
+
+Kevin wilde dat Nova, naast vragen over wie ze is (`self_query.py`, al bestaand), ook kan uitleggen hoe ze technisch werkt — geheugen, denkproces/EventBus, leren, privacy, architectuur. Bewust een NIEUW, apart bestand i.p.v. een uitbreiding van `self_query.py`: dat laatste is opgebouwd rond `identity.json` (persoonlijkheid/gevoel) en er bestaat geen zinnig "veld" voor bijvoorbeeld "hoe werkt Layer 2".
+
+**Gebouwd:**
+- `identity/self_architecture.py` (nieuw) — vaste uitlegteksten in een Python-dictionary (`_UITLEG`), geen apart JSON-bestand nodig (statische documentatietekst die nooit runtime verandert). Zelfde `_kies()`-variatiepatroon als `self_query.py`. Topics: `geheugen`, `denken`, `leren`, `privacy`, `architectuur_algemeen`, `persoonlijkheid_brug` (kort antwoord + verwijzing naar self_query.py bij een vraag die eigenlijk over karakter/gevoel gaat).
+- `intent_router.py`: nieuwe `detect_self_architecture()`-methode, met een eigen patronen-dictionary per topic. In `route()` bewust VÓÓR `detect_identity_question` gecontroleerd, zodat een zin als "hoe werk je" niet per ongeluk als identiteitsvraag opgepikt wordt.
+- `chat.py`: nieuwe `on_self_architecture_question()`-handler, subscribet op `intent_self_architecture`, roept `self_architecture.get_uitleg(topic)` aan en publiceert het resultaat.
+
+**Belangrijke architectuurkeuze — anders dan self_query.py:** Kevin wilde expliciet dat Nova's identiteit/karakter ook hier doorschemert. Daarom publiceert deze route bewust via `layer4_response` (de tone-pipeline: `response_pipeline.py` → `chat_response_engine.py` → `expression_injector.py`), niet rechtstreeks via `chat_response` zoals `self_query.py` dat doet. Gevolg: architectuur-antwoorden krijgen automatisch Nova's stemming/expressie mee (emoji's, gestures, uitroeptekens), net als weer/tijd/definities.
+
+**Live getest (23 juli 2026), alle vier bevestigd correct:**
+- "hoe onthoud je dingen" → topic `geheugen`, via tone-pipeline (`*kleine glimlach*`)
+- "wat is een eventbus" → topic `denken`
+- "ben je lokaal" → topic `privacy`
+- "hoe ben je opgebouwd" → topic `architectuur_algemeen`
+
+100% symbolisch, geen ML/LLM: Kevin kent Nova's architectuur al, deze module herhaalt die kennis enkel in spreektaal op het juiste moment — geen generatie, geen verzonnen uitleg.
+
+---
+
 ## ✅ Afgeronde werkpunten (voorheen "Volgende stappen")
 
 **`behavior_modifiers.py`-koppeling — documentatie-correctie (18 juli 2026, geen nieuwe code-wijziging).** Werkpunt 6 in de "Volgende stappen"-lijst beweerde dat `BehaviorModifiers` (`apply_energy_modulation()`, `apply_impulsivity()`, `apply_dramatic_flair()`) nog steeds ongebruikt was. Bij nazicht van de echte code (18 juli 2026) bleek dit niet te kloppen: alle 3 methodes worden wel degelijk aangeroepen in `personality_engine.py`'s `update_state()` (`self.modifiers.apply_energy_modulation()` / `apply_impulsivity()` / `apply_dramatic_flair()`), vermoedelijk stilzwijgend gekoppeld tijdens de karakterherziening-sessie van 17 juli 2026 (dezelfde sessie waarin de twee gewichten-bugs #12/#13 ontdekt en opgelost werden), maar nooit teruggemeld in de "Volgende stappen"-lijst zelf. Live bevestigd via `identity_state.json`: `impulsivity_modulation: 0.3` en `dramatic_flair_state: 0.15` komen exact overeen met `traits.json`'s `impulsivity`/`dramatic_flair`-waarden, wat enkel kan als `apply_impulsivity()`/`apply_dramatic_flair()` daadwerkelijk draaien. Werkpunt 6 is dus verwijderd uit de open "Volgende stappen"-lijst.
@@ -144,3 +165,29 @@ Loste de tot dan toe genoteerde beperking op: `response_engine.py`'s timing-hint
 **Live getest (23 juli 2026):** "wat is python"/"wat is een hond"/"wat betekent fiets" gaven drie correcte, aparte entries in `patterns_layer2.json`, elk `total: 1`, naast de oude `topic_detected:definitie`-entry (bewaard als archief, niet meer aangevuld). Geen crashes, geen regressie in tone-pipeline/Layer 1. Timing-hint zelf nog niet zichtbaar (verwacht — ver onder de drempel van 10 observaties per woord), groeit organisch verder mee.
 
 **Bewust niet meegenomen:** Bug #10 (sense-disambiguatie) blijft apart open — dit werkt per WOORD, niet per SENSE.
+
+## ✅ Layer 0 — memory.py Fase 5 afgerond (23 juli 2026)
+
+Optimization & polish, alle 5 deelstukken gebouwd en getest:
+
+1. **Query caching:** `get_stats()` cachet het resultaat 120 seconden (`self._stats_cache`/`self._stats_cache_time`). Nieuwe parameter `force_refresh=True` negeert de cache. `search()`, `query()`, `find_similar()` bewust NIET gecached (elk met eigen parameter-combinaties, complexere caching-aanpak nodig, latere stap indien nodig).
+2. **Memory leak-fix:** `self.recent` had geen bovengrens (in tegenstelling tot `self.events`, dat al begrensd was), en groeide onbeperkt zolang `get_recent_events()` niet werd aangeroepen (enkel getriggerd door Kevin's eigen typen in `main.py`). Nu begrensd op `self.max_recent = 500` met dezelfde FIFO-trim als `self.events`. Geen verlies van Nova's permanente geheugen — dit raakt enkel het "nog te tonen in UI"-postvakje, niet `interactions.jsonl`/`interactions.db`.
+3. **Concurrent access:** nieuwe `self.lock = threading.Lock()`, toegepast rond alle `self.conn`-operaties en de gedeelde lijsten (`on_event`, `_flush_buffer`, `search`, `query`, `get_stats`, `find_similar`, `archive_old_events`, `compress_ancient_events`, `vacuum_db`, `trim_ram_cache`). Belangrijke regel: `_flush_buffer()` wordt overal bewust BUITEN een already-held lock aangeroepen (voorkomt deadlock, want `threading.Lock()` is niet-herbetreedbaar).
+4. **Backup:** nieuwe methode `backup_data()`, aangeroepen vanuit `run_maintenance()` (dus elke 6u automatisch). Kopieert `interactions.db` + `interactions.jsonl` naar `data/backups/` met tijdstempel in bestandsnaam (`shutil.copy2`). Nieuwe `_cleanup_old_backups()` houdt enkel de laatste 7 back-ups over per bestandstype.
+5. **Health check:** nieuwe methode `health_check()`, 7 losse checks (databankverbinding, databank reageert, write-buffer niet te lang stil, write-buffer niet abnormaal groot, JSONL/db bestaan nog op schijf, onderhoudstimer actief). Geeft `{"status": "ok"/"problemen", "problemen": [...], "details": {...}}` terug.
+
+**Nieuwe commando's in `main.py`:** `geheugen stats` / `geheugen stats vers` (test/toont caching), `geheugen gezondheid` (toont health_check()-resultaat). Beide permanent, geen tijdelijke debug-commando's.
+
+Alle 5 deelstukken live getest via herhaalde `/reboot`-cycli, geen problemen.
+
+## ✅ Layer 7 — feedback-gebaseerde drempel-aanpassing afgerond (23 juli 2026)
+
+Vult het laatste open werkpunt van `feedback()` (20 juli 2026) op: opgeslagen success/failure-scores per insight-type beïnvloeden nu ook echt of een insight hardop uitgesproken wordt.
+
+- Nieuwe methode `_effectieve_drempel(insight_type)` in `emergence_engine.py`: past de vaste `LAYER4_DREMPELS`-waarde aan op basis van het verschil tussen `failure_count` en `success_count`. Werkt in beide richtingen (veel "slecht" → hogere drempel/moeilijker; veel "ok" → lagere drempel/makkelijker).
+- Bewust een geleidelijke, omkeerbare rem gekozen — GEEN blokkade. Overwogen alternatief (vermenigvuldigingsfactor op basis van failure-ratio) werd verworpen: voelde te hard/direct aan, kon een insight-type in één klap bijna volledig het zwijgen opleggen zonder herstelkans.
+- Nieuwe instellingen: `FEEDBACK_STAP_PERCENTAGE` (0.05 = 5% van de originele drempel per feedback-moment), `FEEDBACK_PLAFOND_PERCENTAGE` (0.20 = max 20% boven/onder het origineel), `FEEDBACK_MIN_OBSERVATIES` (5 — onder dit aantal geen aanpassing).
+- Percentage-gebaseerd i.p.v. vaste getallen, omdat de 4 insight-types compleet verschillende schalen gebruiken (0-1 voor woordverband/tijdspatroon, ruwe aantallen voor kennisdichtheid/personality_drift) — één vast getal zou op de ene schaal onzichtbaar zijn en op de andere overweldigend.
+- `_haalt_layer4_drempel()` aangepast om `_effectieve_drempel()` te gebruiken i.p.v. rechtstreeks `LAYER4_DREMPELS`.
+- Nieuw testcommando in `main.py`: `emergence drempel <type>` (toont origineel/effectief/stats naast elkaar).
+- Live getest en bevestigd (23 juli 2026): 7 failures/1 success duwde `woordverband`'s effectieve drempel van 0.85 naar het plafond van 1.02; 5 daaropvolgende "ok"-beoordelingen (6 success/7 failure totaal) bracht 'm terug naar 0.8925 — bevestigt zowel de opbouw als het snelle herstel.
