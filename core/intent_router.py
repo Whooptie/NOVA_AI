@@ -184,6 +184,15 @@ class IntentRouter:
                         word = word[len(art):].strip()
                         break
 
+                # Per-woord-timing (Layer 2-koppeling, uitbreiding op de
+                # bewust generieke "definitie"-topic uit Fase 7): het
+                # herkende woord hier bewaren als instance-attribuut,
+                # zodat route() straks (na deze aanroep) een woord-
+                # specifiek topic kan publiceren i.p.v. het vaste
+                # "definitie". Alleen HIER, in de definitie-tak, gezet --
+                # blijft None/ongewijzigd voor alle andere intents.
+                self._laatste_definitie_woord = word
+
                 # Layer 4 (response_engine) EERST proberen: die combineert
                 # semantic + word_associations + pattern_matcher tot één
                 # antwoord. Alleen als Layer 4 zelf geen definitie/relatie
@@ -953,7 +962,13 @@ class IntentRouter:
 
         # 8 Definition
         if self.detect_definition(text):
-            self._emit_topic("definitie")
+            # Per-woord-timing: gebruik het specifieke woord als het
+            # beschikbaar is (gezet in detect_definition() hierboven),
+            # met het oude, generieke "definitie" als veilige terugval
+            # -- zo kan dit nooit stil breken als _laatste_definitie_woord
+            # om een onverwachte reden leeg zou zijn.
+            woord = getattr(self, "_laatste_definitie_woord", None)
+            self._emit_topic(f"definitie_{woord}" if woord else "definitie")
             return
 
         # 9 Relation-flow (eerst! anders pikt relation-check het op)

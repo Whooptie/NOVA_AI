@@ -128,3 +128,19 @@ Drempelwaarden (0.8/0.2) bewust symmetrisch gekozen, besproken met Kevin — ver
 **Status: Activity-Aware Interaction Deel 1-3 (interruption learning + generiek per activiteit + variatie in formulering) volledig afgerond en getest.** Enkel Deel 4 (contextuele suggesties tussen activiteiten, bv. Plex → lichten dimmen) blijft open — apart, groter werkpunt met een eigen sensor/integratie-afhankelijkheid, zie `nova_state.md`'s "Volgende stappen".
 
 **Bestanden gewijzigd (volledig overzicht, beide sessies 22 juli 2026):** `core/pending_question.py` (nieuw), `core/interruption_tracker.py` (nieuw), `core/response_engine.py` (`beslis_interruption_gedrag()` + sjablonen + drempel-constantes), `intent_router.py` (nieuwe stap -1 in `route()` + `_verwerk_pending_antwoord()` + `_interpreteer_ja_nee()` + woordenlijsten), `modules/activity/session_watcher.py` (activiteit-tracking + `check_activity_interruption()` + `_on_pending_answered()`), `module_loader.py` (twee nieuwe core-modules + `interruption_tracker` in `response_layers`), `main.py` (`achtergrond_loop()` roept nu ook `check_activity_interruption()` aan; `exit`-blok sluit `interruption_tracker` netjes af; twee nieuwe debug-commando's).
+
+---
+
+## Per-woord-timing (Layer 4/Layer 2-koppeling) — afgerond (23 juli 2026)
+
+Loste de tot dan toe genoteerde beperking op: `response_engine.py`'s timing-hint gebruikte enkel het generieke topic `"definitie"` voor ALLE definitievragen samen. Vanaf nu krijgt elk woord zijn eigen `topic_detected:definitie_<woord>`-teller in Layer 2.
+
+**`intent_router.py`:** `detect_definition()` slaat het herkende woord op als `self._laatste_definitie_woord` (enkel in de definitie-tak). `route()`'s stap 8 gebruikt `getattr(self, "_laatste_definitie_woord", None)` om `_emit_topic(f"definitie_{woord}")` te publiceren, met veilige terugval op het oude `"definitie"`.
+
+**`response_engine.py`:** `_voeg_timing_hint_toe()` kreeg een nieuwe `entity`-parameter, bouwt zelf `f"definitie_{entity}"` als topic-naam. Alle 3 aanroepen in `generate()` geven nu `entity=entity` mee.
+
+**`pattern_matcher.py`:** geen wijziging nodig — telde via de bestaande `startswith("topic_detected:")`-check al generiek elk topic mee.
+
+**Live getest (23 juli 2026):** "wat is python"/"wat is een hond"/"wat betekent fiets" gaven drie correcte, aparte entries in `patterns_layer2.json`, elk `total: 1`, naast de oude `topic_detected:definitie`-entry (bewaard als archief, niet meer aangevuld). Geen crashes, geen regressie in tone-pipeline/Layer 1. Timing-hint zelf nog niet zichtbaar (verwacht — ver onder de drempel van 10 observaties per woord), groeit organisch verder mee.
+
+**Bewust niet meegenomen:** Bug #10 (sense-disambiguatie) blijft apart open — dit werkt per WOORD, niet per SENSE.
