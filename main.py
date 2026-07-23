@@ -351,12 +351,69 @@ def main():
                   f"'emergence feedback <type> <ok|slecht>' (feedback geven).{RESET}")
             continue
 
+        # Commando voor de feedback-gebaseerde drempel-aanpassing (23 juli 2026)
+        if user_input.lower().startswith("emergence drempel"):
+            emergence = loader.loaded_modules.get("emergence_engine")
+            if not emergence:
+                print(f"{RED}emergence_engine-module niet gevonden.{RESET}")
+                continue
+
+            delen = user_input.split()
+            if len(delen) != 3:
+                print(f"{RED}Gebruik: 'emergence drempel <type>' "
+                      f"(bv. 'emergence drempel woordverband').{RESET}")
+                continue
+
+            insight_type = delen[2]
+            origineel = emergence.LAYER4_DREMPELS.get(insight_type)
+            if origineel is None:
+                print(f"{RED}Onbekend insight-type: '{insight_type}'.{RESET}")
+                continue
+
+            effectief = emergence._effectieve_drempel(insight_type)
+            stats = emergence.feedback_data.get(insight_type)
+
+            print(f"{CYAN}Insight-type: {insight_type}{RESET}")
+            print(f"{CYAN}  Originele drempel: {origineel}{RESET}")
+            print(f"{CYAN}  Effectieve drempel: {effectief}{RESET}")
+            print(f"{CYAN}  Feedback-stats: {stats}{RESET}")
+            continue
+
         # Tijdelijk test-commando voor Fase 4 (mag je later weer verwijderen)
         if user_input.lower() == "onderhoud":
             mem = loader.loaded_modules.get("memory")
             if mem:
                 print(f"{CYAN}Onderhoudsronde wordt gestart...{RESET}")
                 mem.run_maintenance()
+            else:
+                print(f"{RED}Memory-module niet gevonden.{RESET}")
+            continue
+
+        # Commando voor Fase 5: toont memory-statistieken (test caching)
+        # 'geheugen stats' gebruikt de cache indien nog geldig (max. 120 sec oud)
+        # 'geheugen stats vers' forceert een verse berekening (force_refresh=True)
+        if user_input.lower() in ("geheugen stats", "geheugen stats vers"):
+            mem = loader.loaded_modules.get("memory")
+            if mem:
+                vers = user_input.lower() == "geheugen stats vers"
+                stats = mem.get_stats(force_refresh=vers)
+                print(f"{CYAN}Memory stats: {stats}{RESET}")
+            else:
+                print(f"{RED}Memory-module niet gevonden.{RESET}")
+            continue
+
+        # Commando voor Fase 5: health check van de memory-module
+        if user_input.lower() == "geheugen gezondheid":
+            mem = loader.loaded_modules.get("memory")
+            if mem:
+                resultaat = mem.health_check()
+                if resultaat["status"] == "ok":
+                    print(f"{CYAN}Memory gezondheid: OK — geen problemen gevonden.{RESET}")
+                else:
+                    print(f"{RED}Memory gezondheid: PROBLEMEN{RESET}")
+                    for probleem in resultaat["problemen"]:
+                        print(f"{RED}  - {probleem}{RESET}")
+                print(f"{CYAN}Details: {resultaat['details']}{RESET}")
             else:
                 print(f"{RED}Memory-module niet gevonden.{RESET}")
             continue

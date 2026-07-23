@@ -2,3 +2,4 @@
 {"succes": true, "aantal_training_voorbeelden": 55, "aantal_extra_uit_uncertain": 3, "nieuwe_score": 0.9474, "huidige_score": 0.5789, "wordt_actief": true, "tijdstip": "2026-07-18T16:25:32.648700"}
 {"succes": true, "aantal_training_voorbeelden": 75, "aantal_extra_uit_uncertain": 23, "nieuwe_score": 0.9474, "huidige_score": 0.9474, "wordt_actief": true, "tijdstip": "2026-07-18T16:33:07.997581"}
 {"succes": true, "aantal_training_voorbeelden": 94, "aantal_extra_uit_uncertain": 42, "nieuwe_score": 0.9474, "huidige_score": 0.9474, "wordt_actief": true, "tijdstip": "2026-07-21T13:12:24.186358"}
+{"succes": true, "aantal_training_voorbeelden": 114, "aantal_extra_uit_uncertain": 62, "nieuwe_score": 1.0, "huidige_score": 0.9474, "wordt_actief": true, "tijdstip": "2026-07-23T19:56:31.713401"}

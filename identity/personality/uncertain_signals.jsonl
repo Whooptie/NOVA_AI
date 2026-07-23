@@ -57,3 +57,7 @@
 {"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:41:47.423449"}
 {"text": "ik ga slapen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:43:48.341796"}
 {"text": "ik ga lezen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:49:55.092525"}
+{"text": "hoe onthoud je dingen", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0366, "bron": "model_fallback", "tijdstip": "2026-07-23T19:54:52.309973"}
+{"text": "ben je lokaal", "signaal": "focus", "model_signaal": "focus", "marge": 0.002, "bron": "model_fallback", "tijdstip": "2026-07-23T19:55:44.978997"}
+{"text": "hoe ben je opgebouwd", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0203, "bron": "model_fallback", "tijdstip": "2026-07-23T19:56:17.340192"}
+{"text": "hoe oud ben je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0203, "bron": "model_fallback", "tijdstip": "2026-07-23T19:56:31.616003"}

@@ -33,7 +33,7 @@
       "last_shift_direction": null
     },
     "reflection_depth": {
-      "positive_count": 0,
+      "positive_count": 3,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-07-18T16:19:24.122381",
@@ -68,7 +68,7 @@
       "last_shift_direction": null
     },
     "focus_hyperfocus_tendency": {
-      "positive_count": 15,
+      "positive_count": 16,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -83,14 +83,14 @@
     },
     "impulsivity": {
       "positive_count": 0,
-      "negative_count": 2,
+      "negative_count": 5,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "chaotic_variability": {
       "positive_count": 0,
-      "negative_count": 3,
+      "negative_count": 4,
       "total_shifts": 1,
       "last_shift": "2026-07-22T21:23:31.467991",
       "last_shift_direction": "negatief"

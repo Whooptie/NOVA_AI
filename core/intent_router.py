@@ -607,6 +607,67 @@ class IntentRouter:
                     return True
 
         return False
+
+    # ---------------------------------------------------------
+    # Self-architecture (nieuw, 23 juli 2026) -- HOE Nova werkt
+    # (geheugen, denken, leren, privacy, architectuur), in
+    # tegenstelling tot detect_identity_question hierboven, dat WIE
+    # Nova is beantwoordt (persoonlijkheid/gevoel via identity.json).
+    #
+    # BEWUST via 'layer4_response' i.p.v. rechtstreeks 'chat_response'
+    # (anders dan intent_identity!) -- zo krijgt de uitleg automatisch
+    # Nova's toon mee via de tone-pipeline (response_pipeline.py ->
+    # chat_response_engine.py -> expression_injector.py), net als
+    # weer/tijd/definities. Kevin wil expliciet dat haar identiteit
+    # ook hier doorschemert, i.p.v. een kale technische uitleg.
+    # ---------------------------------------------------------
+    def detect_self_architecture(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        architectuur_patronen = {
+            "geheugen": [
+                "hoe onthoud je dingen", "hoe onthoud jij dingen",
+                "hoe werkt je geheugen", "hoe werkt jouw geheugen",
+                "hoe slaan je dingen op", "hoe sla jij dingen op",
+                "waar onthoud je dingen", "vergeet je dingen",
+                "vergeet jij dingen",
+            ],
+            "denken": [
+                "hoe denk je na", "hoe denk jij na", "hoe werk je van binnen",
+                "hoe werkt jij van binnen", "hoe verwerk je een bericht",
+                "wat gebeurt er als ik iets tegen je zeg",
+                "wat gebeurt er als ik iets tegen jou zeg",
+                "wat is een eventbus", "wat is de eventbus",
+                "hoe beslis je wat je antwoordt",
+            ],
+            "leren": [
+                "hoe leer je nieuwe woorden", "hoe leer jij nieuwe woorden",
+                "hoe leer je bij", "hoe leer jij bij",
+                "hoe leer je dingen", "hoe leer jij dingen",
+            ],
+            "privacy": [
+                "draai je in de cloud", "draai jij in de cloud",
+                "ben je lokaal", "ben jij lokaal",
+                "gebruik je een taalmodel", "gebruik jij een taalmodel",
+                "gebruik je een llm", "gebruik jij een llm",
+                "stuur je data door", "stuur jij data door",
+            ],
+            "architectuur_algemeen": [
+                "hoe ben je opgebouwd", "hoe ben jij opgebouwd",
+                "hoe zit je in elkaar", "hoe zit jij in elkaar",
+                "leg je architectuur uit", "leg jouw architectuur uit",
+                "wat zijn je lagen", "wat zijn jouw lagen",
+                "hoe werk je", "hoe werk jij",
+            ],
+        }
+
+        for topic, zinnen in architectuur_patronen.items():
+            for zin in zinnen:
+                if zin in t:
+                    self.event_bus.publish("intent_self_architecture", {"topic": topic})
+                    return True
+
+        return False
     
     # ---------------------------------------------------------
     # Memory test-commando's
@@ -950,7 +1011,16 @@ class IntentRouter:
             self._emit_topic("memory")
             return
 
-        # 6d Identiteitsvragen (Kevin vraagt iets over Nova zelf)
+        # 6d Self-architecture (nieuw) -- HOE Nova werkt (geheugen,
+        # denken, leren, privacy, architectuur). Bewust VOOR
+        # detect_identity_question: een zin als "hoe werk je" gaat
+        # over architectuur, niet over persoonlijkheid, en moet dus
+        # niet per ongeluk door de identity-patronen opgepikt worden.
+        if self.detect_self_architecture(text):
+            self._emit_topic("self_architecture")
+            return
+
+        # 6e Identiteitsvragen (Kevin vraagt iets over Nova zelf)
         if self.detect_identity_question(text):
             self._emit_topic("identity")
             return

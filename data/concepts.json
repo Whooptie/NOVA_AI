@@ -13049,5 +13049,52 @@
         "timestamp": "2026-07-22T19:25:44.389702"
       }
     ]
+  },
+  "warm": {
+    "senses": [
+      {
+        "sense_id": "warm#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-23T18:38:34.043404",
+      "updated_at": "2026-07-23T18:38:34.046825",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-23T18:38:34.046825",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-23T18:38:34.046825",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "warm"
+        },
+        "timestamp": "2026-07-23T18:38:34.043404"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "warm#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-23T18:38:34.046825"
+      }
+    ]
   }
 }
