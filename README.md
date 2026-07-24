@@ -1,12 +1,24 @@
 <div align="center">
 
+# 🌟 Nova AI
+
+**A fully symbolic, local AI companion — built without an LLM, without the cloud.**
+
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local-2ea44f?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge)
+![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red?style=for-the-badge)
+
+</div>
+
 ---
 
 ## 🤖 What is Nova?
 
 Nova is a **personal AI companion** that runs entirely locally on my own machine. She doesn't use an LLM (like ChatGPT), no cloud, no internet — everything happens locally, under my own rules.
 
-Nova is built on **symbolic AI**: she learns through explicit concepts, relationships and behavioral patterns — not through a statistical language model. She runs **24/7 as a background process** and can proactively respond to patterns in my behavior.
+Nova is built on **symbolic AI**: she learns through explicit concepts, relationships and behavioral patterns — not through a statistical language model. She runs **24/7 as a background process** and can proactively respond to patterns in my behavior — including deciding, on her own initiative, when it might be a good moment to speak up.
 
 > *"No black box. No cloud. No surprises."*
 
@@ -36,41 +48,45 @@ Nova is built on **symbolic AI**: she learns through explicit concepts, relation
             a b c d e f g h
 
          Move 1. White to move
+
+[Nova]   (30 minutes later, unprompted)
+         You've been at it for a while, Kevin. Maybe time for a short break? ⏱️
 ```
 
 ---
 
 ## ✨ What can Nova already do?
 
-
-| Feature                                                           | Status |
-| ------------------------------------------------------------------- | -------- |
-| 💬 Natural language conversation                                  | ✅     |
-| ♟️ Playing chess against Stockfish (with stats & colored board) | ✅     |
-| 🌤️ Weather forecasts (multiple days)                            | ✅     |
-| 📚 Consulting Wikipedia & auto-learning                           | ✅     |
-| 🧠 Understanding semantic concepts (133+ concepts, 147 senses)    | ✅     |
-| 🔗 Learning word associations through use (PMI scoring)           | ✅     |
-| 📊 Recognizing behavioral patterns by time & frequency            | ✅     |
-| 💡 Template-based responses with tone variation                   | ✅     |
-| 😊 Own personality, emotions & expression                         | ✅     |
-| 🔄 Restarting itself without data loss (`/reboot`)                | ✅     |
-| 🕐 Time awareness (clock, date, timezone)                         | ✅     |
-| ➗ Mathematical calculations                                      | ✅     |
+| Feature | Status |
+|---|---|
+| 💬 Natural language conversation | ✅ |
+| ♟️ Playing chess against Stockfish (with stats & colored board) | ✅ |
+| 🌤️ Weather forecasts (multiple days, proactive severe-weather alerts) | ✅ |
+| 📚 Consulting Wikipedia & auto-learning | ✅ |
+| 🧠 Understanding semantic concepts (133+ concepts, 147 senses) | ✅ |
+| 🔗 Learning word associations through use (PMI scoring) | ✅ |
+| 📊 Recognizing behavioral patterns by time & frequency | ✅ |
+| 💡 Template-based responses with tone variation | ✅ |
+| 😊 Own personality, emotions & expression | ✅ |
+| 🗣️ Speaking up on her own initiative (break reminders, "mind if I interrupt?") | ✅ |
+| 🪟 Awareness of what I'm doing (active window, focus, presence) | ✅ |
+| 🪞 Answering questions about her own architecture and how she works | ✅ |
+| 🔄 Restarting itself without data loss (`/reboot`) | ✅ |
+| 🕐 Time awareness (clock, date, timezone) | ✅ |
+| ➗ Mathematical calculations | ✅ |
 
 ---
 
 ## 🔍 What makes Nova different?
 
-
-| Trait                | ChatGPT / LLM                      | Nova (Symbolic)                     |
-| ---------------------- | ------------------------------------ | ------------------------------------- |
+| Trait | ChatGPT / LLM | Nova (Symbolic) |
+|---|---|---|
 | **Knowledge source** | Billions of parameters (black box) | Explicit concepts (`concepts.json`) |
-| **Learning**         | Fine-tuning (slow, expensive)      | `teach` command (instant)           |
-| **Reasoning**        | Statistical guessing               | Chaining (`is_a_chained`)           |
-| **Privacy**          | Data sent to the cloud             | 100% local                          |
-| **Explainability**   | "We don't know why"                | Every answer is traceable           |
-| **Works offline?**   | No                                 | Yes                                 |
+| **Learning** | Fine-tuning (slow, expensive) | `teach` command (instant) |
+| **Reasoning** | Statistical guessing | Chaining (`is_a_chained`) |
+| **Privacy** | Data sent to the cloud | 100% local |
+| **Explainability** | "We don't know why" | Every answer is traceable |
+| **Works offline?** | No | Yes |
 
 ---
 
@@ -87,17 +103,16 @@ User → IntentRouter → EventBus → Modules
 
 ### 🧠 The memory — 7 layers
 
-
-| Layer   | Name                                                       | Status        |
-| --------- | ------------------------------------------------------------ | --------------- |
-| Layer 0 | SQLite storage (WAL, write buffering, crash recovery)      | ✅ Done       |
-| Layer 1 | Word associations learner (PMI scoring)                    | ✅ Done       |
-| Layer 2 | Behavioral patterns (timing, frequency, anomaly detection) | ✅ Done       |
-| Layer 3 | Semantic reasoning (concepts, relations, inference)        | ✅ Done       |
-| Layer 4 | Response generator (templates, tone variation, routing)    | ✅ Done       |
-| Layer 5 | Context management (interruption logic)                    | ✅ Done       |
-| Layer 6 | Personality & emotion engine                               | ✅ Done       |
-| Layer 7 | Emergent behavior (self-awareness)                         | ✅ Done       |
+| Layer | Name | Status |
+|---|---|---|
+| Layer 0 | SQLite storage (WAL, write buffering, crash recovery) | ✅ Done |
+| Layer 1 | Word associations learner (PMI scoring) | ✅ Done |
+| Layer 2 | Behavioral patterns (timing, frequency, anomaly detection) | ✅ Done |
+| Layer 3 | Semantic reasoning (concepts, relations, inference) | ✅ Done |
+| Layer 4 | Response generator (templates, tone variation, routing) | ✅ Done |
+| Layer 5 | Context management (activity/focus/presence awareness, interruption logic) | ✅ Done |
+| Layer 6 | Personality & emotion engine (incl. adaptive learning) | ✅ Done |
+| Layer 7 | Emergent behavior (self-generated insights, feedback-tracked) | ✅ Done |
 
 ## 💻 How it works — an example
 
@@ -141,11 +156,12 @@ Nova_AI/
 ├── modules/
 │   ├── chat/                 # Conversation handling + tone variation
 │   ├── chess/                # Chess engine (Stockfish)
-│   ├── weather/              # Weather module (multi-day forecast)
+│   ├── weather/              # Weather module (multi-day forecast, alerts)
 │   ├── knowledge/            # Wikipedia AutoTeacher
-│   └── learning/             # Word associations & behavioral patterns
+│   ├── learning/             # Word associations & behavioral patterns
+│   └── context/              # Activity/focus/presence detection, interruption logic
 ├── identity/
-│   ├── personality/          # Personality engine
+│   ├── personality/          # Personality engine + adaptive learning
 │   ├── emotion/              # Emotion engine
 │   └── expression/           # Tone & style
 └── main.py
@@ -157,7 +173,7 @@ Nova_AI/
 
 - **100% local** — no data leaves my machine
 - **No LLM** — no OpenAI, no Gemini, no cloud AI
-- **Never acts without consent** — Nova always suggests first
+- **Never acts without consent** — Nova always suggests first, even when speaking up proactively
 - **Fully transparent** — everything is logged and inspectable
 - **Open architecture** — every concept is readable in `concepts.json`
 - **ML only as a sensor** — external models may help perceive, Nova decides what to do
@@ -175,10 +191,7 @@ This repository serves primarily as a **personal backup**, and has been made pub
 ## 🚀 On the roadmap
 
 - 🟡 Expanding the personality pipeline to all intents
-- 🟢 Layer 5: Context management (when may Nova interrupt?)
 - 🟢 User preferences module (what Nova remembers about me)
-- 🟢 Activity Awareness (recognizing activities & proactive responses)
-- 🟢 Activity-Aware Interaction (interruption learning)
 - 🟢 Intent classifier (small local ML model as a specialist)
 - 🔮 Avatar / desktop companion (animated avatar, lipsync)
 - 🔮 More board games (checkers, Go)
@@ -215,3 +228,9 @@ This project started as an experiment and is growing into a full local AI system
 ---
 
 <div align="center">
+
+**⭐ This code is publicly visible, but not free to use — see LICENSE.txt**
+
+*Built with Python · Powered by curiosity · No LLM*
+
+</div>
