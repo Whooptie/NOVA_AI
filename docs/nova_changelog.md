@@ -191,3 +191,16 @@ Vult het laatste open werkpunt van `feedback()` (20 juli 2026) op: opgeslagen su
 - `_haalt_layer4_drempel()` aangepast om `_effectieve_drempel()` te gebruiken i.p.v. rechtstreeks `LAYER4_DREMPELS`.
 - Nieuw testcommando in `main.py`: `emergence drempel <type>` (toont origineel/effectief/stats naast elkaar).
 - Live getest en bevestigd (23 juli 2026): 7 failures/1 success duwde `woordverband`'s effectieve drempel van 0.85 naar het plafond van 1.02; 5 daaropvolgende "ok"-beoordelingen (6 success/7 failure totaal) bracht 'm terug naar 0.8925 — bevestigt zowel de opbouw als het snelle herstel.
+
+---
+
+## ✅ Debug-commando's verhuisd naar eigen module — afgerond (24 juli 2026)
+
+Vult werkpunt #4 ("Test-commando's herwerken naar help.py", 22 juli 2026) in. Doel: `main.py` overzichtelijk houden — de invoerlus was gegroeid tot 14 losse, tijdelijke debug-/testcommando's (~320 regels `if user_input.lower() == ...`-blokken).
+
+- **Nieuwe module `modules/debug/debug_commands.py`**: bundelt alle 14 commando's (`emergence`, `emergence debug`, `emergence feedback`, `emergence drempel`, `onderhoud`, `geheugen stats`/`geheugen stats vers`, `geheugen gezondheid`, `activiteit debug`, `focus debug`, `presence debug`, `presence debug context`, `context`, `context geschiedenis`, `traits`, `interruption test`, `interruption gedrag`, `patronen`) achter één dictionary-dispatch (`is_debug_command()` + `handle_debug_command()`), i.p.v. losse `if`-blokken.
+- Afwijkende `init_module(event_bus, loader)`-signature (krijgt de `ModuleLoader`-instantie zelf mee i.p.v. de gebruikelijke `sem`), omdat de module rechtstreeks toegang nodig heeft tot `loader.loaded_modules` voor alle andere modules (memory, emergence_engine, context_manager, enz.) — net zoals main.py dat voorheen zelf deed.
+- **`module_loader.py`**: nieuwe stap 3F, handmatig geladen (net als response_engine/context_manager/emergence_engine) vlak vóór de Intent Router, zodat alle andere modules al gegarandeerd in `loaded_modules` staan. De dynamische modules-scan (stap 3) slaat `modules.debug.*` bewust over (`if group == "debug": continue`) om te voorkomen dat de module een tweede keer, met de verkeerde signature, geladen wordt.
+- **`main.py`**: de hele resem debug-ifs vervangen door een korte check (`debug_module.is_debug_command(user_input)` → publiceert `debug_command`-event, anders normale chat-flow). Bestand ging van 689 naar 379 regels (-45%).
+- **Nieuw help-topic**: `modules/help/topics/debug.py` (analoog aan `schaken.py` — puur documentatie, geen logica) + `help.py` en `algemeen.py` bijgewerkt zodat `help debug` dit toont.
+- Live getest (24 juli 2026): schone boot (`[ OK ] debug_commands (0 ms)`, geen dubbele laadpoging), `help`/`help schaken`/`help debug` tonen correct, en twee commando's uit verschillende categorieën (`emergence`, `geheugen gezondheid`) werken beide feilloos via de nieuwe dispatch.

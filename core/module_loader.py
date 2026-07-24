@@ -117,6 +117,13 @@ class ModuleLoader:
 
             pkg, group, mod = parts
 
+            # debug_commands wordt hierboven al handmatig geladen
+            # (stap 3F, met de loader zelf als argument i.p.v. "sem")
+            # — hier overslaan om dubbele/verkeerde initialisatie
+            # te voorkomen.
+            if group == "debug":
+                continue
+
             module = importlib.import_module(full_name)
 
             # Sla over als er geen init_module is (bv. subpackages zoals topics)
@@ -260,6 +267,26 @@ class ModuleLoader:
         emergence.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["emergence_engine"] = emergence
         self.event_bus.register_module("emergence_engine", emergence)
+
+        # ----------------------------------------------------
+        # 3F. DEBUG COMMANDS
+        # ----------------------------------------------------
+        # Handmatig geladen net als response_engine/context_manager/
+        # emergence_engine hierboven, omdat de signature afwijkt van
+        # het gebruikelijke init_module(event_bus, sem)-patroon:
+        # DebugCommands heeft de loader zelf nodig (self), niet
+        # "sem", om via loader.loaded_modules bij alle andere modules
+        # te kunnen (memory, emergence_engine, context_manager, ...).
+        # Bewust HELEMAAL ACHTERAAN, vlak vóór intent_router, zodat
+        # alle modules die debug-commando's ooit nodig hebben al
+        # gegarandeerd in loaded_modules staan.
+        from modules.debug import debug_commands
+
+        start = time.time()
+        debug_cmds = debug_commands.init_module(self.event_bus, self)
+        debug_cmds.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["debug_commands"] = debug_cmds
+        self.event_bus.register_module("debug_commands", debug_cmds)
 
         # ----------------------------------------------------
         # 4. INTENT ROUTER ALS LAATSTE

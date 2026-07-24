@@ -1,6 +1,6 @@
 # modules/help/help.py
 
-from modules.help.topics import algemeen, schaken
+from modules.help.topics import algemeen, schaken, debug
 
 C_RESET = "\033[0m"
 C_GREEN = "\033[92m"
@@ -23,6 +23,8 @@ class HelpModule:
         if topic == "schaken":
             chess_module = self.event_bus.get_module("chess_engine")
             tekst = schaken.get_help(chess_module)
+        elif topic == "debug":
+            tekst = debug.get_help()
         else:
             tekst = algemeen.get_help()
 

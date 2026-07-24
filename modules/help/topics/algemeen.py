@@ -69,4 +69,5 @@ def get_help():
 ❓ HELP
   help               (dit overzicht)
   help schaken       (schaakcommando's)
+  help debug         (debug-/testcommando's voor development)
 """.strip()
