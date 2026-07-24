@@ -64,3 +64,7 @@
 {"text": "help", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:14:58.747118"}
 {"text": "help schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:15:06.262821"}
 {"text": "help debug", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:15:13.555872"}
+{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:28:37.118500"}
+{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:33:54.801056"}
+{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:34:27.982993"}
+{"text": "toren naar a8", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:35:08.714543"}

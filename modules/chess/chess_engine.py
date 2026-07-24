@@ -129,8 +129,13 @@ class ChessModule:
     # Bord tonen (simpele tekstweergave)
     # ----------------------------------------------------
     def handle_show_board(self, data, event_type=None):
+        # instant=True: bevat ANSI-kleurcodes + meerdere regels. Het
+        # typewriter-effect zou elke escape-code letter voor letter
+        # printen — traag én zichtbaar rommelig (rare tekens i.p.v.
+        # kleur). Net als bij help.py: in één keer tonen.
         self.event_bus.publish("chat_response", {
-            "text": f"Huidige stand:\n\n{self.bord_als_tekst()}"
+            "text": f"Huidige stand:\n\n{self.bord_als_tekst()}",
+            "instant": True
         })
 
     # ----------------------------------------------------
@@ -317,7 +322,8 @@ class ChessModule:
             else:
                 if self.board.is_check():
                     self.event_bus.publish("chat_response", {
-                        "text": f"Je staat schaak! Die zet lost dat niet op. Je moet je koning redden.\n\n{self.bord_als_tekst()}"
+                        "text": f"Je staat schaak! Die zet lost dat niet op. Je moet je koning redden.\n\n{self.bord_als_tekst()}",
+                        "instant": True
                     })
                 else:
                     self.event_bus.publish("chat_response", {
@@ -355,7 +361,8 @@ class ChessModule:
         schaak_melding = "\n\n⚠️ Je staat schaak!" if self.board.is_check() else ""
         materiaal = self.materiaal_balans()
         self.event_bus.publish("chat_response", {
-            "text": f"Jij speelde {move_text}. Ik speel {nova_zet}.\n\n{self.bord_als_tekst()}\n{materiaal}{schaak_melding}"
+            "text": f"Jij speelde {move_text}. Ik speel {nova_zet}.\n\n{self.bord_als_tekst()}\n{materiaal}{schaak_melding}",
+            "instant": True
         })
 
         if self.board.is_game_over():
@@ -398,7 +405,8 @@ class ChessModule:
         self.save_stats()
 
         self.event_bus.publish("chat_response", {
-            "text": f"{bericht}\n\n{self.bord_als_tekst()}{aanpassing}"
+            "text": f"{bericht}\n\n{self.bord_als_tekst()}{aanpassing}",
+            "instant": True
         })
 
     # ----------------------------------------------------
