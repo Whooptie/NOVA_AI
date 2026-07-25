@@ -3,6 +3,7 @@
 import chess
 import chess.engine
 import json
+import random
 import threading
 import time
 from pathlib import Path
@@ -69,6 +70,53 @@ class ChessModule:
         event_bus.subscribe("intent_chess_difficulty", self.handle_difficulty)
         event_bus.subscribe("intent_chess_think_time", self.handle_think_time)
         event_bus.subscribe("intent_chess_stats", self.handle_stats)
+
+        # Sjablonen voor de meest terugkerende, tot nu toe vaste zinnen
+        # (schaak-melding, zet-melding, spelverloop). Puur string-
+        # combinatie via random.choice(), geen generatie — zelfde
+        # patroon als session_watcher.py en weather.py. Echte
+        # zet-inhoudelijke commentaar (bv. "sterke opening") is HIER
+        # bewust niet meegenomen -- dat vereist stelling-analyse en
+        # komt later apart aan bod.
+        self._sjablonen_schaak_melding = [
+            "Schaak! Goede zet.",
+            "Schaak gezet, knap gedaan.",
+            "Dat is schaak! Mooie zet.",
+            "Schaak! Dat zag ik niet aankomen.",
+            "Schaak gezet -- goed gespeeld.",
+        ]
+
+        self._sjablonen_zet_melding = [
+            "Jij speelde {move_text}. Ik speel {nova_zet}.",
+            "Je zette {move_text}. Ik antwoord met {nova_zet}.",
+            "{move_text} was jouw zet. Ik doe {nova_zet}.",
+            "Jij koos {move_text}, ik kies {nova_zet}.",
+            "Na jouw {move_text} speel ik {nova_zet}.",
+        ]
+
+        self._sjablonen_winst = [
+            "🎉 Jij wint door {reden}! Goed gespeeld!",
+            "🎉 Winst voor jou door {reden}! Sterk gespeeld!",
+            "🎉 Jij haalt het door {reden}! Proficiat!",
+            "🎉 Overwinning door {reden}! Goed gedaan!",
+            "🎉 Jij wint deze partij door {reden}!",
+        ]
+
+        self._sjablonen_verlies = [
+            "💀 Ik win door {reden}. Probeer het opnieuw!",
+            "💀 Deze ga ik winnen, door {reden}. Nieuwe kans?",
+            "💀 Ik haal het door {reden}. Volgende keer beter!",
+            "💀 Winst voor mij door {reden}. Nog een partij?",
+            "💀 Ik trek aan het langste eind door {reden}. Opnieuw proberen?",
+        ]
+
+        self._sjablonen_gelijkspel = [
+            "🤝 Gelijkspel door {reden}!",
+            "🤝 We eindigen gelijk, door {reden}!",
+            "🤝 Remise door {reden}!",
+            "🤝 Niemand wint -- gelijkspel door {reden}.",
+            "🤝 Een gelijkspel, veroorzaakt door {reden}.",
+        ]
 
         dbg(f"{C_GREEN}ChessModule geladen{C_RESET}")
 
@@ -344,7 +392,7 @@ class ChessModule:
         # Als jouw zet Nova schaak zet, dat direct melden
         if self.board.is_check():
             self.event_bus.publish("chat_response", {
-                "text": f"Schaak! Goede zet."
+                "text": random.choice(self._sjablonen_schaak_melding)
             })
 
         # Nova's beurt (Stockfish)
@@ -360,8 +408,11 @@ class ChessModule:
         nova_zet = self.uci_to_leesbaar(result.move)
         schaak_melding = "\n\n⚠️ Je staat schaak!" if self.board.is_check() else ""
         materiaal = self.materiaal_balans()
+        zet_tekst = random.choice(self._sjablonen_zet_melding).format(
+            move_text=move_text, nova_zet=nova_zet
+        )
         self.event_bus.publish("chat_response", {
-            "text": f"Jij speelde {move_text}. Ik speel {nova_zet}.\n\n{self.bord_als_tekst()}\n{materiaal}{schaak_melding}",
+            "text": f"{zet_tekst}\n\n{self.bord_als_tekst()}\n{materiaal}{schaak_melding}",
             "instant": True
         })
 
@@ -391,15 +442,15 @@ class ChessModule:
         if result == "1-0":
             self.stats["gewonnen"] += 1
             self.stats["streak"] = max(1, self.stats["streak"] + 1)
-            bericht = f"🎉 Jij wint door {reden}! Goed gespeeld!"
+            bericht = random.choice(self._sjablonen_winst).format(reden=reden)
         elif result == "0-1":
             self.stats["verloren"] += 1
             self.stats["streak"] = min(-1, self.stats["streak"] - 1)
-            bericht = f"💀 Ik win door {reden}. Probeer het opnieuw!"
+            bericht = random.choice(self._sjablonen_verlies).format(reden=reden)
         else:
             self.stats["gelijkspel"] += 1
             self.stats["streak"] = 0
-            bericht = f"🤝 Gelijkspel door {reden}!"
+            bericht = random.choice(self._sjablonen_gelijkspel).format(reden=reden)
 
         aanpassing = self._pas_niveau_aan()
         self.save_stats()

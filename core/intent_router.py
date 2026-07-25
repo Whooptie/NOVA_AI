@@ -17,6 +17,8 @@ class IntentRouter:
         self.event_bus = event_bus
         self.semantic = semantic_module
         self.awaiting_confirmation = None
+        self._intent_tabel_deel1 = self._build_intent_tabel_deel1()
+        self._intent_tabel_deel2 = self._build_intent_tabel_deel2()
 
         event_bus.subscribe("chat_message", self.route)
         dbg(f"{C_GREEN}IntentRouter geladen{C_RESET}")
@@ -916,6 +918,61 @@ class IntentRouter:
         return True
 
     # ---------------------------------------------------------
+    # Intent-tabel (i.p.v. losse if-keten in route())
+    # ---------------------------------------------------------
+    # Elke regel = (topic_naam, detect_functie). De VOLGORDE van deze
+    # lijst = de prioriteit, exact zoals voorheen de volgorde van de
+    # if-blokken in route() dat bepaalde. Wordt als instance-attribuut
+    # opgebouwd in __init__ (self._build_intent_tabel()), niet als
+    # class-attribuut, omdat de functies aan 'self' gebonden methoden
+    # zijn die pas bestaan nadat de instance is aangemaakt.
+    #
+    # Let op: dit is GEEN vervanging van alle stappen in route(). Een
+    # aantal stappen (pending question, reboot, teach, example,
+    # confirm, relation-flow via semantic, sense-choice, ja/nee-
+    # confirm, fallback) passen niet in dit (topic, detect)-patroon
+    # en blijven bewust als aparte, expliciete stappen in route()
+    # staan -- zie de commentaren daar voor waarom.
+    def _build_intent_tabel_deel1(self):
+        """
+        Stappen 3 t/m 7 (zie route()) -- alles VOOR de definition-
+        check, want die heeft een dynamische topic-naam en past niet
+        in dit (topic, detect)-patroon.
+        """
+        return [
+            ("greeting",         self.detect_greeting),
+            ("time",             self.detect_time),
+            ("weather",          self.detect_weather),
+            # chess vóór math: zetten zoals "e2e4" mogen niet als
+            # math gezien worden
+            ("chess",            self.detect_chess),
+            ("help",             self.detect_help),
+            ("memory",           self.detect_memory),
+            # self_architecture vóór identity: "hoe werk je" gaat over
+            # architectuur, niet over persoonlijkheid, en moet niet
+            # per ongeluk door de identity-patronen opgepikt worden
+            ("self_architecture", self.detect_self_architecture),
+            ("identity",         self.detect_identity_question),
+            ("math",             self.detect_math),
+        ]
+
+    def _build_intent_tabel_deel2(self):
+        """
+        Stappen 10 t/m 10d (zie route()) -- alles NA de relation-flow
+        via semantic._detect_relation(), die zelf geen vaste topic-
+        naam heeft en dus apart in route() blijft staan.
+        """
+        return [
+            ("relatie",          self.detect_relation_check),
+            ("part_of",          self.detect_part_of_check),
+            ("subtypes",         self.detect_subtypes_query),
+            # activity bewust als LAATSTE: een zin als "ik ga slapen"
+            # mag nooit een specifiekere intent overschrijven, moet
+            # wel vóór de kale fallback gevangen worden
+            ("activity",         self.detect_activity),
+        ]
+
+    # ---------------------------------------------------------
     # Topic events (Layer 2 topic-bewustzijn)
     # ---------------------------------------------------------
     def _emit_topic(self, naam):
@@ -981,54 +1038,13 @@ class IntentRouter:
         if self.handle_confirmation(text):
             return
 
-        # 3 Greeting
-        if self.detect_greeting(text):
-            self._emit_topic("greeting")
-            return
-
-        # 4 Time
-        if self.detect_time(text):
-            self._emit_topic("time")
-            return
-
-        # 5 Weather
-        if self.detect_weather(text):
-            self._emit_topic("weather")
-            return
-
-        # 6 Chess (vóór math, want zetten zoals "e2e4" mogen niet als math gezien worden)
-        if self.detect_chess(text):
-            self._emit_topic("chess")
-            return
-
-        # 6b Help
-        if self.detect_help(text):
-            self._emit_topic("help")
-            return
-
-        # 6c Memory test-commando's
-        if self.detect_memory(text):
-            self._emit_topic("memory")
-            return
-
-        # 6d Self-architecture (nieuw) -- HOE Nova werkt (geheugen,
-        # denken, leren, privacy, architectuur). Bewust VOOR
-        # detect_identity_question: een zin als "hoe werk je" gaat
-        # over architectuur, niet over persoonlijkheid, en moet dus
-        # niet per ongeluk door de identity-patronen opgepikt worden.
-        if self.detect_self_architecture(text):
-            self._emit_topic("self_architecture")
-            return
-
-        # 6e Identiteitsvragen (Kevin vraagt iets over Nova zelf)
-        if self.detect_identity_question(text):
-            self._emit_topic("identity")
-            return
-
-        # 7 Math
-        if self.detect_math(text):
-            self._emit_topic("math")
-            return
+        # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).
+        # Zelfde volgorde, zelfde detect_*()-functies als voorheen --
+        # enkel de manier waarop ze doorlopen worden is veranderd.
+        for topic_naam, detect_functie in self._intent_tabel_deel1:
+            if detect_functie(text):
+                self._emit_topic(topic_naam)
+                return
 
         # 8 Definition
         if self.detect_definition(text):
@@ -1041,35 +1057,19 @@ class IntentRouter:
             self._emit_topic(f"definitie_{woord}" if woord else "definitie")
             return
 
-        # 9 Relation-flow (eerst! anders pikt relation-check het op)
+        # 9 Relation-flow (eerst! anders pikt relation-check het op
+        # dat via de tabel hieronder loopt) -- geen _emit_topic hier,
+        # geen vaste topic-vorm, dus past niet in de tabel.
         if self.semantic and self.semantic._detect_relation(text):
             return
 
-        # 10 Relation-check
-        if self.detect_relation_check(text):
-            self._emit_topic("relatie")
-            return
+        # 10 t/m 10d -- via de intent-tabel (zie
+        # _build_intent_tabel_deel2()). Zelfde volgorde als voorheen.
+        for topic_naam, detect_functie in self._intent_tabel_deel2:
+            if detect_functie(text):
+                self._emit_topic(topic_naam)
+                return
 
-        # 10b Part-of-check (nieuw, 11 juli 2026)
-        if self.detect_part_of_check(text):
-            self._emit_topic("part_of")
-            return
-
-        # 10c Subtypes-vraag (nieuw, 12 juli 2026)
-        if self.detect_subtypes_query(text):
-            self._emit_topic("subtypes")
-            return
-
-        # 10d Activity Awareness Deel A (nieuw) — "ik ga <activiteit>"
-        # Bewust hier, NA alle specifieke intents (weer, schaken, math,
-        # definities...) en VOOR de fallback: een zin als "ik ga
-        # slapen" mag nooit een specifiekere, al bestaande intent
-        # overschrijven, maar moet wel vóór de kale fallback gevangen
-        # worden.
-        if self.detect_activity(text):
-            self._emit_topic("activity")
-            return
-        
         # Sense-choice (antwoord met nummer)
         if text.isdigit():
             if self.semantic:

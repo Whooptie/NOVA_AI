@@ -6,7 +6,7 @@
   "traits": {
     "social_warmth": {
       "positive_count": 0,
-      "negative_count": 21,
+      "negative_count": 32,
       "total_shifts": 1,
       "last_shift": "2026-07-18T16:10:33.350646",
       "last_shift_direction": "positief"
@@ -33,7 +33,7 @@
       "last_shift_direction": null
     },
     "reflection_depth": {
-      "positive_count": 5,
+      "positive_count": 7,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-07-18T16:19:24.122381",
@@ -48,10 +48,10 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 23,
-      "total_shifts": 0,
-      "last_shift": null,
-      "last_shift_direction": null
+      "negative_count": 9,
+      "total_shifts": 1,
+      "last_shift": "2026-07-25T13:37:53.498448",
+      "last_shift_direction": "negatief"
     },
     "emotional_color_intensity": {
       "positive_count": 0,
@@ -68,7 +68,7 @@
       "last_shift_direction": null
     },
     "focus_hyperfocus_tendency": {
-      "positive_count": 16,
+      "positive_count": 17,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -83,14 +83,14 @@
     },
     "impulsivity": {
       "positive_count": 0,
-      "negative_count": 7,
+      "negative_count": 9,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "chaotic_variability": {
       "positive_count": 0,
-      "negative_count": 4,
+      "negative_count": 5,
       "total_shifts": 1,
       "last_shift": "2026-07-22T21:23:31.467991",
       "last_shift_direction": "negatief"
