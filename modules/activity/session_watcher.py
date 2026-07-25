@@ -1,5 +1,6 @@
 # modules/activity/session_watcher.py
 import time
+import random
 
 
 class SessionWatcher:
@@ -65,6 +66,35 @@ class SessionWatcher:
         # komt van intent_router.py's _verwerk_pending_antwoord(), dus
         # GEEN wildcard nodig -- een exacte event-naam volstaat hier.
         event_bus.subscribe("pending_question:answered", self._on_pending_answered)
+
+        # Sjablonen voor de pauze-melding (check_pauze()). Zelfde
+        # opening/midden/afsluiting-patroon als emergence_engine.py --
+        # puur string-combinatie via random.choice(), geen generatie.
+        # Bewust klein gehouden (5 per slot) zodat elke combinatie nog
+        # manueel controleerbaar blijft op coherentie.
+        self._sjablonen_pauze = {
+            "opening": [
+                "Hé Kevin,",
+                "Oei,",
+                "Zeg,",
+                "Kevin,",
+                "Even iets:",
+            ],
+            "midden": [
+                "we zijn nu al {minuten} minuten bezig",
+                "je zit al {minuten} minuten aan een stuk hierop",
+                "dit loopt nu al {minuten} minuten door",
+                "{minuten} minuten verder zonder pauze",
+                "al {minuten} minuten non-stop",
+            ],
+            "afsluiting": [
+                "— misschien even pauzeren?",
+                "— tijd voor een korte onderbreking?",
+                "— ga je er even tussenuit?",
+                "— rek je benen even?",
+                "— goed moment om even te stoppen?",
+            ],
+        }
 
     def _on_any_event(self, data, event_type=None):
         """
@@ -200,6 +230,19 @@ class SessionWatcher:
                 f"activiteit='{self.actieve_activiteit}', toegestaan={toegestaan}"
             )
 
+    def _formuleer_pauze_melding(self, minuten):
+        """
+        Bouwt een sjabloonzin voor de pauze-melding.
+
+        Puur string-formatting op vaste tekstlijsten -- geen generatie,
+        zelfde principe als emergence_engine.py's _formuleer_*()-methodes.
+        """
+        opening = random.choice(self._sjablonen_pauze["opening"])
+        midden = random.choice(self._sjablonen_pauze["midden"]).format(minuten=minuten)
+        afsluiting = random.choice(self._sjablonen_pauze["afsluiting"])
+
+        return f"{opening} {midden} {afsluiting}"
+
     def check_pauze(self):
         """
         Wordt periodiek aangeroepen door de achtergrondthread in main.py.
@@ -247,7 +290,7 @@ class SessionWatcher:
             minuten = int(self.PAUZE_DREMPEL_SECONDEN / 60)
 
             self.event_bus.publish("chat_response", {
-                "text": f"We zijn nu al {minuten} minuten bezig — misschien even pauzeren?"
+                "text": self._formuleer_pauze_melding(minuten)
             })
 
 

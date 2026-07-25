@@ -204,3 +204,37 @@ Vult werkpunt #4 ("Test-commando's herwerken naar help.py", 22 juli 2026) in. Do
 - **`main.py`**: de hele resem debug-ifs vervangen door een korte check (`debug_module.is_debug_command(user_input)` → publiceert `debug_command`-event, anders normale chat-flow). Bestand ging van 689 naar 379 regels (-45%).
 - **Nieuw help-topic**: `modules/help/topics/debug.py` (analoog aan `schaken.py` — puur documentatie, geen logica) + `help.py` en `algemeen.py` bijgewerkt zodat `help debug` dit toont.
 - Live getest (24 juli 2026): schone boot (`[ OK ] debug_commands (0 ms)`, geen dubbele laadpoging), `help`/`help schaken`/`help debug` tonen correct, en twee commando's uit verschillende categorieën (`emergence`, `geheugen gezondheid`) werken beide feilloos via de nieuwe dispatch.
+
+---
+
+## ✅ intent_router.py — route() omgebouwd naar tabel-vorm (25 juli 2026)
+
+Doel: `route()` was gegroeid tot een lange, handmatig geordende keten van losse `if self.detect_X(text): self._emit_topic("X"); return`-blokken — elke nieuwe intent vereiste dat Kevin zelf een nieuw blok op de juiste plek plakte én `_emit_topic()` niet vergat (dat laatste faalt stil, zonder foutmelding, als het gemist wordt). Puur een organisatie-refactor, 100% symbolisch — geen enkele `detect_*()`-methode zelf gewijzigd, geen gedragswijziging beoogd of opgetreden.
+
+- **Twee nieuwe methodes, `_build_intent_tabel_deel1()` en `_build_intent_tabel_deel2()`**: elk een lijst van `(topic_naam, detect_functie)`-tuples. Bewust TWEE aparte lijsten i.p.v. één met een slice-index (`[9:]`) — een vaste index zou breken (stil, zonder foutmelding) zodra een regel ertussen wordt toegevoegd of verwijderd; twee losse, benoemde lijsten zijn ongevoelig voor die verschuiving.
+  - Deel 1 (9 stappen, tussen teach/example/confirm en definition): greeting, time, weather, chess, help, memory, self_architecture, identity, math.
+  - Deel 2 (4 stappen, tussen de relation-flow van `semantic` en sense-choice): relatie, part_of, subtypes, activity.
+- **`__init__`**: bouwt beide lijsten éénmalig op als `self._intent_tabel_deel1`/`_deel2`.
+- **`route()`**: de 13 losse `if`-blokken vervangen door twee korte `for topic_naam, detect_functie in ...`-lussen. Bestaande volgorde en alle bestaande volgorde-afhankelijkheden (chess vóór math, self_architecture vóór identity, activity als laatste vóór fallback) zijn behouden — enkel de manier van doorlopen is veranderd, niet de volgorde zelf.
+- **Bewust NIET in de tabel opgenomen** (blijven expliciet in `route()` staan, elk met eigen reden): pending question, reboot, teach, example, confirm (allemaal vóór de tabel, geen `(topic, detect)`-vorm), definition (dynamische, woord-specifieke topic-naam i.p.v. een vaste string), de relation-flow via `self.semantic._detect_relation()` (geen `_emit_topic()`-aanroep, andere aanroepvorm), sense-choice/ja-nee-confirm (geen `detect_*()`-methode), fallback (blijft de bodem).
+- **Effect voor toekomstige uitbreidingen**: een nieuwe intent die in het patroon past, toevoegen aan de tabel = één regel in de juiste `_build_intent_tabel_deelX()`-lijst, in plaats van een nieuw blok ergens middenin `route()` moeten plakken. `_emit_topic()` kan voor deze 13 stappen niet meer per ongeluk vergeten worden — de lus roept het automatisch aan voor elke regel in de tabel.
+
+Live getest (25 juli 2026) met een volledige doorloop van alle 13 tabel-intents plus de niet-tabel-stappen (help, fallback, reboot, lege input): elke intent gaf exact hetzelfde `[ROUTER] →`-label en antwoord als vóór de refactor. Geen regressies gevonden.
+
+---
+
+## ✅ Sjabloon-variatie toegevoegd aan 4 modules met veelvoorkomende, vaste zinnen (25 juli 2026)
+
+Doel: verschillende modules stuurden telkens LETTERLIJK dezelfde zin bij een terugkerende situatie (pauze-melding, weerwaarschuwing, schaakzetten, fallback), wat op termijn voorspelbaar/"dood" aanvoelt. Zelfde `random.choice()`-patroon toegepast als Layer 7's bestaande `_formuleer_*()`-methodes (`emergence_engine.py`) — puur string-combinatie op vaste tekstlijsten, geen generatie, 100% symbolisch. Vier modules aangepakt, telkens enkel de zin(nen) die vaak identiek terugkwamen; feitelijke/precieze inhoud (bv. `weerwaarschuwing()`'s "Let op: ..."-zinnen, definities) bewust ongewijzigd gelaten.
+
+- **`session_watcher.py`**: nieuwe `_formuleer_pauze_melding(minuten)`, met sjablonen-dict `_sjablonen_pauze` (opening/midden/afsluiting, 5 varianten elk). `check_pauze()` gebruikt deze i.p.v. de vaste f-string.
+- **`weather.py`**: twee plekken.
+  - Proactieve waarschuwing (`_check_waarschuwing_voor_stad()`): nieuwe `_sjablonen_proactieve_waarschuwing`-dict (opening/midden, 5 varianten elk), varieert enkel de inleiding — de eigenlijke `waarschuwing`-tekst (uit `weerwaarschuwing()`) blijft ongewijzigd.
+  - Kledingadvies (`kledingadvies()`): nieuwe `_sjablonen_kledingadvies`-dict, 4 categorieën (vriezend/koud/fris/warm) × 5 varianten elk, vervangt de 4 vaste teksten.
+- **`chess_engine.py`**: 3 punten (bewust NIET het inhoudelijke "zet-commentaar" zoals "sterke opening" — dat vereist stelling-analyse en blijft een aparte, latere stap).
+  - Schaak-melding (in `handle_move()`): nieuwe `_sjablonen_schaak_melding`-lijst, 5 varianten.
+  - Zet-melding (in `handle_move()`, bij elke beurt): nieuwe `_sjablonen_zet_melding`-lijst, 5 varianten.
+  - Win/verlies/gelijkspel (`announce_game_over()`): nieuwe `_sjablonen_winst`/`_sjablonen_verlies`/`_sjablonen_gelijkspel`-lijsten, 5 varianten elk.
+- **`response_pipeline.py`**: generieke fallback (`on_fallback()`), nieuwe `_sjablonen_fallback`-lijst (5 varianten), vervangt de vaste "Ik weet nog niet goed hoe ik daarop moet antwoorden..."-tekst. De losse "Je zei: '...'"-toevoeging blijft ongewijzigd bestaan naast de gevarieerde kernzin.
+
+Alle 4 modules live getest en bevestigd werkend (25 juli 2026) — zichtbare variatie bij herhaalde triggers, geen crashes, geen regressie in de bestaande logica (Layer 5-interruptiegate, weer-API-afhandeling, schaak-regels, auto-learn-fallback) bleef ongewijzigd.

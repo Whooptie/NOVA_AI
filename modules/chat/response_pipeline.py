@@ -1,5 +1,7 @@
 # modules/chat/response_pipeline.py
 
+import random
+
 from identity.personality.personality_engine import PersonalityEngine
 from identity.emotion.emotion_engine import EmotionEngine
 from identity.expression.tone_engine import ToneEngine
@@ -28,6 +30,19 @@ class ResponsePipeline:
         event_bus.subscribe("intent_greeting", self.on_greeting)
         event_bus.subscribe("intent_fallback", self.on_fallback)
         event_bus.subscribe("layer4_response", self.on_layer4_response)
+
+        # Sjablonen voor de generieke fallback ("ik snap dat niet").
+        # Puur string-combinatie via random.choice(), geen generatie --
+        # zelfde patroon als session_watcher.py, weather.py en
+        # chess_engine.py. De "je zei: '...'"-toevoeging blijft apart
+        # bestaan (zie on_fallback()), dit varieert enkel de kernzin.
+        self._sjablonen_fallback = [
+            "Ik weet nog niet goed hoe ik daarop moet antwoorden, maar ik leer graag bij.",
+            "Dat ken ik nog niet, maar ik sta open om het te leren.",
+            "Hier heb ik nog geen goed antwoord op, maar vertel gerust meer.",
+            "Dat snap ik nog niet helemaal, maar ik onthoud het wel.",
+            "Daar kom ik nog niet uit, maar ik leer er graag bij.",
+        ]
 
     def _apply_emotion_trigger(self, trigger: str):
         try:
@@ -136,10 +151,7 @@ class ResponsePipeline:
 
         tone = self.tone_engine.generate_tone(self.personality, self.emotion)
 
-        base = (
-            "Ik weet nog niet goed hoe ik daarop moet antwoorden, "
-            "maar ik leer graag bij."
-        )
+        base = random.choice(self._sjablonen_fallback)
 
         if user_text:
             base += f" Je zei: '{user_text}'."

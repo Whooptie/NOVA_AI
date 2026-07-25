@@ -1,6 +1,7 @@
 # modules/weather/weather.py
 import os
 import json
+import random
 import requests
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -30,6 +31,63 @@ class WeatherModule:
 
         # Luistert enkel naar intent_weather (IntentRouter doet detectie)
         event_bus.subscribe("intent_weather", self.on_weather)
+
+        # Sjablonen voor de proactieve weerwaarschuwing (zie
+        # _check_waarschuwing_voor_stad()). Enkel de INLEIDING varieert
+        # -- de eigenlijke waarschuwingstekst zelf (bv. "Let op: er
+        # wordt onweer verwacht.") blijft feitelijk en ongewijzigd.
+        # Zelfde opening/afsluiting-patroon als emergence_engine.py en
+        # session_watcher.py, puur string-combinatie via random.choice().
+        self._sjablonen_proactieve_waarschuwing = {
+            "opening": [
+                "Even een seintje:",
+                "Kevin, kort iets:",
+                "Zeg, een kleine waarschuwing:",
+                "Even laten weten:",
+                "Kevin, dit is het weer waard om te melden:",
+            ],
+            "midden": [
+                "het weer in {city} verandert.",
+                "er komt iets aan qua weer in {city}.",
+                "in {city} slaat het weer om.",
+                "voor {city} is er een weersverandering op komst.",
+                "het weerbeeld in {city} wijzigt.",
+            ],
+        }
+
+        # Sjablonen voor kledingadvies (zie kledingadvies()). Vier
+        # categorieën (vriezend/koud/fris/warm) x 5 varianten -- zelfde
+        # random.choice()-patroon als hierboven, geen generatie.
+        self._sjablonen_kledingadvies = {
+            "vriezend": [
+                "Trek een dikke jas aan, het vriest!",
+                "Het vriest -- pak er een dikke jas bij.",
+                "Goed inpakken vandaag, het vriest.",
+                "Dikke jas nodig, het is vriesweer.",
+                "Kleed je warm, er is vorst.",
+            ],
+            "koud": [
+                "Trek een warme jas aan.",
+                "Een warme jas is geen overbodige luxe.",
+                "Het is koud -- warme jas aanraden.",
+                "Kleed je warm aan vandaag.",
+                "Een goede jas kan geen kwaad.",
+            ],
+            "fris": [
+                "Een jas is aan te raden.",
+                "Best een jas meenemen.",
+                "Het is fris -- een jasje doet geen kwaad.",
+                "Neem toch maar een jas mee.",
+                "Een lichte jas is voldoende, maar wel aanraden.",
+            ],
+            "warm": [
+                "Het wordt warm, lichte kleding is een goed idee.",
+                "Het wordt warm -- luchtige kleding aanraden.",
+                "Trek iets lichts aan, het wordt warm vandaag.",
+                "Het is warm weer, kleed je luchtig.",
+                "Warme dag op komst, licht gekleed is fijner.",
+            ],
+        }
 
     # -----------------------------------------------------
     # Tekst → stad
@@ -306,13 +364,13 @@ class WeatherModule:
 
     def kledingadvies(self, temp):
         if temp < 0:
-            return "Trek een dikke jas aan, het vriest!"
+            return random.choice(self._sjablonen_kledingadvies["vriezend"])
         if temp < 8:
-            return "Trek een warme jas aan."
+            return random.choice(self._sjablonen_kledingadvies["koud"])
         if temp < 15:
-            return "Een jas is aan te raden."
+            return random.choice(self._sjablonen_kledingadvies["fris"])
         if temp > 25:
-            return "Het wordt warm, lichte kleding is een goed idee."
+            return random.choice(self._sjablonen_kledingadvies["warm"])
         return None
 
     def _heeft_neerslag(self, data, main_categorie):
@@ -455,7 +513,9 @@ class WeatherModule:
             return  # al gemeld vandaag voor deze stad, niet opnieuw
 
         self._markeer_gemeld(city)
-        tekst = f"Even een seintje: het weer in {city} verandert. {waarschuwing}"
+        opening = random.choice(self._sjablonen_proactieve_waarschuwing["opening"])
+        midden = random.choice(self._sjablonen_proactieve_waarschuwing["midden"]).format(city=city)
+        tekst = f"{opening} {midden} {waarschuwing}"
         self.event_bus.publish("layer4_response", {"text": tekst})
 
     def _al_gemeld_vandaag(self, city):
