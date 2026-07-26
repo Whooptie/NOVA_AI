@@ -282,7 +282,15 @@ class WordAssociationsLearner:
         data = interaction.get("data", {})
         interaction_event_type = interaction.get("event_type", "")
 
-        if interaction_event_type not in ("chat_message", "chat_response"):
+        # Bewust ENKEL chat_message (Kevins eigen tekst), niet meer
+        # chat_response (Nova's eigen antwoorden). Nova leerde anders
+        # ook associaties uit haar eigen vaste systeemzinnen (bv. de
+        # greeting "Hey Kevin, leuk dat je er bent" gaf een kunstmatig
+        # sterke "hey"-"kevin"-"leuk"-associatie, 0.84 PMI, zonder dat
+        # dit een echt taalverband uit de wereld was). Layer 1 hoort te
+        # leren van wat KEVIN zegt, niet van Nova's eigen, door hemzelf
+        # geschreven sjablonen.
+        if interaction_event_type != "chat_message":
             return
 
         text = data.get("text", "")
@@ -296,40 +304,63 @@ class WordAssociationsLearner:
 
         ts = interaction.get("timestamp", 0)
 
+        # ── Stap 0: sense-sleutels bepalen (Bug #10-fix) ──
+        # Voor elk woord in de zin proberen we via semantic.py's
+        # detect_sense() te bepalen welke sense bedoeld is (bv.
+        # "python" -> "python#2" als de zin over de slang gaat, i.p.v.
+        # de programmeertaal). Zo tellen we co-occurrences per BETEKENIS
+        # i.p.v. per los woord — daar ging Bug #10 precies over.
+        #
+        # Geeft detect_sense() None terug (woord heeft geen/1 sense,
+        # geen duidelijke match, of self.semantic ontbreekt), dan
+        # gebruiken we gewoon het kale woord zoals voorheen. Dit is dus
+        # een zuivere verrijking, geen breking voor woorden zonder
+        # senses (de overgrote meerderheid van de woordenschat).
+        sleutel_per_woord: Dict[str, str] = {}
+        for word in words:
+            sense_id = None
+            if self.semantic is not None:
+                sense_id = self.semantic.detect_sense(word, words)
+            sleutel_per_woord[word] = sense_id if sense_id else word
+
         # ── Stap 1: woordfrequentie bijwerken ──
         for word in words:
-            if word not in self.word_stats:
-                self.word_stats[word] = {
+            sleutel = sleutel_per_woord[word]
+            if sleutel not in self.word_stats:
+                self.word_stats[sleutel] = {
                     "frequency": 0,
                     "first_seen": ts,
                     "last_seen": ts,
                 }
-            self.word_stats[word]["frequency"] += 1
-            self.word_stats[word]["last_seen"] = ts
+            self.word_stats[sleutel]["frequency"] += 1
+            self.word_stats[sleutel]["last_seen"] = ts
 
         # ── Stap 2: co-occurrence bijwerken (sliding window) ──
         for i, word in enumerate(words):
             window_start = max(0, i - self.window_size)
             window_end = min(len(words), i + self.window_size + 1)
 
+            sleutel = sleutel_per_woord[word]
+
             for j in range(window_start, window_end):
                 if i == j:
                     continue  # Een woord telt niet als associatie met zichzelf
 
                 other_word = words[j]
+                andere_sleutel = sleutel_per_woord[other_word]
 
-                if word not in self.associations:
-                    self.associations[word] = {}
+                if sleutel not in self.associations:
+                    self.associations[sleutel] = {}
 
-                if other_word not in self.associations[word]:
-                    self.associations[word][other_word] = {
+                if andere_sleutel not in self.associations[sleutel]:
+                    self.associations[sleutel][andere_sleutel] = {
                         "co_occurrence": 0,
                         "first_seen": ts,
                         "last_seen": ts,
                     }
 
-                self.associations[word][other_word]["co_occurrence"] += 1
-                self.associations[word][other_word]["last_seen"] = ts
+                self.associations[sleutel][andere_sleutel]["co_occurrence"] += 1
+                self.associations[sleutel][andere_sleutel]["last_seen"] = ts
 
         # ── Stap 3: PMI herberekenen ──
         # Elke keer als we bijleren, herberekenen we de sterkte-scores.
@@ -350,9 +381,11 @@ class WordAssociationsLearner:
         for i, word in enumerate(words):
             window_start = max(0, i - self.window_size)
             window_end = min(len(words), i + self.window_size + 1)
+            sleutel = sleutel_per_woord[word]
             for j in range(window_start, window_end):
                 if i != j:
-                    self.publish_update(word, words[j])
+                    andere_sleutel = sleutel_per_woord[words[j]]
+                    self.publish_update(sleutel, andere_sleutel)
 
     # ─────────────────────────────────
     # Persistentie (Fase 5)

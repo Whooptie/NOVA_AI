@@ -181,7 +181,7 @@ Nova_AI/
 | expression_injector.py | ✅ Klaar EN AANGESLOTEN (17 juli 2026) | Emoji, gesture, puberal flair injectie. Reageert nu ook echt op `response_style` (kort/normaal/uitgebreid) en `personality` (dramatic/interrupts) i.p.v. die enkel door te geven — zie Layer 6-sectie. |
 | help.py | ✅ Klaar | Help-systeem met topic-bestanden. `help` = algemeen overzicht, `help schaken` = schaakcommando's, `help debug` = debug-/testcommando's (24 juli 2026, zie debug_commands.py). `algemeen.py` bijgewerkt (3 juli 2026) met `example`-commando en reasoning-sectie, en (24 juli 2026) met verwijzing naar `help debug`. |
 | wikipedia_teacher.py | ✅ Klaar | Nederlandse Wikipedia API, disambiguatie-afhandeling, is_a relatie-extractie, automatische fallback vanuit chat.py. Definitie-limiet opgetrokken naar 400 tekens, kapt nooit meer af midden in een woord. Automatische voorbeeldzin-extractie uit Wikipedia geprobeerd maar werkt nog niet betrouwbaar — vervangen door handmatig `example`-commando (zie semantic.py). |
-| debug_commands.py | ✅ Klaar (nieuw, 24 juli 2026) | Bundelt alle 14 tijdelijke debug-/testcommando's die voorheen los in `main.py`'s invoerlus stonden (~320 regels, zie changelog). Afwijkende `init_module(event_bus, loader)`-signature (krijgt de loader zelf mee i.p.v. `sem`), handmatig geladen in `module_loader.py` net als `pending_question`/`interruption_tracker`/`response_engine`. `main.py` checkt enkel nog `debug_module.is_debug_command(user_input)` en publiceert bij match het `debug_command`-event. Documentatie via nieuw topic `help debug` (`modules/help/topics/debug.py`). Live getest (24 juli 2026): boot OK, `help debug`, `emergence`, `geheugen gezondheid` werken correct. |
+| debug_commands.py | ✅ Klaar (nieuw, 24 juli 2026; uitgebreid 26 juli 2026) | Bundelt alle tijdelijke debug-/testcommando's die voorheen los in `main.py`'s invoerlus stonden (~320 regels, zie changelog). Afwijkende `init_module(event_bus, loader)`-signature (krijgt de loader zelf mee i.p.v. `sem`), handmatig geladen in `module_loader.py` net als `pending_question`/`interruption_tracker`/`response_engine`. `main.py` checkt enkel nog `debug_module.is_debug_command(user_input)` en publiceert bij match het `debug_command`-event. Documentatie via nieuw topic `help debug` (`modules/help/topics/debug.py`). Ondertussen 16 commando's: de oorspronkelijke 14 (24 juli 2026), plus `preferences debug` (26 juli 2026) en `associaties`/`associaties <woord>` (26 juli 2026, Layer 1 — nodig geworden om de ruis-bug uit `chat_response`-events op te sporen, zie changelog). Live getest (24 juli 2026): boot OK, `help debug`, `emergence`, `geheugen gezondheid` werken correct. |
 | chess_engine.py | ✅ Klaar | Stockfish (UCI), persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten + rokade ("rokeer kort"/"rokeer lang") + promotie ("pion naar e8 dame", standaard dame). Bordweergave met schaaksymbolen (wit/magenta) + zetnummer + materiaaltelling + schaak-melding (beide kanten). Instelbare moeilijkheidsgraad (0-20) + denktijd, beide persistent (chess_settings.json), plus adaptieve auto-aanpassing o.b.v. win/verlies-streak (3 op rij → niveau/denktijd ±). Win/verlies statistieken incl. eindreden (schaakmat/patstand/...) (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
 | word_associations_learner.py | ✅ Klaar (Layer 1, alle 5 fases) | PMI-gebaseerd associatienetwerk (data/word_associations.json). Leert van "chat_message"/"chat_response"-events (niet het gecombineerde formaat uit de originele roadmap). Publiceert `word_association:updated`; sinds Layer 4 (8 juli 2026) wordt `find_related()` ook actief gebruikt in Nova's antwoorden. |
 | pattern_matcher.py | ✅ Klaar (Layer 2, alle 5 fases) | Detecteert timing-patronen (uur/dag) voor chat_message/chat_response. Anomaly-drempels en opslagfrequentie staan nog op tijdelijke testwaarden (zie Layer 2-sectie). |
@@ -224,8 +224,8 @@ Nova_AI/
 | --- | --- | --- | --- | --- |
 | 8 | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag | 🔲 Open — omzeild met handmatig`example`-commando. **Mogelijk verwante observatie (18 juli 2026):** na de fix van bug #6 getest met "wat is fysica?" — Wikipedia-pagina werd dit keer wél correct gevonden (geen leesteken-probleem meer), maar `_extract_definition()` kon er alsnog geen bruikbare definitie uit halen ("Ik kon geen bruikbare definitie vinden voor 'fysica' op Wikipedia"). Nog niet onderzocht of dit dezelfde onderliggende oorzaak heeft als de voorbeeldzin-extractie hierboven, of een apart probleem in `_extract_definition()` zelf. |
 | 9 | Woordsoort-detectie (`detect_pos`) kan werkwoord/zelfstandig-naamwoord-dubbelzinnigheid niet oplossen zonder zinscontext (bv. "gebruik" als werkwoord vs. zelfstandig naamwoord) | semantic.py | 🟢 Laag | ✅ Omzeild (8 juli 2026 — expliciete stopwoordenlijst in response_pipeline.py, geen structurele fix) |
-| 10 | Layer 1 (`word_associations_learner.py`) houdt geen rekening met senses: bij een meerduidig woord (bv. "python" = zowel de slang als de programmeertaal) worden alle co-occurrences door elkaar geteld, ongeacht welke betekenis bedoeld was in de zin. Ontdekt tijdens Layer 4-testen (8 juli 2026): `response_engine.py` toonde de definitie van "python" als slang, aangevuld met de associatie "snel" — die associatie komt vermoedelijk uit gesprekken over de programmeertaal, niet het dier. Layer 1 werkt puur op tekst-co-occurrence en heeft geen besef van `semantic.py`'s sense-systeem (`get_senses()`). Geen bug in `response_engine.py` zelf — die geeft gewoon correct door wat Layer 1 teruggeeft. Live opnieuw bevestigd (8 juli 2026) met "hond" (2 senses) en "hart" (5 senses) in Kevin's echte `concepts.json`. | word_associations_learner.py | 🟢 Laag | 🔲 Open — User Preferences (Fase 1-4 + sentiment-classifier + kandidaat-suggesties) ✅ volledig afgerond 25-26 juli 2026, maar de disambiguatie-koppeling zelf (welke sense Kevin meestal bedoelt) is nog niet ontworpen/gebouwd, zie User Preferences-sectie |
 
+*(Bug #10 opgelost — 26 juli 2026: volledige sense-disambiguatie gebouwd — signaalwoorden per sense in `concepts.json`, `detect_sense()` in `semantic.py`, Layer 1 slaat nu op per `woord#sense_id` i.p.v. per kaal woord, plus `kevin_profile.py`-voorkeur-fallback met nieuw commando `onthoud sense <woord>`. Zie `nova_changelog.md` voor het volledige overzicht.)*
 *(Bug #6 opgelost — 18 juli 2026: `word.strip(".,!?;:")` toegevoegd in `chat.py`'s `on_definition()` vlak na de lidwoord-stripping, zodat leestekens als punt/vraagteken/uitroepteken nooit meer meegaan naar `get_meaning()`, de is_a-check, of de Wikipedia-fallback. Extra defensief vangnet toegevoegd in `wikipedia_teacher.py`'s `on_wiki()` zelf, voor het geval een andere module ooit rechtstreeks een `intent_wiki`-event stuurt zonder via `chat.py` te lopen. Live getest: "wat is een gitaar.", "wat is een computer?", "wat betekent hond!" geven nu allemaal een schoon antwoord zonder leesteken in het woord.)*
 *(Écht opgeloste bugs #1-#5, #11-#18 verplaatst naar `nova_changelog.md`, 18 juli 2026. Bug #9 blijft hier staan — is enkel omzeild, niet structureel gefixt.)*
 *(Bug #7 opgelost — 18 juli 2026: het probleem bleek niet "oude entries missen een update", maar dat `_auto_extract_is_a()` in `semantic.py` enkel het patroon "een X met/die/dat/..." herkende — het patroon waarmee bijna élke Wikipedia-definitie in `concepts.json` daadwerkelijk begint, "[Het woord] is een X die/dat/...", werd nooit herkend. Drie nieuwe regex-patronen toegevoegd voor "[woord] is/zijn een X ...", plus de samengestelde "waarmee/waarin/waaruit/waardoor/waarop/waarvoor"-vormen naast het bestaande losse "waar". Getest tegen de volledige bestaande `concepts.json` (201 bruikbare definities): dekking steeg van 2% (4 matches) naar 28% (56 matches), geen enkele foute match in de steekproef. Bewust GEEN herstelscript gebouwd voor de bestaande senses — enkel nieuw geleerde woorden (via `teach` of Wikipedia) profiteren automatisch; bestaande entries blijven ongewijzigd tenzij opnieuw geleerd. Live bevestigd met "zeilboot" ("Een zeilboot is een vaartuig dat wordt voortgestuwd door de wind." → automatisch `is_a: vaartuig`, source `auto_extract`). Bewust nog NIET aangepakt: definities met een bijvoeglijk naamwoord tussen "een" en het echte target-zelfstandig-naamwoord (bv. "een grote, niet-giftige slang") — vraagt een POS-check per woord, apart werkpuntje voor later.)*
@@ -322,6 +322,7 @@ data_pad = PROJECT_ROOT / "data" / "mijn_bestand.json"
 **Architectuurnotitie:** volledig symbolisch — API-data wordt uitgelezen en in vaste Nederlandse zinsjablonen gegoten (if/else op basis van temperatuur/categorie/ID/windsnelheid/neerslag). Geen LLM, geen vrije tekstgeneratie. De "vergelijking met gisteren" en de proactieve waarschuwing zijn eveneens puur symbolisch: hetzelfde JSON-bestandje (`data/weather_history.json`) met per stad de laatst-gemeten temperatuur + datum + laatste-waarschuwing-datum, en simpele if/else-vergelijkingen.
 
 **`weerwaarschuwing()` uitgebreid (19 juli 2026):** herschreven om vijf signalen te combineren i.p.v. één vaste dictionary-lookup:
+
 - `main_categorie` (bestaand) → onweer, sneeuw, extreem, **plus nieuw: mist/fog/haze**
 - `weather_id` (nieuw) → specifieke OpenWeatherMap-conditiecode 906 = hagel, los van de hoofdcategorie herkend (hagel zit niet in een aparte `main`-categorie bij OWM)
 - `windsnelheid` (nieuw) → harde-windwaarschuwing vanaf drempel `WIND_DREMPEL_MS = 15` (m/s, ~54 km/u, Kevin's keuze 19 juli 2026)
@@ -335,6 +336,7 @@ Elk signaal is een **onafhankelijke check** — er is geen minimum-aantal nodig 
 **Eerlijkheid over gladheid bij voorspellingen:** in `get_forecast()` (5-daagse voorspelling) is de `_heeft_neerslag()`-check minder betrouwbaar dan bij huidig weer — de 3-uurs-voorspellingsblokken geven soms geen `rain`/`snow`-veld door zelfs bij een kans op neerslag (dat zit dan enkel in het aparte `pop`-regenkans-veld). De categorie-check vangt dit gedeeltelijk op, maar niet perfect. Eerlijke beperking van de gratis voorspellings-API, geen fout in de logica zelf.
 
 **Proactieve automatische weerwaarschuwing — volledige werking (19 juli 2026):**
+
 - **Nieuwe methodes in `weather.py`:** `get_current_location_city()` (IP-locatie via ipinfo.io, zelfde soort bron als `modules/time/zone.py`'s tijdzone-detectie), `check_proactieve_waarschuwing()` (hoofdmethode), `_check_waarschuwing_voor_stad()`, `_al_gemeld_vandaag()`, `_markeer_gemeld()`, `_heeft_neerslag()`.
 - **Welke steden gecheckt worden:** standaardstad altijd, plus de IP-gedetecteerde locatie **enkel als die een andere stad is** dan de standaardstad — voorkomt een dubbele melding wanneer Kevin gewoon thuis zit (het overgrote deel van de tijd).
 - **`main.py`-koppeling:** nieuwe constante `WEATHER_CHECK_INTERVAL_MINUTEN = 30`, en een nieuwe check in `achtergrond_loop()` (`if aantal_loops % WEATHER_CHECK_INTERVAL_MINUTEN == 0`), zelfde patroon als de bestaande `PRESENCE_CHECK_INTERVAL_MINUTEN`-check. Roept `weather.check_proactieve_waarschuwing()` aan, in een try/except zodat een fout hier de rest van de achtergrondlus nooit kan blokkeren.
@@ -344,6 +346,7 @@ Elk signaal is een **onafhankelijke check** — er is geen minimum-aantal nodig 
 - **Ethiek:** spontaan spreken zonder vraag is al eerder goedgekeurd door Kevin (3 juli 2026) voor noodweer — geen aparte aan/uit-instelling of bevestigingsvraag vooraf nodig.
 
 **Test-bestanden (19 juli 2026):**
+
 - `test_weerwaarschuwing.py` — los testscript in de projectroot, GEEN onderdeel van Nova's daemon. Roept `weerwaarschuwing()` rechtstreeks aan met verzonnen scenario's (dummy EventBus, geen echte API-call). 18 scenario's (categorieën, hagel, windsnelheid, hitte, gladheid — incl. randgevallen op alle drempelgrenzen en combinaties van meerdere waarschuwingen tegelijk). Live getest, alle 18 geslaagd.
 - `test_proactieve_waarschuwing.py` — los testscript, test de ECHTE OpenWeatherMap- en ipinfo.io-API's (geen mock), toont de volledige `weather_history.json`-inhoud voor/na, en bevestigt de "max. 1x per dag per stad"-regel door 2x na elkaar te draaien. Live getest: eerste run met tijdelijk verlaagde winddrempel gaf correct 2 meldingen (standaardstad Aartrijke + IP-locatie Brugge), tweede run direct daarna gaf terecht 0 nieuwe meldingen.
 
@@ -395,9 +398,9 @@ Alle 5 fases gebouwd, getest (los + binnen de echte Nova) en werkend:
 - `learn_from(self, interaction, event_type=None)` accepteert nu ook een tweede positioneel argument, omdat `event_bus.py` handlers standaard aanroept als `handler(data, event_type)`.
 - De lemmatizer is een Nederlandse *benadering* (verkleinwoorden, regelmatig meervoud, bijvoeglijke vorm op -e), geen volledige taalkundige lemmatizer — onregelmatige vervoegingen (bv. "liep" → "lopen") worden bewust niet afgevangen.
 
-**Bekend, verwacht gedrag (geen bug):**
+**Voorheen hier genoteerd als "bekend, verwacht gedrag" — ondertussen ✅ STRUCTUREEL OPGELOST (26 juli 2026, zie `nova_changelog.md`):**
 
-- Nova's vaste fallback-zin ("Ik weet nog niet goed... Je zei: '...'") wordt bij elk onbegrepen bericht meegeleerd, waardoor woorden als "weet", "goed", "antwoord", "leer", "graag", "zei" hoge, onderling sterke associaties opbouwen. Dit is ruis die vanzelf minder dominant wordt zodra Nova's antwoorden gevarieerder worden (latere layers).
+- De oorspronkelijke aanname ("ruis wordt vanzelf minder dominant zodra Nova's antwoorden gevarieerder worden") bleek niet de kern van het probleem: Nova's vaste fallback-zin (en elke andere `chat_response`, zoals de greeting) werd hoe dan ook meegeleerd, ongeacht hoeveel sjabloon-variatie er is — want `learn_from()` luisterde sowieso naar `chat_response` als bron. Opgelost door Layer 1 uitsluitend nog te laten leren van `chat_message` (Kevins eigen tekst), nooit meer van Nova's eigen gegenereerde antwoorden. `data/word_associations.json` eenmalig leeggemaakt (geen opschoning achteraf mogelijk — event-herkomst wordt niet per associatie bijgehouden).
 
 **Huidige status: actief gebruikt sinds Layer 4 (8 juli 2026).**
 
@@ -446,7 +449,7 @@ Nieuw bestand `core/response_engine.py`. Combineert Layer 3 (semantic), Layer 1 
 | 3 | Layer 2 (`is_pattern_active()`/`get_pattern()`) gebouwd via `get_timing_hint(topic_naam)` | ✅ |
 | 4 | Integratie in `module_loader.py` + `intent_router.py` — Nova gebruikt dit nu echt tijdens een gesprek | ✅ |
 | 5 | Sjablonen natuurlijker: elk sjabloon is een LIJST van 3-5 warme varianten, willekeurig gekozen via `_kies_variant()` (`random.choice()`) | ✅ |
-| 6 | Bug#10 aanpakken (associatie enkel tonen bij juiste sense) | 🔲 Uitgesteld tot disambiguatie-laag (zie User Preferences-sectie) |
+| 6 | Bug#10 aanpakken (associatie enkel tonen bij juiste sense) | ✅ Opgelost (26 juli 2026, zie `nova_changelog.md`) |
 | 7 | Tone/personality via bestaande tone-keten (`response_pipeline.py`/`chat_response_engine.py`/`expression_injector.py`) | ✅ |
 | — | Layer 2 écht gekoppeld aan `generate()` via `_voeg_timing_hint_toe()` (was aanvankelijk vergeten — Layer 2 bleef los na Fase 3) | ✅ |
 
@@ -459,7 +462,7 @@ Nieuw bestand `core/response_engine.py`. Combineert Layer 3 (semantic), Layer 1 
 
 **Bekend, genoteerd voor later:**
 
-- **Bug #10#10:** meerduidige woorden (bv. "hond" met 2 senses, "python" met 2 senses, "hart" met 5 senses in `concepts.json`) — `semantic.get_best_definition()` kiest de sense met hoogste confidence, niet noodzakelijk de bedoelde. Live bevestigd tijdens testen (8 juli 2026): "hond" gaf soms de korte definitie ("een dier") i.p.v. de volledige biologische definitie. Wachten op disambiguatie-laag.
+- **Bug #10 — ✅ OPGELOST (26 juli 2026):** zie `nova_changelog.md` voor het volledige overzicht van de sense-disambiguatie-oplossing.
 - **Emotion/overstimulation-observatie:** tijdens Layer 4-testen viel op dat Nova's `emotion_state.json` structureel op een hoge `overstimulation.level` staat, waardoor elk antwoord het "overprikkeld_chaotisch_snel"-sjabloon (😵⚡💥) kreeg, ongeacht onderwerp. Geen Layer 4-bug — hoorde bij Layer 6, niet bij Layer 4. **Opgelost (11 juli 2026), zie bug #4/#11.**
 - **Toekomstige uitbreiding, DEELS OPGELOST (12 juli 2026, zie werkpunt #2 hierboven): Layer 4 laten gelden voor de andere semantic-gerelateerde intents.** Twee aparte dingen om uit elkaar te houden: (1) **de tone-pipeline** (emoji's/stemming via `expression_injector.py`) — dit is nu opgelost, alle semantic-intents publiceren `layer4_response` en klinken dus warm. (2) **De échte Layer 4-combinatie** (`response_engine.generate()`, die semantic + word_associations (Layer 1, "personal touch") + pattern_matcher (Layer 2, timing-hint) samenbrengt) — dit blijft ENKEL gekoppeld aan `detect_definition()`'s hoofdroute. De andere semantic-intents (`intent_synonym`, `intent_antonym`, `intent_used_for`, `intent_causes`, `intent_properties`, `intent_related_to`, `intent_relation_check`, `intent_part_of_check`, `intent_subtypes_query`) gaan nog altijd rechtstreeks naar hun eigen handler in `chat.py`/`semantic.py`, zonder Layer 1/Layer 2-verrijking. Bewust NIET uitgebreid naar weer/tijd/math/schaken/help — die modules hebben geen semantic/word_associations/pattern_matcher-achtige databronnen om te combineren. Of dit dieptepunt (2) de moeite waard is, hangt af van of "synoniemen van hond, met personal touch/timing-hint erbij" een zinvolle uitbreiding is — nog niet besloten, geen prioriteit.
 
@@ -472,7 +475,7 @@ Nieuw bestand `core/response_engine.py`. Combineert Layer 3 (semantic), Layer 1 
 - **`pattern_matcher.py`**: GEEN wijziging nodig — telt via haar bestaande `startswith("topic_detected:")`-check al generiek élk topic mee, ongeacht welke naam erachter staat.
 - **Live getest (23 juli 2026):** "wat is python", "wat is een hond", "wat betekent fiets" resulteerden in drie aparte, correcte entries in `patterns_layer2.json` (`topic_detected:definitie_python`, `topic_detected:definitie_hond`, `topic_detected:definitie_fiets`, elk `total: 1`), naast de oude, niet meer aangevulde `topic_detected:definitie`-entry (bewaard als archief). Geen crashes, geen regressie in tone-pipeline of Layer 1-associaties.
 - **Nog geen timing-hint zichtbaar** — verwacht: elk woord staat nog ver onder `MIN_OBSERVATIES_VOOR_ANOMALIE` (10), dit groeit organisch verder mee met normaal gebruik.
-- **Expliciet NIET meegenomen:** Bug #10 (sense-disambiguatie, "python" als slang vs. programmeertaal) blijft een apart, groter, nog open werkpunt — deze uitbreiding werkt per WOORD, niet per SENSE.
+- **Bug #10 (sense-disambiguatie, "python" als slang vs. programmeertaal) — ondertussen ✅ OPGELOST (26 juli 2026, zie `nova_changelog.md`).** Deze per-woord-timing-uitbreiding zelf werkt nog steeds per WOORD, niet per SENSE — geen wijziging hier nodig, puur een statusupdate van de verwijzing.
 
 ### Layer 5 — Context Manager (Fase 1-5 afgerond, 13-16 juli 2026 — VOLLEDIG KLAAR ✅)
 
@@ -618,6 +621,7 @@ De oude `_bepaal_interrupt()` (Fase 1-4) gebruikte een "eerste match wint"-volgo
 **Fase 5, laatste stuk — `identity_state → memory`:** `PersonalityEngine.__init__()` krijgt nu `event_bus` mee (doorgegeven vanuit `response_pipeline.py`). Nieuwe methode `_publish_state_update()` publiceert `identity_state:updated` (met `trigger`, `current_mood`, `current_energy`, `expressive_intensity`, `impulsivity_modulation`, `dramatic_flair_state`, `overstimulation_level`) telkens `update_state()` draait. **Geen enkele wijziging nodig geweest in `memory.py` zelf** — die subscribet al op `"*"` (event_bus.py's wildcard-mechanisme) en `identity_state:updated` stond niet in `memory.py`'s `ignore_types`, dus wordt automatisch opgeslagen in `interactions.jsonl`/`interactions.db`.
 
 **Live getest en bevestigd (17 juli 2026):**
+
 - Normaal: `Nova: Hey user, leuk dat je er bent! 😊 ✨` (emoji's nu zichtbaar via `warm_snel`-profiel)
 - Kort (tijdens actief coderen, focus "actief"): `Nova: Hey user, leuk dat je er bent` (geen `!`, geen emoji's) — herhaald bevestigd over 3 opeenvolgende berichten terwijl coding-activiteit opliep van 0.1 naar 1.7 minuten
 - `interactions.jsonl` bevat na een "hey"-groet een `identity_state:updated`-regel met alle verwachte velden correct gevuld
@@ -642,6 +646,7 @@ Beide bevestigd met live cijfers (energie convergeert nu stabiel naar een evenwi
 **Aanleiding:** tijdens het testen van bovenstaande koppelingen viel op dat Nova al na ~5 gewone berichten "omsloeg" naar een overprikkelde/chaotische staat (`overstimulation.level` ging met vaste `+0.15`/trigger-stappen te snel naar de `0.75`-drempel). Kevin gaf aan dit niet te willen — en signaleerde daarbij een fundamenteler punt: **alle bestaande identity/personality-bestanden (`traits.json`, `identity.json`, `emotion_rules.json`, `style_profiles.json`, `gesture_profiles.json`) waren oorspronkelijk door Copilot geschreven, vóór Kevin er zelf goed zicht op had** — dus in plaats van enkel het omslaan-probleem te patchen, is bewust gekozen voor een **volledige, doordachte herziening van Nova's basiskarakter**, ditmaal met Kevin's eigen input als bron in plaats van Copilot's oorspronkelijke, ongecontroleerde keuzes.
 
 **Nieuwe karakterrichting (bepaald in overleg, sparring-vragen via `ask_user_input_v0`):**
+
 - Mix van kalme AI-butler (Jarvis/Gideon/Tau-achtig: zelfregulerend, competent) én gelijkwaardige, scherpe vriendin (geen onderdanigheid, mag tegenspreken/bekritiseren — **mits feitelijk onderbouwd**, dat laatste is een gedragsregel, geen trait, nog niet apart geborgd in code).
 - Rustig basistemperament, keert snel terug naar evenwicht (geen opstapelende chaos meer).
 - Humor: droog, sarcastisch, bijdehands, mag luchtig zijn.
@@ -664,6 +669,7 @@ Beide bevestigd met live cijfers (energie convergeert nu stabiel naar een evenwi
 **Regressiecontrole na afronding (17 juli 2026):** alle 7 kernbestanden (`tone_engine.py`, `personality_engine.py`, `response_pipeline.py`, `expression_injector.py`, `presence_detector.py`, `self_query.py`, `intent_router.py`) opnieuw, in hun actuele staat, gecontroleerd op onderlinge consistentie — geen dode verwijzingen, geen oude keys, geen vergeten koppelingen gevonden. Andere modules (chess, weather, help, wiki, math) lopen allemaal via dezelfde `layer4_response`/`chat_response`-route naar `response_pipeline.py`/`expression_injector.py`, dus die profiteren automatisch mee zonder zelf aangepast te zijn.
 
 **Bewust NIET meegenomen in deze herziening:**
+
 - `behavior_modifiers.py`'s gewichten-fix (zie sectie hierboven) was al opgelost vóór de karakterherziening begon, dus die twee bugfixes gelden voor zowel de oude als de nieuwe traits-waarden.
 - Het "mag tegenspreken, maar moet feitelijk kloppen"-gedragsregel is een uitspraak over gewenst gedrag, nog GEEN concrete code-wijziging — vereist waarschijnlijk aanpassingen in `intent_router.py`/`response_engine.py`/`semantic.py` om te voorkomen dat Nova ongefundeerde beweringen doet. Open werkpunt.
 - Gesture-koppeling geldt vooralsnog puur tekstueel (`text_hint` in de chat) — geen visuele/avatar-koppeling, want Nova heeft momenteel geen avatar.
@@ -677,6 +683,7 @@ Beide bevestigd met live cijfers (energie convergeert nu stabiel naar een evenwi
 **Architectuurprincipe (bewust vastgelegd vóór het bouwen):** een klein, bounded ML-classificatiemodel (TF-IDF + Logistic Regression, dezelfde aanpak als de al geplande intent classifier) mag EEN signaal-label per bericht bepalen. Alle beslissingslogica daarna — welke trait, hoeveel, wanneer, binnen welke grenzen — blijft 100% symbolisch vastgelegd in JSON-regelbestanden. Het model "beslist" niets over Nova's gedrag, exact zoals Stockfish een zet-score levert zonder zelf te bepalen of Nova die zet speelt.
 
 **Kernontwerp, bepaald in overleg (sparring-vragen via `ask_user_input_v0`):**
+
 - Alle 17 traits mogen zowel stijgen als dalen — geen enkele mag enkel één kant op.
 - Drie tempo-categorieën, "zo mens-mogelijk" ontworpen: **traag** (social_warmth, loyalty, self_regulation — drempel 75 signalen, stap 0.02), **middel** (curiosity, reflection_depth, stubbornness_soft, expressiveness, emotional_color_intensity, associative_thinking, focus_hyperfocus_tendency — drempel 25, stap 0.025), **snel** (reactivity, impulsivity, chaotic_variability, energy_level, dramatic_flair — drempel 12, stap 0.03). `boundary_respect`/`safety_alignment` blijven volledig uitgesloten — veiligheidsgerelateerd, nooit door adaptive learning aan te passen.
 - Groeigrenzen: elke trait mag max 0.25 afwijken van zijn (net herziene) startwaarde uit `traits.json`, met 0.05/0.95 als absoluut plafond — een "persoonlijkheidskern" die nooit volledig kan verdwijnen, ook niet na maanden signalen.
@@ -697,6 +704,7 @@ Beide bevestigd met live cijfers (energie convergeert nu stabiel naar een evenwi
 **Tussentijds gevonden en gedicht gat:** `signal_trait_mapping.json` bevatte van meet af aan een `"focus"`-signaal (gekoppeld aan `focus_hyperfocus_tendency`/`chaotic_variability`), maar dat signaal kwam nergens voor in `training_data.json` of de woordenlijst-fallback — kon dus nooit herkend worden. Gedicht door 7 nieuwe trainingsvoorbeelden + 2 benchmark-voorbeelden + een woordenlijst-uitbreiding toe te voegen, gevolgd door een handmatige hertraining. Live bevestigd: `focus_hyperfocus_tendency`/`chaotic_variability`'s tellers bewogen correct na één testbericht.
 
 **Bewust NIET meegenomen / open gebleven:**
+
 - Geen mensencontrole per individueel twijfelgeval in `uncertain_signals.jsonl` — bewuste keuze uit het ontwerpgesprek: het ijkpunt-testsetje is de kwaliteitsrem, niet handmatige labeling van elke regel.
 - De marge-drempel (0.10) en tempo-drempels/stapgroottes zijn Claude's onderbouwde voorstellen, door Kevin goedgekeurd — geen wiskundig "bewezen optimale" waarden, kunnen later bijgesteld worden als de praktijk daar aanleiding toe geeft.
 - Nog geen enkele ECHTE (niet kunstmatig opgezette) automatische hertraining heeft op dit moment plaatsgevonden — de bevestiging hierboven gebruikte een bewust kunstmatig aangevulde test-dataset. De eerste organische hertraining zal vanzelf gebeuren naarmate Kevin Nova blijft gebruiken en er op natuurlijke wijze 10-20+ twijfelgevallen opbouwen.
@@ -706,6 +714,7 @@ Beide bevestigd met live cijfers (energie convergeert nu stabiel naar een evenwi
 ### Layer 7 — Emergence Engine (VOLLEDIG AFGEROND, 22 juli 2026 ✅)
 
 Architectuurbeslissingen vastgelegd in overleg vóór het bouwen (zie `layer7_startbericht.md`, niet in dit bestand maar apart bewaard):
+
 - **Harde grens ML vs. symbolisch:** insight-hérkenning (patronen/clusters vinden) mag later een bounded ML-specialist worden, net als de geplande intent classifier. De output-táál (de sjabloonzin die Nova zegt) blijft ALTIJD sjabloon-gebaseerd — geen LLM/generatie. ML mag dus ooit "wat is belangrijk" herkennen, nooit "hoe zeg ik dit" verzinnen.
 - **Scope eerste versie:** max 3-4 insight-types (topic-frequentie/Layer 1, tijdspatroon/Layer 2, kennisdichtheid/Layer 3, evt. personality drift/Layer 6), niet alles tegelijk. **Alle 4 zijn gebouwd.**
 - **Sjablonen klein gehouden:** ~4-6 opening-, ~4-6 midden-, 2-3 afsluitingsvarianten per insight-type, voor manueel controleerbare coherentie.
@@ -762,6 +771,7 @@ Architectuurbeslissingen vastgelegd in overleg vóór het bouwen (zie `layer7_st
 - Live bevestigd tegen Kevin's echte data (23 juli 2026): bij 7 failures/1 success steeg de effectieve drempel voor `woordverband` van 0.85 naar 1.02 (plafond geraakt, dus vrijwel onhoorbaar geworden); na 5 extra "ok"-beoordelingen (6 success/7 failure totaal) daalde ze alweer naar 0.8925 — bevestigt zowel de geleidelijke opbouw als het snelle herstel.
 
 **Gemeenschappelijk aan alle 4 insight-types:**
+
 - Tijdelijk testcommando in `main.py`: `emergence` (roept `reflect()` handmatig aan, toont tekst + confidence per insight) en `emergence debug` (toont ruwe status van de `layers`-dictionary).
 
 **Bijvangst tijdens het testen: bug #21 gevonden (zie `nova_changelog.md`).** `module_loader.py` vroeg Layer 1 overal op met de verkeerde dictionary-key (`"word_associations"` i.p.v. de echte `"word_associations_learner"`), waardoor zowel Layer 7 als — sinds 8 juli al — Layer 4's personal touch nooit echt werkten. Nu gefixt op beide plekken (stap 3B en 3E).
@@ -872,14 +882,15 @@ Kevin's vraag (7 juli 2026): wat als hij binnen hetzelfde uur zowel schaakt als 
 
 Losse module (`modules/preferences/kevin_profile.py`) die expliciete feiten over Kevin onthoudt (voorkeuren/afkeuren), los van Layer 1.
 
-| Onderdeel | Omschrijving                           | Status           |
-|------|----------------------------------------|------------------|
-| Fase 1    | Databestand + basis CRUD               | ✅ Afgerond en getest |
-| Fase 2    | Expliciet commando (onthoud:/vergeet:) | ✅ Afgerond en getest |
-| Fase 3    | Automatische patroonherkenning (`detect_preference()`) | ✅ Afgerond en getest |
-| Fase 4    | Integratie in gesprek (directe vraag + activity-koppeling in `session_watcher.py`) | ✅ Afgerond en getest |
+| Onderdeel | Omschrijving | Status |
+| --- | --- | --- |
+| Fase 1 | Databestand + basis CRUD | ✅ Afgerond en getest |
+| Fase 2 | Expliciet commando (onthoud:/vergeet:) | ✅ Afgerond en getest |
+| Fase 3 | Automatische patroonherkenning (`detect_preference()`) | ✅ Afgerond en getest |
+| Fase 4 | Integratie in gesprek (directe vraag + activity-koppeling in `session_watcher.py`) | ✅ Afgerond en getest |
 | Sentiment-classifier | ML-nuance-model (positief/neutraal_gemengd/negatief), `sentiment_classifier.py` | ✅ Afgerond en getest (26 juli 2026) |
 | Layer 1-koppeling | Kandidaat-suggesties via `word_associations_learner.find_related()`, `kandidaat_suggesties.py` | ✅ Afgerond en getest (26 juli 2026) |
+| Zichtbaarheid | Help-integratie (`algemeen.py`) + debug-commando `preferences debug` (`debug_commands.py`) | ✅ Afgerond en getest (26 juli 2026) |
 
 Leert zowel automatisch (patroonherkenning) als expliciet (commando). Volledig beschreven in: **memory_user_preferences_roadmap.md** (ontwerp-referentie, zie kanttekening daarin over deze latere uitbreidingen).
 
@@ -896,6 +907,7 @@ Verfijnt het grove positief/negatief-resultaat van `intent_router.py`'s `_ontlee
 `kevin_profile.py` accepteert nu 3 sentimentwaarden (was 2). Categorie-regel: `"voorkeuren"` is de thuis voor zowel `positief` als `neutraal_gemengd`, enkel een uitgesproken `negatief` komt in `afkeuren` terecht.
 
 **Twee bugs gevonden en gefixt tijdens het testen (26 juli 2026), beide in `intent_router.py`'s `_ontleed_voorkeur_zin()`:**
+
 1. Bij een nuance-zin (bv. "ik hou van koffie maar het is niet mijn favoriet") pakte de regex het VOLLEDIGE restant van de zin als "woord" i.p.v. enkel "koffie". Gefixt met `_kap_woord_af()` — een vaste lijst nuance-signaalwoorden (" maar ", " hoewel ", " ook al ", ...) die het woord op de juiste plek afsnijdt.
 2. De bestaande `" is "`-check (bedoeld voor "mijn favoriete X is Y") greep ook in bij andere patronen zoals "ik hou van", en sneed daarbij per ongeluk het echte onderwerp weg. Gefixt door de `" is "`-check enkel toe te passen als het patroon letterlijk `"mijn favoriete "` was.
 
@@ -906,7 +918,8 @@ Losse module, luistert op het al bestaande `preference_learned`-event (kevin_pro
 Bewust GEEN gebruik van Layer 1's eigen `get_word_sentiment()` — die is zelf al gemarkeerd als "geen echt ML-model, ruwe woordenlijst-gok" en zou een verwarrende tweede, minder betrouwbare sentiment-inschatting naast de nieuwe classifier introduceren. Layer 1 wordt hier uitsluitend gebruikt voor kandidaat-woorden VINDEN (co-occurrence/PMI via `find_related()`), niet voor sentiment schatten. Autonomie-principe: Nova suggereert enkel via een `layer4_response`-tekst, ze slaat nooit automatisch iets op — bevestiging gebeurt via het bestaande `onthoud:`-commando.
 
 **Nog openstaand (bewust niet meegenomen, mogelijk voor een volgende sessie):**
-- **Bug #10-koppeling (disambiguatie voor meerduidige woorden):** zie de Layer 1-bug-tabel verderop — `kevin_profile.py` zou in theorie kunnen onthouden welke *sense* van een meerduidig woord (bv. "python" = slang vs. programmeertaal) Kevin doorgaans bedoelt. Nog niet ontworpen of gebouwd; conceptueel apart van de sentiment-classifier en de Layer 1-kandidaat-koppeling die vandaag wél gebouwd zijn.
+
+- ~~Bug #10-koppeling (disambiguatie voor meerduidige woorden)~~ — ✅ VOLLEDIG AFGEROND (26 juli 2026, zie `nova_changelog.md`): `kevin_profile.py` onthoudt nu welke sense Kevin meestal bedoelt bij een meerduidig woord, via het nieuwe commando `onthoud sense <woord>`.
 
 ---
 
@@ -941,12 +954,11 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 ## 🚀 Volgende stappen (in volgorde van prioriteit)
 
-1. ~~**User preferences-module: sentiment-classifier + laag-koppelingen**~~ — ✅ VOLLEDIG AFGEROND (25-26 juli 2026, zie eigen sectie hierboven): Fase 1-4, sentiment-classifier (ML, met 2 bugfixes), en Layer 1-koppeling (kandidaat_suggesties.py) zijn alle drie gebouwd en getest. Enige nog openstaande, losstaande vervolgstuk: de Bug #10-disambiguatiekoppeling (zie Layer 1-bug-tabel) — conceptueel apart, nog niet ontworpen.
-2. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
-3. 🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
-4. 🟢 **`handle_confirmation()` invullen** (`intent_router.py`) — momenteel een leeg geraamte dat altijd `False` teruggeeft, ongeacht `self.awaiting_confirmation`. Dat attribuut wordt bovendien nergens in de codebase ooit op `True` gezet — dit is dus dode code, geen actief gebruikt mechanisme. Niet te verwarren met het nieuwere, wél werkende `_verwerk_pending_antwoord()`/`pending_question.py` (Activity-Aware Interaction, 22 juli 2026), dat een ander doel dient (ja/nee op een door Nova zelf gestelde vraag). Nog te beslissen: alsnog invullen voor de teach-flow, of bewust verwijderen als overbodig geworden geraamte.
-5. 🟢 **Fijner tijdsraster in Layer 2** — concept, nog niet ingepland (zie eigen sectie "💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2" verderop voor het volledige voorstel en de reden om nu nog niet te bouwen).
-6. 🟢 **Weerwaarschuwing bij weertype-wijziging binnen dezelfde dag** (`weather.py`) — momenteel blijft het bij max. 1 melding/dag/stad, ongeacht of het weertype nadien wijzigt (bv. 's ochtends onweer gemeld, 's avonds komt er apart zware sneeuw bij). Nog niet besproken of dit gewenst is — zie "Weather-module"-sectie verderop.
+1. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
+2. 🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
+3. 🟢 **`handle_confirmation()` invullen** (`intent_router.py`) — momenteel een leeg geraamte dat altijd `False` teruggeeft, ongeacht `self.awaiting_confirmation`. Dat attribuut wordt bovendien nergens in de codebase ooit op `True` gezet — dit is dus dode code, geen actief gebruikt mechanisme. Niet te verwarren met het nieuwere, wél werkende `_verwerk_pending_antwoord()`/`pending_question.py` (Activity-Aware Interaction, 22 juli 2026), dat een ander doel dient (ja/nee op een door Nova zelf gestelde vraag). Nog te beslissen: alsnog invullen voor de teach-flow, of bewust verwijderen als overbodig geworden geraamte.
+4. 🟢 **Fijner tijdsraster in Layer 2** — concept, nog niet ingepland (zie eigen sectie "💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2" verderop voor het volledige voorstel en de reden om nu nog niet te bouwen).
+5. 🟢 **Weerwaarschuwing bij weertype-wijziging binnen dezelfde dag** (`weather.py`) — momenteel blijft het bij max. 1 melding/dag/stad, ongeacht of het weertype nadien wijzigt (bv. 's ochtends onweer gemeld, 's avonds komt er apart zware sneeuw bij). Nog niet besproken of dit gewenst is — zie "Weather-module"-sectie verderop.
 
 *(Afgeronde werkpunten verplaatst naar `nova_changelog.md`, 18 juli 2026 — inclusief Personality pipeline deel 1+2, microlearning.py, Layer 2 opruimwerk, Layer 5 Fase 1-5, Layer 6-integratie response_style, emotion_engine decay, Layer 6 identity-blueprint-koppeling, het achtergrondthread-patroon, de `behavior_modifiers.py`-koppeling, en Activity Awareness Deel A — zie changelog voor details.)*
 

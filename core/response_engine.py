@@ -186,7 +186,7 @@ class ResponseEngine:
     # Interne hulpmethodes
     # ------------------------------------------------------------
 
-    def _sterkste_associatie(self, entity: str) -> Optional[str]:
+    def _sterkste_associatie(self, entity: str, context_words: Optional[list] = None) -> Optional[str]:
         """
         Vraagt Layer 1 (word_associations_learner) op of er een sterke
         associatie bestaat voor 'entity', en geeft het sterkste
@@ -200,6 +200,16 @@ class ResponseEngine:
           verzamelen)
         - de sterkste associatie te zwak is om betrouwbaar te tonen
 
+        Bug #10-fix: Layer 1 slaat associaties sinds de sense-fix soms
+        op onder "woord#sense_id" i.p.v. het kale woord (bv. "python#2"
+        voor de slang-betekenis). Zonder deze aanpassing zou dit hier
+        altijd niets meer vinden voor meerduidige woorden, want we
+        zochten nog naar het kale "python". Met context_words (de
+        vraagzin) proberen we eerst dezelfde sense_id te bepalen als
+        Layer 1 gebruikte bij het opslaan, en zoeken daarmee. Geen
+        context of geen match -> gewoon het kale woord, exact als
+        voorheen (geen breuk voor woorden zonder senses).
+
         find_related() geeft altijd AL gesorteerd terug van sterk naar
         zwak (zie word_associations_learner.py), dus we hoeven hier
         zelf niet te sorteren — enkel het eerste resultaat pakken en
@@ -209,21 +219,37 @@ class ResponseEngine:
         if word_assoc is None:
             return None
 
+        zoeksleutel = entity
+        semantic = self.layers.get("semantic")
+        sense_id = None
+        if semantic is not None and context_words:
+            try:
+                sense_id = semantic.detect_sense(entity, context_words)
+            except Exception:
+                sense_id = None
+
+        if sense_id:
+            zoeksleutel = sense_id
+        else:
+            # Bug #10-fix, stap 7: geen duidelijke sense uit de context
+            # zelf te halen -> kijk of Kevin hiervoor een voorkeur heeft
+            # ingesteld (kevin_profile.py), vóór we teruggrijpen naar
+            # het kale woord.
+            kevin_profile = self.layers.get("kevin_profile")
+            if kevin_profile is not None:
+                try:
+                    voorkeur_sense_id = kevin_profile.get_sense_voorkeur(entity)
+                    if voorkeur_sense_id:
+                        zoeksleutel = voorkeur_sense_id
+                except Exception:
+                    pass  # Bij twijfel: gewoon het kale woord gebruiken
+
         try:
-            related = word_assoc.find_related(entity, top_k=1)
+            related = word_assoc.find_related(zoeksleutel, top_k=1)
         except Exception:
             # Ook hier: een opzoekfout in Layer 1 mag nooit Nova's
             # antwoord laten crashen. Gewoon doen alsof er niets was.
             return None
-
-        if not related:
-            return None
-
-        woord, score = related[0]
-        if score < self.MIN_ASSOCIATIE_SCORE:
-            return None
-
-        return woord
 
     def _kies_variant(self, sjabloon_naam: str, **invulwaarden) -> str:
         """
@@ -329,7 +355,7 @@ class ResponseEngine:
     # Publieke API
     # ------------------------------------------------------------
 
-    def generate(self, entity: str) -> Dict:
+    def generate(self, entity: str, context_words: Optional[list] = None) -> Dict:
         """
         Genereert een antwoord over 'entity', puur op basis van
         Layer 3 (semantic).
@@ -343,6 +369,12 @@ class ResponseEngine:
 
         Fase 1: alleen semantic.get_meaning() en, als fallback,
         get_relations(entity, "is_a"). Geen Layer 1/2 nog.
+
+        context_words (Bug #10-fix, optioneel): de woorden uit Kevin's
+        volledige vraagzin, gebruikt om bij meerduidige woorden
+        (python, hart, ...) de juiste sense te herkennen via
+        semantic.detect_sense(). Blijft None bij bestaande aanroepen
+        -> exact hetzelfde gedrag als voorheen (hoogste confidence).
         """
         entity = (entity or "").strip()
         if not entity:
@@ -358,7 +390,7 @@ class ResponseEngine:
         definition = None
         if semantic is not None:
             try:
-                definition = semantic.get_meaning(entity)
+                definition = semantic.get_meaning(entity, context_words)
             except Exception:
                 # Nova mag hier nooit crashen op een opzoekfout —
                 # gewoon doorgaan alsof er niets gevonden is.
@@ -370,7 +402,7 @@ class ResponseEngine:
             # — een associatie zonder definitie zou een vreemde,
             # betekenisloze zin opleveren ("betekent: ... trouwens vaak
             # met..." zonder eerst te weten wat het woord is).
-            associatie_woord = self._sterkste_associatie(entity)
+            associatie_woord = self._sterkste_associatie(entity, context_words)
 
             if associatie_woord:
                 text = self._kies_variant(

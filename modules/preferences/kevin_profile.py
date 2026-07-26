@@ -101,7 +101,7 @@ class KevinProfile:
         self.data_pad.parent.mkdir(parents=True, exist_ok=True)
 
         if not self.data_pad.exists():
-            leeg = {"voorkeuren": {}, "afkeuren": {}}
+            leeg = {"voorkeuren": {}, "afkeuren": {}, "sense_voorkeuren": {}}
             self.data_pad.write_text(
                 json.dumps(leeg, ensure_ascii=False, indent=2),
                 encoding="utf-8"
@@ -130,6 +130,13 @@ class KevinProfile:
 
         data.setdefault("voorkeuren", {})
         data.setdefault("afkeuren", {})
+        # Bug #10-fix (sense-disambiguatie): apart, eenvoudig blok naast
+        # voorkeuren/afkeuren. Dit is GEEN sentiment (positief/negatief)
+        # zoals de rest van dit bestand, maar een keuze uit meerdere
+        # betekenissen van eenzelfde woord (bv. "python" -> "python#2").
+        # Daarom bewust in een eigen top-level sleutel gehouden i.p.v.
+        # in de bestaande voorkeuren/afkeuren-structuur geperst.
+        data.setdefault("sense_voorkeuren", {})
 
         gemigreerd = False
         for categorie in ("voorkeuren", "afkeuren"):
@@ -420,6 +427,41 @@ class KevinProfile:
             "voorkeuren": dict(self.data["voorkeuren"]),
             "afkeuren": dict(self.data["afkeuren"]),
         }
+
+    # -----------------------------------------------------------
+    # Sense-voorkeuren (Bug #10-fix, 26 juli 2026)
+    # -----------------------------------------------------------
+    def set_sense_voorkeur(self, woord, sense_id):
+        """
+        Legt vast welke sense Kevin meestal bedoelt bij een meerduidig
+        woord, bv. set_sense_voorkeur("python", "python#2") als Kevin
+        met "python" meestal de slang bedoelt, niet de programmeertaal.
+
+        Dit is ALTIJD een expliciete, handmatige keuze (bv. via een
+        commando als "onthoud dat ik met python meestal de slang
+        bedoel") -- er is bewust GEEN automatische telling/leren
+        gebouwd, want dat zou een probleem oplossen dat grotendeels al
+        opgelost is door semantic.py's detect_sense() (die per zin al
+        de juiste sense herkent via signaalwoorden). Deze voorkeur is
+        enkel het vangnet voor de zeldzame, contextloze gevallen waar
+        detect_sense() zelf niets kan vinden.
+
+        Overschrijft gewoon een eerder ingestelde voorkeur voor
+        hetzelfde woord, zonder waarschuwing -- de nieuwste keuze van
+        Kevin geldt altijd.
+        """
+        woord = woord.strip().lower()
+        self.data["sense_voorkeuren"][woord] = sense_id
+        self._opslaan()
+        dbg(f"{C_GREEN}sense-voorkeur ingesteld: {woord} -> {sense_id}{C_RESET}")
+
+    def get_sense_voorkeur(self, woord):
+        """
+        Geeft de opgeslagen sense-voorkeur voor een woord terug (bv.
+        "python#2"), of None als er nog geen voorkeur is ingesteld.
+        """
+        woord = woord.strip().lower()
+        return self.data["sense_voorkeuren"].get(woord)
 
     def get_by_sentiment(self, sentiment):
         """

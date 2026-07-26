@@ -89,7 +89,11 @@ class ChatModule:
         meaning = None
         if self.semantic and hasattr(self.semantic, "get_meaning"):
             try:
-                meaning = self.semantic.get_meaning(word)
+                # Bug #10-fix: de volledige (al lowercased) tekst
+                # meegeven als context, zodat bij meerduidige woorden
+                # (python, hart, ...) de juiste sense herkend kan
+                # worden i.p.v. altijd de sense met hoogste confidence.
+                meaning = self.semantic.get_meaning(word, text.split())
             except Exception:
                 meaning = None
 

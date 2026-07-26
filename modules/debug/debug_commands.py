@@ -48,6 +48,8 @@ class DebugCommands:
             (lambda t: t.startswith("interruption test"), self._interruption_test),
             (lambda t: t.startswith("interruption gedrag"), self._interruption_gedrag),
             (lambda t: t.startswith("patronen"), self._patronen),
+            (lambda t: t == "preferences debug", self._preferences_debug),
+            (lambda t: t.startswith("associaties"), self._associaties),
         ]
 
         event_bus.subscribe("debug_command", self.handle_debug_command)
@@ -349,6 +351,103 @@ class DebugCommands:
         print("Is nu actief?:", pm.is_pattern_active(event_type))
         print("Volgende verwachte moment:", pm.predict_next_occurrence(event_type))
         print("Anomalieën (laatste 7 dagen):", pm.get_anomalies(days=7))
+
+    # ------------------------------------------------------------------
+    # Layer 1 — Word Associations Learner
+    # ------------------------------------------------------------------
+
+    def _associaties(self, user_input):
+        """
+        Toont Layer 1's opgeslagen woordassociaties -- rechtstreeks
+        uit word_associations_learner.py, buiten elke sjabloon/
+        response_engine.py om. Puur om na te kijken OF en HOEVEEL
+        Layer 1 effectief leert, los van of dat ooit zichtbaar wordt
+        in een antwoord (dat hangt af van detect_definition() +
+        een sterk genoeg PMI-verband, zie nova_state.md).
+
+        Zonder woord: algemene stats (get_stats()).
+        Met woord: alle associaties voor dat woord (get_associations()).
+        """
+        # Let op: de dynamische module-scan (module_loader.py) gebruikt
+        # de BESTANDSNAAM als key in loaded_modules, niet het label uit
+        # het "module_loaded"-event (dat blijft "word_associations",
+        # puur een event-naam-keuze in word_associations_learner.py
+        # zelf). Vandaar hier een fallback op beide mogelijke keys.
+        wa = self.loader.loaded_modules.get("word_associations_learner")
+        if not wa:
+            wa = self.loader.loaded_modules.get("word_associations")
+        if not wa:
+            print(f"{C_RED}word_associations(_learner)-module niet gevonden.{C_RESET}")
+            return
+
+        delen = user_input.split()
+        if len(delen) < 2:
+            # Geen woord opgegeven: toon algemene stats
+            print(f"{C_CYAN}Layer 1 stats: {wa.get_stats()}{C_RESET}")
+            return
+
+        woord = delen[1].lower()
+
+        print(f"{C_CYAN}--- Associaties voor '{woord}' ---{C_RESET}")
+        associaties = wa.get_associations(woord)
+        if not associaties:
+            print(f"(nog geen associaties opgeslagen voor '{woord}')")
+            return
+        print(associaties)
+        print("Sentiment:", wa.get_word_sentiment(woord))
+
+    # ------------------------------------------------------------------
+    # User Preferences (kevin_profile.py / sentiment_classifier.py /
+    # kandidaat_suggesties.py) -- 26 juli 2026
+    # ------------------------------------------------------------------
+
+    def _preferences_debug(self, user_input):
+        """
+        Toont in één oogopslag de status van de volledige User
+        Preferences-module: aantal voorkeuren/afkeuren, sentiment-
+        classifier-status (getraind of niet, laatste hertraining,
+        aantal openstaande twijfelgevallen), en kandidaat-suggesties-
+        status (aantal al gedaan). Puur uitlezen, geen wijzigingen.
+        """
+        profiel = self.loader.loaded_modules.get("kevin_profile")
+        classifier = self.loader.loaded_modules.get("sentiment_classifier")
+        kandidaten = self.loader.loaded_modules.get("kandidaat_suggesties")
+
+        print(f"{C_CYAN}--- User Preferences: status ---{C_RESET}")
+
+        if not profiel:
+            print(f"{C_RED}kevin_profile-module niet gevonden.{C_RESET}")
+        else:
+            # get_by_sentiment() is de publieke, stabiele API -- gebruikt
+            # bewust NIET _bepaal_actief_sentiment() (privé-methode)
+            # rechtstreeks, zodat deze debug-code niet afhankelijk is
+            # van kevin_profile.py's interne opslagstructuur.
+            n_positief = len(profiel.get_by_sentiment("positief"))
+            n_gemengd = len(profiel.get_by_sentiment("neutraal_gemengd"))
+            n_negatief = len(profiel.get_by_sentiment("negatief"))
+
+            print(f"{C_CYAN}Profiel: {n_positief} positief, {n_gemengd} neutraal_gemengd, "
+                  f"{n_negatief} negatief (totaal {n_positief + n_gemengd + n_negatief} woorden).{C_RESET}")
+
+        if not classifier:
+            print(f"{C_RED}sentiment_classifier-module niet gevonden.{C_RESET}")
+        else:
+            model_status = "geladen" if classifier.model is not None else "NIET geladen (train_sentiment_classifier.py nog niet gedraaid)"
+            status = classifier._laad_hertraining_status()
+            n_twijfel = classifier._tel_huidige_uncertain_regels()
+            n_sinds_laatste = n_twijfel - status["aantal_bij_laatste_training"]
+
+            print(f"{C_CYAN}Sentiment-classifier: model {model_status}.{C_RESET}")
+            print(f"{C_CYAN}Laatste hertraining: {status['laatste_training'] or 'nog nooit'}.{C_RESET}")
+            print(f"{C_CYAN}Twijfelgevallen: {n_twijfel} totaal, {n_sinds_laatste} nieuw sinds "
+                  f"laatste hertraining (drempel: {classifier.HERTRAINING_DREMPEL}).{C_RESET}")
+
+        if not kandidaten:
+            print(f"{C_RED}kandidaat_suggesties-module niet gevonden.{C_RESET}")
+        else:
+            n_gesuggereerd = len(kandidaten._al_gesuggereerd)
+            print(f"{C_CYAN}Kandidaat-suggesties: {n_gesuggereerd} suggestie(s) ooit gedaan "
+                  f"(PMI-drempel: {kandidaten.MIN_PMI_DREMPEL}).{C_RESET}")
 
 
 def init_module(event_bus, loader=None):

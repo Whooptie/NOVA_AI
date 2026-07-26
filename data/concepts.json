@@ -1187,6 +1187,14 @@
       {
         "sense_id": "python#1",
         "definition": "een programmeertaal",
+        "signaalwoorden": [
+          "code",
+          "programma",
+          "script",
+          "functie",
+          "taal",
+          "programmeren"
+        ],
         "pos": "noun",
         "examples": [
           "Nova is volledig geschreven in Python."
@@ -1207,6 +1215,14 @@
       {
         "sense_id": "python#2",
         "definition": "Een python is een grote, niet-giftige slang die zijn prooi verstikt door zich eromheen te wikkelen.",
+        "signaalwoorden": [
+          "slang",
+          "dier",
+          "prooi",
+          "verstikken",
+          "reptiel",
+          "gif"
+        ],
         "pos": "noun",
         "examples": [
           "De python verstopte zich tussen de bladeren.",
@@ -3796,6 +3812,13 @@
       {
         "sense_id": "vel#1",
         "definition": "Een vel is een dun, strak gespannen of plat vlak van materiaal, zoals stof, papier of rubber.",
+        "signaalwoorden": [
+          "papier",
+          "stof",
+          "rubber",
+          "materiaal",
+          "vlak"
+        ],
         "pos": "noun",
         "examples": [
           "De trampoline heeft een strak gespannen vel om op te springen.",
@@ -3817,6 +3840,12 @@
       {
         "sense_id": "vel#2",
         "definition": "Het vel is de huid van een mens of dier, vooral gebruikt in uitdrukkingen over gevoeligheid of weerbaarheid.",
+        "signaalwoorden": [
+          "huid",
+          "gevoelig",
+          "dier",
+          "lichaam"
+        ],
         "pos": "noun",
         "examples": [
           "Hij heeft een dik vel en trekt zich niets aan van kritiek.",
@@ -4998,6 +5027,13 @@
       {
         "sense_id": "oog#1",
         "definition": "Een oog is het orgaan waarmee mensen en dieren licht waarnemen en zien.",
+        "signaalwoorden": [
+          "zien",
+          "kijken",
+          "oogleden",
+          "wimpers",
+          "pupil"
+        ],
         "pos": "noun",
         "examples": [
           "Ze knipperde met haar oog tegen het felle licht.",
@@ -5019,6 +5055,12 @@
       {
         "sense_id": "oog#2",
         "definition": "Het oog van een storm is het rustige, kalme centrum van een orkaan of cycloon, omringd door de sterkste wind.",
+        "signaalwoorden": [
+          "storm",
+          "orkaan",
+          "cycloon",
+          "wind"
+        ],
         "pos": "noun",
         "examples": [
           "Het was opvallend stil toen ze in het oog van de storm zaten.",
@@ -5077,6 +5119,15 @@
       {
         "sense_id": "hart#1",
         "definition": "Het hart is het orgaan dat bloed door het lichaam pompt en zo alle organen van zuurstof voorziet.",
+        "signaalwoorden": [
+          "bloed",
+          "pompt",
+          "lichaam",
+          "orgaan",
+          "zuurstof",
+          "ader",
+          "hartslag"
+        ],
         "pos": "noun",
         "examples": [
           "Haar hart klopte snel na het rennen.",
@@ -5098,6 +5149,13 @@
       {
         "sense_id": "hart#2",
         "definition": "Het hart van iets is het centrale, belangrijkste of meest wezenlijke deel ervan.",
+        "signaalwoorden": [
+          "kern",
+          "centrum",
+          "belangrijkste",
+          "essentie",
+          "middelpunt"
+        ],
         "pos": "noun",
         "examples": [
           "De EventBus vormt het hart van Nova's architectuur.",
@@ -5119,6 +5177,13 @@
       {
         "sense_id": "hart#3",
         "definition": "Het hart is een symbool dat vaak wordt gebruikt om liefde, genegenheid of emotionele warmte uit te drukken.",
+        "signaalwoorden": [
+          "liefde",
+          "genegenheid",
+          "symbool",
+          "valentijn",
+          "verliefd"
+        ],
         "pos": "noun",
         "examples": [
           "Ze stuurde hem een bericht met een hartje.",
@@ -5140,6 +5205,14 @@
       {
         "sense_id": "hart#4",
         "definition": "Harten is een van de vier kleuren in een standaard kaartspel, weergegeven met een rood hartsymbool.",
+        "signaalwoorden": [
+          "kaarten",
+          "kaartspel",
+          "troef",
+          "schoppen",
+          "klaveren",
+          "ruiten"
+        ],
         "pos": "noun",
         "examples": [
           "Ze had de harten aas in haar hand.",
@@ -5168,6 +5241,13 @@
       {
         "sense_id": "hart#5",
         "definition": "In de context van muziek kan het hart verwijzen naar het centrale thema of de kern van een compositie.",
+        "signaalwoorden": [
+          "muziek",
+          "compositie",
+          "thema",
+          "melodie",
+          "stuk"
+        ],
         "pos": "noun",
         "examples": [
           "Het hart van de symfonie ligt in de tweede beweging.",
@@ -5226,6 +5306,13 @@
       {
         "sense_id": "been#1",
         "definition": "Een been is het lichaamsdeel waarmee mensen en veel dieren staan, lopen en rennen.",
+        "signaalwoorden": [
+          "lopen",
+          "rennen",
+          "staan",
+          "spier",
+          "voet"
+        ],
         "pos": "noun",
         "examples": [
           "Ze brak haar been tijdens het skiën.",
@@ -5247,6 +5334,13 @@
       {
         "sense_id": "been#2",
         "definition": "Een been is het harde, kalkhoudende skeletdeel dat het lichaam van mens of dier ondersteunt.",
+        "signaalwoorden": [
+          "bot",
+          "skelet",
+          "kalk",
+          "breken",
+          "botbreuk"
+        ],
         "pos": "noun",
         "examples": [
           "De hond knaagde vergenoegd op een been.",
@@ -5964,6 +6058,13 @@
       {
         "sense_id": "werk#1",
         "definition": "Werk is een activiteit die iemand uitvoert, meestal in ruil voor inkomen of om een taak te vervullen.",
+        "signaalwoorden": [
+          "baan",
+          "inkomen",
+          "kantoor",
+          "taak",
+          "collega"
+        ],
         "pos": "noun",
         "examples": [
           "Hij ging elke ochtend met de fiets naar zijn werk.",
@@ -5985,6 +6086,13 @@
       {
         "sense_id": "werk#2",
         "definition": "Een werk is een kunstzinnige of creatieve schepping, zoals een schilderij, boek of muziekstuk.",
+        "signaalwoorden": [
+          "schilderij",
+          "boek",
+          "muziekstuk",
+          "kunst",
+          "creatie"
+        ],
         "pos": "noun",
         "examples": [
           "Het museum toonde een werk van een bekende schilder.",
@@ -6043,6 +6151,13 @@
       {
         "sense_id": "schaal#1",
         "definition": "Een schaal is een verhouding of meetsysteem waarmee de grootte, waarde of intensiteit van iets wordt uitgedrukt.",
+        "signaalwoorden": [
+          "verhouding",
+          "schaalmodel",
+          "kaart",
+          "intensiteit",
+          "meetsysteem"
+        ],
         "pos": "noun",
         "examples": [
           "De kaart had een schaal van 1 op 100.000.",
@@ -6064,6 +6179,13 @@
       {
         "sense_id": "schaal#2",
         "definition": "Een schaal is een apparaat om het gewicht van iets te meten, zoals een weegschaal.",
+        "signaalwoorden": [
+          "wegen",
+          "gewicht",
+          "weegschaal",
+          "kilo",
+          "gram"
+        ],
         "pos": "noun",
         "examples": [
           "Ze legde de groenten op de schaal om ze te wegen.",
@@ -6085,6 +6207,13 @@
       {
         "sense_id": "schaal#3",
         "definition": "Een schaal is een reeks tonen in een vaste volgorde, gebruikt als basis voor melodieën in muziek.",
+        "signaalwoorden": [
+          "muziek",
+          "toonladder",
+          "noten",
+          "melodie",
+          "akkoord"
+        ],
         "pos": "noun",
         "examples": [
           "Ze oefende elke dag de C-groot-schaal op de piano.",
@@ -6853,6 +6982,12 @@
       {
         "sense_id": "trap#1",
         "definition": "Een trap is het pedaal van een fiets waarop met de voeten wordt getrapt om het wiel aan te drijven.",
+        "signaalwoorden": [
+          "fiets",
+          "pedaal",
+          "wiel",
+          "trappen"
+        ],
         "pos": "noun",
         "examples": [
           "Hij duwde hard op de trap om de heuvel op te komen.",
@@ -6874,6 +7009,13 @@
       {
         "sense_id": "trap#2",
         "definition": "Een trap is een opeenvolging van treden waarmee men van de ene naar de andere verdieping van een gebouw kan lopen.",
+        "signaalwoorden": [
+          "trede",
+          "verdieping",
+          "gebouw",
+          "opgaan",
+          "afgaan"
+        ],
         "pos": "noun",
         "examples": [
           "Ze liep de trap op naar de tweede verdieping.",
@@ -6990,6 +7132,12 @@
       {
         "sense_id": "ketting#1",
         "definition": "Een ketting is een reeks aaneengeschakelde metalen schakels, gebruikt om bijvoorbeeld de trap van een fiets met het achterwiel te verbinden.",
+        "signaalwoorden": [
+          "fiets",
+          "schakels",
+          "achterwiel",
+          "trap"
+        ],
         "pos": "noun",
         "examples": [
           "De ketting van de fiets was eraf gesprongen.",
@@ -7011,6 +7159,13 @@
       {
         "sense_id": "ketting#2",
         "definition": "Een ketting is een sieraad bestaande uit een koord of aaneengeschakelde schakels, gedragen om de hals.",
+        "signaalwoorden": [
+          "sieraad",
+          "hals",
+          "koord",
+          "hanger",
+          "juweel"
+        ],
         "pos": "noun",
         "examples": [
           "Ze droeg een gouden ketting met een hangertje.",
@@ -8400,6 +8555,11 @@
       {
         "sense_id": "rust#1",
         "definition": "Een rust is een teken dat in de muzieknotatie gebruikt wordt om een moment van stilte aan te geven.",
+        "signaalwoorden": [
+          "muziek",
+          "notatie",
+          "partituur"
+        ],
         "pos": "noun",
         "examples": [
           "De partituur had een halve rust na de derde maat.",
@@ -8421,6 +8581,12 @@
       {
         "sense_id": "rust#2",
         "definition": "Rust is een toestand van kalmte, stilte en ontspanning, zonder inspanning of drukte.",
+        "signaalwoorden": [
+          "kalmte",
+          "ontspanning",
+          "slapen",
+          "vakantie"
+        ],
         "pos": "noun",
         "examples": [
           "Na de drukke dag zocht ze even rust.",
@@ -9461,6 +9627,12 @@
       {
         "sense_id": "mes#1",
         "definition": "Een mes is een gereedschap met een scherp lemmet, gebruikt om te snijden.",
+        "signaalwoorden": [
+          "zakmes",
+          "jagen",
+          "wapen",
+          "hout"
+        ],
         "pos": "noun",
         "examples": [
           "Ze sneed de kaas met een scherp mes.",
@@ -9474,6 +9646,12 @@
       {
         "sense_id": "mes#2",
         "definition": "Een mes is een stuk keukengerei met een scherp lemmet, gebruikt om voedsel te snijden.",
+        "signaalwoorden": [
+          "keuken",
+          "koken",
+          "groenten",
+          "vlees"
+        ],
         "pos": "noun",
         "examples": [
           "Kevin snijdt de tomaat met een mes.",
@@ -12029,6 +12207,335 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-25T20:13:30.058114"
+      }
+    ]
+  },
+  "aan": {
+    "senses": [
+      {
+        "sense_id": "aan#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-26T19:03:01.920598",
+      "updated_at": "2026-07-26T19:03:01.921603",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-26T19:03:01.921603",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-26T19:03:01.921603",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "aan"
+        },
+        "timestamp": "2026-07-26T19:03:01.920598"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "aan#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-26T19:03:01.921603"
+      }
+    ]
+  },
+  "script": {
+    "senses": [
+      {
+        "sense_id": "script#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-26T19:03:01.945871",
+      "updated_at": "2026-07-26T19:03:01.946872",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-26T19:03:01.946872",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-26T19:03:01.946872",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "script"
+        },
+        "timestamp": "2026-07-26T19:03:01.945871"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "script#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-26T19:03:01.946872"
+      }
+    ]
+  },
+  "programma": {
+    "senses": [
+      {
+        "sense_id": "programma#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-26T19:03:01.961888",
+      "updated_at": "2026-07-26T19:03:01.961888",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-26T19:03:01.961888",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-26T19:03:01.961888",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "programma"
+        },
+        "timestamp": "2026-07-26T19:03:01.961888"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "programma#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-26T19:03:01.961888"
+      }
+    ]
+  },
+  "vind": {
+    "senses": [
+      {
+        "sense_id": "vind#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-26T19:55:26.179526",
+      "updated_at": "2026-07-26T19:55:26.180536",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-26T19:55:26.180536",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-26T19:55:26.180536",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vind"
+        },
+        "timestamp": "2026-07-26T19:55:26.179526"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vind#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-26T19:55:26.180536"
+      }
+    ]
+  },
+  "heel": {
+    "senses": [
+      {
+        "sense_id": "heel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-26T19:55:26.206543",
+      "updated_at": "2026-07-26T19:55:26.207541",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-26T19:55:26.207541",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-26T19:55:26.207541",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "heel"
+        },
+        "timestamp": "2026-07-26T19:55:26.206543"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "heel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-26T19:55:26.207541"
+      }
+    ]
+  },
+  "snel": {
+    "senses": [
+      {
+        "sense_id": "snel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-26T19:55:26.232537",
+      "updated_at": "2026-07-26T19:55:26.233540",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-26T19:55:26.233540",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-26T19:55:26.233540",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "snel"
+        },
+        "timestamp": "2026-07-26T19:55:26.232537"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "snel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-26T19:55:26.233540"
+      }
+    ]
+  },
+  "gene": {
+    "senses": [
+      {
+        "sense_id": "gene#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-26T19:58:23.095950",
+      "updated_at": "2026-07-26T19:58:23.095950",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-26T19:58:23.095950",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-26T19:58:23.095950",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gene"
+        },
+        "timestamp": "2026-07-26T19:58:23.095950"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "gene#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-26T19:58:23.095950"
       }
     ]
   }

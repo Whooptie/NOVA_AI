@@ -101,3 +101,13 @@
 {"text": "vergeet: niet mijn favoriet", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0753, "bron": "model_fallback", "tijdstip": "2026-07-26T12:15:10.168547"}
 {"text": "onthoud: ik hou van koffie maar het is niet mijn favoriet", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0148, "bron": "model_fallback", "tijdstip": "2026-07-26T12:15:15.281223"}
 {"text": "vergeet: niet mijn favoriet", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0753, "bron": "model_fallback", "tijdstip": "2026-07-26T12:18:15.865796"}
+{"text": "ik werk aan een script met code in mijn programma", "signaal": "focus", "model_signaal": "focus", "marge": 0.0121, "bron": "model_fallback", "tijdstip": "2026-07-26T21:03:01.891846"}
+{"text": "python is code", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-07-26T21:04:06.842619"}
+{"text": "python is code", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-07-26T21:04:13.164976"}
+{"text": "onthoud sense python", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0214, "bron": "model_fallback", "tijdstip": "2026-07-26T21:13:33.278750"}
+{"text": "1", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-07-26T21:13:48.187495"}
+{"text": "/python", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0067, "bron": "model_fallback", "tijdstip": "2026-07-26T21:44:12.417477"}
+{"text": "1", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-07-26T21:54:51.282400"}
+{"text": "Ik vind python heel krachtig en snel", "signaal": "focus", "model_signaal": "focus", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-26T21:55:26.151688"}
+{"text": "gene", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-26T21:58:23.067954"}
+{"text": "python is code", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-07-26T21:58:29.076460"}
