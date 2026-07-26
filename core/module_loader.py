@@ -208,6 +208,22 @@ class ModuleLoader:
         watcher = self.loaded_modules.get("session_watcher")
         if watcher is not None:
             watcher.context_manager = ctx_mgr
+            # User Preferences (Fase 4): kevin_profile (modules/preferences/)
+            # zit net als session_watcher zelf in de dynamische scan (stap 3),
+            # dus staat op dit punt al gegarandeerd in loaded_modules --
+            # zelfde manier ingeprikt als context_manager hierboven.
+            watcher.kevin_profile = self.loaded_modules.get("kevin_profile")
+
+        # User Preferences: Layer 1-koppeling (kandidaat_suggesties.py,
+        # 26 juli 2026). Zit ook in modules/preferences/, dus al geladen
+        # via de dynamische scan (stap 3) -- kevin_profile EN
+        # word_associations_learner staan daardoor op dit punt beide al
+        # gegarandeerd in loaded_modules, dus hier ingeprikt net als
+        # bij session_watcher hierboven.
+        kandidaat_module = self.loaded_modules.get("kandidaat_suggesties")
+        if kandidaat_module is not None:
+            kandidaat_module.kevin_profile = self.loaded_modules.get("kevin_profile")
+            kandidaat_module.word_associations = self.loaded_modules.get("word_associations_learner")
         
         # ----------------------------------------------------
         # 3D. MICROLEARNING (Layer 6, Fase 6 — Adaptive Learning)
@@ -291,8 +307,17 @@ class ModuleLoader:
         # ----------------------------------------------------
         # 4. INTENT ROUTER ALS LAATSTE
         # ----------------------------------------------------
+        # kevin_profile (modules/preferences/) is een dynamisch geladen
+        # module (stap 3), dus staat op dit punt al in loaded_modules --
+        # intent_router heeft deze nodig voor het 'onthoud:'/'vergeet:'-
+        # commando (Fase 2, User Preferences).
         start = time.time()
-        ir = intent_router.init_module(self.event_bus, semantic_module=sem)
+        ir = intent_router.init_module(
+            self.event_bus,
+            semantic_module=sem,
+            kevin_profile=self.loaded_modules.get("kevin_profile"),
+            sentiment_classifier=self.loaded_modules.get("sentiment_classifier")
+        )
         ir.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["intent_router"] = ir
         self.event_bus.register_module("intent_router", ir)

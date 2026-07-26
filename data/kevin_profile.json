@@ -1,0 +1,63 @@
+{
+  "voorkeuren": {
+    "e4": {
+      "automatisch": {
+        "sentiment": "positief",
+        "datum": "2026-07-25",
+        "aantal_keer_genoemd": 1
+      }
+    },
+    "kou": {
+      "expliciet": {
+        "sentiment": "positief",
+        "datum": "2026-07-25",
+        "aantal_keer_genoemd": 1
+      },
+      "automatisch": {
+        "sentiment": "negatief",
+        "datum": "2026-07-25",
+        "aantal_keer_genoemd": 1
+      }
+    },
+    "schaken": {
+      "automatisch": {
+        "sentiment": "positief",
+        "datum": "2026-07-25",
+        "aantal_keer_genoemd": 1
+      },
+      "expliciet": {
+        "sentiment": "positief",
+        "datum": "2026-07-25",
+        "aantal_keer_genoemd": 1
+      }
+    },
+    "koffie": {
+      "automatisch": {
+        "sentiment": "positief",
+        "datum": "2026-07-26",
+        "aantal_keer_genoemd": 4
+      },
+      "expliciet": {
+        "sentiment": "neutraal_gemengd",
+        "datum": "2026-07-26",
+        "aantal_keer_genoemd": 2
+      }
+    }
+  },
+  "afkeuren": {
+    "verliezen bij schaken": {
+      "automatisch": {
+        "sentiment": "negatief",
+        "datum": "2026-07-25",
+        "aantal_keer_genoemd": 1
+      }
+    },
+    "tandarts": {
+      "expliciet": {
+        "sentiment": "negatief",
+        "datum": "2026-07-25",
+        "aantal_keer_genoemd": 1
+      }
+    }
+  }
+}

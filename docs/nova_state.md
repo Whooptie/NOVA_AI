@@ -75,11 +75,24 @@ Nova_AI/
 │   ├── learning/
 │   │   ├── word_associations_learner.py
 │   │   └── pattern_matcher.py
-│   └── context/
-│       ├── context_manager.py
-│       ├── activity_detector.py
-│       ├── focus_detector.py
-│       └── presence_detector.py
+│   ├── context/
+│   │   ├── context_manager.py
+│   │   ├── activity_detector.py
+│   │   ├── focus_detector.py
+│   │   └── presence_detector.py
+│   └── preferences/
+│       ├── kevin_profile.py
+│       ├── sentiment_classifier.py
+│       ├── train_sentiment_classifier.py
+│       ├── sentiment_training_data.json
+│       ├── sentiment_benchmark_data.json
+│       ├── sentiment_model.pkl
+│       ├── sentiment_model_kandidaat.pkl
+│       ├── sentiment_uncertain.jsonl
+│       ├── sentiment_hertraining_status.json
+│       ├── sentiment_training_log.jsonl
+│       ├── kandidaat_suggesties.py
+│       └── kandidaat_suggesties_gedaan.json
 ├── identity/
 │   ├── self_query.py
 │   ├── self_architecture.py
@@ -123,6 +136,7 @@ Nova_AI/
 │   ├── patterns_layer2.json
 │   ├── interruption_patterns.json
 │   ├── weather_history.json
+│   ├── kevin_profile.json
 │   └── context_log.jsonl
 │   └── models/
 │       └── blaze_face_short_range.tflite
@@ -210,7 +224,7 @@ Nova_AI/
 | --- | --- | --- | --- | --- |
 | 8 | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag | 🔲 Open — omzeild met handmatig`example`-commando. **Mogelijk verwante observatie (18 juli 2026):** na de fix van bug #6 getest met "wat is fysica?" — Wikipedia-pagina werd dit keer wél correct gevonden (geen leesteken-probleem meer), maar `_extract_definition()` kon er alsnog geen bruikbare definitie uit halen ("Ik kon geen bruikbare definitie vinden voor 'fysica' op Wikipedia"). Nog niet onderzocht of dit dezelfde onderliggende oorzaak heeft als de voorbeeldzin-extractie hierboven, of een apart probleem in `_extract_definition()` zelf. |
 | 9 | Woordsoort-detectie (`detect_pos`) kan werkwoord/zelfstandig-naamwoord-dubbelzinnigheid niet oplossen zonder zinscontext (bv. "gebruik" als werkwoord vs. zelfstandig naamwoord) | semantic.py | 🟢 Laag | ✅ Omzeild (8 juli 2026 — expliciete stopwoordenlijst in response_pipeline.py, geen structurele fix) |
-| 10 | Layer 1 (`word_associations_learner.py`) houdt geen rekening met senses: bij een meerduidig woord (bv. "python" = zowel de slang als de programmeertaal) worden alle co-occurrences door elkaar geteld, ongeacht welke betekenis bedoeld was in de zin. Ontdekt tijdens Layer 4-testen (8 juli 2026): `response_engine.py` toonde de definitie van "python" als slang, aangevuld met de associatie "snel" — die associatie komt vermoedelijk uit gesprekken over de programmeertaal, niet het dier. Layer 1 werkt puur op tekst-co-occurrence en heeft geen besef van `semantic.py`'s sense-systeem (`get_senses()`). Geen bug in `response_engine.py` zelf — die geeft gewoon correct door wat Layer 1 teruggeeft. Live opnieuw bevestigd (8 juli 2026) met "hond" (2 senses) en "hart" (5 senses) in Kevin's echte `concepts.json`. | word_associations_learner.py | 🟢 Laag | 🔲 Open — wacht op disambiguatie-laag (`user_preferences.py`), zie Layer 4-sectie |
+| 10 | Layer 1 (`word_associations_learner.py`) houdt geen rekening met senses: bij een meerduidig woord (bv. "python" = zowel de slang als de programmeertaal) worden alle co-occurrences door elkaar geteld, ongeacht welke betekenis bedoeld was in de zin. Ontdekt tijdens Layer 4-testen (8 juli 2026): `response_engine.py` toonde de definitie van "python" als slang, aangevuld met de associatie "snel" — die associatie komt vermoedelijk uit gesprekken over de programmeertaal, niet het dier. Layer 1 werkt puur op tekst-co-occurrence en heeft geen besef van `semantic.py`'s sense-systeem (`get_senses()`). Geen bug in `response_engine.py` zelf — die geeft gewoon correct door wat Layer 1 teruggeeft. Live opnieuw bevestigd (8 juli 2026) met "hond" (2 senses) en "hart" (5 senses) in Kevin's echte `concepts.json`. | word_associations_learner.py | 🟢 Laag | 🔲 Open — User Preferences (Fase 1-4 + sentiment-classifier + kandidaat-suggesties) ✅ volledig afgerond 25-26 juli 2026, maar de disambiguatie-koppeling zelf (welke sense Kevin meestal bedoelt) is nog niet ontworpen/gebouwd, zie User Preferences-sectie |
 
 *(Bug #6 opgelost — 18 juli 2026: `word.strip(".,!?;:")` toegevoegd in `chat.py`'s `on_definition()` vlak na de lidwoord-stripping, zodat leestekens als punt/vraagteken/uitroepteken nooit meer meegaan naar `get_meaning()`, de is_a-check, of de Wikipedia-fallback. Extra defensief vangnet toegevoegd in `wikipedia_teacher.py`'s `on_wiki()` zelf, voor het geval een andere module ooit rechtstreeks een `intent_wiki`-event stuurt zonder via `chat.py` te lopen. Live getest: "wat is een gitaar.", "wat is een computer?", "wat betekent hond!" geven nu allemaal een schoon antwoord zonder leesteken in het woord.)*
 *(Écht opgeloste bugs #1-#5, #11-#18 verplaatst naar `nova_changelog.md`, 18 juli 2026. Bug #9 blijft hier staan — is enkel omzeild, niet structureel gefixt.)*
@@ -854,18 +868,45 @@ Kevin's vraag (7 juli 2026): wat als hij binnen hetzelfde uur zowel schaakt als 
 
 ---
 
-## 👤 User Preferences (concept, nog niet ingepland)
+## 👤 User Preferences (Fase 1-4 + sentiment-classifier + Layer 1-koppeling ✅ afgerond en getest, 25-26 juli 2026)
 
-Losse module die expliciete feiten over Kevin onthoudt (voorkeuren/afkeuren), los van Layer 1.
+Losse module (`modules/preferences/kevin_profile.py`) die expliciete feiten over Kevin onthoudt (voorkeuren/afkeuren), los van Layer 1.
 
-| Fase | Omschrijving                           | Status           |
+| Onderdeel | Omschrijving                           | Status           |
 |------|----------------------------------------|------------------|
-| 1    | Databestand + basis CRUD               | ❌ Nog te bouwen |
-| 2    | Expliciet commando (onthoud:/vergeet:) | ❌ Nog te bouwen |
-| 3    | Automatische patroonherkenning         | ❌ Nog te bouwen |
-| 4    | Integratie in chat.py                  | ❌ Nog te bouwen |
+| Fase 1    | Databestand + basis CRUD               | ✅ Afgerond en getest |
+| Fase 2    | Expliciet commando (onthoud:/vergeet:) | ✅ Afgerond en getest |
+| Fase 3    | Automatische patroonherkenning (`detect_preference()`) | ✅ Afgerond en getest |
+| Fase 4    | Integratie in gesprek (directe vraag + activity-koppeling in `session_watcher.py`) | ✅ Afgerond en getest |
+| Sentiment-classifier | ML-nuance-model (positief/neutraal_gemengd/negatief), `sentiment_classifier.py` | ✅ Afgerond en getest (26 juli 2026) |
+| Layer 1-koppeling | Kandidaat-suggesties via `word_associations_learner.find_related()`, `kandidaat_suggesties.py` | ✅ Afgerond en getest (26 juli 2026) |
 
-Leert zowel automatisch (patroonherkenning) als expliciet (commando). Volledig beschreven in: **memory_user_preferences_roadmap.md**
+Leert zowel automatisch (patroonherkenning) als expliciet (commando). Volledig beschreven in: **memory_user_preferences_roadmap.md** (ontwerp-referentie, zie kanttekening daarin over deze latere uitbreidingen).
+
+**Datastructuur-uitbreiding (v2, tijdens Fase 3):** elk woord houdt een apart `expliciet`- en `automatisch`-sub-blok bij (i.p.v. één plat sentiment/bron-veld), zodat een automatische herkenning nooit een eerdere expliciete uitspraak overschrijft. Bij conflict tussen beide (bv. expliciet "positief", automatisch later "negatief") geldt: **expliciet wint altijd** voor het actieve sentiment — de andere kant blijft wel gewoon zichtbaar in het bestand, er gaat geen informatie verloren. `_laad()` migreert een ouder v1-databestand automatisch naar deze v2-structuur bij het opstarten.
+
+**Fase 4-detail:** `detect_preference_query()` (`intent_router.py`) herkent zowel categorie-specifieke vragen ("wat kan ik drinken/eten?") als een breed profiel-overzicht ("wat weet je over mij?"/"wat vind ik leuk?"). `session_watcher.py` koppelt daarnaast elke `activity_started:<naam>`-event aan het profiel via een substring-match (activiteit-naam is vaak een hele frase, bv. "een potje schaken", geen los woord) en reageert met een gevarieerde sjabloonzin — zowel bij een positieve match ("veel plezier, ik weet dat je daarvan houdt!") als een negatieve ("oei, ik dacht dat je daar niet van hield?").
+
+### Sentiment-classifier (`sentiment_classifier.py`, `train_sentiment_classifier.py`)
+
+Zelfde patroon en veiligheidsrem als `identity/personality/microlearning.py` + `train_classifier.py` (Layer 6, Fase 6) — bewust hergebruikt. TF-IDF + Logistic Regression, getraind op `sentiment_training_data.json` (44 voorbeelden bij eerste training), getoetst tegen een apart ijkpunt-testsetje `sentiment_benchmark_data.json` (score 0.9167 bij eerste training) — een nieuwe modelversie wordt enkel actief bij minstens gelijke score, voorkomt drift.
+
+Verfijnt het grove positief/negatief-resultaat van `intent_router.py`'s `_ontleed_voorkeur_zin()` naar 3 categorieën (positief/neutraal_gemengd/negatief) door de VOLLEDIGE zin te classificeren, niet enkel het losse woord. Automatische hertraining zowel bij opstart als doorlopend na elk nieuw twijfelgeval (marge-detectie, drempel `HERTRAINING_DREMPEL = 15`), gelogd in `sentiment_uncertain.jsonl`.
+
+`kevin_profile.py` accepteert nu 3 sentimentwaarden (was 2). Categorie-regel: `"voorkeuren"` is de thuis voor zowel `positief` als `neutraal_gemengd`, enkel een uitgesproken `negatief` komt in `afkeuren` terecht.
+
+**Twee bugs gevonden en gefixt tijdens het testen (26 juli 2026), beide in `intent_router.py`'s `_ontleed_voorkeur_zin()`:**
+1. Bij een nuance-zin (bv. "ik hou van koffie maar het is niet mijn favoriet") pakte de regex het VOLLEDIGE restant van de zin als "woord" i.p.v. enkel "koffie". Gefixt met `_kap_woord_af()` — een vaste lijst nuance-signaalwoorden (" maar ", " hoewel ", " ook al ", ...) die het woord op de juiste plek afsnijdt.
+2. De bestaande `" is "`-check (bedoeld voor "mijn favoriete X is Y") greep ook in bij andere patronen zoals "ik hou van", en sneed daarbij per ongeluk het echte onderwerp weg. Gefixt door de `" is "`-check enkel toe te passen als het patroon letterlijk `"mijn favoriete "` was.
+
+### Layer 1-koppeling: kandidaat-suggesties (`kandidaat_suggesties.py`)
+
+Losse module, luistert op het al bestaande `preference_learned`-event (kevin_profile.py, sinds Fase 1) — geen wijziging nodig aan kevin_profile.py of intent_router.py zelf. Bij elke nieuwe voorkeur met een DUIDELIJK sentiment (positief/negatief, niet neutraal_gemengd) vraagt deze module aan Layer 1 (`word_associations_learner.find_related()`) naar het sterkst geassocieerde woord, en suggereert dat terloops als mogelijke nieuwe voorkeur — als het (a) boven `MIN_PMI_DREMPEL = 0.4` scoort, (b) nog niet in het profiel staat, en (c) nog niet eerder gesuggereerd is voor dit bron-woord (cooldown, bijgehouden in `kandidaat_suggesties_gedaan.json`).
+
+Bewust GEEN gebruik van Layer 1's eigen `get_word_sentiment()` — die is zelf al gemarkeerd als "geen echt ML-model, ruwe woordenlijst-gok" en zou een verwarrende tweede, minder betrouwbare sentiment-inschatting naast de nieuwe classifier introduceren. Layer 1 wordt hier uitsluitend gebruikt voor kandidaat-woorden VINDEN (co-occurrence/PMI via `find_related()`), niet voor sentiment schatten. Autonomie-principe: Nova suggereert enkel via een `layer4_response`-tekst, ze slaat nooit automatisch iets op — bevestiging gebeurt via het bestaande `onthoud:`-commando.
+
+**Nog openstaand (bewust niet meegenomen, mogelijk voor een volgende sessie):**
+- **Bug #10-koppeling (disambiguatie voor meerduidige woorden):** zie de Layer 1-bug-tabel verderop — `kevin_profile.py` zou in theorie kunnen onthouden welke *sense* van een meerduidig woord (bv. "python" = slang vs. programmeertaal) Kevin doorgaans bedoelt. Nog niet ontworpen of gebouwd; conceptueel apart van de sentiment-classifier en de Layer 1-kandidaat-koppeling die vandaag wél gebouwd zijn.
 
 ---
 
@@ -900,7 +941,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 ## 🚀 Volgende stappen (in volgorde van prioriteit)
 
-1. 🟢 **User preferences-module** — nog te plannen (memory_user_preferences_roadmap.md, alle 4 fases nog te bouwen: databestand+CRUD, expliciet commando, automatische patroonherkenning, integratie in chat.py). Groeiend takenpakket: expliciete voorkeuren (ik hou van/haat X), disambiguatie-keuzes voor meerduidige woorden (zie bug #10, Layer 4-sectie), en mogelijk een feedback-loop voor Layer 4-antwoorden.
+1. ~~**User preferences-module: sentiment-classifier + laag-koppelingen**~~ — ✅ VOLLEDIG AFGEROND (25-26 juli 2026, zie eigen sectie hierboven): Fase 1-4, sentiment-classifier (ML, met 2 bugfixes), en Layer 1-koppeling (kandidaat_suggesties.py) zijn alle drie gebouwd en getest. Enige nog openstaande, losstaande vervolgstuk: de Bug #10-disambiguatiekoppeling (zie Layer 1-bug-tabel) — conceptueel apart, nog niet ontworpen.
 2. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
 3. 🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
 4. 🟢 **`handle_confirmation()` invullen** (`intent_router.py`) — momenteel een leeg geraamte dat altijd `False` teruggeeft, ongeacht `self.awaiting_confirmation`. Dat attribuut wordt bovendien nergens in de codebase ooit op `True` gezet — dit is dus dode code, geen actief gebruikt mechanisme. Niet te verwarren met het nieuwere, wél werkende `_verwerk_pending_antwoord()`/`pending_question.py` (Activity-Aware Interaction, 22 juli 2026), dat een ander doel dient (ja/nee op een door Nova zelf gestelde vraag). Nog te beslissen: alsnog invullen voor de teach-flow, of bewust verwijderen als overbodig geworden geraamte.

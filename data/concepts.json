@@ -42,26 +42,6 @@
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": []
-      },
-      {
-        "sense_id": "hond#2",
-        "definition": "een dier",
-        "pos": "noun",
-        "examples": [
-          "De hond is een trouw huisdier."
-        ],
-        "relations": [
-          {
-            "type": "is_a",
-            "target": "dier",
-            "confidence": 1.0,
-            "source": "user",
-            "created_at": "2026-06-29T17:36:35.210559"
-          }
-        ],
-        "source": "user",
-        "confidence": 1.0,
-        "audit_log": []
       }
     ],
     "metadata": {
@@ -103,25 +83,6 @@
         "old_value": null,
         "new_value": "De hond is de gedomesticeerde ondersoort van de wolf.",
         "timestamp": "2026-06-27T18:58:08.344044"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "user",
-        "sense_id": "hond#2",
-        "old_value": null,
-        "new_value": "een dier",
-        "timestamp": "2026-06-29T17:33:12.841783"
-      },
-      {
-        "event_type": "relation_add",
-        "source": "user",
-        "sense_id": "hond#2",
-        "relation": {
-          "type": "is_a",
-          "target": "dier",
-          "confidence": 1.0
-        },
-        "timestamp": "2026-06-29T17:36:35.210559"
       }
     ]
   },
@@ -533,16 +494,6 @@
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
-      },
-      {
-        "sense_id": "dier#2",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
       }
     ],
     "metadata": {
@@ -596,14 +547,6 @@
           "confidence": 1.0
         },
         "timestamp": "2026-06-29T17:37:52.228284"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "dier#2",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T17:50:55.727715"
       }
     ]
   },
@@ -1269,7 +1212,15 @@
           "De python verstopte zich tussen de bladeren.",
           "In de dierentuin lag een python opgerold in zijn kooi."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -2712,6 +2663,13 @@
             "confidence": 0.9,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-25T19:20:53.181987"
           }
         ],
         "source": "user",
@@ -2721,15 +2679,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-07-25T19:20:53.181987",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-07-25T19:20:53.181987",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-07-25T19:20:53.181987",
           "confidence": 1.0
         }
       ]
@@ -2750,6 +2712,17 @@
         "old_value": null,
         "new_value": "Een kat is een klein roofdierzoogdier dat vaak als huisdier wordt gehouden vanwege zijn behendigheid en zelfstandige aard.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "kat#1",
+        "relation": {
+          "type": "is_a",
+          "target": "dier",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-07-25T19:20:53.181987"
       }
     ]
   },
@@ -6075,7 +6048,15 @@
           "De kaart had een schaal van 1 op 100.000.",
           "Op een schaal van 1 tot 10 gaf ze het een 8."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "apparaat",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -7035,7 +7016,15 @@
           "Ze droeg een gouden ketting met een hangertje.",
           "Hij kreeg de ketting cadeau van zijn oma."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "lichaam",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -8496,8 +8485,8 @@
           "Hij wilde alles weten over het project."
         ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -8546,8 +8535,8 @@
           "Ze voelde zich goed na de wandeling."
         ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -10331,7 +10320,15 @@
           "Dit gebied stond bekend om zijn vruchtbare grond.",
           "Het beschermde gebied was niet toegankelijk voor bezoekers."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "plek",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -10702,7 +10699,15 @@
           "Ze zocht een rustige plek om te lezen.",
           "Dit was de plek waar ze elkaar altijd ontmoetten."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "gebied",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": []
@@ -10899,8 +10904,8 @@
           "Bij kamertemperatuur is water vloeibaar, maar bij bevriezing wordt het vast."
         ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -11066,335 +11071,6 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-12T10:59:03.975850"
-      }
-    ]
-  },
-  "welke": {
-    "senses": [
-      {
-        "sense_id": "welke#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-12T17:50:55.702977",
-      "updated_at": "2026-07-12T17:50:55.703958",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T17:50:55.703958",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-12T17:50:55.703958",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "welke"
-        },
-        "timestamp": "2026-07-12T17:50:55.702977"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "welke#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T17:50:55.703958"
-      }
-    ]
-  },
-  "ken": {
-    "senses": [
-      {
-        "sense_id": "ken#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-12T17:50:55.742649",
-      "updated_at": "2026-07-12T17:50:55.742649",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T17:50:55.742649",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-12T17:50:55.742649",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "ken"
-        },
-        "timestamp": "2026-07-12T17:50:55.742649"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "ken#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T17:50:55.742649"
-      }
-    ]
-  },
-  "waarop": {
-    "senses": [
-      {
-        "sense_id": "waarop#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-12T17:57:19.439249",
-      "updated_at": "2026-07-12T17:57:19.440250",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T17:57:19.440250",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-12T17:57:19.440250",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "waarop"
-        },
-        "timestamp": "2026-07-12T17:57:19.439249"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "waarop#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T17:57:19.440250"
-      }
-    ]
-  },
-  "lijkt": {
-    "senses": [
-      {
-        "sense_id": "lijkt#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-12T17:57:19.464268",
-      "updated_at": "2026-07-12T17:57:19.465264",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T17:57:19.465264",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-12T17:57:19.465264",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "lijkt"
-        },
-        "timestamp": "2026-07-12T17:57:19.464268"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "lijkt#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T17:57:19.465264"
-      }
-    ]
-  },
-  "synoniem": {
-    "senses": [
-      {
-        "sense_id": "synoniem#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-12T17:57:47.382157",
-      "updated_at": "2026-07-12T17:57:47.383151",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T17:57:47.383151",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-12T17:57:47.383151",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "synoniem"
-        },
-        "timestamp": "2026-07-12T17:57:47.382157"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "synoniem#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T17:57:47.383151"
-      }
-    ]
-  },
-  "tegenovergestelde": {
-    "senses": [
-      {
-        "sense_id": "tegenovergestelde#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-12T17:57:57.528736",
-      "updated_at": "2026-07-12T17:57:57.528736",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T17:57:57.528736",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-12T17:57:57.528736",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "tegenovergestelde"
-        },
-        "timestamp": "2026-07-12T17:57:57.528736"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "tegenovergestelde#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T17:57:57.528736"
-      }
-    ]
-  },
-  "eigenschappen": {
-    "senses": [
-      {
-        "sense_id": "eigenschappen#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-12T17:58:24.645721",
-      "updated_at": "2026-07-12T17:58:24.647757",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T17:58:24.647757",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-12T17:58:24.647757",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "eigenschappen"
-        },
-        "timestamp": "2026-07-12T17:58:24.645721"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "eigenschappen#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T17:58:24.647757"
       }
     ]
   },
@@ -12055,758 +11731,6 @@
       }
     ]
   },
-  "wie": {
-    "senses": [
-      {
-        "sense_id": "wie#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-12T20:57:08.252656",
-      "updated_at": "2026-07-12T20:57:08.253644",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T20:57:08.253644",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-12T20:57:08.253644",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "wie"
-        },
-        "timestamp": "2026-07-12T20:57:08.252656"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "wie#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-12T20:57:08.253644"
-      }
-    ]
-  },
-  "hoe": {
-    "senses": [
-      {
-        "sense_id": "hoe#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T08:43:32.155780",
-      "updated_at": "2026-07-18T08:43:32.160238",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T08:43:32.160238",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T08:43:32.160238",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "hoe"
-        },
-        "timestamp": "2026-07-18T08:43:32.155780"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "hoe#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T08:43:32.160238"
-      }
-    ]
-  },
-  "heet": {
-    "senses": [
-      {
-        "sense_id": "heet#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T08:43:32.188259",
-      "updated_at": "2026-07-18T08:43:32.189315",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T08:43:32.189315",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T08:43:32.189315",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "heet"
-        },
-        "timestamp": "2026-07-18T08:43:32.188259"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "heet#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T08:43:32.189315"
-      }
-    ]
-  },
-  "dank": {
-    "senses": [
-      {
-        "sense_id": "dank#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T13:38:38.856529",
-      "updated_at": "2026-07-18T13:38:38.857917",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T13:38:38.857917",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T13:38:38.857917",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "dank"
-        },
-        "timestamp": "2026-07-18T13:38:38.856529"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "dank#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T13:38:38.857917"
-      }
-    ]
-  },
-  "nova": {
-    "senses": [
-      {
-        "sense_id": "nova#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T13:38:38.888937",
-      "updated_at": "2026-07-18T13:38:38.890959",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T13:38:38.890959",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T13:38:38.890959",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "nova"
-        },
-        "timestamp": "2026-07-18T13:38:38.888937"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "nova#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T13:38:38.890959"
-      }
-    ]
-  },
-  "helpt": {
-    "senses": [
-      {
-        "sense_id": "helpt#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T13:38:38.914931",
-      "updated_at": "2026-07-18T13:38:38.915945",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T13:38:38.915945",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T13:38:38.915945",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "helpt"
-        },
-        "timestamp": "2026-07-18T13:38:38.914931"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "helpt#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T13:38:38.915945"
-      }
-    ]
-  },
-  "oké": {
-    "senses": [
-      {
-        "sense_id": "oké#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T13:39:35.567041",
-      "updated_at": "2026-07-18T13:39:35.568087",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T13:39:35.568087",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T13:39:35.568087",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "oké"
-        },
-        "timestamp": "2026-07-18T13:39:35.567041"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "oké#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T13:39:35.568087"
-      }
-    ]
-  },
-  "echt": {
-    "senses": [
-      {
-        "sense_id": "echt#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T13:56:13.671519",
-      "updated_at": "2026-07-18T13:56:13.673521",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T13:56:13.673521",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T13:56:13.673521",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "echt"
-        },
-        "timestamp": "2026-07-18T13:56:13.671519"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "echt#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T13:56:13.673521"
-      }
-    ]
-  },
-  "oke": {
-    "senses": [
-      {
-        "sense_id": "oke#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T13:56:37.543134",
-      "updated_at": "2026-07-18T13:56:37.543134",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T13:56:37.543134",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T13:56:37.543134",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "oke"
-        },
-        "timestamp": "2026-07-18T13:56:37.543134"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "oke#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T13:56:37.543134"
-      }
-    ]
-  },
-  "snap": {
-    "senses": [
-      {
-        "sense_id": "snap#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T14:13:41.432512",
-      "updated_at": "2026-07-18T14:13:41.433512",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T14:13:41.433512",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T14:13:41.433512",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "snap"
-        },
-        "timestamp": "2026-07-18T14:13:41.432512"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "snap#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T14:13:41.433512"
-      }
-    ]
-  },
-  "wat": {
-    "senses": [
-      {
-        "sense_id": "wat#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T14:13:41.459511",
-      "updated_at": "2026-07-18T14:13:41.459511",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T14:13:41.459511",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T14:13:41.459511",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "wat"
-        },
-        "timestamp": "2026-07-18T14:13:41.459511"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "wat#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T14:13:41.459511"
-      }
-    ]
-  },
-  "bedoelt": {
-    "senses": [
-      {
-        "sense_id": "bedoelt#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T14:13:41.485508",
-      "updated_at": "2026-07-18T14:13:41.485508",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T14:13:41.485508",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T14:13:41.485508",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "bedoelt"
-        },
-        "timestamp": "2026-07-18T14:13:41.485508"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "bedoelt#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T14:13:41.485508"
-      }
-    ]
-  },
-  "even": {
-    "senses": [
-      {
-        "sense_id": "even#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T14:26:44.854528",
-      "updated_at": "2026-07-18T14:26:44.856652",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T14:26:44.856652",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T14:26:44.856652",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "even"
-        },
-        "timestamp": "2026-07-18T14:26:44.854528"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "even#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T14:26:44.856652"
-      }
-    ]
-  },
-  "helemaal": {
-    "senses": [
-      {
-        "sense_id": "helemaal#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T14:26:44.881149",
-      "updated_at": "2026-07-18T14:26:44.881149",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T14:26:44.881149",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T14:26:44.881149",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "helemaal"
-        },
-        "timestamp": "2026-07-18T14:26:44.881149"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "helemaal#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T14:26:44.881149"
-      }
-    ]
-  },
-  "focussen": {
-    "senses": [
-      {
-        "sense_id": "focussen#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T14:26:44.911715",
-      "updated_at": "2026-07-18T14:26:44.912716",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T14:26:44.912716",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T14:26:44.912716",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "focussen"
-        },
-        "timestamp": "2026-07-18T14:26:44.911715"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "focussen#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T14:26:44.912716"
-      }
-    ]
-  },
-  "stuk": {
-    "senses": [
-      {
-        "sense_id": "stuk#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-18T14:26:44.942081",
-      "updated_at": "2026-07-18T14:26:44.942081",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-18T14:26:44.942081",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-18T14:26:44.942081",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "stuk"
-        },
-        "timestamp": "2026-07-18T14:26:44.942081"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "stuk#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-18T14:26:44.942081"
-      }
-    ]
-  },
   "zeilboot": {
     "senses": [
       {
@@ -12862,57 +11786,68 @@
       }
     ]
   },
-  "snel": {
+  "vaartuig": {
     "senses": [
       {
-        "sense_id": "snel#1",
-        "definition": "unknown",
+        "sense_id": "vaartuig#1",
+        "definition": "Een vaartuig is een door mensen gemaakt object dat gebruikt wordt om over water te reizen of te varen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Een zeilboot is een vaartuig dat door de wind wordt voortgestuwd.",
+          "Het vaartuig voer over het meer."
+        ],
+        "relations": [
+          {
+            "type": "has_part",
+            "target": "zeilboot",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-12T20:21:25.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
     "metadata": {
-      "created_at": "2026-07-21T11:12:24.226395",
-      "updated_at": "2026-07-21T11:12:24.227395",
+      "created_at": "2026-07-12T20:21:25.000000",
+      "updated_at": "2026-07-12T20:21:25.000000",
       "sources": [
-        "auto"
+        "user"
       ],
-      "last_used_at": "2026-07-21T11:12:24.227395",
-      "usage_count": 1,
+      "last_used_at": "2026-07-12T20:21:25.000000",
+      "usage_count": 0,
       "confidence_history": [
         {
-          "timestamp": "2026-07-21T11:12:24.227395",
-          "confidence": 0.1
+          "timestamp": "2026-07-12T20:21:25.000000",
+          "confidence": 1.0
         }
       ]
     },
     "audit_log": [
       {
         "event_type": "concept_created",
-        "source": "system",
+        "source": "user",
         "new_value": {
-          "word": "snel"
+          "word": "vaartuig"
         },
-        "timestamp": "2026-07-21T11:12:24.226395"
+        "timestamp": "2026-07-12T20:21:25.000000"
       },
       {
         "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "snel#1",
+        "source": "user",
+        "sense_id": "vaartuig#1",
         "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-21T11:12:24.227395"
+        "new_value": "Een vaartuig is een door mensen gemaakt object dat gebruikt wordt om over water te reizen of te varen.",
+        "timestamp": "2026-07-12T20:21:25.000000"
       }
     ]
   },
-  "elegant": {
+  "drink": {
     "senses": [
       {
-        "sense_id": "elegant#1",
+        "sense_id": "drink#1",
         "definition": "unknown",
         "pos": "noun",
         "examples": [],
@@ -12923,16 +11858,16 @@
       }
     ],
     "metadata": {
-      "created_at": "2026-07-21T11:13:19.160600",
-      "updated_at": "2026-07-21T11:13:19.161596",
+      "created_at": "2026-07-25T20:06:54.566515",
+      "updated_at": "2026-07-25T20:06:54.567520",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-07-21T11:13:19.161596",
+      "last_used_at": "2026-07-25T20:06:54.567520",
       "usage_count": 1,
       "confidence_history": [
         {
-          "timestamp": "2026-07-21T11:13:19.161596",
+          "timestamp": "2026-07-25T20:06:54.567520",
           "confidence": 0.1
         }
       ]
@@ -12942,24 +11877,24 @@
         "event_type": "concept_created",
         "source": "system",
         "new_value": {
-          "word": "elegant"
+          "word": "drink"
         },
-        "timestamp": "2026-07-21T11:13:19.160600"
+        "timestamp": "2026-07-25T20:06:54.566515"
       },
       {
         "event_type": "sense_created",
         "source": "auto",
-        "sense_id": "elegant#1",
+        "sense_id": "drink#1",
         "old_value": null,
         "new_value": "unknown",
-        "timestamp": "2026-07-21T11:13:19.161596"
+        "timestamp": "2026-07-25T20:06:54.567520"
       }
     ]
   },
-  "emergence": {
+  "graag": {
     "senses": [
       {
-        "sense_id": "emergence#1",
+        "sense_id": "graag#1",
         "definition": "unknown",
         "pos": "noun",
         "examples": [],
@@ -12970,16 +11905,16 @@
       }
     ],
     "metadata": {
-      "created_at": "2026-07-21T11:13:40.355786",
-      "updated_at": "2026-07-21T11:13:40.356848",
+      "created_at": "2026-07-25T20:06:54.603860",
+      "updated_at": "2026-07-25T20:06:54.605098",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-07-21T11:13:40.356848",
+      "last_used_at": "2026-07-25T20:06:54.605098",
       "usage_count": 1,
       "confidence_history": [
         {
-          "timestamp": "2026-07-21T11:13:40.356848",
+          "timestamp": "2026-07-25T20:06:54.605098",
           "confidence": 0.1
         }
       ]
@@ -12989,24 +11924,24 @@
         "event_type": "concept_created",
         "source": "system",
         "new_value": {
-          "word": "emergence"
+          "word": "graag"
         },
-        "timestamp": "2026-07-21T11:13:40.355786"
+        "timestamp": "2026-07-25T20:06:54.603860"
       },
       {
         "event_type": "sense_created",
         "source": "auto",
-        "sense_id": "emergence#1",
+        "sense_id": "graag#1",
         "old_value": null,
         "new_value": "unknown",
-        "timestamp": "2026-07-21T11:13:40.356848"
+        "timestamp": "2026-07-25T20:06:54.605098"
       }
     ]
   },
-  "hoor": {
+  "speel": {
     "senses": [
       {
-        "sense_id": "hoor#1",
+        "sense_id": "speel#1",
         "definition": "unknown",
         "pos": "noun",
         "examples": [],
@@ -13017,16 +11952,16 @@
       }
     ],
     "metadata": {
-      "created_at": "2026-07-22T19:25:44.387668",
-      "updated_at": "2026-07-22T19:25:44.389702",
+      "created_at": "2026-07-25T20:13:30.034107",
+      "updated_at": "2026-07-25T20:13:30.035118",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-07-22T19:25:44.389702",
+      "last_used_at": "2026-07-25T20:13:30.035118",
       "usage_count": 1,
       "confidence_history": [
         {
-          "timestamp": "2026-07-22T19:25:44.389702",
+          "timestamp": "2026-07-25T20:13:30.035118",
           "confidence": 0.1
         }
       ]
@@ -13036,24 +11971,24 @@
         "event_type": "concept_created",
         "source": "system",
         "new_value": {
-          "word": "hoor"
+          "word": "speel"
         },
-        "timestamp": "2026-07-22T19:25:44.387668"
+        "timestamp": "2026-07-25T20:13:30.034107"
       },
       {
         "event_type": "sense_created",
         "source": "auto",
-        "sense_id": "hoor#1",
+        "sense_id": "speel#1",
         "old_value": null,
         "new_value": "unknown",
-        "timestamp": "2026-07-22T19:25:44.389702"
+        "timestamp": "2026-07-25T20:13:30.035118"
       }
     ]
   },
-  "warm": {
+  "piano": {
     "senses": [
       {
-        "sense_id": "warm#1",
+        "sense_id": "piano#1",
         "definition": "unknown",
         "pos": "noun",
         "examples": [],
@@ -13064,16 +11999,16 @@
       }
     ],
     "metadata": {
-      "created_at": "2026-07-23T18:38:34.043404",
-      "updated_at": "2026-07-23T18:38:34.046825",
+      "created_at": "2026-07-25T20:13:30.058114",
+      "updated_at": "2026-07-25T20:13:30.058114",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-07-23T18:38:34.046825",
+      "last_used_at": "2026-07-25T20:13:30.058114",
       "usage_count": 1,
       "confidence_history": [
         {
-          "timestamp": "2026-07-23T18:38:34.046825",
+          "timestamp": "2026-07-25T20:13:30.058114",
           "confidence": 0.1
         }
       ]
@@ -13083,17 +12018,17 @@
         "event_type": "concept_created",
         "source": "system",
         "new_value": {
-          "word": "warm"
+          "word": "piano"
         },
-        "timestamp": "2026-07-23T18:38:34.043404"
+        "timestamp": "2026-07-25T20:13:30.058114"
       },
       {
         "event_type": "sense_created",
         "source": "auto",
-        "sense_id": "warm#1",
+        "sense_id": "piano#1",
         "old_value": null,
         "new_value": "unknown",
-        "timestamp": "2026-07-23T18:38:34.046825"
+        "timestamp": "2026-07-25T20:13:30.058114"
       }
     ]
   }
