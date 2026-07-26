@@ -5,14 +5,14 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 0,
-      "negative_count": 32,
+      "positive_count": 1,
+      "negative_count": 44,
       "total_shifts": 1,
       "last_shift": "2026-07-18T16:10:33.350646",
       "last_shift_direction": "positief"
     },
     "loyalty": {
-      "positive_count": 4,
+      "positive_count": 5,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -33,7 +33,7 @@
       "last_shift_direction": null
     },
     "reflection_depth": {
-      "positive_count": 7,
+      "positive_count": 15,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-07-18T16:19:24.122381",
@@ -48,7 +48,7 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 9,
+      "negative_count": 21,
       "total_shifts": 1,
       "last_shift": "2026-07-25T13:37:53.498448",
       "last_shift_direction": "negatief"
@@ -68,11 +68,11 @@
       "last_shift_direction": null
     },
     "focus_hyperfocus_tendency": {
-      "positive_count": 17,
+      "positive_count": 5,
       "negative_count": 0,
-      "total_shifts": 0,
-      "last_shift": null,
-      "last_shift_direction": null
+      "total_shifts": 1,
+      "last_shift": "2026-07-25T22:14:39.577555",
+      "last_shift_direction": "positief"
     },
     "reactivity": {
       "positive_count": 0,
@@ -83,16 +83,16 @@
     },
     "impulsivity": {
       "positive_count": 0,
-      "negative_count": 9,
-      "total_shifts": 0,
-      "last_shift": null,
-      "last_shift_direction": null
+      "negative_count": 5,
+      "total_shifts": 1,
+      "last_shift": "2026-07-25T22:13:50.774594",
+      "last_shift_direction": "negatief"
     },
     "chaotic_variability": {
       "positive_count": 0,
-      "negative_count": 5,
-      "total_shifts": 1,
-      "last_shift": "2026-07-22T21:23:31.467991",
+      "negative_count": 6,
+      "total_shifts": 2,
+      "last_shift": "2026-07-25T22:14:22.063389",
       "last_shift_direction": "negatief"
     },
     "energy_level": {

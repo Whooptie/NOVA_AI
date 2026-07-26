@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "description": "User Preferences, sentiment-classifier: vast ijkpunt-testsetje. Een nieuwe, hertrainde modelversie wordt ENKEL actief als ze hierop minstens even goed scoort als de huidige versie -- voorkomt dat automatische hertraining het model per ongeluk laat verslechteren (drift). NOOIT gebruiken als trainingsdata zelf -- moet apart blijven van sentiment_training_data.json om een eerlijke, onafhankelijke test te zijn. Zelfde patroon als identity/personality/benchmark_data.json.",
+    "created": "26 juli 2026"
+  },
+  "voorbeelden": [
+    {"text": "ik ben echt fan van schaken", "categorie": "positief"},
+    {"text": "koffie in de ochtend is het beste moment van de dag", "categorie": "positief"},
+    {"text": "ik geniet er elke keer weer van", "categorie": "positief"},
+    {"text": "dat vind ik nu net heerlijk", "categorie": "positief"},
+    {"text": "pizza is oké, maar niet iets waar ik gek van word", "categorie": "neutraal_gemengd"},
+    {"text": "het is niet slecht, maar ook niet geweldig", "categorie": "neutraal_gemengd"},
+    {"text": "kan me er niet echt druk om maken, positief of negatief", "categorie": "neutraal_gemengd"},
+    {"text": "soms leuk, soms ook gewoon saai", "categorie": "neutraal_gemengd"},
+    {"text": "ik moet echt niks hebben van kou", "categorie": "negatief"},
+    {"text": "wachtrijen zijn een regelrechte kwelling", "categorie": "negatief"},
+    {"text": "ik kan er niet tegen, echt niet", "categorie": "negatief"},
+    {"text": "dat vind ik ronduit vervelend", "categorie": "negatief"}
+  ]
+}

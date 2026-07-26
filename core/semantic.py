@@ -831,6 +831,22 @@ class TeachEngine:
 # 6. RelationParser
 # ---------------------------------------------------------
 class RelationParser:
+    # Woorden die NOOIT als nieuw subject/object mogen dienen voor een
+    # automatisch aangemaakt "unknown"-concept. Dit zijn vraagwoorden,
+    # tussenwerpsels en functiewoorden die toevallig binnen een patroon
+    # als " is een ", " lijkt op ", " zijn " kunnen vallen in gewone
+    # chatzinnen die GEEN echte kennisrelatie beschrijven (bv. "dat lijkt
+    # op wat ik bedoelde"). Bestaande concepten worden hier NOOIT door
+    # geblokkeerd -- enkel het aanmaken van NIEUWE unknown-ruis wordt
+    # tegengehouden (zie is_ruiswoord()).
+    STOPWOORDEN = {
+        "lijkt", "synoniem", "oke", "oké", "wat", "nova", "emergence",
+        "wie", "hoe", "heet", "dank", "helpt", "echt", "snap", "bedoelt",
+        "even", "helemaal", "focussen", "stuk", "snel", "elegant", "hoor",
+        "warm", "welke", "ken", "waarop", "waarin", "waaruit", "waardoor",
+        "waarvoor", "dat", "die", "dit", "deze", "het", "een", "de",
+    }
+
     def __init__(self):
         self.relation_mapping = {
             " is een soort van ": "is_a",
@@ -864,6 +880,16 @@ class RelationParser:
                     "relation_type": rel_type
                 }
         return None
+
+    def is_ruiswoord(self, woord: str) -> bool:
+        """
+        True als 'woord' een vraagwoord/tussenwerpsel/functiewoord is
+        dat NIET als nieuw unknown-concept mag worden aangemaakt.
+        Wordt enkel geraadpleegd als het woord nog GEEN bestaand concept
+        is -- bestaande concepten (ook al staan ze toevallig in deze
+        lijst) worden hier nooit door geraakt.
+        """
+        return woord.strip().lower() in self.STOPWOORDEN
 
     def parse_relation(self, sentence: str, pattern: str) -> Optional[Dict[str, str]]:
         text = sentence.strip()
@@ -1238,11 +1264,42 @@ class SemanticConceptsModule:
         if not parsed:
             return False
 
-        self.flow_engine.start_relation_flow(
-            parsed["subject"],
-            detected["relation_type"],
-            parsed["object"]
+        subject = parsed["subject"]
+        obj = parsed["object"]
+
+        # BUGFIX (25 juli 2026): voorkom dat losse vraagwoorden/
+        # tussenwerpsels/functiewoorden ("lijkt", "oké", "wat", "hoe", ...)
+        # als nieuw unknown/auto/0.1-concept in concepts.json belanden.
+        # Dit gebeurde omdat elke niet-herkende chatzin door de relatie-
+        # parser liep en toevallige patroonmatches (bv. " lijkt op ",
+        # " zijn ", " is een ") in gewone zinnen als echte kennisrelatie
+        # werden behandeld. De stopwoordencheck geldt ENKEL voor woorden
+        # die nog geen bestaand concept zijn -- een bestaand concept
+        # (ook al staat het toevallig in de stopwoordenlijst) wordt hier
+        # nooit door geblokkeerd.
+        # BUGFIX-VERVOLG (25 juli 2026): "bestaat al" moet betekenen dat
+        # het woord een ECHTE, betekenisvolle sense heeft -- niet enkel
+        # dat er al IETS in senses staat. Een woord met uitsluitend
+        # unknown/auto/0.1-ruis (zoals 'echt' en 'warm' vóór deze fix)
+        # telde voorheen ten onrechte als "bestaand", waardoor de
+        # stopwoordencheck werd overgeslagen en de relatie alsnog werd
+        # aangemaakt. Nu wordt enkel een sense met een echte definitie
+        # (definition != "unknown") als geldig bestaand beschouwd.
+        subject_bestaat_al = any(
+            s.get("definition") != "unknown"
+            for s in self.sense_engine.get_senses(subject)
         )
+        object_bestaat_al = any(
+            s.get("definition") != "unknown"
+            for s in self.sense_engine.get_senses(obj)
+        )
+
+        if not subject_bestaat_al and self.parser.is_ruiswoord(subject):
+            return False
+        if not object_bestaat_al and self.parser.is_ruiswoord(obj):
+            return False
+
+        self.flow_engine.start_relation_flow(subject, detected["relation_type"], obj)
         return True
 
     # Confirm-flow

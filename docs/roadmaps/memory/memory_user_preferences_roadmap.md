@@ -1,9 +1,26 @@
 # User Preferences Roadmap: Wat Nova over Kevin onthoudt
 
-**Status:** Concept — nog niet gepland in bouwvolgorde
+**Status:** ✅ VOLLEDIG AFGEROND EN GETEST (Fase 1-4 op 25 juli 2026, sentiment-classifier + Layer 1-koppeling op 26 juli 2026) — zie `nova_state.md` voor de actuele status-tabel en `nova_changelog.md` voor de volledige bouwgeschiedenis. Dit document is NIET meer up-to-date als ontwerp van de huidige situatie — het beschrijft het ORIGINELE plan van 2 juli, vóór de v2-datastructuur en de ML-uitbreidingen. Bewaard als historische referentie voor de oorspronkelijke redenering (waarom apart van Layer 1, de eerste API-schets), niet als actuele documentatie.
 **Depends on:** memory.py (Layer 0) ✅ Fase 1-3 klaar
-**Gebruikt door:** Layer 4 (Response generation), toekomstige proactieve suggesties
-**Datum:** 2 juli 2026
+**Gebruikt door:** Layer 4 (Response generation), `session_watcher.py` (activity-koppeling), `kandidaat_suggesties.py` (Layer 1-koppeling)
+**Datum:** 2 juli 2026 (origineel ontwerp) — geïmplementeerd 25 juli 2026, uitgebreid 26 juli 2026
+
+---
+
+## ⚠️ VOLLEDIG BIJGEWERKT SINDS ORIGINEEL ONTWERP (26 juli 2026)
+
+Dit document beschrijft het plan zoals het op 2 juli bedacht was. Sindsdien is de module niet alleen volledig gebouwd, maar ook op twee punten verder uitgebreid dan hier oorspronkelijk voorzien was. Lees de rest van dit document met dat in het achterhoofd:
+
+1. **Datastructuur is v2, niet wat hieronder bij "DATA STRUCTURE" staat.** I.p.v. één plat `{"sentiment", "bron", ...}`-veld per woord, houdt elk woord nu een apart `expliciet`- en `automatisch`-sub-blok bij, met een conflict-regel (expliciet wint altijd bij tegenstrijdig sentiment). Zie `nova_state.md` voor het volledige, actuele voorbeeld.
+
+2. **De EERLIJKHEID-sectie hieronder is deels ACHTERHAALD, niet enkel "gedeeltelijk"** — beide ❌-punten die daar stonden zijn intussen wél gebouwd:
+   - *"Nuance in sentiment... dit vereist taalbegrip, bouwen we dus niet"* — is nu wél gebouwd: `sentiment_classifier.py`, een getraind ML-model (TF-IDF + Logistic Regression) dat de volledige zin classificeert naar positief/neutraal_gemengd/negatief. Mogelijk gemaakt door de ML-leidraad-update (ML actief inzetten waar nuttig, niet enkel als laatste redmiddel) — dit was op 2 juli nog niet toegestaan binnen Nova's principes, nu wel.
+   - *"Layer 1 kan als extra signaal dienen om kandidaat-voorkeuren te vinden"* (zie sectie "Waarom een aparte module, en geen Layer 1?") — is nu wél gebouwd: `kandidaat_suggesties.py`, luistert op `preference_learned` en gebruikt Layer 1's `find_related()` om terloops nieuwe voorkeur-kandidaten te suggereren.
+   - Het enige punt dat nog steeds klopt als "niet gebouwd": impliciete/subtiele voorkeuren uit de toon van een heel gesprek afleiden. Dat blijft terecht buiten scope.
+
+3. **De API (zie "API DESIGN" hieronder) is grotendeels ongewijzigd gebleven** — `add_preference()`, `remove_preference()`, `get_preference()`, `get_all_preferences()`, `get_by_sentiment()` bestaan nog steeds met dezelfde namen en betekenis, enkel `add_preference()`'s `sentiment`-parameter accepteert nu 3 waarden i.p.v. 2, en `remove_preference()` kreeg een optionele `bron`-parameter voor gedeeltelijk verwijderen.
+
+Voor de volledige, huidige technische details (bugfixes, exacte drempels, bestandslocaties): zie `nova_changelog.md`, hoofdstuk "User Preferences-module: Fase 1-4, sentiment-classifier, Layer 1-koppeling".
 
 ---
 

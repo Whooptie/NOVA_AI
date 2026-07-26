@@ -13,14 +13,22 @@ def dbg(label, text=""):
     print(f"{C_CYAN}[ROUTER]{C_RESET} {label} {text}")
 
 class IntentRouter:
-    def __init__(self, event_bus, semantic_module=None):
+    def __init__(self, event_bus, semantic_module=None, kevin_profile=None, sentiment_classifier=None):
         self.event_bus = event_bus
         self.semantic = semantic_module
+        self.kevin_profile = kevin_profile
+        # User Preferences, sentiment-nuance (26 juli 2026): verfijnt
+        # het grove positief/negatief-resultaat van _ontleed_voorkeur_
+        # zin() naar 3 categorieën (positief/neutraal_gemengd/negatief).
+        # Kan None zijn als het model nog niet geladen is -- altijd
+        # voorzichtig checken met "if self.sentiment_classifier".
+        self.sentiment_classifier = sentiment_classifier
         self.awaiting_confirmation = None
         self._intent_tabel_deel1 = self._build_intent_tabel_deel1()
         self._intent_tabel_deel2 = self._build_intent_tabel_deel2()
 
         event_bus.subscribe("chat_message", self.route)
+        event_bus.subscribe("intent_preference_detected", self._on_preference_detected)
         dbg(f"{C_GREEN}IntentRouter geladen{C_RESET}")
 
     # ---------------------------------------------------------
@@ -87,6 +95,345 @@ class IntentRouter:
             "sentence": sentence
         })
         return True
+
+    # ---------------------------------------------------------
+    # Preferences-flow (Fase 2: expliciet commando)
+    # ---------------------------------------------------------
+    def handle_preference(self, text):
+        """
+        Herkent 'onthoud: ...' en 'vergeet: ...'. Dit is bewust dezelfde
+        stijl als handle_teach() hierboven: een vaste prefix, splitsen,
+        en rechtstreeks doorsturen -- geen patroonherkenning hier (dat
+        is Fase 3, detect_preference()). Dit is de voorspelbare,
+        expliciete route: wat Kevin letterlijk typt, wordt letterlijk
+        opgeslagen.
+
+        Voorbeelden:
+            onthoud: ik drink graag koffie   -> positief, "koffie"
+            onthoud: ik hou niet van kou     -> negatief, "kou"
+            vergeet: kou                     -> verwijderd
+        """
+        t = text.strip()
+        tl = t.lower()
+
+        # --- vergeet: <woord> ---
+        if tl.startswith("vergeet:") or tl.startswith("vergeet "):
+            woord = t.split(":", 1)[1].strip() if ":" in t else t.split(maxsplit=1)[1].strip()
+            if not woord:
+                self.event_bus.publish("chat_response", {
+                    "text": "Gebruik: vergeet: <woord>"
+                })
+                return True
+
+            if self.kevin_profile:
+                verwijderd = self.kevin_profile.remove_preference(woord)
+                if not verwijderd:
+                    self.event_bus.publish("chat_response", {
+                        "text": f"Ik had niets onthouden over '{woord}'."
+                    })
+            return True
+
+        # --- onthoud: <zin> ---
+        if tl.startswith("onthoud:") or tl.startswith("onthoud "):
+            zin = t.split(":", 1)[1].strip() if ":" in t else t.split(maxsplit=1)[1].strip()
+            if not zin:
+                self.event_bus.publish("chat_response", {
+                    "text": "Gebruik: onthoud: ik hou van <woord> / ik hou niet van <woord>"
+                })
+                return True
+
+            grof_sentiment, woord = self._ontleed_voorkeur_zin(zin)
+            if not woord:
+                self.event_bus.publish("chat_response", {
+                    "text": (
+                        "Ik snap niet goed wat ik moet onthouden. Probeer bv.: "
+                        "'onthoud: ik hou van koffie'"
+                    )
+                })
+                return True
+
+            sentiment = self._verfijn_sentiment(zin, grof_sentiment)
+
+            if self.kevin_profile:
+                self.kevin_profile.add_preference(woord, sentiment, bron="expliciet")
+            return True
+
+        return False
+
+    def _ontleed_voorkeur_zin(self, zin):
+        """
+        Zeer eenvoudige, pure regex/string-herkenning van sentiment +
+        onderwerp in een zin na 'onthoud:'. Bewust beperkt tot een
+        handvol vaste patronen -- dit is 100% symbolisch (geen ML/LLM),
+        maar heeft daardoor ook een eerlijke grens: een creatief
+        geformuleerde zin die niet in een van deze patronen past, wordt
+        gewoon niet herkend (geeft dan woord=None terug).
+
+        Geeft terug: (sentiment, woord) -- sentiment is "positief" of
+        "negatief", woord is None als niets herkend werd.
+        """
+        z = zin.strip().lower().rstrip(".!")
+
+        negatieve_patronen = [
+            "ik hou niet van ", "ik haat ", "ik lust geen ", "ik lust niet van ",
+        ]
+        for p in negatieve_patronen:
+            if p in z:
+                woord = z.split(p, 1)[1].strip()
+                return "negatief", woord or None
+
+        positieve_patronen = [
+            "ik hou van ", "ik drink graag ", "ik eet graag ",
+            "mijn favoriete ", "ik vind leuk ",
+        ]
+        for p in positieve_patronen:
+            if p in z:
+                woord = z.split(p, 1)[1].strip()
+                # "mijn favoriete X is Y" -> we willen Y, niet "X is Y".
+                # BUGFIX (26 juli 2026): deze "is"-check moet ENKEL bij
+                # het "mijn favoriete "-patroon gebeuren, niet bij de
+                # andere patronen. Was voorheen onvoorwaardelijk, waardoor
+                # een zin als "ik hou van koffie maar het is niet mijn
+                # favoriet" verkeerd afgekapt werd: de losse " is " in
+                # "...maar het IS niet..." (een heel andere zins-
+                # constructie dan "mijn favoriete X is Y") werd toch als
+                # splitpunt gebruikt, en gooide daarbij "koffie" zelf weg
+                # nog vóór _kap_woord_af() de kans kreeg iets te doen.
+                if p == "mijn favoriete " and " is " in woord:
+                    woord = woord.split(" is ", 1)[1].strip()
+                woord = self._kap_woord_af(woord)
+                return "positief", woord or None
+
+        return "positief", None
+
+    # Signaalwoorden die typisch een nuance-bijzin inleiden (bugfix
+    # 26 juli 2026): zonder dit werd bv. "ik hou van koffie maar het
+    # is niet mijn favoriet" opgeslagen met het VOLLEDIGE restant van
+    # de zin als "woord" ("koffie maar het is niet mijn favoriet")
+    # i.p.v. enkel "koffie". Zodra een van deze signalen in de rest
+    # van de zin voorkomt, snijden we het woord daar af. Bewust een
+    # vaste, korte lijst -- 100% symbolisch, geen taalbegrip -- dus
+    # zal niet elke mogelijke nuance-constructie vangen, maar dekt de
+    # meest voorkomende gevallen.
+    _AFKAP_SIGNALEN = [
+        " maar ", " hoewel ", " al is ", " ook al ", " ondanks ",
+        " toch niet ", " echter ", " niet altijd ", " niet mijn favoriet",
+    ]
+
+    def _kap_woord_af(self, woord):
+        """
+        Snijdt 'woord' af zodra een nuance-signaalwoord verschijnt (zie
+        _AFKAP_SIGNALEN hierboven). Geeft het woord ongewijzigd terug
+        als geen enkel signaal voorkomt.
+        """
+        laagste_index = len(woord)
+        for signaal in self._AFKAP_SIGNALEN:
+            idx = woord.find(signaal)
+            if idx != -1 and idx < laagste_index:
+                laagste_index = idx
+        return woord[:laagste_index].strip()
+
+    def _verfijn_sentiment(self, volledige_zin, grof_sentiment):
+        """
+        User Preferences, sentiment-nuance (26 juli 2026): geeft de
+        VOLLEDIGE zin (niet enkel het losse woord) door aan
+        sentiment_classifier.py, dat het grove positief/negatief-
+        resultaat van _ontleed_voorkeur_zin() kan verfijnen naar
+        "neutraal_gemengd" als de zin daarop wijst (bv. "koffie is wel
+        oké maar niet mijn favoriet" -- de regex-patronen hierboven
+        herkennen enkel WELK woord het onderwerp is en een grof
+        sentiment, geen nuance).
+
+        Geeft gewoon grof_sentiment terug als er geen classifier
+        beschikbaar is (bv. nog geen model getraind) -- de nuance-
+        verfijning is een bonus bovenop de werkende Fase 2/3-flow,
+        nooit een vereiste ervoor.
+        """
+        if not self.sentiment_classifier:
+            return grof_sentiment
+
+        return self.sentiment_classifier.classificeer(
+            volledige_zin, grof_sentiment=grof_sentiment
+        )
+
+    # ---------------------------------------------------------
+    # Preferences-flow (Fase 3: automatische patroonherkenning)
+    # ---------------------------------------------------------
+    def detect_preference(self, text):
+        """
+        Automatische tegenhanger van handle_preference() hierboven --
+        zelfde patroonlijst (via _ontleed_voorkeur_zin), maar zonder dat
+        Kevin het expliciete 'onthoud:'-commando hoeft te typen. Volgt
+        exact de conventie van detect_weather()/detect_math() hierboven:
+        herkent een patroon, publiceert een event, geeft True terug.
+        Geeft False terug (of valt stil door) als niets herkend wordt --
+        _emit_topic() gebeurt dan NIET, dat doet route() zelf al via de
+        intent-tabel.
+
+        Bewuste symbolische grens (zie ook memory_user_preferences_
+        roadmap.md, sectie EERLIJKHEID): dit is dezelfde beperkte
+        patroonlijst als de expliciete route, dus dezelfde kans dat een
+        creatief geformuleerde zin gemist wordt. Dat is de bewuste prijs
+        van 100% symbolisch werken zonder taalmodel -- beter een patroon
+        missen dan een verkeerd sentiment vastleggen.
+
+        LET OP: dit publiceert 'intent_preference_detected' i.p.v.
+        rechtstreeks kevin_profile.add_preference() aan te roepen, in
+        tegenstelling tot handle_preference(). Reden: bij een impliciete
+        (niet-expliciete) uitspraak wil je typisch een lagere
+        confidence/andere bron ("automatisch" i.p.v. "expliciet") EN wil
+        je response_engine.py de kans geven om dit natuurlijk te
+        bevestigen in de tone-pipeline, i.p.v. hier al stilzwijgend op
+        te slaan. Het opslaan zelf gebeurt in _on_preference_detected()
+        verderop, die op dit event subscribet.
+        """
+        t = text.strip()
+        tl = t.lower()
+
+        # Vermijd dubbel werk: zinnen die al met 'onthoud:'/'vergeet:'
+        # beginnen zijn al door handle_preference() afgehandeld (die
+        # stap staat vóór de intent-tabel in route()), dus komen hier
+        # normaal nooit aan -- deze check is een extra vangnet.
+        if tl.startswith("onthoud") or tl.startswith("vergeet"):
+            return False
+
+        grof_sentiment, woord = self._ontleed_voorkeur_zin(t)
+        if not woord:
+            return False
+
+        dbg(f"{C_GREEN}→ preference (automatisch): '{woord}' = {grof_sentiment}{C_RESET}")
+        self.event_bus.publish("intent_preference_detected", {
+            "woord": woord,
+            "sentiment": grof_sentiment,
+            "volledige_zin": t,
+        })
+        return True
+
+    def _on_preference_detected(self, data):
+        """
+        Subscriber op 'intent_preference_detected' (zie detect_preference()
+        hierboven). Slaat de gevonden voorkeur effectief op met
+        bron="automatisch" -- lagere confidence dan het expliciete
+        'onthoud:'-commando (bron="expliciet"), conform de data-structuur
+        in memory_user_preferences_roadmap.md.
+
+        Verfijnt eerst het grove sentiment via sentiment_classifier.py
+        (zie _verfijn_sentiment()) -- zelfde nuance-stap als
+        handle_preference() voor het expliciete commando.
+        """
+        if not self.kevin_profile:
+            return
+
+        sentiment = self._verfijn_sentiment(data["volledige_zin"], data["sentiment"])
+        self.kevin_profile.add_preference(
+            data["woord"], sentiment, bron="automatisch"
+        )
+
+    # ---------------------------------------------------------
+    # Preferences-flow (Fase 4: voorkeuren OPVRAGEN in gesprek)
+    # ---------------------------------------------------------
+    # Vaste woordenlijsten voor categorie-specifieke vragen. Bewust
+    # klein en plat gehouden (geen semantic.py-koppeling) -- dit is
+    # een eenvoudige lookup-tabel, geen taalbegrip. Uitbreidbaar door
+    # gewoon woorden toe te voegen aan de sets.
+    _DRANK_WOORDEN = {"koffie", "thee", "water", "cola", "melk", "sap", "wijn", "bier"}
+    _ETEN_WOORDEN = {"pizza", "pasta", "salade", "friet", "soep", "brood"}
+
+    def detect_preference_query(self, text):
+        """
+        Herkent vragen die het profiel OPVRAGEN, in twee smaken:
+
+        1. Categorie-specifiek: "wat kan ik drinken?" / "wat zou ik
+           kunnen eten?" -- kijkt enkel naar voorkeuren die in de
+           _DRANK_WOORDEN/_ETEN_WOORDEN-lijst voorkomen.
+        2. Breed profiel-overzicht: "wat weet je over mij?" / "wat
+           vind ik leuk?" -- dumpt het volledige voorkeuren/afkeuren-
+           profiel in één zin.
+
+        100% symbolisch: vaste triggerzinnen + een vaste woordenlijst-
+        lookup, geen vrije tekstinterpretatie. Net als detect_weather()
+        hierboven, geen _emit_topic() hier -- dat doet de intent-tabel
+        zelf al (zie _build_intent_tabel_deel2()).
+
+        Publiceert 'layer4_response' i.p.v. rechtstreeks 'chat_response',
+        zodat het antwoord nog door de volledige tone-pipeline gaat
+        (emotie/personality/expressie) -- zelfde route als weather.py/
+        math.py/time.py, zie nova_state.md sectie over layer4_response.
+        """
+        if not self.kevin_profile:
+            return False
+
+        t = text.lower().strip().rstrip("?.")
+
+        drink_triggers = [
+            "wat kan ik drinken", "wat zou ik kunnen drinken",
+            "wat kan ik best drinken", "wat drink ik graag",
+        ]
+        eet_triggers = [
+            "wat kan ik eten", "wat zou ik kunnen eten",
+            "wat kan ik best eten", "wat eet ik graag",
+        ]
+        breed_triggers = [
+            "wat weet je over mij", "wat weet je van mij",
+            "wat vind ik leuk", "wat hou ik van", "wat zijn mijn voorkeuren",
+            "wat weet je over kevin",
+        ]
+
+        if any(trig in t for trig in drink_triggers):
+            tekst = self._antwoord_categorie_vraag(self._DRANK_WOORDEN, "drinkt")
+            self.event_bus.publish("layer4_response", {"text": tekst})
+            return True
+
+        if any(trig in t for trig in eet_triggers):
+            tekst = self._antwoord_categorie_vraag(self._ETEN_WOORDEN, "eet")
+            self.event_bus.publish("layer4_response", {"text": tekst})
+            return True
+
+        if any(trig in t for trig in breed_triggers):
+            tekst = self._antwoord_volledig_profiel()
+            self.event_bus.publish("layer4_response", {"text": tekst})
+            return True
+
+        return False
+
+    def _antwoord_categorie_vraag(self, categorie_woorden, werkwoord):
+        """
+        Bouwt een antwoord voor een categorie-specifieke vraag (drinken/
+        eten). Kiest willekeurig tussen alle matches als er meerdere
+        zijn -- geen voorkeur voor expliciet/automatisch of hoogste
+        aantal_keer_genoemd, dat is bewust simpel gehouden voor deze
+        eerste versie.
+        """
+        import random
+        alles = self.kevin_profile.get_all_preferences()
+        matches = [w for w in alles["voorkeuren"] if w in categorie_woorden]
+
+        if not matches:
+            return f"Ik weet nog niet wat je graag {werkwoord}, je hebt me dat nog niet verteld."
+
+        gekozen = random.choice(matches)
+        return f"{gekozen.capitalize()} misschien? Je gaf eerder aan dat je dat graag {werkwoord}."
+
+    def _antwoord_volledig_profiel(self):
+        """
+        Bouwt een antwoord dat het volledige profiel samenvat in één
+        zin. Toont enkel de woorden zelf (geen bron/aantal-details --
+        dat zou de zin onleesbaar maken), gescheiden door komma's.
+        """
+        alles = self.kevin_profile.get_all_preferences()
+        voorkeuren = list(alles["voorkeuren"].keys())
+        afkeuren = list(alles["afkeuren"].keys())
+
+        if not voorkeuren and not afkeuren:
+            return "Ik weet eigenlijk nog niet zoveel over je voorkeuren -- vertel gerust iets!"
+
+        delen = []
+        if voorkeuren:
+            delen.append("je houdt van " + ", ".join(voorkeuren))
+        if afkeuren:
+            delen.append("je houdt niet van " + ", ".join(afkeuren))
+
+        return "Voor zover ik weet: " + " en ".join(delen) + "."
 
     # ---------------------------------------------------------
     # Confirm-flow (teach)
@@ -966,10 +1313,22 @@ class IntentRouter:
             ("relatie",          self.detect_relation_check),
             ("part_of",          self.detect_part_of_check),
             ("subtypes",         self.detect_subtypes_query),
-            # activity bewust als LAATSTE: een zin als "ik ga slapen"
-            # mag nooit een specifiekere intent overschrijven, moet
-            # wel vóór de kale fallback gevangen worden
             ("activity",         self.detect_activity),
+            # preference_query VOOR preference (Fase 4 vóór Fase 3):
+            # een VRAAG ("wat kan ik drinken?") moet niet per ongeluk
+            # door detect_preference() als een NIEUWE uitspraak gelezen
+            # worden. detect_preference_query() herkent vraag-vormen,
+            # detect_preference() herkent uitspraak-vormen -- ze
+            # overlappen normaal niet qua triggerzinnen, maar de
+            # volgorde hier is een extra vangnet.
+            ("preference_query", self.detect_preference_query),
+            # preference bewust als ALLERLAATSTE (na activity): een
+            # zin als "ik ga slapen" of "ik speel graag schaak" moet
+            # eerst de kans krijgen om als activity/chess herkend te
+            # worden -- pas als niets specifieker matcht, proberen we
+            # de generieke voorkeur-patronen (Fase 3, zie detect_
+            # preference() hierboven).
+            ("preference",       self.detect_preference),
         ]
 
     # ---------------------------------------------------------
@@ -1038,6 +1397,10 @@ class IntentRouter:
         if self.handle_confirmation(text):
             return
 
+        # 2B Preferences (Fase 2: expliciet 'onthoud:'/'vergeet:'-commando)
+        if self.handle_preference(text):
+            return
+
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).
         # Zelfde volgorde, zelfde detect_*()-functies als voorheen --
         # enkel de manier waarop ze doorlopen worden is veranderd.
@@ -1090,7 +1453,7 @@ class IntentRouter:
         # 11 Fallback
         self.fallback(text)
 
-def init_module(event_bus, semantic_module=None):
-    router = IntentRouter(event_bus, semantic_module)
+def init_module(event_bus, semantic_module=None, kevin_profile=None, sentiment_classifier=None):
+    router = IntentRouter(event_bus, semantic_module, kevin_profile, sentiment_classifier)
     event_bus.publish("module_loaded", {"name": "intent_router"})
     return router

@@ -31,7 +31,7 @@ class SessionWatcher:
     # tijdelijk lager om te testen"-opmerking had.
     INTERRUPTION_VRAAG_DREMPEL_MINUTEN = 15
 
-    def __init__(self, event_bus, context_manager=None):
+    def __init__(self, event_bus, context_manager=None, kevin_profile=None):
         self.event_bus = event_bus
         self.start_time = time.time()
         self.laatste_melding_time = None
@@ -39,6 +39,48 @@ class SessionWatcher:
         # Kan None zijn (bv. als context_manager nog niet geladen is),
         # daarom altijd voorzichtig checken met "if self.context_manager".
         self.context_manager = context_manager
+
+        # User Preferences (Fase 4): voor de activity-koppeling
+        # hieronder (_reageer_op_profiel_match). Net als context_manager
+        # kan dit None zijn afhankelijk van laadvolgorde -- altijd
+        # voorzichtig checken met "if self.kevin_profile".
+        self.kevin_profile = kevin_profile
+
+        # Voorkomt dat dezelfde activiteit-instantie tweemaal een
+        # profiel-reactie triggert.
+        self._al_gereageerd_op_profiel_voor = None
+
+        # Sjablonen voor de profiel-match-reactie (_reageer_op_profiel_
+        # match hieronder). Zelfde opening/afsluiting-combinatiepatroon
+        # als _sjablonen_pauze verderop in dit bestand -- puur string-
+        # combinatie via random.choice(), geen generatie.
+        self._sjablonen_profiel_match = {
+            "positief": {
+                "openingen": [
+                    "Veel plezier met {activiteit}!",
+                    "Fijn dat je {activiteit} gaat doen!",
+                    "Leuk, {activiteit}!",
+                    "{activiteit_hoofdletter}, mooi zo!",
+                ],
+                "afsluitingen": [
+                    "Ik weet dat je daar erg van houdt.",
+                    "Dat vind je altijd fijn om te doen.",
+                    "Ik herinner me dat je dat graag doet.",
+                    "Je hebt me al verteld dat je dat leuk vindt.",
+                ],
+            },
+            "negatief": {
+                "openingen": [
+                    "Oei,", "Hmm,", "Wacht even,", "Raar,",
+                ],
+                "afsluitingen": [
+                    "ik dacht dat je daar net niet van hield?",
+                    "had je daar niet eerder iets negatiefs over gezegd?",
+                    "ik herinner me dat je dat eigenlijk niet leuk vond.",
+                    "je zei toch dat je dat liever niet deed?",
+                ],
+            },
+        }
 
         # Activity-Aware Interaction (interruption_learning_roadmap.md):
         # houdt bij WELKE activiteit nu loopt en SINDS WANNEER, puur
@@ -115,6 +157,106 @@ class SessionWatcher:
         self.actieve_activiteit = naam
         self.activiteit_start_tijd = time.time()
         self._al_gevraagd_voor_activiteit = None
+        self._al_gereageerd_op_profiel_voor = None
+
+        self._reageer_op_profiel_match(naam)
+
+    # Minimale woordlengte voor substring-matching (zie
+    # _reageer_op_profiel_match hieronder) -- voorkomt dat korte
+    # profielwoorden ("as", "op") toevallig overal in matchen.
+    _MIN_LENGTE_SUBSTRING_MATCH = 4
+
+    def _reageer_op_profiel_match(self, activiteit_naam):
+        """
+        User Preferences-koppeling (Fase 4): als de zonet gestarte
+        activiteit overeenkomt met een woord uit kevin_profile.json,
+        stuurt Nova een korte, gevarieerde bevestiging -- zowel bij een
+        POSITIEVE match ("veel plezier, ik weet dat je hiervan houdt")
+        als een NEGATIEVE match ("ik dacht dat je hier niet van hield?").
+
+        Matching is een SUBSTRING-check, niet enkel exacte gelijkheid:
+        detect_activity() geeft vaak een hele frase door ("een potje
+        schaken", "koffie drinken"), geen los woord, dus een profielwoord
+        als "schaken" moet ook matchen als het ERGENS in die frase
+        voorkomt. Bewust beperkt tot woorden van minstens
+        _MIN_LENGTE_SUBSTRING_MATCH letters, om te vermijden dat een kort
+        profielwoord toevallig overal in matcht.
+
+        Dit is bewust een vaste, voorspelbare koppeling (activity-event
+        x profiel-lookup), GEEN vrije tekstinterpretatie -- enkel dit
+        ene, voorspelbare moment (activiteit-start) triggert een reactie.
+
+        Publiceert 'layer4_response' (niet rechtstreeks 'chat_response'),
+        zodat dit nog door de tone-pipeline gaat, net als de rest van
+        Layer 4.
+        """
+        if not self.kevin_profile:
+            return
+
+        if self._al_gereageerd_op_profiel_voor == activiteit_naam:
+            return
+
+        gevonden_woord, info = self._zoek_profiel_match(activiteit_naam)
+        if gevonden_woord is None:
+            return
+
+        self._al_gereageerd_op_profiel_voor = activiteit_naam
+
+        tekst = self._formuleer_profiel_reactie(gevonden_woord, info["sentiment"])
+        self.event_bus.publish("layer4_response", {"text": tekst})
+        print(
+            f"[SESSION_WATCHER] Profiel-match voor activiteit '{activiteit_naam}' "
+            f"(profielwoord: '{gevonden_woord}', sentiment: {info['sentiment']})."
+        )
+
+    def _zoek_profiel_match(self, activiteit_naam):
+        """
+        Zoekt of een woord uit het profiel voorkomt in de activiteit-
+        naam (substring-check in beide richtingen: activiteit bevat
+        profielwoord, OF profielwoord bevat activiteit -- vangt zowel
+        "een potje schaken" (bevat "schaken") als een kortere activiteit-
+        naam op).
+
+        Geeft terug: (profielwoord, info) van de EERSTE match, of
+        (None, None) als niets matcht. Bij meerdere mogelijke matches
+        wordt bewust niet verder gesorteerd/gekozen -- dit is een
+        zeldzame situatie en de eerste match is prima voor deze
+        eenvoudige koppeling.
+        """
+        alles = self.kevin_profile.get_all_preferences()
+        alle_woorden = list(alles["voorkeuren"].keys()) + list(alles["afkeuren"].keys())
+
+        activiteit_lower = activiteit_naam.lower()
+
+        for woord in alle_woorden:
+            if len(woord) < self._MIN_LENGTE_SUBSTRING_MATCH:
+                continue
+            if woord in activiteit_lower or activiteit_lower in woord:
+                info = self.kevin_profile.get_preference(woord)
+                if info is not None:
+                    return woord, info
+
+        return None, None
+
+    def _formuleer_profiel_reactie(self, activiteit, sentiment):
+        """
+        Bouwt een gevarieerde reactiezin op basis van sentiment, met
+        random.choice() op vaste sjabloon-onderdelen -- zelfde principe
+        als _formuleer_pauze_melding() verderop in dit bestand.
+        """
+        sjabloon = self._sjablonen_profiel_match[sentiment]
+
+        if sentiment == "positief":
+            opening = random.choice(sjabloon["openingen"]).format(
+                activiteit=activiteit,
+                activiteit_hoofdletter=activiteit.capitalize()
+            )
+            afsluiting = random.choice(sjabloon["afsluitingen"])
+            return f"{opening} {afsluiting}"
+
+        opening = random.choice(sjabloon["openingen"])
+        afsluiting = random.choice(sjabloon["afsluitingen"])
+        return f"{opening} over '{activiteit}' -- {afsluiting}"
 
     def check_activity_interruption(self):
         """
@@ -302,11 +444,14 @@ def init_module(event_bus, sem=None):
 
     LET OP: session_watcher wordt geladen via de DYNAMISCHE modules-
     scan in module_loader.py (stap 3) — dat gebeurt VOOR context_manager
-    geladen wordt (stap 3C, na response_engine). Op dit moment bestaat
-    loaded_modules["context_manager"] dus nog NIET. We geven hier dus
-    (nog) geen context_manager mee — die wordt vlak na het laden
-    apart ingeprikt door module_loader.py. Zie het zoek/vervang-blok
-    voor module_loader.py hieronder.
+    EN VOOR kevin_profile geladen wordt (kevin_profile zit in
+    modules/preferences/, dus wordt door dezelfde dynamische scan
+    gevonden, maar de volgorde binnen die scan hangt af van
+    pkgutil.walk_packages() en is niet gegarandeerd vóór session_watcher
+    te lopen). We geven hier dus (nog) geen context_manager/kevin_profile
+    mee — die worden vlak na het laden apart ingeprikt door
+    module_loader.py. Zie het zoek/vervang-blok voor module_loader.py
+    hieronder.
     """
     instance = SessionWatcher(event_bus)
     event_bus.publish("module_loaded", {"name": "session_watcher"})

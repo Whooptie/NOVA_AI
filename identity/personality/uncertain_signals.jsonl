@@ -79,3 +79,25 @@
 {"text": "sin(30)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-25T13:45:03.422223"}
 {"text": "bla", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "woordenlijst", "tijdstip": "2026-07-25T19:06:40.435629"}
 {"text": "bla", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "woordenlijst", "tijdstip": "2026-07-25T19:06:46.878796"}
+{"text": "echt is een woord", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0749, "bron": "model_fallback", "tijdstip": "2026-07-25T21:04:22.847417"}
+{"text": "help", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-25T21:05:35.979653"}
+{"text": "onthoud: ik drink graag koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0255, "bron": "model_fallback", "tijdstip": "2026-07-25T22:05:35.671861"}
+{"text": "onthoud: ik hou niet van kou", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0541, "bron": "model_fallback", "tijdstip": "2026-07-25T22:05:52.564970"}
+{"text": "vergeet: kou", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0479, "bron": "model_fallback", "tijdstip": "2026-07-25T22:06:00.732895"}
+{"text": "vergeet: kou", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0479, "bron": "model_fallback", "tijdstip": "2026-07-25T22:06:09.417316"}
+{"text": "onthoud: blabla", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0135, "bron": "model_fallback", "tijdstip": "2026-07-25T22:06:16.625937"}
+{"text": "ik hou van koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0491, "bron": "model_fallback", "tijdstip": "2026-07-25T22:12:54.408287"}
+{"text": "ik hou van schaken", "signaal": "focus", "model_signaal": "focus", "marge": 0.0019, "bron": "model_fallback", "tijdstip": "2026-07-25T22:13:06.878963"}
+{"text": "ik hou niet van verliezen bij schaken", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0007, "bron": "model_fallback", "tijdstip": "2026-07-25T22:13:50.755074"}
+{"text": "nieuwe partij", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0079, "bron": "model_fallback", "tijdstip": "2026-07-25T22:14:27.544852"}
+{"text": "onthoud: ik hou van kou", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0018, "bron": "model_fallback", "tijdstip": "2026-07-25T22:22:46.764517"}
+{"text": "ik hou niet van kou", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0031, "bron": "model_fallback", "tijdstip": "2026-07-25T22:23:03.332438"}
+{"text": "onthoud: ik hou van koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.018, "bron": "model_fallback", "tijdstip": "2026-07-25T22:23:35.808102"}
+{"text": "onthoud: ik hou van schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0072, "bron": "model_fallback", "tijdstip": "2026-07-25T22:41:06.505788"}
+{"text": "onthoud: ik hou niet van tandarts", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0541, "bron": "model_fallback", "tijdstip": "2026-07-25T22:41:22.882610"}
+{"text": "onthoud: koffie is wel oké maar niet mijn favoriet", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.02, "bron": "model_fallback", "tijdstip": "2026-07-26T12:11:59.779946"}
+{"text": "onthoud: ik hou van koffie maar het is niet mijn favoriet", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0148, "bron": "model_fallback", "tijdstip": "2026-07-26T12:12:41.023051"}
+{"text": "onthoud: ik hou van koffie maar het is niet mijn favoriet", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0148, "bron": "model_fallback", "tijdstip": "2026-07-26T12:14:55.151636"}
+{"text": "vergeet: niet mijn favoriet", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0753, "bron": "model_fallback", "tijdstip": "2026-07-26T12:15:10.168547"}
+{"text": "onthoud: ik hou van koffie maar het is niet mijn favoriet", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0148, "bron": "model_fallback", "tijdstip": "2026-07-26T12:15:15.281223"}
+{"text": "vergeet: niet mijn favoriet", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0753, "bron": "model_fallback", "tijdstip": "2026-07-26T12:18:15.865796"}
