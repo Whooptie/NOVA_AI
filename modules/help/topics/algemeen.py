@@ -38,6 +38,18 @@ def get_help():
 ♟️ SCHAKEN
   help schaken  (voor alle schaakcommando's)
 
+💛 VOORKEUREN
+  onthoud: ik hou van koffie          (voorkeur vastleggen)
+  onthoud: ik hou niet van kou        (afkeur vastleggen)
+  vergeet: koffie                     (voorkeur/afkeur laten vergeten)
+  wat kan ik drinken                  (suggestie op basis van je voorkeuren)
+  wat kan ik eten                     (idem, voor eten)
+  wat weet je over mij                (volledig overzicht van je profiel)
+  wat vind ik leuk                    (idem)
+  onthoud sense python                (kies welke betekenis je meestal bedoelt
+                                        bij een meerduidig woord, bv. python
+                                        als taal of als slang)
+
 🧠 GEHEUGEN
   memory stats                    (hoeveel events opgeslagen, hoe groot de database)
   memory search <woord>           (zoek een woord terug in het geheugen)

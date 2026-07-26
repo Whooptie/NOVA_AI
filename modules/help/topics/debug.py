@@ -40,6 +40,14 @@ def get_help():
   patronen                       (algemene stats: hoeveel event_types en observaties)
   patronen <event_type>          (ruwe patroondata, actief?, volgend verwacht moment, anomalieën)
 
+🔗 LAYER 1 — WORD ASSOCIATIONS
+  associaties                    (algemene stats: hoeveel woorden/associaties totaal)
+  associaties <woord>            (alle opgeslagen associaties + sentiment voor dat woord)
+
+💛 USER PREFERENCES
+  preferences debug              (profiel-aantallen, sentiment-classifier-status,
+                                   kandidaat-suggesties-status in één oogopslag)
+
 ℹ️ Dit zijn tijdelijke test-/debugcommando's voor jou als developer,
    geen onderdeel van Nova's normale gesprek met de gebruiker.
 """.strip()

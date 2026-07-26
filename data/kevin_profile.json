@@ -59,5 +59,8 @@
         "aantal_keer_genoemd": 1
       }
     }
+  },
+  "sense_voorkeuren": {
+    "python": "python#1"
   }
 }

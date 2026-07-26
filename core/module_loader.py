@@ -169,6 +169,14 @@ class ModuleLoader:
             "word_associations": self.loaded_modules.get("word_associations_learner"),
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
             "interruption_tracker": self.loaded_modules.get("interruption_tracker"),
+            # Bug #10-fix, stap 7: kevin_profile nodig in
+            # _sterkste_associatie() als vangnet-voorkeur wanneer
+            # detect_sense() zelf geen duidelijke sense uit de context
+            # kan halen. kevin_profile (modules/preferences/) is op dit
+            # punt al dynamisch geladen (stap 3 hierboven), dus staat
+            # gegarandeerd al in loaded_modules -- zelfde redenering als
+            # bij intent_router hieronder.
+            "kevin_profile": self.loaded_modules.get("kevin_profile"),
         }
         resp_engine = response_engine.init_module(self.event_bus, layers=response_layers)
         resp_engine.__load_time_ms__ = int((time.time() - start) * 1000)

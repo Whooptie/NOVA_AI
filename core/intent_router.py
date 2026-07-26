@@ -24,6 +24,13 @@ class IntentRouter:
         # voorzichtig checken met "if self.sentiment_classifier".
         self.sentiment_classifier = sentiment_classifier
         self.awaiting_confirmation = None
+        # Bug #10-fix, stap 7: houdt bij of Kevin net gevraagd is een
+        # nummer te kiezen na "onthoud sense <woord>". Volledig los van
+        # pending_question.py (dat mechanisme is gebouwd voor ja/nee-
+        # vragen, niet voor een keuze uit een genummerde lijst) --
+        # zelfde soort lokale, eigen state als semantic.py's
+        # RelationFlowEngine.pending_relation.
+        self._pending_sense_voorkeur = None
         self._intent_tabel_deel1 = self._build_intent_tabel_deel1()
         self._intent_tabel_deel2 = self._build_intent_tabel_deel2()
 
@@ -255,6 +262,121 @@ class IntentRouter:
         return self.sentiment_classifier.classificeer(
             volledige_zin, grof_sentiment=grof_sentiment
         )
+
+    # ---------------------------------------------------------
+    # Sense-voorkeur commando (Bug #10-fix, stap 7)
+    # ---------------------------------------------------------
+    def handle_sense_voorkeur(self, text):
+        """
+        Herkent 'onthoud sense <woord>'. Start een korte, lokale
+        vraag-flow (net als RelationFlowEngine in semantic.py, maar
+        hier volledig binnen intent_router.py): Nova toont de
+        genummerde lijst van senses voor dat woord, en wacht op een
+        nummer als antwoord (afgehandeld door
+        _verwerk_pending_sense_voorkeur()).
+
+        Bewust een NUMMER laten kiezen i.p.v. te proberen vrije tekst
+        ("de slang") te matchen met een definitie -- dat laatste zou
+        een eigen stuk tekstherkenning vergen en is foutgevoeliger.
+        Zelfde soort keuze als _ask_sense_choice() in semantic.py al
+        maakt voor de relatie-flow.
+
+        Voorbeeld:
+            onthoud sense python
+            -> "Welke betekenis van 'python' bedoel je meestal?
+                1. een programmeertaal
+                2. Een python is een grote, niet-giftige slang..."
+            Kevin antwoordt: 2
+            -> voorkeur opgeslagen, python -> python#2
+        """
+        t = text.strip()
+        tl = t.lower()
+
+        if not (tl.startswith("onthoud sense ") or tl.startswith("onthoud betekenis ")):
+            return False
+
+        prefix_lengte = len("onthoud sense ") if tl.startswith("onthoud sense ") else len("onthoud betekenis ")
+        woord = t[prefix_lengte:].strip().rstrip(".!?")
+
+        if not woord:
+            self.event_bus.publish("chat_response", {
+                "text": "Gebruik: onthoud sense <woord>, bv. 'onthoud sense python'"
+            })
+            return True
+
+        if not self.semantic:
+            self.event_bus.publish("chat_response", {
+                "text": "Ik kan nu geen betekenissen opzoeken, probeer later opnieuw."
+            })
+            return True
+
+        senses = self.semantic.get_senses(woord)
+        echte_senses = [s for s in senses if s.get("definition") != "unknown"]
+
+        if len(echte_senses) < 2:
+            self.event_bus.publish("chat_response", {
+                "text": f"Ik ken '{woord}' niet met meerdere betekenissen, dus er is niets om te kiezen."
+            })
+            return True
+
+        lines = [f"Welke betekenis van '{woord}' bedoel je meestal?"]
+        for i, s in enumerate(echte_senses, start=1):
+            lines.append(f"{i}. {s.get('definition')}")
+        lines.append("Antwoord met het nummer.")
+
+        self._pending_sense_voorkeur = {
+            "woord": woord,
+            "senses": echte_senses,
+        }
+
+        self.event_bus.publish("chat_response", {"text": "\n".join(lines)})
+        return True
+
+    def _verwerk_pending_sense_voorkeur(self, text):
+        """
+        Wordt aangeroepen VOORDAT de normale intent-routing draait,
+        enkel als self._pending_sense_voorkeur niet None is (dus vlak
+        na handle_sense_voorkeur() de vraag stelde). Verwacht een kaal
+        nummer als antwoord.
+
+        Geeft True terug als het bericht als antwoord behandeld is
+        (normale routing dus NIET meer draait), anders False.
+        """
+        if self._pending_sense_voorkeur is None:
+            return False
+
+        t = text.strip()
+
+        if not t.isdigit():
+            self.event_bus.publish("chat_response", {
+                "text": "Antwoord met enkel het nummer van de betekenis die je bedoelt."
+            })
+            return True  # Vraag blijft open staan, geen normale routing
+
+        nummer = int(t)
+        senses = self._pending_sense_voorkeur["senses"]
+        woord = self._pending_sense_voorkeur["woord"]
+
+        if nummer < 1 or nummer > len(senses):
+            self.event_bus.publish("chat_response", {
+                "text": f"Kies een nummer tussen 1 en {len(senses)}."
+            })
+            return True  # Vraag blijft open staan
+
+        gekozen_sense_id = senses[nummer - 1]["sense_id"]
+
+        if self.kevin_profile:
+            self.kevin_profile.set_sense_voorkeur(woord, gekozen_sense_id)
+            self.event_bus.publish("chat_response", {
+                "text": f"Oké, ik onthoud dat je met '{woord}' meestal betekenis {nummer} bedoelt."
+            })
+        else:
+            self.event_bus.publish("chat_response", {
+                "text": "Ik kan dit nu niet opslaan (kevin_profile niet beschikbaar)."
+            })
+
+        self._pending_sense_voorkeur = None
+        return True
 
     # ---------------------------------------------------------
     # Preferences-flow (Fase 3: automatische patroonherkenning)
@@ -558,7 +680,13 @@ class IntentRouter:
                 response_engine = self.event_bus.modules.get("response_engine")
 
                 if response_engine is not None:
-                    resultaat = response_engine.generate(word)
+                    # Bug #10-fix: de volledige vraagzin (t) meegeven als
+                    # context, zodat response_engine (via semantic.
+                    # detect_sense()) bij meerduidige woorden (python,
+                    # hart, ...) de juiste sense kan herkennen i.p.v.
+                    # altijd de sense met hoogste confidence te tonen.
+                    context_words = t.split()
+                    resultaat = response_engine.generate(word, context_words)
 
                     if resultaat.get("confidence", 0.0) > 0.2:
                         self.event_bus.publish("layer4_response", {
@@ -1381,6 +1509,15 @@ class IntentRouter:
         if self._verwerk_pending_antwoord(text):
             return
 
+        # -1B Pending sense-voorkeur (Bug #10-fix, stap 7) -- zelfde
+        # voorrang-redenering als hierboven: als Kevin net gevraagd is
+        # een nummer te kiezen na "onthoud sense <woord>", mag dat
+        # nummer nooit als een los, nieuw bericht door de rest van de
+        # routing lopen (bv. per ongeluk als math-expressie "2"
+        # herkend worden).
+        if self._verwerk_pending_sense_voorkeur(text):
+            return
+
         # 0 Reboot (altijd als allereerste gecontroleerd, voorrang op alles)
         if self.detect_reboot(text):
             return
@@ -1395,6 +1532,15 @@ class IntentRouter:
 
         # 2 Confirm
         if self.handle_confirmation(text):
+            return
+
+        # 2A Sense-voorkeur commando (Bug #10-fix, stap 7) -- MOET voor
+        # handle_preference() gecontroleerd worden: "onthoud sense X"
+        # begint met "onthoud " en zou anders door
+        # _ontleed_voorkeur_zin() als een onherkend voorkeur-patroon
+        # worden afgevangen (met een verwarrende foutmelding), nog
+        # vóór dit commando de kans krijgt.
+        if self.handle_sense_voorkeur(text):
             return
 
         # 2B Preferences (Fase 2: expliciet 'onthoud:'/'vergeet:'-commando)

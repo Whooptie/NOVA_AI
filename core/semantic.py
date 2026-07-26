@@ -227,13 +227,73 @@ class SenseEngine:
             return []
         return concept.get("senses", [])
 
-    def get_best_definition(self, word: str) -> str | None:
+    def get_best_definition(self, word: str, context_words: list[str] | None = None) -> str | None:
         senses = self.get_senses(word)
         real_senses = [s for s in senses if s.get("definition") != "unknown"]
         if not real_senses:
             return None
+
+        # Bug #10-fix: als er context_words zijn meegegeven, proberen we
+        # eerst via signaalwoorden de juiste sense te herkennen (bv.
+        # "wat is python, is dat een gevaarlijk dier?" -> python#2).
+        # Geen context, of geen duidelijke match -> val terug op het
+        # oude gedrag (hoogste confidence), exact zoals voorheen.
+        if context_words:
+            sense_id = self.detect_sense(word, context_words)
+            if sense_id:
+                for s in real_senses:
+                    if s.get("sense_id") == sense_id:
+                        return s.get("definition")
+
         best = max(real_senses, key=lambda s: s.get("confidence", 0))
         return best.get("definition")
+
+    def detect_sense(self, word: str, context_words: list[str]) -> str | None:
+        """
+        Bepaalt welke sense van een meerduidig woord bedoeld is, op basis
+        van de andere woorden in de zin (context_words).
+
+        Werkt puur symbolisch via 'signaalwoorden' die per sense in
+        concepts.json staan (bv. python#2 heeft signaalwoorden als
+        "slang", "dier", "prooi"). Geen ML/LLM.
+
+        Geeft terug:
+        - None als het woord geen concept is, geen senses heeft, of maar
+          1 sense heeft (dan is er toch niets te kiezen)
+        - None bij een gelijke stand (geen duidelijke winnaar) of als
+          geen enkele sense signaalwoorden heeft ingevuld
+        - anders: de sense_id (bv. "python#2") van de sense met de meeste
+          treffers in de context_words
+        """
+        senses = self.get_senses(word)
+        real_senses = [s for s in senses if s.get("definition") != "unknown"]
+
+        if len(real_senses) <= 1:
+            return None  # Niets om te disambigueren
+
+        context_set = set(context_words)
+
+        scores = []
+        for s in real_senses:
+            signaalwoorden = s.get("signaalwoorden", [])
+            if not signaalwoorden:
+                continue
+            aantal_treffers = len(context_set & set(signaalwoorden))
+            if aantal_treffers > 0:
+                scores.append((s["sense_id"], aantal_treffers))
+
+        if not scores:
+            return None  # Geen enkele match
+
+        scores.sort(key=lambda x: x[1], reverse=True)
+
+        # Bij een gelijke stand tussen de top-2 is er geen duidelijke
+        # winnaar — dan laten we het bewust aan None, zodat de aanroeper
+        # (Layer 1 / get_meaning) op de bestaande fallback terugvalt.
+        if len(scores) > 1 and scores[0][1] == scores[1][1]:
+            return None
+
+        return scores[0][0]
 
     def detect_pos(self, word: str) -> str:
         w = word.lower().strip()
@@ -1182,13 +1242,44 @@ class SemanticConceptsModule:
     def get_senses(self, word):
         return self.sense_engine.get_senses(word)
 
-    def get_meaning(self, word):
+    def get_meaning(self, word, context_words=None):
         # 1. normaliseer meervoud → enkelvoud
         pos_guess = self.sense_engine.detect_pos(word)
         word = self.teach_engine._normalize_plural_if_noun(word, pos_guess)
 
-        # 2. zoek definitie
-        return self.sense_engine.get_best_definition(word)
+        # 2. Bug #10-fix, stap 7: als context_words zelf geen duidelijke
+        # sense oplevert (bv. te korte zin, "wat is python?" zonder
+        # verdere aanwijzingen), kijken we of Kevin hiervoor ooit een
+        # voorkeur heeft ingesteld via kevin_profile.py. Vindt
+        # get_best_definition() zelf al iets via context_words, dan
+        # komt deze voorkeur er nooit meer aan te pas (zie
+        # get_best_definition() zelf: context_words heeft voorrang).
+        #
+        # We bepalen dit HIER (i.p.v. binnenin get_best_definition())
+        # omdat enkel SemanticConceptsModule toegang heeft tot
+        # event_bus.modules, en dus tot kevin_profile.
+        voorkeur_sense_id = None
+        if not context_words or not self.sense_engine.detect_sense(word, context_words):
+            kevin_profile = self.event_bus.modules.get("kevin_profile") if self.event_bus else None
+            if kevin_profile is not None:
+                try:
+                    voorkeur_sense_id = kevin_profile.get_sense_voorkeur(word)
+                except Exception:
+                    voorkeur_sense_id = None
+
+        if voorkeur_sense_id:
+            senses = self.sense_engine.get_senses(word)
+            for s in senses:
+                if s.get("sense_id") == voorkeur_sense_id and s.get("definition") != "unknown":
+                    return s.get("definition")
+            # Voorkeur verwijst naar een sense die niet (meer) bestaat
+            # -> gewoon laten doorvallen naar de normale route hieronder.
+
+        # 3. zoek definitie (met optionele sense-disambiguatie, Bug #10)
+        return self.sense_engine.get_best_definition(word, context_words)
+
+    def detect_sense(self, word, context_words):
+        return self.sense_engine.detect_sense(word, context_words)
 
 
     def add_relation(self, subject, relation_type, target):
