@@ -26,7 +26,7 @@
       "last_shift_direction": null
     },
     "curiosity": {
-      "positive_count": 0,
+      "positive_count": 4,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -61,14 +61,14 @@
       "last_shift_direction": null
     },
     "associative_thinking": {
-      "positive_count": 0,
+      "positive_count": 4,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "focus_hyperfocus_tendency": {
-      "positive_count": 7,
+      "positive_count": 9,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-07-25T22:14:39.577555",
@@ -90,20 +90,20 @@
     },
     "chaotic_variability": {
       "positive_count": 0,
-      "negative_count": 8,
+      "negative_count": 10,
       "total_shifts": 2,
       "last_shift": "2026-07-25T22:14:22.063389",
       "last_shift_direction": "negatief"
     },
     "energy_level": {
-      "positive_count": 0,
+      "positive_count": 4,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "dramatic_flair": {
-      "positive_count": 0,
+      "positive_count": 4,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
