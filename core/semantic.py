@@ -312,13 +312,83 @@ class SenseEngine:
 
         infinitives = {
             "lopen", "werken", "spelen", "maken", "doen", "zien", "gaan",
-            "komen", "blijven", "eten", "drinken", "schrijven", "lezen"
+            "komen", "blijven", "eten", "drinken", "schrijven", "lezen",
+            "vinden", "spreken", "kijken", "denken", "geven", "nemen",
+            "vragen", "zeggen", "weten", "kennen", "willen", "kunnen",
+            "moeten", "helpen", "spelen", "praten",
         }
         if w in infinitives:
             return "verb"
 
+        # Bugfix (27 juli 2026): vervoegde werkwoordsvormen (bv. "drink",
+        # "speel", "vind" -- ik-vorm van "drinken"/"spelen"/"vinden")
+        # werden hier voorheen niet herkend, want deze lijst checkte
+        # enkel de kale INFINITIEF. Een niet-herkende vervoegde vorm
+        # viel daardoor door naar de "noun"-default hieronder, en
+        # auto_learn() sloeg het dan ten onrechte op als zelfstandig
+        # naamwoord. Nu wordt ELKE veelvoorkomende vervoegingsuitgang
+        # ("t", "en", "de", "den", "d") van het woord afgehaald en
+        # gecombineerd met de twee gangbare infinitief-uitgangen
+        # ("en"/"n") gecheckt tegen dezelfde infinitieven-set hierboven
+        # -- geen nieuwe woordenlijst, enkel een bredere match op de
+        # lijst die al bestond. Blijft bewust simpel/symbolisch: geen
+        # volledige vervoegingsgrammatica, enkel de meest voorkomende
+        # patronen (ik/jij/hij-vorm, verleden tijd).
+        #
+        # BUGFIX-VERVOLG (27 juli 2026): eerste versie van deze fix
+        # miste nog "speel" (en soortgelijke: "loop", "maak", ...) --
+        # de Nederlandse spellingsregel dat een lange klinker in de
+        # ik-vorm ENKEL verdubbeld wordt als er geen uitgang volgt
+        # (speel -> spelen, niet "speelen") werd nog niet gedekt. Nu
+        # wordt bij een stam die eindigt op medeklinker + dubbele
+        # klinker ("ee"/"oo"/"uu") ook de ENKELVOUDIGE klinkervorm
+        # geprobeerd ("speel" -> "spel", dan "spel"+"en" = "spelen").
+        vervoeging_afkappingen = ("den", "de", "en", "t", "d", "")
+        kandidaat_stammen = {w}
+        for afkapping in vervoeging_afkappingen:
+            if afkapping and w.endswith(afkapping):
+                kandidaat_stammen.add(w[: -len(afkapping)])
+
+        for stam in kandidaat_stammen:
+            for infinitief_uitgang in ("en", "n"):
+                if stam + infinitief_uitgang in infinitives:
+                    return "verb"
+
+            # Klinkerverdubbelingsregel: medeklinker + dubbele klinker
+            # (ee/oo/uu) aan het einde van de stam -> probeer ook de
+            # enkelvoudige klinkervorm (speel -> spel, loop -> lop).
+            if (
+                len(stam) >= 3
+                and stam[-1] not in "aeiou"
+                and stam[-2] == stam[-3]
+                and stam[-2] in "aeou"
+            ):
+                korte_stam = stam[:-2] + stam[-1]
+                for infinitief_uitgang in ("en", "n"):
+                    if korte_stam + infinitief_uitgang in infinitives:
+                        return "verb"
+
         if w.endswith("lijk") or w.endswith("ig") or w.endswith("isch"):
             return "adj"
+
+        # Bugfix (27 juli 2026): veelvoorkomende bijwoorden/voorzetsels/
+        # functiewoorden die GEEN zelfstandig naamwoord zijn, maar door
+        # de "noun"-default hieronder toch als concept werden aan-
+        # gemaakt (bv. "graag", "heel", "snel", "aan"). Zelfde soort
+        # vaste, symbolische stopwoordenlijst als RelationParser.
+        # STOPWOORDEN (semantic.py) en response_pipeline.py's eigen
+        # stopwoorden-set -- hier specifiek gericht op woordsoort i.p.v.
+        # relatie-ruis. Geeft bewust geen "noun"/"verb" terug voor deze
+        # woorden; "function" signaleert aan de aanroeper (auto_learn())
+        # dat dit woord niet als zelfstandig naamwoord-concept hoort.
+        FUNCTIEWOORDEN = {
+            "graag", "heel", "snel", "aan", "even", "helemaal", "hoor",
+            "warm", "welke", "waarop", "waarin", "waaruit", "waardoor",
+            "waarvoor", "toch", "wel", "niet", "ook", "nog", "al",
+            "misschien", "gewoon", "zeker", "eigenlijk", "samen",
+        }
+        if w in FUNCTIEWOORDEN:
+            return "function"
 
         return "noun"
 
@@ -869,6 +939,17 @@ class TeachEngine:
         word = word.lower().strip()
 
         pos_guess = self.sense_engine.detect_pos(word)
+
+        # Bugfix (27 juli 2026): functiewoorden (bijwoorden/voorzetsels,
+        # zie detect_pos()'s nieuwe FUNCTIEWOORDEN-check) mogen nooit
+        # als concept aangemaakt worden -- dit was exact de bron van de
+        # 11 resterende ruis-concepten (drink, graag, speel, vind, ...)
+        # in concepts.json. Geeft een "leeg" resultaat terug i.p.v. een
+        # nieuw concept, zodat de aanroeper weet dat hier bewust niets
+        # geleerd is.
+        if pos_guess == "function":
+            return {"definition": "unknown", "pos": "function", "geweigerd": True}
+
         word = self._normalize_plural_if_noun(word, pos_guess)
 
         concept = self.store.ensure_concept(word)

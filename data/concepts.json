@@ -8751,8 +8751,8 @@
           "Dit nummer stond wekenlang aan de top van de hitlijst."
         ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -8809,8 +8809,8 @@
             "created_at": "2026-07-11T00:00:00.000000"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -10005,8 +10005,8 @@
             "created_at": "2026-07-11T20:52:21.434865"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -10572,8 +10572,8 @@
             "created_at": "2026-07-11T21:30:14.653410"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -10740,8 +10740,8 @@
             "created_at": "2026-07-11T21:20:00.000000"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -10813,8 +10813,8 @@
             "created_at": "2026-07-11T21:00:50.190504"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
@@ -12022,238 +12022,54 @@
       }
     ]
   },
-  "drink": {
-    "senses": [
-      {
-        "sense_id": "drink#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-25T20:06:54.566515",
-      "updated_at": "2026-07-25T20:06:54.567520",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-25T20:06:54.567520",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-25T20:06:54.567520",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "drink"
-        },
-        "timestamp": "2026-07-25T20:06:54.566515"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "drink#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-25T20:06:54.567520"
-      }
-    ]
-  },
-  "graag": {
-    "senses": [
-      {
-        "sense_id": "graag#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-25T20:06:54.603860",
-      "updated_at": "2026-07-25T20:06:54.605098",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-25T20:06:54.605098",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-25T20:06:54.605098",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "graag"
-        },
-        "timestamp": "2026-07-25T20:06:54.603860"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "graag#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-25T20:06:54.605098"
-      }
-    ]
-  },
-  "speel": {
-    "senses": [
-      {
-        "sense_id": "speel#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-25T20:13:30.034107",
-      "updated_at": "2026-07-25T20:13:30.035118",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-25T20:13:30.035118",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-25T20:13:30.035118",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "speel"
-        },
-        "timestamp": "2026-07-25T20:13:30.034107"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "speel#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-25T20:13:30.035118"
-      }
-    ]
-  },
   "piano": {
     "senses": [
       {
         "sense_id": "piano#1",
-        "definition": "unknown",
+        "definition": "Een piano is een muziekinstrument met toetsen die, wanneer ingedrukt, hamertjes tegen snaren laten slaan om toon te produceren.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Ze speelde een rustig nummer op de piano.",
+          "De piano stond in de hoek van de woonkamer."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "muziekinstrument",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-07-27T21:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
     "metadata": {
-      "created_at": "2026-07-25T20:13:30.058114",
-      "updated_at": "2026-07-25T20:13:30.058114",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-25T20:13:30.058114",
+      "created_at": "2026-07-27T21:00:00.000000",
+      "updated_at": "2026-07-27T21:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-27T21:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
-        {
-          "timestamp": "2026-07-25T20:13:30.058114",
-          "confidence": 0.1
-        }
+        {"timestamp": "2026-07-27T21:00:00.000000", "confidence": 1.0}
       ]
     },
     "audit_log": [
       {
         "event_type": "concept_created",
         "source": "system",
-        "new_value": {
-          "word": "piano"
-        },
-        "timestamp": "2026-07-25T20:13:30.058114"
+        "new_value": {"word": "piano"},
+        "timestamp": "2026-07-27T21:00:00.000000"
       },
       {
         "event_type": "sense_created",
-        "source": "auto",
+        "source": "user",
         "sense_id": "piano#1",
         "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-25T20:13:30.058114"
-      }
-    ]
-  },
-  "aan": {
-    "senses": [
-      {
-        "sense_id": "aan#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-26T19:03:01.920598",
-      "updated_at": "2026-07-26T19:03:01.921603",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-26T19:03:01.921603",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-26T19:03:01.921603",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "aan"
-        },
-        "timestamp": "2026-07-26T19:03:01.920598"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "aan#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-26T19:03:01.921603"
+        "new_value": "Een piano is een muziekinstrument met toetsen die, wanneer ingedrukt, hamertjes tegen snaren laten slaan om toon te produceren.",
+        "timestamp": "2026-07-27T21:00:00.000000"
       }
     ]
   },
@@ -12261,46 +12077,53 @@
     "senses": [
       {
         "sense_id": "script#1",
-        "definition": "unknown",
+        "definition": "Een script is een geschreven bestand met code-instructies die door een computer stap voor stap uitgevoerd worden.",
+        "signaalwoorden": [
+          "code", "programma", "python", "functie", "programmeren", "bestand"
+        ],
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Kevin schreef een script om de data automatisch op te ruimen.",
+          "Het script crashte omdat er een fout in de code zat."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "programma",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-27T21:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
     "metadata": {
-      "created_at": "2026-07-26T19:03:01.945871",
-      "updated_at": "2026-07-26T19:03:01.946872",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-26T19:03:01.946872",
+      "created_at": "2026-07-27T21:00:00.000000",
+      "updated_at": "2026-07-27T21:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-27T21:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
-        {
-          "timestamp": "2026-07-26T19:03:01.946872",
-          "confidence": 0.1
-        }
+        {"timestamp": "2026-07-27T21:00:00.000000", "confidence": 1.0}
       ]
     },
     "audit_log": [
       {
         "event_type": "concept_created",
         "source": "system",
-        "new_value": {
-          "word": "script"
-        },
-        "timestamp": "2026-07-26T19:03:01.945871"
+        "new_value": {"word": "script"},
+        "timestamp": "2026-07-27T21:00:00.000000"
       },
       {
         "event_type": "sense_created",
-        "source": "auto",
+        "source": "user",
         "sense_id": "script#1",
         "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-26T19:03:01.946872"
+        "new_value": "Een script is een geschreven bestand met code-instructies die door een computer stap voor stap uitgevoerd worden.",
+        "timestamp": "2026-07-27T21:00:00.000000"
       }
     ]
   },
@@ -12308,234 +12131,53 @@
     "senses": [
       {
         "sense_id": "programma#1",
-        "definition": "unknown",
+        "definition": "Een programma is een verzameling instructies die een computer uitvoert om een bepaalde taak te vervullen.",
+        "signaalwoorden": [
+          "code", "script", "python", "functie", "programmeren", "software"
+        ],
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Nova is een programma dat volledig lokaal draait.",
+          "Kevin schreef een programma om zijn bestanden te ordenen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "script",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-07-27T21:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": []
       }
     ],
     "metadata": {
-      "created_at": "2026-07-26T19:03:01.961888",
-      "updated_at": "2026-07-26T19:03:01.961888",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-26T19:03:01.961888",
+      "created_at": "2026-07-27T21:00:00.000000",
+      "updated_at": "2026-07-27T21:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-07-27T21:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
-        {
-          "timestamp": "2026-07-26T19:03:01.961888",
-          "confidence": 0.1
-        }
+        {"timestamp": "2026-07-27T21:00:00.000000", "confidence": 1.0}
       ]
     },
     "audit_log": [
       {
         "event_type": "concept_created",
         "source": "system",
-        "new_value": {
-          "word": "programma"
-        },
-        "timestamp": "2026-07-26T19:03:01.961888"
+        "new_value": {"word": "programma"},
+        "timestamp": "2026-07-27T21:00:00.000000"
       },
       {
         "event_type": "sense_created",
-        "source": "auto",
+        "source": "user",
         "sense_id": "programma#1",
         "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-26T19:03:01.961888"
-      }
-    ]
-  },
-  "vind": {
-    "senses": [
-      {
-        "sense_id": "vind#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-26T19:55:26.179526",
-      "updated_at": "2026-07-26T19:55:26.180536",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-26T19:55:26.180536",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-26T19:55:26.180536",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "vind"
-        },
-        "timestamp": "2026-07-26T19:55:26.179526"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "vind#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-26T19:55:26.180536"
-      }
-    ]
-  },
-  "heel": {
-    "senses": [
-      {
-        "sense_id": "heel#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-26T19:55:26.206543",
-      "updated_at": "2026-07-26T19:55:26.207541",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-26T19:55:26.207541",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-26T19:55:26.207541",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "heel"
-        },
-        "timestamp": "2026-07-26T19:55:26.206543"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "heel#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-26T19:55:26.207541"
-      }
-    ]
-  },
-  "snel": {
-    "senses": [
-      {
-        "sense_id": "snel#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-26T19:55:26.232537",
-      "updated_at": "2026-07-26T19:55:26.233540",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-26T19:55:26.233540",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-26T19:55:26.233540",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "snel"
-        },
-        "timestamp": "2026-07-26T19:55:26.232537"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "snel#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-26T19:55:26.233540"
-      }
-    ]
-  },
-  "gene": {
-    "senses": [
-      {
-        "sense_id": "gene#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-26T19:58:23.095950",
-      "updated_at": "2026-07-26T19:58:23.095950",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-26T19:58:23.095950",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-26T19:58:23.095950",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "gene"
-        },
-        "timestamp": "2026-07-26T19:58:23.095950"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "gene#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-26T19:58:23.095950"
+        "new_value": "Een programma is een verzameling instructies die een computer uitvoert om een bepaalde taak te vervullen.",
+        "timestamp": "2026-07-27T21:00:00.000000"
       }
     ]
   }

@@ -111,3 +111,7 @@
 {"text": "Ik vind python heel krachtig en snel", "signaal": "focus", "model_signaal": "focus", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-26T21:55:26.151688"}
 {"text": "gene", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-26T21:58:23.067954"}
 {"text": "python is code", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-07-26T21:58:29.076460"}
+{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T20:57:17.524856"}
+{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:02:19.502860"}
+{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:02:58.401720"}
+{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:08:56.799349"}
