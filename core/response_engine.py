@@ -251,6 +251,31 @@ class ResponseEngine:
             # antwoord laten crashen. Gewoon doen alsof er niets was.
             return None
 
+        # Bugfix (27 juli 2026): tot hier ontbrak de verwerking van
+        # 'related' volledig — de methode viel stilzwijgend door naar
+        # een impliciete return None, ongeacht wat Layer 1 vond. Dit
+        # betekende dat de "met_associatie"-sjabloonvariant in
+        # generate() sinds het begin nooit werd gebruikt.
+        #
+        # find_related() geeft een lijst van (woord, score)-tuples
+        # terug, AL gesorteerd sterk -> zwak (zie
+        # word_associations_learner.py), bv. [("snel", 0.61)]. Met
+        # top_k=1 bevat 'related' dus hoogstens 1 element.
+        if not related:
+            # Geen associaties gevonden voor dit woord/deze sense --
+            # heel normaal vroeg in Nova's leven, of simpelweg een
+            # woord waar Kevin nog nooit iets over getypt heeft.
+            return None
+
+        woord, score = related[0]
+
+        if score < self.MIN_ASSOCIATIE_SCORE:
+            # Wel een associatie, maar te zwak om betrouwbaar te tonen
+            # (zie MIN_ASSOCIATIE_SCORE = 0.5, __init__).
+            return None
+
+        return woord
+
     def _kies_variant(self, sjabloon_naam: str, **invulwaarden) -> str:
         """
         Kiest willekeurig één variant uit self.templates[sjabloon_naam]
@@ -355,7 +380,12 @@ class ResponseEngine:
     # Publieke API
     # ------------------------------------------------------------
 
-    def generate(self, entity: str, context_words: Optional[list] = None) -> Dict:
+    def generate(
+        self,
+        entity: str,
+        context_words: Optional[list] = None,
+        response_style: str = "normaal",
+    ) -> Dict:
         """
         Genereert een antwoord over 'entity', puur op basis van
         Layer 3 (semantic).
@@ -375,6 +405,20 @@ class ResponseEngine:
         (python, hart, ...) de juiste sense te herkennen via
         semantic.detect_sense(). Blijft None bij bestaande aanroepen
         -> exact hetzelfde gedrag als voorheen (hoogste confidence).
+
+        response_style (Layer 5-koppeling, nieuw, 27 juli 2026):
+        "kort"/"normaal"/"uitgebreid", zoals berekend door
+        context_manager.py's _bepaal_response_style(). Blijft "normaal"
+        bij bestaande aanroepen die deze parameter niet meegeven ->
+        geen breuk voor andere aanroepers.
+
+        BELANGRIJK ONDERSCHEID met expression_injector.py: die laag
+        regelt de TOON achteraf (emoji's/gestures/uitroeptekens weg bij
+        "kort"). Dit hier regelt de INHOUD zelf: bij "kort" worden de
+        Layer 1-associatie en de Layer 2-timing-hint bewust NIET
+        toegevoegd, zodat Kevin tijdens het coderen de kale definitie
+        krijgt i.p.v. een uitgebreide, verrijkte zin. Bij "normaal" en
+        "uitgebreid" verandert er niets t.o.v. het vorige gedrag.
         """
         entity = (entity or "").strip()
         if not entity:
@@ -383,6 +427,8 @@ class ResponseEngine:
                 "confidence": 0.0,
                 "sources": [],
             }
+
+        is_kort = response_style == "kort"
 
         semantic = self.layers.get("semantic")
 
@@ -402,7 +448,13 @@ class ResponseEngine:
             # — een associatie zonder definitie zou een vreemde,
             # betekenisloze zin opleveren ("betekent: ... trouwens vaak
             # met..." zonder eerst te weten wat het woord is).
-            associatie_woord = self._sterkste_associatie(entity, context_words)
+            #
+            # response_style == "kort": deze verrijking bewust
+            # overslaan (zie docstring hierboven) — Kevin is dan
+            # duidelijk met iets anders bezig, geen extra zinsdelen.
+            associatie_woord = None
+            if not is_kort:
+                associatie_woord = self._sterkste_associatie(entity, context_words)
 
             if associatie_woord:
                 text = self._kies_variant(
@@ -421,7 +473,8 @@ class ResponseEngine:
             text = self._kies_variant(
                 "definitie", entity=entity, definition=definition
             )
-            text = self._voeg_timing_hint_toe(text, entity=entity)
+            if not is_kort:
+                text = self._voeg_timing_hint_toe(text, entity=entity)
             return {
                 "text": text,
                 "confidence": 0.9,
