@@ -686,7 +686,32 @@ class IntentRouter:
                     # hart, ...) de juiste sense kan herkennen i.p.v.
                     # altijd de sense met hoogste confidence te tonen.
                     context_words = t.split()
-                    resultaat = response_engine.generate(word, context_words)
+
+                    # Werkpunt 9.5 (27 juli 2026): response_style
+                    # opvragen bij Layer 5 (context_manager) en
+                    # doorgeven aan generate(), zodat "kort" nu ook
+                    # de INHOUD verkort (Layer 1-associatie + Layer 2-
+                    # timing-hint overslaan), niet enkel de toon
+                    # achteraf (dat laatste deed expression_injector.py
+                    # al). Zelfde try/except-veiligheid en dezelfde
+                    # manier van opvragen als response_pipeline.py's
+                    # _get_response_style() — context_manager wordt
+                    # nooit als argument doorgegeven aan IntentRouter,
+                    # dus we halen het op via event_bus.modules, met
+                    # "normaal" als veilige standaardwaarde als Layer 5
+                    # nog niet geladen is of er iets misgaat.
+                    response_style = "normaal"
+                    try:
+                        ctx_mgr = self.event_bus.modules.get("context_manager")
+                        if ctx_mgr is not None:
+                            ctx = ctx_mgr.get_current()
+                            response_style = ctx.get("response_style", "normaal")
+                    except Exception:
+                        response_style = "normaal"
+
+                    resultaat = response_engine.generate(
+                        word, context_words, response_style=response_style
+                    )
 
                     if resultaat.get("confidence", 0.0) > 0.2:
                         self.event_bus.publish("layer4_response", {
