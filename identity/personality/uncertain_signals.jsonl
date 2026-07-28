@@ -115,3 +115,21 @@
 {"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:02:19.502860"}
 {"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:02:58.401720"}
 {"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:08:56.799349"}
+{"text": "alles goed?", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.025, "bron": "model_fallback", "tijdstip": "2026-07-28T11:33:11.556737"}
+{"text": "oei", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-07-28T11:34:41.574694"}
+{"text": "met mij wel", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0184, "bron": "model_fallback", "tijdstip": "2026-07-28T11:34:50.579339"}
+{"text": "alles goed?", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.025, "bron": "model_fallback", "tijdstip": "2026-07-28T11:36:57.799620"}
+{"text": "alles goed", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.025, "bron": "model_fallback", "tijdstip": "2026-07-28T11:37:12.650955"}
+{"text": "banaan appelsap trein", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:17:38.437259"}
+{"text": "kaas wolk fluit", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:18:15.462054"}
+{"text": "appel peer", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:18:27.703396"}
+{"text": "appel peer", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:20:20.887120"}
+{"text": "peer banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:21:07.233857"}
+{"text": "cadeau", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:21:25.257332"}
+{"text": "appel peer", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:23:42.329005"}
+{"text": "appel banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:26:23.950050"}
+{"text": "peer appel", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:26:34.496304"}
+{"text": "peer appel banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:27:48.497962"}
+{"text": "appel banaan trein", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:38:09.590783"}
+{"text": "appel banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:51:52.628049"}
+{"text": "appel banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:58:13.860737"}

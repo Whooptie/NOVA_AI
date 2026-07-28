@@ -355,8 +355,8 @@ Elk signaal is een **onafhankelijke check** — er is geen minimum-aantal nodig 
 1. ~~Vergelijking met gisteren~~ ✅ Gebouwd (19 juli 2026, zie hierboven).
 2. ~~Meer weerwaarschuwingen (mist/harde wind/hagel/hitte/gladheid)~~ ✅ Gebouwd (19 juli 2026, zie hierboven).
 3. ~~Proactieve automatische weerwaarschuwing~~ ✅ Gebouwd (19 juli 2026, zie hierboven).
-4. **Mogelijke verfijning:** opnieuw melden als het weertype tijdens de dag wijzigt (bv. 's ochtends onweer gemeld, 's avonds komt er apart zware sneeuw bij) — nu blijft het bij max. 1 melding/dag/stad ongeacht wijzigingen. Nog niet besproken of dit gewenst is.
-5. **Overwogen maar bewust niet gebouwd (19 juli 2026):** meerdere vaste locaties tegelijk volgen (bv. ook familie's stad), instelbare drempels via spraak (eigen instellingen-bestand + intent nodig, zoals chess_settings.json). Kevin gaf aan dat de huidige opzet (standaardstad + IP-locatie) voldoende is.
+4. ~~Opnieuw melden bij weertype-wijziging binnen dezelfde dag~~ ✅ Gebouwd en live getest (28 juli 2026). `_al_gemeld_vandaag()`/`_markeer_gemeld()` (simpele 1x-per-dag-vlag) vervangen door `_is_nieuwe_episode()`/`_markeer_status()`: `weather_history.json` bewaart nu per stad ook `laatste_waarschuwing_tekst` (de exacte waarschuwingszin, of `null` als er niets actief is). Een nieuwe melding gaat door zodra de huidige waarschuwingstekst verschilt van de vorige check — dus zowel bij een ander weertype (onweer → sneeuw) als bij een TERUGKEER van hetzelfde type na een rustige periode (bv. 's ochtends onweer, 's middags rustig, 's avonds onweer terug → nu wél opnieuw gemeld, waar dat voorheen stil bleef). Blijft dezelfde waarschuwing gewoon ononderbroken actief, dan wordt ze nog steeds maar 1x gemeld — geen spam tijdens 1 aanhoudende bui. Live bevestigd in de draaiende daemon met echt weer (Aartrijke, 28 juli 2026).
+5. ~~Dubbele melding bij buurgemeentes van de standaardstad~~ ✅ Gebouwd en live getest (28 juli 2026). Bijvangst tijdens het testen van punt 4 hierboven: Kevin's IP-locatie (ipinfo.io) gaf op een moment "Brugge" terug terwijl hij fysiek in zijn standaardstad Aartrijke zat (~6-8 km ertussen) — IP-geolocatie is gebaseerd op internetprovider-routing, niet GPS, en is dus onnauwkeurig op korte afstand. Dit gaf 2 bijna-identieke proactieve meldingen na elkaar (1 voor Aartrijke, 1 voor "Brugge"). Opgelost met een nieuwe afstandscheck: `get_current_location()` (vervangt `get_current_location_city()`, die als backwards-compatible wrapper blijft bestaan) geeft nu ook coördinaten terug uit ipinfo.io's `loc`-veld; nieuwe `_get_stad_coordinaten()` vraagt de coördinaten van de standaardstad op via OpenWeatherMap's gratis Geocoding-API (zelfde `api_key`, geen nieuwe dienst); nieuwe `_afstand_km()` (Haversine-formule, standaard wiskunde, geen library) berekent de afstand. Enkel als die afstand groter is dan de nieuwe constante `ZELFDE_PLEK_DREMPEL_KM = 20` telt de IP-locatie als een échte, aparte stad om te checken — anders wordt ze genegeerd. Bij een API-fout (coördinaten niet te achterhalen) valt de check terug op de oude, simpele naamvergelijking, om nooit een echte locatiewissel te missen. Puur symbolisch, geen ML. Live bevestigd: nadien nog maar 1 melding (Aartrijke) i.p.v. 2.
 
 ---
 
@@ -802,6 +802,35 @@ Architectuurbeslissingen vastgelegd in overleg vóór het bouwen (zie `layer7_st
 
 ---
 
+## 💬 `conversation_engine.py` — contextuele fallback-conversatie (Fase 1, afgerond 28 juli 2026)
+
+**Probleem dat dit oplost:** de generieke fallback (`response_pipeline.py`'s `on_fallback()`) gaf tot dit punt altijd een kale, contextloze zin ("Ik weet nog niet goed hoe ik daarop moet antwoorden...") bij elke onherkende intent — ook al kende Nova via Layer 5/6 de actuele context (bezig met coderen, ongewoon energiek, ...) prima.
+
+**Architectuurkeuze — geen event-subscriber, maar een rechtstreeks aangeroepen methode.** `conversation_engine.py` abonneert zich bewust NIET zelf op `intent_fallback` (dat zou naast `response_pipeline.py`'s eigen `on_fallback()` een tweede, apart gepubliceerd antwoord opleveren — dubbele reactie). In plaats daarvan roept `on_fallback()` de publieke methoden hier rechtstreeks aan, vóór het zijn eigen standaard sjabloon kiest — zelfde beslispatroon als `intent_router.py`'s confidence-check bij `response_engine.generate()` vs. de Wikipedia-fallback. Elke methode geeft kant-en-klare tekst terug, of `None` als er niets bruikbaars is.
+
+**`probeer_mood_observatie()` (Layer 6) — geprobeerd vóór activiteit, want een opvallende emotionele staat weegt zwaarder.** Leest `event_bus.modules.get("personality")` (zie hieronder, nieuwe registratie) en kijkt naar `current_energy`/`overstimulation_level`. Drempels: energiek bij `energy > 0.7`, rustig bij `energy < 0.3`, overprikkeld bij `overstimulation_level > 0.5` (voorrang op de andere twee). Bij een gemiddelde staat (het gros van de tijd) bewust `None` — geen sjabloon forceren als er niets noemenswaardigs is. **Vereiste aanpassing in `response_pipeline.py`:** `PersonalityEngine` wordt daar aangemaakt (niet via `module_loader.py`), dus stond nergens in `event_bus.modules` — één nieuwe regel `event_bus.register_module("personality", self.personality)` toegevoegd na de aanmaak.
+
+**`probeer_activiteit_observatie()` (Layer 5).** Leest `event_bus.modules.get("context_manager")`, bouwt een zin uit `activity` + `activity_duration_minutes` (via `_formatteer_duur()`, variatie tussen ronde vorm en exacte minuten). `ACTIVITEIT_LABELS` vertaalt `activity_detector.py`'s labels (momenteel enkel `coding`/`talking_to_nova`) naar leesbare tekst.
+
+**Tijdvenster i.p.v. hard "nooit 2x na elkaar"-slot.** Eerste versie onthield enkel `laatste_praatvorm` en blokkeerde die vorm daarna voorgoed — probleem (terecht opgemerkt door Kevin): tijdens een lange coderen-sessie viel Nova na één observatie voorgoed stil op dat vlak, ook al bleef het gesprek doorgaan. Opgelost met `laatste_observatie_tijdstip` + `_mag_opnieuw_observeren()`: dezelfde (of een andere) observatie mag opnieuw zodra `HERHALING_DREMPEL_MINUTEN` (10) verstreken is. Beide praatvormen delen dit ene tijdslot, dus nooit twee observaties kort na elkaar, ongeacht welke als eerste triggerde.
+
+**Persistentie over `/reboot` heen.** `laatste_praatvorm` + `laatste_observatie_tijdstip` worden bij elke keuze meteen weggeschreven naar `data/conversation_state.json` (zelfde "meteen opslaan, geen `shutdown()`-buffering nodig"-patroon als `word_associations_learner.py`/`context_manager.py`, want het is één klein, zelden wijzigend veld).
+
+**Module-registratie:** volgt de standaard `init_module(event_bus, sem=None)`-conventie, dus automatisch opgepikt door `module_loader.py`'s dynamische `pkgutil`-scan — geen wijziging in `module_loader.py` zelf nodig.
+
+**Live getest (28 juli 2026):**
+
+- Activiteit-observatie tijdens coderen: `"Je zit al een poosje in de coderen-modus. Nog lang mee bezig?"` — bevestigd, incl. reboot-persistentie (na `exit`+herstart bleef `laatste_praatvorm` correct blokkerend).
+- Tijdvenster bevestigd met verlaagde testdrempel (30 sec): binnen het venster → kale fallback, na verstrijken → opnieuw een observatie.
+- Mood-observatie (energiek-tak) bevestigd met `current_energy` tijdelijk op 0.85: `"Ik voel me best energiek vandaag, eerlijk gezegd. En bij jou, hoe voel jij je?"` — kreeg correct voorrang op activiteit_observatie. Rustig- en overprikkeld-tak NIET apart live getest (zelfde codestructuur, dus laag risico, maar nog niet bevestigd).
+
+**Bewust NIET gebouwd:**
+
+- `topic_terugkoppeling`/`kennisdichtheid_terugkoppeling` als aparte praatvormen — Layer 7 (`emergence_engine.py`) doet dit al met eigen sjablonen en gates; dit zou dubbel werk zijn geweest. Zie i.p.v. daarvan de Layer 7-proactiviteit-fix hierboven bij "Proactief spreken".
+- `bodemzin` (eerlijk "geen mening"-antwoord bij meningsvragen zoals "wat vind je van X") — vereist eerst een aparte patroonherkenner om meningsvragen te onderscheiden van onbegrepen tekst, die nog niet bestaat. Bewust opengelaten, geen huidige prioriteit (Kevin: "weet het nog niet").
+
+---
+
 ## 🔄 Semantic — Status & Roadmap
 
 ### Fases 1-7 (VOLLEDIG KLAAR ✅)
@@ -969,7 +998,19 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 2. 🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
 3. 🟢 **`handle_confirmation()` invullen** (`intent_router.py`) — momenteel een leeg geraamte dat altijd `False` teruggeeft, ongeacht `self.awaiting_confirmation`. Dat attribuut wordt bovendien nergens in de codebase ooit op `True` gezet — dit is dus dode code, geen actief gebruikt mechanisme. Niet te verwarren met het nieuwere, wél werkende `_verwerk_pending_antwoord()`/`pending_question.py` (Activity-Aware Interaction, 22 juli 2026), dat een ander doel dient (ja/nee op een door Nova zelf gestelde vraag). Nog te beslissen: alsnog invullen voor de teach-flow, of bewust verwijderen als overbodig geworden geraamte.
 4. 🟢 **Fijner tijdsraster in Layer 2** — concept, nog niet ingepland (zie eigen sectie "💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2" verderop voor het volledige voorstel en de reden om nu nog niet te bouwen).
-5. 🟢 **Weerwaarschuwing bij weertype-wijziging binnen dezelfde dag** (`weather.py`) — momenteel blijft het bij max. 1 melding/dag/stad, ongeacht of het weertype nadien wijzigt (bv. 's ochtends onweer gemeld, 's avonds komt er apart zware sneeuw bij). Nog niet besproken of dit gewenst is — zie "Weather-module"-sectie verderop.
+5. 🟢 Bug #8 oppakken — Wikipedia-extractie verbeteren, voor gevallen waar het artikel wel gevonden wordt maar geen bruikbare eerste-zin-definitie oplevert. (bv. "wat is fysica?") — concreet, afgebakend
+6. 🟢 "Mag tegenspreken, moet feitelijk kloppen" — omzetten van afspraak naar werkende code. (raakt intent_router.py/response_engine.py/semantic.py)
+7. 🟢 handle_confirmation() — definitief beslissen: invullen voor de teach-flow, of verwijderen als overbodig dood geraamte
+8. 🟢 conversation_engine.py — rustig-/overprikkeld- observatietakken nog live bevestigen (enkel energiek-tak is tot nu toe getest)
+9. 🟡 math.py Fase 3-5 afwerken — substantieel werk,
+   in volgorde van math_roadmap.md:
+   ├── Fase 3: Numerieke intelligentie (algebra,
+   │   calculus, statistiek)
+   ├── Fase 4: High-level engines (symbolische
+   │   algebra, fysica-engine)
+   └── Fase 5 + aanvulling: Getaltheorie/CS-algoritmes, precisie/notatie/exacte vormen (16 losse, kleine ideeën, alle 100% symbolisch)
+   Bekend, niet-dringend aandachtspunt onderweg: detect_math()'s te brede operator-trigger (kale substring-check, geen woordgrenzen)
+10. 🟡 Semantic Fase 8+ (semantic_extension_roadmap.md blijft leidend) — start met Fase 8 (Causal Reasoning), pure symbolisch, geen ML nodig reasoning_engine_ideeen_roadmap.md is een LOSSE ideeënbak zonder eigen bouwvolgorde (niet concurrerend) — idee #5 ("waarom niet"-uitleg) en #1 zijn daaruit de meest voor de hand liggende kandidaten om tussendoor op te pakken
 
 *(Afgeronde werkpunten verplaatst naar `nova_changelog.md`, 18 juli 2026 — inclusief Personality pipeline deel 1+2, microlearning.py, Layer 2 opruimwerk, Layer 5 Fase 1-5, Layer 6-integratie response_style, emotion_engine decay, Layer 6 identity-blueprint-koppeling, het achtergrondthread-patroon, de `behavior_modifiers.py`-koppeling, en Activity Awareness Deel A — zie changelog voor details.)*
 
@@ -1022,6 +1063,10 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 **Tweede feature op dit patroon, sinds 22 juli 2026: Activity-Aware Interaction.** `session_watcher.py` luistert nu ook via een wildcard-subscribe (`event_bus.subscribe("*", ...)`) naar alle `activity_started:<naam>`-events en houdt bij welke activiteit nu loopt en sinds wanneer (`self.actieve_activiteit`/`self.activiteit_start_tijd`). Een nieuwe methode `check_activity_interruption()` (aangeroepen vanuit `achtergrond_loop()`, elke 60 sec, zelfde ritme als `check_pauze()`) checkt of de activiteit al `INTERRUPTION_VRAAG_DREMPEL_MINUTEN` loopt (tijdelijk op 1 gezet om te testen, uiteindelijk 15) en zo ja, roept `pending_question.set("mag_ik_storen", ...)` aan + publiceert proactief `"Mag ik storen?"`. Een aparte listener (`_on_pending_answered()`, op event `pending_question:answered`) verwerkt Kevin's antwoord en roept `interruption_tracker.record_feedback(activiteit, toegestaan, tijd_sinds_start)` aan. Live bevestigd (22 juli 2026): volledig circuit van "ik ga coderen" tot geregistreerde feedback in `interruption_patterns.json` werkt zonder fouten.
 
 **Voor toekomstige proactieve modules (zoals Layer 5 straks):** dit patroon is nu de vaste weg. Nieuwe proactieve logica hoort in een aparte module met een `check_*()`-achtige methode, aangeroepen vanuit `achtergrond_loop()` in `main.py`, die zelf `event_bus.publish("chat_response", {...})` of `event_bus.publish("layer4_response", {...})` publiceert — nooit rechtstreeks `print()` vanuit de achtergrondthread zelf, anders mis je de tone-pipeline en het "verse prompt"-mechanisme.
+
+**Vierde feature op dit patroon, sinds 28 juli 2026: Layer 7 (`emergence_engine.py`) eindelijk daadwerkelijk proactief.** `reflect()` bestond al langer met een volledige confidence-gate (`LAYER4_DREMPELS`/`_effectieve_drempel()`) en timing-gate (`_mag_nu_spreken()` → `context_manager.can_interrupt()`), en publiceerde bij een sterk genoeg insight al zelf naar `layer4_response` — maar werd nergens automatisch aangeroepen, enkel via het handmatige debug-commando `emergence`. Nieuwe constante `EMERGENCE_CHECK_INTERVAL_MINUTEN = 10` in `main.py` + een blok in `achtergrond_loop()` (analoog aan het bestaande `WEATHER_CHECK_INTERVAL_MINUTEN`-blok) roept nu periodiek `emergence_engine.reflect()` aan. Bewust een kortere interval dan bij weer/presence (die zijn zwaar: externe API-call resp. webcam) — `reflect()` is pure lokale Python-berekening op reeds-in-het-geheugen-zittende data, dus een kortere interval verhoogt geen spam-risico (de bestaande gates blijven ongewijzigd bepalend), enkel hoe snel een sterk insight ontdekt wordt.
+
+**Live getest (28 juli 2026):** `emergence`-debugcommando bevestigde 4 berekende insights, waarvan `kennisdichtheid` (confidence 13.00 tegen effectieve drempel 8) de confidence-gate ruim haalde. Toch verscheen er geen spontane melding via de achtergrondlus — `context`-debugcommando bevestigde de reden: `Mag onderbreken: False (ongebruikelijk moment volgens Layer 2: -1, om 13u)`. Dit bevestigt dat beide gates onafhankelijk en correct samenwerken: Layer 7 bepaalt WAT gezegd zou worden, Layer 5 bepaalt OF dat nu mag — geen bug, exact het ontworpen gedrag. Op een "gebruikelijk moment" (volgens Kevin's eigen Layer 2-patronen, doorgaans 19-23u) zou dezelfde insight wél doorkomen.
 
 ---
 

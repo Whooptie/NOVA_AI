@@ -12049,18 +12049,25 @@
     "metadata": {
       "created_at": "2026-07-27T21:00:00.000000",
       "updated_at": "2026-07-27T21:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-27T21:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
-        {"timestamp": "2026-07-27T21:00:00.000000", "confidence": 1.0}
+        {
+          "timestamp": "2026-07-27T21:00:00.000000",
+          "confidence": 1.0
+        }
       ]
     },
     "audit_log": [
       {
         "event_type": "concept_created",
         "source": "system",
-        "new_value": {"word": "piano"},
+        "new_value": {
+          "word": "piano"
+        },
         "timestamp": "2026-07-27T21:00:00.000000"
       },
       {
@@ -12079,7 +12086,12 @@
         "sense_id": "script#1",
         "definition": "Een script is een geschreven bestand met code-instructies die door een computer stap voor stap uitgevoerd worden.",
         "signaalwoorden": [
-          "code", "programma", "python", "functie", "programmeren", "bestand"
+          "code",
+          "programma",
+          "python",
+          "functie",
+          "programmeren",
+          "bestand"
         ],
         "pos": "noun",
         "examples": [
@@ -12103,18 +12115,25 @@
     "metadata": {
       "created_at": "2026-07-27T21:00:00.000000",
       "updated_at": "2026-07-27T21:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-27T21:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
-        {"timestamp": "2026-07-27T21:00:00.000000", "confidence": 1.0}
+        {
+          "timestamp": "2026-07-27T21:00:00.000000",
+          "confidence": 1.0
+        }
       ]
     },
     "audit_log": [
       {
         "event_type": "concept_created",
         "source": "system",
-        "new_value": {"word": "script"},
+        "new_value": {
+          "word": "script"
+        },
         "timestamp": "2026-07-27T21:00:00.000000"
       },
       {
@@ -12133,7 +12152,12 @@
         "sense_id": "programma#1",
         "definition": "Een programma is een verzameling instructies die een computer uitvoert om een bepaalde taak te vervullen.",
         "signaalwoorden": [
-          "code", "script", "python", "functie", "programmeren", "software"
+          "code",
+          "script",
+          "python",
+          "functie",
+          "programmeren",
+          "software"
         ],
         "pos": "noun",
         "examples": [
@@ -12157,18 +12181,25 @@
     "metadata": {
       "created_at": "2026-07-27T21:00:00.000000",
       "updated_at": "2026-07-27T21:00:00.000000",
-      "sources": ["user"],
+      "sources": [
+        "user"
+      ],
       "last_used_at": "2026-07-27T21:00:00.000000",
       "usage_count": 1,
       "confidence_history": [
-        {"timestamp": "2026-07-27T21:00:00.000000", "confidence": 1.0}
+        {
+          "timestamp": "2026-07-27T21:00:00.000000",
+          "confidence": 1.0
+        }
       ]
     },
     "audit_log": [
       {
         "event_type": "concept_created",
         "source": "system",
-        "new_value": {"word": "programma"},
+        "new_value": {
+          "word": "programma"
+        },
         "timestamp": "2026-07-27T21:00:00.000000"
       },
       {
@@ -12178,6 +12209,382 @@
         "old_value": null,
         "new_value": "Een programma is een verzameling instructies die een computer uitvoert om een bepaalde taak te vervullen.",
         "timestamp": "2026-07-27T21:00:00.000000"
+      }
+    ]
+  },
+  "oei": {
+    "senses": [
+      {
+        "sense_id": "oei#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T09:34:41.596213",
+      "updated_at": "2026-07-28T09:34:41.596213",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T09:34:41.596213",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T09:34:41.596213",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "oei"
+        },
+        "timestamp": "2026-07-28T09:34:41.596213"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "oei#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T09:34:41.596213"
+      }
+    ]
+  },
+  "banaan": {
+    "senses": [
+      {
+        "sense_id": "banaan#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T10:17:38.524098",
+      "updated_at": "2026-07-28T10:17:38.525098",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T10:17:38.525098",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T10:17:38.525098",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "banaan"
+        },
+        "timestamp": "2026-07-28T10:17:38.524098"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "banaan#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T10:17:38.525098"
+      }
+    ]
+  },
+  "appelsap": {
+    "senses": [
+      {
+        "sense_id": "appelsap#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T10:17:38.538110",
+      "updated_at": "2026-07-28T10:17:38.538110",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T10:17:38.538110",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T10:17:38.538110",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "appelsap"
+        },
+        "timestamp": "2026-07-28T10:17:38.538110"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "appelsap#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T10:17:38.538110"
+      }
+    ]
+  },
+  "trein": {
+    "senses": [
+      {
+        "sense_id": "trein#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T10:17:38.549102",
+      "updated_at": "2026-07-28T10:17:38.550100",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T10:17:38.550100",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T10:17:38.550100",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "trein"
+        },
+        "timestamp": "2026-07-28T10:17:38.549102"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "trein#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T10:17:38.550100"
+      }
+    ]
+  },
+  "fluit": {
+    "senses": [
+      {
+        "sense_id": "fluit#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T10:18:15.498957",
+      "updated_at": "2026-07-28T10:18:15.500353",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T10:18:15.500353",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T10:18:15.500353",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "fluit"
+        },
+        "timestamp": "2026-07-28T10:18:15.498957"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "fluit#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T10:18:15.500353"
+      }
+    ]
+  },
+  "peer": {
+    "senses": [
+      {
+        "sense_id": "peer#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T10:18:27.726435",
+      "updated_at": "2026-07-28T10:18:27.727416",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T10:18:27.727416",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T10:18:27.727416",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "peer"
+        },
+        "timestamp": "2026-07-28T10:18:27.726435"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "peer#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T10:18:27.727416"
+      }
+    ]
+  },
+  "cadeau": {
+    "senses": [
+      {
+        "sense_id": "cadeau#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T10:21:25.278614",
+      "updated_at": "2026-07-28T10:21:25.278614",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T10:21:25.278614",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T10:21:25.278614",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "cadeau"
+        },
+        "timestamp": "2026-07-28T10:21:25.278614"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "cadeau#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T10:21:25.278614"
+      }
+    ]
+  },
+  "dank": {
+    "senses": [
+      {
+        "sense_id": "dank#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T10:38:45.959989",
+      "updated_at": "2026-07-28T10:38:45.959989",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T10:38:45.959989",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T10:38:45.959989",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "dank"
+        },
+        "timestamp": "2026-07-28T10:38:45.959989"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "dank#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T10:38:45.959989"
       }
     ]
   }

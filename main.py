@@ -114,7 +114,19 @@ PRESENCE_CHECK_INTERVAL_MINUTEN = 5
 # (onweer/sneeuw/extreem/mist/hagel/harde wind) — zie weather.py's
 # check_proactieve_waarschuwing(). Net als bij PRESENCE hierboven: gewoon
 # 1 getal, hoeveel minuten tussen elke check (30 = elke 30 minuten).
-WEATHER_CHECK_INTERVAL_MINUTEN = 30
+WEATHER_CHECK_INTERVAL_MINUTEN = 1
+
+# Hoe vaak Layer 7 (emergence_engine.py) reflecteert op verzamelde
+# inzichten (woordverband/tijdspatroon/kennisdichtheid/personality_
+# drift). In tegenstelling tot PRESENCE/WEATHER hierboven is dit GEEN
+# zware/externe operatie (geen webcam, geen API-call) — puur lokale
+# Python-berekening op data die toch al in het geheugen zit. Daarom
+# een kortere interval dan bij die twee: 10 minuten, zodat een sterk
+# insight niet te lang blijft "liggen" voor het ooit hardop gezegd
+# wordt. reflect() bevat zelf al de confidence-gate (LAYER4_DREMPELS)
+# en timing-gate (_mag_nu_spreken()) — een kortere interval verhoogt
+# dus geen spam-risico, enkel hoe snel een insight ontdekt wordt.
+EMERGENCE_CHECK_INTERVAL_MINUTEN = 10
 
 
 def achtergrond_loop(loader):
@@ -213,6 +225,24 @@ def achtergrond_loop(loader):
                     weather.check_proactieve_waarschuwing()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in check_proactieve_waarschuwing(): {e}")
+
+        # Layer 7 — periodiek reflecteren op verzamelde inzichten
+        # (woordverband/tijdspatroon/kennisdichtheid/personality_drift).
+        # emergence_engine.reflect() bevat zelf al de confidence-gate
+        # (LAYER4_DREMPELS) en de timing-gate (_mag_nu_spreken(), vraagt
+        # context_manager.can_interrupt()) — deze aanroep hier zorgt
+        # enkel dat reflect() OOIT vanzelf gebeurt (voorheen enkel via
+        # een handmatig debug-commando bereikbaar), niet dat de gates
+        # zelf veranderen. Geen risico op spam: dezelfde gates die
+        # eerder al "stil bleven" bij een ongeschikt moment gelden
+        # hier evengoed.
+        if aantal_loops % EMERGENCE_CHECK_INTERVAL_MINUTEN == 0:
+            emergence = loader.loaded_modules.get("emergence_engine")
+            if emergence:
+                try:
+                    emergence.reflect()
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in emergence.reflect(): {e}")
 
 def main():
     global wachten_op_input
