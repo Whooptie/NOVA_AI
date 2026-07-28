@@ -1,0 +1,875 @@
+{
+  "voorbeelden": [
+    {
+      "tekst": "hallo",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoi",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hey nova",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "goeiemorgen",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dagg",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hey daar",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hallo nova, alles goed",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoi hoi",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "goedenavond",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "yo nova",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoi daar ben ik weer",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hey hoe is het",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe laat is het",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is de tijd",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "weet je hoe laat het is",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "kan je me zeggen hoe laat het is",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoeveel tijd hebben we nog",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is het uur nu",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "geef me de klok eens",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "welk uur is het ondertussen",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe laat hebben we het nu",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "zeg eens hoe laat het is",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "tijd graag",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe laat is het ondertussen geworden",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "heb je de tijd voor me",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "kan je me de tijd geven",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "welke tijd hebben we nu",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoeveel uur is het nu",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "geef me het huidige tijdstip",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe laat is het precies",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat toont de klok nu",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is het weer vandaag",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het koud buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het warm vandaag",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe is het weerbericht",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is de temperatuur buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "moet ik een jas meenemen",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "gaat het regenen vandaag",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe wordt het weer morgen",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het zonnig buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat voor weer hebben we",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "check het weer even voor mij",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe koud is het buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "moet ik een paraplu meenemen",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "gaat het vandaag regenen of niet",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het buiten aan het regenen",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoeveel graden is het buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het bewolkt vandaag",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "waait het hard buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "kan ik zonder jas naar buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wordt het nog droog vandaag",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "schaak",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {"tekst": "zin om te gaan schaken", "label": "chess", "bron": "gecorrigeerd"},
+    {
+      "tekst": "laten we schaken",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "nieuwe partij schaak",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "toon het bord",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "e2e4",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "paard naar f3",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is de stand op het bord",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "laten we nog een potje schaak spelen",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "zullen we schaken",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "moeilijkheid 10",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "geef me mijn schaakstatistieken",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "rokeer kort",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wil je nog schaken",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "goesting om te schaken",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "laten we een spelletje schaak doen",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik daag je uit voor een partijtje schaak",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "geef me schaakadvies",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "welke zet moet ik doen",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "loper naar d4",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "koning e1",
+      "label": "chess",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "zin om te gaan schaken",
+      "label": "chess",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "speel je een potje mee",
+      "label": "chess",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "hoe werk je van binnen",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe onthoud je dingen",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "gebruik je een taalmodel",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "draai je in de cloud",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe leer je nieuwe woorden bij",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "leg je architectuur eens uit",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is de eventbus precies",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe zit je in elkaar",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat gebeurt er als ik iets tegen je zeg",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe beslis je wat je antwoordt",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "sla je alles lokaal op",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat zijn je lagen eigenlijk",
+      "label": "self_architecture",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wie ben je eigenlijk",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ben je een ai",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat vind je leuk",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe voel je je vandaag",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat zijn je waarden",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "vertel eens over jezelf",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "waar word je blij van",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is je karakter",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat vind je van mij",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "waarom doe je dit eigenlijk",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "kan je nog veranderen en groeien",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "waar ben je goed in",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat voor iemand ben jij",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat voor type ben je",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe zou je jezelf beschrijven als persoon",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wie ben jij nu eigenlijk echt",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "beschrijf je persoonlijkheid eens",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat maakt jou wie je bent",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "welke eigenschappen heb je",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe zou een vriend je omschrijven",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat typeert jou",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat zijn jouw sterke en zwakke punten",
+      "label": "identity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "3 + 5",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is 12 * 8",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "bereken 100 / 4",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "sqrt 16",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is de sinus van 30 graden",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "10 - 7",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "2^8",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "log 100",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoeveel is 45 gedeeld door 9",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "reken dit even uit voor mij 7*7",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "20 graden celsius naar fahrenheit",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "abs -15",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is de wortel van 81",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "reken 15 plus 27 voor mij uit",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "tel deze twee getallen op",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoeveel is dat samen",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is de vierkantswortel van 64",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "los deze berekening op",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "cosinus van 60 graden",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "afgerond op twee cijfers",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is de natuurlijke logaritme van 10",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "9 tot de macht 2",
+      "label": "math",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga coderen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik begin met programmeren",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga nu gamen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik start met werken",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ben aan het coderen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "tijd om te gaan slapen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga even Plex kijken",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik begin nu aan mijn huiswerk",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga douchen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga zo aan tafel",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "even iets anders doen nu",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga nu even sporten",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "tijd om te gaan douchen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga nu douchen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga zo koken",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik begin nu met opruimen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga even wandelen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga tv kijken",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ga nu lezen",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "tijd voor het avondeten",
+      "label": "activity",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik hou van koffie",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik hou niet van kou",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik vind pizza lekker",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik drink graag thee",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ben dol op schaken",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik kan niet tegen lawaai",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik hou echt van deze muziek",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "friet vind ik heerlijk",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik hou niet zo van drukte",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ben gek op oude films",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wijn lust ik niet zo graag",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik hou van rustige avonden",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik heb een hekel aan lawaai",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik heb een hekel aan wachten",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik kan echt niet tegen kou",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik vind regen vervelend",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "chocolade is mijn favoriet",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik heb liever thee dan koffie",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "katten vind ik geweldig",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ben niet zo'n fan van drukte",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "stilte waardeer ik enorm",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik erger me aan slechte muziek",
+      "label": "preference",
+      "bron": "handmatig"
+    }
+  ],
+  "metadata": {
+    "laatst_getraind": "2026-07-28",
+    "aantal_voorbeelden": 171,
+    "categorieën": [
+      "activity",
+      "chess",
+      "greeting",
+      "identity",
+      "math",
+      "preference",
+      "self_architecture",
+      "time",
+      "weather"
+    ]
+  }
+}

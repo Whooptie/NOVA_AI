@@ -13,7 +13,7 @@ def dbg(label, text=""):
     print(f"{C_CYAN}[ROUTER]{C_RESET} {label} {text}")
 
 class IntentRouter:
-    def __init__(self, event_bus, semantic_module=None, kevin_profile=None, sentiment_classifier=None):
+    def __init__(self, event_bus, semantic_module=None, kevin_profile=None, sentiment_classifier=None, intent_classifier=None):
         self.event_bus = event_bus
         self.semantic = semantic_module
         self.kevin_profile = kevin_profile
@@ -23,6 +23,13 @@ class IntentRouter:
         # Kan None zijn als het model nog niet geladen is -- altijd
         # voorzichtig checken met "if self.sentiment_classifier".
         self.sentiment_classifier = sentiment_classifier
+        # Intent Classifier (Fase 3, 28 juli 2026): ML-fallback als
+        # GEEN enkele bestaande detect_*() een match vindt. Kan None
+        # zijn als het model nog niet geladen is -- altijd voorzichtig
+        # checken met "if self.intent_classifier". Zie
+        # intent_classifier_roadmap.md voor de volledige onderbouwing
+        # waarom dit een begrensde ML-specialist is, geen LLM.
+        self.intent_classifier = intent_classifier
         self.awaiting_confirmation = None
         # Bug #10-fix, stap 7: houdt bij of Kevin net gevraagd is een
         # nummer te kiezen na "onthoud sense <woord>". Volledig los van
@@ -36,6 +43,13 @@ class IntentRouter:
 
         event_bus.subscribe("chat_message", self.route)
         event_bus.subscribe("intent_preference_detected", self._on_preference_detected)
+        # Intent Classifier (Fase 3): luistert naar het antwoord op een
+        # classifier-gestelde vraag (bv. "Bedoel je dat je wil
+        # schaken?"). Dezelfde soort listener als
+        # session_watcher.py/interruption_tracker.py gebruiken voor
+        # "mag_ik_storen" -- hergebruikt het bestaande
+        # pending_question-mechanisme, geen nieuwe infrastructuur.
+        event_bus.subscribe("pending_question:answered", self._on_classifier_pending_answered)
         dbg(f"{C_GREEN}IntentRouter geladen{C_RESET}")
 
     # ---------------------------------------------------------
@@ -1485,6 +1499,182 @@ class IntentRouter:
         ]
 
     # ---------------------------------------------------------
+    # Intent Classifier (Fase 3, 28 juli 2026) — ML-fallback wanneer
+    # GEEN enkele bestaande detect_*() een match vond. Zie
+    # intent_classifier_roadmap.md voor de volledige onderbouwing.
+    #
+    # Drempels (Kevin's keuze, 28 juli 2026):
+    #   >= 0.70            -> direct de categorie afhandelen, geen vraag
+    #   0.35 t/m 0.70 (excl)-> pending_question stellen, wacht op ja/nee
+    #   < 0.35              -> loggen naar unmatched_intents.jsonl,
+    #                          daarna gewoon door naar fallback()
+    # ---------------------------------------------------------
+    DREMPEL_DIRECT = 0.70
+    DREMPEL_VRAAG = 0.30
+
+    # Nederlandse, spreektalige labels per categorie -- gebruikt in de
+    # bevestigingsvraag ("Bedoel je dat je wil <label>?"). Los van de
+    # interne Engelse categorienamen zelf, puur voor leesbare zinnen.
+    _CLASSIFIER_LABEL_NL = {
+        "greeting": "even gedag zeggen",
+        "time": "weten hoe laat het is",
+        "weather": "het weer weten",
+        "chess": "schaken",
+        "self_architecture": "weten hoe ik in elkaar zit",
+        "identity": "iets over mij weten",
+        "math": "een berekening laten maken",
+        "activity": "een activiteit starten",
+        "preference": "een voorkeur delen",
+    }
+
+    def _probeer_intent_classifier(self, text):
+        """
+        Wordt aangeroepen als LAATSTE stap in route(), enkel als geen
+        enkele bestaande detect_*() iets herkende. Retourneert True als
+        dit bericht hierdoor afgehandeld is (vraag gesteld OF direct
+        uitgevoerd), anders False (dan gaat route() gewoon door naar
+        de normale fallback()).
+
+        BELANGRIJK (eerlijkheid): de classifier kiest ALTIJD het minst
+        -slechte label uit haar lijst, ook bij een compleet onbekende
+        zin -- ze heeft geen "ik weet het niet"-status. Daarom wordt
+        hier NOOIT enkel op confidence vertrouwd zonder drempel, en
+        wordt alles onder DREMPEL_VRAAG apart gelogd voor toekomstig
+        bijtrainen i.p.v. genegeerd.
+        """
+        if not self.intent_classifier:
+            return False
+
+        resultaat = self.intent_classifier.predict(text)
+        if resultaat is None:
+            # Nog geen getraind model beschikbaar (bv. te weinig data)
+            return False
+
+        label = resultaat["label"]
+        confidence = resultaat["confidence"]
+
+        if confidence >= self.DREMPEL_DIRECT:
+            dbg(f"{C_GREEN}→ classifier direct: '{label}' "
+                f"(confidence {confidence}){C_RESET}")
+            self._voer_classifier_intent_uit(label)
+            return True
+
+        if confidence >= self.DREMPEL_VRAAG:
+            pending = self.event_bus.modules.get("pending_question")
+            if pending is None:
+                # Geen pending_question-module geladen -- kan niet
+                # netjes vragen, dus behandel dit dan maar als
+                # onzeker genoeg om te loggen i.p.v. te gokken.
+                self._log_unmatched_intent(text, resultaat)
+                return False
+
+            label_nl = self._CLASSIFIER_LABEL_NL.get(label, label)
+            dbg(f"{C_YELLOW}→ classifier twijfel: '{label}' "
+                f"(confidence {confidence}) -- vraag bevestiging{C_RESET}")
+            pending.set(f"classifier_intent_{label}", verval_seconden=60)
+            self.event_bus.publish("chat_response", {
+                "text": f"Bedoel je dat je {label_nl}?"
+            })
+            return True
+
+        # confidence < DREMPEL_VRAAG -- te onzeker om zelfs te vragen.
+        # Loggen voor toekomstig bijtrainen, dan gewoon door naar de
+        # normale fallback() (geen True hier -- retourneer False zodat
+        # route() zelf fallback(text) nog aanroept).
+        self._log_unmatched_intent(text, resultaat)
+        return False
+
+    def _log_unmatched_intent(self, text, resultaat):
+        """
+        Slaat een onherkende/onzekere zin op in data/unmatched_intents
+        .jsonl -- één JSON-object per regel, zodat Kevin dit later
+        rustig kan doorlopen als hint-lijst voor mogelijke nieuwe
+        trainingsvoorbeelden of nieuwe modules. Puur toevoegen, nooit
+        overschrijven.
+        """
+        import json
+        import os
+        from datetime import datetime
+
+        pad = os.path.join("data", "unmatched_intents.jsonl")
+        regel = {
+            "tekst": text,
+            "hoogste_gok": resultaat["label"],
+            "confidence": resultaat["confidence"],
+            "tijdstip": datetime.now().isoformat()
+        }
+        try:
+            os.makedirs("data", exist_ok=True)
+            with open(pad, "a", encoding="utf-8") as f:
+                f.write(json.dumps(regel, ensure_ascii=False) + "\n")
+        except Exception as e:
+            dbg(f"{C_RED}kon unmatched_intents.jsonl niet schrijven: {e}{C_RESET}")
+
+    def _voer_classifier_intent_uit(self, label):
+        """
+        Voert de daadwerkelijke actie uit voor een categorie die de
+        classifier herkende -- ofwel direct (confidence >= 0.70), ofwel
+        na een bevestigde pending_question (zie
+        _on_classifier_pending_answered() hieronder).
+
+        Chess krijgt een ECHTE actie (bord tonen, of nieuwe partij als
+        de vorige afgelopen is) -- Kevin's expliciete keuze (28 juli
+        2026). Alle andere categorieën krijgen een neutrale,
+        bevestigende chat_response, want de classifier kent geen
+        sub-actie (welke zet, welk woord, ...) -- enkel het onderwerp.
+        """
+        if label == "chess":
+            chess_engine = self.event_bus.modules.get("chess_engine")
+            partij_voorbij = (
+                chess_engine is None
+                or not hasattr(chess_engine, "board")
+                or chess_engine.board.is_game_over()
+            )
+            if partij_voorbij:
+                self.event_bus.publish("intent_chess_new", {})
+            else:
+                self.event_bus.publish("intent_chess_board", {})
+            self._emit_topic("chess")
+            return
+
+        # Overige 8 categorieën: neutrale bevestigende tekst, gewoon
+        # het onderwerp benoemen. Geen concrete sub-actie mogelijk --
+        # zie roadmap-eerlijkheid: de classifier kent enkel het label.
+        label_nl = self._CLASSIFIER_LABEL_NL.get(label, label)
+        self.event_bus.publish("chat_response", {
+            "text": f"Oké, dus je wil {label_nl}. Zeg maar wat je precies bedoelt!"
+        })
+        self._emit_topic(label)
+
+    def _on_classifier_pending_answered(self, data):
+        """
+        Subscriber op 'pending_question:answered'. Dit event wordt
+        gepubliceerd door ELKE module die met pending_question.py
+        werkt (bv. ook interruption_tracker.py voor "mag_ik_storen"),
+        dus we filteren hier expliciet op onze eigen vraag_type-prefix
+        ("classifier_intent_") om niet op andermans vragen te
+        reageren.
+        """
+        vraag_type = data.get("vraag_type", "")
+        if not vraag_type.startswith("classifier_intent_"):
+            return
+
+        label = vraag_type[len("classifier_intent_"):]
+        signaal = data.get("signaal")
+
+        if signaal == "bevestiging":
+            dbg(f"{C_GREEN}→ classifier-vraag bevestigd: {label}{C_RESET}")
+            self._voer_classifier_intent_uit(label)
+        else:
+            dbg(f"{C_YELLOW}→ classifier-vraag ontkend: {label}{C_RESET}")
+            # Bewust GEEN unmatched_intents-logging hier: Kevin heeft
+            # actief "nee" gezegd op de classifier's gok, dus we weten
+            # dat dit specifieke label fout was -- maar we weten nog
+            # niet wat het WEL had moeten zijn (zie roadmap, "geval 1").
+            # Een toekomstige uitbreiding (Fase 4) kan Kevin hier de
+            # kans geven het zelf te zeggen ("nee ik bedoelde X").
+
+    # ---------------------------------------------------------
     # Topic events (Layer 2 topic-bewustzijn)
     # ---------------------------------------------------------
     def _emit_topic(self, naam):
@@ -1621,10 +1811,20 @@ class IntentRouter:
                 self.semantic.handle_confirm(text)
             return
 
+        # 10e Intent Classifier (Fase 3, 28 juli 2026) -- ML-fallback,
+        # ENKEL geprobeerd als GEEN enkele bestaande detect_*()
+        # hierboven al iets herkende. Kan het bericht zelf afhandelen
+        # (vraag stellen OF direct uitvoeren bij hoge confidence) --
+        # geeft dan True terug en we stoppen hier. Bij lage confidence
+        # wordt enkel gelogd en gaat de routing gewoon door naar de
+        # normale fallback() hieronder.
+        if self._probeer_intent_classifier(text):
+            return
+
         # 11 Fallback
         self.fallback(text)
 
-def init_module(event_bus, semantic_module=None, kevin_profile=None, sentiment_classifier=None):
-    router = IntentRouter(event_bus, semantic_module, kevin_profile, sentiment_classifier)
+def init_module(event_bus, semantic_module=None, kevin_profile=None, sentiment_classifier=None, intent_classifier=None):
+    router = IntentRouter(event_bus, semantic_module, kevin_profile, sentiment_classifier, intent_classifier)
     event_bus.publish("module_loaded", {"name": "intent_router"})
     return router

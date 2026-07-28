@@ -12587,5 +12587,99 @@
         "timestamp": "2026-07-28T10:38:45.959989"
       }
     ]
+  },
+  "zin": {
+    "senses": [
+      {
+        "sense_id": "zin#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T18:21:48.345996",
+      "updated_at": "2026-07-28T18:21:48.347996",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T18:21:48.347996",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T18:21:48.347996",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zin"
+        },
+        "timestamp": "2026-07-28T18:21:48.345996"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "zin#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T18:21:48.347996"
+      }
+    ]
+  },
+  "schaken": {
+    "senses": [
+      {
+        "sense_id": "schaken#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T18:21:48.370870",
+      "updated_at": "2026-07-28T18:21:48.370870",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T18:21:48.370870",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T18:21:48.370870",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schaken"
+        },
+        "timestamp": "2026-07-28T18:21:48.370870"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "schaken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T18:21:48.370870"
+      }
+    ]
   }
 }
