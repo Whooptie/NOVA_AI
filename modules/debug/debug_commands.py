@@ -50,6 +50,9 @@ class DebugCommands:
             (lambda t: t.startswith("patronen"), self._patronen),
             (lambda t: t == "preferences debug", self._preferences_debug),
             (lambda t: t.startswith("associaties"), self._associaties),
+            (lambda t: t == "intent debug", self._intent_debug),
+            (lambda t: t.startswith("intent test"), self._intent_test),
+            (lambda t: t == "intent retrain", self._intent_retrain),
         ]
 
         event_bus.subscribe("debug_command", self.handle_debug_command)
@@ -448,6 +451,82 @@ class DebugCommands:
             n_gesuggereerd = len(kandidaten._al_gesuggereerd)
             print(f"{C_CYAN}Kandidaat-suggesties: {n_gesuggereerd} suggestie(s) ooit gedaan "
                   f"(PMI-drempel: {kandidaten.MIN_PMI_DREMPEL}).{C_RESET}")
+
+    # ------------------------------------------------------------------
+    # Intent Classifier (Fase 1-6, 28 juli 2026)
+    # ------------------------------------------------------------------
+
+    def _intent_debug(self, user_input):
+        """
+        Toont de status van de Intent Classifier: hoeveel voorbeelden,
+        welke categorieën, wanneer voor het laatst getraind. Puur
+        uitlezen, geen wijzigingen.
+        """
+        clf = self.loader.loaded_modules.get("intent_classifier")
+        if not clf:
+            print(f"{C_RED}intent_classifier-module niet gevonden.{C_RESET}")
+            return
+
+        stats = clf.get_stats()
+        print(f"{C_CYAN}--- Intent Classifier: status ---{C_RESET}")
+        print(f"{C_CYAN}Aantal voorbeelden: {stats['aantal_voorbeelden']}{C_RESET}")
+        print(f"{C_CYAN}Categorieën: {', '.join(stats['categorieën'])}{C_RESET}")
+        print(f"{C_CYAN}Laatst getraind: {stats['laatst_getraind'] or 'nog nooit'}{C_RESET}")
+        print(f"{C_CYAN}Model geladen: {stats['model_geladen']}{C_RESET}")
+        print(f"{C_CYAN}Laatste Layer 0-scan: "
+              f"{clf.metadata.get('laatste_layer0_scan') or 'nog nooit'}{C_RESET}")
+
+    def _intent_test(self, user_input):
+        """
+        Test een zin rechtstreeks tegen de Intent Classifier, buiten
+        de normale intent_router.py-flow om (dus GEEN pending_question,
+        GEEN drempel-logica, GEEN logging naar unmatched_intents.jsonl
+        -- puur het kale predict()-resultaat, ter inspectie).
+
+        Gebruik: intent test <zin>
+        """
+        clf = self.loader.loaded_modules.get("intent_classifier")
+        if not clf:
+            print(f"{C_RED}intent_classifier-module niet gevonden.{C_RESET}")
+            return
+
+        # "intent test" is 2 woorden, de rest is de te testen zin.
+        delen = user_input.split(maxsplit=2)
+        if len(delen) < 3:
+            print(f"{C_RED}Gebruik: intent test <zin>{C_RESET}")
+            return
+
+        zin = delen[2]
+        resultaat = clf.predict(zin)
+        if resultaat is None:
+            print(f"{C_RED}Geen getraind model beschikbaar.{C_RESET}")
+            return
+
+        print(f"{C_CYAN}--- Intent test: '{zin}' ---{C_RESET}")
+        print(f"{C_CYAN}Label: {resultaat['label']} "
+              f"(confidence: {resultaat['confidence']}){C_RESET}")
+        top3 = sorted(resultaat["all_scores"].items(), key=lambda x: -x[1])[:3]
+        print(f"{C_CYAN}Top 3: {top3}{C_RESET}")
+
+    def _intent_retrain(self, user_input):
+        """
+        Forceert retrain_vanuit_bestanden() handmatig, i.p.v. te
+        wachten op de periodieke 4-uur-cyclus in main.py's
+        achtergrond_loop(). Handig om meteen te zien of een correctie/
+        Layer 0-voorbeeld al effect heeft, zonder uren te moeten
+        wachten tijdens het testen.
+        """
+        clf = self.loader.loaded_modules.get("intent_classifier")
+        if not clf:
+            print(f"{C_RED}intent_classifier-module niet gevonden.{C_RESET}")
+            return
+
+        print(f"{C_CYAN}Hertraining wordt gestart...{C_RESET}")
+        gelukt = clf.retrain_vanuit_bestanden()
+        if gelukt:
+            print(f"{C_CYAN}Hertraining geslaagd. {clf.get_stats()}{C_RESET}")
+        else:
+            print(f"{C_RED}Hertraining mislukt (zie logs hierboven).{C_RESET}")
 
 
 def init_module(event_bus, loader=None):

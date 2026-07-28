@@ -260,7 +260,11 @@
       "label": "chess",
       "bron": "handmatig"
     },
-    {"tekst": "zin om te gaan schaken", "label": "chess", "bron": "gecorrigeerd"},
+    {
+      "tekst": "zin om te gaan schaken",
+      "label": "chess",
+      "bron": "gecorrigeerd"
+    },
     {
       "tekst": "laten we schaken",
       "label": "chess",
@@ -859,7 +863,7 @@
   ],
   "metadata": {
     "laatst_getraind": "2026-07-28",
-    "aantal_voorbeelden": 171,
+    "aantal_voorbeelden": 172,
     "categorieën": [
       "activity",
       "chess",
@@ -870,6 +874,7 @@
       "self_architecture",
       "time",
       "weather"
-    ]
+    ],
+    "laatste_layer0_scan": 1785272618.1094518
   }
 }

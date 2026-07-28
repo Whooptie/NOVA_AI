@@ -58,6 +58,7 @@ Nova_AI/
 │   ├── chat/
 │   │   ├── chat.py
 │   │   ├── response_pipeline.py
+│   │   ├── conversation_engine.py
 │   │   ├── chat_response_engine.py
 │   │   └── expression_injector.py
 │   ├── chess/
@@ -74,7 +75,8 @@ Nova_AI/
 │   │   └── wikipedia_teacher.py
 │   ├── learning/
 │   │   ├── word_associations_learner.py
-│   │   └── pattern_matcher.py
+│   │   ├── pattern_matcher.py
+│   │   └── intent_classifier.py
 │   ├── context/
 │   │   ├── context_manager.py
 │   │   ├── activity_detector.py
@@ -137,7 +139,14 @@ Nova_AI/
 │   ├── interruption_patterns.json
 │   ├── weather_history.json
 │   ├── kevin_profile.json
-│   └── context_log.jsonl
+│   ├── context_log.jsonl
+│   ├── training_data.json
+│   ├── gecorrigeerde_voorbeelden.jsonl
+│   ├── unmatched_intents.jsonl
+│   ├── onbekende_correcties.jsonl
+│   ├── layer0_gebruikt.jsonl
+│   ├── intent_classifier_model.pkl
+│   └── intent_classifier_vectorizer.pkl
 │   └── models/
 │       └── blaze_face_short_range.tflite
 ├── logs/
@@ -176,7 +185,8 @@ Nova_AI/
 | weather.py | ✅ Klaar | API-key in .env, huidig weer + 5-daagse forecast, kledingadvies, weerwaarschuwingen, dag-detectie (morgen/overmorgen/weekdag) |
 | math.py | ✅ Klaar | Berekeningen, temperatuurconversie, wiskundige functies |
 | chat.py | ✅ Klaar | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig. |
-| response_pipeline.py | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet.** Nieuw (8 juli 2026): `on_fallback()` roept nu ook `_auto_learn_from_sentence()` aan — filtert zelfstandige naamwoorden uit de fallback-zin (via `detect_pos`) en slaat onbekende woorden automatisch op als `unknown`-concept via `semantic.auto_learn()`. Functiewoorden (bezittelijke voornaamwoorden, vervoegingen van "gebruiken", etc.) worden expliciet uitgesloten via een stopwoordenlijst — die hoort thuis in Layer 1 (word_associations), niet in concepts.json. |
+| response_pipeline.py | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet.** Nieuw (8 juli 2026): `on_fallback()` roept nu ook `_auto_learn_from_sentence()` aan — filtert zelfstandige naamwoorden uit de fallback-zin (via `detect_pos`) en slaat onbekende woorden automatisch op als `unknown`-concept via `semantic.auto_learn()`. Functiewoorden (bezittelijke voornaamwoorden, vervoegingen van "gebruiken", etc.) worden expliciet uitgesloten via een stopwoordenlijst — die hoort thuis in Layer 1 (word_associations), niet in concepts.json. Nieuw (28 juli 2026): `PersonalityEngine` wordt hier aangemaakt maar stond nergens in `event_bus.modules` — één regel `event_bus.register_module("personality", self.personality)` toegevoegd, nodig voor `conversation_engine.py`'s `probeer_mood_observatie()`. `on_fallback()` probeert nu eerst `conversation_engine.probeer_mood_observatie()`, dan `probeer_activiteit_observatie()`, voor het op de kale sjabloon-fallback terugvalt. |
+| conversation_engine.py | ✅ Klaar (Fase 1, 28 juli 2026) | Contextuele fallback-conversatie i.p.v. kale "ik snap dat niet"-zin. Geen event-subscriber (zou een tweede, dubbel antwoord naast response_pipeline.py's on_fallback() opleveren) — publieke methodes die door on_fallback() rechtstreeks aangeroepen worden, elk `None` teruggevend als er niets bruikbaars is. `probeer_mood_observatie()` (Layer 6, via `event_bus.modules.get("personality")`): energiek/rustig/overprikkeld o.b.v. current_energy/overstimulation_level-drempels. `probeer_activiteit_observatie()` (Layer 5, via `context_manager`): activiteit + duur. Beide delen één tijdvenster (`HERHALING_DREMPEL_MINUTEN`, 10) i.p.v. een hard "nooit 2x na elkaar"-slot — anders viel Nova tijdens een lange sessie na 1 observatie voorgoed stil. State (`laatste_praatvorm`/`laatste_observatie_tijdstip`) meteen weggeschreven naar `data/conversation_state.json`, blijft dus ook over een `/reboot` heen bestaan. Bewust NIET gebouwd: topic-/kennisdichtheid-terugkoppeling (Layer 7 doet dit al zelf, zie emergence_engine.py) en een "bodemzin" voor meningsvragen (vereist een nog te bouwen patroonherkenner, geen huidige prioriteit). Live getest: activiteit- en mood-observatie (energiek-tak) bevestigd incl. tijdvenster en reboot-persistentie; rustig-/overprikkeld-tak nog niet apart getest. |
 | chat_response_engine.py | ✅ Klaar | Doorsturen van pipeline_response naar expression_inject |
 | expression_injector.py | ✅ Klaar EN AANGESLOTEN (17 juli 2026) | Emoji, gesture, puberal flair injectie. Reageert nu ook echt op `response_style` (kort/normaal/uitgebreid) en `personality` (dramatic/interrupts) i.p.v. die enkel door te geven — zie Layer 6-sectie. |
 | help.py | ✅ Klaar | Help-systeem met topic-bestanden. `help` = algemeen overzicht, `help schaken` = schaakcommando's, `help debug` = debug-/testcommando's (24 juli 2026, zie debug_commands.py). `algemeen.py` bijgewerkt (3 juli 2026) met `example`-commando en reasoning-sectie, en (24 juli 2026) met verwijzing naar `help debug`. |
@@ -185,6 +195,7 @@ Nova_AI/
 | chess_engine.py | ✅ Klaar | Stockfish (UCI), persistente partijstand (chess_game.json), lazy engine-start, netjes afgesloten bij exit. Natuurlijke taal voor zetten + rokade ("rokeer kort"/"rokeer lang") + promotie ("pion naar e8 dame", standaard dame). Bordweergave met schaaksymbolen (wit/magenta) + zetnummer + materiaaltelling + schaak-melding (beide kanten). Instelbare moeilijkheidsgraad (0-20) + denktijd, beide persistent (chess_settings.json), plus adaptieve auto-aanpassing o.b.v. win/verlies-streak (3 op rij → niveau/denktijd ±). Win/verlies statistieken incl. eindreden (schaakmat/patstand/...) (chess_stats.json). Auto-shutdown Stockfish na 30 min inactiviteit. |
 | word_associations_learner.py | ✅ Klaar (Layer 1, alle 5 fases) | PMI-gebaseerd associatienetwerk (data/word_associations.json). Leert van "chat_message"/"chat_response"-events (niet het gecombineerde formaat uit de originele roadmap). Publiceert `word_association:updated`; sinds Layer 4 (8 juli 2026) wordt `find_related()` ook actief gebruikt in Nova's antwoorden. |
 | pattern_matcher.py | ✅ Klaar (Layer 2, alle 5 fases) | Detecteert timing-patronen (uur/dag) voor chat_message/chat_response. Anomaly-drempels en opslagfrequentie staan nog op tijdelijke testwaarden (zie Layer 2-sectie). |
+| intent_classifier.py | ✅ Klaar en volledig getest (28 juli 2026, alle 6 fases) | ML-fallback (scikit-learn: TF-IDF + Logistic Regression) in `intent_router.py`'s `route()`, enkel geprobeerd als GEEN bestaande `detect_*()` matcht. 9 categorieën, `data/training_data.json` (172 voorbeelden). Drempels: ≥0.70 direct uitvoeren, 0.30-0.70 `pending_question`-vraag ("Bedoel je dat je X?"), <0.30 loggen naar `unmatched_intents.jsonl`. Fase 4: correctiemechanisme ("nee ik bedoelde X", bedoel-/komma-patroon) → `gecorrigeerde_voorbeelden.jsonl`; onbekend correctiewoord (classifier <0.40) → `onbekende_correcties.jsonl`, nooit blind gegokt. Fase 5: periodieke hertraining elke 4u via `main.py`'s `achtergrond_loop()` (`INTENT_CLASSIFIER_RETRAIN_INTERVAL_MINUTEN`), combineert 3 bronnen (training_data.json + gecorrigeerde_voorbeelden.jsonl + Layer 0) enkel TIJDELIJK in het geheugen — `training_data.json` blijft altijd Kevin's schone basisset. Fase 6: leert ook uit Layer 0 (`memory.py`), via `_emit_topic(naam, bron="detect"/"classifier")` — enkel `bron="detect"`-matches worden vertrouwd (nooit classifier-eigen gokken, zelfbevestigend-leren-risico). Koppeling bericht↔topic is VOLGORDE-gebaseerd (niet tijd-gebaseerd, na praktijktest waarbij de achtergrondthread/GIL de hoofdthread >2 sec vertraagde) — enkel een bericht waarvan het allereerstvolgende event precies zijn eigen topic-event is, wordt gekoppeld; 2+ berichten na elkaar zonder tussenliggend topic-event worden allemaal verworpen. Debug-commando's: `intent debug`/`intent test <zin>`/`intent retrain`. Live end-to-end bevestigd inclusief Layer 0-koppeling (`data/layer0_gebruikt.jsonl`). Zie intent_classifier_roadmap.md. |
 | microlearning.py | ✅ Klaar (17-18 juli 2026) | Zie uitgebreide vermelding + Layer 6 Fase 6-sectie verderop — was lang leeg, nu volledig gebouwd (Adaptive Learning) |
 | context_manager.py | ✅ Fase 1-5 VOLLEDIG KLAAR (Layer 5) | Combineert tijd + pattern_matcher + activity/focus/presence-detectors tot een gewogen score + interruption-advies (`should_interrupt`) + response_style-advies (`"kort"`/`"normaal"`/`"uitgebreid"`, sinds 17 juli 2026 AANGESLOTEN op Layer 6, en sinds 27 juli 2026 ook op Layer 4 — volledig afgerond, zie die sectie). Krijgt net als response_engine.py een `layers`-dictionary mee, dus handmatig geladen (niet via dynamische scan). Zie sectie "Layer 5" onder 7-Laags Memory Architectuur. |
 | activity_detector.py | ✅ Klaar (Layer 5, Fase 2) | Detecteert actief venster/proces via `pygetwindow` (venstertitel), vertaalt naar activiteit-label (`coding`, `talking_to_nova`, ...). Standaard dynamische module_loader-conventie, geen `layers`-dictionary nodig. |
@@ -213,8 +224,6 @@ Nova_AI/
 | signal_trait_mapping.json | ✅ Klaar (17 juli 2026) | Koppelt signalen (frustratie/waardering/interesse/verwarring/focus/kilte) aan welke traits ze in welke richting beïnvloeden. |
 | growth_metrics.json | ✅ Klaar (17 juli 2026) | Lopende positive/negative-tellers per trait voor Fase 6, bijgewerkt door microlearning.py. |
 | training_data.json / benchmark_data.json | ✅ Klaar (17-18 juli 2026) | Trainings- resp. ijkpunt-voorbeelden voor het signaal-classificatiemodel, 6 categorieën (incl. later toegevoegd `focus`). |
-
----
 
 ---
 
@@ -994,15 +1003,14 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 ## 🚀 Volgende stappen (in volgorde van prioriteit)
 
-1. 🟢 **Intent classifier (ML-specialist)** — concept, nog niet ingepland. Los van Layer 1-7, hangt enkel af van Layer 0-data. Volledig uitgewerkt in: intent_classifier_roadmap.md.
-2. 🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
-3. 🟢 **`handle_confirmation()` invullen** (`intent_router.py`) — momenteel een leeg geraamte dat altijd `False` teruggeeft, ongeacht `self.awaiting_confirmation`. Dat attribuut wordt bovendien nergens in de codebase ooit op `True` gezet — dit is dus dode code, geen actief gebruikt mechanisme. Niet te verwarren met het nieuwere, wél werkende `_verwerk_pending_antwoord()`/`pending_question.py` (Activity-Aware Interaction, 22 juli 2026), dat een ander doel dient (ja/nee op een door Nova zelf gestelde vraag). Nog te beslissen: alsnog invullen voor de teach-flow, of bewust verwijderen als overbodig geworden geraamte.
-4. 🟢 **Fijner tijdsraster in Layer 2** — concept, nog niet ingepland (zie eigen sectie "💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2" verderop voor het volledige voorstel en de reden om nu nog niet te bouwen).
-5. 🟢 Bug #8 oppakken — Wikipedia-extractie verbeteren, voor gevallen waar het artikel wel gevonden wordt maar geen bruikbare eerste-zin-definitie oplevert. (bv. "wat is fysica?") — concreet, afgebakend
-6. 🟢 "Mag tegenspreken, moet feitelijk kloppen" — omzetten van afspraak naar werkende code. (raakt intent_router.py/response_engine.py/semantic.py)
-7. 🟢 handle_confirmation() — definitief beslissen: invullen voor de teach-flow, of verwijderen als overbodig dood geraamte
-8. 🟢 conversation_engine.py — rustig-/overprikkeld- observatietakken nog live bevestigen (enkel energiek-tak is tot nu toe getest)
-9. 🟡 math.py Fase 3-5 afwerken — substantieel werk,
+1. 🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
+2. 🟢 **`handle_confirmation()` invullen** (`intent_router.py`) — momenteel een leeg geraamte dat altijd `False` teruggeeft, ongeacht `self.awaiting_confirmation`. Dat attribuut wordt bovendien nergens in de codebase ooit op `True` gezet — dit is dus dode code, geen actief gebruikt mechanisme. Niet te verwarren met het nieuwere, wél werkende `_verwerk_pending_antwoord()`/`pending_question.py` (Activity-Aware Interaction, 22 juli 2026), dat een ander doel dient (ja/nee op een door Nova zelf gestelde vraag). Nog te beslissen: alsnog invullen voor de teach-flow, of bewust verwijderen als overbodig geworden geraamte.
+3. 🟢 **Fijner tijdsraster in Layer 2** — concept, nog niet ingepland (zie eigen sectie "💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2" verderop voor het volledige voorstel en de reden om nu nog niet te bouwen).
+4. 🟢 Bug #8 oppakken — Wikipedia-extractie verbeteren, voor gevallen waar het artikel wel gevonden wordt maar geen bruikbare eerste-zin-definitie oplevert. (bv. "wat is fysica?") — concreet, afgebakend
+5. 🟢 "Mag tegenspreken, moet feitelijk kloppen" — omzetten van afspraak naar werkende code. (raakt intent_router.py/response_engine.py/semantic.py)
+6. 🟢 handle_confirmation() — definitief beslissen: invullen voor de teach-flow, of verwijderen als overbodig dood geraamte
+7. 🟢 conversation_engine.py — rustig-/overprikkeld- observatietakken nog live bevestigen (enkel energiek-tak is tot nu toe getest)
+8. 🟡 math.py Fase 3-5 afwerken — substantieel werk,
    in volgorde van math_roadmap.md:
    ├── Fase 3: Numerieke intelligentie (algebra,
    │   calculus, statistiek)
@@ -1010,7 +1018,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
    │   algebra, fysica-engine)
    └── Fase 5 + aanvulling: Getaltheorie/CS-algoritmes, precisie/notatie/exacte vormen (16 losse, kleine ideeën, alle 100% symbolisch)
    Bekend, niet-dringend aandachtspunt onderweg: detect_math()'s te brede operator-trigger (kale substring-check, geen woordgrenzen)
-10. 🟡 Semantic Fase 8+ (semantic_extension_roadmap.md blijft leidend) — start met Fase 8 (Causal Reasoning), pure symbolisch, geen ML nodig reasoning_engine_ideeen_roadmap.md is een LOSSE ideeënbak zonder eigen bouwvolgorde (niet concurrerend) — idee #5 ("waarom niet"-uitleg) en #1 zijn daaruit de meest voor de hand liggende kandidaten om tussendoor op te pakken
+9. 🟡 Semantic Fase 8+ (semantic_extension_roadmap.md blijft leidend) — start met Fase 8 (Causal Reasoning), pure symbolisch, geen ML nodig reasoning_engine_ideeen_roadmap.md is een LOSSE ideeënbak zonder eigen bouwvolgorde (niet concurrerend) — idee #5 ("waarom niet"-uitleg) en #1 zijn daaruit de meest voor de hand liggende kandidaten om tussendoor op te pakken
 
 *(Afgeronde werkpunten verplaatst naar `nova_changelog.md`, 18 juli 2026 — inclusief Personality pipeline deel 1+2, microlearning.py, Layer 2 opruimwerk, Layer 5 Fase 1-5, Layer 6-integratie response_style, emotion_engine decay, Layer 6 identity-blueprint-koppeling, het achtergrondthread-patroon, de `behavior_modifiers.py`-koppeling, en Activity Awareness Deel A — zie changelog voor details.)*
 
@@ -1036,7 +1044,7 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 - topic_events_roadmap.md — `topic_detected`-events: hoe Layer 2 specifieke onderwerpen (schaak, Plex, ...) op tijdstip leert koppelen, en hoe Layer 4 dat later in vaste sjabloonzinnen gebruikt
 - identity_ROADMAP.md — Identity-opbouw in 6 fases: Blueprint → Personality Engine → Emotion Engine → Expression Engine → Integration Layer → Adaptive Learning (later)
 - math_roadmap.md — Roadmap voor math.py-uitbreidingen
-- intent_classifier_roadmap.md — ML-specialist naast intent_router.py: klein lokaal classificatiemodel (scikit-learn) dat nieuwe, onbekende zinnen naar een bekende intent-categorie voorspelt. Concept, nog niet ingepland in bouwvolgorde.
+- intent_classifier_roadmap.md — ML-specialist naast intent_router.py: klein lokaal classificatiemodel (scikit-learn) dat nieuwe, onbekende zinnen naar een bekende intent-categorie voorspelt. ✅ VOLLEDIG GEBOUWD EN GETEST (28 juli 2026) — alle 6 fases (trainingsdata → classifier → vraag/direct/log-integratie → correctiemechanisme → periodieke hertraining → leren uit Layer 0), zie modules-tabel hierboven voor volledige details.
 - activity_awareness_roadmap.md — Activiteiten herkennen via intent/scherm/camera, co-occurrence tussen activiteiten, duur-detectie + proactieve pauze-suggestie. Concept, nog niet ingepland in bouwvolgorde.
 - interruption_learning_roadmap.md — Activity-Aware Interaction: (1) leren wanneer Nova mag storen tijdens een activiteit (confidence-score per activiteit, generiek), (2) variatie in formulering zodat het niet mechanisch aanvoelt, (3) contextuele suggesties tussen activiteiten (bv. Plex → lichten dimmen) — dit laatste vereist een aparte sensor/integratie-laag voor alledaagse acties die nog geen Nova-event zijn. Concept (9 juli 2026), nog niet ingepland; hangt af van Activity Awareness Deel A en Layer 5 Fase 1-2.
 - ml_components_overview.md — Overzicht per laag (1/2/3/4) van mogelijke bounded ML-toevoegingen — referentiedocument, geen bouwvolgorde. Layer 3 (GNN voor concepts.json) is Kevin's belangrijkste "achterhoofd"-optie, grootste ingreep van de lijst.
@@ -1095,7 +1103,7 @@ Ondanks de naam is `layer4_response` intussen **niet meer exclusief voor Layer 4
 - **Transparent always** — alles gelogd, audit_log op elk concept
 - **Nooit handelen zonder toestemming** — kernprincipe
 - **Geen LLM in de kern** — wel externe gespecialiseerde modellen (vision, ML-classificatie) als aparte modules
-- **ML mag als sensor** — een classifier die zinnen categoriseert is oké, zolang Nova zelf beslist wat ze doet
+- **ML mag als sensor** — een classifier die zinnen categoriseert is oké, zolang Nova zelf beslist wat ze doet (zie intent_classifier.py: gokt enkel een label, Nova/intent_router.py beslist zelf via drempels of dat vertrouwd wordt)
 - **confidence-schaal:** user = 1.0 / auto_extract = 0.9 / wikipedia = 0.8 / auto = 0.1
 - **EventBus-patroon:** élke module communiceert via publish/subscribe, nooit direct
 - **Actief spel:** IntentRouter houdt een `active_game` variabele bij — losse spelcommando's ("bord", "statistieken") gaan naar het actieve spel; expliciet spel vermelden ("schaak bord") overschrijft dit tijdelijk zonder `active_game` te wijzigen

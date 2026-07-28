@@ -117,3 +117,12 @@
 {"timestamp": "2026-07-28T10:38:45.959989", "event_type": "concept_created", "word": "dank", "source": "system", "new_value": {"word": "dank"}}
 {"timestamp": "2026-07-28T18:21:48.345996", "event_type": "concept_created", "word": "zin", "source": "system", "new_value": {"word": "zin"}}
 {"timestamp": "2026-07-28T18:21:48.370870", "event_type": "concept_created", "word": "schaken", "source": "system", "new_value": {"word": "schaken"}}
+{"timestamp": "2026-07-28T20:08:41.716775", "event_type": "concept_created", "word": "wat", "source": "system", "new_value": {"word": "wat"}}
+{"timestamp": "2026-07-28T20:12:25.505816", "event_type": "concept_created", "word": "laat", "source": "system", "new_value": {"word": "laat"}}
+{"timestamp": "2026-07-28T20:12:25.528039", "event_type": "concept_created", "word": "eens", "source": "system", "new_value": {"word": "eens"}}
+{"timestamp": "2026-07-28T20:12:25.550040", "event_type": "concept_created", "word": "nadenken", "source": "system", "new_value": {"word": "nadenken"}}
+{"timestamp": "2026-07-28T20:12:25.570070", "event_type": "concept_created", "word": "over", "source": "system", "new_value": {"word": "over"}}
+{"timestamp": "2026-07-28T20:12:25.583595", "event_type": "concept_created", "word": "iets", "source": "system", "new_value": {"word": "iets"}}
+{"timestamp": "2026-07-28T20:33:33.875656", "event_type": "concept_created", "word": "hallo", "source": "system", "new_value": {"word": "hallo"}}
+{"timestamp": "2026-07-28T21:01:44.566851", "event_type": "concept_created", "word": "type", "source": "system", "new_value": {"word": "type"}}
+{"timestamp": "2026-07-28T21:01:44.592316", "event_type": "concept_created", "word": "data\\layer0_gebruikt.jsonl", "source": "system", "new_value": {"word": "data\\layer0_gebruikt.jsonl"}}

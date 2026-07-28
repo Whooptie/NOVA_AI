@@ -30,6 +30,11 @@ class IntentRouter:
         # intent_classifier_roadmap.md voor de volledige onderbouwing
         # waarom dit een begrensde ML-specialist is, geen LLM.
         self.intent_classifier = intent_classifier
+        # Fase 4 (correcties): kortstondig geheugen van de laatst
+        # gestelde classifier-vraag (originele tekst + gegokt label),
+        # puur in RAM. Zie _probeer_intent_classifier() en
+        # _verwerk_correctie().
+        self._laatste_classifier_vraag = None
         self.awaiting_confirmation = None
         # Bug #10-fix, stap 7: houdt bij of Kevin net gevraagd is een
         # nummer te kiezen na "onthoud sense <woord>". Volledig los van
@@ -1411,6 +1416,17 @@ class IntentRouter:
             return False
 
         vraag_type = pending.get_type()
+
+        # Fase 4 (correcties, 28 juli 2026): EERST checken of dit een
+        # correctie is ("nee ik bedoelde X"), VOORDAT de gewone ja/nee
+        # -interpretatie draait. Dat is bewust, want
+        # _interpreteer_ja_nee() heeft een lengte-limiet van 4 woorden
+        # -- een langere correctiezin zoals "nee dat is het niet, ik
+        # bedoel weer" zou daar anders NIET als ontkenning herkend
+        # worden en gewoon "onherkend" opleveren.
+        if self._verwerk_correctie(text, vraag_type):
+            return True
+
         signaal = self._interpreteer_ja_nee(text)
 
         if signaal is None:
@@ -1510,7 +1526,7 @@ class IntentRouter:
     #                          daarna gewoon door naar fallback()
     # ---------------------------------------------------------
     DREMPEL_DIRECT = 0.70
-    DREMPEL_VRAAG = 0.30
+    DREMPEL_VRAAG = 0.35
 
     # Nederlandse, spreektalige labels per categorie -- gebruikt in de
     # bevestigingsvraag ("Bedoel je dat je wil <label>?"). Los van de
@@ -1526,6 +1542,237 @@ class IntentRouter:
         "activity": "een activiteit starten",
         "preference": "een voorkeur delen",
     }
+
+    # Fase 4 (correcties, 28 juli 2026): omgekeerde mapping -- welk
+    # Nederlands woord dat Kevin typt na "ik bedoelde ..." hoort bij
+    # welk intern label. Bewust een VASTE, expliciete lijst (geen ML)
+    # als eerste, betrouwbare poging -- enkel als een woord hier NIET
+    # in staat, valt _herken_correctie_label() terug op de classifier
+    # zelf als vangnet (zie die methode voor de reden).
+    _CORRECTIE_WOORDEN_NL = {
+        "schaken": "chess", "schaak": "chess",
+        "weer": "weather", "het weer": "weather",
+        "tijd": "time", "hoe laat": "time",
+        "rekenen": "math", "wiskunde": "math", "berekening": "math",
+        "identiteit": "identity", "jezelf": "identity",
+        "wie je bent": "identity",
+        "architectuur": "self_architecture", "je brein": "self_architecture",
+        "hoe je werkt": "self_architecture",
+        "activiteit": "activity", "iets doen": "activity",
+        "voorkeur": "preference", "wat ik leuk vind": "preference",
+        "begroeten": "greeting", "gedag zeggen": "greeting",
+    }
+
+    # Woorden waarmee een ontkenning/correctie kan beginnen -- los van
+    # ONTKENNING_WOORDEN hierboven, want DIE lijst is beperkt tot max.
+    # 4 woorden (regel _interpreteer_ja_nee) en zou dus een langere
+    # correctiezin zoals "nee dat is het niet, ik bedoel weer" missen.
+    _CORRECTIE_START_WOORDEN = ("nee", "neen", "nope", "non")
+
+    def _detecteer_correctie(self, text):
+        """
+        Herkent of 'text' een correctie op een classifier-vraag is,
+        zoals "nee ik bedoelde weer" of "neen, weer" of "nee dat is
+        het niet, ik bedoel weer". Geeft het RUWE correctie-woord terug
+        (bv. "weer"), of None als er geen correctiepatroon herkend
+        wordt.
+
+        Volgorde (eerste match wint):
+          1. bevat "bedoel" of "bedoelde"? -> alles NA dat woord
+          2. bevat een komma? -> alles NA de LAATSTE komma
+          3. anders: geen correctie herkend (val terug op de gewone
+             _interpreteer_ja_nee() ontkenning-detectie)
+
+        Bewust GEEN lengte-limiet hier (in tegenstelling tot
+        _interpreteer_ja_nee) -- een correctiezin mag zo lang zijn als
+        nodig, zolang ze met een ontkenningswoord begint.
+        """
+        t = text.lower().strip().rstrip("?.!")
+
+        begint_met_ontkenning = any(
+            t.startswith(woord) for woord in self._CORRECTIE_START_WOORDEN
+        )
+        if not begint_met_ontkenning:
+            return None
+
+        for sleutelwoord in ("bedoelde", "bedoel"):
+            if sleutelwoord in t:
+                _, _, rest = t.partition(sleutelwoord)
+                rest = rest.strip(" ,.")
+                if rest:
+                    return rest
+
+        if "," in t:
+            rest = t.rsplit(",", 1)[-1].strip(" .")
+            if rest:
+                return rest
+
+        return None
+
+    # Fase 4 (correcties, 28 juli 2026): minimale confidence die de
+    # classifier moet halen op een LOS correctiewoord (bv. enkel
+    # "koken") vooraleer we dat vertrouwen als vangnet. Een los woord
+    # scoort doorgaans lager/onbetrouwbaarder dan een volledige zin,
+    # dus bewust STRENGER dan de gewone DREMPEL_VRAAG (0.35) -- anders
+    # zou een woord dat bij GEEN van de 9 categorieën hoort (zoals
+    # "koken") toch een willekeurig, fout label toegewezen krijgen en
+    # als "gecorrigeerd" (dus MET ZEKERHEID juist) worden opgeslagen.
+    DREMPEL_CORRECTIE_VANGNET = 0.40
+
+    def _herken_correctie_label(self, correctie_woord):
+        """
+        Zet het ruwe correctie-woord (bv. "weer") om naar een intern
+        label (bv. "weather").
+
+        Eerst de vaste, expliciete _CORRECTIE_WOORDEN_NL-lijst
+        proberen (betrouwbaar, voorspelbaar). Staat het woord daar
+        niet in, dan de classifier zelf als vangnet gebruiken -- maar
+        ENKEL als de score boven DREMPEL_CORRECTIE_VANGNET ligt. Onder
+        die drempel geven we liever eerlijk "onbekend" terug (zie
+        _verwerk_correctie(), die dit dan naar
+        onbekende_correcties.jsonl logt) dan een gegokt label blind
+        als "gecorrigeerd, met zekerheid juist" te bewaren.
+        """
+        if correctie_woord in self._CORRECTIE_WOORDEN_NL:
+            return self._CORRECTIE_WOORDEN_NL[correctie_woord]
+
+        if self.intent_classifier:
+            resultaat = self.intent_classifier.predict(correctie_woord)
+            if resultaat and resultaat["confidence"] >= self.DREMPEL_CORRECTIE_VANGNET:
+                dbg(f"{C_YELLOW}→ correctiewoord '{correctie_woord}' niet in "
+                    f"vaste lijst, classifier gokt: {resultaat['label']} "
+                    f"(confidence {resultaat['confidence']}){C_RESET}")
+                return resultaat["label"]
+            elif resultaat:
+                dbg(f"{C_YELLOW}→ correctiewoord '{correctie_woord}' -- "
+                    f"classifier te onzeker ({resultaat['confidence']} < "
+                    f"{self.DREMPEL_CORRECTIE_VANGNET}), niet vertrouwd"
+                    f"{C_RESET}")
+
+        return None
+
+    def _log_gecorrigeerd_voorbeeld(self, tekst, label):
+        """
+        Slaat een DOOR KEVIN BEVESTIGDE correctie op in
+        data/gecorrigeerde_voorbeelden.jsonl -- bewust een apart
+        bestand, LOS van training_data.json (dat blijft Kevin's eigen,
+        handmatig beheerde bestand) en los van unmatched_intents.jsonl
+        (dat bevat ONZEKERE gokken zonder bevestigd label, dit hier
+        bevat enkel MET ZEKERHEID correct gelabelde voorbeelden).
+
+        Een toekomstige Fase 5 (periodieke hertraining, elke nacht/4
+        uur -- Kevin's keuze, 28 juli 2026) leest training_data.json
+        EN dit bestand samen om te trainen, zodat niets verloren gaat
+        zonder dat Kevin zelf iets hoeft te kopiëren.
+        """
+        import json
+        import os
+        from datetime import datetime
+
+        pad = os.path.join("data", "gecorrigeerde_voorbeelden.jsonl")
+        regel = {
+            "tekst": tekst,
+            "label": label,
+            "bron": "gecorrigeerd",
+            "tijdstip": datetime.now().isoformat()
+        }
+        try:
+            os.makedirs("data", exist_ok=True)
+            with open(pad, "a", encoding="utf-8") as f:
+                f.write(json.dumps(regel, ensure_ascii=False) + "\n")
+        except Exception as e:
+            dbg(f"{C_RED}kon gecorrigeerde_voorbeelden.jsonl niet "
+                f"schrijven: {e}{C_RESET}")
+
+    def _log_onbekende_correctie(self, origineel, correctie_woord):
+        """
+        Slaat een correctiewoord op dat bij GEEN van de 9 bestaande
+        categorieën goed paste (niet in _CORRECTIE_WOORDEN_NL, en de
+        classifier was er ook niet zeker genoeg van). Dit is Kevin's
+        hint-lijst voor mogelijke NIEUWE categorieën/modules die nog
+        niet bestaan (bv. "koken" zou hier een paar keer kunnen
+        opduiken en dan blijkt dat een eigen intent te verdienen) --
+        bewust LOS van gecorrigeerde_voorbeelden.jsonl (dat bevat enkel
+        MET ZEKERHEID juiste labels voor bestaande categorieën) en van
+        unmatched_intents.jsonl (dat bevat classifier-onzekerheid over
+        HELE zinnen, niet over een specifiek correctiewoord).
+        """
+        import json
+        import os
+        from datetime import datetime
+
+        pad = os.path.join("data", "onbekende_correcties.jsonl")
+        regel = {
+            "originele_zin": origineel,
+            "correctie_woord": correctie_woord,
+            "tijdstip": datetime.now().isoformat()
+        }
+        try:
+            os.makedirs("data", exist_ok=True)
+            with open(pad, "a", encoding="utf-8") as f:
+                f.write(json.dumps(regel, ensure_ascii=False) + "\n")
+        except Exception as e:
+            dbg(f"{C_RED}kon onbekende_correcties.jsonl niet "
+                f"schrijven: {e}{C_RESET}")
+
+    def _verwerk_correctie(self, text, vraag_type):
+        """
+        Wordt aangeroepen vanuit _verwerk_pending_antwoord() ZODRA een
+        correctiepatroon herkend is ("nee ik bedoelde X") op een
+        classifier-vraag. Handelt het VOLLEDIGE correctie-scenario af:
+        label herkennen, opslaan als trainingsvoorbeeld, de juiste
+        actie alsnog uitvoeren, en de pending question sluiten.
+
+        Geeft True terug als de correctie volledig verwerkt is,
+        anders False (dan valt de aanroeper terug op de normale
+        ja/nee-afhandeling).
+        """
+        pending = self.event_bus.modules.get("pending_question")
+
+        if not vraag_type.startswith("classifier_intent_") or \
+           self._laatste_classifier_vraag is None:
+            return False
+
+        correctie_woord = self._detecteer_correctie(text)
+        if correctie_woord is None:
+            return False
+
+        nieuw_label = self._herken_correctie_label(correctie_woord)
+        if nieuw_label is None:
+            dbg(f"{C_YELLOW}→ correctie herkend maar label onbekend: "
+                f"'{correctie_woord}'{C_RESET}")
+            # Hint-lijst voor mogelijke nieuwe categorieën (Kevin's
+            # keuze, 28 juli 2026) -- LOS van gecorrigeerde_
+            # voorbeelden.jsonl, want we weten hier NIET welk label
+            # correct is, enkel dat geen van de 9 bestaande paste.
+            originele_tekst = self._laatste_classifier_vraag["tekst"]
+            self._log_onbekende_correctie(originele_tekst, correctie_woord)
+            self.event_bus.publish("chat_response", {
+                "text": f"Sorry, ik ken '{correctie_woord}' niet als "
+                        f"onderwerp. Kan je het anders formuleren?"
+            })
+            if pending:
+                pending.clear()
+            self._laatste_classifier_vraag = None
+            return True
+
+        originele_tekst = self._laatste_classifier_vraag["tekst"]
+        oud_label = self._laatste_classifier_vraag["label"]
+
+        dbg(f"{C_GREEN}→ correctie: '{originele_tekst}' was gegokt als "
+            f"'{oud_label}', Kevin corrigeert naar '{nieuw_label}'{C_RESET}")
+        self._log_gecorrigeerd_voorbeeld(originele_tekst, nieuw_label)
+
+        if pending:
+            pending.clear()
+        self._laatste_classifier_vraag = None
+
+        # Meteen de juiste actie alsnog proberen uit te voeren (Kevin's
+        # keuze, 28 juli 2026) -- hergebruikt dezelfde methode als bij
+        # een gewone bevestiging, dus chess toont het bord/start een
+        # nieuwe partij, de rest geeft de neutrale bevestigende tekst.
+        self._voer_classifier_intent_uit(nieuw_label)
+        return True
 
     def _probeer_intent_classifier(self, text):
         """
@@ -1572,6 +1819,14 @@ class IntentRouter:
             dbg(f"{C_YELLOW}→ classifier twijfel: '{label}' "
                 f"(confidence {confidence}) -- vraag bevestiging{C_RESET}")
             pending.set(f"classifier_intent_{label}", verval_seconden=60)
+            # Fase 4 (correcties, 28 juli 2026): bewaar de ORIGINELE
+            # zin kortstondig in RAM, puur voor de duur tussen vraag en
+            # antwoord -- verdwijnt vanzelf zodra het antwoord verwerkt
+            # is (zie _verwerk_correctie()) of de vraag verloopt.
+            self._laatste_classifier_vraag = {
+                "tekst": text,
+                "label": label
+            }
             self.event_bus.publish("chat_response", {
                 "text": f"Bedoel je dat je {label_nl}?"
             })
@@ -1634,7 +1889,7 @@ class IntentRouter:
                 self.event_bus.publish("intent_chess_new", {})
             else:
                 self.event_bus.publish("intent_chess_board", {})
-            self._emit_topic("chess")
+            self._emit_topic("chess", bron="classifier")
             return
 
         # Overige 8 categorieën: neutrale bevestigende tekst, gewoon
@@ -1644,7 +1899,7 @@ class IntentRouter:
         self.event_bus.publish("chat_response", {
             "text": f"Oké, dus je wil {label_nl}. Zeg maar wat je precies bedoelt!"
         })
-        self._emit_topic(label)
+        self._emit_topic(label, bron="classifier")
 
     def _on_classifier_pending_answered(self, data):
         """
@@ -1677,14 +1932,24 @@ class IntentRouter:
     # ---------------------------------------------------------
     # Topic events (Layer 2 topic-bewustzijn)
     # ---------------------------------------------------------
-    def _emit_topic(self, naam):
+    def _emit_topic(self, naam, bron="detect"):
         """
         Stuurt een 'topic_detected:<naam>' event de EventBus op.
         Layer 2 (pattern_matcher.py) telt dit generiek mee op uur/dag,
         zodat er per onderwerp (schaken, weer, ...) patronen kunnen
-        ontstaan. Geen nieuwe logica hier — enkel doorgeven.
+        ontstaan. Geen nieuwe logica hier -- enkel doorgeven.
+
+        Fase 6 (leren uit Layer 0, 28 juli 2026): 'bron' onderscheidt
+        WAAR dit topic vandaan kwam -- "detect" (een bestaande,
+        betrouwbare detect_*()-match, de default) versus "classifier"
+        (de Intent Classifier gokte dit, Fase 3/4). Dit veld belandt
+        mee in Layer 0 (memory.py slaat elk event + z'n volledige data
+        op), en een latere hertrainings-uitbreiding gebruikt dit om
+        ENKEL "detect"-topics als nieuw trainingsvoorbeeld te
+        vertrouwen -- classifier-gokken opnieuw laten meetrainen zou
+        een zelfbevestigend risico zijn (Kevin's keuze, 28 juli 2026).
         """
-        self.event_bus.publish(f"topic_detected:{naam}", {})
+        self.event_bus.publish(f"topic_detected:{naam}", {"bron": bron})
 
     # ---------------------------------------------------------
     # Fallback
@@ -1767,7 +2032,10 @@ class IntentRouter:
         # enkel de manier waarop ze doorlopen worden is veranderd.
         for topic_naam, detect_functie in self._intent_tabel_deel1:
             if detect_functie(text):
-                self._emit_topic(topic_naam)
+                # Fase 6: expliciet bron="detect" -- dit is een
+                # betrouwbare match van een bestaande detect_*(),
+                # geschikt als toekomstig trainingsvoorbeeld.
+                self._emit_topic(topic_naam, bron="detect")
                 return
 
         # 8 Definition
@@ -1791,7 +2059,9 @@ class IntentRouter:
         # _build_intent_tabel_deel2()). Zelfde volgorde als voorheen.
         for topic_naam, detect_functie in self._intent_tabel_deel2:
             if detect_functie(text):
-                self._emit_topic(topic_naam)
+                # Fase 6: expliciet bron="detect", zelfde reden als
+                # bij _intent_tabel_deel1 hierboven.
+                self._emit_topic(topic_naam, bron="detect")
                 return
 
         # Sense-choice (antwoord met nummer)

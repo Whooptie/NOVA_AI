@@ -48,6 +48,11 @@ def get_help():
   preferences debug              (profiel-aantallen, sentiment-classifier-status,
                                    kandidaat-suggesties-status in één oogopslag)
 
+🎯 INTENT CLASSIFIER (ML-fallback, Fase 1-6)
+  intent debug                   (aantal voorbeelden, categorieën, laatste training)
+  intent test <zin>               (test een zin rechtstreeks tegen de classifier)
+  intent retrain                  (forceert retrain_vanuit_bestanden() nu meteen)
+
 ℹ️ Dit zijn tijdelijke test-/debugcommando's voor jou als developer,
    geen onderdeel van Nova's normale gesprek met de gebruiker.
 """.strip()

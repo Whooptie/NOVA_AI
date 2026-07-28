@@ -128,6 +128,16 @@ WEATHER_CHECK_INTERVAL_MINUTEN = 1
 # dus geen spam-risico, enkel hoe snel een insight ontdekt wordt.
 EMERGENCE_CHECK_INTERVAL_MINUTEN = 10
 
+# Fase 5 (periodieke hertraining intent_classifier, 28 juli 2026):
+# hoe vaak wordt het ML-model van de Intent Classifier opnieuw
+# getraind op training_data.json + de ondertussen verzamelde
+# gecorrigeerde_voorbeelden.jsonl (Fase 4's "nee ik bedoelde X").
+# Kevin's keuze: elke 4 uur, wat de nacht vanzelf ook meepikt zolang
+# Nova 24/7 blijft draaien -- geen apart, vast nachtelijk tijdstip
+# nodig. 240 minuten = 4 uur (zelfde eenheid als de andere
+# CHECK_INTERVAL_MINUTEN-constantes hierboven).
+INTENT_CLASSIFIER_RETRAIN_INTERVAL_MINUTEN = 240
+
 
 def achtergrond_loop(loader):
     """
@@ -243,6 +253,20 @@ def achtergrond_loop(loader):
                     emergence.reflect()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in emergence.reflect(): {e}")
+
+        # Fase 5 (periodieke hertraining Intent Classifier, 28 juli
+        # 2026): traint het ML-model opnieuw op training_data.json +
+        # gecorrigeerde_voorbeelden.jsonl samen. Zelfde
+        # aantal_loops-modulo-patroon als emergence_engine hierboven.
+        # Duurt in de praktijk 1-2 seconden (zie opstart-logs) -- geen
+        # noemenswaardige impact op de rest van de achtergrondthread.
+        if aantal_loops % INTENT_CLASSIFIER_RETRAIN_INTERVAL_MINUTEN == 0:
+            intent_classifier = loader.loaded_modules.get("intent_classifier")
+            if intent_classifier:
+                try:
+                    intent_classifier.retrain_vanuit_bestanden()
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in intent_classifier.retrain_vanuit_bestanden(): {e}")
 
 def main():
     global wachten_op_input
