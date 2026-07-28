@@ -328,6 +328,17 @@ Live getest (26 juli 2026): `help` toont de nieuwe VOORKEUREN-sectie, `help debu
 
 **Bug #9/#24 — ✅ VOLLEDIG AFGEROND (27 juli 2026, zie eigen entry #24 hierboven in dit bestand).**
 
+## ✅ Weerwaarschuwing: episode-logica + IP-locatie-afstandsdrempel (28 juli 2026)
+
+**Twee losse fixes in `weather.py`, allebei live getest in de draaiende daemon met echt weer:**
+
+1. **Opnieuw melden bij weertype-wijziging/terugkeer binnen dezelfde dag.** Was voorheen: max. 1 melding/dag/stad, punt uit. `_al_gemeld_vandaag()`/`_markeer_gemeld()` vervangen door `_is_nieuwe_episode()`/`_markeer_status()` — `weather_history.json` bewaart nu ook `laatste_waarschuwing_tekst` per stad. Een nieuwe episode = de vorige check had geen waarschuwing, of de tekst is anders dan voorheen. Dekt Kevin's scenario: 's ochtends onweer gemeld, 's middags rustig, 's avonds onweer terug → nu terecht opnieuw gemeld.
+2. **IP-locatie-afstandsdrempel.** Tijdens het testen van fix 1 bleek ipinfo.io Kevin's locatie soms als "Brugge" te melden terwijl hij in zijn standaardstad Aartrijke zat (~6-8 km verschil, IP-geolocatie is providergebaseerd, geen GPS) — dit gaf 2 bijna-identieke proactieve meldingen na elkaar. Opgelost met `_afstand_km()` (Haversine) + `_get_stad_coordinaten()` (OpenWeatherMap Geocoding-API, zelfde `api_key`): de IP-locatie telt nu enkel als aparte stad als ze verder dan `ZELFDE_PLEK_DREMPEL_KM = 20` van de standaardstad ligt. `get_current_location_city()` blijft bestaan als backwards-compatible wrapper rond de nieuwe `get_current_location()` (die ook coördinaten teruggeeft). Bij API-falen: veilige terugval op de oude naamvergelijking.
+
+Beide volledig symbolisch, geen ML. Zie bijgewerkte "Weather-module"-sectie in `nova_state.md` voor volledige details.
+
+---
+
 ## ✅ response_style volledig aangesloten op Layer 4 +_sterkste_associatie()-bugfix (27 juli 2026)
 
 Vervolg op de Layer 6-koppeling van 17 juli 2026 (zie `nova_state.md`, Layer 5-sectie): `response_style` ("kort"/"normaal"/"uitgebreid", berekend door `context_manager.py`) beïnvloedde tot dit punt enkel de TOON van een antwoord (`expression_injector.py` liet emoji's/gestures/uitroeptekens weg bij "kort"). De INHOUD zelf — `response_engine.py`'s `generate()`, die semantic + Layer 1 (word_associations) + Layer 2 (pattern_matcher) combineert — kende `response_style` nog niet, en bouwde bij "kort" dus toch een volledig verrijkt antwoord op dat pas achteraf kaal gemaakt werd.

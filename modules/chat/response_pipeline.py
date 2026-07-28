@@ -26,6 +26,14 @@ class ResponsePipeline:
         self.emotion = EmotionEngine()
         self.tone_engine = ToneEngine()
 
+        # Registratie zodat andere modules (bv. conversation_engine.py)
+        # de actuele Layer 6-state kunnen opvragen via
+        # event_bus.modules.get("personality"), net zoals dat al voor
+        # context_manager (Layer 5) gebeurt. PersonalityEngine wordt
+        # hier aangemaakt i.p.v. via module_loader.py, dus zonder deze
+        # regel zou het nergens in event_bus.modules terechtkomen.
+        event_bus.register_module("personality", self.personality)
+
         # Voor nu: greeting + fallback + Layer 4 (definitie-antwoorden)
         event_bus.subscribe("intent_greeting", self.on_greeting)
         event_bus.subscribe("intent_fallback", self.on_fallback)
@@ -151,10 +159,27 @@ class ResponsePipeline:
 
         tone = self.tone_engine.generate_tone(self.personality, self.emotion)
 
-        base = random.choice(self._sjablonen_fallback)
+        # Eerst proberen: conversation_engine.py's contextuele
+        # activiteit-observatie (Layer 5-data). Geeft None terug als
+        # er geen bruikbare context is — dan valt dit terug op de
+        # bestaande sjabloon-fallback. Zelfde beslispatroon als
+        # intent_router.py's confidence-check bij response_engine.py.
+        conv_engine = self.event_bus.modules.get("conversation_engine")
+        base = None
+        if conv_engine is not None:
+            # Volgorde bewust: mood_observatie eerst, want een
+            # overprikkelde/opvallende emotionele staat is doorgaans
+            # betekenisvoller dan een activiteit-observatie. Beide
+            # respecteren hetzelfde tijdvenster (_mag_opnieuw_
+            # observeren()), dus er is nooit overlap.
+            base = conv_engine.probeer_mood_observatie()
+            if base is None:
+                base = conv_engine.probeer_activiteit_observatie()
 
-        if user_text:
-            base += f" Je zei: '{user_text}'."
+        if base is None:
+            base = random.choice(self._sjablonen_fallback)
+            if user_text:
+                base += f" Je zei: '{user_text}'."
 
         self.event_bus.publish("pipeline_response", {
             "base_text": base,

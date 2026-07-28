@@ -447,33 +447,115 @@ class WeatherModule:
     # -----------------------------------------------------
     # Proactieve automatische weerwaarschuwing (achtergrond-timer)
     # -----------------------------------------------------
-    def get_current_location_city(self):
-        """Vraagt de huidige stad op via IP-locatie (ipinfo.io), zelfde
-        soort bron als modules/time/zone.py gebruikt voor de tijdzone.
-        Geeft None terug bij falen — puur symbolisch, geen ML, gewoon een
-        extra veld uit dezelfde soort API-response."""
+    def get_current_location(self):
+        """Vraagt de huidige stad + coördinaten op via IP-locatie
+        (ipinfo.io), zelfde soort bron als modules/time/zone.py gebruikt
+        voor de tijdzone. Geeft (stad, lat, lon) terug, met None-waarden
+        bij falen of ontbrekende velden -- puur symbolisch, geen ML, gewoon
+        twee extra velden uit dezelfde soort API-response.
+
+        ipinfo.io geeft coördinaten als 1 string terug in het 'loc'-veld,
+        bv. "51.2093,3.2247" (lat,lon) -- die splitsen we hier op."""
         try:
             r = requests.get("https://ipinfo.io/json", timeout=4)
             data = r.json()
-            return data.get("city")
+            stad = data.get("city")
+
+            lat, lon = None, None
+            loc = data.get("loc")
+            if loc and "," in loc:
+                lat_str, lon_str = loc.split(",", 1)
+                lat, lon = float(lat_str), float(lon_str)
+
+            return stad, lat, lon
         except Exception:
-            return None
+            return None, None, None
+
+    def get_current_location_city(self):
+        """Backwards-compatible variant die enkel de stadsnaam teruggeeft
+        (zonder coördinaten). Gebruikt intern get_current_location()."""
+        stad, _lat, _lon = self.get_current_location()
+        return stad
+
+    def _get_stad_coordinaten(self, city):
+        """Vraagt lat/lon op voor een stadsnaam via OpenWeatherMap's
+        Geocoding-API (zelfde api_key als de rest van deze module, geen
+        nieuwe dienst nodig). Geeft (lat, lon) terug, of (None, None) bij
+        falen -- puur een opzoeking, geen ML."""
+        url = (
+            f"https://api.openweathermap.org/geo/1.0/direct?"
+            f"q={city},{self.default_country}&limit=1&appid={self.api_key}"
+        )
+        try:
+            r = requests.get(url, timeout=4)
+            resultaten = r.json()
+            if not resultaten:
+                return None, None
+            return resultaten[0].get("lat"), resultaten[0].get("lon")
+        except Exception:
+            return None, None
+
+    def _afstand_km(self, lat1, lon1, lat2, lon2):
+        """Haversine-afstandsberekening tussen twee coördinaten, in km.
+        Standaard wiskunde (bolvormige aarde-benadering) -- geen library,
+        geen ML, gewoon een formule."""
+        import math
+
+        R = 6371  # gemiddelde straal van de aarde in km
+        d_lat = math.radians(lat2 - lat1)
+        d_lon = math.radians(lon2 - lon1)
+        a = (
+            math.sin(d_lat / 2) ** 2
+            + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(d_lon / 2) ** 2
+        )
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        return R * c
+
+    # Drempel voor "dit telt als dezelfde plek" -- IP-geolocatie is
+    # inherent onnauwkeurig (gebaseerd op internetprovider-routing, niet
+    # GPS), dus kleine buurgemeentes van de standaardstad mogen niet als
+    # aparte locatie tellen. 20 km dekt bv. Aartrijke <-> Brugge ruim.
+    # Gewoon een constante hier bovenaan -- pas gerust aan als 20 km in de
+    # praktijk nog te weinig of te veel blijkt.
+    ZELFDE_PLEK_DREMPEL_KM = 20
 
     def check_proactieve_waarschuwing(self):
         """Wordt periodiek aangeroepen vanuit achtergrond_loop() in main.py
         (elke 30 min). Checkt de standaardstad, en indien de IP-locatie een
-        ANDERE stad is, ook die — om Kevin niet dubbel te melden als hij
-        toch gewoon in zijn standaardstad zit. Meldt maximaal 1x per dag
-        per stad (via 'laatste_waarschuwing_datum' in weather_history.json).
+        ANDERE stad is DIE OOK ECHT VER GENOEG WEG LIGT (> ZELFDE_PLEK_DREMPEL_KM),
+        ook die -- om Kevin niet dubbel te melden zodra IP-geolocatie een
+        naburige plaats teruggeeft terwijl hij gewoon thuis zit. Meldt
+        waarschuwingen per nieuwe episode (zie _is_nieuwe_episode()).
         """
         if not self.api_key:
             return  # geen API-sleutel, stil niets doen (geen spam in de logs)
 
         steden_om_te_checken = [self.default_city]
 
-        ip_stad = self.get_current_location_city()
+        ip_stad, ip_lat, ip_lon = self.get_current_location()
         if ip_stad and ip_stad.lower() != self.default_city.lower():
-            steden_om_te_checken.append(ip_stad)
+            # Andere STADSNAAM volgens ipinfo.io -- maar dat kan gewoon een
+            # buurgemeente zijn die toevallig anders heet. Enkel als de
+            # afstand ook echt groot genoeg is, tellen we dit als een
+            # aparte locatie om te checken.
+            if ip_lat is not None and ip_lon is not None:
+                default_lat, default_lon = self._get_stad_coordinaten(self.default_city)
+                if default_lat is not None and default_lon is not None:
+                    afstand = self._afstand_km(default_lat, default_lon, ip_lat, ip_lon)
+                    if afstand > self.ZELFDE_PLEK_DREMPEL_KM:
+                        steden_om_te_checken.append(ip_stad)
+                    # Anders: te dichtbij, blijkbaar toch dezelfde plek --
+                    # geen tweede stad toevoegen.
+                else:
+                    # Coördinaten van de standaardstad niet te achterhalen
+                    # (bv. Geocoding-API-fout) -- val terug op de oude,
+                    # simpele naam-vergelijking om nooit een echte
+                    # locatiewissel te missen.
+                    steden_om_te_checken.append(ip_stad)
+            else:
+                # Geen coördinaten van ipinfo.io beschikbaar -- zelfde
+                # veilige terugval als hierboven.
+                steden_om_te_checken.append(ip_stad)
 
         for stad in steden_om_te_checken:
             self._check_waarschuwing_voor_stad(stad)
@@ -506,34 +588,45 @@ class WeatherModule:
 
         heeft_neerslag = self._heeft_neerslag(data, main_categorie)
         waarschuwing = self.weerwaarschuwing(main_categorie, weather_id=weather_id, windsnelheid=wind, temperatuur=temp, heeft_neerslag=heeft_neerslag)
+
         if not waarschuwing:
+            # Geen waarschuwing nu -- toch bijhouden dat de "actieve episode"
+            # voorbij is, anders herkennen we een latere terugkeer van
+            # dezelfde waarschuwing (bv. 's avonds opnieuw onweer na een
+            # rustige middag) niet als nieuwe episode.
+            self._markeer_status(city, waarschuwing_tekst=None)
             return
 
-        if self._al_gemeld_vandaag(city):
-            return  # al gemeld vandaag voor deze stad, niet opnieuw
+        if not self._is_nieuwe_episode(city, waarschuwing):
+            return  # zelfde waarschuwing als de vorige check, nog dezelfde episode
 
-        self._markeer_gemeld(city)
+        self._markeer_status(city, waarschuwing_tekst=waarschuwing)
         opening = random.choice(self._sjablonen_proactieve_waarschuwing["opening"])
         midden = random.choice(self._sjablonen_proactieve_waarschuwing["midden"]).format(city=city)
         tekst = f"{opening} {midden} {waarschuwing}"
         self.event_bus.publish("layer4_response", {"text": tekst})
 
-    def _al_gemeld_vandaag(self, city):
-        """Checkt of er al een proactieve waarschuwing gemeld werd voor
-        deze stad, vandaag."""
+    def _is_nieuwe_episode(self, city, waarschuwing_tekst):
+        """Bepaalt of de huidige waarschuwing een NIEUWE episode is t.o.v.
+        de vorige check, i.p.v. gewoon 1x per dag te tellen. Een nieuwe
+        episode is: de vorige check had GEEN waarschuwing (de waarschuwing
+        was dus even weg en komt nu terug -- ook al is het exact hetzelfde
+        weertype als eerder vandaag), OF de waarschuwingstekst is nu anders
+        dan de vorige keer (bv. onweer -> sneeuw). Blijft dezelfde
+        waarschuwing gewoon actief tussen twee checks in, dan is het GEEN
+        nieuwe episode en melden we niet opnieuw."""
         geschiedenis = self._laad_geschiedenis()
         stad_key = city.lower()
-        vandaag = datetime.now().strftime("%Y-%m-%d")
+        entry = geschiedenis.get(stad_key, {})
 
-        entry = geschiedenis.get(stad_key)
-        if not entry:
-            return False
+        vorige_tekst = entry.get("laatste_waarschuwing_tekst")
+        return vorige_tekst != waarschuwing_tekst
 
-        return entry.get("laatste_waarschuwing_datum") == vandaag
-
-    def _markeer_gemeld(self, city):
-        """Zet 'vandaag al gemeld' voor deze stad, zonder de bestaande
-        temperatuur/datum-gegevens (voor de gisteren-vergelijking) te
+    def _markeer_status(self, city, waarschuwing_tekst):
+        """Slaat de huidige waarschuwingsstatus op voor deze stad: de tekst
+        (of None als er nu niets te melden is) plus de datum van de laatste
+        melding (enkel bijgewerkt als er ECHT gemeld is). Zonder de
+        bestaande temperatuur/datum-gegevens (gisteren-vergelijking) te
         overschrijven."""
         geschiedenis = self._laad_geschiedenis()
         stad_key = city.lower()
@@ -542,7 +635,9 @@ class WeatherModule:
         if stad_key not in geschiedenis:
             geschiedenis[stad_key] = {}
 
-        geschiedenis[stad_key]["laatste_waarschuwing_datum"] = vandaag
+        geschiedenis[stad_key]["laatste_waarschuwing_tekst"] = waarschuwing_tekst
+        if waarschuwing_tekst is not None:
+            geschiedenis[stad_key]["laatste_waarschuwing_datum"] = vandaag
 
         try:
             self.history_path.parent.mkdir(parents=True, exist_ok=True)
