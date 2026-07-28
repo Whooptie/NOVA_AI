@@ -1,0 +1,119 @@
+{"timestamp": "2026-06-27T18:41:03.705863", "event_type": "concept_created", "word": "hond", "source": "system", "new_value": {"word": "hond"}}
+{"timestamp": "2026-06-27T18:41:29.731863", "event_type": "concept_created", "word": "zwarte gat", "source": "system", "new_value": {"word": "zwarte gat"}}
+{"timestamp": "2026-06-27T18:50:45.572891", "event_type": "concept_created", "word": "hond", "source": "system", "new_value": {"word": "hond"}}
+{"timestamp": "2026-06-27T18:58:08.343041", "event_type": "concept_created", "word": "hond", "source": "system", "new_value": {"word": "hond"}}
+{"timestamp": "2026-06-27T18:58:32.285272", "event_type": "concept_created", "word": "fiets", "source": "system", "new_value": {"word": "fiets"}}
+{"timestamp": "2026-06-27T18:59:44.999764", "event_type": "concept_created", "word": "huiskat", "source": "system", "new_value": {"word": "huiskat"}}
+{"timestamp": "2026-06-27T19:01:30.215178", "event_type": "concept_created", "word": "huiskat", "source": "system", "new_value": {"word": "huiskat"}}
+{"timestamp": "2026-06-27T19:03:22.379009", "event_type": "concept_created", "word": "huiskat", "source": "system", "new_value": {"word": "huiskat"}}
+{"timestamp": "2026-06-27T19:05:44.416115", "event_type": "concept_created", "word": "computer", "source": "system", "new_value": {"word": "computer"}}
+{"timestamp": "2026-06-27T19:05:57.120363", "event_type": "concept_created", "word": "planeet", "source": "system", "new_value": {"word": "planeet"}}
+{"timestamp": "2026-06-27T19:18:13.053278", "event_type": "concept_created", "word": "trampoline", "source": "system", "new_value": {"word": "trampoline"}}
+{"timestamp": "2026-06-29T17:33:27.306128", "event_type": "concept_created", "word": "dier", "source": "system", "new_value": {"word": "dier"}}
+{"timestamp": "2026-06-29T17:37:48.295379", "event_type": "concept_created", "word": "levend wezen", "source": "system", "new_value": {"word": "levend wezen"}}
+{"timestamp": "2026-06-29T17:42:58.029225", "event_type": "concept_created", "word": "zitbank", "source": "system", "new_value": {"word": "zitbank"}}
+{"timestamp": "2026-06-29T17:49:13.341468", "event_type": "concept_created", "word": "octopus", "source": "system", "new_value": {"word": "octopus"}}
+{"timestamp": "2026-06-29T17:55:24.949953", "event_type": "concept_created", "word": "appel", "source": "system", "new_value": {"word": "appel"}}
+{"timestamp": "2026-06-29T17:56:52.829629", "event_type": "concept_created", "word": "pitvrucht", "source": "system", "new_value": {"word": "pitvrucht"}}
+{"timestamp": "2026-06-29T18:20:52.412906", "event_type": "concept_created", "word": "democratie", "source": "system", "new_value": {"word": "democratie"}}
+{"timestamp": "2026-06-29T18:21:37.185926", "event_type": "concept_created", "word": "vliegtuig", "source": "system", "new_value": {"word": "vliegtuig"}}
+{"timestamp": "2026-06-29T18:23:14.593519", "event_type": "concept_created", "word": "luchtvaartuig", "source": "system", "new_value": {"word": "luchtvaartuig"}}
+{"timestamp": "2026-06-29T18:24:45.400140", "event_type": "concept_created", "word": "bestuursvorm", "source": "system", "new_value": {"word": "bestuursvorm"}}
+{"timestamp": "2026-06-30T19:47:23.996590", "event_type": "concept_created", "word": "zwart gat", "source": "system", "new_value": {"word": "zwart gat"}}
+{"timestamp": "2026-06-30T19:48:00.880990", "event_type": "concept_created", "word": "relativiteitstheorie", "source": "system", "new_value": {"word": "relativiteitstheorie"}}
+{"timestamp": "2026-07-02T11:50:21.398848", "event_type": "concept_created", "word": "python", "source": "system", "new_value": {"word": "python"}}
+{"timestamp": "2026-07-02T12:19:23.511648", "event_type": "concept_created", "word": "machine learning", "source": "system", "new_value": {"word": "machine learning"}}
+{"timestamp": "2026-07-02T12:19:50.493068", "event_type": "concept_created", "word": "kunstmatige intelligentie", "source": "system", "new_value": {"word": "kunstmatige intelligentie"}}
+{"timestamp": "2026-07-03T11:48:22.331904", "event_type": "concept_created", "word": "honingbeer", "source": "system", "new_value": {"word": "honingbeer"}}
+{"timestamp": "2026-07-03T11:48:42.943773", "event_type": "concept_created", "word": "grizzlybeer", "source": "system", "new_value": {"word": "grizzlybeer"}}
+{"timestamp": "2026-07-03T17:36:24.152649", "event_type": "concept_created", "word": "machine learning", "source": "system", "new_value": {"word": "machine learning"}}
+{"timestamp": "2026-07-08T15:38:51.262515", "event_type": "concept_created", "word": "gebruik", "source": "system", "new_value": {"word": "gebruik"}}
+{"timestamp": "2026-07-08T15:38:51.271528", "event_type": "concept_created", "word": "mijn", "source": "system", "new_value": {"word": "mijn"}}
+{"timestamp": "2026-07-08T15:38:51.283051", "event_type": "concept_created", "word": "laptop", "source": "system", "new_value": {"word": "laptop"}}
+{"timestamp": "2026-07-08T17:57:51.704279", "event_type": "concept_created", "word": "exot", "source": "system", "new_value": {"word": "exot"}}
+{"timestamp": "2026-07-08T19:17:58.063114", "event_type": "concept_created", "word": "rust", "source": "system", "new_value": {"word": "rust"}}
+{"timestamp": "2026-07-08T19:18:36.095223", "event_type": "concept_created", "word": "topic_detected:definitie", "source": "system", "new_value": {"word": "topic_detected:definitie"}}
+{"timestamp": "2026-07-10T20:50:52.462691", "event_type": "concept_created", "word": "alles", "source": "system", "new_value": {"word": "alles"}}
+{"timestamp": "2026-07-10T20:50:52.482631", "event_type": "concept_created", "word": "goed", "source": "system", "new_value": {"word": "goed"}}
+{"timestamp": "2026-07-10T20:51:42.258223", "event_type": "concept_created", "word": "programeertaal", "source": "system", "new_value": {"word": "programeertaal"}}
+{"timestamp": "2026-07-10T20:54:00.308189", "event_type": "concept_created", "word": "top", "source": "system", "new_value": {"word": "top"}}
+{"timestamp": "2026-07-10T21:01:21.090308", "event_type": "concept_created", "word": "paard", "source": "system", "new_value": {"word": "paard"}}
+{"timestamp": "2026-07-11T17:29:13.270100", "event_type": "concept_created", "word": "nord", "source": "system", "new_value": {"word": "nord"}}
+{"timestamp": "2026-07-11T20:45:30.083084", "event_type": "concept_created", "word": "vulkaan", "source": "system", "new_value": {"word": "vulkaan"}}
+{"timestamp": "2026-07-11T20:45:30.095560", "event_type": "concept_created", "word": "berg waaruit gesmolten gesteente, gas en as vanuit het binnenste van de aarde naar de oppervlakte komen. magma is gesmolten gesteente dat zich diep onder de grond bevindt, voordat het als lava naar buiten komt. lava is de naam voor magma zodra het de oppervlakte van de aarde bereikt. een krater is de opening bovenaan een vulkaan waaruit de uitbarsting plaatsvindt. ijsland is een land met veel actieve vulkanen, doordat het op de grens van twee tektonische platen ligt", "source": "system", "new_value": {"word": "berg waaruit gesmolten gesteente, gas en as vanuit het binnenste van de aarde naar de oppervlakte komen. magma is gesmolten gesteente dat zich diep onder de grond bevindt, voordat het als lava naar buiten komt. lava is de naam voor magma zodra het de oppervlakte van de aarde bereikt. een krater is de opening bovenaan een vulkaan waaruit de uitbarsting plaatsvindt. ijsland is een land met veel actieve vulkanen, doordat het op de grens van twee tektonische platen ligt"}}
+{"timestamp": "2026-07-11T20:52:17.438719", "event_type": "concept_created", "word": "berg", "source": "system", "new_value": {"word": "berg"}}
+{"timestamp": "2026-07-11T20:52:53.379080", "event_type": "concept_created", "word": "berg waaruit gesmolten gesteente, gas en as vanuit het binnenste van de aarde naar de oppervlakte komen", "source": "system", "new_value": {"word": "berg waaruit gesmolten gesteente, gas en as vanuit het binnenste van de aarde naar de oppervlakte komen"}}
+{"timestamp": "2026-07-11T20:59:11.942346", "event_type": "concept_created", "word": "tijger", "source": "system", "new_value": {"word": "tijger"}}
+{"timestamp": "2026-07-11T20:59:11.955353", "event_type": "concept_created", "word": "roofdier", "source": "system", "new_value": {"word": "roofdier"}}
+{"timestamp": "2026-07-11T20:59:32.985684", "event_type": "concept_created", "word": "gitaar", "source": "system", "new_value": {"word": "gitaar"}}
+{"timestamp": "2026-07-11T20:59:32.999701", "event_type": "concept_created", "word": "instrument", "source": "system", "new_value": {"word": "instrument"}}
+{"timestamp": "2026-07-11T21:00:02.150701", "event_type": "concept_created", "word": "woestijn", "source": "system", "new_value": {"word": "woestijn"}}
+{"timestamp": "2026-07-11T21:00:02.163780", "event_type": "concept_created", "word": "gebied", "source": "system", "new_value": {"word": "gebied"}}
+{"timestamp": "2026-07-11T21:00:20.960120", "event_type": "concept_created", "word": "gletsjer", "source": "system", "new_value": {"word": "gletsjer"}}
+{"timestamp": "2026-07-11T21:00:20.974200", "event_type": "concept_created", "word": "grote massa ijs", "source": "system", "new_value": {"word": "grote massa ijs"}}
+{"timestamp": "2026-07-11T21:00:33.071726", "event_type": "concept_created", "word": "oase", "source": "system", "new_value": {"word": "oase"}}
+{"timestamp": "2026-07-11T21:00:33.085733", "event_type": "concept_created", "word": "vruchtbare plek in de woestijn waar water aanwezig is", "source": "system", "new_value": {"word": "vruchtbare plek in de woestijn waar water aanwezig is"}}
+{"timestamp": "2026-07-11T21:00:46.895142", "event_type": "concept_created", "word": "komeet", "source": "system", "new_value": {"word": "komeet"}}
+{"timestamp": "2026-07-11T21:23:55.222367", "event_type": "concept_created", "word": "ijs", "source": "system", "new_value": {"word": "ijs"}}
+{"timestamp": "2026-07-11T21:23:55.235365", "event_type": "concept_created", "word": "vaste stof", "source": "system", "new_value": {"word": "vaste stof"}}
+{"timestamp": "2026-07-11T21:27:54.929707", "event_type": "concept_created", "word": "vast", "source": "system", "new_value": {"word": "vast"}}
+{"timestamp": "2026-07-11T21:30:12.980423", "event_type": "concept_created", "word": "ijsmassa", "source": "system", "new_value": {"word": "ijsmassa"}}
+{"timestamp": "2026-07-12T10:59:03.974852", "event_type": "concept_created", "word": "orkest", "source": "system", "new_value": {"word": "orkest"}}
+{"timestamp": "2026-07-12T17:50:55.702977", "event_type": "concept_created", "word": "welke", "source": "system", "new_value": {"word": "welke"}}
+{"timestamp": "2026-07-12T17:50:55.742649", "event_type": "concept_created", "word": "ken", "source": "system", "new_value": {"word": "ken"}}
+{"timestamp": "2026-07-12T17:57:19.439249", "event_type": "concept_created", "word": "waarop", "source": "system", "new_value": {"word": "waarop"}}
+{"timestamp": "2026-07-12T17:57:19.464268", "event_type": "concept_created", "word": "lijkt", "source": "system", "new_value": {"word": "lijkt"}}
+{"timestamp": "2026-07-12T17:57:47.382157", "event_type": "concept_created", "word": "synoniem", "source": "system", "new_value": {"word": "synoniem"}}
+{"timestamp": "2026-07-12T17:57:57.528736", "event_type": "concept_created", "word": "tegenovergestelde", "source": "system", "new_value": {"word": "tegenovergestelde"}}
+{"timestamp": "2026-07-12T17:58:24.645721", "event_type": "concept_created", "word": "eigenschappen", "source": "system", "new_value": {"word": "eigenschappen"}}
+{"timestamp": "2026-07-12T20:57:08.252656", "event_type": "concept_created", "word": "wie", "source": "system", "new_value": {"word": "wie"}}
+{"timestamp": "2026-07-13T16:54:25.096441", "event_type": "concept_created", "word": "bens", "source": "system", "new_value": {"word": "bens"}}
+{"timestamp": "2026-07-16T19:11:57.497804", "event_type": "concept_created", "word": "context_manager", "source": "system", "new_value": {"word": "context_manager"}}
+{"timestamp": "2026-07-17T17:25:48.130766", "event_type": "concept_created", "word": "contect", "source": "system", "new_value": {"word": "contect"}}
+{"timestamp": "2026-07-18T08:43:32.155780", "event_type": "concept_created", "word": "hoe", "source": "system", "new_value": {"word": "hoe"}}
+{"timestamp": "2026-07-18T08:43:32.188259", "event_type": "concept_created", "word": "heet", "source": "system", "new_value": {"word": "heet"}}
+{"timestamp": "2026-07-18T13:38:38.856529", "event_type": "concept_created", "word": "dank", "source": "system", "new_value": {"word": "dank"}}
+{"timestamp": "2026-07-18T13:38:38.888937", "event_type": "concept_created", "word": "nova", "source": "system", "new_value": {"word": "nova"}}
+{"timestamp": "2026-07-18T13:38:38.914931", "event_type": "concept_created", "word": "helpt", "source": "system", "new_value": {"word": "helpt"}}
+{"timestamp": "2026-07-18T13:39:35.567041", "event_type": "concept_created", "word": "oké", "source": "system", "new_value": {"word": "oké"}}
+{"timestamp": "2026-07-18T13:56:13.671519", "event_type": "concept_created", "word": "echt", "source": "system", "new_value": {"word": "echt"}}
+{"timestamp": "2026-07-18T13:56:37.543134", "event_type": "concept_created", "word": "oke", "source": "system", "new_value": {"word": "oke"}}
+{"timestamp": "2026-07-18T14:13:41.432512", "event_type": "concept_created", "word": "snap", "source": "system", "new_value": {"word": "snap"}}
+{"timestamp": "2026-07-18T14:13:41.459511", "event_type": "concept_created", "word": "wat", "source": "system", "new_value": {"word": "wat"}}
+{"timestamp": "2026-07-18T14:13:41.485508", "event_type": "concept_created", "word": "bedoelt", "source": "system", "new_value": {"word": "bedoelt"}}
+{"timestamp": "2026-07-18T14:26:44.854528", "event_type": "concept_created", "word": "even", "source": "system", "new_value": {"word": "even"}}
+{"timestamp": "2026-07-18T14:26:44.881149", "event_type": "concept_created", "word": "helemaal", "source": "system", "new_value": {"word": "helemaal"}}
+{"timestamp": "2026-07-18T14:26:44.911715", "event_type": "concept_created", "word": "focussen", "source": "system", "new_value": {"word": "focussen"}}
+{"timestamp": "2026-07-18T14:26:44.942081", "event_type": "concept_created", "word": "stuk", "source": "system", "new_value": {"word": "stuk"}}
+{"timestamp": "2026-07-19T11:05:12.262866", "event_type": "concept_created", "word": "zeilboot", "source": "system", "new_value": {"word": "zeilboot"}}
+{"timestamp": "2026-07-21T11:12:24.226395", "event_type": "concept_created", "word": "snel", "source": "system", "new_value": {"word": "snel"}}
+{"timestamp": "2026-07-21T11:13:19.160600", "event_type": "concept_created", "word": "elegant", "source": "system", "new_value": {"word": "elegant"}}
+{"timestamp": "2026-07-21T11:13:40.355786", "event_type": "concept_created", "word": "emergence", "source": "system", "new_value": {"word": "emergence"}}
+{"timestamp": "2026-07-22T19:25:44.387668", "event_type": "concept_created", "word": "hoor", "source": "system", "new_value": {"word": "hoor"}}
+{"timestamp": "2026-07-23T18:38:34.043404", "event_type": "concept_created", "word": "warm", "source": "system", "new_value": {"word": "warm"}}
+{"timestamp": "2026-07-25T11:39:58.158274", "event_type": "concept_created", "word": "blablabla", "source": "system", "new_value": {"word": "blablabla"}}
+{"timestamp": "2026-07-25T17:06:40.459399", "event_type": "concept_created", "word": "bla", "source": "system", "new_value": {"word": "bla"}}
+{"timestamp": "2026-07-25T19:04:22.873098", "event_type": "concept_created", "word": "woord", "source": "system", "new_value": {"word": "woord"}}
+{"timestamp": "2026-07-25T20:06:54.566515", "event_type": "concept_created", "word": "drink", "source": "system", "new_value": {"word": "drink"}}
+{"timestamp": "2026-07-25T20:06:54.603860", "event_type": "concept_created", "word": "graag", "source": "system", "new_value": {"word": "graag"}}
+{"timestamp": "2026-07-25T20:13:30.034107", "event_type": "concept_created", "word": "speel", "source": "system", "new_value": {"word": "speel"}}
+{"timestamp": "2026-07-25T20:13:30.058114", "event_type": "concept_created", "word": "piano", "source": "system", "new_value": {"word": "piano"}}
+{"timestamp": "2026-07-26T19:03:01.920598", "event_type": "concept_created", "word": "aan", "source": "system", "new_value": {"word": "aan"}}
+{"timestamp": "2026-07-26T19:03:01.945871", "event_type": "concept_created", "word": "script", "source": "system", "new_value": {"word": "script"}}
+{"timestamp": "2026-07-26T19:03:01.961888", "event_type": "concept_created", "word": "programma", "source": "system", "new_value": {"word": "programma"}}
+{"timestamp": "2026-07-26T19:55:26.179526", "event_type": "concept_created", "word": "vind", "source": "system", "new_value": {"word": "vind"}}
+{"timestamp": "2026-07-26T19:55:26.206543", "event_type": "concept_created", "word": "heel", "source": "system", "new_value": {"word": "heel"}}
+{"timestamp": "2026-07-26T19:55:26.232537", "event_type": "concept_created", "word": "snel", "source": "system", "new_value": {"word": "snel"}}
+{"timestamp": "2026-07-26T19:58:23.095950", "event_type": "concept_created", "word": "gene", "source": "system", "new_value": {"word": "gene"}}
+{"timestamp": "2026-07-27T18:57:17.557001", "event_type": "concept_created", "word": "samen", "source": "system", "new_value": {"word": "samen"}}
+{"timestamp": "2026-07-27T19:02:58.426852", "event_type": "concept_created", "word": "samen", "source": "system", "new_value": {"word": "samen"}}
+{"timestamp": "2026-07-28T09:34:41.596213", "event_type": "concept_created", "word": "oei", "source": "system", "new_value": {"word": "oei"}}
+{"timestamp": "2026-07-28T10:17:38.524098", "event_type": "concept_created", "word": "banaan", "source": "system", "new_value": {"word": "banaan"}}
+{"timestamp": "2026-07-28T10:17:38.538110", "event_type": "concept_created", "word": "appelsap", "source": "system", "new_value": {"word": "appelsap"}}
+{"timestamp": "2026-07-28T10:17:38.549102", "event_type": "concept_created", "word": "trein", "source": "system", "new_value": {"word": "trein"}}
+{"timestamp": "2026-07-28T10:18:15.498957", "event_type": "concept_created", "word": "fluit", "source": "system", "new_value": {"word": "fluit"}}
+{"timestamp": "2026-07-28T10:18:27.726435", "event_type": "concept_created", "word": "peer", "source": "system", "new_value": {"word": "peer"}}
+{"timestamp": "2026-07-28T10:21:25.278614", "event_type": "concept_created", "word": "cadeau", "source": "system", "new_value": {"word": "cadeau"}}
+{"timestamp": "2026-07-28T10:38:45.959989", "event_type": "concept_created", "word": "dank", "source": "system", "new_value": {"word": "dank"}}
+{"timestamp": "2026-07-28T18:21:48.345996", "event_type": "concept_created", "word": "zin", "source": "system", "new_value": {"word": "zin"}}
+{"timestamp": "2026-07-28T18:21:48.370870", "event_type": "concept_created", "word": "schaken", "source": "system", "new_value": {"word": "schaken"}}

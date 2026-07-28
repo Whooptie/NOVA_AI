@@ -324,7 +324,8 @@ class ModuleLoader:
             self.event_bus,
             semantic_module=sem,
             kevin_profile=self.loaded_modules.get("kevin_profile"),
-            sentiment_classifier=self.loaded_modules.get("sentiment_classifier")
+            sentiment_classifier=self.loaded_modules.get("sentiment_classifier"),
+            intent_classifier=self.loaded_modules.get("intent_classifier")
         )
         ir.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["intent_router"] = ir

@@ -133,3 +133,7 @@
 {"text": "appel banaan trein", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:38:09.590783"}
 {"text": "appel banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:51:52.628049"}
 {"text": "appel banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T12:58:13.860737"}
+{"text": "zin om te gaan schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0126, "bron": "model_fallback", "tijdstip": "2026-07-28T20:21:48.316615"}
+{"text": "zin om te gaan schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0126, "bron": "model_fallback", "tijdstip": "2026-07-28T20:24:27.814068"}
+{"text": "pion naar e4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-07-28T20:24:54.424666"}
+{"text": "zin om te gaan schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0126, "bron": "model_fallback", "tijdstip": "2026-07-28T20:25:27.992679"}
