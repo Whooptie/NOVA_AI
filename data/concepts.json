@@ -12681,5 +12681,428 @@
         "timestamp": "2026-07-28T18:21:48.370870"
       }
     ]
+  },
+  "wat": {
+    "senses": [
+      {
+        "sense_id": "wat#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T20:08:41.716775",
+      "updated_at": "2026-07-28T20:08:41.718232",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T20:08:41.718232",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T20:08:41.718232",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wat"
+        },
+        "timestamp": "2026-07-28T20:08:41.716775"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "wat#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T20:08:41.718232"
+      }
+    ]
+  },
+  "laat": {
+    "senses": [
+      {
+        "sense_id": "laat#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T20:12:25.505816",
+      "updated_at": "2026-07-28T20:12:25.506809",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T20:12:25.506809",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T20:12:25.506809",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "laat"
+        },
+        "timestamp": "2026-07-28T20:12:25.505816"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "laat#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T20:12:25.506809"
+      }
+    ]
+  },
+  "eens": {
+    "senses": [
+      {
+        "sense_id": "eens#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T20:12:25.528039",
+      "updated_at": "2026-07-28T20:12:25.528039",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T20:12:25.528039",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T20:12:25.528039",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "eens"
+        },
+        "timestamp": "2026-07-28T20:12:25.528039"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "eens#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T20:12:25.528039"
+      }
+    ]
+  },
+  "nadenken": {
+    "senses": [
+      {
+        "sense_id": "nadenken#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T20:12:25.550040",
+      "updated_at": "2026-07-28T20:12:25.550040",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T20:12:25.550040",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T20:12:25.550040",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "nadenken"
+        },
+        "timestamp": "2026-07-28T20:12:25.550040"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "nadenken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T20:12:25.550040"
+      }
+    ]
+  },
+  "over": {
+    "senses": [
+      {
+        "sense_id": "over#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T20:12:25.570070",
+      "updated_at": "2026-07-28T20:12:25.571069",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T20:12:25.571069",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T20:12:25.571069",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "over"
+        },
+        "timestamp": "2026-07-28T20:12:25.570070"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "over#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T20:12:25.571069"
+      }
+    ]
+  },
+  "iets": {
+    "senses": [
+      {
+        "sense_id": "iets#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T20:12:25.583595",
+      "updated_at": "2026-07-28T20:12:25.583595",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T20:12:25.583595",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T20:12:25.583595",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "iets"
+        },
+        "timestamp": "2026-07-28T20:12:25.583595"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "iets#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T20:12:25.583595"
+      }
+    ]
+  },
+  "hallo": {
+    "senses": [
+      {
+        "sense_id": "hallo#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T20:33:33.875656",
+      "updated_at": "2026-07-28T20:33:33.876655",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T20:33:33.876655",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T20:33:33.876655",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hallo"
+        },
+        "timestamp": "2026-07-28T20:33:33.875656"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "hallo#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T20:33:33.876655"
+      }
+    ]
+  },
+  "type": {
+    "senses": [
+      {
+        "sense_id": "type#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T21:01:44.566851",
+      "updated_at": "2026-07-28T21:01:44.566851",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T21:01:44.566851",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T21:01:44.566851",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "type"
+        },
+        "timestamp": "2026-07-28T21:01:44.566851"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "type#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T21:01:44.566851"
+      }
+    ]
+  },
+  "data\\layer0_gebruikt.jsonl": {
+    "senses": [
+      {
+        "sense_id": "data\\layer0_gebruikt.jsonl#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-28T21:01:44.592316",
+      "updated_at": "2026-07-28T21:01:44.593305",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-07-28T21:01:44.593305",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-28T21:01:44.593305",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "data\\layer0_gebruikt.jsonl"
+        },
+        "timestamp": "2026-07-28T21:01:44.592316"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "data\\layer0_gebruikt.jsonl#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-07-28T21:01:44.593305"
+      }
+    ]
   }
 }
