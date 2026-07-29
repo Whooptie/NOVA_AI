@@ -35,6 +35,15 @@ class IntentRouter:
         # puur in RAM. Zie _probeer_intent_classifier() en
         # _verwerk_correctie().
         self._laatste_classifier_vraag = None
+        # 29 juli 2026: vlag die een detect_*()-methode zelf kan zetten
+        # als ze AL een specifieker topic emit heeft dan de generieke
+        # naam uit de intent-tabel (bv. detect_chess()'s evaluatie
+        # -tak emit "chess_evaluation" i.p.v. het algemene "chess").
+        # Wordt door route()'s centrale lus gecheckt vlak vóór ze haar
+        # eigen, generieke _emit_topic() zou aanroepen -- en telkens
+        # weer op False gezet na elk bericht, zodat dit nooit per
+        # ongeluk "aanblijft" voor een volgend, ongerelateerd bericht.
+        self._topic_al_ge_emit = False
         self.awaiting_confirmation = None
         # Bug #10-fix, stap 7: houdt bij of Kevin net gevraagd is een
         # nummer te kiezen na "onthoud sense <woord>". Volledig los van
@@ -840,6 +849,33 @@ class IntentRouter:
     def detect_chess(self, text):
         t = text.lower().strip().rstrip("?.")
 
+        # Vraag naar detail van de laatste zet-evaluatie (nieuw).
+        # Herhaalt enkel wat al berekend werd bij de zet zelf --
+        # verzint GEEN nieuwe uitleg (zie chess_engine.py's
+        # handle_evaluation_query()).
+        eval_vraag_phrases = [
+            "waarom was dat een blunder", "wat ging er mis",
+            "wat had ik beter kunnen doen", "wat was de betere zet",
+            "waarom was die zet slecht", "leg die zet uit",
+            "wat had ik moeten spelen",
+        ]
+        if any(p in t for p in eval_vraag_phrases):
+            dbg(f"{C_GREEN}→ chess_evaluation_query{C_RESET}")
+            self.event_bus.publish("intent_chess_evaluation_query", {})
+            # Deze tak van detect_chess() hoort eigenlijk bij een
+            # SPECIFIEKERE categorie dan het generieke "chess" dat de
+            # centrale lus (route()) anders zou emitten via de vaste
+            # (topic_naam, detect_functie)-koppeling in de intent
+            # -tabel. We emitten hier zelf het juiste, specifieke
+            # topic, en zetten een vlag zodat route() zijn eigen,
+            # generieke _emit_topic("chess", ...) hierna NIET nogmaals
+            # aanroept (anders zou dit bericht dubbel -- en onder het
+            # verkeerde label "chess" -- meetellen voor Fase 6's
+            # Layer 0-koppeling).
+            self._emit_topic("chess_evaluation", bron="detect")
+            self._topic_al_ge_emit = True
+            return True
+
         # Nieuwe partij
         new_game_phrases = [
             "nieuwe partij", "nieuw potje", "nieuw spel schaak",
@@ -1531,8 +1567,30 @@ class IntentRouter:
     # Nederlandse, spreektalige labels per categorie -- gebruikt in de
     # bevestigingsvraag ("Bedoel je dat je wil <label>?"). Los van de
     # interne Engelse categorienamen zelf, puur voor leesbare zinnen.
-    _CLASSIFIER_LABEL_NL = {
-        "greeting": "even gedag zeggen",
+    # 29 juli 2026: TWEE aparte mappings i.p.v. één -- een eerdere
+    # versie hergebruikte dezelfde tekst in "Bedoel je dat je
+    # {label_nl}?" EN "Oké, dus je wil {label_nl}.", maar Nederlandse
+    # werkwoordsvervoeging verschilt tussen die twee zinsconstructies
+    # ("je WEET" vs "je wil WETEN"). Bleek concreet fout te lopen bij
+    # chess_evaluation ("Bedoel je dat je weten..." klonk krom). Nu
+    # heeft elke categorie een losse, grammaticaal juiste tekst per
+    # zinsvorm, zodat toekomstige nieuwe categorieën dit meteen goed
+    # kunnen instellen zonder dezelfde valkuil.
+    _CLASSIFIER_LABEL_NL_VRAAG = {
+        "greeting": "even gedag wil zeggen",
+        "time": "weet hoe laat het is",
+        "weather": "het weer wil weten",
+        "chess": "wil schaken",
+        "self_architecture": "wil weten hoe ik in elkaar zit",
+        "identity": "iets over mij wil weten",
+        "math": "een berekening wil laten maken",
+        "activity": "een activiteit wil starten",
+        "preference": "een voorkeur wil delen",
+        "chess_evaluation": "wil weten wat er mis ging met een zet",
+    }
+
+    _CLASSIFIER_LABEL_NL_BEVESTIGING = {
+        "greeting": "gedag zeggen",
         "time": "weten hoe laat het is",
         "weather": "het weer weten",
         "chess": "schaken",
@@ -1541,6 +1599,7 @@ class IntentRouter:
         "math": "een berekening laten maken",
         "activity": "een activiteit starten",
         "preference": "een voorkeur delen",
+        "chess_evaluation": "weten wat er mis ging met een zet",
     }
 
     # Fase 4 (correcties, 28 juli 2026): omgekeerde mapping -- welk
@@ -1815,7 +1874,7 @@ class IntentRouter:
                 self._log_unmatched_intent(text, resultaat)
                 return False
 
-            label_nl = self._CLASSIFIER_LABEL_NL.get(label, label)
+            label_nl = self._CLASSIFIER_LABEL_NL_VRAAG.get(label, label)
             dbg(f"{C_YELLOW}→ classifier twijfel: '{label}' "
                 f"(confidence {confidence}) -- vraag bevestiging{C_RESET}")
             pending.set(f"classifier_intent_{label}", verval_seconden=60)
@@ -1892,10 +1951,10 @@ class IntentRouter:
             self._emit_topic("chess", bron="classifier")
             return
 
-        # Overige 8 categorieën: neutrale bevestigende tekst, gewoon
+        # Overige 9 categorieën: neutrale bevestigende tekst, gewoon
         # het onderwerp benoemen. Geen concrete sub-actie mogelijk --
         # zie roadmap-eerlijkheid: de classifier kent enkel het label.
-        label_nl = self._CLASSIFIER_LABEL_NL.get(label, label)
+        label_nl = self._CLASSIFIER_LABEL_NL_BEVESTIGING.get(label, label)
         self.event_bus.publish("chat_response", {
             "text": f"Oké, dus je wil {label_nl}. Zeg maar wat je precies bedoelt!"
         })
@@ -2032,6 +2091,16 @@ class IntentRouter:
         # enkel de manier waarop ze doorlopen worden is veranderd.
         for topic_naam, detect_functie in self._intent_tabel_deel1:
             if detect_functie(text):
+                # 29 juli 2026: als de detect_*()-methode zelf al een
+                # specifieker topic emit heeft (zie _topic_al_ge_emit
+                # -uitleg in __init__), dan NIET nogmaals het generieke
+                # topic_naam uit de tabel emitten -- anders zou
+                # bv. een chess_evaluation-vraag dubbel (en onder het
+                # verkeerde label "chess") meetellen voor Fase 6's
+                # Layer 0-koppeling.
+                if self._topic_al_ge_emit:
+                    self._topic_al_ge_emit = False
+                    return
                 # Fase 6: expliciet bron="detect" -- dit is een
                 # betrouwbare match van een bestaande detect_*(),
                 # geschikt als toekomstig trainingsvoorbeeld.
@@ -2059,6 +2128,12 @@ class IntentRouter:
         # _build_intent_tabel_deel2()). Zelfde volgorde als voorheen.
         for topic_naam, detect_functie in self._intent_tabel_deel2:
             if detect_functie(text):
+                # 29 juli 2026: zelfde vlag-check als bij
+                # _intent_tabel_deel1 hierboven (zie die commentaar
+                # voor de volledige uitleg).
+                if self._topic_al_ge_emit:
+                    self._topic_al_ge_emit = False
+                    return
                 # Fase 6: expliciet bron="detect", zelfde reden als
                 # bij _intent_tabel_deel1 hierboven.
                 self._emit_topic(topic_naam, bron="detect")

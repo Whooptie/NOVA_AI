@@ -859,14 +859,115 @@
       "tekst": "ik erger me aan slechte muziek",
       "label": "preference",
       "bron": "handmatig"
+    },
+    {
+      "tekst": "waarom was dat een blunder",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat ging er mis met die zet",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat had ik beter kunnen doen",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat was de betere zet geweest",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "waarom was die zet slecht",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "leg die zet eens uit",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat had ik moeten spelen daar",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "waarom heb ik dat potje verloren",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "kon ik dat beter aanpakken",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat was er fout aan mijn zet",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "waarom verlies ik materiaal hier",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "was dat wel een goede keuze",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe had ik dit beter kunnen spelen",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is er fout gegaan in die partij",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "leg uit waarom die zet niet goed was",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "was die zet wel verstandig",
+      "label": "chess_evaluation",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "had ik dat anders moeten aanpakken",
+      "label": "chess_evaluation",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "was dat de juiste keuze",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "had ik dat anders moeten doen",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is dat een verstandige zet geweest",
+      "label": "chess_evaluation",
+      "bron": "handmatig"
     }
   ],
   "metadata": {
-    "laatst_getraind": "2026-07-28",
-    "aantal_voorbeelden": 172,
+    "laatst_getraind": "2026-07-29",
+    "aantal_voorbeelden": 192,
     "categorieën": [
       "activity",
       "chess",
+      "chess_evaluation",
       "greeting",
       "identity",
       "math",
@@ -875,6 +976,6 @@
       "time",
       "weather"
     ],
-    "laatste_layer0_scan": 1785272618.1094518
+    "laatste_layer0_scan": 1785332346.924197
   }
 }

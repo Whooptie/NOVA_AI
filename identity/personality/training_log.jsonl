@@ -7,3 +7,4 @@
 {"succes": true, "aantal_training_voorbeelden": 154, "aantal_extra_uit_uncertain": 102, "nieuwe_score": 1.0, "huidige_score": 1.0, "wordt_actief": true, "tijdstip": "2026-07-26T12:18:15.909797"}
 {"succes": true, "aantal_training_voorbeelden": 174, "aantal_extra_uit_uncertain": 122, "nieuwe_score": 0.9474, "huidige_score": 1.0, "wordt_actief": false, "tijdstip": "2026-07-28T12:17:38.517015"}
 {"succes": true, "aantal_training_voorbeelden": 194, "aantal_extra_uit_uncertain": 142, "nieuwe_score": 0.9474, "huidige_score": 1.0, "wordt_actief": false, "tijdstip": "2026-07-28T22:09:00.220203"}
+{"succes": true, "aantal_training_voorbeelden": 214, "aantal_extra_uit_uncertain": 162, "nieuwe_score": 0.9474, "huidige_score": 1.0, "wordt_actief": false, "tijdstip": "2026-07-29T15:35:38.601495"}
