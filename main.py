@@ -48,7 +48,7 @@ RESET = "\033[0m"
 
 # Hoe snel Nova "typt" — tijd in seconden tussen elke letter.
 # Kleiner getal = sneller. Pas dit gerust aan naar smaak.
-TYPEWRITER_SNELHEID = 0.04
+TYPEWRITER_SNELHEID = 0.02
 
 def print_nova_typewriter(tekst):
     """

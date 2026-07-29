@@ -4,3 +4,7 @@
 {"tekst": "laat me eens goed nadenken over iets", "hoogste_gok": "time", "confidence": 0.1864, "tijdstip": "2026-07-28T22:12:25.504807"}
 {"tekst": "Jij: hallo", "hoogste_gok": "greeting", "confidence": 0.1587, "tijdstip": "2026-07-28T22:33:33.872651"}
 {"tekst": "type data\\layer0_gebruikt.jsonl", "hoogste_gok": "identity", "confidence": 0.1597, "tijdstip": "2026-07-28T23:01:44.565860"}
+{"tekst": "was die zet nu eigenlijk wel verstandig", "hoogste_gok": "chess_evaluation", "confidence": 0.2729, "tijdstip": "2026-07-29T15:35:38.608963"}
+{"tekst": "was die zet nu eigenlijk wel verstandig", "hoogste_gok": "chess_evaluation", "confidence": 0.2729, "tijdstip": "2026-07-29T15:35:56.456955"}
+{"tekst": "had ik dat anders moeten aanpakken", "hoogste_gok": "chess_evaluation", "confidence": 0.2509, "tijdstip": "2026-07-29T15:36:05.284612"}
+{"tekst": "was die zet nu eigenlijk wel verstandig", "hoogste_gok": "chess_evaluation", "confidence": 0.2655, "tijdstip": "2026-07-29T15:37:59.694435"}

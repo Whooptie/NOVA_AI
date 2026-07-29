@@ -70,52 +70,217 @@ class ChessModule:
         event_bus.subscribe("intent_chess_difficulty", self.handle_difficulty)
         event_bus.subscribe("intent_chess_think_time", self.handle_think_time)
         event_bus.subscribe("intent_chess_stats", self.handle_stats)
+        event_bus.subscribe("intent_chess_evaluation_query", self.handle_evaluation_query)
 
         # Sjablonen voor de meest terugkerende, tot nu toe vaste zinnen
-        # (schaak-melding, zet-melding, spelverloop). Puur string-
-        # combinatie via random.choice(), geen generatie — zelfde
-        # patroon als session_watcher.py en weather.py. Echte
-        # zet-inhoudelijke commentaar (bv. "sterke opening") is HIER
-        # bewust niet meegenomen -- dat vereist stelling-analyse en
-        # komt later apart aan bod.
-        self._sjablonen_schaak_melding = [
-            "Schaak! Goede zet.",
-            "Schaak gezet, knap gedaan.",
-            "Dat is schaak! Mooie zet.",
-            "Schaak! Dat zag ik niet aankomen.",
-            "Schaak gezet -- goed gespeeld.",
+        # (schaak-melding, zet-melding, spelverloop), nu ook opgebouwd
+        # als OPENING + MIDDEN + AFSLUITING (zelfde patroon als de
+        # zet-evaluatie-sjablonen verderop) i.p.v. volledig vaste
+        # zinnen -- meer variatie, nog steeds puur string-combinatie
+        # via _bouw_zin(), geen generatie. Echte zet-inhoudelijke
+        # commentaar (bv. "sterke opening") zit apart in de
+        # evaluatie-sjablonen hieronder.
+        self._schaak_melding_opening = [
+            "Schaak!", "Schaak gezet,", "Dat is schaak!", "Schaak!", "Schaak gezet --",
+        ]
+        self._schaak_melding_midden = [
+            "Goede zet", "Knap gedaan", "Mooie zet",
+            "Dat zag ik niet aankomen", "Goed gespeeld",
+        ]
+        self._schaak_melding_afsluiting = [
+            ".", ".", "!",
         ]
 
-        self._sjablonen_zet_melding = [
-            "Jij speelde {move_text}. Ik speel {nova_zet}.",
-            "Je zette {move_text}. Ik antwoord met {nova_zet}.",
-            "{move_text} was jouw zet. Ik doe {nova_zet}.",
-            "Jij koos {move_text}, ik kies {nova_zet}.",
-            "Na jouw {move_text} speel ik {nova_zet}.",
+        # zet_melding bestaat inhoudelijk uit twee vaste helften (wat
+        # JIJ deed + wat IK doe) -- het middendeel hieronder is daarom
+        # zelf al de volledige combinatie van beide placeholders i.p.v.
+        # een losse keuze, de variatie zit in opening/afsluiting.
+        self._zet_melding_opening = [
+            "Jij speelde", "Je zette", "Jij koos", "Na jouw", "Zonet speelde je",
+        ]
+        self._zet_melding_midden = [
+            "{move_text}. Ik speel {nova_zet}",
+            "{move_text}, ik antwoord met {nova_zet}",
+            "{move_text}, ik doe {nova_zet}",
+            "{move_text}, ik kies {nova_zet}",
+            "{move_text} -- ik speel {nova_zet}",
+        ]
+        self._zet_melding_afsluiting = [
+            ".", ".",
         ]
 
-        self._sjablonen_winst = [
-            "🎉 Jij wint door {reden}! Goed gespeeld!",
-            "🎉 Winst voor jou door {reden}! Sterk gespeeld!",
-            "🎉 Jij haalt het door {reden}! Proficiat!",
-            "🎉 Overwinning door {reden}! Goed gedaan!",
-            "🎉 Jij wint deze partij door {reden}!",
+        self._winst_opening = [
+            "🎉 Jij wint", "🎉 Winst voor jou", "🎉 Jij haalt het",
+            "🎉 Overwinning", "🎉 Jij wint deze partij",
+        ]
+        self._winst_midden = [
+            "door {reden}",
+        ]
+        self._winst_afsluiting = [
+            "! Goed gespeeld!", "! Sterk gespeeld!", "! Proficiat!", "! Goed gedaan!",
         ]
 
-        self._sjablonen_verlies = [
-            "💀 Ik win door {reden}. Probeer het opnieuw!",
-            "💀 Deze ga ik winnen, door {reden}. Nieuwe kans?",
-            "💀 Ik haal het door {reden}. Volgende keer beter!",
-            "💀 Winst voor mij door {reden}. Nog een partij?",
-            "💀 Ik trek aan het langste eind door {reden}. Opnieuw proberen?",
+        self._verlies_opening = [
+            "💀 Ik win", "💀 Deze ga ik winnen", "💀 Ik haal het",
+            "💀 Winst voor mij", "💀 Ik trek aan het langste eind",
+        ]
+        self._verlies_midden = [
+            "door {reden}",
+        ]
+        self._verlies_afsluiting = [
+            ". Probeer het opnieuw!", ". Nieuwe kans?",
+            ". Volgende keer beter!", ". Nog een partij?", ". Opnieuw proberen?",
         ]
 
-        self._sjablonen_gelijkspel = [
-            "🤝 Gelijkspel door {reden}!",
-            "🤝 We eindigen gelijk, door {reden}!",
-            "🤝 Remise door {reden}!",
-            "🤝 Niemand wint -- gelijkspel door {reden}.",
-            "🤝 Een gelijkspel, veroorzaakt door {reden}.",
+        self._gelijkspel_opening = [
+            "🤝 Gelijkspel", "🤝 We eindigen gelijk", "🤝 Remise",
+            "🤝 Niemand wint", "🤝 Een gelijkspel",
+        ]
+        self._gelijkspel_midden = [
+            "door {reden}",
+        ]
+        self._gelijkspel_afsluiting = [
+            "!", ".", ", helaas voor ons allebei.",
+        ]
+
+        # ------------------------------------------------------------
+        # Zet-evaluatie (nieuw) — 100% symbolisch via Stockfish' eigen
+        # centipawn-score, GEEN ML/LLM. Stockfish geeft voor/na elke
+        # speler-zet een evaluatie terug; het verschil (vanuit jouw
+        # perspectief, in centipawns) bepaalt de categorie hieronder.
+        # Enkel Stockfish' BESTE-ZET-SUGGESTIE wordt getoond bij
+        # twijfelachtig/blunder — WAAROM die zet beter is, wordt
+        # bewust niet uitgelegd (vereist stelling-redenering die
+        # Stockfish niet teruggeeft; apart, later werkpunt, zie
+        # nova_state.md).
+        self.EVAL_DREMPEL_UITSTEKEND = 150   # cp verbetering
+        self.EVAL_DREMPEL_TWIJFELACHTIG = 50  # cp verlies
+        self.EVAL_DREMPEL_BLUNDER = 150       # cp verlies
+        self.EVAL_KANS_NEUTRAAL_TOCH_SPREKEN = 0.15  # "soms" bij gewone zet
+
+        # Vaste analysetijd voor de zet-evaluatie, BEWUST los van
+        # self.think_time. think_time wordt automatisch door
+        # _pas_niveau_aan() opgeschroefd/verlaagd o.b.v. jouw
+        # winst/verlies-streak -- dat zegt iets over hoe sterk Nova's
+        # EIGEN zet moet zijn, niets over hoe lang de evaluatie van
+        # JOUW zet zou moeten duren. Zonder deze aparte waarde zou een
+        # hoge think_time (bv. 10s bij skill 20) de evaluatie 2x zo
+        # traag maken (voor- en na-analyse), wat de partij onnodig
+        # zou vertragen naarmate je beter speelt.
+        self.EVAL_ANALYSE_TIJD = 0.3
+
+        # Onthoudt de laatste evaluatie zodat een latere vraag
+        # ("waarom was dat een blunder?") ze kan herhalen zonder
+        # opnieuw te moeten berekenen.
+        self.laatste_zet_evaluatie = None
+
+        # ------------------------------------------------------------
+        # Sjablonen als OPENING + MIDDEN + AFSLUITING, zelfde patroon
+        # als conversation_engine.py's OPENINGEN/AFSLUITINGEN-aanpak,
+        # hier met een extra middendeel voor meer variatie. Nova
+        # combineert per categorie willekeurig 1 opening + 1 midden +
+        # 1 afsluiting tot een volledige zin -- puur string-combinatie
+        # via random.choice(), geen generatie.
+
+        self._eval_uitstekend_opening = [
+            "Wow,", "Sterk gespeeld,", "Daar had ik niet van terug --",
+            "Chapeau,", "Knap gedaan,",
+        ]
+        self._eval_uitstekend_midden = [
+            "dat was een uitstekende zet", "dat is echt een topzet",
+            "dat had ik niet meteen zien aankomen",
+            "dat is precies de beste zet hier", "dat was heel scherp gezien",
+        ]
+        self._eval_uitstekend_afsluiting = [
+            "!", ", goed gezien!", ", knap gespeeld!",
+        ]
+
+        self._eval_sterk_opening = [
+            "Sterke zet --", "Mooi gespeeld,", "Goede keuze,",
+            "Prima gedaan,", "Dat is degelijk --",
+        ]
+        self._eval_sterk_midden = [
+            "dat zet me onder druk", "dat had ik niet meteen zien aankomen",
+            "dat houdt de stelling gezond", "dat is een verstandige zet",
+            "dat brengt je stelling vooruit",
+        ]
+        self._eval_sterk_afsluiting = [
+            ".", ", goed bezig.", ".",
+        ]
+
+        self._eval_neutraal_opening = [
+            "Oké,", "Prima,", "Nu goed,", "Alright,", "Tja,",
+        ]
+        self._eval_neutraal_midden = [
+            "logische zet", "een rustige, degelijke zet",
+            "dat houdt het spel in balans", "een gewone, veilige zet",
+            "een redelijke keuze hier",
+        ]
+        self._eval_neutraal_afsluiting = [
+            ".", ".", ".",
+        ]
+
+        self._eval_twijfelachtig_opening = [
+            "Hmm,", "Kon,", "Tja,", "Nou,", "Eerlijk gezegd,",
+        ]
+        self._eval_twijfelachtig_midden = [
+            "dat had misschien sterker gekund",
+            "dat is niet de sterkste keuze hier",
+            "er stond volgens mij iets beters klaar",
+            "dat is een beetje twijfelachtig",
+            "dat had scherper gemogen",
+        ]
+        self._eval_twijfelachtig_afsluiting = [
+            ".", ", denk ik.", ", vind ik.",
+        ]
+
+        self._eval_blunder_opening = [
+            "Au --", "Oei,", "Dat ging niet goed --", "Pas op --", "Hmm, dat is niet best --",
+        ]
+        self._eval_blunder_midden = [
+            "dat kost je nogal wat", "dat was een blunder",
+            "die zet doet best pijn voor je stelling",
+            "daar verlies je flink materiaal of stelling mee",
+            "dat is een dure vergissing",
+        ]
+        self._eval_blunder_afsluiting = [
+            ", vrees ik.", ", let goed op.", ".",
+        ]
+
+        self._eval_mat_dreigt_opening = [
+            "Pas op,", "Let op --", "Voorzichtig,", "Kijk uit,", "Opgelet,",
+        ]
+        self._eval_mat_dreigt_midden = [
+            "ik zie een mataanval aankomen als je niet oppast",
+            "dat kan uitdraaien op mat binnen enkele zetten",
+            "er dreigt hier een matnet",
+            "dit kan gevaarlijk aflopen voor je koning",
+            "je koning staat hier niet veilig meer",
+        ]
+        self._eval_mat_dreigt_afsluiting = [
+            ".", "!", ".",
+        ]
+
+        self._betere_zet_opening = [
+            "Sterker was volgens mij", "Ik had zelf", "Overweeg volgende keer",
+            "Beter was", "Ik zou eerder gekozen hebben voor",
+        ]
+        self._betere_zet_midden = [
+            "{betere_zet}",
+        ]
+        self._betere_zet_afsluiting = [
+            " geweest.", " overwogen.", ".", ", denk ik.",
+        ]
+
+        self._redding_nu_opening = [
+            "Als je nu nog wil redden,", "Je kan dit nog pareren met",
+            "Overweeg", "Probeer misschien", "Nu kan je nog",
+        ]
+        self._redding_nu_midden = [
+            "{redding_zet}",
+        ]
+        self._redding_nu_afsluiting = [
+            ".", ", denk ik.", " om dit nog recht te trekken.",
         ]
 
         dbg(f"{C_GREEN}ChessModule geladen{C_RESET}")
@@ -304,7 +469,26 @@ class ChessModule:
     # ----------------------------------------------------
     # UCI-zet omzetten naar leesbare tekst (bv. b8c6 → "paard naar c6")
     # ----------------------------------------------------
-    def uci_to_leesbaar(self, move):
+    def uci_to_leesbaar(self, move, bord=None):
+        """
+        Zet een Move-object om naar leesbare tekst (bv. "paard naar d5
+        (f6d5)"). BELANGRIJK: optioneel `bord`-argument toegevoegd --
+        zonder dit gebruikt de methode self.board (huidige stelling),
+        zoals voorheen. Dit is nodig omdat de zet-evaluatie soms een
+        zet op een ANDERE stelling moet vertalen dan de huidige (bv.
+        de betere-zet-suggestie hoort bij de stelling VOOR jouw zet,
+        niet bij het bord van nu).
+
+        Werkt zowel voor een zet die op `bord` AL gespeeld is (het
+        stuk staat dan op to_square, from_square is leeg -- dit is
+        het geval bij Nova's net gespeelde result.move) als voor een
+        zet die er NOG NIET op gespeeld is (het stuk staat dan nog op
+        from_square -- dit is het geval bij betere_zet_voor/
+        redding_zet, die enkel een SUGGESTIE zijn en nooit echt
+        gepusht worden op dat bord).
+        """
+        werkbord = bord if bord is not None else self.board
+
         stuk_namen = {
             chess.PAWN:   "pion",
             chess.KNIGHT: "paard",
@@ -313,16 +497,217 @@ class ChessModule:
             chess.QUEEN:  "dame",
             chess.KING:   "koning",
         }
-        stuk = self.board.piece_type_at(move.to_square)
+        # Eerst from_square proberen (zet nog niet gespeeld), anders
+        # to_square (zet al gespeeld op dit bord).
+        stuk = werkbord.piece_type_at(move.from_square)
+        zet_al_gespeeld = stuk is None
+        if zet_al_gespeeld:
+            stuk = werkbord.piece_type_at(move.to_square)
         naam = stuk_namen.get(stuk, "stuk")
         veld = chess.square_name(move.to_square)
-        san = self.board.san(move) if move in self.board.legal_moves else move.uci()
+
+        # Tussen haakjes altijd de VOLLEDIGE UCI-notatie (bv. "c2c4"),
+        # niet de korte SAN ("c4"). SAN is voor een schaakbord correct
+        # en gangbaar, maar als los tekstfragment zonder bord erbij
+        # (bv. "Beter was pion naar c4 (c4) geweest") oogt het
+        # onvolledig/verwarrend -- welke pion, van waar? De volledige
+        # UCI (van-veld + naar-veld) is voor Kevin ondubbelzinnig,
+        # ook zonder het bord erbij te zien.
+        uci_notatie = move.uci()
+
+        # Slagzet expliciet benoemen (nieuw). Zonder dit klinkt een
+        # zin als "ik speel paard naar c7" alsof het naar een leeg
+        # veld gaat -- terwijl het in werkelijkheid een stuk (soms
+        # zelfs precies datzelfde veld waar JIJ net naartoe speelde)
+        # wegneemt. Detectie moet gebeuren op het bord VAN VOOR de
+        # zet: als de zet al gespeeld is op `werkbord` (zie
+        # zet_al_gespeeld hierboven), gebruiken we daarom move_stack
+        # om tijdelijk terug te gaan; anders werkt is_capture() al
+        # direct correct op het huidige (nog-niet-gespeelde) bord.
+        if zet_al_gespeeld and werkbord.move_stack and werkbord.move_stack[-1] == move:
+            werkbord.pop()
+            is_slagzet = werkbord.is_capture(move)
+            werkbord.push(move)
+        elif not zet_al_gespeeld:
+            is_slagzet = werkbord.is_capture(move)
+        else:
+            is_slagzet = False  # kan niet betrouwbaar bepaald worden
+
+        werkwoord = "slaat op" if is_slagzet else "naar"
 
         if move.promotion:
             promotie_naam = stuk_namen.get(move.promotion, "dame")
-            return f"pion naar {veld}, gepromoveerd tot {promotie_naam} ({san})"
+            return f"pion {werkwoord} {veld}, gepromoveerd tot {promotie_naam} ({uci_notatie})"
 
-        return f"{naam} naar {veld} ({san})"
+        return f"{naam} {werkwoord} {veld} ({uci_notatie})"
+
+    # ----------------------------------------------------
+    # Zet-evaluatie -- 100% symbolisch via Stockfish' centipawn-score
+    # ----------------------------------------------------
+    def _score_naar_cp(self, info_score, speler_kleur):
+        """
+        Zet een python-chess PovScore om naar een centipawn-getal
+        VANUIT HET PERSPECTIEF VAN speler_kleur (jij, meestal WIT).
+        Geeft None terug bij een mat-score (die wordt apart
+        afgehandeld door _mate_in()).
+        """
+        pov_score = info_score.pov(speler_kleur)
+        if pov_score.is_mate():
+            return None
+        return pov_score.score()
+
+    def _mate_in(self, info_score, speler_kleur):
+        """
+        Geeft het aantal zetten tot mat terug (positief = jij zet mat,
+        negatief = jij wordt mat gezet), of None als er geen mat
+        gezien wordt in deze analyse.
+        """
+        pov_score = info_score.pov(speler_kleur)
+        if pov_score.is_mate():
+            return pov_score.mate()
+        return None
+
+    # ----------------------------------------------------
+    # Bouwt een zin uit opening + midden + afsluiting-lijsten
+    # (zelfde variatie-patroon als conversation_engine.py's
+    # OPENINGEN/AFSLUITINGEN, hier met een extra middendeel).
+    # format_kwargs wordt enkel gebruikt bij midden-lijsten die een
+    # placeholder bevatten (bv. {betere_zet}, {redding_zet}).
+    # ----------------------------------------------------
+    def _bouw_zin(self, opening_lijst, midden_lijst, afsluiting_lijst, **format_kwargs):
+        opening = random.choice(opening_lijst)
+        midden = random.choice(midden_lijst)
+        afsluiting = random.choice(afsluiting_lijst)
+        if format_kwargs:
+            midden = midden.format(**format_kwargs)
+        return f"{opening} {midden}{afsluiting}"
+
+    def evalueer_speler_zet(self, move, speler_kleur):
+        """
+        Vergelijkt Stockfish' evaluatie van de stelling VOOR en NA
+        jouw zet (vanuit jouw perspectief, in centipawns). Geeft een
+        dict terug met categorie + kant-en-klare tekst, of None als
+        Stockfish niet beschikbaar is (dan wordt er gewoon niets
+        gezegd -- geen crash, de zet zelf gaat wel gewoon door).
+
+        BELANGRIJK: dit is analyse VOOR Nova's eigen antwoordzet --
+        het bord staat op dit moment nog net na jouw zet, dus we
+        moeten de stelling van ERVOOR apart vasthouden (zie
+        handle_move() waar dit aangeroepen wordt).
+        """
+        if not self.ensure_engine():
+            return None
+
+        try:
+            stelling_voor = self.board.copy()
+            stelling_voor.pop()  # jouw zet ongedaan maken voor de "voor"-analyse
+        except IndexError:
+            return None
+
+        try:
+            info_voor = self.engine.analyse(stelling_voor, chess.engine.Limit(time=self.EVAL_ANALYSE_TIJD))
+            info_na = self.engine.analyse(self.board, chess.engine.Limit(time=self.EVAL_ANALYSE_TIJD))
+        except Exception as e:
+            dbg(f"{C_RED}Kon zet niet evalueren: {e}{C_RESET}")
+            return None
+
+        beste_zet_voor = info_voor.get("pv", [None])[0]
+
+        mate_na = self._mate_in(info_na["score"], speler_kleur)
+        if mate_na is not None and mate_na < 0:
+            # Jij wordt binnenkort mat gezet
+            categorie = "mat_dreigt"
+            tekst = self._bouw_zin(
+                self._eval_mat_dreigt_opening,
+                self._eval_mat_dreigt_midden,
+                self._eval_mat_dreigt_afsluiting,
+            )
+            return self._bouw_evaluatie(categorie, tekst, beste_zet_voor, stelling_voor)
+
+        cp_voor = self._score_naar_cp(info_voor["score"], speler_kleur)
+        cp_na = self._score_naar_cp(info_na["score"], speler_kleur)
+
+        if cp_voor is None or cp_na is None:
+            # Eén van beide kanten zag al een mat -- niet vergelijkbaar
+            # als gewoon centipawn-verschil, laat dit gewoon stil.
+            return None
+
+        verschil = cp_na - cp_voor  # negatief = jij verloor terrein
+
+        if verschil >= 0 or verschil > -self.EVAL_DREMPEL_TWIJFELACHTIG:
+            # Zet bleef gelijk of verbeterde: sterk of uitstekend
+            if verschil >= self.EVAL_DREMPEL_UITSTEKEND:
+                categorie = "uitstekend"
+                tekst = self._bouw_zin(
+                    self._eval_uitstekend_opening,
+                    self._eval_uitstekend_midden,
+                    self._eval_uitstekend_afsluiting,
+                )
+            elif verschil >= 0:
+                categorie = "sterk"
+                tekst = self._bouw_zin(
+                    self._eval_sterk_opening,
+                    self._eval_sterk_midden,
+                    self._eval_sterk_afsluiting,
+                )
+            else:
+                categorie = "neutraal"
+                tekst = self._bouw_zin(
+                    self._eval_neutraal_opening,
+                    self._eval_neutraal_midden,
+                    self._eval_neutraal_afsluiting,
+                )
+            return self._bouw_evaluatie(categorie, tekst, None, stelling_voor)
+
+        verlies = -verschil
+        if verlies >= self.EVAL_DREMPEL_BLUNDER:
+            categorie = "blunder"
+            tekst = self._bouw_zin(
+                self._eval_blunder_opening,
+                self._eval_blunder_midden,
+                self._eval_blunder_afsluiting,
+            )
+            return self._bouw_evaluatie(categorie, tekst, beste_zet_voor, stelling_voor)
+        else:
+            categorie = "twijfelachtig"
+            tekst = self._bouw_zin(
+                self._eval_twijfelachtig_opening,
+                self._eval_twijfelachtig_midden,
+                self._eval_twijfelachtig_afsluiting,
+            )
+            return self._bouw_evaluatie(categorie, tekst, beste_zet_voor, stelling_voor)
+
+    def _bouw_evaluatie(self, categorie, tekst, beste_zet_voor, stelling_voor):
+        """
+        Voegt, indien van toepassing, Stockfish' beste-zet-suggestie
+        toe in leesbare tekst. Geeft nooit een UITLEG waarom die zet
+        beter was -- bewust weggelaten, zie toelichting bovenaan dit
+        blok.
+        """
+        volledige_tekst = tekst
+        if beste_zet_voor is not None and categorie in ("twijfelachtig", "blunder"):
+            try:
+                # BELANGRIJK: uci_to_leesbaar() krijgt hier expliciet
+                # stelling_voor mee -- dat is het bord VOOR jouw zet,
+                # niet self.board (dat staat op dit moment al na jouw
+                # zet én zelfs na Nova's tegenzet). Zonder dit
+                # argument zou san()/piece_type_at() het verkeerde
+                # stuk of een foutieve notatie teruggeven.
+                betere_zet_tekst = self.uci_to_leesbaar(beste_zet_voor, bord=stelling_voor)
+                aanvulling = self._bouw_zin(
+                    self._betere_zet_opening,
+                    self._betere_zet_midden,
+                    self._betere_zet_afsluiting,
+                    betere_zet=betere_zet_tekst,
+                )
+                volledige_tekst += f" {aanvulling}"
+            except Exception:
+                pass
+
+        return {
+            "categorie": categorie,
+            "tekst": volledige_tekst,
+        }
 
     # ----------------------------------------------------
     # Zet verwerken
@@ -385,6 +770,47 @@ class ChessModule:
         self.save_game()
         self.last_move_time = time.time()
 
+        # Leesbare vorm van JOUW zet vastleggen, direct na het spelen
+        # ervan -- move_text is enkel de rauwe tekst die jij typte
+        # (bv. "d5c7", of een natuurlijke-taal-zin), niet noodzakelijk
+        # een correcte/consistente beschrijving van wat er gebeurde.
+        # Door dit hier via uci_to_leesbaar() te doen (self.board
+        # staat nu net na jouw zet, dus zet_al_gespeeld-pad wordt
+        # gebruikt) krijgt Nova's melding hieronder altijd een
+        # correcte, consistente beschrijving -- inclusief "slaat op"
+        # als jouw zet een stuk wegnam.
+        move_leesbaar = self.uci_to_leesbaar(move)
+
+        # --------------------------------------------------------
+        # Zet-evaluatie (nieuw) -- MOET gebeuren vóór Nova's eigen
+        # tegenzet hieronder, want evalueer_speler_zet() vergelijkt
+        # de stelling voor/na JOUW zet en gebruikt daarvoor tijdelijk
+        # self.board.pop() om terug te gaan naar "voor jouw zet".
+        # Dat werkt alleen zolang Nova's zet er nog niet bovenop ligt.
+        # Bewust via layer4_response (warme tone-pipeline) i.p.v.
+        # rechtstreeks chat_response -- de bordweergave verderop
+        # blijft wél apart op chat_response, net als voorheen.
+        speler_kleur = not self.board.turn  # de kleur die zonet zette
+        evaluatie = self.evalueer_speler_zet(move, speler_kleur)
+        if evaluatie is not None:
+            self.laatste_zet_evaluatie = evaluatie
+            categorie = evaluatie["categorie"]
+
+            # mat_dreigt wordt BEWUST niet hier al gepubliceerd -- die
+            # wordt hieronder, na Nova's tegenzet, samengevoegd met de
+            # "redding nu"-suggestie tot ÉÉN bericht. Twee losse
+            # meldingen ("had moeten"/"kan nu nog") vlak na elkaar zou
+            # in een gespannen moment als ruis aanvoelen; kies daarom
+            # voor natuurlijkheid boven volledigheid.
+            mag_spreken = categorie not in ("neutraal", "mat_dreigt")
+            if categorie == "neutraal" and random.random() < self.EVAL_KANS_NEUTRAAL_TOCH_SPREKEN:
+                mag_spreken = True
+
+            if mag_spreken:
+                self.event_bus.publish("layer4_response", {
+                    "text": evaluatie["tekst"]
+                })
+
         if self.board.is_game_over():
             self.announce_game_over()
             return
@@ -392,7 +818,11 @@ class ChessModule:
         # Als jouw zet Nova schaak zet, dat direct melden
         if self.board.is_check():
             self.event_bus.publish("chat_response", {
-                "text": random.choice(self._sjablonen_schaak_melding)
+                "text": self._bouw_zin(
+                    self._schaak_melding_opening,
+                    self._schaak_melding_midden,
+                    self._schaak_melding_afsluiting,
+                )
             })
 
         # Nova's beurt (Stockfish)
@@ -408,13 +838,64 @@ class ChessModule:
         nova_zet = self.uci_to_leesbaar(result.move)
         schaak_melding = "\n\n⚠️ Je staat schaak!" if self.board.is_check() else ""
         materiaal = self.materiaal_balans()
-        zet_tekst = random.choice(self._sjablonen_zet_melding).format(
-            move_text=move_text, nova_zet=nova_zet
+        zet_tekst = self._bouw_zin(
+            self._zet_melding_opening,
+            self._zet_melding_midden,
+            self._zet_melding_afsluiting,
+            move_text=move_leesbaar, nova_zet=nova_zet,
         )
         self.event_bus.publish("chat_response", {
             "text": f"{zet_tekst}\n\n{self.bord_als_tekst()}\n{materiaal}{schaak_melding}",
             "instant": True
         })
+
+        # --------------------------------------------------------
+        # "Redding nu" (nieuw) -- ENKEL bij mat_dreigt, en enkel als
+        # de partij nog niet voorbij is. Aparte, DERDE Stockfish-
+        # analyse op de stelling NA Nova's tegenzet (dus de stelling
+        # waarin jij zo meteen weer aan zet bent). De mat_dreigt-
+        # waarschuwing zelf (evaluatie["tekst"]) werd hierboven bewust
+        # NIET al gepubliceerd -- ze wordt hier samengevoegd met de
+        # redding-suggestie tot ÉÉN natuurlijk bericht, i.p.v. twee
+        # losse meldingen na elkaar.
+        # Bewust nog steeds 100% symbolisch -- gewoon Stockfish' eigen
+        # beste-zet-suggestie op het huidige bord, geen ML/LLM.
+        if (
+            evaluatie is not None
+            and evaluatie["categorie"] == "mat_dreigt"
+            and not self.board.is_game_over()
+        ):
+            try:
+                info_redding = self.engine.analyse(
+                    self.board, chess.engine.Limit(time=self.EVAL_ANALYSE_TIJD)
+                )
+                redding_zet = info_redding.get("pv", [None])[0]
+                if redding_zet is not None:
+                    # Hier GEEN apart bord-argument nodig -- self.board
+                    # staat op dit moment al op de juiste stelling
+                    # (na Nova's tegenzet, vóór redding_zet gespeeld
+                    # is), exact zoals uci_to_leesbaar() standaard
+                    # verwacht.
+                    redding_zet_tekst = self.uci_to_leesbaar(redding_zet)
+                    redding_tekst = self._bouw_zin(
+                        self._redding_nu_opening,
+                        self._redding_nu_midden,
+                        self._redding_nu_afsluiting,
+                        redding_zet=redding_zet_tekst,
+                    )
+                    volledig_bericht = f"{evaluatie['tekst']} {redding_tekst}"
+                else:
+                    volledig_bericht = evaluatie["tekst"]
+                self.event_bus.publish("layer4_response", {
+                    "text": volledig_bericht
+                })
+            except Exception as e:
+                dbg(f"{C_RED}Kon redding-nu niet berekenen: {e}{C_RESET}")
+                # Nog steeds de kale waarschuwing tonen, beter dan
+                # volledig stilzwijgen bij een echte mat-dreiging.
+                self.event_bus.publish("layer4_response", {
+                    "text": evaluatie["tekst"]
+                })
 
         if self.board.is_game_over():
             self.announce_game_over()
@@ -442,15 +923,24 @@ class ChessModule:
         if result == "1-0":
             self.stats["gewonnen"] += 1
             self.stats["streak"] = max(1, self.stats["streak"] + 1)
-            bericht = random.choice(self._sjablonen_winst).format(reden=reden)
+            bericht = self._bouw_zin(
+                self._winst_opening, self._winst_midden, self._winst_afsluiting,
+                reden=reden,
+            )
         elif result == "0-1":
             self.stats["verloren"] += 1
             self.stats["streak"] = min(-1, self.stats["streak"] - 1)
-            bericht = random.choice(self._sjablonen_verlies).format(reden=reden)
+            bericht = self._bouw_zin(
+                self._verlies_opening, self._verlies_midden, self._verlies_afsluiting,
+                reden=reden,
+            )
         else:
             self.stats["gelijkspel"] += 1
             self.stats["streak"] = 0
-            bericht = random.choice(self._sjablonen_gelijkspel).format(reden=reden)
+            bericht = self._bouw_zin(
+                self._gelijkspel_opening, self._gelijkspel_midden, self._gelijkspel_afsluiting,
+                reden=reden,
+            )
 
         aanpassing = self._pas_niveau_aan()
         self.save_stats()
@@ -515,6 +1005,27 @@ class ChessModule:
     def save_stats(self):
         with open(self.stats_path, "w", encoding="utf-8") as f:
             json.dump(self.stats, f, indent=2)
+
+    # ----------------------------------------------------
+    # Detail op vraag: laatste zet-evaluatie herhalen
+    # ----------------------------------------------------
+    def handle_evaluation_query(self, data, event_type=None):
+        """
+        Reageert op een vraag als "waarom was dat een blunder?" of
+        "wat had ik beter kunnen doen?". Herhaalt gewoon de laatst
+        opgeslagen evaluatie (incl. betere-zet-suggestie indien
+        aanwezig) -- verzint GEEN nieuwe uitleg, dat is bewust
+        (nog) niet gebouwd, zie toelichting bij evalueer_speler_zet().
+        """
+        if self.laatste_zet_evaluatie is None:
+            self.event_bus.publish("chat_response", {
+                "text": "Ik heb nog geen zet-evaluatie klaarstaan -- speel eerst een zet."
+            })
+            return
+
+        self.event_bus.publish("layer4_response", {
+            "text": self.laatste_zet_evaluatie["tekst"]
+        })
 
     def handle_stats(self, data, event_type=None):
         s = self.stats

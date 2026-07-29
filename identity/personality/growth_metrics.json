@@ -5,8 +5,8 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 0,
-      "negative_count": 15,
+      "positive_count": 3,
+      "negative_count": 40,
       "total_shifts": 2,
       "last_shift": "2026-07-28T20:25:32.675845",
       "last_shift_direction": "negatief"
@@ -19,14 +19,14 @@
       "last_shift_direction": null
     },
     "self_regulation": {
-      "positive_count": 0,
+      "positive_count": 3,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "curiosity": {
-      "positive_count": 4,
+      "positive_count": 5,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -49,8 +49,8 @@
     "expressiveness": {
       "positive_count": 0,
       "negative_count": 19,
-      "total_shifts": 3,
-      "last_shift": "2026-07-28T20:24:27.836609",
+      "total_shifts": 4,
+      "last_shift": "2026-07-29T14:50:04.220171",
       "last_shift_direction": "negatief"
     },
     "emotional_color_intensity": {
@@ -61,7 +61,7 @@
       "last_shift_direction": null
     },
     "associative_thinking": {
-      "positive_count": 4,
+      "positive_count": 5,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -76,7 +76,7 @@
     },
     "reactivity": {
       "positive_count": 0,
-      "negative_count": 0,
+      "negative_count": 3,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
@@ -96,14 +96,14 @@
       "last_shift_direction": "negatief"
     },
     "energy_level": {
-      "positive_count": 4,
+      "positive_count": 5,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "dramatic_flair": {
-      "positive_count": 4,
+      "positive_count": 5,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
