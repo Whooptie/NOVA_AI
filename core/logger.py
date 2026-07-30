@@ -25,31 +25,40 @@ class LoggerModule:
         )
 
         self.logger = logging.getLogger("nova")
-        self.logger.setLevel(logging.WARNING)
+        self.logger.setLevel(logging.INFO)
         self.logger.addHandler(handler)
 
-        # Event-types die we altijd als fout/waarschuwing behandelen,
-        # ook al heten ze zelf niet "error" of "failed"
-        self.explicit_warning_events = {
+        # Event-types die we altijd als ECHTE fout behandelen (ERROR),
+        # ook al heet het event zelf niet "error"
+        self.explicit_error_events = {
             "memory_write_failed",
         }
+
+        # Event-types die we als waarschuwing behandelen (WARNING) —
+        # minder ernstig dan een error, maar toch het melden waard
+        self.explicit_warning_events = set()
 
         def log_event(data, event_type=None):
             if event_type is None:
                 return
 
             naam = event_type.lower()
-            is_probleem = (
+            is_error = (
                 "error" in naam
-                or "fail" in naam
+                or event_type in self.explicit_error_events
+            )
+            is_warning = (
+                "fail" in naam
                 or event_type in self.explicit_warning_events
             )
 
-            if is_probleem:
+            if is_error:
+                self.logger.error(f"Event: {event_type} | Data: {data}")
+            elif is_warning:
                 self.logger.warning(f"Event: {event_type} | Data: {data}")
 
         event_bus.subscribe("*", log_event)
-        self.logger.warning("Logger-module gestart — logt enkel fouten/waarschuwingen.")
+        self.logger.info("Logger-module gestart — logt fouten/waarschuwingen (en opstart als info).")
 
 
 def init_module(event_bus):

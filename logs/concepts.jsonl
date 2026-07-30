@@ -129,3 +129,6 @@
 {"timestamp": "2026-07-29T13:35:38.609960", "event_type": "concept_created", "word": "zet", "source": "system", "new_value": {"word": "zet"}}
 {"timestamp": "2026-07-29T13:36:05.286612", "event_type": "concept_created", "word": "anders", "source": "system", "new_value": {"word": "anders"}}
 {"timestamp": "2026-07-29T13:36:05.305611", "event_type": "concept_created", "word": "aanpakken", "source": "system", "new_value": {"word": "aanpakken"}}
+{"timestamp": "2026-07-30T16:54:39.744408", "event_type": "concept_created", "word": "activiteit", "source": "system", "new_value": {"word": "activiteit"}}
+{"timestamp": "2026-07-30T17:22:36.905449", "event_type": "concept_created", "word": "dankje", "source": "system", "new_value": {"word": "dankje"}}
+{"timestamp": "2026-07-30T19:17:02.114546", "event_type": "concept_created", "word": "koi", "source": "system", "new_value": {"word": "koi"}}

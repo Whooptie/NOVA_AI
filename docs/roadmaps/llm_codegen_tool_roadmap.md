@@ -14,15 +14,17 @@
 3. [Deel A: fallback/missing-intent tracking (100% symbolisch)](#deel-a)
 4. [Deel B: Claude API als codeer-tool ("live typen")](#deel-b)
 5. [Deel C: Claude API voor fallback-analyse (bewust NIET autonoom)](#deel-c)
-6. [Context-laag: waarom de API niks "onthoudt"](#context-laag)
-7. [Fase-roadmap](#fase-roadmap)
-8. [Eerlijkheid: wat kan wel/niet](#eerlijkheid)
+6. [Deel D: Nova als "codeerbrein"-orkestrator](#deel-d)
+7. [Context-laag: waarom de API niks "onthoudt"](#context-laag)
+8. [Fase-roadmap](#fase-roadmap)
+9. [Eerlijkheid: wat kan wel/niet](#eerlijkheid)
 
 ---
 
 ## WAT LOST DIT OP? {#wat-lost-dit-op}
 
 Kevin wil op termijn twee dingen kunnen doen:
+
 - Nova live zien "coderen" in VSCode (Claude schrijft code weg naar bestanden, Kevin kijkt toe)
 - Ontdekken welke modules Nova mist, op basis van herhaalde fallback/onbekende verzoeken
 
@@ -110,6 +112,51 @@ Dit gebeurt **nooit** vanzelf tijdens Nova's 24/7-daemon-run. Het is functioneel
 
 ---
 
+## DEEL D: NOVA ALS "CODEERBREIN"-ORKESTRATOR (29 juli 2026) {#deel-d}
+
+**Beslissing van Kevin op dit moment:** de LLM-bridge (`llm_bridge.py`, Qwen2.5 3B) wordt losgelaten als toekomstige "mond" van Nova (Scenario 1 "De Vertaler" uit de future-vision-lijst). In plaats daarvan wordt een LLM (via de Anthropic API, zie Deel B) enkel nog ingezet als **codeerbrein**, gekoppeld aan een orkestratielaag die het geheel laat aanvoelen alsof Nova zelf codeert — zonder dat dit ooit zo voorgesteld wordt.
+
+**Waarom dit de "mond"-route niet meer nodig heeft:** het probleem waar Scenario 1 op vastliep was de niet-triviale validatielaag — hoe weet je dat gegenereerde tekst nog overeenkomt met wat Nova symbolisch bedoelde? Bij codegen speelt dat probleem niet op dezelfde manier: Kevin ziet zelf de gegenereerde code, test die zelf, en beslist zelf of hij bruikbaar is. De "validatie" is dus Kevin zelf, net zoals nu al bij een gewone Claude-chat — geen extra symbolische controlelaag nodig binnen Nova.
+
+**Het gewenste verloop, concreet:**
+
+```
+Kevin: "Nova, kun je dit bouwen: [opdracht]"
+       ↓
+Nova antwoordt via een VAST sjabloon (geen vrije generatie):
+   "Oké, ik begin er direct aan." / "Momentje, ik ga aan de slag."
+   (zelfde soort sjabloonkeuze als _kies_variant() elders in Nova)
+       ↓
+Losse tool-module (buiten EventBus-brein, zie Deel B) roept
+Anthropic API aan met de opdracht + relevante context
+       ↓
+API retourneert code
+       ↓
+Tool schrijft de code weg naar een APARTE map
+   (bv. C:\Nova_AI\codegen_output\<datum>_<korte-naam>\)
+   — nooit rechtstreeks tussen Nova's eigen modules,
+   zodat gegenereerde code nooit per ongeluk vermengd raakt
+   met Kevins/Claude's hand-geschreven Nova-code
+       ↓
+Nova meldt (opnieuw vast sjabloon): "Klaar, ik heb het weggeschreven naar [map]."
+       ↓
+Kevin bekijkt/test de code zelf, beslist zelf of/hoe hij die overneemt
+```
+
+**Wat dit wel/niet is — cruciaal onderscheid:**
+
+- ✅ Nova's *statusberichten* ("ik begin eraan", "klaar") zijn 100% symbolisch — vaste, door Kevin/Claude geschreven sjablonen, exact zoals de rest van `response_engine.py`/`response_pipeline.py` werkt. Geen woord hiervan komt van de LLM.
+- ✅ De **code zelf** komt van de LLM — dat is en blijft een externe, begrensde tool-aanroep (zoals Stockfish een zet berekent, berekent de LLM hier code), nooit iets dat als "Nova's eigen redenering" wordt voorgesteld.
+- ✅ Een aparte outputmap houdt dit onderscheid ook op schijf zichtbaar — vergelijkbaar met hoe `concepts.json` een `source`-veld bijhoudt (user/auto/wikipedia) zodat je altijd kan zien waar iets vandaan kwam. Hier zou het equivalent zijn: gegenereerde code komt nooit ongemarkeerd tussen Nova's eigen bestanden terecht.
+- ❌ Nova "doet alsof" ze zelf de code bedenkt/schrijft in de zin dat dit ooit tegenover Kevin verzwegen zou worden — dat mag niet; het orkestratie-effect ("ja ik begin eraan") is prima als vlot statusbericht, zolang jij (en Nova, als je haar er zelf naar vraagt) weet en kan uitleggen dat de eigenlijke code van een externe LLM-aanroep komt, niet van Nova's symbolische kern.
+- ❌ Dit orkestratiemechanisme autonoom laten draaien binnen de 24/7-daemon (Nova beslist zelf, ongevraagd, dat ze iets gaat coderen) — blijft uitgesloten, zelfde kernprincipe als hierboven: altijd Kevin-getriggerd.
+
+**Relatie tot Deel B:** dit is in essentie Deel B ("live typen"-tool), met twee toevoegingen: (1) een vast, symbolisch statusbericht vóór en na de aanroep, zodat het gesprek natuurlijk aanvoelt, en (2) een verplichte, aparte outputmap per codegen-run, i.p.v. rechtstreeks naar een bestaand doelbestand schrijven. Dit maakt Deel B iets explicieter in hoe Kevin het in de praktijk wil ervaren, zonder de kernregels (Kevin-getriggerd, geen autonomie, geen "onthouden" tussen calls) te wijzigen.
+
+**Status:** idee/concept, sluit aan bij Deel B/Fase 3, geen aparte fase-nummering nodig — dit is een verduidelijking van hoe Fase 3 er in de praktijk moet uitzien, geen nieuwe fase.
+
+---
+
 ## CONTEXT-LAAG: WAAROM DE API NIKS "ONTHOUDT" {#context-laag}
 
 Cruciaal verschil met claude.ai (deze app): de kale Anthropic API heeft **geen geheugen tussen aanroepen**. Elke API-call begint blanco. Wat hier in de app aanvoelt als "Claude onthoudt Nova's project" is een apart systeem (memory + project knowledge) dat Anthropic specifiek voor claude.ai gebouwd heeft — niet iets dat automatisch meekomt met de API.
@@ -142,6 +189,9 @@ Cruciaal verschil met claude.ai (deze app): de kale Anthropic API heeft **geen g
 - ❌ **Nova roept zelf, autonoom tijdens haar daemon-run, de API aan om te beslissen wat er gebouwd moet worden** — dit is een LLM als brein-vervanging, expliciet uitgesloten
 - ❌ **Verwachten dat de API "vanzelf" Nova's project kent na een tijdje gebruiken** — geen ingebouwd geheugen; elke call vereist zelf meegestuurde context
 - ❌ **VSCode Copilot/Claude-extensie als aanroepbare tool voor Nova** — die zijn voor de mens in de editor, geen aanroepbare API voor een extern script
+- ✅ **Nova's vaste statusberichten rond een codegen-aanroep ("ik begin eraan"/"klaar")** — 100% symbolisch sjabloon, zelfde soort mechanisme als `_kies_variant()` elders in Nova; geeft het gesprek een vlot "codeerbrein"-gevoel zonder dat Nova zelf iets genereert
+- ❌ **Verzwijgen dat de eigenlijke code van een externe LLM-aanroep komt** — het orkestratie-effect mag natuurlijk aanvoelen, maar mag nooit verhullen dat de code zelf niet van Nova's symbolische kern komt
+- ❌ **De LLM-bridge (`llm_bridge.py`, Qwen2.5 3B) alsnog inzetten als "mond"/stijl-laag voor `response_engine.py`** — bewust losgelaten (29 juli 2026, zie Deel D); Scenario 1 "De Vertaler" uit de future-vision-lijst wordt niet meer nagestreefd, de LLM-rol van Nova blijft beperkt tot het codeerbrein hierboven
 
 **Status in de bouwvolgorde:** idee/concept, geen prioriteit. Fase 1-2 kunnen onafhankelijk van de rest gebouwd worden. Fase 3-6 wachten op Kevin's bewuste keuze om de Claude API in te zetten.
 

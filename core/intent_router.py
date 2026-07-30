@@ -44,7 +44,6 @@ class IntentRouter:
         # weer op False gezet na elk bericht, zodat dit nooit per
         # ongeluk "aanblijft" voor een volgend, ongerelateerd bericht.
         self._topic_al_ge_emit = False
-        self.awaiting_confirmation = None
         # Bug #10-fix, stap 7: houdt bij of Kevin net gevraagd is een
         # nummer te kiezen na "onthoud sense <woord>". Volledig los van
         # pending_question.py (dat mechanisme is gebouwd voor ja/nee-
@@ -584,14 +583,6 @@ class IntentRouter:
             delen.append("je houdt niet van " + ", ".join(afkeuren))
 
         return "Voor zover ik weet: " + " en ".join(delen) + "."
-
-    # ---------------------------------------------------------
-    # Confirm-flow (teach)
-    # ---------------------------------------------------------
-    def handle_confirmation(self, text):
-        if not self.awaiting_confirmation:
-            return False
-        return False
 
     # ---------------------------------------------------------
     # Definition
@@ -2067,10 +2058,6 @@ class IntentRouter:
 
         # 1B Example
         if self.handle_example(text):
-            return
-
-        # 2 Confirm
-        if self.handle_confirmation(text):
             return
 
         # 2A Sense-voorkeur commando (Bug #10-fix, stap 7) -- MOET voor

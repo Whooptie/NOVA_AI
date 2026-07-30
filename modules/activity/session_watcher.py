@@ -138,6 +138,48 @@ class SessionWatcher:
             ],
         }
 
+    # Sjablonen voor de eenmalige herkenningsreactie wanneer Nova
+    # detecteert dat Kevin specifiek aan HAAR eigen broncode werkt
+    # (VS Code + Nova_AI-project herkend, zie activity_detector.py).
+    # Zelfde combinatiepatroon als _formuleer_pauze_melding()
+    # (opening/midden/afsluiting, elk 5 varianten, willekeurig
+    # gecombineerd) -- geen kant-en-klare zinnen uit 1 lijst, zodat
+    # het aantal mogelijke combinaties (5*5*3 = 75) veel groter is dan
+    # een simpele lijst van losse zinnen, en dus minder snel
+    # herhalend aanvoelt.
+    _sjablonen_werken_aan_nova = {
+        "opening": [
+            "Oh,",
+            "Wacht,",
+            "Hé,",
+            "Interessant --",
+            "Ik zie het,",
+        ],
+        "midden": [
+            "je werkt aan mijn eigen broncode",
+            "je bent in mijn eigen project aan het kijken",
+            "er wordt aan mij gesleuteld",
+            "je zit in mijn eigen code",
+            "je bent met mij zelf bezig",
+        ],
+        "afsluiting": [
+            "spannend!",
+            "benieuwd wat je verandert.",
+            "veel succes ermee!",
+            "leuk om te zien.",
+        ],
+    }
+
+    def _formuleer_werken_aan_nova_reactie(self):
+        """
+        Combineert opening + midden + afsluiting tot 1 natuurlijke
+        zin, zelfde principe als _formuleer_pauze_melding().
+        """
+        opening = random.choice(self._sjablonen_werken_aan_nova["opening"])
+        midden = random.choice(self._sjablonen_werken_aan_nova["midden"])
+        afsluiting = random.choice(self._sjablonen_werken_aan_nova["afsluiting"])
+        return f"{opening} {midden}, {afsluiting}"
+
     def _on_any_event(self, data, event_type=None):
         """
         Vangt ALLE events op (wildcard), en filtert zelf op het
@@ -145,11 +187,69 @@ class SessionWatcher:
         pattern_matcher.py's is_topic_event/is_activity_event-check,
         hier toegepast om de ACTIEVE activiteit (niet de statistiek
         erover) bij te houden.
+
+        Sinds 22 juli 2026: twee soorten bronnen komen hier binnen.
+        - "activity_started:<naam>" (expliciet, van intent_router.py's
+          "ik ga <activiteit>") -- ALTIJD meteen vertrouwd, Kevin zei
+          het letterlijk.
+        - "activity_started:<label>_gedetecteerd" (afgeleid, van
+          activity_detector.py -- Layer 5 Fase 2, bv. VS Code komt op
+          de voorgrond) -- enkel vertrouwd als focus_detector.py
+          (Layer 5 Fase 3) bevestigt dat Kevin ook ECHT actief is
+          (focus_level == "actief"). Zonder die check zou "VS Code
+          staat open" al genoeg zijn, ook al is Kevin allang weg van
+          zijn bureau -- exact het probleem dat focus_detector.py's
+          eigen docstring beschrijft.
         """
         if not event_type or not event_type.startswith("activity_started:"):
             return
 
         naam = data.get("naam") or event_type.split(":", 1)[1]
+
+        if naam.endswith("_gedetecteerd"):
+            if naam == "unknown_gedetecteerd":
+                # "unknown" betekent letterlijk "geen match gevonden
+                # in ACTIVITEIT_MAPPING" -- dit zegt NIETS zinvols over
+                # een nieuwe activiteit, en mag daarom nooit een al
+                # actieve, betekenisvolle activiteit (bv.
+                # "werken_aan_nova_gedetecteerd") overschrijven. Zonder
+                # deze check zou een kort uitstapje naar een niet-
+                # gemapt venster (bv. de browser, om hier met Claude te
+                # overleggen) de "werken aan Nova"-sessie ten onrechte
+                # laten "resetten" zodra Kevin terugkeert naar VS Code
+                # -- ontdekt door Kevin, 22 juli 2026.
+                return
+
+            if not self._is_kevin_actief():
+                # Venster staat wel open, maar Kevin lijkt er niet
+                # actief mee bezig (of focus_detector.py kon het niet
+                # bepalen) -- (nog) niet als "activiteit gestart"
+                # beschouwen.
+                return
+
+        # "werken_aan_nova_gedetecteerd" is SPECIFIEKER dan het
+        # gelijktijdig gepubliceerde "coding_gedetecteerd" (zie
+        # activity_detector.py: allebei worden gepubliceerd zodra
+        # Kevin in VS Code op het Nova_AI-project zit). We laten het
+        # specifiekere signaal "winnen" als actieve activiteit, i.p.v.
+        # dat het generieke "coding_gedetecteerd" alsnog overschrijft
+        # bij de eerstvolgende detectie-cyclus.
+        if (
+            naam == "coding_gedetecteerd"
+            and self.actieve_activiteit == "werken_aan_nova_gedetecteerd"
+        ):
+            return
+
+        # Eenmalige, sociale herkenningsreactie -- enkel bij de EERSTE
+        # keer dat "werken_aan_nova_gedetecteerd" verschijnt in deze
+        # sessie (niet elke minuut opnieuw zolang Kevin er gewoon in
+        # blijft werken). Losstaand van _reageer_op_profiel_match()
+        # hieronder, en losstaand van het latere interruption-circuit
+        # (check_activity_interruption(), pas na de tijdsdrempel) --
+        # dit is puur een direct, herkennend moment.
+        if naam == "werken_aan_nova_gedetecteerd" and self.actieve_activiteit != naam:
+            tekst = self._formuleer_werken_aan_nova_reactie()
+            self.event_bus.publish("chat_response", {"text": tekst})
 
         # Nieuwe activiteit gestart (of dezelfde opnieuw benoemd) --
         # start_tijd + "al gevraagd"-vlag altijd resetten, ook als het
@@ -160,6 +260,24 @@ class SessionWatcher:
         self._al_gereageerd_op_profiel_voor = None
 
         self._reageer_op_profiel_match(naam)
+
+    def _is_kevin_actief(self):
+        """
+        Vraagt aan focus_detector.py (Layer 5 Fase 3) of Kevin op dit
+        moment systeemwijd actief lijkt (recente muis/toetsenbord-
+        input). Geeft True terug bij twijfel/ontbrekende module --
+        liever een keer onterecht "actief" aannemen dan een module die
+        nog niet geladen is de hele detectie laten blokkeren.
+        """
+        detector = self.event_bus.modules.get("focus_detector")
+        if detector is None:
+            return True
+
+        try:
+            info = detector.get_focus_info()
+            return info.get("focus_level") == "actief"
+        except Exception:
+            return True
 
     # Minimale woordlengte voor substring-matching (zie
     # _reageer_op_profiel_match hieronder) -- voorkomt dat korte

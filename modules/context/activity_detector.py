@@ -97,6 +97,18 @@ class ActivityDetector:
     # Als geen enkele match gevonden wordt, dit label gebruiken.
     ONBEKEND_LABEL = "unknown"
 
+    # Herkenningsfragment specifiek voor "Kevin werkt in VS Code aan
+    # Nova's EIGEN broncode" (i.p.v. een willekeurig ander Python-
+    # project). VS Code toont de mapnaam van het geopende project
+    # middenin de venstertitel (bv. "chess_stats.json - Nova_AI -
+    # Visual Studio Code") -- dat maakt dit betrouwbaar herkenbaar,
+    # in tegenstelling tot enkel "code.exe" (dat geldt voor ELK
+    # VS Code-project). BEWUST GEEN apart activiteit-label (blijft
+    # gewoon "coding" meetellen in de algemene teller) -- enkel een
+    # EXTRA signaal (is_working_on_nova), zie detect_activity()
+    # hieronder. Besproken met Kevin (22 juli 2026).
+    NOVA_PROJECT_HERKENNING = "nova_ai"
+
     def __init__(self, event_bus):
         self.event_bus = event_bus
 
@@ -142,19 +154,66 @@ class ActivityDetector:
         if self._activiteit_sinds is not None:
             duur_minuten = (nu - self._activiteit_sinds).total_seconds() / 60
 
+        # Extra, los signaal (naast het gewone activiteit-label):
+        # werkt Kevin specifiek aan Nova's EIGEN broncode in VS Code?
+        # Case-insensitive substring-check op de venstertitel, zelfde
+        # aanpak als _match_activiteit() hierboven. Enkel relevant als
+        # label al "coding" is -- een andere activiteit met toevallig
+        # "nova_ai" in de titel (onwaarschijnlijk, maar voor de
+        # duidelijkheid) telt hier niet als "werken aan Nova".
+        is_working_on_nova = (
+            label == "coding"
+            and raw_titel is not None
+            and self.NOVA_PROJECT_HERKENNING in raw_titel.lower()
+        )
+
         resultaat = {
             "activity": label,
             "duration_minutes": round(duur_minuten, 1),
             "raw_window_title": raw_titel,
             "raw_process_name": raw_proces,
+            "is_working_on_nova": is_working_on_nova,
             "time": nu.isoformat(),
         }
 
         if self.event_bus is not None:
-            # Layer 2 (pattern_matcher.py) telt dit automatisch mee
-            # zoals elk ander event_type, zonder dat pattern_matcher.py
-            # zelf iets hoeft te weten over "activiteiten" — het ziet
-            # gewoon een event_type "activity_detected" langskomen.
+            # Layer 2 (pattern_matcher.py) telt dit automatisch mee.
+            # BEWUST hetzelfde "activity_started:<naam>"-voorvoegsel
+            # als intent_router.py's expliciete "ik ga <activiteit>"
+            # -detectie (zie Activity-Aware Interaction, 22 juli 2026)
+            # -- niet een apart "activity_detected:<naam>"-voorvoegsel.
+            # Zo herkent pattern_matcher.py's AL BESTAANDE
+            # is_activity_event-check dit automatisch mee, zonder een
+            # DERDE prefix-check te moeten toevoegen.
+            #
+            # BELANGRIJK -- "_gedetecteerd"-achtervoegsel, BEWUST NIET
+            # hetzelfde label als Kevin's expliciete "ik ga <activiteit>"
+            # (bv. "coding_gedetecteerd", NIET "coderen"). Dit is een
+            # AFGELEIDE waarneming (welk venster staat open), minder
+            # zeker dan een expliciete uitspraak -- VS Code kan open
+            # staan terwijl Kevin koffie haalt. Door een apart label te
+            # gebruiken, bouwt deze bron een EIGEN, aparte confidence-
+            # teller op in interruption_tracker.py, die nooit ongemerkt
+            # samenvloeit met de betrouwbaardere, expliciete metingen.
+            # Zie het gesprek met Kevin (22 juli 2026).
+            self.event_bus.publish(f"activity_started:{label}_gedetecteerd", resultaat)
+
+            # Apart, AANVULLEND signaal (naast het gewone label, dat
+            # gewoon "coding" blijft) -- specifiek voor "Kevin werkt
+            # NU aan Nova's eigen broncode" (VS Code + Nova_AI-project
+            # in de titel). Enkel gepubliceerd als het ook echt True is
+            # -- geen "werkt_niet_aan_nova"-tegenhanger nodig, want
+            # Layer 2 telt hier gewoon HOE VAAK dit specifieke moment
+            # voorkomt, net als elke andere activiteit. Besproken met
+            # Kevin (22 juli 2026): dit was een los signaal in de data
+            # dat nog nergens als EVENT gepubliceerd werd, waardoor
+            # niets (Layer 2, session_watcher.py) het kon oppikken.
+            if resultaat.get("is_working_on_nova"):
+                self.event_bus.publish("activity_started:werken_aan_nova_gedetecteerd", resultaat)
+
+            # Ook het bestaande, vaste event blijven publiceren, voor
+            # eventuele andere/toekomstige listeners die specifiek op
+            # "activity_detected" subscriben (ongeacht welke activiteit).
             self.event_bus.publish("activity_detected", resultaat)
 
         return resultaat

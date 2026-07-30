@@ -177,6 +177,67 @@ class EmergenceEngine:
         # bijvoegt.
         self._topic_naam_labels = {
             "chess": "schaken",
+            "chess_evaluation": "schaakanalyse",
+            "definitie": "definities",
+            "greeting": "onze begroetingen",
+            "help": "de help-functie",
+            "identity": "wie ik ben",
+            "math": "rekenen",
+            "memory": "mijn geheugen",
+            "part_of": "onderdeel-relaties",
+            "preference": "je voorkeuren",
+            "relatie": "relaties tussen concepten",
+            "self_architecture": "hoe ik werk",
+            "subtypes": "soorten van iets",
+            "time": "de tijd",
+            "weather": "het weer",
+            "activity": "je activiteiten",
+        }
+
+        # Vertaalt het stuk na "activity_started:" naar een Nederlands
+        # woord, analoog aan _topic_naam_labels hierboven. Sommige
+        # namen dragen een technisch "_gedetecteerd"-achtervoegsel
+        # (zie Activity-Aware Interaction, 22 juli 2026: dit
+        # onderscheidt een AFGELEIDE waarneming via het actieve venster
+        # van Kevins eigen, expliciete "ik ga <activiteit>"-uitspraak
+        # — bewust apart gehouden, NIET hetzelfde patroon, zie het
+        # gesprek van 30 juli 2026). Dat achtervoegsel hoort nooit
+        # letterlijk in een uitgesproken zin. Onbekende/nieuwe
+        # activiteiten vallen terug op de kale naam (zie
+        # _onderwerp_label()).
+        self._activity_naam_labels = {
+            "coderen": "coderen",
+            "coding_gedetecteerd": "coderen",
+            "talking_to_nova_gedetecteerd": "praten met mij",
+            "werken_aan_nova_gedetecteerd": "aan mijn eigen code werken",
+            "schaken": "schaken",
+            "lezen": "lezen",
+            "slapen": "slapen",
+            "koffie zetten": "koffie zetten",
+        }
+
+        # WHITELIST (30 juli 2026): enkel event_types die hier expliciet
+        # in staan, mogen ooit als 'tijdspatroon'-insight getoond worden
+        # — ongeacht hoe sterk hun confidence/total zijn. Dit is bewust
+        # een WHITELIST i.p.v. een blacklist: nieuwe/toekomstige topics
+        # en activiteiten zijn dus standaard STIL totdat Kevin ze hier
+        # zelf toevoegt, in plaats van dat Kevin moet onthouden om elk
+        # nieuw gevoelig geval apart te verbieden. Reden: niet elk
+        # statistisch sterk patroon is iets dat Nova spontaan hardop
+        # mag zeggen (bv. "activity_started:unknown_gedetecteerd" is
+        # inhoudelijk zinloos, en sommige activiteiten kunnen te
+        # persoonlijk zijn om spontaan als 'patroon' te noemen, ook al
+        # zijn ze feitelijk correct). "topic_detected:*" mag hier
+        # generiek door (gespreksonderwerpen, inherent minder
+        # gevoelig) — "activity_started:*" moet Kevin zelf, per
+        # activiteit, hieronder expliciet toevoegen.
+        self.INSIGHT_WAARDIGE_ACTIVITEITEN = {
+            "coderen",
+            "coding_gedetecteerd",
+            "werken_aan_nova_gedetecteerd",
+            "schaken",
+            "lezen",
+            "slapen",
         }
 
         # ─────────────────────────────────
@@ -408,6 +469,10 @@ class EmergenceEngine:
             topic_naam = event_type.split(":", 1)[1]
             return self._topic_naam_labels.get(topic_naam, topic_naam)
 
+        if event_type.startswith("activity_started:"):
+            activiteit_naam = event_type.split(":", 1)[1]
+            return self._activity_naam_labels.get(activiteit_naam, activiteit_naam)
+
         return event_type
 
     # ─────────────────────────────────
@@ -547,6 +612,21 @@ class EmergenceEngine:
                 continue
             if confidence is None or uur is None:
                 continue
+
+            # WHITELIST-check (30 juli 2026): activity_started:-events
+            # mogen ENKEL als insight verschijnen als de activiteit
+            # zelf expliciet in INSIGHT_WAARDIGE_ACTIVITEITEN staat.
+            # topic_detected:-events en de vaste chat_message/
+            # chat_response-events mogen hier generiek door (zie
+            # toelichting bij INSIGHT_WAARDIGE_ACTIVITEITEN in
+            # __init__). Dit is een INHOUDELIJK filter, los van de
+            # statistische total/confidence-check hierboven — een
+            # activiteit kan statistisch sterk genoeg zijn en toch
+            # bewust nooit hardop genoemd worden.
+            if event_type.startswith("activity_started:"):
+                activiteit_naam = event_type.split(":", 1)[1]
+                if activiteit_naam not in self.INSIGHT_WAARDIGE_ACTIVITEITEN:
+                    continue
 
             kandidaten.append((event_type, uur, confidence, total))
 

@@ -142,6 +142,14 @@ classifier.retrain()
 | 4 | Sjabloon-antwoorden per emotie-categorie (vaste, symbolische zinnen, met variatie) | ❌ Nee | Klein — vergelijkbaar met expression_injector.py |
 | 5 | Drempelwaarde/marge-logica om te bepalen wanneer een classificatie zeker genoeg is (zelfde soort aanpak als microlearning.py's marge-check) | ❌ Nee | Klein — hergebruik van een al bewezen patroon |
 | 6 (optioneel) | Periodiek hertrainen, eventueel gevoed door Layer 0-data + een correctie-commando (zelfde principe als `intent_classifier_roadmap.md`) | ❌ Nee | Middel |
+| 7 | Intensiteitsschaal per categorie (bv. "beetje moe" vs "doodop") — extra label of tweede kleine classifier bovenop dezelfde TF-IDF-vectorisatie | ❌ Nee (klassieke, simpele ML) | Klein |
+| 8 | Koppeling aan `pending_question.py` — vaste vervolgvraag-sjablonen per emotie ("wil je dat ik het rustiger aan doe?") | ❌ Nee | Klein — hergebruik bestaand mechanisme |
+| 9 | Koppeling aan Layer 5 (`context_manager.py`) — `emotional_statement:detected` gated door `can_interrupt()`, zelfde patroon als Layer 7 | ❌ Nee | Klein — hergebruik bestaand patroon |
+| 10 | Koppeling aan Layer 0 — emotie-detecties opslaan als events in `memory.py`, later Layer 2-achtige tijdspatronen herkennen ("elke maandag moe"), mogelijke brug naar Layer 7 als nieuw insight-type | ❌ Nee | Middel |
+| 11 (⚠️ afweging) | Event-gewijze koppeling met `behavior_modifiers.py` — herhaalde "gestrest"-detecties als input voor Nova's toon, zonder microlearning.py's data/logica te vermengen | ❌ Nee | Middel — vereist zorgvuldige scheiding |
+| 12 (⚠️ afweging) | Multi-label classificatie voor gemengde emoties ("blij maar ook moe") — bv. one-vs-rest Logistic Regression + sjabloon-logica die combinaties aankan | ❌ Nee (klassieke ML, wel complexer) | Middel-Groot |
+
+**Afhankelijkheden:** vereist geen van de nog te bouwen lagen. Het benodigde event (`raw_user_message`) bestaat al. Volledig onafhankelijk van `microlearning.py` bouwbaar — beide luisteren naar hetzelfde event, maar raken elkaars data/logica nooit. Fases 9 en 10 hergebruiken bestaande patronen (Layer 5-gate, Layer 0-opslag) en kunnen dus ook onafhankelijk van elkaar gebouwd worden zodra de basis (fase 1-5) klaar is.
 
 **Afhankelijkheden:** vereist geen van de nog te bouwen lagen. Het benodigde event (`raw_user_message`) bestaat al. Volledig onafhankelijk van `microlearning.py` bouwbaar — beide luisteren naar hetzelfde event, maar raken elkaars data/logica nooit.
 
@@ -170,11 +178,25 @@ emotional_statement_classifier (dit document)
 ├── Gebruikt dezelfde technische aanpak als: 
 │   signal_classifier (Layer 6) en intent_classifier_roadmap.md
 │   — telkens een eigen, klein, begrensd model, geen gedeelde inhoud
-└── Zou, indien gewenst, later gekoppeld kunnen worden aan
-    pending_question_roadmap.md — maar is daar niet van afhankelijk;
-    dit reageert direct op een NIEUWE, ongevraagde uitspraak, niet
-    op een antwoord op een eerdere vraag van Nova
+├── Zou, indien gewenst, later gekoppeld kunnen worden aan
+│   pending_question_roadmap.md — maar is daar niet van afhankelijk;
+│   dit reageert direct op een NIEUWE, ongevraagde uitspraak, niet
+│   op een antwoord op een eerdere vraag van Nova
+├── Fase 9 hergebruikt Layer 5's can_interrupt() — zelfde gate-patroon
+│   als Layer 7 (emergence_engine.py) al gebruikt
+├── Fase 10 kan een nieuw insight-type worden voor Layer 7
+│   (emergence_engine.py) — emotioneel patroon naast de bestaande
+│   4 insight-types
+└── Fase 11 blijft bewust een APARTE consumer van
+    emotional_statement:detected — geen wijziging aan
+    microlearning.py's eigen data/logica
 ```
+
+TOEKOMSTIGE UITBREIDINGEN (fases 7-12) — status 29 juli 2026
+
+Alle 8 uitbreidingspunten uit het uitbreidingsgesprek zijn goedgekeurd en toegevoegd aan de fase-roadmap hierboven. Twee daarvan (fase 11 en 12) zijn expliciet gemarkeerd als "kan wel, maar met architecturale afweging" — geen van beide is geschrapt, beide staan gewoon met een waarschuwing genoteerd zodat de afweging niet vergeten wordt bij het bouwen.
+
+Bewust NIET toegevoegd (blijft buiten scope, zie eerlijkheid-sectie): origineel/invoelend antwoord genereren, sarcasme/ironie herkennen, open ongestructureerde emotionele verhalen classificeren — deze drie vereisen een LLM en overschrijden de grens van dit document.
 
 ---
 
