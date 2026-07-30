@@ -215,6 +215,7 @@ class DebugCommands:
         print(f"{C_CYAN}Ruwe venstertitel: {info.get('raw_window_title')!r}{C_RESET}")
         print(f"{C_CYAN}Ruwe procesnaam: {info.get('raw_process_name')!r}{C_RESET}")
         print(f"{C_CYAN}Herkend als: {info.get('activity')}{C_RESET}")
+        print(f"{C_CYAN}Werkt aan Nova zelf: {info.get('is_working_on_nova')}{C_RESET}")
 
     def _focus_debug(self, user_input):
         fd = self.loader.loaded_modules.get("focus_detector")
