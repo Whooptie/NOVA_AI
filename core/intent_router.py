@@ -2113,6 +2113,18 @@ class IntentRouter:
         if self._verwerk_pending_antwoord(text):
             return
 
+        # -1C Pending Wikipedia-disambiguatie-keuze (31 juli 2026, Bug
+        # #8-vervolg) -- zelfde voorrang-redenering als hierboven en als
+        # de sense-voorkeur-check: als Nova net een genummerde
+        # Wikipedia-keuzevraag stelde ("1. Mercurius (planeet) / 2. ..."),
+        # mag dat nummer nooit doorlopen naar de bestaande, generieke
+        # "text.isdigit()"-sense-choice-afhandeling verderop in deze
+        # functie (die is bedoeld voor concepts.json-sense-keuzes, niet
+        # voor Wikipedia-disambiguatie) -- vandaar VÓÓR die check.
+        wiki_teacher = self.event_bus.modules.get("wikipedia_teacher")
+        if wiki_teacher is not None and wiki_teacher.verwerk_wiki_keuze(text):
+            return
+
         # -1B Pending sense-voorkeur (Bug #10-fix, stap 7) -- zelfde
         # voorrang-redenering als hierboven: als Kevin net gevraagd is
         # een nummer te kiezen na "onthoud sense <woord>", mag dat

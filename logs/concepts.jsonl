@@ -147,3 +147,14 @@
 {"timestamp": "2026-07-31T05:07:59.947422", "event_type": "concept_created", "word": "partijtje", "source": "system", "new_value": {"word": "partijtje"}}
 {"timestamp": "2026-07-31T05:08:09.189371", "event_type": "concept_created", "word": "laten", "source": "system", "new_value": {"word": "laten"}}
 {"timestamp": "2026-07-31T05:08:09.220373", "event_type": "concept_created", "word": "potje", "source": "system", "new_value": {"word": "potje"}}
+{"timestamp": "2026-07-31T19:44:05.268854", "event_type": "concept_created", "word": "chemie", "source": "system", "new_value": {"word": "chemie"}}
+{"timestamp": "2026-07-31T19:45:06.678785", "event_type": "concept_created", "word": "biologie", "source": "system", "new_value": {"word": "biologie"}}
+{"timestamp": "2026-07-31T19:45:23.486940", "event_type": "concept_created", "word": "logica", "source": "system", "new_value": {"word": "logica"}}
+{"timestamp": "2026-07-31T19:55:03.187431", "event_type": "concept_created", "word": "fysica", "source": "system", "new_value": {"word": "fysica"}}
+{"timestamp": "2026-07-31T19:55:26.856134", "event_type": "concept_created", "word": "bank", "source": "system", "new_value": {"word": "bank"}}
+{"timestamp": "2026-07-31T19:57:49.739010", "event_type": "concept_created", "word": "mercurius", "source": "system", "new_value": {"word": "mercurius"}}
+{"timestamp": "2026-07-31T20:06:57.974311", "event_type": "concept_created", "word": "fysica", "source": "system", "new_value": {"word": "fysica"}}
+{"timestamp": "2026-07-31T20:07:23.412083", "event_type": "concept_created", "word": "chemie", "source": "system", "new_value": {"word": "chemie"}}
+{"timestamp": "2026-07-31T20:07:36.779294", "event_type": "concept_created", "word": "bank", "source": "system", "new_value": {"word": "bank"}}
+{"timestamp": "2026-07-31T20:07:51.328445", "event_type": "concept_created", "word": "mercurius", "source": "system", "new_value": {"word": "mercurius"}}
+{"timestamp": "2026-07-31T20:14:11.114596", "event_type": "concept_created", "word": "mercurius", "source": "system", "new_value": {"word": "mercurius"}}

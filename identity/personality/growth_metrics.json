@@ -6,7 +6,7 @@
   "traits": {
     "social_warmth": {
       "positive_count": 3,
-      "negative_count": 61,
+      "negative_count": 64,
       "total_shifts": 2,
       "last_shift": "2026-07-28T20:25:32.675845",
       "last_shift_direction": "negatief"
@@ -48,7 +48,7 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 15,
+      "negative_count": 18,
       "total_shifts": 5,
       "last_shift": "2026-07-30T19:20:07.777983",
       "last_shift_direction": "negatief"

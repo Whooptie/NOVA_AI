@@ -53,6 +53,7 @@ class DebugCommands:
             (lambda t: t == "intent debug", self._intent_debug),
             (lambda t: t.startswith("intent test"), self._intent_test),
             (lambda t: t == "intent retrain", self._intent_retrain),
+            (lambda t: t.startswith("wiki debug"), self._wiki_debug),
         ]
 
         event_bus.subscribe("debug_command", self.handle_debug_command)
@@ -399,6 +400,59 @@ class DebugCommands:
             return
         print(associaties)
         print("Sentiment:", wa.get_word_sentiment(woord))
+
+    # ------------------------------------------------------------------
+    # Wikipedia Teacher — ruw API-antwoord inspecteren (Bug #8-onderzoek,
+    # 31 juli 2026)
+    # ------------------------------------------------------------------
+
+    def _wiki_debug(self, user_input):
+        """
+        Haalt het RUWE Wikipedia-antwoord op voor een woord en toont het
+        volledige 'type' en 'extract'-veld, zonder enige verdere
+        verwerking door wikipedia_teacher.py. Puur voor onderzoek: zo
+        zien we exact wat de API teruggeeft, i.p.v. te gissen naar wat
+        _extract_definition() / _extract_first_disambiguation_target()
+        ermee doen.
+
+        Gebruik: wiki debug <woord>
+        """
+        wt = self.loader.loaded_modules.get("wikipedia_teacher")
+        if not wt:
+            print(f"{C_RED}wikipedia_teacher-module niet gevonden.{C_RESET}")
+            return
+
+        delen = user_input.split(maxsplit=2)
+        if len(delen) < 3:
+            print(f"{C_RED}Gebruik: wiki debug <woord>{C_RESET}")
+            return
+
+        woord = delen[2].strip()
+
+        summary = wt._fetch_summary(woord)
+        if not summary:
+            summary = wt._fetch_summary(woord.capitalize())
+
+        if not summary:
+            print(f"{C_RED}Geen Wikipedia-resultaat gevonden voor '{woord}'.{C_RESET}")
+            return
+
+        print(f"{C_CYAN}--- Ruw Wikipedia-antwoord voor '{woord}' ---{C_RESET}")
+        print(f"{C_CYAN}type: {summary.get('type')!r}{C_RESET}")
+        print(f"{C_CYAN}title: {summary.get('title')!r}{C_RESET}")
+        print(f"{C_CYAN}extract:{C_RESET}")
+        print(f"{summary.get('extract')!r}")
+
+        # Als het een doorverwijspagina is, meteen ook tonen wat onze
+        # eigen extractiefunctie ermee zou doen — zo zien we in één
+        # oogopslag of het probleem in de API-data zit of in onze
+        # eigen parsing-logica.
+        if summary.get("type") == "disambiguation":
+            alternatief = wt._extract_first_disambiguation_target(
+                summary.get("extract", ""), woord
+            )
+            print(f"{C_CYAN}--> _extract_first_disambiguation_target() geeft terug: "
+                  f"{alternatief!r}{C_RESET}")
 
     # ------------------------------------------------------------------
     # User Preferences (kevin_profile.py / sentiment_classifier.py /

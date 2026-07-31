@@ -14056,5 +14056,203 @@
         "timestamp": "2026-07-31T05:08:09.221374"
       }
     ]
+  },
+  "fysica": {
+    "senses": [
+      {
+        "sense_id": "fysica#1",
+        "definition": "Natuurkunde of fysica is de wetenschap die zich bezighoudt met de algemene eigenschappen van materie, straling en energie, evenals het gedrag ervan in de ruimte en de tijd. Fysici onderzoeken fenomenen zoals kracht, beweging en evenwicht, warmte, licht, geluid, magnetisme en elektriciteit.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-31T20:06:57.974311",
+      "updated_at": "2026-07-31T20:06:57.975311",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-31T20:06:57.975311",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-31T20:06:57.975311",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "fysica"
+        },
+        "timestamp": "2026-07-31T20:06:57.974311"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "fysica#1",
+        "old_value": null,
+        "new_value": "Natuurkunde of fysica is de wetenschap die zich bezighoudt met de algemene eigenschappen van materie, straling en energie, evenals het gedrag ervan in de ruimte en de tijd. Fysici onderzoeken fenomenen zoals kracht, beweging en evenwicht, warmte, licht, geluid, magnetisme en elektriciteit.",
+        "timestamp": "2026-07-31T20:06:57.975311"
+      }
+    ]
+  },
+  "chemie": {
+    "senses": [
+      {
+        "sense_id": "chemie#1",
+        "definition": "Scheikunde of chemie is de natuurwetenschap die zich bezighoudt met de samenstelling, structuur, eigenschappen en veranderingen van stoffen (materie). Scheikundigen onderzoeken op moleculair en atomair niveau hoe deeltjes op elkaar inwerken en hoe deze interacties leiden tot waarneembare fenomenen.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-31T20:07:23.412083",
+      "updated_at": "2026-07-31T20:07:23.413081",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-31T20:07:23.413081",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-31T20:07:23.413081",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "chemie"
+        },
+        "timestamp": "2026-07-31T20:07:23.412083"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "chemie#1",
+        "old_value": null,
+        "new_value": "Scheikunde of chemie is de natuurwetenschap die zich bezighoudt met de samenstelling, structuur, eigenschappen en veranderingen van stoffen (materie). Scheikundigen onderzoeken op moleculair en atomair niveau hoe deeltjes op elkaar inwerken en hoe deze interacties leiden tot waarneembare fenomenen.",
+        "timestamp": "2026-07-31T20:07:23.413081"
+      }
+    ]
+  },
+  "bank": {
+    "senses": [
+      {
+        "sense_id": "bank#1",
+        "definition": "Een commerciële bank of kredietinstelling is een financieel instituut met een lopende rekening bij een centrale bank. Een centrale bank treedt op als bank voor commerciële banken en debiteert vervolgens hun lopende rekeningen.",
+        "pos": "noun",
+        "examples": [
+          "Het systeem resulteert in seigneuriage-inkomsten voor een centrale bank."
+        ],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-31T20:07:36.779294",
+      "updated_at": "2026-07-31T20:07:36.780485",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-31T20:07:36.780485",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-31T20:07:36.780485",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bank"
+        },
+        "timestamp": "2026-07-31T20:07:36.779294"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bank#1",
+        "old_value": null,
+        "new_value": "Een commerciële bank of kredietinstelling is een financieel instituut met een lopende rekening bij een centrale bank. Een centrale bank treedt op als bank voor commerciële banken en debiteert vervolgens hun lopende rekeningen.",
+        "timestamp": "2026-07-31T20:07:36.780485"
+      }
+    ]
+  },
+  "mercurius": {
+    "senses": [
+      {
+        "sense_id": "mercurius#1",
+        "definition": "De caduceus, kerykeion, hermesstaf of mercuriusstaf is een staf die een koerier of onderhandelaar ongehinderde doorgang moest verlenen in het oude Griekenland.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "staf",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "created_at": "2026-07-31T20:14:11.153593"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-07-31T20:14:11.114596",
+      "updated_at": "2026-07-31T20:14:11.116593",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-07-31T20:14:11.116593",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-07-31T20:14:11.116593",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "mercurius"
+        },
+        "timestamp": "2026-07-31T20:14:11.114596"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "mercurius#1",
+        "old_value": null,
+        "new_value": "De caduceus, kerykeion, hermesstaf of mercuriusstaf is een staf die een koerier of onderhandelaar ongehinderde doorgang moest verlenen in het oude Griekenland.",
+        "timestamp": "2026-07-31T20:14:11.116593"
+      }
+    ]
   }
 }
