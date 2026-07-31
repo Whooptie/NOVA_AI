@@ -53,6 +53,11 @@ def get_help():
   intent test <zin>               (test een zin rechtstreeks tegen de classifier)
   intent retrain                  (forceert retrain_vanuit_bestanden() nu meteen)
 
+🌐 WIKIPEDIA TEACHER
+  wiki debug <woord>             (toont ruw Wikipedia-antwoord: type + extract,
+                                   en bij een doorverwijspagina ook wat onze eigen
+                                   extractiefunctie ermee doet)
+
 ℹ️ Dit zijn tijdelijke test-/debugcommando's voor jou als developer,
    geen onderdeel van Nova's normale gesprek met de gebruiker.
 """.strip()

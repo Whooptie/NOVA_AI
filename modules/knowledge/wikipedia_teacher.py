@@ -31,6 +31,20 @@ class WikipediaTeacher:
         self.event_bus = event_bus
         self.semantic = semantic_module
 
+        # Bug #8-fix, VIERDE ONDERDEEL (31 juli 2026): als de links-API-
+        # fallback meerdere, evenwaardige kandidaten oplevert (bv.
+        # "mercurius" -> planeet/element/mythologie/voetbalclub, zonder
+        # dat er een duidelijke "hoofdbetekenis" is zoals bij fysica/
+        # chemie), stelt Nova een genummerde keuzevraag i.p.v. blind de
+        # eerste (willekeurige) match te pakken. Deze state onthoudt dat
+        # er zo'n vraag open staat, tot het volgende bericht van Kevin.
+        # Zelfde patroon als semantic.py's pending_relation/
+        # RelationFlowEngine -- eigen, lichte state i.p.v. het generieke
+        # pending_question-systeem, want dat laatste is bewust enkel
+        # bedoeld voor ja/nee-achtige reacties (zie
+        # pending_question_roadmap.md), niet voor een open meerkeuze.
+        self._pending_wiki_choice = None
+
         # Luister naar wikipedia intents
         event_bus.subscribe("intent_wiki", self.on_wiki)
 
@@ -43,8 +57,30 @@ class WikipediaTeacher:
         """
         Haalt de Wikipedia samenvatting op voor een woord.
         Geeft None terug als het woord niet gevonden wordt.
+
+        Bug #8-fix, DERDE ONDERDEEL (31 juli 2026): woord.capitalize()
+        zet niet enkel de eerste letter om naar een hoofdletter, maar
+        ALLE andere letters ook naar kleine letters. Bij een simpel
+        eenwoords-begrip ("fysica" -> "Fysica") is dat toevallig
+        onschadelijk, maar bij een titel die al correcte hoofdletters
+        bevat middenin — zoals "CVV Mercurius" (een titel die via
+        _extract_first_disambiguation_target()'s links-API-fallback kan
+        binnenkomen) — vernielt .capitalize() de titel tot "Cvv
+        mercurius", wat niet bestaat op Wikipedia. Gevonden via live
+        testen: "wiki debug mercurius" leverde correct "CVV Mercurius"
+        als alternatief, maar de daaropvolgende _fetch_summary()-aanroep
+        faalde stil doordat de titel intern kapotgemaakt werd.
+
+        Nieuwe aanpak: enkel de EERSTE letter met een hoofdletter, de
+        rest van het woord blijft ongewijzigd — zo blijven titels als
+        "CVV Mercurius" of "Bank (financiële instelling)" intact, en
+        krijgt een kaal, kleine-letter-woord zoals "fysica" nog steeds
+        gewoon zijn hoofdletter.
         """
-        encoded = urllib.parse.quote(word.capitalize())
+        if word and word[0].islower():
+            word = word[0].upper() + word[1:]
+
+        encoded = urllib.parse.quote(word)
         url = WIKI_API + encoded
 
         try:
@@ -289,8 +325,31 @@ class WikipediaTeacher:
     # ---------------------------------------------------------
     def _extract_first_disambiguation_target(self, extract: str, original_word: str) -> str | None:
         """
-        Haalt het eerste zinvolle woord op uit een doorverwijspagina.
-        Als de extract leeg is na de dubbele punt, probeer dan standaard suffixen.
+        Haalt het eerste zinvolle woord/begrip op uit een doorverwijspagina.
+        Als de extract leeg is na de dubbele punt, probeer dan
+        _fetch_disambiguation_links_via_api() (echte MediaWiki-links-API)
+        als vangnet, en pas daarna de standaard suffixen.
+
+        Bug #8-fix, TWEEDE ITERATIE (31 juli 2026): via 'wiki debug fysica'
+        bleek dat Wikipedia's extract-veld de alternatieven met NEWLINES
+        (\\n) scheidt, niet met komma's zoals de eerste fix aannam:
+        'Fysica kan verwijzen naar:natuurkunde\\neen fysica, een leerboek
+        over de fysica\\nFysica, ...'. Een komma BINNEN een regel ("een
+        fysica, een leerboek over de fysica") hoort dus BIJ dat ene
+        alternatief, en is geen scheiding tussen alternatieven — de
+        vorige versie splitste per ongeluk op elke komma en kwam daardoor
+        op 'fysica' uit i.p.v. 'natuurkunde'.
+
+        Bijkomende ontdekking: bij sommige doorverwijspagina's (bv.
+        "Mercurius kan verwijzen naar:", "Bank kan verwijzen naar:") geeft
+        Wikipedia's REST-summary-API HELEMAAL GEEN lijst mee in extract —
+        die tekst staat blijkbaar enkel in de HTML-pagina, niet in het
+        platte-tekst-samenvattingsveld. Voor dat geval kan geen enkele
+        tekst-parsing ooit iets opleveren (de data is er simpelweg niet),
+        dus is een aparte, ECHTE API-aanroep toegevoegd
+        (_fetch_disambiguation_links_via_api(), gebruikt MediaWiki's
+        action=query&prop=links) die de daadwerkelijke doorverwijs-
+        alternatieven ophaalt wanneer extract leeg blijkt.
         """
         # Alles na de dubbele punt
         if ":" in extract:
@@ -298,12 +357,55 @@ class WikipediaTeacher:
         else:
             rest = extract.strip()
 
-        # Eerste woord met hoofdletter proberen
-        m = re.match(r"([A-Z][a-zäëïöüA-Z\-]+(?:\s[a-z]+)?)", rest)
-        if m:
-            return m.group(1).strip()
+        if rest:
+            # Alternatieven zijn met \n gescheiden (bevestigd via
+            # 'wiki debug fysica'). Een komma BINNEN een regel is geen
+            # scheiding tussen alternatieven, dus NIET op komma splitsen.
+            regels = [r.strip() for r in rest.split("\n") if r.strip()]
+            stopwoorden = {"een", "de", "het"}
 
-        # Niets gevonden → generieke suffixen proberen
+            for regel in regels[:5]:
+                # Bij een komma in de regel ("een fysica, een leerboek
+                # over de fysica"): enkel het EERSTE deel vóór de komma
+                # is het eigenlijke, korte alternatief — de rest is een
+                # toelichting op datzelfde alternatief.
+                eerste_deel = regel.split(",")[0].strip()
+
+                woorden = [w.strip("().,;:'") for w in eerste_deel.split()]
+                woorden = [w for w in woorden if w and w.lower() not in stopwoorden]
+
+                if not woorden:
+                    continue
+
+                # Meer dan 2 woorden = omschrijving, geen los begrip
+                if len(woorden) > 2:
+                    continue
+
+                if woorden[0][0].isupper():
+                    kandidaat = woorden[0]
+                else:
+                    kandidaat = woorden[-1]
+
+                if len(kandidaat) > 1:
+                    return kandidaat
+
+        # Extract leverde niets op (leeg, of enkel omschrijvingen). Let
+        # op: de links-API-aanroep gebeurt HIER BEWUST NIET meer (was
+        # een overblijfsel van een eerdere fix-versie) — die aanroep is
+        # verplaatst naar on_wiki() zelf, want daar wordt ook gecheckt
+        # of de links-API 1 of MEERDERE kandidaten teruggeeft. Stond hij
+        # hier nog, dan zou 'alternatief' altijd al gevuld zijn zodra er
+        # een link gevonden werd, en zou on_wiki()'s keuzevraag-logica
+        # (bij >1 kandidaat) nooit bereikt worden — precies de bug die
+        # bij het testen met "mercurius" opdook: geen enkele vraag
+        # verscheen, want dit blok greep al in vóór on_wiki() de kans
+        # kreeg zelf de links-API met meerdere kandidaten te proberen.
+
+        # Enkel de generieke suffixen nog als laatste redmiddel op dit
+        # niveau — puur voor het geval een simpel woord een vaste,
+        # voorspelbare disambiguatie-suffix heeft (bv. "appel" ->
+        # "appel_(vrucht)"), dit is een andere situatie dan de bredere
+        # links-API-fallback in on_wiki().
         suffixen = ["_(vrucht)", "_(begrip)", "_(plant)", "_(stad)", "_(naam)", "_(muziek)"]
         for suffix in suffixen:
             candidate = original_word.capitalize() + suffix
@@ -312,6 +414,150 @@ class WikipediaTeacher:
                 return candidate
 
         return None
+
+    def _fetch_disambiguation_links_via_api(self, word: str) -> str | None:
+        """
+        Vangnet voor doorverwijspagina's waar het extract-veld van de
+        REST-summary-API leeg is (bv. "Mercurius kan verwijzen naar:",
+        zonder lijst erachter — bevestigd via 'wiki debug mercurius').
+
+        Geeft enkel de EERSTE bruikbare link terug — gebruikt wanneer
+        er toch maar één plausibele optie is. Voor het geval er meerdere,
+        evenwaardige kandidaten zijn, zie _fetch_disambiguation_links_meerdere().
+        """
+        kandidaten = self._fetch_disambiguation_links_meerdere(word, max_kandidaten=1)
+        return kandidaten[0] if kandidaten else None
+
+    def _fetch_disambiguation_links_meerdere(self, word: str, max_kandidaten: int = 4) -> list:
+        """
+        Roept MediaWiki's ECHTE action-API aan (action=query&prop=links,
+        niet de REST-summary-API) om de daadwerkelijke lijst met pagina's
+        op te vragen waar een doorverwijspagina naar linkt. Dit is de
+        betrouwbare, structurele bron voor deze data wanneer het
+        extract-veld leeg is — pure symbolische API-aanroep + parsing,
+        geen ML/generatie.
+
+        Geeft tot max_kandidaten bruikbare link-titels terug, in de
+        volgorde waarin Wikipedia ze vermeldt (geen betekenisvolle
+        rangschikking — vandaar dat bij >1 resultaat een keuzevraag aan
+        Kevin wordt voorgelegd i.p.v. blind de eerste te kiezen, zie
+        on_wiki()).
+        """
+        params = {
+            "action": "query",
+            "format": "json",
+            "titles": word.capitalize(),
+            "prop": "links",
+            "pllimit": "20",
+            "plnamespace": "0",  # enkel echte artikelen, geen Wikipedia:/Categorie:/...
+        }
+        url = "https://nl.wikipedia.org/w/api.php?" + urllib.parse.urlencode(params)
+
+        try:
+            req = urllib.request.Request(
+                url,
+                headers={"User-Agent": "Nova-AI/1.0 (educational project)"}
+            )
+            with urllib.request.urlopen(req, timeout=5) as response:
+                data = json.loads(response.read().decode("utf-8"))
+        except Exception:
+            return []
+
+        pages = data.get("query", {}).get("pages", {})
+        meta_namespaces = ("Wikipedia", "Categorie", "Help", "Overleg", "Sjabloon", "Portaal")
+        kandidaten = []
+
+        for page in pages.values():
+            for link in page.get("links", []):
+                titel = link.get("title", "").strip()
+                if not titel:
+                    continue
+                # Meta-pagina's overslaan
+                if ":" in titel and titel.split(":", 1)[0] in meta_namespaces:
+                    continue
+                # Niet de doorverwijspagina zelf teruggeven
+                if titel.lower() == word.lower():
+                    continue
+                if titel not in kandidaten:
+                    kandidaten.append(titel)
+                if len(kandidaten) >= max_kandidaten:
+                    return kandidaten
+
+        return kandidaten
+
+    def verwerk_wiki_keuze(self, tekst: str) -> bool:
+        """
+        Checkt of er een openstaande meerkeuzevraag is (gezet door
+        on_wiki() hieronder) en of 'tekst' daar een geldig genummerd
+        antwoord op is. Geeft True terug als dit bericht als keuze-
+        antwoord verwerkt is (de aanroeper moet dan stoppen met verdere
+        routing), False als er niets open stond of het geen geldig
+        nummer was (dan gaat de tekst gewoon door de normale flow).
+
+        Moet door intent_router.py's route() VÓÓR de bestaande
+        text.isdigit()-sense-choice gecontroleerd worden, anders vangt
+        semantic.py's eigen sense-choice-systeem het nummer al af.
+        """
+        if not self._pending_wiki_choice:
+            return False
+
+        tekst = tekst.strip()
+        kandidaten = self._pending_wiki_choice["kandidaten"]
+        oorspronkelijk_woord = self._pending_wiki_choice["woord"]
+
+        if not tekst.isdigit():
+            # Geen geldig nummer -> vraag laten vervallen, normaal doorgaan
+            self._pending_wiki_choice = None
+            return False
+
+        idx = int(tekst) - 1
+        if not (0 <= idx < len(kandidaten)):
+            # Nummer buiten bereik -> vraag laten vervallen
+            self._pending_wiki_choice = None
+            self.event_bus.publish("chat_response", {
+                "text": f"Dat nummer kende ik niet, ik laat de vraag varen. "
+                        f"Probeer opnieuw met 'wiki {oorspronkelijk_woord}'."
+            })
+            return True
+
+        gekozen = kandidaten[idx]
+        self._pending_wiki_choice = None
+        self._verwerk_gekozen_pagina(oorspronkelijk_woord, gekozen)
+        return True
+
+    def _verwerk_gekozen_pagina(self, oorspronkelijk_woord: str, gekozen_titel: str):
+        """
+        Haalt de samenvatting op van de door Kevin gekozen disambiguatie-
+        optie en rondt de volledige teach-flow af (definitie/relaties/
+        voorbeelden opslaan). Losgetrokken uit on_wiki() zodat zowel het
+        automatische 1-kandidaat-pad als het na-een-keuzevraag-pad
+        dezelfde afrondingslogica hergebruiken.
+        """
+        summary = self._fetch_summary(gekozen_titel)
+        if not summary or summary.get("type") == "disambiguation":
+            self.event_bus.publish("chat_response", {
+                "text": f"Ik kon geen bruikbare definitie vinden voor "
+                        f"'{gekozen_titel}' op Wikipedia. "
+                        f"Leer het me met: teach {oorspronkelijk_woord} <betekenis>"
+            })
+            return
+
+        definition = self._extract_definition(summary)
+        if not definition:
+            self.event_bus.publish("chat_response", {
+                "text": f"Ik kon geen bruikbare definitie vinden voor "
+                        f"'{gekozen_titel}' op Wikipedia. "
+                        f"Leer het me met: teach {oorspronkelijk_woord} <betekenis>"
+            })
+            return
+
+        relations = self._extract_relations(oorspronkelijk_woord, definition)
+        examples = self._extract_examples(oorspronkelijk_woord, summary, definition)
+        resultaat = self._teach_word(oorspronkelijk_woord, definition, relations, examples)
+
+        self.event_bus.publish("chat_response", {
+            "text": resultaat
+        })
 
     def on_wiki(self, data, event_type=None):
         # Bugfix #6 (18 juli 2026): defensief vangnet. chat.py stript
@@ -351,7 +597,14 @@ class WikipediaTeacher:
         # 2. Doorverwijspagina afhandelen
         if summary.get("type") == "disambiguation":
             extract = summary.get("extract", "")
+
+            # Eerst de bestaande, geteste tekst-extractie proberen (werkt
+            # al correct voor fysica/chemie/bank — blijft ONGEWIJZIGD,
+            # geeft altijd maar 1 resultaat terug, want de tekst zelf
+            # geeft meestal al een duidelijke "hoofdbetekenis" als eerste
+            # regel).
             alternatief = self._extract_first_disambiguation_target(extract, word)
+
             if alternatief:
                 summary2 = self._fetch_summary(alternatief)
                 if summary2 and summary2.get("type") != "disambiguation":
@@ -359,7 +612,35 @@ class WikipediaTeacher:
                 else:
                     summary = None
             else:
-                summary = None
+                # Tekst-extractie leverde niets op (leeg extract-veld,
+                # zoals bij "mercurius"/"bank" — bevestigd via
+                # 'wiki debug'). Nieuw vangnet (31 juli 2026): de
+                # links-API kan meerdere, EVENWAARDIGE kandidaten
+                # opleveren zonder duidelijke volgorde (in tegenstelling
+                # tot de tekst-extractie hierboven). Bij >1 kandidaat
+                # stellen we daarom een keuzevraag i.p.v. blind de eerste
+                # (mogelijk irrelevante) link te pakken.
+                kandidaten = self._fetch_disambiguation_links_meerdere(word)
+
+                if len(kandidaten) == 0:
+                    summary = None
+                elif len(kandidaten) == 1:
+                    # Geen ambiguïteit in de praktijk -> gewoon doorgaan,
+                    # net als het bestaande 1-alternatief-pad hierboven.
+                    summary2 = self._fetch_summary(kandidaten[0])
+                    summary = summary2 if summary2 and summary2.get("type") != "disambiguation" else None
+                else:
+                    # Meerdere evenwaardige kandidaten -> keuzevraag stellen.
+                    # GEEN definities/beschrijvingen erbij (zou de vraag
+                    # te lang maken voor Nova's typewriter-effect) — enkel
+                    # de titels, kort en scanbaar.
+                    self._pending_wiki_choice = {"woord": word, "kandidaten": kandidaten}
+                    vraag = f"'{word}' kan meerdere dingen betekenen. Welke bedoel je?\n"
+                    for i, k in enumerate(kandidaten, start=1):
+                        vraag += f"  {i}. {k}\n"
+                    vraag += "Typ het nummer van je keuze."
+                    self.event_bus.publish("chat_response", {"text": vraag})
+                    return
 
         if not summary:
             self.event_bus.publish("chat_response", {

@@ -231,7 +231,7 @@ Wikipedia, synoniemen, antoniemen, relaties, definitievragen gekoppeld. handle_c
 
 | # | Bug | Bestand | Urgentie | Status |
 | --- | --- | --- | --- | --- |
-| 8 | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag | 🔲 Open — omzeild met handmatig`example`-commando. **Mogelijk verwante observatie (18 juli 2026):** na de fix van bug #6 getest met "wat is fysica?" — Wikipedia-pagina werd dit keer wél correct gevonden (geen leesteken-probleem meer), maar `_extract_definition()` kon er alsnog geen bruikbare definitie uit halen ("Ik kon geen bruikbare definitie vinden voor 'fysica' op Wikipedia"). Nog niet onderzocht of dit dezelfde onderliggende oorzaak heeft als de voorbeeldzin-extractie hierboven, of een apart probleem in `_extract_definition()` zelf. |
+| 8 | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag | 🔲 Open — omzeild met handmatig`example`-commando. (Het "geen bruikbare definitie voor 'fysica'"-deel van deze observatie is een APART probleem gebleken, opgelost en verplaatst naar bug #27 in `nova_changelog.md` — 31 juli 2026.) |
 
 *(Bug #9 opgelost — 27 juli 2026: `detect_pos()` in `semantic.py` herkent nu ook vervoegde werkwoordsvormen (incl. Nederlandse klinkerverdubbelingsregel: speel→spelen, loop→lopen) via een uitgebreide infinitieven-check, en een nieuwe `FUNCTIEWOORDEN`-set voor bijwoorden/voorzetsels. Structurele fix i.p.v. de eerdere omzeiling (8 juli 2026, stopwoordenlijst in `response_pipeline.py`). Zie `nova_changelog.md` voor het volledige overzicht.)*
 *(Bug #10 opgelost — 26 juli 2026: volledige sense-disambiguatie gebouwd — signaalwoorden per sense in `concepts.json`, `detect_sense()` in `semantic.py`, Layer 1 slaat nu op per `woord#sense_id` i.p.v. per kaal woord, plus `kevin_profile.py`-voorkeur-fallback met nieuw commando `onthoud sense <woord>`. Zie `nova_changelog.md` voor het volledige overzicht.)*
@@ -933,9 +933,9 @@ Kevin's vraag (7 juli 2026): wat als hij binnen hetzelfde uur zowel schaakt als 
 
 Verplaatst naar `nova_changelog.md` (zie sectie "Generieke actie-koppeling per Intent Classifier-categorie, incl. sub-actie-oplossing voor chess"). Kort: 5 van de 10 categorieën (`chess`, `chess_evaluation`, `weather`, `time`, `greeting`) krijgen nu een ECHTE actie bij een bevestigde classifier-gok, via een nieuw `_CLASSIFIER_ACTIE_REGISTER`-dictionary i.p.v. de oude hardcoded `if label == "chess":`-tak.
 
-**Bewust nog NIET in het register — mogelijk vervolgpunt:**
+**Bewust nog NIET in het register:**
 
-- `identity` / `self_architecture` — vereisen een `sub_intent` uit resp. ~20 en meerdere vaste opties, niet af te leiden uit de brede classifier-categorie zelf. Zou een apart ontwerp vergen (classifier zelf fijnere sub-labels laten leren, of een lichte patroon-check achteraf op de bevestigde tekst).
+- `identity` / `self_architecture` — ✅ overwogen en bewust AFGESLOTEN (31 juli 2026, zie nova_changelog.md voor het volledige afwegingstraject). Geen actie nodig: bij deze twee categorieën is de bestaande neutrale bevestigingstekst het juiste gedrag, in tegenstelling tot chess/weather/time/greeting.
 - `activity` — vereist de letterlijke activiteitsnaam uit de tekst zelf.
 - `math` — module zelf nog niet af.
 - `preference` — heeft al een eigen classifier (`sentiment_classifier.py`); koppeling met dit register is een apart te bekijken vraagstuk.
@@ -1020,7 +1020,9 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 
 1. 🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
 2. 🟢 **Fijner tijdsraster in Layer 2** — concept, nog niet ingepland (zie eigen sectie "💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2" verderop voor het volledige voorstel en de reden om nu nog niet te bouwen).
-3. 🟢 Bug #8 oppakken — Wikipedia-extractie verbeteren, voor gevallen waar het artikel wel gevonden wordt maar geen bruikbare eerste-zin-definitie oplevert. (bv. "wat is fysica?") — concreet, afgebakend
+3. 🟢 **Vervolgwerkpunten uit Bug #27** (zie `nova_changelog.md` voor de volledige, afgeronde bugfix — bewust apart gehouden, geen van beide dringend):
+   ├── De links-API-kandidatenlijst bij een keuzevraag heeft geen inhoudelijke rangschikking — bij "mercurius" verschenen bv. geen "Mercurius (planeet)"/"Mercurius (element)" tussen de 4 getoonde opties (wél aanwezig op Wikipedia), puur omdat MediaWiki's `action=query&prop=links`-API geen relevantie-score meegeeft, enkel de volgorde waarin links op de pagina staan. Mogelijke aanpak later: kandidaten die op bekende, betekenisvolle suffix-patronen lijken (`_(planeet)`, `_(element)`, `_(scheikunde)`, ...) naar voren halen in de lijst.
+   └── Als een woord al een bestaand concept heeft (via `teach` of een eerdere Wikipedia-les), is er nog geen manier om ALSNOG een andere/aanvullende betekenis van Wikipedia op te vragen — `wiki <woord>` overschrijft nu enkel een bestaande `source: wikipedia`-sense, en weigert helemaal bij een bestaande `source: user`-sense (zie `_teach_word()`'s bestaande gedrag). Zou een nieuwe manier vragen om EXPLICIET een tweede/derde sense toe te voegen i.p.v. te overschrijven of te weigeren.
 4. 🟢 "Mag tegenspreken, moet feitelijk kloppen" — omzetten van afspraak naar werkende code. (raakt intent_router.py/response_engine.py/semantic.py)
 5. 🟢 conversation_engine.py — rustig-/overprikkeld- observatietakken nog live bevestigen (enkel energiek-tak is tot nu toe getest)
 6. 🟡 math.py Fase 3-5 afwerken — substantieel werk,

@@ -181,3 +181,5 @@
 {"text": "had ik iets anders moeten spelen daarnet", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0136, "bron": "model_fallback", "tijdstip": "2026-07-31T07:04:50.917816"}
 {"text": "zin in een partijtje", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0557, "bron": "model_fallback", "tijdstip": "2026-07-31T07:07:59.917407"}
 {"text": "heb je zin om te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0043, "bron": "model_fallback", "tijdstip": "2026-07-31T07:08:15.734009"}
+{"text": "banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-31T22:08:13.250182"}
+{"text": "2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-07-31T22:14:10.748237"}
