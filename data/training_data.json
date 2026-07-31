@@ -959,11 +959,31 @@
       "tekst": "is dat een verstandige zet geweest",
       "label": "chess_evaluation",
       "bron": "handmatig"
+    },
+    {
+      "tekst": "hoeveel uur is het al",
+      "label": "time",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "zou ik een paraplu nodig hebben",
+      "label": "weather",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "zin om nog wat te schaken",
+      "label": "chess",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "was die zet nu eigenlijk wel verstandig",
+      "label": "chess_evaluation",
+      "bron": "gecorrigeerd"
     }
   ],
   "metadata": {
-    "laatst_getraind": "2026-07-29",
-    "aantal_voorbeelden": 192,
+    "laatst_getraind": "2026-07-31",
+    "aantal_voorbeelden": 196,
     "categorieën": [
       "activity",
       "chess",
@@ -976,6 +996,6 @@
       "time",
       "weather"
     ],
-    "laatste_layer0_scan": 1785332346.924197
+    "laatste_layer0_scan": 1785474230.2917092
   }
 }

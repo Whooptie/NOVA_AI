@@ -170,3 +170,14 @@
 {"text": "activiteit", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-30T18:54:39.713182"}
 {"text": "ok dankje", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-30T19:22:36.867737"}
 {"text": "teach koi noun", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0207, "bron": "model_fallback", "tijdstip": "2026-07-30T21:17:02.089490"}
+{"text": "wat vind je van mij", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0844, "bron": "model_fallback", "tijdstip": "2026-07-31T06:48:51.619622"}
+{"text": "zou ik een paraplu nodig hebben", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0046, "bron": "model_fallback", "tijdstip": "2026-07-31T06:49:50.794073"}
+{"text": "hello", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-31T06:50:56.278397"}
+{"text": "hay", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-07-31T06:51:15.908711"}
+{"text": "kan je me de tijd geven", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0067, "bron": "model_fallback", "tijdstip": "2026-07-31T06:52:41.171701"}
+{"text": "goeiedag", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-31T06:52:48.425326"}
+{"text": "ik moet zo ergens zijn, hoeveel is het nu", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0982, "bron": "model_fallback", "tijdstip": "2026-07-31T06:54:16.796069"}
+{"text": "was dat nou wel de juiste keuze", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0535, "bron": "model_fallback", "tijdstip": "2026-07-31T07:04:31.235967"}
+{"text": "had ik iets anders moeten spelen daarnet", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0136, "bron": "model_fallback", "tijdstip": "2026-07-31T07:04:50.917816"}
+{"text": "zin in een partijtje", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0557, "bron": "model_fallback", "tijdstip": "2026-07-31T07:07:59.917407"}
+{"text": "heb je zin om te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0043, "bron": "model_fallback", "tijdstip": "2026-07-31T07:08:15.734009"}

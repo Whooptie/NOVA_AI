@@ -1593,6 +1593,64 @@ class IntentRouter:
         "chess_evaluation": "weten wat er mis ging met een zet",
     }
 
+    # Generieke actie-koppeling per Intent Classifier-categorie (30
+    # juli 2026): label -> functie die de ECHTE actie uitvoert i.p.v.
+    # enkel een neutrale bevestigende tekst. Elke functie krijgt de
+    # ORIGINELE tekst mee (nodig voor bv. weather/time, die de tekst
+    # zelf doorgeven in hun payload) en publiceert zelf het juiste
+    # event -- exact zoals de bestaande detect_*()-tegenhangers dat al
+    # deden.
+    #
+    # BEWUST NIET in dit dictionary (blijven op de neutrale
+    # bevestigingstekst hieronder, "Oké, dus je wil X..."):
+    #   - identity / self_architecture: vereisen een sub_intent uit
+    #     een lijst van ~20 opties (who/age/is_ai/geheugen/denken/...)
+    #     die uit de brede classifier-categorie niet af te leiden is
+    #     -- een gok hier zou een verzonnen sub_intent betekenen.
+    #     Mogelijk vervolgpunt (Kevin, 30 juli 2026), nog niet gebouwd.
+    #   - activity: vereist de letterlijke activiteitsnaam UIT de
+    #     tekst gehaald ("ik ga koken" -> "koken") -- bij een
+    #     classifier-gok is niet zeker dat die naam er überhaupt
+    #     herkenbaar in staat.
+    #   - math: module zelf nog niet af (Kevin, 30 juli 2026).
+    #   - preference: heeft al een eigen gespecialiseerde classifier
+    #     (sentiment_classifier.py) voor de nuance -- koppeling met
+    #     dit register is een apart te bekijken vraagstuk, geen
+    #     "kan niet", gewoon nog niet beslist (Kevin, 30 juli 2026).
+    def _actie_chess_classifier(self, text):
+        """
+        Zelfde sub-actie-keuze als de oude, hardcoded if-tak in
+        _voer_classifier_intent_uit() hierboven -- enkel verplaatst
+        naar het generieke register, gedrag ongewijzigd.
+        """
+        chess_engine = self.event_bus.modules.get("chess_engine")
+        partij_voorbij = (
+            chess_engine is None
+            or not hasattr(chess_engine, "board")
+            or chess_engine.board.is_game_over()
+        )
+        if partij_voorbij:
+            self.event_bus.publish("intent_chess_new", {})
+        else:
+            self.event_bus.publish("intent_chess_board", {})
+
+    def _actie_greeting_classifier(self, text):
+        self.event_bus.publish("intent_greeting", {"sender": self._get_sender_name()})
+
+    _CLASSIFIER_ACTIE_REGISTER = {
+        "chess": _actie_chess_classifier,
+        "chess_evaluation": lambda self, text: self.event_bus.publish(
+            "intent_chess_evaluation_query", {}
+        ),
+        "weather": lambda self, text: self.event_bus.publish(
+            "intent_weather", {"text": text}
+        ),
+        "time": lambda self, text: self.event_bus.publish(
+            "intent_time_query", {"text": text}
+        ),
+        "greeting": _actie_greeting_classifier,
+    }
+
     # Fase 4 (correcties, 28 juli 2026): omgekeerde mapping -- welk
     # Nederlands woord dat Kevin typt na "ik bedoelde ..." hoort bij
     # welk intern label. Bewust een VASTE, expliciete lijst (geen ML)
@@ -1821,7 +1879,9 @@ class IntentRouter:
         # keuze, 28 juli 2026) -- hergebruikt dezelfde methode als bij
         # een gewone bevestiging, dus chess toont het bord/start een
         # nieuwe partij, de rest geeft de neutrale bevestigende tekst.
-        self._voer_classifier_intent_uit(nieuw_label)
+        # 30 juli 2026: originele_tekst meegegeven, nodig voor de
+        # nieuw ondersteunde acties (weather/time geven de tekst door).
+        self._voer_classifier_intent_uit(nieuw_label, originele_tekst)
         return True
 
     def _probeer_intent_classifier(self, text):
@@ -1853,7 +1913,7 @@ class IntentRouter:
         if confidence >= self.DREMPEL_DIRECT:
             dbg(f"{C_GREEN}→ classifier direct: '{label}' "
                 f"(confidence {confidence}){C_RESET}")
-            self._voer_classifier_intent_uit(label)
+            self._voer_classifier_intent_uit(label, text)
             return True
 
         if confidence >= self.DREMPEL_VRAAG:
@@ -1915,36 +1975,40 @@ class IntentRouter:
         except Exception as e:
             dbg(f"{C_RED}kon unmatched_intents.jsonl niet schrijven: {e}{C_RESET}")
 
-    def _voer_classifier_intent_uit(self, label):
+    def _voer_classifier_intent_uit(self, label, text=""):
         """
         Voert de daadwerkelijke actie uit voor een categorie die de
         classifier herkende -- ofwel direct (confidence >= 0.70), ofwel
         na een bevestigde pending_question (zie
         _on_classifier_pending_answered() hieronder).
 
-        Chess krijgt een ECHTE actie (bord tonen, of nieuwe partij als
-        de vorige afgelopen is) -- Kevin's expliciete keuze (28 juli
-        2026). Alle andere categorieën krijgen een neutrale,
-        bevestigende chat_response, want de classifier kent geen
-        sub-actie (welke zet, welk woord, ...) -- enkel het onderwerp.
+        30 juli 2026: gebruikt nu _CLASSIFIER_ACTIE_REGISTER i.p.v.
+        een hardcoded "if label == 'chess':". Staat het label in het
+        register, dan voert de bijhorende functie de ECHTE actie uit
+        (chess, chess_evaluation, weather, time, greeting -- zie de
+        uitleg bij _CLASSIFIER_ACTIE_REGISTER hierboven voor welke
+        categorieën BEWUST nog niet in dit register zitten en waarom).
+        Staat het label er niet in, dan blijft het oude gedrag gewoon
+        bestaan: een neutrale bevestigende chat_response.
+
+        'text' is de ORIGINELE, ruwe tekst van Kevin's bericht -- nodig
+        voor categorieën als weather/time die de tekst zelf doorgeven
+        aan hun event-payload. Heeft een veilige lege-string-default,
+        zodat een eventuele oude aanroep zonder dit argument niet
+        meteen crasht (al geven alle drie de aanroeppunten hieronder
+        het nu netjes door).
         """
-        if label == "chess":
-            chess_engine = self.event_bus.modules.get("chess_engine")
-            partij_voorbij = (
-                chess_engine is None
-                or not hasattr(chess_engine, "board")
-                or chess_engine.board.is_game_over()
-            )
-            if partij_voorbij:
-                self.event_bus.publish("intent_chess_new", {})
-            else:
-                self.event_bus.publish("intent_chess_board", {})
-            self._emit_topic("chess", bron="classifier")
+        actie = self._CLASSIFIER_ACTIE_REGISTER.get(label)
+        if actie is not None:
+            actie(self, text)
+            self._emit_topic(label, bron="classifier")
             return
 
-        # Overige 9 categorieën: neutrale bevestigende tekst, gewoon
-        # het onderwerp benoemen. Geen concrete sub-actie mogelijk --
-        # zie roadmap-eerlijkheid: de classifier kent enkel het label.
+        # Overige categorieën (identity, self_architecture, activity,
+        # math, preference, en elk toekomstig onbekend label): neutrale
+        # bevestigende tekst, gewoon het onderwerp benoemen. Geen
+        # concrete sub-actie mogelijk -- zie roadmap-eerlijkheid: de
+        # classifier kent enkel het label, geen sub-informatie.
         label_nl = self._CLASSIFIER_LABEL_NL_BEVESTIGING.get(label, label)
         self.event_bus.publish("chat_response", {
             "text": f"Oké, dus je wil {label_nl}. Zeg maar wat je precies bedoelt!"
@@ -1969,7 +2033,17 @@ class IntentRouter:
 
         if signaal == "bevestiging":
             dbg(f"{C_GREEN}→ classifier-vraag bevestigd: {label}{C_RESET}")
-            self._voer_classifier_intent_uit(label)
+            # 30 juli 2026: originele tekst nodig voor de nieuw
+            # ondersteunde acties (weather/time). Deze komt niet mee
+            # via 'data' (dat is pending_question.py's eigen payload),
+            # maar staat nog in _laatste_classifier_vraag -- gezet in
+            # _probeer_intent_classifier() bij het stellen van de
+            # vraag, en nog niet gewist op dit punt. Veilige fallback
+            # naar lege string als die er onverwacht toch niet is.
+            originele_tekst = ""
+            if self._laatste_classifier_vraag:
+                originele_tekst = self._laatste_classifier_vraag.get("tekst", "")
+            self._voer_classifier_intent_uit(label, originele_tekst)
         else:
             dbg(f"{C_YELLOW}→ classifier-vraag ontkend: {label}{C_RESET}")
             # Bewust GEEN unmatched_intents-logging hier: Kevin heeft

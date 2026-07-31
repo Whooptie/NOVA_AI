@@ -415,3 +415,39 @@ Kevin's nieuwe `chess_evaluation_query`-intent (zie sectie hierboven) kreeg ook 
 **Bewust NIET gebouwd: een echte actie bij bevestigde `chess_evaluation`.** In tegenstelling tot `chess` zelf (die wél een concrete actie krijgt — bord tonen/nieuwe partij) publiceert een bevestigde `chess_evaluation`-classifier-gok voorlopig enkel de neutrale bevestigende tekst, geen `intent_chess_evaluation_query`-event. Kevin's expliciete keuze: eerst een generiek mechanisme ontwerpen waarbij ELKE categorie een gekoppelde actie kan hebben (i.p.v. opnieuw een aparte, hardcoded `if label == "...":`-tak toe te voegen zoals bij chess), zie nieuwe sectie "💡 Idee (nog niet ingepland): generieke actie-koppeling per Intent Classifier-categorie" in `nova_state.md`.
 
 **Live end-to-end bevestigd (29 juli 2026):** spontane classifier-vraag op een net-anders-geformuleerde evaluatie-vraag ("was die zet nu eigenlijk wel verstandig" → "Bedoel je dat je wil weten wat er mis ging met een zet?" → bevestigd), en de Layer 0-koppeling met het correcte label ná de bugfix.
+
+---
+
+## ✅ Generieke actie-koppeling per Intent Classifier-categorie (30-31 juli 2026)
+
+Vervolg op het idee dat op 29 juli in `nova_state.md` genoteerd stond (zie sectie hierboven, "Bewust NIET gebouwd: een echte actie bij bevestigde `chess_evaluation`"). Kevin wilde meteen het volledige generieke systeem, inclusief een oplossing voor het sub-actie-vraagstuk (categorieën zoals `chess` waarbij de classifier zelf niet weet welke sub-actie bedoeld is, in tegenstelling tot "kale" categorieën zoals `chess_evaluation` met één vast event).
+
+**Ontwerp, na inspectie van alle 8 overige `detect_*()`-methodes:** bleek dat van de 10 categorieën er in de praktijk maar 1 (`chess`) een écht sub-actie-probleem heeft — de overige 9 zijn stuk voor stuk "kaal" (één label hoort bij precies één actie, of heeft momenteel nog geen actie). Voor `chess` blijft de sub-keuze (nieuwe partij vs. bord tonen) in Python-logica staan (`is_game_over()`-check), enkel verplaatst naar een generiek register — geen aparte sub-labels aan de classifier zelf toegevoegd.
+
+**Nieuw in `intent_router.py`:**
+
+- **`_CLASSIFIER_ACTIE_REGISTER`** — dictionary `label -> functie(self, text)`, direct na `_CLASSIFIER_LABEL_NL_BEVESTIGING`. Elke functie krijgt de ORIGINELE tekst mee en publiceert zelf het juiste event, net als de bestaande `detect_*()`-tegenhangers.
+- **`_actie_chess_classifier(self, text)`** — exact dezelfde `partij_voorbij`-logica die voorheen hardcoded in `_voer_classifier_intent_uit()` stond, nu een losse functie in het register.
+- **`_actie_greeting_classifier(self, text)`** — publiceert `intent_greeting` met `_get_sender_name()`.
+- Drie kale lambda's in het register: `chess_evaluation` → `intent_chess_evaluation_query`, `weather` → `intent_weather` (met `text`), `time` → `intent_time_query` (met `text`).
+- **`_voer_classifier_intent_uit(self, label, text="")`** herschreven: zoekt `label` op in het register; gevonden → voert de bijhorende functie uit + `_emit_topic(label, bron="classifier")`; niet gevonden → ongewijzigd oud gedrag (neutrale bevestigende chat_response). Kreeg een nieuwe `text`-parameter (met veilige lege-string-default), nodig voor `weather`/`time` die de tekst doorgeven in hun payload.
+- Drie aanroepplekken aangepast om `text` mee te geven: de directe-confidence-tak in `_probeer_intent_classifier()`, de correctie-flow in `_verwerk_correctie()` (gebruikt `originele_tekst`, al beschikbaar), en `_on_classifier_pending_answered()` (haalt de tekst op uit `self._laatste_classifier_vraag`, aangezien `pending_question.py`'s eigen payload de tekst niet meegeeft).
+
+**Bewust NIET in het register — blijven op de oude neutrale bevestigingstekst:**
+
+- `identity` / `self_architecture` — vereisen een `sub_intent` uit resp. ~20 en meerdere vaste opties (who/age/is_ai/geheugen/denken/...), niet af te leiden uit de brede classifier-categorie. Een gok hier zou een verzonnen sub_intent betekenen — precies het "doen alsof iets betrouwbaar symbolisch is terwijl het eigenlijk gokken is"-patroon dat vermeden moet worden. Mogelijk vervolgpunt, Kevin's woorden: "als die klaar is mss groep b (identity en self_architecture)".
+- `activity` — vereist de letterlijke activiteitsnaam UIT de tekst gehaald ("ik ga koken" → "koken"); bij een classifier-gok niet zeker dat die naam er herkenbaar in staat.
+- `math` — module zelf nog niet af (Kevin, 30 juli 2026), bewust buiten scope.
+- `preference` — heeft al een eigen gespecialiseerde classifier (`sentiment_classifier.py`) voor de nuance; koppeling met dit register is een apart te bekijken vraagstuk, geen "kan niet".
+
+**Trainingsdata aangevuld (31 juli 2026):** tijdens het live testen bleken enkele natuurlijke, on-topic zinnen te laag te scoren om zelfs de twijfel-drempel te halen (`"hoeveel uur is het al"`, `"zou ik een paraplu nodig hebben"`, plus twee chess/chess_evaluation-varianten). Via `unmatched_intents.jsonl` (de bestaande hint-log) nagekeken en 4 nieuwe voorbeelden toegevoegd aan `training_data.json` (2 zaten er, bleek achteraf, al in via een eerdere sessie). Bewust NIET toegevoegd: een handvol duidelijke ruis in dezelfde log (`"Jij: hallo"` — logging-artefact met promptprefix, `"type data\layer0_gebruikt.jsonl"` — debug-commando, en vier korte onbekende woorden die allemaal toevallig exact naar `math` met confidence 0.1349 gokten — bevestigd als het verwachte "plat/laag over de hele lijn"-gedrag bij een compleet onbekende korte zin, geen echt gat in de `math`-trainingsdata). Kevin bevestigde dat de eerste groep test-artefacten waren uit de implementatiefase van de classifier zelf (28 juli), geen actie nodig. Na `intent retrain`: 198 voorbeelden gebruikt (196 basis + 2 automatisch via Layer 0 opgepikt), model succesvol herladen.
+
+**Live end-to-end getest (31 juli 2026), stuk voor stuk via de classifier-twijfelroute (niet via de bestaande `detect_*()`-patronen):**
+
+- **weather:** "is het buiten aangenaam" → twijfel (0.58) → bevestigd → een echt, actueel weerantwoord (temperatuur, luchtvochtigheid, wind, zon op/onder) i.p.v. de oude generieke bevestigingstekst.
+- **chess_evaluation:** "was dat nou wel de juiste keuze" → twijfel (0.38) → bevestigd → `chess_engine.py`'s `handle_evaluation_query()` reageert correct ("Ik heb nog geen zet-evaluatie klaarstaan" — geen bug, er was simpelweg nog geen zet gespeeld in de sessie).
+- **chess (bord-tak):** "heb je zin om te schaken" → twijfel (0.39) → bevestigd → toont het bord van de lopende, 12-zetten-diepe partij (correcte keuze, want `is_game_over()` was `False`).
+- **chess (nieuwe-partij-tak):** niet apart live getest — vereist een reeds AFGELOPEN partij op het moment van de classifier-zin, wat niet haalbaar bleek zonder een partij kunstmatig tot mat te forceren (geen mat-in-2 vindbaar vanuit de toen actieve stand). Risico ingeschat als laag: dezelfde `if/else` als de al-bevestigde bord-tak, ongewijzigde logica, enkel verplaatst.
+- **time / greeting via de register-functies zelf:** niet apart live getest (elke testzin raakte toevallig een bestaand `detect_*()`-patroon, of scoorde te laag om de classifier-twijfelzone te bereiken — een apart, secundair signaal dat `time`/`greeting`'s trainingsdata dunner is dan de andere categorieën, geen bug in dit werkpunt). Code-pad is identiek aan het bevestigde `weather`-pad (zelfde lambda-vorm in het register), dus risico laag.
+
+**Bijvangst tijdens het testen (geen bug, ter info):** `microlearning.py` (Layer 6, volledig los systeem) hertraint automatisch zodra 20 nieuwe twijfelgevallen zich opstapelen, en test de nieuwe modelversie tegen een ijkpunt vóór ze die actief maakt — bevestigd als bedoeld gedrag (Kevin): voorkomt dat losse woorden als "ja"/"nee"/"ok" per ongeluk een verkeerde emotie triggeren, en beschermt tegen drift.
