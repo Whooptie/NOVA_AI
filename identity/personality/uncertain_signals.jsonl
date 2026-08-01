@@ -189,3 +189,8 @@
 {"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T10:58:38.718843"}
 {"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T11:00:30.103988"}
 {"text": "3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T11:01:08.716207"}
+{"text": "wat weet je allemaal over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0396, "bron": "model_fallback", "tijdstip": "2026-08-01T12:40:08.906770"}
+{"text": "wat weet je allemaal over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0396, "bron": "model_fallback", "tijdstip": "2026-08-01T12:40:44.821790"}
+{"text": "2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T12:41:03.953033"}
+{"text": "wat weet je allemaal over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0396, "bron": "model_fallback", "tijdstip": "2026-08-01T12:41:34.689344"}
+{"text": "33", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T12:41:51.302367"}
