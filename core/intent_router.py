@@ -650,6 +650,52 @@ class IntentRouter:
                         break
                 self.event_bus.publish("intent_wiki", {"word": word})
                 return True
+
+        # Andere/aanvullende betekenis opvragen (vervolgpunt uit bug #27,
+        # 31 juli 2026): een natuurlijke vervolgzin op een eerdere "wat
+        # is X"-vraag, geen los commando.
+        #
+        # Bugfix bij live-testen (31 juli 2026): de eerste versie
+        # gebruikte EXACTE zin-gelijkheid (t in [...]), waardoor zelfs
+        # een kleine, heel natuurlijke variatie als "zijn er nog andere
+        # betekenissen VAN FYSICA" al niet matchte en gewoon in de
+        # fallback-intent belandde. Nu: STARTSWITH-matching op een
+        # kernzin, met het woord ERNA optioneel (na "van "/"voor ").
+        # Als het woord expliciet genoemd wordt, heeft dat voorrang op
+        # _laatste_definitie_woord (bv. als iemand na een tijdje toch
+        # nog een ANDER woord noemt dan het laatst opgezochte).
+        andere_betekenis_kernzinnen = [
+            "zijn er nog andere betekenissen",
+            "zijn er andere betekenissen",
+            "heeft dat nog andere betekenissen",
+            "heeft het nog andere betekenissen",
+            "andere betekenissen",
+            "nog andere betekenissen",
+            "wat betekent het nog meer",
+            "wat betekent dat nog meer",
+            "wat betekent het nog",
+            "wat betekend het nog",
+        ]
+        for kernzin in andere_betekenis_kernzinnen:
+            if t == kernzin or t.startswith(kernzin):
+                rest = t[len(kernzin):].strip().rstrip("?.")
+                woord = None
+                for koppel in [" van ", " voor "]:
+                    if rest.startswith(koppel):
+                        woord = rest[len(koppel):].strip()
+                        break
+                if not woord:
+                    woord = getattr(self, "_laatste_definitie_woord", None)
+
+                if not woord:
+                    self.event_bus.publish("chat_response", {
+                        "text": "Waarvan wil je andere betekenissen weten? "
+                                "Vraag eerst even 'wat is <woord>'."
+                    })
+                    return True
+
+                self.event_bus.publish("intent_wiki_andere_betekenis", {"word": woord})
+                return True
                 
         # Definitievragen (crashfix: woord veilig ophalen)
         prefixes = [

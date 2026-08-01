@@ -14068,20 +14068,43 @@
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": []
+      },
+      {
+        "sense_id": "fysica#2",
+        "definition": "Een natuurkundige of fysicus/fysica is een wetenschappelijk onderzoeker die de natuurkunde beoefent. Het natuur in natuurkunde heeft betrekking op de niet-levende natuur.",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "wetenschappelijk",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "created_at": "2026-08-01T09:01:09.003682"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-31T20:06:57.974311",
-      "updated_at": "2026-07-31T20:06:57.975311",
+      "updated_at": "2026-08-01T09:01:09.003682",
       "sources": [
-        "user"
+        "user",
+        "wikipedia"
       ],
-      "last_used_at": "2026-07-31T20:06:57.975311",
-      "usage_count": 1,
+      "last_used_at": "2026-08-01T09:01:09.003682",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-31T20:06:57.975311",
           "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-08-01T09:01:09.003682",
+          "confidence": 0.8
         }
       ]
     },
@@ -14101,6 +14124,14 @@
         "old_value": null,
         "new_value": "Natuurkunde of fysica is de wetenschap die zich bezighoudt met de algemene eigenschappen van materie, straling en energie, evenals het gedrag ervan in de ruimte en de tijd. Fysici onderzoeken fenomenen zoals kracht, beweging en evenwicht, warmte, licht, geluid, magnetisme en elektriciteit.",
         "timestamp": "2026-07-31T20:06:57.975311"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "wikipedia",
+        "sense_id": "fysica#2",
+        "old_value": null,
+        "new_value": "Een natuurkundige of fysicus/fysica is een wetenschappelijk onderzoeker die de natuurkunde beoefent. Het natuur in natuurkunde heeft betrekking op de niet-levende natuur.",
+        "timestamp": "2026-08-01T09:01:09.003682"
       }
     ]
   },
@@ -14204,34 +14235,29 @@
     "senses": [
       {
         "sense_id": "mercurius#1",
-        "definition": "De caduceus, kerykeion, hermesstaf of mercuriusstaf is een staf die een koerier of onderhandelaar ongehinderde doorgang moest verlenen in het oude Griekenland.",
+        "definition": "Mercurius is de planeet in het zonnestelsel met de kleinste en snelste baan om de zon. Het is de kleinste van de acht planeten, nauwelijks groter dan de Maan.",
         "pos": "noun",
-        "examples": [],
-        "relations": [
-          {
-            "type": "is_a",
-            "target": "staf",
-            "confidence": 0.9,
-            "source": "auto_extract",
-            "created_at": "2026-07-31T20:14:11.153593"
-          }
+        "examples": [
+          "Mercurius is een Aardse planeet met een vast oppervlak dat lijkt op de Maan.",
+          "Mercurius heeft geen manen."
         ],
+        "relations": [],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": []
       }
     ],
     "metadata": {
-      "created_at": "2026-07-31T20:14:11.114596",
-      "updated_at": "2026-07-31T20:14:11.116593",
+      "created_at": "2026-08-01T08:37:03.097171",
+      "updated_at": "2026-08-01T08:37:03.098166",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-31T20:14:11.116593",
+      "last_used_at": "2026-08-01T08:37:03.098166",
       "usage_count": 1,
       "confidence_history": [
         {
-          "timestamp": "2026-07-31T20:14:11.116593",
+          "timestamp": "2026-08-01T08:37:03.098166",
           "confidence": 1.0
         }
       ]
@@ -14243,15 +14269,109 @@
         "new_value": {
           "word": "mercurius"
         },
-        "timestamp": "2026-07-31T20:14:11.114596"
+        "timestamp": "2026-08-01T08:37:03.097171"
       },
       {
         "event_type": "sense_created",
         "source": "user",
         "sense_id": "mercurius#1",
         "old_value": null,
-        "new_value": "De caduceus, kerykeion, hermesstaf of mercuriusstaf is een staf die een koerier of onderhandelaar ongehinderde doorgang moest verlenen in het oude Griekenland.",
-        "timestamp": "2026-07-31T20:14:11.116593"
+        "new_value": "Mercurius is de planeet in het zonnestelsel met de kleinste en snelste baan om de zon. Het is de kleinste van de acht planeten, nauwelijks groter dan de Maan.",
+        "timestamp": "2026-08-01T08:37:03.098166"
+      }
+    ]
+  },
+  "andere": {
+    "senses": [
+      {
+        "sense_id": "andere#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-01T08:54:49.551881",
+      "updated_at": "2026-08-01T08:54:49.551881",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-01T08:54:49.551881",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-01T08:54:49.551881",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "andere"
+        },
+        "timestamp": "2026-08-01T08:54:49.551881"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "andere#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-01T08:54:49.551881"
+      }
+    ]
+  },
+  "betekenissen": {
+    "senses": [
+      {
+        "sense_id": "betekenissen#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-01T08:54:49.586870",
+      "updated_at": "2026-08-01T08:54:49.587915",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-01T08:54:49.587915",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-01T08:54:49.587915",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "betekenissen"
+        },
+        "timestamp": "2026-08-01T08:54:49.586870"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "betekenissen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-01T08:54:49.587915"
       }
     ]
   }

@@ -158,3 +158,6 @@
 {"timestamp": "2026-07-31T20:07:36.779294", "event_type": "concept_created", "word": "bank", "source": "system", "new_value": {"word": "bank"}}
 {"timestamp": "2026-07-31T20:07:51.328445", "event_type": "concept_created", "word": "mercurius", "source": "system", "new_value": {"word": "mercurius"}}
 {"timestamp": "2026-07-31T20:14:11.114596", "event_type": "concept_created", "word": "mercurius", "source": "system", "new_value": {"word": "mercurius"}}
+{"timestamp": "2026-08-01T08:37:03.097171", "event_type": "concept_created", "word": "mercurius", "source": "system", "new_value": {"word": "mercurius"}}
+{"timestamp": "2026-08-01T08:54:49.551881", "event_type": "concept_created", "word": "andere", "source": "system", "new_value": {"word": "andere"}}
+{"timestamp": "2026-08-01T08:54:49.586870", "event_type": "concept_created", "word": "betekenissen", "source": "system", "new_value": {"word": "betekenissen"}}
