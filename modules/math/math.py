@@ -287,10 +287,13 @@ class MathModule:
         # 5. detecteer getal + unit (alleen letters, maar NIET splitsen)
         #    dit matcht 5m, 10km, 3mw, 12uf, 1pa, 50km/h
         # 1) getal + unit zonder spatie (1m, 50km/h, 250mL)
-        expr = re.sub(r'(\d+(\.\d+)?)([A-Za-zµ][A-Za-zµ/]*)', r'\1*\3', expr)
+        #    BUGFIX (1 aug 2026): haakjes toegevoegd — zonder haakjes groepeerde
+        #    "3m / 2s" als ((3*m)/2)*s door gelijke */-voorrang, wat een
+        #    verkeerde eenheid opleverde (m·s i.p.v. m/s of m·s^-1)
+        expr = re.sub(r'(\d+(\.\d+)?)([A-Za-zµ][A-Za-zµ/]*)', r'(\1*\3)', expr)
 
         # 2) getal + spatie + unit (1 bar, 250 mL, 60 rpm, 1 Wh, 2.5 Ah)
-        expr = re.sub(r'(\d+(\.\d+)?)[ ]+([A-Za-zµ][A-Za-zµ/]*)', r'\1*\3', expr)
+        expr = re.sub(r'(\d+(\.\d+)?)[ ]+([A-Za-zµ][A-Za-zµ/]*)', r'(\1*\3)', expr)
 
         return expr
         

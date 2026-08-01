@@ -161,3 +161,8 @@
 {"timestamp": "2026-08-01T08:37:03.097171", "event_type": "concept_created", "word": "mercurius", "source": "system", "new_value": {"word": "mercurius"}}
 {"timestamp": "2026-08-01T08:54:49.551881", "event_type": "concept_created", "word": "andere", "source": "system", "new_value": {"word": "andere"}}
 {"timestamp": "2026-08-01T08:54:49.586870", "event_type": "concept_created", "word": "betekenissen", "source": "system", "new_value": {"word": "betekenissen"}}
+{"timestamp": "2026-08-01T17:05:59.863270", "event_type": "concept_created", "word": "xyzabc", "source": "system", "new_value": {"word": "xyzabc"}}
+{"timestamp": "2026-08-01T17:05:59.897266", "event_type": "concept_created", "word": "test", "source": "system", "new_value": {"word": "test"}}
+{"timestamp": "2026-08-01T17:05:59.923266", "event_type": "concept_created", "word": "123", "source": "system", "new_value": {"word": "123"}}
+{"timestamp": "2026-08-01T17:29:22.304931", "event_type": "concept_created", "word": "hoe", "source": "system", "new_value": {"word": "hoe"}}
+{"timestamp": "2026-08-01T17:29:22.339936", "event_type": "concept_created", "word": "morgen", "source": "system", "new_value": {"word": "morgen"}}

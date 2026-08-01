@@ -23,3 +23,8 @@
 {"tekst": "banaan", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-07-31T22:08:13.290568"}
 {"tekst": "zijn er nog andere betekenissen van fysica", "hoogste_gok": "identity", "confidence": 0.1458, "tijdstip": "2026-08-01T10:54:49.548876"}
 {"tekst": "", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T10:54:51.320669"}
+{"tekst": "xyzabc test 123", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T19:05:59.862266"}
+{"tekst": "xyzabc test 123", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T19:07:01.637218"}
+{"tekst": "xyzabc test 123", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T19:09:49.888243"}
+{"tekst": "xyzabc test 123", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T19:26:12.867071"}
+{"tekst": "hoe warm wordt het morgen", "hoogste_gok": "weather", "confidence": 0.2627, "tijdstip": "2026-08-01T19:29:22.302932"}
