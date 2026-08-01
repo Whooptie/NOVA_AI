@@ -71,6 +71,7 @@ class EmotionEngine:
             # de 0.75-drempel aan. Verlaagd naar +0.06, zodat het
             # realistisch 10+ snelle triggers kost voor ze überhaupt
             # richting overprikkeld gaat, in plaats van 5.
+            # VERVANG DOOR:
             self.state["overstimulation"]["last_overflow_behavior"] = rule["overflow_behavior"]
             self.state["overstimulation"]["level"] = self._clamp(
                 self.state["overstimulation"]["level"] + 0.06
@@ -90,6 +91,18 @@ class EmotionEngine:
         # Tijdstip van deze trigger onthouden voor de volgende
         # tijd-decay-berekening.
         self.state["overstimulation"]["last_trigger_timestamp"] = time.time()
+
+        # Bugfix (1 augustus 2026): identity_state.json had een EIGEN,
+        # plat "overstimulation_level"-veld dat conversation_engine.py's
+        # mood-observatie leest, maar dat nooit werd bijgewerkt door
+        # emotion_engine.py's eigen (genestelde, met decay) versie
+        # hierboven — twee losse waarheden die nooit synchroon liepen.
+        # emotion_state.json blijft de bron van waarheid; hier spiegelen
+        # we enkel de actuele waarde door naar personality_engine.state,
+        # zodat conversation_engine.py altijd de actuele stand leest.
+        if personality_engine is not None:
+            personality_engine.state["overstimulation_level"] = self.state["overstimulation"]["level"]
+            personality_engine._save_state()
 
         # -----------------------------
         # RECOVERY HINT
