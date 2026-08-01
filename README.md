@@ -18,7 +18,7 @@
 
 Nova is a **personal AI companion** that runs entirely locally on my own machine. She doesn't use an LLM (like ChatGPT), no cloud, no internet — everything happens locally, under my own rules.
 
-Nova is built on **symbolic AI**: she learns through explicit concepts, relationships and behavioral patterns — not through a statistical language model. She runs **24/7 as a background process** and can proactively respond to patterns in my behavior — including deciding, on her own initiative, when it might be a good moment to speak up.
+Nova is built on **symbolic AI** (GOFAI-style, event-driven): she learns through explicit concepts, relationships and behavioral patterns — not through a statistical language model. She runs **24/7 as a background process** and can proactively decide, on her own initiative, when it's actually an appropriate moment to speak up — not just whether she *has* something to say, but whether now is a good time to say it.
 
 > *"No black box. No cloud. No surprises."*
 
@@ -51,6 +51,10 @@ Nova is built on **symbolic AI**: she learns through explicit concepts, relation
 
 [Nova]   (30 minutes later, unprompted)
          You've been at it for a while, Kevin. Maybe time for a short break? ⏱️
+
+[Nova]   (later, mid-coding session)
+         Mind if I interrupt? — only asked once she's checked it's
+         actually a reasonable moment to, based on what I usually allow.
 ```
 
 ---
@@ -67,10 +71,12 @@ Nova is built on **symbolic AI**: she learns through explicit concepts, relation
 | 🔗 Learning word associations through use (PMI scoring) | ✅ |
 | 📊 Recognizing behavioral patterns by time & frequency | ✅ |
 | 💡 Template-based responses with tone variation | ✅ |
-| 😊 Own personality, emotions & expression | ✅ |
-| 🗣️ Speaking up on her own initiative (break reminders, "mind if I interrupt?") | ✅ |
+| 😊 Own personality, emotions & expression (with adaptive learning) | ✅ |
+| 🗣️ Speaking up on her own initiative — break reminders, "mind if I interrupt?" | ✅ |
 | 🪟 Awareness of what I'm doing (active window, focus, presence) | ✅ |
+| 🤔 Generating her own insights from patterns she's noticed, gated by confidence *and* timing | ✅ |
 | 🪞 Answering questions about her own architecture and how she works | ✅ |
+| 🎯 Classifying unclear/ambiguous input to route it correctly (trained local model) | ✅ |
 | 🔄 Restarting itself without data loss (`/reboot`) | ✅ |
 | 🕐 Time awareness (clock, date, timezone) | ✅ |
 | ➗ Mathematical calculations | ✅ |
@@ -110,9 +116,11 @@ User → IntentRouter → EventBus → Modules
 | Layer 2 | Behavioral patterns (timing, frequency, anomaly detection) | ✅ Done |
 | Layer 3 | Semantic reasoning (concepts, relations, inference) | ✅ Done |
 | Layer 4 | Response generator (templates, tone variation, routing) | ✅ Done |
-| Layer 5 | Context management (activity/focus/presence awareness, interruption logic) | ✅ Done |
-| Layer 6 | Personality & emotion engine (incl. adaptive learning) | ✅ Done |
-| Layer 7 | Emergent behavior (self-generated insights, feedback-tracked) | ✅ Done |
+| Layer 5 | Context management (time, activity, focus, presence, weighted interruption logic) | ✅ Done |
+| Layer 6 | Personality & emotion engine (incl. adaptive learning from feedback) | ✅ Done |
+| Layer 7 | Emergent behavior (self-generated insights, confidence + timing gated) | ✅ Done |
+
+All 7 layers are complete and running live in the daemon — Layer 5 and Layer 7 were the most recent additions, giving Nova both *awareness* of what I'm doing and the judgment to decide whether a given moment is actually appropriate to act on it.
 
 ## 💻 How it works — an example
 
@@ -156,10 +164,11 @@ Nova_AI/
 ├── modules/
 │   ├── chat/                 # Conversation handling + tone variation
 │   ├── chess/                # Chess engine (Stockfish)
-│   ├── weather/              # Weather module (multi-day forecast, alerts)
-│   ├── knowledge/            # Wikipedia AutoTeacher
-│   ├── learning/             # Word associations & behavioral patterns
-│   └── context/              # Activity/focus/presence detection, interruption logic
+│   ├── weather/              # Weather module (multi-day forecast, proactive alerts)
+│   ├── knowledge/             # Wikipedia AutoTeacher
+│   ├── learning/              # Word associations, behavioral patterns, intent classifier
+│   ├── context/               # Activity/focus/presence detection, interruption logic
+│   └── preferences/           # What Nova learns about how I like to be spoken to
 ├── identity/
 │   ├── personality/          # Personality engine + adaptive learning
 │   ├── emotion/              # Emotion engine
@@ -176,7 +185,7 @@ Nova_AI/
 - **Never acts without consent** — Nova always suggests first, even when speaking up proactively
 - **Fully transparent** — everything is logged and inspectable
 - **Open architecture** — every concept is readable in `concepts.json`
-- **ML only as a sensor** — external models may help perceive, Nova decides what to do
+- **ML only as a sensor** — external models may help perceive (e.g. presence detection, short-reply classification), Nova decides what to do with it
 
 ---
 
@@ -190,9 +199,8 @@ This repository serves primarily as a **personal backup**, and has been made pub
 
 ## 🚀 On the roadmap
 
-- 🟡 Expanding the personality pipeline to all intents
-- 🟢 User preferences module (what Nova remembers about me)
-- 🟢 Intent classifier (small local ML model as a specialist)
+- 🟡 Enforcing "may push back, but only if factually grounded" as actual behavior (currently a stated principle, not yet code)
+- 🟢 User preferences module (what Nova remembers about how I like to be spoken to)
 - 🔮 Avatar / desktop companion (animated avatar, lipsync)
 - 🔮 More board games (checkers, Go)
 - 🔮 Smart home integration (lights, sensors)
