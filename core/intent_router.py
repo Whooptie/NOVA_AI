@@ -694,9 +694,51 @@ class IntentRouter:
                     })
                     return True
 
+                # Eigen, herkenbaar Layer 2-topic (1 augustus 2026), i.p.v.
+                # mee te liften op het topic van de vorige, gewone
+                # definitievraag -- "zijn er nog andere betekenissen" is
+                # een ANDER, onderscheiden gedragspatroon (bv. Kevin die
+                # 's avonds graag dieper op een woord doorvraagt), dat
+                # zonder eigen topic onzichtbaar zou blijven voor Layer 2.
+                # Zelfde vlag-patroon als detect_chess()'s
+                # chess_evaluation-tak hierboven: voorkomt dat route()'s
+                # stap 8 hierna ALSNOG het generieke "definitie_<woord>"
+                # emit (zie ook de bijbehorende aanpassing daar).
+                self._emit_topic(f"andere_betekenis_{woord}", bron="detect")
+                self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_wiki_andere_betekenis", {"word": woord})
                 return True
-                
+
+        # "Wat weet je allemaal over X" -- nieuwe module concept_overview.py
+        # (1 augustus 2026): toont een kort overzicht van ALLE bestaande
+        # kennis over een woord (alle senses, relaties, voorbeelden),
+        # met een pending-vervolgvraag voor wie meer detail wil. In
+        # tegenstelling tot de andere detecties hierboven werkt dit
+        # woord ALTIJD expliciet genoemd (geen zinvolle "vorig woord"-
+        # fallback hier, want dit gaat niet per se over het laatst
+        # opgezochte woord).
+        overview_prefixes = [
+            "wat weet je allemaal over ",
+            "wat weet je over ",
+            "vertel me alles over ",
+            "vertel alles over ",
+        ]
+        for p in overview_prefixes:
+            if t.startswith(p):
+                woord = t[len(p):].strip().rstrip("?.")
+                for art in ["de ", "het ", "een "]:
+                    if woord.startswith(art):
+                        woord = woord[len(art):].strip()
+                        break
+                # Eigen Layer 2-topic (1 augustus 2026), zelfde redenering
+                # als bij de andere-betekenis-tak hierboven -- "wat weet
+                # je allemaal over X" is een apart, herkenbaar
+                # gedragspatroon, geen gewone definitievraag.
+                self._emit_topic(f"concept_overview_{woord}" if woord else "concept_overview", bron="detect")
+                self._topic_al_ge_emit = True
+                self.event_bus.publish("intent_concept_overview", {"word": woord})
+                return True
+
         # Definitievragen (crashfix: woord veilig ophalen)
         prefixes = [
             "wat is ",
@@ -2171,6 +2213,16 @@ class IntentRouter:
         if wiki_teacher is not None and wiki_teacher.verwerk_wiki_keuze(text):
             return
 
+        # -1D Pending "wat weet je over X"-vervolgantwoord (1 augustus
+        # 2026, nieuwe module concept_overview.py) -- zelfde voorrang-
+        # redenering als -1C hierboven: als Nova net het korte overzicht
+        # toonde en vroeg "typ 'ja' of een nummer", mag dat antwoord
+        # nooit door de generieke sense-choice-check hieronder opgevangen
+        # worden.
+        concept_overview = self.event_bus.modules.get("concept_overview")
+        if concept_overview is not None and concept_overview.verwerk_overview_antwoord(text):
+            return
+
         # -1B Pending sense-voorkeur (Bug #10-fix, stap 7) -- zelfde
         # voorrang-redenering als hierboven: als Kevin net gevraagd is
         # een nummer te kiezen na "onthoud sense <woord>", mag dat
@@ -2228,6 +2280,20 @@ class IntentRouter:
 
         # 8 Definition
         if self.detect_definition(text):
+            # Bugfix (1 augustus 2026): detect_definition() dekt sinds
+            # bug #27 ook de "andere betekenissen"- en "concept
+            # overview"-vragen, die nu ZELF al hun eigen, specifiekere
+            # topic emitten (zie de _topic_al_ge_emit-vlag daar, zelfde
+            # patroon als detect_chess()'s chess_evaluation-tak). Zonder
+            # deze check zou zo'n bericht DUBBEL meetellen: eenmaal
+            # correct onder zijn eigen topic, en eenmaal hier onder het
+            # verkeerde, misleidende "definitie_<woord>" (het topic van
+            # de VORIGE, gewone definitievraag, want deze takken laten
+            # _laatste_definitie_woord ongewijzigd).
+            if self._topic_al_ge_emit:
+                self._topic_al_ge_emit = False
+                return
+
             # Per-woord-timing: gebruik het specifieke woord als het
             # beschikbaar is (gezet in detect_definition() hierboven),
             # met het oude, generieke "definitie" als veilige terugval
