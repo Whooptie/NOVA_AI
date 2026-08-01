@@ -1,7 +1,8 @@
 {
   "aartrijke": {
     "datum": "2026-07-31",
-    "temp": 18.75
+    "temp": 18.75,
+    "laatste_waarschuwing_tekst": null
   },
   "brugge": {
     "laatste_waarschuwing_tekst": "Let op: het wordt erg warm.",

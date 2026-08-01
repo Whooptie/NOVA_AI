@@ -183,3 +183,9 @@
 {"text": "heb je zin om te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0043, "bron": "model_fallback", "tijdstip": "2026-07-31T07:08:15.734009"}
 {"text": "banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-31T22:08:13.250182"}
 {"text": "2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-07-31T22:14:10.748237"}
+{"text": "4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T10:37:02.149410"}
+{"text": "zijn er nog andere betekenissen van fysica", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-08-01T10:54:49.496889"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T10:57:49.843223"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T10:58:38.718843"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T11:00:30.103988"}
+{"text": "3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T11:01:08.716207"}
