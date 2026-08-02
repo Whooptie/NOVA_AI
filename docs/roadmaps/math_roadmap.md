@@ -137,20 +137,36 @@ Onderweg gevonden en opgelost, tijdens dezelfde sessie:
 
 ## **FASE 4 — High‑level engines**
 
-### ➤ 10. **Symbolische algebra (optioneel)**
+### ✅ 10. **Symbolische algebra** (klaar, getest 2 aug 2026)
 
-- `solve("x^2 - 4 = 0")`
-- `differentiate("x^3 + 2x")`
+- ✔ `differentiate()` — symbolisch differentiëren, geeft een formule terug
+- ✔ `solve_sym()` — exact oplossen, inclusief hogere-graads vergelijkingen
+- ✔ `simplify_sym()`, `expand_sym()`, `factor_sym()`, `integrate_sym()` — als bonus bovenop wat de roadmap oorspronkelijk vroeg
 
-### ➤ 11. **Fysica‑engine**
+**Architectuurkeuze: SymPy** (externe bibliotheek), niet volledig eigen code — enige uitzondering in heel math.py. Reden: een eigen symbolische differentiator + vereenvoudiger bouwen die ook maar enigszins met Wolfram Alpha-niveau (goniometrische identiteiten, hogere-graads factorisatie) kan meekomen, zou een apart project van weken zijn. SymPy blijft 100% symbolisch/deterministisch — geen ML/LLM, geen "gokken", enkel vaste algebraïsche regels toegepast op een expressieboom, exact zoals de rest van math.py.
 
-Gebaseerd op vectoren + calculus + units:
+**Veiligheidsmaatregel:** SymPy's normale manier om een string in te lezen (`sympify()`) voert intern Python's `eval()` uit — een reëel risico (bevestigd met een test die `__import__('os').system(...)` liet uitvoeren). Opgelost door Nova's eigen, al beveiligde AST-parser te hergebruiken met een strikte functienaam-whitelist, nooit de ruwe tekst rechtstreeks aan SymPy geven.
 
-- krachten
-- energie
-- beweging
-- projectielbanen
-- simulaties
+**Belangrijke bugfix, ontdekt tijdens het testen, raakt bestaande Fase 3-functies:** een bestaande preprocess-regel (getal+letter → eenheid-met-macht, bv. "5m2"→"5m^2") greep ten onrechte ook in bij `3x^2` (bedoeld als 3·x²), en maakte er `(3x)^2` = 9x² van. Trof `afgeleide()`, `newton()`, `polyeval()`, `extremum()`, `integraal()`, `limiet()`, `dv()` — overal waar een coëfficiënt vóór een macht van x staat. Gefixt met een lookahead-uitzondering, volledig geregressietest tegen alle bestaande eenheden- en Fase 3-functionaliteit.
+
+### ✅ 11. **Fysica‑engine** (klaar, getest 2 aug 2026)
+
+Klassieke (Newtoniaanse) mechanica voor één object, 100% eigen Python-code (geen externe bibliotheek nodig), hergebruikt het bestaande eenhedensysteem:
+
+- ✔ krachten — `kracht()` (F=ma)
+- ✔ energie — `energie_kinetisch()` (E=½mv²), `energie_potentieel()` (E=mgh), `arbeid()` (W=F·d)
+- ✔ beweging — `snelheid_na()`, `afstand_na()` (eenparig versnelde beweging)
+- ✔ projectielbanen — `projectiel()`, geeft bereik/max. hoogte/vluchttijd
+- ✔ simulaties — `val_met_weerstand()`, numerieke simulatie (val met luchtweerstand heeft geen gesloten-vorm-formule, gekoppeld stelsel hoogte+snelheid stap voor stap doorgerekend)
+
+**FASE 4 — High-level engines is hiermee volledig afgerond** (punt 10 Symbolische algebra via SymPy, punt 11 Fysica-engine — beide getest in Nova zelf).
+
+**Bewuste afbakening:** één object tegelijk, geen botsingen tussen meerdere objecten, geen rotatie/traagheidsmomenten, geen andere vakgebieden (elektromagnetisme, thermodynamica) — dat zou een apart project zijn.
+
+Onderweg gevonden en opgelost, tijdens dezelfde sessie:
+
+- `m/s` bestond niet als losse eenheid-sleutel in het bestaande `self.units`-systeem (enkel als resultaat van een berekening zoals `m/s`) — opgelost door zelf een `UnitValue` met de juiste dimensies te bouwen in `snelheid_na()` en `val_met_weerstand()`.
+- Klein afrondingsartefact in `energie_potentieel()` (`196.20000000000002`) opgeschoond met `round()`.
 
 ---
 

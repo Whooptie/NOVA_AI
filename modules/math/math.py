@@ -4,6 +4,20 @@ import operator
 import math
 import re
 
+# Fase 4, punt 10 — Symbolische algebra (SymPy)
+# SymPy is een externe bibliotheek voor symbolisch rekenen (formules
+# blijven formules, i.p.v. te worden uitgerekend tot een getal). We
+# importeren hem hier met een try/except: als hij niet geïnstalleerd is
+# (bv. na een schone Nova-installatie zonder "pip install sympy"),
+# crasht Nova niet in zijn geheel — enkel de nieuwe symbolische functies
+# (differentiate, solve_sym, ...) geven dan een duidelijke Nederlandse
+# foutmelding i.p.v. de rest van math.py onbruikbaar te maken.
+try:
+    import sympy as sp
+    SYMPY_BESCHIKBAAR = True
+except ImportError:
+    SYMPY_BESCHIKBAAR = False
+
 class UnitValue:
     def __init__(self, value, dims=None, label=None):
         self.value = value
@@ -180,6 +194,24 @@ class MathModule:
             "permutaties": self._permutaties,           # permutaties(5,2) -> 20
             "binomiaal": self._binomiaal,               # binomiaal(10,3,0.5) -> kans
             "normaal": self._normaal,                   # normaal(0) -> 0.5
+
+            # Fase 4, punt 10 — Symbolische algebra (via SymPy)
+            "differentiate": self._differentiate,       # differentiate(x^3+2x) -> "3x^2 + 2"
+            "integrate_sym": self._integrate_sym,       # integrate_sym(x^2) -> "x^3/3"
+            "simplify_sym": self._simplify_sym,         # simplify_sym(sin(x)^2+cos(x)^2) -> "1"
+            "expand_sym": self._expand_sym,             # expand_sym((x+1)^2) -> "x^2 + 2x + 1"
+            "factor_sym": self._factor_sym,             # factor_sym(x^2-4) -> "(x-2)(x+2)"
+            "solve_sym": self._solve_sym,               # solve_sym(x^2-5x+6=0) -> "x = 2 of x = 3"
+
+            # Fase 4, punt 11 — Fysica-engine, 100% puur symbolisch/numeriek
+            "kracht": self._kracht,                                 # kracht(1000, 3) -> 3000 N
+            "energie_kinetisch": self._energie_kinetisch,           # energie_kinetisch(5, 10) -> 250 J
+            "energie_potentieel": self._energie_potentieel,         # energie_potentieel(2, 10) -> 196.2 J
+            "arbeid": self._arbeid,                                 # arbeid(50, 3) -> 150 J
+            "snelheid_na": self._snelheid_na,                       # snelheid_na(0, 9.81, 3) -> 29.43 m/s
+            "afstand_na": self._afstand_na,                         # afstand_na(20, -5, 4) -> 40 m
+            "projectiel": self._projectiel,                         # projectiel(20, 45) -> bereik/hoogte/vluchttijd
+            "val_met_weerstand": self._val_met_weerstand,           # simulatie via numerieke integratie
         }
 
         # constante waarden
@@ -416,10 +448,24 @@ class MathModule:
         #    BUGFIX (1 aug 2026): haakjes toegevoegd — zonder haakjes groepeerde
         #    "3m / 2s" als ((3*m)/2)*s door gelijke */-voorrang, wat een
         #    verkeerde eenheid opleverde (m·s i.p.v. m/s of m·s^-1)
-        expr = re.sub(r'(\d+(\.\d+)?)([A-Za-zµ][A-Za-zµ/]*)', r'(\1*\3)', expr)
+        # BUGFIX (Fase 4, punt 10): zonder de (?=\*\*)-uitzondering hierna
+        # werd bv. "3x^2" (bedoeld als 3·x², de coëfficiënt 3 maal x in het
+        # kwadraat) fout gegroepeerd tot "(3*x)**2" = 9x² — want "^" was op
+        # dat moment al "**" geworden (stap 4 hierboven), en deze regel zag
+        # enkel het losse stuk "3x" zonder te beseffen dat de macht ERNA
+        # bij "x" alleen hoort, niet bij "3x" samen. We splitsen dit nu in
+        # twee gevallen: staat er een "**" direct achter de match, dan komt
+        # er enkel een "*" tussen getal en letter (geen haakjes om het
+        # geheel) — anders (het echte eenheden-geval, bv. "5m") blijft het
+        # bestaande haakjes-gedrag ongewijzigd.
+        expr = re.sub(r'(\d+(\.\d+)?)([A-Za-zµ][A-Za-zµ/]*)(?=\*\*)', r'\1*\3', expr)
+        expr = re.sub(r'(\d+(\.\d+)?)([A-Za-zµ][A-Za-zµ/]*)(?!\*\*)', r'(\1*\3)', expr)
 
         # 2) getal + spatie + unit (1 bar, 250 mL, 60 rpm, 1 Wh, 2.5 Ah)
-        expr = re.sub(r'(\d+(\.\d+)?)[ ]+([A-Za-zµ][A-Za-zµ/]*)', r'(\1*\3)', expr)
+        # BUGFIX (Fase 4, punt 10): zelfde reden als hierboven, nu voor de
+        # variant MET spatie (bv. "3 x^2").
+        expr = re.sub(r'(\d+(\.\d+)?)[ ]+([A-Za-zµ][A-Za-zµ/]*)(?=\*\*)', r'\1*\3', expr)
+        expr = re.sub(r'(\d+(\.\d+)?)[ ]+([A-Za-zµ][A-Za-zµ/]*)(?!\*\*)', r'(\1*\3)', expr)
 
         return expr
         
@@ -505,6 +551,20 @@ class MathModule:
         return [[M[i][j] for i in range(len(M))] for j in range(row_len)]
 
     def eval_expr(self, expr):
+        # UITZONDERING (Fase 4, punt 10 — solve_sym): een vergelijking als
+        # "solve_sym(x**2-5*x+6 = 0)" bevat een "="-teken, en dat is geen
+        # geldige Python-eval-expressie — ast.parse(mode="eval") zou hier
+        # meteen op stuklopen, VOOR we ook maar bij _eval()'s bestaande
+        # functie-routering geraken. Daarom vangen we dit specifieke
+        # geval hier al af, met een simpele regex die enkel de inhoud
+        # tussen de buitenste haakjes van solve_sym(...) plukt en die
+        # rechtstreeks (als ruwe string, nog steeds via Nova's eigen
+        # beveiligde AST-parser in _sympy_parse — zie _solve_sym) aan de
+        # symbolische oplosser doorgeeft.
+        solve_sym_match = re.match(r"^solve_sym\s*\((.*)\)\s*$", expr.strip())
+        if solve_sym_match:
+            return self._solve_sym(solve_sym_match.group(1))
+
         node = ast.parse(expr, mode="eval").body
         return self._eval(node)
 
@@ -1141,6 +1201,381 @@ class MathModule:
         kans = 0.5 * (1 + math.erf(z))
         return round(kans, 6)
 
+    # -----------------------------------------------------------
+    # Fase 4, punt 10 — Symbolische algebra (via SymPy)
+    # -----------------------------------------------------------
+    # LET OP — dit is de enige plek in math.py die geen 100% eigen,
+    # zelfgeschreven code is: SymPy is een externe bibliotheek voor
+    # symbolisch rekenen. Alle andere functies in dit bestand blijven
+    # 100% eigen Python-code. Zie math_roadmap.md voor de volledige
+    # afweging waarom hier bewust voor SymPy gekozen is (symbolisch,
+    # geen ML/LLM — SymPy "gokt" niet, het past vaste algebraïsche
+    # regels toe, net als de rest van math.py).
+    #
+    # VEILIGHEID: we geven NOOIT de ruwe tekst van de gebruiker
+    # rechtstreeks door aan sympy.sympify() of parse_expr() — die voeren
+    # intern Python's eigen eval() uit op de string, waardoor bv.
+    # "__import__('os').system(...)" gewoon zou worden uitgevoerd. In
+    # plaats daarvan hergebruiken we Nova's eigen, al beveiligde AST-
+    # parser (ast.parse, dezelfde die _eval() ook gebruikt) en vertalen
+    # we die boom zelf, knoop voor knoop, naar SymPy — met een whitelist
+    # van toegestane functienamen, precies zoals _eval()'s Call-tak dat
+    # al doet voor self.funcs.
+
+    _SYMPY_TOEGESTANE_FUNCTIES = None  # wordt lazy gevuld, zie _sympy_functies()
+
+    def _sympy_functies(self):
+        # Lazy: enkel opbouwen als SymPy ook echt beschikbaar is,
+        # anders zou dit al bij het opstarten van MathModule crashen
+        # op een systeem zonder SymPy.
+        if self._SYMPY_TOEGESTANE_FUNCTIES is None:
+            self._SYMPY_TOEGESTANE_FUNCTIES = {
+                "sin": sp.sin, "cos": sp.cos, "tan": sp.tan,
+                "sqrt": sp.sqrt, "exp": sp.exp,
+                "ln": sp.log, "log": sp.log,
+                "abs": sp.Abs,
+            }
+        return self._SYMPY_TOEGESTANE_FUNCTIES
+
+    def _check_sympy(self, fname):
+        if not SYMPY_BESCHIKBAAR:
+            raise ValueError(
+                f"{fname}: SymPy is niet geïnstalleerd. Installeer het met "
+                f"'pip install sympy' in Nova's virtuele omgeving en herstart Nova."
+            )
+
+    def _ast_naar_sympy(self, node, x):
+        # Eigen, beveiligde vertaler: AST-knoop → SymPy-object.
+        # Enkel getallen, de variabele x, +-*/^, unair min, en een
+        # whitelist van functienamen worden geaccepteerd — alles
+        # daarbuiten (attribute access, imports, willekeurige
+        # functie-aanroepen) wordt geweigerd met een ValueError, exact
+        # zoals _eval()'s bestaande Call-tak dat al doet.
+        if isinstance(node, ast.Constant):
+            return sp.Number(node.value)
+        if isinstance(node, ast.Num):  # oudere Python-versies
+            return sp.Number(node.n)
+        if isinstance(node, ast.Name):
+            if node.id == "x":
+                return x
+            raise ValueError(f"Onbekende naam: {node.id} (enkel 'x' is ondersteund als variabele)")
+        if isinstance(node, ast.BinOp):
+            links = self._ast_naar_sympy(node.left, x)
+            rechts = self._ast_naar_sympy(node.right, x)
+            if isinstance(node.op, ast.Add):
+                return links + rechts
+            if isinstance(node.op, ast.Sub):
+                return links - rechts
+            if isinstance(node.op, ast.Mult):
+                return links * rechts
+            if isinstance(node.op, ast.Div):
+                return links / rechts
+            if isinstance(node.op, ast.Pow):
+                return links ** rechts
+            raise ValueError("Onbekende operator in symbolische expressie")
+        if isinstance(node, ast.UnaryOp):
+            waarde = self._ast_naar_sympy(node.operand, x)
+            if isinstance(node.op, ast.USub):
+                return -waarde
+            if isinstance(node.op, ast.UAdd):
+                return waarde
+            raise ValueError("Onbekende unaire operator in symbolische expressie")
+        if isinstance(node, ast.Call):
+            if not isinstance(node.func, ast.Name):
+                raise ValueError("Ongeldige functie-aanroep in symbolische expressie")
+            fname = node.func.id
+            toegestaan = self._sympy_functies()
+            if fname not in toegestaan:
+                raise ValueError(f"Onbekende functie in symbolische expressie: {fname}")
+            args = [self._ast_naar_sympy(a, x) for a in node.args]
+            return toegestaan[fname](*args)
+        # Alles wat hier niet expliciet is toegestaan (Attribute, Call op
+        # iets anders dan een Name, Subscript, enz.) wordt geweigerd.
+        raise ValueError("Ongeldige of niet-ondersteunde symbolische expressie")
+
+    def _sympy_parse(self, expr_str, x):
+        # Parseert een expressie-string (al voorbewerkt door preprocess(),
+        # dus "^" is al "**") via Nova's eigen AST, NOOIT via sympify()
+        # rechtstreeks op de string — zie veiligheidsuitleg hierboven.
+        try:
+            tree = ast.parse(expr_str, mode="eval")
+        except SyntaxError:
+            raise ValueError(f"Kan de expressie niet lezen: \"{expr_str}\"")
+        return self._ast_naar_sympy(tree.body, x)
+
+    def _sympy_str(self, sympy_obj):
+        # Vertaalt een SymPy-resultaat terug naar Nova's eigen notatie
+        # (met "^" i.p.v. "**"), zodat het er hetzelfde uitziet als wat
+        # de gebruiker zelf typt.
+        return str(sympy_obj).replace("**", "^").replace("*", "")
+
+    def _differentiate(self, expr_str):
+        # Symbolisch differentiëren: geeft een FORMULE terug, geen getal.
+        # bv. differentiate(x^3 + 2x) → "3x^2 + 2"
+        # Voor de numerieke variant (helling op één specifiek punt): afgeleide()
+        self._check_sympy("differentiate")
+        x = sp.symbols("x")
+        expr = self._sympy_parse(expr_str, x)
+        resultaat = sp.diff(expr, x)
+        resultaat = sp.simplify(resultaat)
+        return self._sympy_str(resultaat)
+
+    def _integrate_sym(self, expr_str):
+        # Symbolische (onbepaalde) integraal: geeft een FORMULE terug.
+        # bv. integrate_sym(x^2) → "x^3/3"
+        # Voor de numerieke variant (oppervlakte tussen twee punten): integraal()
+        self._check_sympy("integrate_sym")
+        x = sp.symbols("x")
+        expr = self._sympy_parse(expr_str, x)
+        resultaat = sp.integrate(expr, x)
+        resultaat = sp.simplify(resultaat)
+        return self._sympy_str(resultaat)
+
+    def _simplify_sym(self, expr_str):
+        # Vereenvoudigt een expressie zo veel mogelijk.
+        # bv. simplify_sym(sin(x)^2 + cos(x)^2) → "1"
+        self._check_sympy("simplify_sym")
+        x = sp.symbols("x")
+        expr = self._sympy_parse(expr_str, x)
+        resultaat = sp.simplify(expr)
+        return self._sympy_str(resultaat)
+
+    def _expand_sym(self, expr_str):
+        # Werkt haakjes uit.
+        # bv. expand_sym((x+1)^2) → "x^2 + 2x + 1"
+        self._check_sympy("expand_sym")
+        x = sp.symbols("x")
+        expr = self._sympy_parse(expr_str, x)
+        resultaat = sp.expand(expr)
+        return self._sympy_str(resultaat)
+
+    def _factor_sym(self, expr_str):
+        # Ontbindt een expressie in factoren.
+        # bv. factor_sym(x^2 - 4) → "(x-2)(x+2)"
+        self._check_sympy("factor_sym")
+        x = sp.symbols("x")
+        expr = self._sympy_parse(expr_str, x)
+        resultaat = sp.factor(expr)
+        return self._sympy_str(resultaat)
+
+    def _solve_sym(self, expr_str):
+        # Lost een vergelijking symbolisch/exact op — ondersteunt, dankzij
+        # SymPy, ook hogere-graads vergelijkingen (niet enkel lineair/
+        # kwadratisch). bv. solve_sym(x^2-5x+6=0) → "x = 2 of x = 3"
+        # Voor een numerieke wortelbenadering vanaf een startwaarde: nulpunt()/newton()
+        self._check_sympy("solve_sym")
+        x = sp.symbols("x")
+
+        if "=" in expr_str:
+            links_str, rechts_str = expr_str.split("=", 1)
+            links = self._sympy_parse(links_str.strip(), x)
+            rechts = self._sympy_parse(rechts_str.strip(), x)
+        else:
+            links = self._sympy_parse(expr_str.strip(), x)
+            rechts = sp.Number(0)
+
+        vergelijking = sp.Eq(links, rechts)
+
+        try:
+            oplossingen = sp.solve(vergelijking, x)
+        except NotImplementedError:
+            raise ValueError(
+                "solve_sym: kan deze vergelijking niet symbolisch/exact oplossen "
+                "(bv. te complex, of geen gesloten-vorm-oplossing). "
+                "Probeer nulpunt() voor een numerieke benadering."
+            )
+
+        if not oplossingen:
+            raise ValueError("solve_sym: geen oplossingen gevonden voor deze vergelijking")
+
+        # Complexe oplossingen filteren we eruit, net als bij solveQuadratic
+        # — Nova ondersteunt nog geen complexe getallen (zie Fase 5).
+        reele_oplossingen = [o for o in oplossingen if o.is_real]
+        if not reele_oplossingen:
+            raise ValueError(
+                "solve_sym: geen reële oplossingen — enkel complexe getallen als "
+                "oplossing, en die zijn nog niet ondersteund in Nova"
+            )
+
+        opgeschreven = [self._sympy_str(o) for o in reele_oplossingen]
+        return "x = " + " of x = ".join(opgeschreven)
+
+    # -----------------------------------------------------------
+    # Fase 4, punt 11 — Fysica-engine, 100% puur symbolisch/numeriek
+    # -----------------------------------------------------------
+    # Klassieke (Newtoniaanse) mechanica voor één object: krachten,
+    # energie, beweging in 1D/2D, en simulaties. Bewuste afbakening (zie
+    # math_roadmap.md): geen botsingen tussen meerdere objecten, geen
+    # rotatie/traagheidsmomenten, geen andere vakgebieden (elektromagne-
+    # tisme, thermodynamica) — dat zou een apart project zijn.
+    #
+    # Alle argumenten zijn gewone getallen in SI-basiseenheden (kg, m, s,
+    # m/s, m/s², N, J, rad). Resultaten komen terug als UnitValue, zodat
+    # ze via .to(...) naar andere eenheden omgezet kunnen worden — het
+    # bestaande eenhedensysteem (met automatische dimensie-tracking)
+    # wordt hier hergebruikt, niet opnieuw uitgevonden.
+
+    _ZWAARTEKRACHT = 9.81  # m/s², standaard valversnelling op aarde
+
+    def _check_getal(self, waarde, naam, functienaam):
+        if not isinstance(waarde, (int, float)):
+            raise ValueError(f"{functienaam}: {naam} moet een getal zijn")
+
+    def _kracht(self, massa, versnelling):
+        # Newton's tweede wet: F = m·a
+        # bv. kracht(1000, 3) → kracht op een auto van 1000kg die met 3m/s² versnelt
+        self._check_getal(massa, "massa", "kracht")
+        self._check_getal(versnelling, "versnelling", "kracht")
+        if massa <= 0:
+            raise ValueError("kracht: massa moet groter zijn dan 0")
+
+        resultaat = massa * versnelling
+        return self._make_unitvalue(resultaat, "N")
+
+    def _energie_kinetisch(self, massa, snelheid):
+        # Kinetische energie: E = ½·m·v²
+        # bv. energie_kinetisch(5, 10) → kinetische energie van 5kg aan 10m/s
+        self._check_getal(massa, "massa", "energie_kinetisch")
+        self._check_getal(snelheid, "snelheid", "energie_kinetisch")
+        if massa <= 0:
+            raise ValueError("energie_kinetisch: massa moet groter zijn dan 0")
+
+        resultaat = 0.5 * massa * snelheid ** 2
+        return self._make_unitvalue(resultaat, "J")
+
+    def _energie_potentieel(self, massa, hoogte, g=None):
+        # Zwaarte-energie: E = m·g·h
+        # bv. energie_potentieel(2, 10) → potentiële energie van 2kg op 10m hoogte
+        self._check_getal(massa, "massa", "energie_potentieel")
+        self._check_getal(hoogte, "hoogte", "energie_potentieel")
+        if massa <= 0:
+            raise ValueError("energie_potentieel: massa moet groter zijn dan 0")
+        if g is None:
+            g = self._ZWAARTEKRACHT
+
+        resultaat = round(massa * g * hoogte, 6)
+        return self._make_unitvalue(resultaat, "J")
+
+    def _arbeid(self, kracht, afstand):
+        # Arbeid: W = F·d (kracht in de bewegingsrichting maal afgelegde afstand)
+        # bv. arbeid(50, 3) → arbeid geleverd door 50N over 3m
+        self._check_getal(kracht, "kracht", "arbeid")
+        self._check_getal(afstand, "afstand", "arbeid")
+
+        resultaat = kracht * afstand
+        return self._make_unitvalue(resultaat, "J")
+
+    def _snelheid_na(self, v0, versnelling, tijd):
+        # Eenparig versnelde beweging: v = v0 + a·t
+        # bv. snelheid_na(0, 9.81, 3) → snelheid na 3s vrije val vanuit stilstand
+        self._check_getal(v0, "v0", "snelheid_na")
+        self._check_getal(versnelling, "versnelling", "snelheid_na")
+        self._check_getal(tijd, "tijd", "snelheid_na")
+        if tijd < 0:
+            raise ValueError("snelheid_na: tijd kan niet negatief zijn")
+
+        resultaat = round(v0 + versnelling * tijd, 6)
+        # BUGFIX: "m/s" bestaat niet als losse sleutel in self.units (dat
+        # systeem kent enkel grondeenheden zoals "m" en "s" apart, en
+        # samengestelde eenheden ontstaan normaal via een berekening zoals
+        # "m/s" i.p.v. rechtstreeks opgevraagd te worden). Hier bouwen we
+        # daarom zelf een UnitValue met de juiste dimensies, i.p.v.
+        # _make_unitvalue() te gebruiken.
+        return UnitValue(resultaat, {"m": 1, "s": -1}, label="m/s").bind_math(self)
+
+    def _afstand_na(self, v0, versnelling, tijd):
+        # Eenparig versnelde beweging: x = v0·t + ½·a·t²
+        # bv. afstand_na(20, -5, 4) → afgelegde afstand na 4s remmen vanaf 20m/s met -5m/s²
+        self._check_getal(v0, "v0", "afstand_na")
+        self._check_getal(versnelling, "versnelling", "afstand_na")
+        self._check_getal(tijd, "tijd", "afstand_na")
+        if tijd < 0:
+            raise ValueError("afstand_na: tijd kan niet negatief zijn")
+
+        resultaat = v0 * tijd + 0.5 * versnelling * tijd ** 2
+        return self._make_unitvalue(resultaat, "m")
+
+    def _projectiel(self, snelheid, hoek_graden, g=None):
+        # Projectielbeweging (worp onder een hoek, zonder luchtweerstand):
+        # geeft bereik, maximale hoogte en vluchttijd terug.
+        # bv. projectiel(20, 45) → een bal die met 20m/s onder 45° wordt weggeschoten
+        self._check_getal(snelheid, "snelheid", "projectiel")
+        self._check_getal(hoek_graden, "hoek", "projectiel")
+        if snelheid < 0:
+            raise ValueError("projectiel: snelheid kan niet negatief zijn")
+        if not (0 <= hoek_graden <= 90):
+            raise ValueError("projectiel: hoek moet tussen 0 en 90 graden liggen")
+        if g is None:
+            g = self._ZWAARTEKRACHT
+
+        hoek_rad = math.radians(hoek_graden)
+        vx = snelheid * math.cos(hoek_rad)
+        vy = snelheid * math.sin(hoek_rad)
+
+        vluchttijd = (2 * vy) / g if g > 0 else 0
+        bereik = vx * vluchttijd
+        max_hoogte = (vy ** 2) / (2 * g) if g > 0 else 0
+
+        return {
+            "bereik": self._make_unitvalue(round(bereik, 6), "m"),
+            "max_hoogte": self._make_unitvalue(round(max_hoogte, 6), "m"),
+            "vluchttijd": self._make_unitvalue(round(vluchttijd, 6), "s"),
+        }
+
+    def _val_met_weerstand(self, massa, hoogte, weerstandscoefficient, stappen=1000):
+        # Simulatie (Fase 4, punt 11 — "simulaties"): een vrije val MET
+        # luchtweerstand heeft geen nette gesloten-vorm-formule meer (de
+        # weerstandskracht hangt zelf weer af van de snelheid, die op zijn
+        # beurt verandert door diezelfde kracht) — daarom lossen we dit
+        # numeriek op, met exact dezelfde Runge-Kutta 4-machinerie als
+        # dv_rk4() al gebruikt voor differentiaalvergelijkingen.
+        # Model: dv/dt = g - (weerstandscoefficient/massa)·v²
+        # bv. val_met_weerstand(80, 1000, 0.2) → valtijd van een parachutist
+        self._check_getal(massa, "massa", "val_met_weerstand")
+        self._check_getal(hoogte, "hoogte", "val_met_weerstand")
+        self._check_getal(weerstandscoefficient, "weerstandscoëfficiënt", "val_met_weerstand")
+        if massa <= 0:
+            raise ValueError("val_met_weerstand: massa moet groter zijn dan 0")
+        if hoogte <= 0:
+            raise ValueError("val_met_weerstand: hoogte moet groter zijn dan 0")
+        if weerstandscoefficient < 0:
+            raise ValueError("val_met_weerstand: weerstandscoëfficiënt kan niet negatief zijn")
+
+        g = self._ZWAARTEKRACHT
+        k = weerstandscoefficient
+
+        # We simuleren stap voor stap (RK4-achtig, met twee gekoppelde
+        # grootheden: hoogte en snelheid) tot de hoogte 0 bereikt, in
+        # plaats van dv_rk4() rechtstreeks te hergebruiken — die is
+        # gebouwd voor één vrije expressie f(x,y), hier hebben we een
+        # gekoppeld stelsel (positie én snelheid) nodig.
+        dt = 0.01
+        max_stappen = 100000
+        t, hgt, v = 0.0, hoogte, 0.0
+
+        for _ in range(max_stappen):
+            versnelling = g - (k / massa) * v ** 2
+            v_nieuw = v + versnelling * dt
+            hgt_nieuw = hgt - v * dt
+
+            if hgt_nieuw <= 0:
+                # lineair interpoleren voor een nauwkeurigere landingstijd
+                fractie = hgt / (hgt - hgt_nieuw) if (hgt - hgt_nieuw) != 0 else 0
+                t += dt * fractie
+                v = v + versnelling * dt * fractie
+                hgt = 0
+                break
+
+            t += dt
+            hgt, v = hgt_nieuw, v_nieuw
+        else:
+            raise ValueError("val_met_weerstand: geen landing binnen een redelijke simulatietijd — controleer de waarden")
+
+        return {
+            "valtijd": self._make_unitvalue(round(t, 6), "s"),
+            "eindsnelheid": UnitValue(round(v, 6), {"m": 1, "s": -1}, label="m/s").bind_math(self),
+        }
+
     def _make_unitvalue(self, number, unit_name):
         # temperatuur-markers
         if isinstance(unit_name, tuple) and unit_name[0] == "TEMP":
@@ -1400,6 +1835,26 @@ class MathModule:
                 overige_args = [self._eval(a, variables) for a in node.args[1:]]
                 return self.funcs[fname](f_xy, *overige_args)
 
+            # Groep 3 (Fase 4, punt 10 — Symbolische algebra): deze
+            # functies geven zelf een FORMULE terug (geen getal), en
+            # verwachten daarom hun argument als STRING, niet als
+            # geëvalueerde waarde of als Python-functie-object zoals
+            # groep 1/2 hierboven. We gebruiken ast.unparse() om de
+            # AST-node terug te vertalen naar de tekst zoals ze er
+            # (na preprocess()) al stond, en geven die string door —
+            # de functies zelf parsen die daarna opnieuw, veilig, via
+            # _sympy_parse() (zie de uitleg daar).
+            EXPR_FUNCS_SYMBOLISCH = {
+                "differentiate", "integrate_sym", "simplify_sym",
+                "expand_sym", "factor_sym",
+            }
+            if fname in EXPR_FUNCS_SYMBOLISCH:
+                if len(node.args) < 1:
+                    raise ValueError(f"{fname}: eerste argument moet een expressie met x zijn, bv. \"x^2 - 4\"")
+
+                expr_str = ast.unparse(node.args[0])
+                return self.funcs[fname](expr_str)
+
             args = [self._eval(a, variables) for a in node.args]
             return self.funcs[fname](*args)
 
@@ -1549,8 +2004,36 @@ class MathModule:
                     f"{'+' if result['snijpunt'] >= 0 else '-'} {self._format_value(abs(result['snijpunt']))} "
                     f"(helling={self._format_value(result['helling'])}, snijpunt={self._format_value(result['snijpunt'])})"
                 )
+            # NIEUW (Fase 4, punt 11): projectiel() geeft een dict met
+            # bereik/max_hoogte/vluchttijd terug — nette Nederlandse zin
+            # i.p.v. de rauwe dict.
+            elif isinstance(result, dict) and "bereik" in result and "max_hoogte" in result:
+                msg = (
+                    f"{origineel} → "
+                    f"bereik {result['bereik']}, "
+                    f"max. hoogte {result['max_hoogte']}, "
+                    f"vluchttijd {result['vluchttijd']}"
+                )
+            # NIEUW (Fase 4, punt 11): val_met_weerstand() geeft een dict
+            # met valtijd/eindsnelheid terug.
+            elif isinstance(result, dict) and "valtijd" in result and "eindsnelheid" in result:
+                msg = (
+                    f"{origineel} → "
+                    f"valtijd {result['valtijd']}, "
+                    f"eindsnelheid {result['eindsnelheid']}"
+                )
             elif isinstance(result, UnitValue):
                 msg = f"{origineel} = {result}"
+            # NIEUW (Fase 4, punt 10): de symbolische algebra-functies
+            # geven zelf al een volledige, leesbare string terug (bv.
+            # "x = 2 of x = 3" voor solve_sym, of "3x^2 + 2" voor
+            # differentiate). Die tonen we met een pijl i.p.v. "=", zodat
+            # solve_sym niet als "... = x = 2 of x = 3" verschijnt.
+            elif isinstance(result, str) and re.match(
+                r"^(differentiate|integrate_sym|simplify_sym|expand_sym|factor_sym|solve_sym)\s*\(",
+                origineel.strip(),
+            ):
+                msg = f"{origineel} → {result}"
             else:
                 msg = f"{origineel} = {result}"
 
@@ -1597,6 +2080,11 @@ class MathModule:
                 "gemiddelde:", "mediaan:", "modus:", "variantie:", "stdafwijking:",
                 "regressie:", "correlatie:", "faculteit:", "combinaties:",
                 "permutaties:", "binomiaal:", "normaal:",
+                "differentiate:", "integrate_sym:", "simplify_sym:",
+                "expand_sym:", "factor_sym:", "solve_sym:",
+                "kracht:", "energie_kinetisch:", "energie_potentieel:",
+                "arbeid:", "snelheid_na:", "afstand_na:", "projectiel:",
+                "val_met_weerstand:",
             )):
                 msg = err
 

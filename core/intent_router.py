@@ -1176,17 +1176,36 @@ class IntentRouter:
             # zie de haakje-vereiste check verderop.
             "stdafwijking", "variantie", "faculteit", "combinaties",
             "permutaties", "mediaan",
+            # UITBREIDING (Fase 4, punt 10 — Symbolische algebra, via
+            # SymPy): allemaal Engelse, technische functienamen die
+            # niemand toevallig in een gewone Nederlandse zin gebruikt
+            # (in tegenstelling tot "wortel"/"bereken"/"gemiddelde"/
+            # "normaal" hierboven), dus die mogen gewoon breed matchen.
+            "differentiate", "integrate_sym", "simplify_sym",
+            "expand_sym", "factor_sym", "solve_sym",
+            # UITBREIDING (Fase 4, punt 11 — Fysica-engine):
+            # "energie_kinetisch", "energie_potentieel", "snelheid_na",
+            # "afstand_na" en "val_met_weerstand" bevatten underscores en
+            # zijn technisch genoeg om breed te mogen matchen. "projectiel"
+            # is ook technisch genoeg (komt zelden voor in gewone zinnen).
+            # "kracht" en "arbeid" zijn wél gewone Nederlandse woorden
+            # (vgl. "de kracht van je woorden", "ik ga naar mijn arbeid")
+            # — die staan daarom NIET hier, zie de haakje-vereiste check
+            # verderop.
+            "energie_kinetisch", "energie_potentieel", "snelheid_na",
+            "afstand_na", "val_met_weerstand", "projectiel",
         ]
         if any(re.search(rf"\b{k}\b", t) for k in math_keywords):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
         # "wortel", "bereken", "afgeleide", "integraal", "limiet", "dv",
-        # "gemiddelde", "modus", "regressie", "correlatie", "binomiaal" en
-        # "normaal" enkel herkennen als ECHTE functie-aanroep (naam direct
-        # gevolgd door een openingshaakje) — zie toelichting hierboven
-        # waarom deze niet in de brede math_keywords-lijst staan.
-        if re.search(r'\b(wortel|bereken|afgeleide|integraal|limiet|dv|gemiddelde|modus|regressie|correlatie|binomiaal|normaal)\s*\(', t):
+        # "gemiddelde", "modus", "regressie", "correlatie", "binomiaal",
+        # "normaal", "kracht" en "arbeid" enkel herkennen als ECHTE
+        # functie-aanroep (naam direct gevolgd door een openingshaakje) —
+        # zie toelichting hierboven waarom deze niet in de brede
+        # math_keywords-lijst staan.
+        if re.search(r'\b(wortel|bereken|afgeleide|integraal|limiet|dv|gemiddelde|modus|regressie|correlatie|binomiaal|normaal|kracht|arbeid)\s*\(', t):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
