@@ -119,13 +119,17 @@ class WeatherModule:
         if "vandaag" in t:
             return 0
 
-        # Specifieke weekdag, bv. "weer op maandag"
+        # Specifieke weekdag, bv. "weer op maandag". Een expliciet genoemde
+        # dagnaam betekent ALTIJD de eerstvolgende gelegenheid — ook als
+        # vandaag toevallig die dag is, dan is "zaterdag" de zaterdag over
+        # een week, nooit vandaag. Voor vandaag zegt Kevin gewoon "wat is
+        # het weer" of "...vandaag", niet de naam van de dag zelf.
         for naam, weekday_nr in WEEKDAGEN.items():
             if naam in t:
                 vandaag = datetime.now().weekday()
                 offset = (weekday_nr - vandaag) % 7
                 if offset == 0:
-                    offset = 0  # zelfde dag = vandaag bedoeld
+                    offset = 7  # vandaag toevallig die dag = volgende week bedoeld
                 return offset
 
         return 0  # standaard: vandaag

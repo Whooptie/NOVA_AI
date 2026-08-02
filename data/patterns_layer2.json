@@ -5,37 +5,38 @@
         "12": 56,
         "15": 44,
         "19": 129,
-        "20": 66,
-        "21": 123,
+        "20": 149,
+        "21": 133,
         "16": 37,
         "17": 2,
         "18": 27,
         "22": 86,
         "23": 61,
-        "10": 35,
+        "10": 42,
         "13": 29,
         "11": 19,
         "14": 12,
         "6": 15,
-        "7": 9
+        "7": 9,
+        "9": 12
       },
       "days": {
-        "zondag": 128,
+        "zondag": 147,
         "maandag": 34,
         "dinsdag": 81,
         "woensdag": 63,
         "donderdag": 52,
         "vrijdag": 163,
-        "zaterdag": 229
+        "zaterdag": 322
       },
-      "total": 750,
-      "most_common_hour": 19,
-      "confidence": 0.172,
+      "total": 862,
+      "most_common_hour": 20,
+      "confidence": 0.173,
       "day_frequency": {
-        "maandag": 0.317,
-        "dinsdag": 0.756,
-        "woensdag": 0.588,
-        "donderdag": 0.485,
+        "maandag": 0.276,
+        "dinsdag": 0.658,
+        "woensdag": 0.512,
+        "donderdag": 0.422,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
         "zondag": 1.0
@@ -46,37 +47,38 @@
         "12": 62,
         "15": 32,
         "19": 117,
-        "20": 70,
-        "21": 109,
+        "20": 148,
+        "21": 118,
         "16": 20,
         "17": 2,
         "18": 23,
         "22": 89,
         "23": 58,
-        "10": 31,
+        "10": 37,
         "13": 32,
         "11": 17,
         "14": 9,
         "6": 13,
-        "7": 9
+        "7": 9,
+        "9": 10
       },
       "days": {
-        "zondag": 113,
+        "zondag": 129,
         "maandag": 32,
         "dinsdag": 78,
         "woensdag": 59,
         "donderdag": 43,
         "vrijdag": 135,
-        "zaterdag": 233
+        "zaterdag": 320
       },
-      "total": 693,
-      "most_common_hour": 19,
-      "confidence": 0.169,
+      "total": 796,
+      "most_common_hour": 20,
+      "confidence": 0.186,
       "day_frequency": {
-        "maandag": 0.323,
-        "dinsdag": 0.788,
-        "woensdag": 0.596,
-        "donderdag": 0.434,
+        "maandag": 0.281,
+        "dinsdag": 0.686,
+        "woensdag": 0.519,
+        "donderdag": 0.378,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
         "zondag": 1.0
@@ -187,7 +189,7 @@
         "22": 5,
         "16": 4,
         "15": 2,
-        "20": 7,
+        "20": 13,
         "19": 10,
         "10": 1,
         "13": 1,
@@ -199,19 +201,19 @@
       "days": {
         "dinsdag": 9,
         "vrijdag": 9,
-        "zaterdag": 7,
+        "zaterdag": 13,
         "zondag": 10,
         "donderdag": 5,
         "maandag": 3
       },
-      "total": 43,
-      "most_common_hour": 19,
-      "confidence": 0.233,
+      "total": 49,
+      "most_common_hour": 20,
+      "confidence": 0.265,
       "day_frequency": {
-        "maandag": 0.488,
+        "maandag": 0.429,
         "dinsdag": 1.0,
         "woensdag": 0.0,
-        "donderdag": 0.814,
+        "donderdag": 0.714,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
         "zondag": 1.0
@@ -219,27 +221,30 @@
     },
     "topic_detected:math": {
       "hours": {
-        "21": 3,
+        "21": 12,
         "16": 1,
         "23": 5,
-        "13": 4
+        "13": 4,
+        "20": 51,
+        "9": 5,
+        "10": 5
       },
       "days": {
         "dinsdag": 2,
-        "zaterdag": 10,
-        "zondag": 1
+        "zaterdag": 70,
+        "zondag": 11
       },
-      "total": 13,
-      "most_common_hour": 23,
-      "confidence": 0.385,
+      "total": 83,
+      "most_common_hour": 20,
+      "confidence": 0.614,
       "day_frequency": {
         "maandag": 0.0,
-        "dinsdag": 1.0,
+        "dinsdag": 0.169,
         "woensdag": 0.0,
         "donderdag": 0.0,
         "vrijdag": 0.0,
         "zaterdag": 1.0,
-        "zondag": 0.538
+        "zondag": 0.928
       }
     },
     "topic_detected:definitie": {
@@ -727,23 +732,25 @@
       "hours": {
         "18": 3,
         "19": 42,
-        "20": 9,
-        "21": 85,
+        "20": 47,
+        "21": 91,
         "22": 32,
         "6": 12,
         "7": 22,
-        "10": 2,
+        "10": 10,
         "11": 22,
-        "12": 4
+        "12": 4,
+        "9": 22
       },
       "days": {
         "donderdag": 113,
         "vrijdag": 82,
-        "zaterdag": 38
+        "zaterdag": 82,
+        "zondag": 30
       },
-      "total": 233,
+      "total": 307,
       "most_common_hour": 21,
-      "confidence": 0.365,
+      "confidence": 0.296,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
@@ -751,36 +758,39 @@
         "donderdag": 1.0,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
-        "zondag": 0.0
+        "zondag": 0.684
       }
     },
     "activity_started:coding_gedetecteerd": {
       "hours": {
         "18": 7,
         "19": 26,
-        "21": 26,
+        "21": 28,
         "6": 6,
         "7": 2,
         "22": 4,
-        "10": 2,
-        "11": 4
+        "10": 46,
+        "11": 4,
+        "20": 4,
+        "9": 8
       },
       "days": {
         "donderdag": 50,
         "vrijdag": 21,
-        "zaterdag": 6
+        "zaterdag": 12,
+        "zondag": 52
       },
-      "total": 77,
-      "most_common_hour": 19,
-      "confidence": 0.338,
+      "total": 135,
+      "most_common_hour": 10,
+      "confidence": 0.341,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
         "woensdag": 0.0,
         "donderdag": 1.0,
         "vrijdag": 1.0,
-        "zaterdag": 0.545,
-        "zondag": 0.0
+        "zaterdag": 0.622,
+        "zondag": 1.0
       }
     },
     "activity_started:talking_to_nova_gedetecteerd": {
@@ -789,56 +799,62 @@
         "22": 16,
         "6": 24,
         "7": 16,
-        "21": 15,
-        "10": 7,
+        "21": 26,
+        "10": 13,
         "11": 11,
         "12": 5,
-        "13": 8
+        "13": 8,
+        "20": 124,
+        "9": 18
       },
       "days": {
         "donderdag": 3,
         "vrijdag": 69,
-        "zaterdag": 52
+        "zaterdag": 187,
+        "zondag": 24
       },
-      "total": 124,
-      "most_common_hour": 6,
-      "confidence": 0.194,
+      "total": 283,
+      "most_common_hour": 20,
+      "confidence": 0.438,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
         "woensdag": 0.0,
-        "donderdag": 0.169,
+        "donderdag": 0.074,
         "vrijdag": 1.0,
         "zaterdag": 1.0,
-        "zondag": 0.0
+        "zondag": 0.594
       }
     },
     "activity_started:werken_aan_nova_gedetecteerd": {
       "hours": {
         "19": 21,
-        "21": 26,
+        "21": 28,
         "6": 6,
         "7": 2,
         "22": 4,
-        "10": 2,
-        "11": 4
+        "10": 46,
+        "11": 4,
+        "20": 4,
+        "9": 8
       },
       "days": {
         "donderdag": 38,
         "vrijdag": 21,
-        "zaterdag": 6
+        "zaterdag": 12,
+        "zondag": 52
       },
-      "total": 65,
-      "most_common_hour": 21,
-      "confidence": 0.4,
+      "total": 123,
+      "most_common_hour": 10,
+      "confidence": 0.374,
       "day_frequency": {
         "maandag": 0.0,
         "dinsdag": 0.0,
         "woensdag": 0.0,
         "donderdag": 1.0,
         "vrijdag": 1.0,
-        "zaterdag": 0.646,
-        "zondag": 0.0
+        "zaterdag": 0.683,
+        "zondag": 1.0
       }
     },
     "topic_detected:definitie_fysica": {
@@ -1013,9 +1029,89 @@
         "zaterdag": 1.0,
         "zondag": 0.0
       }
+    },
+    "topic_detected:conversie": {
+      "hours": {
+        "9": 5
+      },
+      "days": {
+        "zondag": 5
+      },
+      "total": 5,
+      "most_common_hour": 9,
+      "confidence": 1.0,
+      "day_frequency": {
+        "maandag": 0.0,
+        "dinsdag": 0.0,
+        "woensdag": 0.0,
+        "donderdag": 0.0,
+        "vrijdag": 0.0,
+        "zaterdag": 0.0,
+        "zondag": 1.0
+      }
     }
   },
   "anomalies": [
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785659115.6185315,
+      "omschrijving": "'topic_detected:math' kwam voor om 10u, terwijl dit normaal rond 20u gebeurt (confidence 0.622)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785658904.1212785,
+      "omschrijving": "'topic_detected:math' kwam voor om 10u, terwijl dit normaal rond 20u gebeurt (confidence 0.63)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785658892.2955031,
+      "omschrijving": "'topic_detected:math' kwam voor om 10u, terwijl dit normaal rond 20u gebeurt (confidence 0.637)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785658881.3674443,
+      "omschrijving": "'topic_detected:math' kwam voor om 10u, terwijl dit normaal rond 20u gebeurt (confidence 0.646)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785658871.4935424,
+      "omschrijving": "'topic_detected:math' kwam voor om 10u, terwijl dit normaal rond 20u gebeurt (confidence 0.654)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785657403.9673288,
+      "omschrijving": "'topic_detected:math' kwam voor om 9u, terwijl dit normaal rond 20u gebeurt (confidence 0.662)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785657394.6327972,
+      "omschrijving": "'topic_detected:math' kwam voor om 9u, terwijl dit normaal rond 20u gebeurt (confidence 0.671)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785657383.3515966,
+      "omschrijving": "'topic_detected:math' kwam voor om 9u, terwijl dit normaal rond 20u gebeurt (confidence 0.68)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785657374.7641728,
+      "omschrijving": "'topic_detected:math' kwam voor om 9u, terwijl dit normaal rond 20u gebeurt (confidence 0.689)."
+    },
+    {
+      "event_type": "topic_detected:math",
+      "type": "ongewone_timing",
+      "timestamp": 1785656912.894374,
+      "omschrijving": "'topic_detected:math' kwam voor om 9u, terwijl dit normaal rond 20u gebeurt (confidence 0.699)."
+    },
     {
       "event_type": "topic_detected:time",
       "type": "ongewone_timing",

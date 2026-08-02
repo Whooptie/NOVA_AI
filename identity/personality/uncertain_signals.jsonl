@@ -203,3 +203,94 @@
 {"text": "hallo", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T19:25:28.067056"}
 {"text": "xyzabc test 123", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0196, "bron": "model_fallback", "tijdstip": "2026-08-01T19:26:12.812081"}
 {"text": "hoe warm wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0797, "bron": "model_fallback", "tijdstip": "2026-08-01T19:29:22.271933"}
+{"text": "5 + 3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:16:21.511904"}
+{"text": "10 * 4 / 2", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-01T20:16:28.218024"}
+{"text": "2^10", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-01T20:16:39.830903"}
+{"text": "(2 + 3) * 4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:16:46.250813"}
+{"text": "-5 + 3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:16:53.188659"}
+{"text": "bereken 10 keer 4", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0916, "bron": "model_fallback", "tijdstip": "2026-08-01T20:17:16.742357"}
+{"text": "sqrt(16)", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0772, "bron": "model_fallback", "tijdstip": "2026-08-01T20:17:23.348266"}
+{"text": "cos(0)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:17:39.616591"}
+{"text": "tan(0)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:17:51.796240"}
+{"text": "log(100)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:17:58.923313"}
+{"text": "ln(1)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:18:06.498010"}
+{"text": "exp(0)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:18:12.947181"}
+{"text": "abs(-7)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:18:24.456330"}
+{"text": "round(3.14159, 2)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:18:36.103853"}
+{"text": "pi", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:18:43.788922"}
+{"text": "e", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:18:47.705568"}
+{"text": "[1,2,3] + [4,5,6]", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:18:58.388778"}
+{"text": "dot([1,2],[3,4])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:19:06.666501"}
+{"text": "cross([1,0,0],[0,1,0])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:19:16.139364"}
+{"text": "norm([3,4])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:19:23.289915"}
+{"text": "unit([3,4])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:19:32.120098"}
+{"text": "proj([1,2],[3,4])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:19:38.796643"}
+{"text": "[[1,2],[3,4]] + [[5,6],[7,8]]", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:20:03.001828"}
+{"text": "[[1,2],[3,4]] * [[5,6],[7,8]]", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:20:11.956553"}
+{"text": "det([[1,2],[3,4]])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:20:30.158572"}
+{"text": "inverse([[1,2],[3,4]])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:20:36.311615"}
+{"text": "transpose([[1,2],[3,4]])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:20:43.313911"}
+{"text": "identity(3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:20:51.627490"}
+{"text": "rotX(90)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:21:02.946038"}
+{"text": "rotY(90)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:21:08.392702"}
+{"text": "rotZ(90)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:21:14.309406"}
+{"text": "rotAxis([0,0,1], 90)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:21:23.067434"}
+{"text": "solve([[2,1],[1,-1]], [5,1])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:21:33.462462"}
+{"text": "solveGauss([[2,1],[1,-1]], [5,1])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:21:42.495076"}
+{"text": "5m + 30cm", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:21:52.147810"}
+{"text": "10kg * 2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:22:04.717616"}
+{"text": "3m / 2s", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:22:11.646574"}
+{"text": "0°C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:22:21.612248"}
+{"text": "5 / 0", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:22:30.181658"}
+{"text": "5xyz", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:22:37.040304"}
+{"text": "5 + * 3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:22:44.643953"}
+{"text": "foo(5)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:23:02.302282"}
+{"text": "pi", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:28:14.844944"}
+{"text": "e", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:28:18.538696"}
+{"text": "20°C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:29:13.347186"}
+{"text": "0C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:40:47.749722"}
+{"text": "20C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:40:53.735533"}
+{"text": "0°C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:41:00.598534"}
+{"text": "100°C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:41:05.859592"}
+{"text": "32°F", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:41:16.047234"}
+{"text": "det([[1,2],[3,4]])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:41:23.382796"}
+{"text": "dot([1,2],[3,4])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:41:31.657167"}
+{"text": "rotX(90)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:41:36.670486"}
+{"text": "identity(3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:41:48.239064"}
+{"text": "inverse([[1,2],[3,4]])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:42:01.049268"}
+{"text": "pi", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:42:28.853908"}
+{"text": "0C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:45:23.781837"}
+{"text": "20C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:45:31.288800"}
+{"text": "0°C", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:45:36.574559"}
+{"text": "5m", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T20:45:40.863321"}
+{"text": "10kg", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:45:48.764811"}
+{"text": "5m.to(cm)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:53:50.148004"}
+{"text": "100km.to(m)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:53:56.189712"}
+{"text": "0degC.to(degF)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:54:03.010792"}
+{"text": "1000m.to(km)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:54:10.426564"}
+{"text": "1kg.to(g)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:54:20.121635"}
+{"text": "1kg.to(g)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:59:24.265140"}
+{"text": "1mile.to(m)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:59:29.358809"}
+{"text": "1lb.to(kg)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:59:37.571292"}
+{"text": "100kmh.to(mph)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T20:59:56.371234"}
+{"text": "1cal.to(J)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T21:00:01.526584"}
+{"text": "1atm.to(Pa)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T21:00:07.288786"}
+{"text": "1gal.to(L)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T21:00:13.893106"}
+{"text": "90deg.to(rad)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T21:00:20.261992"}
+{"text": "1week.to(day)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T21:00:26.241418"}
+{"text": "1GB.to(kB)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T21:00:35.890372"}
+{"text": "1kg.to(g)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T21:03:03.757256"}
+{"text": "3m / 2s", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-01T21:03:10.463684"}
+{"text": "2^10", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-01T21:03:18.064673"}
+{"text": "1 kg in gram", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0178, "bron": "model_fallback", "tijdstip": "2026-08-02T09:39:54.090777"}
+{"text": "5m*5m*5m", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T09:48:32.051359"}
+{"text": "solveQuadratic(1, -5, 6)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T09:56:13.509522"}
+{"text": "newton(x^2 - 4, 1)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T09:56:22.371800"}
+{"text": "polyeval(x^2 + 2x + 1, 3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T09:56:33.517939"}
+{"text": "extremum(-x^2 + 4x, 0, 5)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T09:56:40.545213"}
+{"text": "wortel(1, -5, 6)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T10:21:10.419688"}
+{"text": "nulpunt(x^2-4, 1)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T10:21:18.998634"}
+{"text": "bereken(x^2+2x+1, 3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T10:21:31.307762"}
+{"text": "minmax(-x^2+4x, 0, 5)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T10:21:42.344849"}
+{"text": "kan je dat even berekenen", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0485, "bron": "model_fallback", "tijdstip": "2026-08-02T10:22:11.063347"}
+{"text": "nulpunt(x^2-4, 1)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T10:25:14.644093"}

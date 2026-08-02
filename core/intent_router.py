@@ -1030,6 +1030,68 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Eenhedenconversie in natuurlijke taal
+    # ---------------------------------------------------------
+    # NIEUW (1 aug 2026): vertaalt natuurlijke zinnen ("hoeveel ml is
+    # 250 cl?", "1 kg in gram") naar math.py's .to(...)-syntax. Puur
+    # symbolisch (regex + woordenboek), geen ML nodig. Beperkt tot een
+    # praktische lijst veelgebruikte Nederlandse eenheidswoorden — code-
+    # afkortingen (kg, cl, ...) werken via detect_math() al vanzelf.
+    NL_EENHEDEN = {
+        "meter": "m", "meters": "m", "centimeter": "cm", "centimeters": "cm",
+        "millimeter": "mm", "millimeters": "mm", "kilometer": "km", "kilometers": "km",
+        "mijl": "mile", "mijlen": "mile", "voet": "ft", "yard": "yard",
+        "gram": "g", "kilo": "kg", "kilogram": "kg", "milligram": "mg",
+        "pond": "lb", "ons": "oz",
+        "liter": "L", "liters": "L", "milliliter": "ml", "milliliters": "ml",
+        "centiliter": "cl", "centiliters": "cl", "deciliter": "dl", "deciliters": "dl",
+        "gallon": "gal",
+        "seconde": "s", "seconden": "s", "minuut": "min", "minuten": "min",
+        "uur": "h", "uren": "h", "dag": "day", "dagen": "day", "week": "week", "weken": "week",
+        "celsius": "degC", "fahrenheit": "degF", "kelvin": "K",
+        "graden": "deg", "graad": "deg", "radialen": "rad", "radiaal": "rad",
+        "calorie": "cal", "calorieën": "cal", "kilocalorie": "kcal", "kilocalorieën": "kcal",
+        "byte": "byte", "bytes": "byte", "kilobyte": "kB", "megabyte": "MB", "gigabyte": "GB",
+    }
+
+    def _eenheid_naar_code(self, woord):
+        w = woord.strip().lower()
+        return self.NL_EENHEDEN.get(w, woord.strip())
+
+    def detect_conversie(self, text):
+        t = text.strip()
+
+        # patroon A: "hoeveel <doel> is <getal> <bron>"
+        m = re.search(
+            r'hoeveel\s+([a-zA-Zµ°éë]+)\s+is\s+(\d+(?:[.,]\d+)?)\s*([a-zA-Zµ°]+)',
+            t, re.IGNORECASE
+        )
+        if m:
+            doel_woord, getal, bron_woord = m.groups()
+            bron = self._eenheid_naar_code(bron_woord)
+            doel = self._eenheid_naar_code(doel_woord)
+            getal = getal.replace(",", ".")
+            expr = f"{getal}{bron}.to({doel})"
+            self.event_bus.publish("intent_math", {"expr": expr})
+            return True
+
+        # patroon B: "<getal> <bron> in <doel>"
+        m = re.search(
+            r'(\d+(?:[.,]\d+)?)\s*([a-zA-Zµ°]+)\s+in\s+([a-zA-Zµ°éë]+)',
+            t, re.IGNORECASE
+        )
+        if m:
+            getal, bron_woord, doel_woord = m.groups()
+            bron = self._eenheid_naar_code(bron_woord)
+            doel = self._eenheid_naar_code(doel_woord)
+            getal = getal.replace(",", ".")
+            expr = f"{getal}{bron}.to({doel})"
+            self.event_bus.publish("intent_math", {"expr": expr})
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Math
     # ---------------------------------------------------------
     def detect_math(self, text):
@@ -1044,6 +1106,25 @@ class IntentRouter:
         if re.fullmatch(r"\d+(\.\d+)?\s*°[CF]", t):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
+
+        # UITBREIDING (1 aug 2026): eenhedenconversie via .to(...) (bv.
+        # "5m.to(cm)") bevat geen operator/keyword en werd daardoor nooit
+        # herkend als math-intent. Het patroon ".to(" is heel specifiek
+        # voor conversie-syntax en komt niet voor in gewone zinnen.
+        if re.search(r'\.to\(', t):
+            self.event_bus.publish("intent_math", {"expr": text})
+            return True
+
+        # UITBREIDING (1 aug 2026): getal direct gevolgd door een kale
+        # eenheid-letter (bv. "0C", "20C", "5m", "10kg") werd nooit
+        # herkend, omdat er geen operator/keyword/gradenteken in zit.
+        # Nodig zodat bv. "0C" wél naar math.py gaat — daar geeft de
+        # dubbelzinnigheid-check een duidelijke foutmelding i.p.v. dat
+        # de zin in de fallback verdwijnt.
+        if re.fullmatch(r"\d+(\.\d+)?\s*[A-Za-zµ]+", t):
+            self.event_bus.publish("intent_math", {"expr": text})
+            return True
+
         # BUGFIX (11 juli 2026): "tan" (en andere korte math_keywords)
         # zaten voorheen als kale substring-check, waardoor gewone
         # woorden die deze letters toevallig bevatten (bv. "toestand"
@@ -1051,10 +1132,48 @@ class IntentRouter:
         # We gebruiken nu woordgrenzen (\b) zodat enkel het EXACTE
         # keyword als apart woord matcht, niet als deel van een ander
         # woord.
-        math_keywords = ["sqrt", "sin", "cos", "tan", "log", "ln", "exp", "abs", "round"]
+        # UITBREIDING (1 aug 2026): math_keywords bevatte enkel de basis
+        # wiskundige functies, niet de vector/matrix/rotatie-functienamen
+        # uit math.py's self.funcs. Daardoor werden aanroepen als
+        # "det(...)", "dot(...)", "rotX(...)" nooit herkend.
+        math_keywords = [
+            "sqrt", "sin", "cos", "tan", "log", "ln", "exp", "abs", "round",
+            "dot", "norm", "cross", "unit", "proj", "transpose", "det", "inverse",
+            "identity", "rotX", "rotx", "rotY", "roty", "rotZ", "rotz",
+            "rotAxis", "rotaxis", "solve", "solveGauss", "solvegauss",
+            # UITBREIDING (Fase 3, Algebra-module): zonder deze namen werd
+            # bv. "extremum(x2, 0, 5)" (geen +/-/*/^ in de tekst) nooit
+            # herkend als math-intent en verdween hij stil in de fallback.
+            # LET OP: "wortel" en "bereken" bewust NIET in deze lijst —
+            # dat zijn gewone Nederlandse woorden (vgl. "de wortel van het
+            # probleem", "ik moet nog berekenen wat...") die als kale
+            # substring-match veel te breed zouden triggeren. Zie de
+            # aparte, strengere check hieronder die enkel matcht als er
+            # ook een openingshaakje op volgt (dus echt een functie-
+            # aanroep is, bv. "wortel(1,-5,6)").
+            "solveQuadratic", "solvequadratic",
+            "newton", "nulpunt", "polyeval", "extremum", "minmax",
+        ]
         if any(re.search(rf"\b{k}\b", t) for k in math_keywords):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
+
+        # "wortel" en "bereken" enkel herkennen als ECHTE functie-aanroep
+        # (naam direct gevolgd door een openingshaakje) — zie toelichting
+        # hierboven waarom deze niet in de brede math_keywords-lijst staan.
+        if re.search(r'\b(wortel|bereken)\s*\(', t):
+            self.event_bus.publish("intent_math", {"expr": text})
+            return True
+
+        # LET OP — bewust apart gehouden van math_keywords hierboven:
+        # "pi" en "e" zijn losse, korte woorden die ook buiten wiskunde-
+        # context kunnen voorkomen. Enkel toevoegen als je dit risico
+        # aanvaardt.
+        math_constants = ["pi", "e"]
+        if any(re.search(rf"\b{k}\b", t) for k in math_constants):
+            self.event_bus.publish("intent_math", {"expr": text})
+            return True
+
         return False
 
     # ---------------------------------------------------------
@@ -1598,6 +1717,11 @@ class IntentRouter:
             # per ongeluk door de identity-patronen opgepikt worden
             ("self_architecture", self.detect_self_architecture),
             ("identity",         self.detect_identity_question),
+            # conversie vóór math: een conversiezin ("hoeveel ml is
+            # 250 cl?") moet eerst als conversie herkend en vertaald
+            # worden naar .to(...)-syntax, vóór detect_math() de zin
+            # eventueel al op een andere manier oppikt
+            ("conversie",        self.detect_conversie),
             ("math",             self.detect_math),
         ]
 
