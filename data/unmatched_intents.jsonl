@@ -28,3 +28,24 @@
 {"tekst": "xyzabc test 123", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T19:09:49.888243"}
 {"tekst": "xyzabc test 123", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T19:26:12.867071"}
 {"tekst": "hoe warm wordt het morgen", "hoogste_gok": "weather", "confidence": 0.2627, "tijdstip": "2026-08-01T19:29:22.302932"}
+{"tekst": "bereken 10 keer 4", "hoogste_gok": "math", "confidence": 0.2816, "tijdstip": "2026-08-01T20:17:16.778360"}
+{"tekst": "pi", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:18:43.832477"}
+{"tekst": "e", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:18:47.738567"}
+{"tekst": "dot([1,2],[3,4])", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:19:06.746350"}
+{"tekst": "cross([1,0,0],[0,1,0])", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:19:16.194653"}
+{"tekst": "norm([3,4])", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:19:23.322912"}
+{"tekst": "unit([3,4])", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:19:32.155097"}
+{"tekst": "proj([1,2],[3,4])", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:19:38.829019"}
+{"tekst": "det([[1,2],[3,4]])", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:20:30.192656"}
+{"tekst": "inverse([[1,2],[3,4]])", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:20:36.345443"}
+{"tekst": "transpose([[1,2],[3,4]])", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:20:43.355465"}
+{"tekst": "identity(3)", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:20:51.662493"}
+{"tekst": "rotX(90)", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:21:02.978077"}
+{"tekst": "rotY(90)", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:21:08.427126"}
+{"tekst": "rotZ(90)", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:21:14.342692"}
+{"tekst": "rotAxis([0,0,1], 90)", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:21:23.101450"}
+{"tekst": "5xyz", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:22:37.079813"}
+{"tekst": "foo(5)", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:23:02.339329"}
+{"tekst": "0C", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:40:47.793718"}
+{"tekst": "20C", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-01T20:40:53.792023"}
+{"tekst": "kan je dat even berekenen", "hoogste_gok": "identity", "confidence": 0.183, "tijdstip": "2026-08-02T10:22:11.100350"}

@@ -146,8 +146,18 @@ class MathModule:
             "rotaxis": self._rotAxis,   # alias voor router die lowercase maakt
             "solve": self._solve,
             "solveGauss": self._solveGauss,
-            "solvegauss": self._solveGauss   # alias voor router die lowercase maakt
+            "solvegauss": self._solveGauss,   # alias voor router die lowercase maakt
 
+            # Fase 3 — Algebra-module (numeriek), 100% puur symbolisch
+            "solveQuadratic": self._solveQuadratic,
+            "solvequadratic": self._solveQuadratic,   # alias voor router die lowercase maakt
+            "wortel": self._solveQuadratic,           # Nederlandse alias: "wortel(1,-5,6)"
+            "newton": self._newton,
+            "nulpunt": self._newton,                  # Nederlandse alias: "nulpunt(x^2-4, 1)"
+            "polyeval": self._polyeval,
+            "bereken": self._polyeval,                # Nederlandse alias: "bereken(x^2+2x+1, 3)"
+            "extremum": self._extremum,
+            "minmax": self._extremum,                 # Nederlandse alias: "minmax(-x^2+4x, 0, 5)"
         }
 
         # constante waarden
@@ -159,6 +169,15 @@ class MathModule:
         # SI-basiseenheden
         base_units = {
             "m":   ({"m": 1}, 1),
+            # BUGFIX (1 aug 2026): "g" (gram) ontbrak als grondeenheid.
+            # "kg" stond hier met factor 1, waardoor het prefix-systeem
+            # hieronder er bovenop bouwde en onzinnige combinaties als
+            # "kkg"/"mkg" genereerde in plaats van het verwachte/normale
+            # "g"/"mg". Nu is "g" de grondeenheid (SI-conventie: kilogram
+            # is de enige basiseenheid met prefix erin), en "kg" blijft
+            # apart bestaan als alias voor compatibiliteit met bestaande
+            # code/tests.
+            "g":   ({"kg": 1}, 0.001),
             "kg":  ({"kg": 1}, 1),
             "s":   ({"s": 1}, 1),
             "A":   ({"A": 1}, 1),
@@ -198,6 +217,67 @@ class MathModule:
             "rpm": ({"s": -1}, 2 * math.pi / 60),
             "Wh": ({"kg": 1, "m": 2, "s": -2}, 3600),   # 1 Wh = 3600 J
             "Ah": ({"A": 1, "s": 1}, 3600),             # 1 Ah = 3600 C
+
+            # --------------------------------------------------------
+            # UITBREIDING (1 aug 2026): veelgebruikte niet-SI eenheden
+            # die ontbraken. Allemaal vaste, bekende omrekenfactoren —
+            # puur symbolisch, geen enkele hiervan vereist ML/generatie.
+            # --------------------------------------------------------
+
+            # tijd (naast "h" dat al bestond)
+            "min": ({"s": 1}, 60),
+            "day": ({"s": 1}, 86400),
+            # LET OP: bewust GEEN losse "d" voor dag toegevoegd — "d" is
+            # al de deci-prefix (1e-1) in het bestaande prefix-systeem.
+            # Gebruik "day" voluit om dubbelzinnigheid te vermijden.
+            "week": ({"s": 1}, 604800),
+
+            # lengte — imperial
+            "mile": ({"m": 1}, 1609.344),
+            "mi":   ({"m": 1}, 1609.344),
+            "ft":   ({"m": 1}, 0.3048),
+            "foot": ({"m": 1}, 0.3048),
+            "inch": ({"m": 1}, 0.0254),
+            "yard": ({"m": 1}, 0.9144),
+            "yd":   ({"m": 1}, 0.9144),
+
+            # massa — imperial
+            "lb":  ({"kg": 1}, 0.45359237),
+            "lbs": ({"kg": 1}, 0.45359237),
+            "oz":  ({"kg": 1}, 0.028349523125),
+            "ton": ({"kg": 1}, 1000),   # metrische ton
+
+            # snelheid — kant-en-klaar (naast "km / h" handmatig delen)
+            "kmh": ({"m": 1, "s": -1}, 1000 / 3600),
+            "kph": ({"m": 1, "s": -1}, 1000 / 3600),
+            "mph": ({"m": 1, "s": -1}, 1609.344 / 3600),
+
+            # energie
+            "cal":  ({"kg": 1, "m": 2, "s": -2}, 4.184),
+            "kcal": ({"kg": 1, "m": 2, "s": -2}, 4184),
+            "eV":   ({"kg": 1, "m": 2, "s": -2}, 1.602176634e-19),
+
+            # druk
+            "atm":  ({"kg": 1, "m": -1, "s": -2}, 101325),
+            "psi":  ({"kg": 1, "m": -1, "s": -2}, 6894.757293168),
+            "mmHg": ({"kg": 1, "m": -1, "s": -2}, 133.322387415),
+
+            # volume — imperial (Amerikaanse maten)
+            "gal": ({"m": 3}, 0.003785411784),
+            "pt":  ({"m": 3}, 0.000473176473),
+            "qt":  ({"m": 3}, 0.000946352946),
+
+            # hoek — dimensieloos (rad is de SI-eenheid, dus factor 1;
+            # deg is graden->radialen, relevant voor rotX/rotY/rotZ/rotAxis
+            # die intern radialen verwachten)
+            "rad": ({}, 1),
+            "deg": ({}, math.pi / 180),
+
+            # data (geen natuurkundige dimensie — eigen "byte"-dimensie)
+            "byte": ({"byte": 1}, 1),
+            "kB":   ({"byte": 1}, 1000),
+            "MB":   ({"byte": 1}, 1000000),
+            "GB":   ({"byte": 1}, 1000000000),
         }
 
         prefixes = {
@@ -240,6 +320,15 @@ class MathModule:
                     continue
                 self.units[pname] = (dims, factor * pfactor)
 
+                # BUGFIX (1 aug 2026): "L" (liter) is de enige derived
+                # unit waarvoor de veelgebruikte kleine-letter-schrijfwijze
+                # (ml, cl, dl) geen risico op verwarring geeft — anders
+                # dan bv. Pa/pA. Zonder deze uitzondering bestond enkel
+                # de correcte SI-notatie "mL"/"cL", niet de in de praktijk
+                # vaker getypte "ml"/"cl".
+                if unit == "L":
+                    self.units[pname.lower()] = (dims, factor * pfactor)
+
         # herstel meter-eenheid
         self.units["m"] = ({"m": 1}, 1)
         self.units["meter"] = ({"m": 1}, 1)
@@ -265,7 +354,15 @@ class MathModule:
         expr = expr.translate(superscripts)
         # 1b. getal-exponent zonder ^ → voeg ^ toe
         #    voorbeelden: 10-4 → 10^-4
-        expr = re.sub(r'(\d+)-(\d+)', r'\1^-\2', expr)
+        # BUGFIX (Fase 3, Algebra-module): zonder de (?<!\^) negative
+        # lookbehind greep deze regel ook in bij expressies als "x^2-4"
+        # (bedoeld als x²-4, dus x-kwadraat MIN vier) — die had al een
+        # eigen "^" vlak ervoor staan, maar de regel voegde er stiekem
+        # nóg een "^" bovenop toe en maakte er "x^2^-4" (x tot de macht
+        # (2 tot de macht -4)) van, wiskundig compleet iets anders. Met
+        # de lookbehind slaat de regel niet meer toe zodra er al een "^"
+        # vlak vóór het eerste getal staat.
+        expr = re.sub(r'(?<!\^)(\d+)-(\d+)', r'\1^-\2', expr)
 
         # 1. unit + exponent → unit^exponent
         #    voorbeelden: m3 → m^3, m2 → m^2, s-1 → s^-1
@@ -601,6 +698,114 @@ class MathModule:
 
         return [[1 if i == j else 0 for j in range(n)] for i in range(n)]
 
+    # -----------------------------------------------------------
+    # Fase 3 — Algebra-module (numeriek), 100% puur symbolisch
+    # -----------------------------------------------------------
+
+    def _solveQuadratic(self, a, b, c):
+        # ax^2 + bx + c = 0
+        if not all(isinstance(v, (int, float)) for v in (a, b, c)):
+            raise ValueError("solveQuadratic verwacht drie getallen: a, b, c")
+
+        if a == 0:
+            # eigenlijk geen kwadratische maar een lineaire vergelijking
+            if b == 0:
+                raise ValueError("solveQuadratic: a en b zijn beide 0, geen oplosbare vergelijking")
+            return [-c / b]
+
+        discriminant = b ** 2 - 4 * a * c
+
+        if discriminant < 0:
+            # Nova ondersteunt nog geen complexe getallen (zie math_roadmap.md,
+            # Fase 5 punt 13 — nog niet gebouwd), dus we geven dit eerlijk aan
+            # i.p.v. een fout complex antwoord te verzinnen.
+            raise ValueError(
+                "solveQuadratic: geen reële oplossingen (discriminant < 0) — "
+                "complexe getallen zijn nog niet ondersteund in Nova"
+            )
+
+        if discriminant == 0:
+            return [-b / (2 * a)]
+
+        sqrt_d = math.sqrt(discriminant)
+        x1 = (-b + sqrt_d) / (2 * a)
+        x2 = (-b - sqrt_d) / (2 * a)
+        return sorted([x1, x2])
+
+    def _newton(self, f, x0, tol=1e-10, max_iter=100):
+        # Newton-Raphson: zoekt een wortel (f(x)=0) van een vrije expressie
+        # met x, bv. newton(x^2 - 4, 1) → zoekt vanaf startwaarde x0=1
+        if not callable(f):
+            raise ValueError("newton verwacht als eerste argument een expressie met x, bv. \"x^2 - 4\"")
+        if not isinstance(x0, (int, float)):
+            raise ValueError("newton verwacht een numerieke startwaarde x0")
+
+        h = 1e-6  # kleine stap voor numerieke afgeleide
+        x = x0
+
+        for _ in range(max_iter):
+            fx = f(x)
+            # numerieke afgeleide via centraal verschil
+            dfx = (f(x + h) - f(x - h)) / (2 * h)
+
+            if dfx == 0:
+                raise ValueError("newton: afgeleide is 0, geen verdere toenadering mogelijk (probeer een andere startwaarde)")
+
+            x_nieuw = x - fx / dfx
+
+            if abs(x_nieuw - x) < tol:
+                return x_nieuw
+
+            x = x_nieuw
+
+        raise ValueError(f"newton: geen convergentie na {max_iter} iteraties (probeer een andere startwaarde)")
+
+    def _polyeval(self, f, x):
+        # Evalueert een vrije expressie met x op een specifiek punt,
+        # bv. polyeval(x^3 + 2x - 5, 3) → vult x=3 in
+        if not callable(f):
+            raise ValueError("polyeval verwacht als eerste argument een expressie met x, bv. \"x^3 + 2x - 5\"")
+        if not isinstance(x, (int, float)):
+            raise ValueError("polyeval verwacht een numerieke waarde voor x")
+
+        return f(x)
+
+    def _extremum(self, f, start, eind, stappen=1000):
+        # Zoekt numeriek het minimum en maximum van een vrije expressie
+        # met x binnen een bereik [start, eind], bv.
+        # extremum(-x^2 + 4x, 0, 5) → zoekt minima/maxima tussen x=0 en x=5
+        if not callable(f):
+            raise ValueError("extremum verwacht als eerste argument een expressie met x, bv. \"-x^2 + 4x\"")
+        if not all(isinstance(v, (int, float)) for v in (start, eind)):
+            raise ValueError("extremum verwacht numerieke grenzen start en eind")
+        if start >= eind:
+            raise ValueError("extremum: start moet kleiner zijn dan eind")
+        if not isinstance(stappen, int) or stappen < 2:
+            raise ValueError("extremum: stappen moet een geheel getal ≥ 2 zijn")
+
+        beste_min = (start, f(start))
+        beste_max = (start, f(start))
+
+        # BUGFIX: x via de iteratie-index berekenen i.p.v. herhaaldelijk
+        # "x += stap" op te tellen — dat laatste stapelt kleine floating-
+        # point-afrondingsfouten op, waardoor het randpunt "eind" (bv. 5)
+        # er als 4.999999999999916 uitkwam i.p.v. netjes 5.
+        for i in range(stappen + 1):
+            x = start + (eind - start) * i / stappen
+            waarde = f(x)
+            if waarde < beste_min[1]:
+                beste_min = (x, waarde)
+            if waarde > beste_max[1]:
+                beste_max = (x, waarde)
+
+        # Afronden op 6 decimalen: haalt de laatste restjes floating-
+        # point-ruis weg (bv. 1.9999999999999793 → 2.0) zonder dat het
+        # numerieke resultaat merkbaar minder nauwkeurig wordt.
+        return {
+            "min": {"x": round(beste_min[0], 6), "waarde": round(beste_min[1], 6)},
+            "max": {"x": round(beste_max[0], 6), "waarde": round(beste_max[1], 6)},
+        }
+
     def _make_unitvalue(self, number, unit_name):
         # temperatuur-markers
         if isinstance(unit_name, tuple) and unit_name[0] == "TEMP":
@@ -618,7 +823,15 @@ class MathModule:
         dims, factor = self.units[unit_name]
         return UnitValue(number * factor, dims.copy(), label=unit_name).bind_math(self)
 
-    def _eval(self, node):
+    def _eval(self, node, variables=None):
+        # NIEUW (Fase 3, Algebra-module): optioneel 'variables'-dict
+        # (bv. {"x": 2.5}) waarmee newton()/polyeval()/extremum() een
+        # losse variabele als x kunnen laten meelopen tijdens het
+        # evalueren van een vrije expressie zoals "x^2 - 4". Bestaat
+        # deze parameter niet, dan gedraagt _eval() zich exact zoals
+        # voorheen (100% backward compatible, geen enkele bestaande
+        # aanroep hoeft aangepast te worden).
+
         # getallen
         if isinstance(node, ast.Num):          # <3.8
             return node.n
@@ -627,19 +840,38 @@ class MathModule:
     
         # vectoren (lijsten)
         if isinstance(node, ast.List):
-            return [self._eval(e) for e in node.elts]
+            return [self._eval(e, variables) for e in node.elts]
 
         # tuples (functie-argumenten)
         if isinstance(node, ast.Tuple):
-            return [self._eval(e) for e in node.elts]
+            return [self._eval(e, variables) for e in node.elts]
             
         # namen (constanten + eenheden)
         if isinstance(node, ast.Name):
             name = node.id
 
+            # NIEUW: los variabele-symbool (bv. "x") tijdens newton/
+            # polyeval/extremum — heeft voorrang op eenheden/constanten,
+            # want binnen zo'n expressie ís x de bedoelde variabele.
+            if variables is not None and name in variables:
+                return variables[name]
+
             # temperatuur-eenheden altijd via _make_unitvalue verwerken
             if name in ("degC", "degF"):
                 return ("TEMP", name)
+
+            # BUGFIX (1 aug 2026): kale "C" is dubbelzinnig — kan coulomb
+            # (SI-ladingseenheid, staat in self.units) of Celsius betekenen.
+            # Zonder deze check werd "0C" stilzwijgend als coulomb gelezen
+            # (0 A·s). We raden hier bewust NIET welke bedoeld is — dat zou
+            # in de helft van de gevallen alsnog fout gokken. In plaats
+            # daarvan een duidelijke fout die om het gradenteken vraagt.
+            if name == "C":
+                raise ValueError(
+                    "Dubbelzinnige eenheid 'C': bedoel je graden Celsius (°C) "
+                    "of coulomb (elektrische lading)? Typ het gradenteken erbij "
+                    "voor Celsius, bv. 0°C."
+                )
 
             # constante?
             if name in self.consts:
@@ -653,9 +885,10 @@ class MathModule:
             raise ValueError(f"Onbekende naam of eenheid: {name}")
 
         # binaire operatoren
+        # binaire operatoren
         if isinstance(node, ast.BinOp):
-            left = self._eval(node.left)
-            right = self._eval(node.right)
+            left = self._eval(node.left, variables)
+            right = self._eval(node.right, variables)
             op = self.ops[type(node.op)]
 
             # temperatuur-markers: forceer _make_unitvalue
@@ -678,7 +911,7 @@ class MathModule:
             # -----------------------------------------
             # matrix + matrix  /  matrix - matrix
             # -----------------------------------------
-            if isinstance(left, list) and isinstance(right, list):
+            if isinstance(left, list) and isinstance(right, list) and op in (operator.add, operator.sub):
                 if all(isinstance(row, list) for row in left) and all(isinstance(row, list) for row in right):
                     if len(left) != len(right) or any(len(a) != len(b) for a, b in zip(left, right)):
                         raise ValueError("matrix + matrix: dimensies komen niet overeen")
@@ -746,11 +979,11 @@ class MathModule:
         # unair (bv. -5)
         if isinstance(node, ast.UnaryOp):
             op = self.ops[type(node.op)]
-            return op(self._eval(node.operand))
+            return op(self._eval(node.operand, variables))
 
         # ⭐ 1. attribute access
         if isinstance(node, ast.Attribute):
-            obj = self._eval(node.value)
+            obj = self._eval(node.value, variables)
             attr = node.attr
             if hasattr(obj, attr):
                 return getattr(obj, attr)
@@ -763,7 +996,20 @@ class MathModule:
             if isinstance(node.func, ast.Attribute):
                 obj = self._eval(node.func.value)
                 method = node.func.attr
-                args = [self._eval(a) for a in node.args]
+
+                # BUGFIX (1 aug 2026): bij .to(cm) werd "cm" eerst via
+                # _eval() omgezet naar een UnitValue (0.01 m), omdat een
+                # los symbool normaal als eenheid-waarde wordt opgelost.
+                # _convert() verwacht de eenheid echter als STRING ("cm"),
+                # niet als UnitValue — dat gaf een verwarrende foutmelding
+                # ("Onbekende eenheid: 0.01 m" i.p.v. "cm"). Voor .to()
+                # specifiek gebruiken we daarom de kale naam als string
+                # wanneer het argument een simpele naam is (bv. cm, degF).
+                if method == "to" and len(node.args) == 1 and isinstance(node.args[0], ast.Name):
+                    args = [node.args[0].id]
+                else:
+                    args = [self._eval(a) for a in node.args]
+
                 if hasattr(obj, method):
                     return getattr(obj, method)(*args)
                 raise ValueError(f"Onbekende methode: {method}")
@@ -775,7 +1021,31 @@ class MathModule:
             if fname not in self.funcs:
                 raise ValueError(f"Onbekende functie: {fname}")
 
-            args = [self._eval(a) for a in node.args]
+            # NIEUW (Fase 3, Algebra-module): newton/polyeval/extremum
+            # werken met een VRIJE EXPRESSIE als eerste argument (bv.
+            # "x^2 - 4"), i.p.v. een kant-en-klare waarde. Normaal
+            # evalueert _eval() elk functie-argument meteen tot een
+            # getal — dat kan hier niet, want "x" heeft nog geen
+            # waarde. In plaats daarvan geven we deze drie functies
+            # een klein Python-functie-object mee (f) dat, ZODRA zij
+            # zelf een x-waarde kiezen, die expressie alsnog symbolisch
+            # evalueert via _eval(node, {"x": waarde}). Alle overige
+            # functies (sqrt, sin, det, ...) blijven ongewijzigd werken
+            # zoals voorheen.
+            EXPR_FUNCS = {"newton", "nulpunt", "polyeval", "bereken", "extremum", "minmax"}
+            if fname in EXPR_FUNCS:
+                if len(node.args) < 1:
+                    raise ValueError(f"{fname}: eerste argument moet een expressie met x zijn, bv. \"x^2 - 4\"")
+
+                expr_node = node.args[0]
+
+                def f(x_waarde, _expr_node=expr_node):
+                    return self._eval(_expr_node, {"x": x_waarde})
+
+                overige_args = [self._eval(a, variables) for a in node.args[1:]]
+                return self.funcs[fname](f, *overige_args)
+
+            args = [self._eval(a, variables) for a in node.args]
             return self.funcs[fname](*args)
 
         raise ValueError("Ongeldige expressie")
@@ -890,14 +1160,34 @@ class MathModule:
         return s
 
     def on_math(self, data, event_type=None):
-        expr = self.preprocess(data.get("expr", ""))
+        origineel = data.get("expr", "")
+        expr = self.preprocess(origineel)
 
         try:
             result = self.eval_expr(expr)
-            if isinstance(result, UnitValue):
-                msg = f"{expr} = {result}"
+            # BUGFIX (1 aug 2026): het bericht toonde voorheen de intern
+            # voorbewerkte expressie (met toegevoegde haakjes en *, bv.
+            # "(1*kg).to(g)"), wat er technisch/programmeur-achtig uitzag.
+            # We tonen nu de originele, door de gebruiker getypte tekst
+            # ("1kg.to(g)") — de berekening zelf blijft de voorbewerkte
+            # versie gebruiken, alleen de weergave verandert.
+
+            # NIEUW (Fase 3): extremum() geeft een dict {"min": {...},
+            # "max": {...}} terug — die rauw tonen ("{'min': {'x': ...") is
+            # niet leesbaar. Hier bouwen we er een nette Nederlandse zin
+            # van, gebruikmakend van de bestaande _format_value() voor
+            # nette getalnotatie.
+            if isinstance(result, dict) and "min" in result and "max" in result:
+                mn, mx = result["min"], result["max"]
+                msg = (
+                    f"{origineel} → "
+                    f"minimum {self._format_value(mn['waarde'])} bij x={self._format_value(mn['x'])}, "
+                    f"maximum {self._format_value(mx['waarde'])} bij x={self._format_value(mx['x'])}"
+                )
+            elif isinstance(result, UnitValue):
+                msg = f"{origineel} = {result}"
             else:
-                msg = f"{expr} = {result}"
+                msg = f"{origineel} = {result}"
 
         except Exception as e:
             err = str(e)
@@ -932,7 +1222,14 @@ class MathModule:
             elif "math domain error" in err:
                 msg = "Je probeert een ongeldige wiskundige operatie uit te voeren (bv. wortel van een negatief getal)."
 
-            # --- 6. fallback ---
+            # --- 6. Fase 3 algebra-functies: eigen foutmeldingen zijn
+            #        al volledig leesbaar Nederlands, dus die tonen we
+            #        rechtstreeks zonder het technische "Er ging iets
+            #        mis:"-voorvoegsel.
+            elif err.startswith(("solveQuadratic:", "newton:", "polyeval:", "extremum:")):
+                msg = err
+
+            # --- 7. fallback ---
             else:
                 msg = f"Er ging iets mis: {err}"
 
