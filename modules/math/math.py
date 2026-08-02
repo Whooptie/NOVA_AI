@@ -158,6 +158,28 @@ class MathModule:
             "bereken": self._polyeval,                # Nederlandse alias: "bereken(x^2+2x+1, 3)"
             "extremum": self._extremum,
             "minmax": self._extremum,                 # Nederlandse alias: "minmax(-x^2+4x, 0, 5)"
+
+            # Fase 3, punt 8 — Calculus-module (numeriek), 100% puur symbolisch
+            "afgeleide": self._afgeleide,              # afgeleide(x^2, 3) -> 6.0
+            "integraal": self._integraal,               # integraal(x^2, 0, 3) -> 9.0
+            "limiet": self._limiet,                     # limiet(sin(x)/x, 0) -> 1.0
+            "dv": self._dv,                             # dv(x-y, y0=1, van=0, tot=5) -> standaard RK4
+            "dv_euler": self._dv_euler,                 # expliciet Euler
+            "dv_rk4": self._dv_rk4,                     # expliciet RK4
+
+            # Fase 3, punt 9 — Statistiek-module, 100% puur symbolisch/numeriek
+            "gemiddelde": self._gemiddelde,             # gemiddelde([1,2,3,4]) -> 2.5
+            "mediaan": self._mediaan,                   # mediaan([1,3,2]) -> 2
+            "modus": self._modus,                       # modus([1,2,2,3]) -> [2]
+            "variantie": self._variantie,               # variantie([2,4,4,4,5,5,7,9]) -> 4.571429
+            "stdafwijking": self._stdafwijking,         # stdafwijking([2,4,4,4,5,5,7,9]) -> 2.13809
+            "regressie": self._regressie,               # regressie([1,2,3],[2,4,6]) -> {helling, snijpunt}
+            "correlatie": self._correlatie,             # correlatie([1,2,3],[2,4,6]) -> 1.0
+            "faculteit": self._faculteit,               # faculteit(5) -> 120
+            "combinaties": self._combinaties,           # combinaties(5,2) -> 10
+            "permutaties": self._permutaties,           # permutaties(5,2) -> 20
+            "binomiaal": self._binomiaal,               # binomiaal(10,3,0.5) -> kans
+            "normaal": self._normaal,                   # normaal(0) -> 0.5
         }
 
         # constante waarden
@@ -366,8 +388,15 @@ class MathModule:
 
         # 1. unit + exponent → unit^exponent
         #    voorbeelden: m3 → m^3, m2 → m^2, s-1 → s^-1
-        expr = re.sub(r'([A-Za-z]+)(\d+)', r'\1^\2', expr)
-        expr = re.sub(r'([A-Za-z]+)-(\d+)', r'\1^-\2', expr)
+        # BUGFIX (Fase 3, Calculus-module): zonder de (?!\w*\() negative
+        # lookahead greep deze regel ook in bij functienamen die op een
+        # cijfer eindigen, bv. "dv_rk4(...)" → "dv_rk^4(...)" (fout, want
+        # "^" wordt later "**" en "dv_rk" bestaat niet als functienaam).
+        # Met de lookahead slaat de regel niet meer toe als er verderop
+        # (evt. na nog meer letters/cijfers) een "(" volgt — dat betekent
+        # namelijk een functie-aanroep, geen eenheid-met-macht.
+        expr = re.sub(r'([A-Za-z]+)(\d+)(?!\w*\()', r'\1^\2', expr)
+        expr = re.sub(r'([A-Za-z]+)-(\d+)(?!\w*\()', r'\1^-\2', expr)
 
         # 2. µ → u
         expr = expr.replace("µ", "u")
@@ -806,6 +835,312 @@ class MathModule:
             "max": {"x": round(beste_max[0], 6), "waarde": round(beste_max[1], 6)},
         }
 
+    # -----------------------------------------------------------
+    # Fase 3, punt 8 — Calculus-module (numeriek), 100% puur symbolisch
+    # -----------------------------------------------------------
+
+    def _afgeleide(self, f, x):
+        # Numerieke afgeleide via centraal verschil: f'(x) ≈ (f(x+h)-f(x-h)) / 2h
+        # bv. afgeleide(x^2, 3) → 6.0 (helling van x² in het punt x=3)
+        if not callable(f):
+            raise ValueError("afgeleide verwacht als eerste argument een expressie met x, bv. \"x^2\"")
+        if not isinstance(x, (int, float)):
+            raise ValueError("afgeleide verwacht een numerieke waarde voor x")
+
+        h = 1e-6
+        resultaat = (f(x + h) - f(x - h)) / (2 * h)
+        return round(resultaat, 6)
+
+    def _integraal(self, f, a, b, stappen=1000):
+        # Numerieke integraal via de regel van Simpson (nauwkeuriger dan
+        # trapezium-regel bij hetzelfde aantal stappen), bv.
+        # integraal(x^2, 0, 3) → 9.0 (oppervlakte onder x² tussen 0 en 3)
+        if not callable(f):
+            raise ValueError("integraal verwacht als eerste argument een expressie met x, bv. \"x^2\"")
+        if not all(isinstance(v, (int, float)) for v in (a, b)):
+            raise ValueError("integraal verwacht numerieke grenzen a en b")
+        if a >= b:
+            raise ValueError("integraal: ondergrens a moet kleiner zijn dan bovengrens b")
+        if not isinstance(stappen, int) or stappen < 2:
+            raise ValueError("integraal: stappen moet een geheel getal ≥ 2 zijn")
+        # Simpson's regel vraagt een even aantal deelintervallen
+        if stappen % 2 != 0:
+            stappen += 1
+
+        h = (b - a) / stappen
+        totaal = f(a) + f(b)
+
+        for i in range(1, stappen):
+            x = a + i * h
+            factor = 4 if i % 2 != 0 else 2
+            totaal += factor * f(x)
+
+        resultaat = (h / 3) * totaal
+        return round(resultaat, 6)
+
+    def _limiet(self, f, x_naar, h=1e-6):
+        # Benadert de limiet van een expressie met x, als x steeds dichter
+        # naar x_naar nadert — van links én van rechts, bv.
+        # limiet(sin(x)/x, 0) → 1.0
+        if not callable(f):
+            raise ValueError("limiet verwacht als eerste argument een expressie met x, bv. \"sin(x)/x\"")
+        if not isinstance(x_naar, (int, float)):
+            raise ValueError("limiet verwacht een numerieke waarde om naartoe te naderen")
+
+        try:
+            van_links = f(x_naar - h)
+            van_rechts = f(x_naar + h)
+        except (ZeroDivisionError, ValueError) as e:
+            raise ValueError(f"limiet: kan de functie niet evalueren dicht bij x={x_naar} ({e})")
+
+        # Als links en rechts duidelijk uiteenlopen, bestaat de limiet niet
+        # in de gewone zin — dat melden we eerlijk i.p.v. een willekeurig
+        # gemiddelde te presenteren als "het" antwoord.
+        if abs(van_links - van_rechts) > 1e-3:
+            raise ValueError(
+                f"limiet: lijkt niet te bestaan rond x={x_naar} "
+                f"(van links ≈ {round(van_links, 6)}, van rechts ≈ {round(van_rechts, 6)} — te veel verschil)"
+            )
+
+        return round((van_links + van_rechts) / 2, 6)
+
+    def _dv_stap_euler(self, f, x0, y0, tot, stappen=1000):
+        # Eén Euler-stap-methode, hergebruikt door zowel _dv_euler als
+        # ter vergelijking beschikbaar; f is f(x, y) uit dy/dx = f(x, y)
+        h = (tot - x0) / stappen
+        x, y = x0, y0
+        for _ in range(stappen):
+            y = y + h * f(x, y)
+            x = x + h
+        return x, y
+
+    def _dv_euler(self, f, y0, van, tot, stappen=1000):
+        # Lost dy/dx = f(x, y) numeriek op met de Euler-methode (eenvoudig,
+        # minder nauwkeurig — vooral nuttig om het principe te begrijpen).
+        # bv. dv_euler(x - y, y0=1, van=0, tot=5)
+        if not callable(f):
+            raise ValueError("dv_euler verwacht als eerste argument een expressie met x én y, bv. \"x - y\"")
+        if not all(isinstance(v, (int, float)) for v in (y0, van, tot)):
+            raise ValueError("dv_euler verwacht numerieke waarden voor y0, van en tot")
+        if van >= tot:
+            raise ValueError("dv_euler: 'van' moet kleiner zijn dan 'tot'")
+        if not isinstance(stappen, int) or stappen < 1:
+            raise ValueError("dv_euler: stappen moet een geheel getal ≥ 1 zijn")
+
+        _, y_eind = self._dv_stap_euler(f, van, y0, tot, stappen)
+        return round(y_eind, 6)
+
+    def _dv_rk4(self, f, y0, van, tot, stappen=1000):
+        # Lost dy/dx = f(x, y) numeriek op met de Runge-Kutta 4 methode
+        # (veel nauwkeuriger dan Euler bij hetzelfde aantal stappen — dit
+        # is de standaardmethode in de praktijk).
+        # bv. dv_rk4(x - y, y0=1, van=0, tot=5)
+        if not callable(f):
+            raise ValueError("dv_rk4 verwacht als eerste argument een expressie met x én y, bv. \"x - y\"")
+        if not all(isinstance(v, (int, float)) for v in (y0, van, tot)):
+            raise ValueError("dv_rk4 verwacht numerieke waarden voor y0, van en tot")
+        if van >= tot:
+            raise ValueError("dv_rk4: 'van' moet kleiner zijn dan 'tot'")
+        if not isinstance(stappen, int) or stappen < 1:
+            raise ValueError("dv_rk4: stappen moet een geheel getal ≥ 1 zijn")
+
+        h = (tot - van) / stappen
+        x, y = van, y0
+
+        for _ in range(stappen):
+            k1 = f(x, y)
+            k2 = f(x + h / 2, y + h / 2 * k1)
+            k3 = f(x + h / 2, y + h / 2 * k2)
+            k4 = f(x + h, y + h * k3)
+            y = y + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4)
+            x = x + h
+
+        return round(y, 6)
+
+    def _dv(self, f, y0, van, tot, stappen=1000):
+        # Gebruiksvriendelijke ingang voor differentiaalvergelijkingen:
+        # gebruikt standaard RK4 (nauwkeuriger, de gangbare keuze in de
+        # praktijk). Voor het eenvoudigere Euler-principe: dv_euler().
+        # bv. dv(x - y, y0=1, van=0, tot=5)
+        return self._dv_rk4(f, y0, van, tot, stappen)
+
+    # -----------------------------------------------------------
+    # Fase 3, punt 9 — Statistiek-module, 100% puur symbolisch/numeriek
+    # -----------------------------------------------------------
+
+    def _check_getallenlijst(self, data, naam):
+        # Gedeelde validatie: hergebruikt door bijna alle statistiek-
+        # functies hieronder, zodat foutmeldingen consistent zijn.
+        if not isinstance(data, list) or len(data) == 0:
+            raise ValueError(f"{naam}: verwacht een niet-lege lijst met getallen, bv. {naam}([1,2,3,4])")
+        if not all(isinstance(v, (int, float)) for v in data):
+            raise ValueError(f"{naam}: alle elementen in de lijst moeten getallen zijn")
+
+    def _gemiddelde(self, data):
+        # Rekenkundig gemiddelde: som van alle waarden gedeeld door het aantal
+        # bv. gemiddelde([1,2,3,4]) → 2.5
+        self._check_getallenlijst(data, "gemiddelde")
+        return round(sum(data) / len(data), 6)
+
+    def _mediaan(self, data):
+        # De middelste waarde als je alles sorteert (of het gemiddelde van
+        # de twee middelste bij een even aantal), bv. mediaan([1,3,2]) → 2
+        self._check_getallenlijst(data, "mediaan")
+        gesorteerd = sorted(data)
+        n = len(gesorteerd)
+        midden = n // 2
+        if n % 2 == 1:
+            return gesorteerd[midden]
+        return round((gesorteerd[midden - 1] + gesorteerd[midden]) / 2, 6)
+
+    def _modus(self, data):
+        # De meest voorkomende waarde(n). Bij een gelijkspel worden alle
+        # meest-voorkomende waarden teruggegeven (als lijst), zodat we niet
+        # stiekem willekeurig één ervan kiezen. bv. modus([1,2,2,3]) → [2]
+        self._check_getallenlijst(data, "modus")
+        tellingen = {}
+        for v in data:
+            tellingen[v] = tellingen.get(v, 0) + 1
+        max_telling = max(tellingen.values())
+        return sorted([v for v, c in tellingen.items() if c == max_telling])
+
+    def _variantie(self, data, steekproef=True):
+        # Variantie: gemiddelde van de kwadratische afwijkingen t.o.v. het
+        # gemiddelde. Standaard steekproefvariantie (deelt door n-1, de
+        # gangbare keuze wanneer data een steekproef is uit een grotere
+        # populatie — dit is de meest gebruikte variant in de praktijk).
+        # Zet steekproef=False voor populatievariantie (deelt door n).
+        # bv. variantie([2,4,4,4,5,5,7,9]) → 4.571429
+        self._check_getallenlijst(data, "variantie")
+        n = len(data)
+        if steekproef and n < 2:
+            raise ValueError("variantie: een steekproefvariantie vraagt minstens 2 waarden")
+        gem = sum(data) / n
+        kwadratensom = sum((v - gem) ** 2 for v in data)
+        deler = (n - 1) if steekproef else n
+        return round(kwadratensom / deler, 6)
+
+    def _stdafwijking(self, data, steekproef=True):
+        # Standaardafwijking = wortel van de variantie, bv.
+        # stdafwijking([2,4,4,4,5,5,7,9]) → 2.138090
+        return round(math.sqrt(self._variantie(data, steekproef)), 6)
+
+    def _regressie(self, x_data, y_data):
+        # Lineaire regressie via de kleinste-kwadratenmethode: zoekt de
+        # rechte y = a*x + b die het beste bij de punten past.
+        # bv. regressie([1,2,3,4], [2,4,6,8]) → {"helling": 2.0, "snijpunt": 0.0}
+        self._check_getallenlijst(x_data, "regressie (x)")
+        self._check_getallenlijst(y_data, "regressie (y)")
+        if len(x_data) != len(y_data):
+            raise ValueError("regressie: x_data en y_data moeten even lang zijn (elk punt heeft een x én een y)")
+        if len(x_data) < 2:
+            raise ValueError("regressie: minstens 2 punten nodig om een rechte te bepalen")
+
+        n = len(x_data)
+        gem_x = sum(x_data) / n
+        gem_y = sum(y_data) / n
+
+        teller = sum((x_data[i] - gem_x) * (y_data[i] - gem_y) for i in range(n))
+        noemer = sum((x_data[i] - gem_x) ** 2 for i in range(n))
+
+        if noemer == 0:
+            raise ValueError("regressie: alle x-waarden zijn gelijk, geen eenduidige rechte mogelijk")
+
+        helling = teller / noemer
+        snijpunt = gem_y - helling * gem_x
+
+        return {"helling": round(helling, 6), "snijpunt": round(snijpunt, 6)}
+
+    def _correlatie(self, x_data, y_data):
+        # Pearson-correlatiecoëfficiënt: getal tussen -1 en 1 dat aangeeft
+        # hoe sterk twee datasets lineair samenhangen.
+        # bv. correlatie([1,2,3,4], [2,4,6,8]) → 1.0 (perfect lineair verband)
+        self._check_getallenlijst(x_data, "correlatie (x)")
+        self._check_getallenlijst(y_data, "correlatie (y)")
+        if len(x_data) != len(y_data):
+            raise ValueError("correlatie: x_data en y_data moeten even lang zijn (elk punt heeft een x én een y)")
+        if len(x_data) < 2:
+            raise ValueError("correlatie: minstens 2 punten nodig")
+
+        n = len(x_data)
+        gem_x = sum(x_data) / n
+        gem_y = sum(y_data) / n
+
+        teller = sum((x_data[i] - gem_x) * (y_data[i] - gem_y) for i in range(n))
+        som_kw_x = sum((v - gem_x) ** 2 for v in x_data)
+        som_kw_y = sum((v - gem_y) ** 2 for v in y_data)
+
+        if som_kw_x == 0 or som_kw_y == 0:
+            raise ValueError("correlatie: alle waarden in x of y zijn gelijk, correlatie is niet gedefinieerd")
+
+        r = teller / math.sqrt(som_kw_x * som_kw_y)
+        return round(r, 6)
+
+    def _faculteit(self, n):
+        # Hulpfunctie voor combinaties/permutaties: n! = n×(n-1)×...×1
+        if not isinstance(n, int) or n < 0:
+            raise ValueError("faculteit verwacht een geheel getal ≥ 0")
+        resultaat = 1
+        for i in range(2, n + 1):
+            resultaat *= i
+        return resultaat
+
+    def _combinaties(self, n, k):
+        # Aantal manieren om k elementen te kiezen uit n, volgorde maakt
+        # niet uit: C(n,k) = n! / (k! × (n-k)!)
+        # bv. combinaties(5, 2) → 10
+        if not all(isinstance(v, int) for v in (n, k)):
+            raise ValueError("combinaties verwacht twee gehele getallen: n en k")
+        if n < 0 or k < 0:
+            raise ValueError("combinaties: n en k moeten ≥ 0 zijn")
+        if k > n:
+            raise ValueError("combinaties: k mag niet groter zijn dan n")
+        return self._faculteit(n) // (self._faculteit(k) * self._faculteit(n - k))
+
+    def _permutaties(self, n, k):
+        # Aantal manieren om k elementen te kiezen uit n, volgorde maakt
+        # WEL uit: P(n,k) = n! / (n-k)!
+        # bv. permutaties(5, 2) → 20
+        if not all(isinstance(v, int) for v in (n, k)):
+            raise ValueError("permutaties verwacht twee gehele getallen: n en k")
+        if n < 0 or k < 0:
+            raise ValueError("permutaties: n en k moeten ≥ 0 zijn")
+        if k > n:
+            raise ValueError("permutaties: k mag niet groter zijn dan n")
+        return self._faculteit(n) // self._faculteit(n - k)
+
+    def _binomiaal(self, n, k, p):
+        # Kans op precies k successen bij n onafhankelijke pogingen met
+        # succeskans p per poging (bv. k keer kop bij n muntworpen).
+        # bv. binomiaal(10, 3, 0.5) → kans op precies 3 keer kop bij 10 worpen
+        if not all(isinstance(v, int) for v in (n, k)):
+            raise ValueError("binomiaal verwacht gehele getallen voor n en k")
+        if not isinstance(p, (int, float)):
+            raise ValueError("binomiaal verwacht een numerieke kans p")
+        if not (0 <= p <= 1):
+            raise ValueError("binomiaal: p moet een kans zijn tussen 0 en 1")
+        if n < 0 or k < 0 or k > n:
+            raise ValueError("binomiaal: k moet tussen 0 en n liggen")
+
+        kans = self._combinaties(n, k) * (p ** k) * ((1 - p) ** (n - k))
+        return round(kans, 6)
+
+    def _normaal(self, x, gem=0, std=1):
+        # Cumulatieve kans van de normale verdeling: de kans dat een
+        # willekeurige waarde uit een normaalverdeling (met gegeven
+        # gemiddelde en standaardafwijking) kleiner of gelijk is aan x.
+        # Gebruikt de foutfunctie (erf) uit Python's ingebouwde math-
+        # module — een standaard, exacte numerieke benadering, geen ML.
+        # bv. normaal(0) → 0.5 (kans dat een standaard-normale waarde ≤ 0 is)
+        if not all(isinstance(v, (int, float)) for v in (x, gem, std)):
+            raise ValueError("normaal verwacht numerieke waarden voor x, gemiddelde en standaardafwijking")
+        if std <= 0:
+            raise ValueError("normaal: standaardafwijking moet groter zijn dan 0")
+
+        z = (x - gem) / (std * math.sqrt(2))
+        kans = 0.5 * (1 + math.erf(z))
+        return round(kans, 6)
+
     def _make_unitvalue(self, number, unit_name):
         # temperatuur-markers
         if isinstance(unit_name, tuple) and unit_name[0] == "TEMP":
@@ -1021,18 +1356,23 @@ class MathModule:
             if fname not in self.funcs:
                 raise ValueError(f"Onbekende functie: {fname}")
 
-            # NIEUW (Fase 3, Algebra-module): newton/polyeval/extremum
-            # werken met een VRIJE EXPRESSIE als eerste argument (bv.
-            # "x^2 - 4"), i.p.v. een kant-en-klare waarde. Normaal
+            # NIEUW (Fase 3, Algebra-module + Calculus-module): sommige
+            # functies werken met een VRIJE EXPRESSIE als eerste argument
+            # (bv. "x^2 - 4"), i.p.v. een kant-en-klare waarde. Normaal
             # evalueert _eval() elk functie-argument meteen tot een
-            # getal — dat kan hier niet, want "x" heeft nog geen
-            # waarde. In plaats daarvan geven we deze drie functies
-            # een klein Python-functie-object mee (f) dat, ZODRA zij
-            # zelf een x-waarde kiezen, die expressie alsnog symbolisch
-            # evalueert via _eval(node, {"x": waarde}). Alle overige
+            # getal — dat kan hier niet, want "x" (en bij de DV-functies
+            # ook "y") heeft nog geen waarde. In plaats daarvan geven we
+            # deze functies een klein Python-functie-object mee (f) dat,
+            # ZODRA zij zelf waarden kiezen, die expressie alsnog
+            # symbolisch evalueert via _eval(node, {...}). Alle overige
             # functies (sqrt, sin, det, ...) blijven ongewijzigd werken
             # zoals voorheen.
-            EXPR_FUNCS = {"newton", "nulpunt", "polyeval", "bereken", "extremum", "minmax"}
+
+            # Groep 1: expressie met enkel x, bv. "x^2 - 4"
+            EXPR_FUNCS = {
+                "newton", "nulpunt", "polyeval", "bereken", "extremum", "minmax",
+                "afgeleide", "integraal", "limiet",
+            }
             if fname in EXPR_FUNCS:
                 if len(node.args) < 1:
                     raise ValueError(f"{fname}: eerste argument moet een expressie met x zijn, bv. \"x^2 - 4\"")
@@ -1044,6 +1384,21 @@ class MathModule:
 
                 overige_args = [self._eval(a, variables) for a in node.args[1:]]
                 return self.funcs[fname](f, *overige_args)
+
+            # Groep 2: expressie met x ÉN y samen, bv. "x - y" voor
+            # differentiaalvergelijkingen dy/dx = f(x, y)
+            EXPR_FUNCS_XY = {"dv_euler", "dv_rk4", "dv"}
+            if fname in EXPR_FUNCS_XY:
+                if len(node.args) < 1:
+                    raise ValueError(f"{fname}: eerste argument moet een expressie met x en y zijn, bv. \"x - y\"")
+
+                expr_node = node.args[0]
+
+                def f_xy(x_waarde, y_waarde, _expr_node=expr_node):
+                    return self._eval(_expr_node, {"x": x_waarde, "y": y_waarde})
+
+                overige_args = [self._eval(a, variables) for a in node.args[1:]]
+                return self.funcs[fname](f_xy, *overige_args)
 
             args = [self._eval(a, variables) for a in node.args]
             return self.funcs[fname](*args)
@@ -1184,6 +1539,16 @@ class MathModule:
                     f"minimum {self._format_value(mn['waarde'])} bij x={self._format_value(mn['x'])}, "
                     f"maximum {self._format_value(mx['waarde'])} bij x={self._format_value(mx['x'])}"
                 )
+            # NIEUW (Fase 3, punt 9): regressie() geeft een dict
+            # {"helling": ..., "snijpunt": ...} terug — ook hier bouwen
+            # we een leesbare Nederlandse zin i.p.v. de rauwe dict te tonen.
+            elif isinstance(result, dict) and "helling" in result and "snijpunt" in result:
+                msg = (
+                    f"{origineel} → "
+                    f"y = {self._format_value(result['helling'])}x "
+                    f"{'+' if result['snijpunt'] >= 0 else '-'} {self._format_value(abs(result['snijpunt']))} "
+                    f"(helling={self._format_value(result['helling'])}, snijpunt={self._format_value(result['snijpunt'])})"
+                )
             elif isinstance(result, UnitValue):
                 msg = f"{origineel} = {result}"
             else:
@@ -1226,7 +1591,13 @@ class MathModule:
             #        al volledig leesbaar Nederlands, dus die tonen we
             #        rechtstreeks zonder het technische "Er ging iets
             #        mis:"-voorvoegsel.
-            elif err.startswith(("solveQuadratic:", "newton:", "polyeval:", "extremum:")):
+            elif err.startswith((
+                "solveQuadratic:", "newton:", "polyeval:", "extremum:",
+                "afgeleide:", "integraal:", "limiet:", "dv_euler:", "dv_rk4:",
+                "gemiddelde:", "mediaan:", "modus:", "variantie:", "stdafwijking:",
+                "regressie:", "correlatie:", "faculteit:", "combinaties:",
+                "permutaties:", "binomiaal:", "normaal:",
+            )):
                 msg = err
 
             # --- 7. fallback ---

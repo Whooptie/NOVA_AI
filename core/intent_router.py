@@ -1153,15 +1153,40 @@ class IntentRouter:
             # aanroep is, bv. "wortel(1,-5,6)").
             "solveQuadratic", "solvequadratic",
             "newton", "nulpunt", "polyeval", "extremum", "minmax",
+            # UITBREIDING (Fase 3, punt 8 — Calculus-module): "dv_euler"
+            # en "dv_rk4" zijn technische namen die niemand toevallig in
+            # een gewone zin gebruikt, dus die mogen breed matchen. "dv"
+            # alleen is te kort/generiek (net als "pi"/"e" hierboven) en
+            # staat daarom bij de haakje-vereiste check verderop. Ook
+            # "afgeleide", "integraal" en "limiet" zijn gewone
+            # Nederlandse woorden (vgl. "een integraal onderdeel van...",
+            # "de limiet van mijn geduld", "de afgeleide betekenis van
+            # dit woord") — die staan daarom NIET hier.
+            "dv_euler", "dv_rk4",
+            # UITBREIDING (Fase 3, punt 9 — Statistiek-module):
+            # "stdafwijking", "variantie", "faculteit", "combinaties" en
+            # "permutaties" zijn specifieke technische termen die niemand
+            # toevallig in een gewone zin gebruikt, dus die mogen breed
+            # matchen. "mediaan" staat voor de zekerheid ook hier (komt
+            # zelden voor buiten wiskunde-context). "gemiddelde", "modus",
+            # "regressie", "correlatie" en "normaal" zijn wél gewone
+            # Nederlandse woorden (vgl. "dat is normaal gesproken zo",
+            # "in het gemiddelde geval", "wat is jouw modus vandaag",
+            # "de correlatie is duidelijk") — die staan daarom NIET hier,
+            # zie de haakje-vereiste check verderop.
+            "stdafwijking", "variantie", "faculteit", "combinaties",
+            "permutaties", "mediaan",
         ]
         if any(re.search(rf"\b{k}\b", t) for k in math_keywords):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
-        # "wortel" en "bereken" enkel herkennen als ECHTE functie-aanroep
-        # (naam direct gevolgd door een openingshaakje) — zie toelichting
-        # hierboven waarom deze niet in de brede math_keywords-lijst staan.
-        if re.search(r'\b(wortel|bereken)\s*\(', t):
+        # "wortel", "bereken", "afgeleide", "integraal", "limiet", "dv",
+        # "gemiddelde", "modus", "regressie", "correlatie", "binomiaal" en
+        # "normaal" enkel herkennen als ECHTE functie-aanroep (naam direct
+        # gevolgd door een openingshaakje) — zie toelichting hierboven
+        # waarom deze niet in de brede math_keywords-lijst staan.
+        if re.search(r'\b(wortel|bereken|afgeleide|integraal|limiet|dv|gemiddelde|modus|regressie|correlatie|binomiaal|normaal)\s*\(', t):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
