@@ -5,8 +5,8 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 0,
-      "negative_count": 0,
+      "positive_count": 1,
+      "negative_count": 19,
       "total_shifts": 4,
       "last_shift": "2026-08-02T10:25:14.672091",
       "last_shift_direction": "negatief"
@@ -19,14 +19,14 @@
       "last_shift_direction": null
     },
     "self_regulation": {
-      "positive_count": 11,
+      "positive_count": 12,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "curiosity": {
-      "positive_count": 8,
+      "positive_count": 9,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -48,9 +48,9 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 20,
-      "total_shifts": 9,
-      "last_shift": "2026-08-01T20:59:37.602852",
+      "negative_count": 14,
+      "total_shifts": 10,
+      "last_shift": "2026-08-02T17:56:46.425611",
       "last_shift_direction": "negatief"
     },
     "emotional_color_intensity": {
@@ -61,7 +61,7 @@
       "last_shift_direction": null
     },
     "associative_thinking": {
-      "positive_count": 8,
+      "positive_count": 9,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -76,10 +76,10 @@
     },
     "reactivity": {
       "positive_count": 0,
-      "negative_count": 11,
-      "total_shifts": 0,
-      "last_shift": null,
-      "last_shift_direction": null
+      "negative_count": 0,
+      "total_shifts": 1,
+      "last_shift": "2026-08-02T21:07:07.855804",
+      "last_shift_direction": "negatief"
     },
     "impulsivity": {
       "positive_count": 0,
@@ -96,14 +96,14 @@
       "last_shift_direction": "negatief"
     },
     "energy_level": {
-      "positive_count": 8,
+      "positive_count": 9,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "dramatic_flair": {
-      "positive_count": 8,
+      "positive_count": 9,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,

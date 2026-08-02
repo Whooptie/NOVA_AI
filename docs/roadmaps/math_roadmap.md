@@ -94,20 +94,44 @@ Onderweg gevonden en opgelost, tijdens dezelfde sessie:
   (`(?<!\^)`), getest tegen bestaande units-berekeningen (`m/s^2`,
   `10^-4`) om zeker te zijn dat er geen regressie was.
 
-### ➤ 8. **Calculus‑module (numeriek)**
+### ✅ 8. **Calculus‑module (numeriek)** (klaar, getest 2 aug 2026)
 
-- numerieke afgeleiden
-- numerieke integralen
-- limieten benaderen
-- differentiaalvergelijkingen (Euler, RK4)
+- ✔ numerieke afgeleiden — `afgeleide()`, centraal verschil
+- ✔ numerieke integralen — `integraal()`, regel van Simpson
+- ✔ limieten benaderen — `limiet()`, van links én rechts, geeft eerlijk aan als de limiet niet lijkt te bestaan
+- ✔ differentiaalvergelijkingen — `dv()` (standaard RK4), `dv_euler()`, `dv_rk4()` — vorm `f(x,y), y0, van, tot` (wiskundige standaardnotatie voor dy/dx=f(x,y))
 
-### ➤ 9. **Statistiek‑module**
+Onderweg gevonden en opgelost, tijdens dezelfde sessie:
 
-- gemiddelden
-- variantie
-- regressie
-- correlatie
-- kansberekeningen
+- Bug in bestaande `preprocess()`-regel (unit+exponent, bv. `m3`→`m^3`):
+  greep ten onrechte ook in bij functienamen die op een cijfer eindigen
+  (bv. `dv_rk4(...)` → fout omgezet naar `dv_rk^4(...)`). Gefixt met een
+  negative lookahead die niet ingrijpt als er een `(` op volgt — getest
+  tegen alle bestaande units-berekeningen, geen regressie.
+- `_eval()`'s `variables`-mechanisme (gebouwd in punt 7 voor `x`) is nu
+  uitgebreid naar twee gelijktijdige variabelen (`x` én `y`) voor de
+  DV-functies, zonder de bestaande een-variabele-functies te raken.
+
+### ✅ 9. **Statistiek‑module** (klaar, getest 2 aug 2026)
+
+- ✔ gemiddelden — `gemiddelde()`, `mediaan()`, `modus()`
+- ✔ variantie — `variantie()` (steekproefvariantie, deelt door n-1), `stdafwijking()`
+- ✔ regressie — `regressie()`, lineaire regressie via kleinste-kwadratenmethode
+- ✔ correlatie — `correlatie()`, Pearson-coëfficiënt
+- ✔ kansberekeningen — `faculteit()`, `combinaties()`, `permutaties()`,
+  `binomiaal()` (binomiale verdeling), `normaal()` (cumulatieve normale
+  verdeling via Python's ingebouwde `math.erf()` — exacte formule, geen
+  ML/schatting)
+
+**FASE 3 — Numerieke intelligentie is hiermee volledig afgerond** (punt 7 Algebra, punt 8 Calculus, punt 9 Statistiek — alle drie getest in Nova zelf).
+
+Onderweg gevonden en opgelost, tijdens dezelfde sessie:
+
+- Kleine consistentie-bugfix: `_check_getallenlijst()`'s eerste
+  foutmelding miste een dubbele punt na de functienaam, waardoor hij
+  per ongeluk via het technische "Er ging iets mis:"-voorvoegsel liep
+  i.p.v. rechtstreeks als leesbare Nederlandse foutmelding getoond te
+  worden.
 
 ---
 

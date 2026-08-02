@@ -14375,10 +14375,10 @@
       }
     ]
   },
-  "kan": {
+  "limiet": {
     "senses": [
       {
-        "sense_id": "kan#1",
+        "sense_id": "limiet#1",
         "definition": "unknown",
         "pos": "noun",
         "examples": [],
@@ -14389,16 +14389,16 @@
       }
     ],
     "metadata": {
-      "created_at": "2026-08-02T08:22:11.102351",
-      "updated_at": "2026-08-02T08:22:11.103352",
+      "created_at": "2026-08-02T15:56:54.041592",
+      "updated_at": "2026-08-02T15:56:54.041592",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-08-02T08:22:11.103352",
+      "last_used_at": "2026-08-02T15:56:54.041592",
       "usage_count": 1,
       "confidence_history": [
         {
-          "timestamp": "2026-08-02T08:22:11.103352",
+          "timestamp": "2026-08-02T15:56:54.041592",
           "confidence": 0.1
         }
       ]
@@ -14408,17 +14408,252 @@
         "event_type": "concept_created",
         "source": "system",
         "new_value": {
-          "word": "kan"
+          "word": "limiet"
         },
-        "timestamp": "2026-08-02T08:22:11.102351"
+        "timestamp": "2026-08-02T15:56:54.041592"
       },
       {
         "event_type": "sense_created",
         "source": "auto",
-        "sense_id": "kan#1",
+        "sense_id": "limiet#1",
         "old_value": null,
         "new_value": "unknown",
-        "timestamp": "2026-08-02T08:22:11.103352"
+        "timestamp": "2026-08-02T15:56:54.041592"
+      }
+    ]
+  },
+  "geduld": {
+    "senses": [
+      {
+        "sense_id": "geduld#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-02T15:56:54.072110",
+      "updated_at": "2026-08-02T15:56:54.073115",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-02T15:56:54.073115",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-02T15:56:54.073115",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "geduld"
+        },
+        "timestamp": "2026-08-02T15:56:54.072110"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "geduld#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-02T15:56:54.073115"
+      }
+    ]
+  },
+  "bereikt": {
+    "senses": [
+      {
+        "sense_id": "bereikt#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-02T15:56:54.101636",
+      "updated_at": "2026-08-02T15:56:54.101636",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-02T15:56:54.101636",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-02T15:56:54.101636",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bereikt"
+        },
+        "timestamp": "2026-08-02T15:56:54.101636"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "bereikt#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-02T15:56:54.101636"
+      }
+    ]
+  },
+  "hoe": {
+    "senses": [
+      {
+        "sense_id": "hoe#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-02T19:05:52.473146",
+      "updated_at": "2026-08-02T19:05:52.474146",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-02T19:05:52.474146",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-02T19:05:52.474146",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hoe"
+        },
+        "timestamp": "2026-08-02T19:05:52.473146"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "hoe#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-02T19:05:52.474146"
+      }
+    ]
+  },
+  "normaal": {
+    "senses": [
+      {
+        "sense_id": "normaal#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-02T19:07:24.534688",
+      "updated_at": "2026-08-02T19:07:24.535688",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-02T19:07:24.535688",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-02T19:07:24.535688",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "normaal"
+        },
+        "timestamp": "2026-08-02T19:07:24.534688"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "normaal#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-02T19:07:24.535688"
+      }
+    ]
+  },
+  "gesproken": {
+    "senses": [
+      {
+        "sense_id": "gesproken#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-02T19:07:24.571693",
+      "updated_at": "2026-08-02T19:07:24.572690",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-02T19:07:24.572690",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-02T19:07:24.572690",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gesproken"
+        },
+        "timestamp": "2026-08-02T19:07:24.571693"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "gesproken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-02T19:07:24.572690"
       }
     ]
   }
