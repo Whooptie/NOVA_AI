@@ -30,6 +30,9 @@ scikit-learn>=1.4.0        # train_classifier.py / microlearning.py — signal_m
 # --- Testing ---
 pytest>=8.2.0              # Unit tests
 
+# --- Math ---
+numpy>=1.14.0            # math.py
+
 # --- Standard library (no installation needed) ---
 # sqlite3      — Layer 0 memory (built into Python)
 # threading    — background timers, daemon threads

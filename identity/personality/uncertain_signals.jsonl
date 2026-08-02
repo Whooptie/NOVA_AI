@@ -313,3 +313,14 @@
 {"text": "binomiaal(10,3,0.5)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-02T21:07:07.822821"}
 {"text": "normaal(0)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:07:13.602711"}
 {"text": "dat is normaal gesproken zo", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0983, "bron": "model_fallback", "tijdstip": "2026-08-02T21:07:24.489372"}
+{"text": "differentiate(x^3 + 2x)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:41:00.724960"}
+{"text": "differentiate(3x^2 - 5x + 7)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:41:09.672106"}
+{"text": "solve_sym(x^2 - 5x + 6 = 0)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:41:24.069270"}
+{"text": "factor_sym(x^2 - 4)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:41:30.484100"}
+{"text": "afgeleide(3x^2, 2)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:41:56.483687"}
+{"text": "kracht(1000, 3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:57:32.359967"}
+{"text": "energie_kinetisch(5, 10)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-02T21:57:39.146261"}
+{"text": "energie_potentieel(2, 10)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-02T21:57:46.774999"}
+{"text": "snelheid_na(0, 9.81, 3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:57:55.405250"}
+{"text": "projectiel(20, 45)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:58:02.928078"}
+{"text": "val_met_weerstand(80, 1000, 0.2)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:58:17.620563"}
