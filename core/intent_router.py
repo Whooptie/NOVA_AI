@@ -1194,6 +1194,33 @@ class IntentRouter:
             # verderop.
             "energie_kinetisch", "energie_potentieel", "snelheid_na",
             "afstand_na", "val_met_weerstand", "projectiel",
+            # UITBREIDING (Fase 5, punt 12 — Getaltheorie & combinatoriek):
+            # allemaal technische termen/acroniemen die niemand toevallig
+            # in een gewone Nederlandse zin gebruikt, dus die mogen breed
+            # matchen.
+            "is_priem", "priemgetallen", "ggd", "kgv", "modulo",
+            # UITBREIDING (Fase 5, punt 14 — Extra eenheden, talstelsel-
+            # conversies): allemaal Nederlandse maar duidelijk technische
+            # samengestelde termen die niemand toevallig in een gewone
+            # zin gebruikt.
+            "naar_binair", "naar_octaal", "naar_hex", "vanuit_talstelsel",
+            # UITBREIDING (Fase 5, punt 15 — Klassieke CS-algoritmes):
+            # underscore-namen en eigennamen (dijkstra, levenshtein) die
+            # niemand toevallig in een gewone zin gebruikt.
+            "binary_search", "bubble_sort", "quick_sort",
+            "bfs", "dfs", "dijkstra", "levenshtein",
+            # UITBREIDING (Fase 5, punt 16 — Afronding & precisie):
+            # duidelijk technische, samengestelde termen.
+            "significante_cijfers", "stel_precisie_in", "reset_precisie",
+            # UITBREIDING (Fase 5, punten 18-20): "som_reeks",
+            # "meetkundige_reeks", "kans_dobbelsteen" en "kans_kaart"
+            # bevatten underscores en zijn technisch genoeg om breed te
+            # mogen matchen. "breuk" en "sigma" zijn NIET hier — "breuk"
+            # is een gewoon Nederlands woord (vgl. "een breuk in mijn
+            # been", "breuk met het verleden") en "sigma" wordt ook als
+            # jongerentaal/slang gebruikt buiten wiskunde-context — die
+            # staan daarom bij de haakje-vereiste check verderop.
+            "som_reeks", "meetkundige_reeks", "kans_dobbelsteen", "kans_kaart",
         ]
         if any(re.search(rf"\b{k}\b", t) for k in math_keywords):
             self.event_bus.publish("intent_math", {"expr": text})
@@ -1201,11 +1228,11 @@ class IntentRouter:
 
         # "wortel", "bereken", "afgeleide", "integraal", "limiet", "dv",
         # "gemiddelde", "modus", "regressie", "correlatie", "binomiaal",
-        # "normaal", "kracht" en "arbeid" enkel herkennen als ECHTE
-        # functie-aanroep (naam direct gevolgd door een openingshaakje) —
-        # zie toelichting hierboven waarom deze niet in de brede
-        # math_keywords-lijst staan.
-        if re.search(r'\b(wortel|bereken|afgeleide|integraal|limiet|dv|gemiddelde|modus|regressie|correlatie|binomiaal|normaal|kracht|arbeid)\s*\(', t):
+        # "normaal", "kracht", "arbeid", "breuk" en "sigma" enkel
+        # herkennen als ECHTE functie-aanroep (naam direct gevolgd door
+        # een openingshaakje) — zie toelichting hierboven waarom deze
+        # niet in de brede math_keywords-lijst staan.
+        if re.search(r'\b(wortel|bereken|afgeleide|integraal|limiet|dv|gemiddelde|modus|regressie|correlatie|binomiaal|normaal|kracht|arbeid|breuk|sigma)\s*\(', t):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
@@ -1215,6 +1242,17 @@ class IntentRouter:
         # aanvaardt.
         math_constants = ["pi", "e"]
         if any(re.search(rf"\b{k}\b", t) for k in math_constants):
+            self.event_bus.publish("intent_math", {"expr": text})
+            return True
+
+        # UITBREIDING (Fase 5, punt 13 — Complexe getallen): "4i" (een
+        # cijfer direct gevolgd door "i") herkennen we breed — niemand
+        # schrijft dat toevallig in een gewone zin. Een kale, losstaande
+        # "i" NIET breed matchen: dat is een extreem generieke, één-
+        # letterige token (nog generieker dan "pi"/"e" hierboven, denk
+        # aan Engelse tekst met "I" of losse letters/afkortingen) — het
+        # risico op valse positieven weegt hier niet op tegen het nut.
+        if re.search(r'\d\s*i\b', t):
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 

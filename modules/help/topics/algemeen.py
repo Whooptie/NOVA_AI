@@ -14,6 +14,8 @@ def get_help():
 🔢 WISKUNDE
   2 + 2 / 10 * 5 / sqrt(16)
   25°C  (temperatuurconversie)
+  help wiskunde  (voor het volledige overzicht: algebra, calculus,
+                  statistiek, fysica, complexe getallen, en meer)
 
 📚 KENNISBANK
   wat is een zwart gat

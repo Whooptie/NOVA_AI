@@ -53,3 +53,4 @@
 {"tekst": "de limiet van mijn geduld is bereikt", "hoogste_gok": "math", "confidence": 0.2103, "tijdstip": "2026-08-02T18:01:33.025166"}
 {"tekst": "hoe warm wordt het morgen", "hoogste_gok": "weather", "confidence": 0.2627, "tijdstip": "2026-08-02T21:05:52.472148"}
 {"tekst": "dat is normaal gesproken zo", "hoogste_gok": "chess_evaluation", "confidence": 0.1769, "tijdstip": "2026-08-02T21:07:24.533688"}
+{"tekst": "ik ben moe", "hoogste_gok": "preference", "confidence": 0.2993, "tijdstip": "2026-08-03T19:17:02.807514"}

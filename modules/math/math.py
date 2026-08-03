@@ -2,7 +2,9 @@
 import ast
 import operator
 import math
+import cmath
 import re
+from fractions import Fraction
 
 # Fase 4, punt 10 — Symbolische algebra (SymPy)
 # SymPy is een externe bibliotheek voor symbolisch rekenen (formules
@@ -120,6 +122,13 @@ class MathModule:
         self.unit_sep = "·"   # of " "
         UnitValue.bind_math = UnitValue.bind_math
 
+        # Fase 5, punt 16 — Afronding & precisie: instelbare precisie
+        # voor de hele sessie (relevant bij fysica-berekeningen met
+        # meetonzekerheid, waar je bv. altijd op 3 decimalen wil
+        # afronden). None = geen speciale precisie ingesteld, gedraag je
+        # zoals voorheen (geen wijziging aan bestaande weergave).
+        self.sessie_precisie = None
+
         # veilige operatoren
         self.ops = {
             ast.Add: operator.add,
@@ -212,8 +221,46 @@ class MathModule:
             "afstand_na": self._afstand_na,                         # afstand_na(20, -5, 4) -> 40 m
             "projectiel": self._projectiel,                         # projectiel(20, 45) -> bereik/hoogte/vluchttijd
             "val_met_weerstand": self._val_met_weerstand,           # simulatie via numerieke integratie
-        }
 
+            # Fase 5, punt 12 — Getaltheorie & combinatoriek
+            "is_priem": self._is_priem,                 # is_priem(17) -> True
+            "priemgetallen": self._priemgetallen,       # priemgetallen(30) -> [2,3,5,7,...,29]
+            "ggd": self._ggd,                           # ggd(48, 18) -> 6
+            "kgv": self._kgv,                           # kgv(4, 6) -> 12
+            "modulo": self._modulo,                     # modulo(17, 5) -> 2
+
+            # Fase 5, punt 14 — Extra eenheden: talstelsel-conversies
+            "naar_binair": self._naar_binair,           # naar_binair(255) -> "11111111"
+            "naar_octaal": self._naar_octaal,           # naar_octaal(255) -> "377"
+            "naar_hex": self._naar_hex,                 # naar_hex(255) -> "ff"
+            "vanuit_talstelsel": self._vanuit_talstelsel,  # vanuit_talstelsel("ff", 16) -> 255
+
+            # Fase 5, punt 15 — Klassieke CS-algoritmes
+            "binary_search": self._binary_search,       # binary_search([1,3,5,7], 5) -> 2
+            "bubble_sort": self._bubble_sort,           # bubble_sort([5,2,8,1]) -> [1,2,5,8]
+            "quick_sort": self._quick_sort,             # quick_sort([5,2,8,1]) -> [1,2,5,8]
+            "bfs": self._bfs,                           # bfs({"A":["B"]}, "A") -> ["A","B"]
+            "dfs": self._dfs,                           # dfs({"A":["B"]}, "A") -> ["A","B"]
+            "dijkstra": self._dijkstra,                 # dijkstra({"A":{"B":4}}, "A") -> {"A":0,"B":4}
+            "levenshtein": self._levenshtein,           # levenshtein("kitten","sitting") -> 3
+
+            # Fase 5, punt 16 — Afronding & precisie
+            "significante_cijfers": self._significante_cijfers,  # significante_cijfers(123456,3) -> 123000
+            "stel_precisie_in": self._stel_precisie_in,          # stel_precisie_in(3)
+            "reset_precisie": self._reset_precisie,              # reset_precisie()
+
+            # Fase 5, punt 18 — Breuken als exact type
+            "breuk": self._breuk,                       # breuk(1, 3) -> 1/3 (exact)
+
+            # Fase 5, punt 19 — Reeksen/rijen
+            "som_reeks": self._som_reeks,               # som_reeks(1, 100) -> 5050
+            "sigma": self._sigma,                       # sigma(x^2, 1, 5) -> 55
+            "meetkundige_reeks": self._meetkundige_reeks,  # meetkundige_reeks(1, 2, 5) -> 31
+
+            # Fase 5, punt 20 — Eenvoudige kansrekening (discreet)
+            "kans_dobbelsteen": self._kans_dobbelsteen,  # kans_dobbelsteen(2, 7) -> kans
+            "kans_kaart": self._kans_kaart,              # kans_kaart(4, 52, 5) -> kans
+        }
         # constante waarden
         self.consts = {
             "pi": math.pi,
@@ -294,12 +341,21 @@ class MathModule:
             "inch": ({"m": 1}, 0.0254),
             "yard": ({"m": 1}, 0.9144),
             "yd":   ({"m": 1}, 0.9144),
+            # LET OP: "nmi" (nautische mijl) NIET hier toevoegen — het
+            # prefix-systeem verderop genereert automatisch "n"+"mi"
+            # (nano-prefix × mile) en overschrijft een hier gedefinieerde
+            # "nmi" met een compleet verkeerde waarde (zelfde soort
+            # naamconflict als eerder bij "L"/"mL"). Zie de expliciete
+            # herstelregel bij "herstel meter-eenheid" verderop.
 
             # massa — imperial
             "lb":  ({"kg": 1}, 0.45359237),
             "lbs": ({"kg": 1}, 0.45359237),
             "oz":  ({"kg": 1}, 0.028349523125),
             "ton": ({"kg": 1}, 1000),   # metrische ton
+            # Fase 5, punt 14 — Extra eenheden: stone (Britse gewichts-
+            # eenheid, vooral gebruikt voor lichaamsgewicht in UK/Ierland)
+            "stone": ({"kg": 1}, 6.35029318),  # 1 stone = 14 lb
 
             # snelheid — kant-en-klaar (naast "km / h" handmatig delen)
             "kmh": ({"m": 1, "s": -1}, 1000 / 3600),
@@ -392,11 +448,43 @@ class MathModule:
         self.units["m**3"] = ({"m": 3}, 1)
         self.units["m2"] = ({"m": 2}, 1)
         self.units["m^2"] = ({"m": 2}, 1)
-        self.units["m**2"] = ({"m": 2}, 1)
+
+        # Fase 5, punt 14 — Extra eenheden: "nmi" (nautische mijl) moet
+        # HIER, na het prefix-systeem, expliciet ingesteld worden — zie
+        # de toelichting bij "lengte — imperial" hierboven over waarom
+        # het niet in derived_units kan staan (wordt anders overschreven
+        # door "n" (nano-prefix) + "mi" (mile), met een compleet
+        # verkeerde waarde als gevolg).
+        self.units["nmi"] = ({"m": 1}, 1852)
 
     import re
 
     def preprocess(self, expr):
+        # Fase 5, punt 13 — Complexe getallen: de imaginaire eenheid "i"
+        # (wiskundige standaardnotatie, bv. "3+4i") wordt hier vertaald
+        # naar een TIJDELIJKE, veilige placeholder ("__IMAG__"), niet
+        # meteen naar Python's "j"-notatie. Reden: als we hier al "j"
+        # zouden schrijven, zou de latere eenheden-regex verderop in deze
+        # functie (die "getal+letter" als eenheid interpreteert, bv.
+        # "5m" → "(5*m)") een kale "4j" ten onrechte ook als "4 van
+        # eenheid j" behandelen en er "(4*j)" van maken — exact hetzelfde
+        # soort conflict als de eerdere "3x^2"-bug. "__IMAG__" bevat een
+        # underscore, die niet in de eenheden-regex' letter-klasse zit,
+        # en blijft daardoor ongemoeid tot de allerlaatste regel van deze
+        # functie, waar we het pas definitief naar "j" omzetten.
+        # Twee gevallen: "4i" (getal direct voor de i) en een losse "i"
+        # (zonder getal ervoor, bv. in "3+i" of "i" alleen) — die laatste
+        # betekent impliciet "1i".
+        expr = re.sub(r'(\d+(\.\d+)?)\s*i\b', r'\1__IMAG__', expr)
+        expr = re.sub(r'(?<![\w.])i\b', '1__IMAG__', expr)
+
+        # Fase 5, punt 17 — Percentages als eersteklas notatie: "20%"
+        # betekent "20/100" (0.20). Puur syntactische suiker rond
+        # bestaande deling — geen nieuwe rekenlogica. Moet vroeg in de
+        # pipeline gebeuren, vóór eventuele andere regels een kans
+        # krijgen om het "%"-teken verkeerd te interpreteren.
+        expr = re.sub(r'(\d+(\.\d+)?)\s*%', r'(\1/100)', expr)
+
         # temperatuur: °C en °F → tokens zonder speciale tekens
         expr = expr.replace("°C", "degC")
         expr = expr.replace("°F", "degF")
@@ -436,10 +524,20 @@ class MathModule:
         # 3. '3x5' → '3*5'
         expr = re.sub(r'(\d)\s*[xX]\s*(\d)', r'\1*\2', expr)
 
-        # 4. alias-operatoren
+         # 4. alias-operatoren
         expr = expr.replace(" x ", " * ")
         expr = expr.replace("×", "*")
-        expr = expr.replace(":", "/")
+        # BUGFIX (Fase 5, punt 15 — CS-algoritmes): zonder de negative
+        # lookbehind/lookahead greep deze regel ook in bij dict-syntax
+        # (bv. bfs()/dfs()/dijkstra()'s graaf-argument, {"A": ["B","C"]}),
+        # en veranderde de dubbele punt na een dict-key ten onrechte in
+        # een deelteken — {"A": [...]} werd zo onleesbare, kapotte syntax.
+        # Nu slaat de regel niet meer toe als de ":" direct voorafgegaan
+        # wordt door een aanhalingsteken (dict-key) of gevolgd wordt door
+        # een aanhalingsteken/haakje/accolade (dict-value die met zo'n
+        # teken begint) — enkel een kale "getal : getal"-breuknotatie
+        # (bv. "10:4") wordt nog vervangen.
+        expr = re.sub(r'(?<!["\'])\s*:\s*(?!\s*["\'\[{])', '/', expr)
         expr = expr.replace("^", "**")
 
         # 5. detecteer getal + unit (alleen letters, maar NIET splitsen)
@@ -466,6 +564,14 @@ class MathModule:
         # variant MET spatie (bv. "3 x^2").
         expr = re.sub(r'(\d+(\.\d+)?)[ ]+([A-Za-zµ][A-Za-zµ/]*)(?=\*\*)', r'\1*\3', expr)
         expr = re.sub(r'(\d+(\.\d+)?)[ ]+([A-Za-zµ][A-Za-zµ/]*)(?!\*\*)', r'(\1*\3)', expr)
+
+        # Fase 5, punt 13 — Complexe getallen: nu pas, als allerlaatste
+        # stap, zetten we de "__IMAG__"-placeholder (zie bovenaan deze
+        # functie) definitief om naar Python's "j"-notatie. Alle eerdere
+        # preprocess-stappen (eenheden, machten, enz.) hebben de
+        # placeholder niet meer kunnen aanraken, dus "4__IMAG__" wordt nu
+        # veilig "4j" — een geldige Python complex-literal.
+        expr = expr.replace("__IMAG__", "j")
 
         return expr
         
@@ -805,13 +911,16 @@ class MathModule:
         discriminant = b ** 2 - 4 * a * c
 
         if discriminant < 0:
-            # Nova ondersteunt nog geen complexe getallen (zie math_roadmap.md,
-            # Fase 5 punt 13 — nog niet gebouwd), dus we geven dit eerlijk aan
-            # i.p.v. een fout complex antwoord te verzinnen.
-            raise ValueError(
-                "solveQuadratic: geen reële oplossingen (discriminant < 0) — "
-                "complexe getallen zijn nog niet ondersteund in Nova"
-            )
+            # UPDATE (Fase 5, punt 13 — Complexe getallen, nu gebouwd):
+            # eerder gaf Nova hier een foutmelding, want complexe
+            # getallen bestonden nog niet. Nu tonen we het correcte
+            # complexe antwoord, via cmath.sqrt() (Python's ingebouwde
+            # complexe-wiskunde-module, i.p.v. math.sqrt() dat hier zou
+            # falen op een negatief getal).
+            sqrt_d = cmath.sqrt(discriminant)
+            x1 = (-b + sqrt_d) / (2 * a)
+            x2 = (-b - sqrt_d) / (2 * a)
+            return sorted([x1, x2], key=lambda z: (z.real, z.imag))
 
         if discriminant == 0:
             return [-b / (2 * a)]
@@ -1307,7 +1416,15 @@ class MathModule:
         # Vertaalt een SymPy-resultaat terug naar Nova's eigen notatie
         # (met "^" i.p.v. "**"), zodat het er hetzelfde uitziet als wat
         # de gebruiker zelf typt.
-        return str(sympy_obj).replace("**", "^").replace("*", "")
+        # Fase 5, punt 13 — Complexe getallen: SymPy toont de imaginaire
+        # eenheid als hoofdletter "I" (bv. "2*I" of "-I") — we vertalen
+        # dat hier naar de kleine "i" die de gebruiker zelf ook intypt.
+        # Veilig binnen onze functie-whitelist (sin/cos/tan/sqrt/exp/
+        # log/Abs): geen van die namen bevat zelf een hoofdletter "I",
+        # dus deze vervanging kan nooit per ongeluk iets anders raken.
+        tekst = str(sympy_obj).replace("**", "^").replace("*", "")
+        tekst = re.sub(r'\bI\b', 'i', tekst)
+        return tekst
 
     def _differentiate(self, expr_str):
         # Symbolisch differentiëren: geeft een FORMULE terug, geen getal.
@@ -1388,16 +1505,11 @@ class MathModule:
         if not oplossingen:
             raise ValueError("solve_sym: geen oplossingen gevonden voor deze vergelijking")
 
-        # Complexe oplossingen filteren we eruit, net als bij solveQuadratic
-        # — Nova ondersteunt nog geen complexe getallen (zie Fase 5).
-        reele_oplossingen = [o for o in oplossingen if o.is_real]
-        if not reele_oplossingen:
-            raise ValueError(
-                "solve_sym: geen reële oplossingen — enkel complexe getallen als "
-                "oplossing, en die zijn nog niet ondersteund in Nova"
-            )
-
-        opgeschreven = [self._sympy_str(o) for o in reele_oplossingen]
+        # UPDATE (Fase 5, punt 13 — Complexe getallen, nu gebouwd): eerder
+        # werden complexe oplossingen hier weggefilterd met een
+        # foutmelding. Nu tonen we ze gewoon mee — _sympy_str() vertaalt
+        # SymPy's "I" al naar onze "i"-notatie.
+        opgeschreven = [self._sympy_str(o) for o in oplossingen]
         return "x = " + " of x = ".join(opgeschreven)
 
     # -----------------------------------------------------------
@@ -1576,6 +1688,480 @@ class MathModule:
             "eindsnelheid": UnitValue(round(v, 6), {"m": 1, "s": -1}, label="m/s").bind_math(self),
         }
 
+    # -----------------------------------------------------------
+    # Fase 5, punt 12 — Getaltheorie & combinatoriek, 100% puur symbolisch
+    # -----------------------------------------------------------
+    # LET OP: faculteit(), combinaties() en permutaties() zijn al
+    # gebouwd in Fase 3, punt 9 (Statistiek-module), waar ze nodig waren
+    # voor binomiaal(). Hier komen enkel de nog ontbrekende onderdelen
+    # van punt 12 bij: priemgetallen, ggd/kgv, modulo-rekenen.
+
+    def _is_priem(self, n):
+        # Test of een getal een priemgetal is (enkel deelbaar door 1 en
+        # zichzelf, en groter dan 1). bv. is_priem(17) → True
+        if not isinstance(n, int):
+            raise ValueError("is_priem verwacht een geheel getal")
+        if n < 2:
+            return False
+        if n in (2, 3):
+            return True
+        if n % 2 == 0:
+            return False
+        # enkel oneven delers proberen t/m de wortel van n (alles erboven
+        # zou al gevonden zijn als kleinere partner van een deler eronder)
+        for deler in range(3, int(math.isqrt(n)) + 1, 2):
+            if n % deler == 0:
+                return False
+        return True
+
+    def _priemgetallen(self, tot):
+        # Genereert alle priemgetallen tot en met 'tot', via de Zeef van
+        # Eratosthenes (efficiënt: één keer alle veelvouden doorstrepen
+        # i.p.v. elk getal apart met is_priem() te testen).
+        # bv. priemgetallen(30) → [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+        if not isinstance(tot, int):
+            raise ValueError("priemgetallen verwacht een geheel getal")
+        if tot < 2:
+            return []
+        if tot > 10_000_000:
+            raise ValueError("priemgetallen: bovengrens is te groot (max. 10.000.000), zou te lang duren")
+
+        zeef = [True] * (tot + 1)
+        zeef[0] = zeef[1] = False
+        for i in range(2, int(math.isqrt(tot)) + 1):
+            if zeef[i]:
+                for veelvoud in range(i * i, tot + 1, i):
+                    zeef[veelvoud] = False
+        return [i for i, is_priem in enumerate(zeef) if is_priem]
+
+    def _ggd(self, a, b):
+        # Grootste gemene deler, via het Euclidisch algoritme.
+        # bv. ggd(48, 18) → 6
+        if not all(isinstance(v, int) for v in (a, b)):
+            raise ValueError("ggd verwacht twee gehele getallen")
+        return math.gcd(a, b)
+
+    def _kgv(self, a, b):
+        # Kleinste gemene veelvoud: kgv(a,b) = |a*b| / ggd(a,b)
+        # bv. kgv(4, 6) → 12
+        if not all(isinstance(v, int) for v in (a, b)):
+            raise ValueError("kgv verwacht twee gehele getallen")
+        if a == 0 or b == 0:
+            raise ValueError("kgv: is niet gedefinieerd als a of b gelijk is aan 0")
+        return abs(a * b) // math.gcd(a, b)
+
+    def _modulo(self, a, b):
+        # De rest bij deling: modulo(a, b) = a % b
+        # bv. modulo(17, 5) → 2
+        # Als aparte, benoemde functie i.p.v. enkel het kale "%"-teken,
+        # zodat er geen verwarring ontstaat met de percentage-notatie
+        # (zie math_roadmap.md, Fase 5-aanvulling punt 17).
+        if not all(isinstance(v, int) for v in (a, b)):
+            raise ValueError("modulo verwacht twee gehele getallen")
+        if b == 0:
+            raise ValueError("modulo: delen door 0 kan niet")
+        return a % b
+
+    # -----------------------------------------------------------
+    # Fase 5, punt 14 — Extra eenheden: talstelsel-conversies
+    # -----------------------------------------------------------
+    # Gebruikt Python's ingebouwde bin()/oct()/hex()/int(x, base) — 100%
+    # deterministisch, geen ML nodig. naar_binair/naar_octaal/naar_hex
+    # gaan er impliciet van uit dat het invoergetal decimaal is (het
+    # gangbare geval: "wat is 255 in binair"). Voor de omgekeerde
+    # richting: vanuit_talstelsel(tekst, grondtal) — je hoeft dan enkel
+    # het grondtal van de BRON te kennen (bv. 2 voor binair), niet twee
+    # grondtallen tegelijk.
+
+    def _strip_prefix(self, python_str, prefix_len):
+        # Haalt Python's ingebouwde prefix (0b/0o/0x) netjes weg, met
+        # correcte afhandeling van een eventueel minteken ervoor (bv.
+        # "-0b101" → "-101", niet per ongeluk "0b101" → "b101").
+        if python_str.startswith("-"):
+            return "-" + python_str[1 + prefix_len:]
+        return python_str[prefix_len:]
+
+    def _naar_binair(self, getal):
+        # bv. naar_binair(255) → "11111111"
+        if not isinstance(getal, int):
+            raise ValueError("naar_binair verwacht een geheel getal")
+        return self._strip_prefix(bin(getal), 2)
+
+    def _naar_octaal(self, getal):
+        # bv. naar_octaal(255) → "377"
+        if not isinstance(getal, int):
+            raise ValueError("naar_octaal verwacht een geheel getal")
+        return self._strip_prefix(oct(getal), 2)
+
+    def _naar_hex(self, getal):
+        # bv. naar_hex(255) → "ff"
+        if not isinstance(getal, int):
+            raise ValueError("naar_hex verwacht een geheel getal")
+        return self._strip_prefix(hex(getal), 2)
+
+    def _vanuit_talstelsel(self, tekst, grondtal):
+        # Zet een getal-als-tekst in een willekeurig grondtal (2 t/m 36)
+        # om naar het gewone decimale getal.
+        # bv. vanuit_talstelsel("11111111", 2) → 255
+        # bv. vanuit_talstelsel("ff", 16) → 255
+        if not isinstance(tekst, str):
+            raise ValueError("vanuit_talstelsel verwacht het getal als tekst, bv. \"ff\"")
+        if not isinstance(grondtal, int):
+            raise ValueError("vanuit_talstelsel verwacht een geheel getal als grondtal")
+        if not (2 <= grondtal <= 36):
+            raise ValueError("vanuit_talstelsel: grondtal moet tussen 2 en 36 liggen")
+
+        try:
+            return int(tekst, grondtal)
+        except ValueError:
+            raise ValueError(
+                f"vanuit_talstelsel: \"{tekst}\" is geen geldig getal in grondtal {grondtal}"
+            )
+
+    # -----------------------------------------------------------
+    # Fase 5, punt 15 — Klassieke CS-algoritmes (losstaande module)
+    # -----------------------------------------------------------
+    # 100% eigen Python-code, geen ML/LLM. Bewust géén graafalgoritmes
+    # specifiek voor Nova's concepts.json (kortste pad tussen concepten,
+    # cykel-detectie, topologische sortering) — die horen inhoudelijk bij
+    # de semantic-roadmap, niet hier. Hier enkel algemene, losstaande
+    # algoritmes die op willekeurige data werken.
+
+    def _binary_search(self, lijst, waarde):
+        # Zoekt een waarde in een GESORTEERDE lijst, veel sneller dan
+        # element-voor-element doorlopen bij grote lijsten.
+        # bv. binary_search([1,3,5,7,9,11], 7) → 3 (index van 7)
+        if not isinstance(lijst, list):
+            raise ValueError("binary_search verwacht een lijst")
+        if lijst != sorted(lijst):
+            raise ValueError("binary_search: de lijst moet gesorteerd zijn")
+
+        links, rechts = 0, len(lijst) - 1
+        while links <= rechts:
+            midden = (links + rechts) // 2
+            if lijst[midden] == waarde:
+                return midden
+            if lijst[midden] < waarde:
+                links = midden + 1
+            else:
+                rechts = midden - 1
+
+        raise ValueError(f"binary_search: {waarde} niet gevonden in de lijst")
+
+    def _bubble_sort(self, lijst):
+        # Simpel, klassiek sorteeralgoritme: herhaaldelijk naburige
+        # elementen omwisselen als ze in de verkeerde volgorde staan.
+        # Niet het snelste algoritme (O(n²)), maar wel het meest
+        # herkenbare/eenvoudigste om te begrijpen.
+        # bv. bubble_sort([5,2,8,1]) → [1,2,5,8]
+        if not isinstance(lijst, list):
+            raise ValueError("bubble_sort verwacht een lijst")
+        if not all(isinstance(v, (int, float)) for v in lijst):
+            raise ValueError("bubble_sort verwacht een lijst met enkel getallen")
+
+        resultaat = lijst.copy()
+        n = len(resultaat)
+        for i in range(n):
+            for j in range(0, n - i - 1):
+                if resultaat[j] > resultaat[j + 1]:
+                    resultaat[j], resultaat[j + 1] = resultaat[j + 1], resultaat[j]
+        return resultaat
+
+    def _quick_sort(self, lijst):
+        # Sneller sorteeralgoritme (gemiddeld O(n log n)): kiest een
+        # spilelement (pivot) en verdeelt de rest in kleiner/gelijk/groter,
+        # en herhaalt dat recursief op elk deel.
+        # bv. quick_sort([5,2,8,1]) → [1,2,5,8]
+        if not isinstance(lijst, list):
+            raise ValueError("quick_sort verwacht een lijst")
+        if not all(isinstance(v, (int, float)) for v in lijst):
+            raise ValueError("quick_sort verwacht een lijst met enkel getallen")
+
+        if len(lijst) <= 1:
+            return lijst.copy()
+
+        spil = lijst[len(lijst) // 2]
+        kleiner = [x for x in lijst if x < spil]
+        gelijk = [x for x in lijst if x == spil]
+        groter = [x for x in lijst if x > spil]
+        return self._quick_sort(kleiner) + gelijk + self._quick_sort(groter)
+
+    def _check_graaf(self, graaf, functienaam):
+        if not isinstance(graaf, dict):
+            raise ValueError(
+                f"{functienaam} verwacht een graaf als dictionary, "
+                f'bv. {{"A": ["B","C"], "B": ["D"]}}'
+            )
+
+    def _bfs(self, graaf, start):
+        # Breadth-First Search: doorloopt een graaf laag voor laag vanaf
+        # het startpunt, geeft de volgorde terug waarin knopen bereikt
+        # worden. bv. bfs({"A":["B","C"],"B":["D"],"C":["D"]}, "A")
+        # → ["A", "B", "C", "D"]
+        self._check_graaf(graaf, "bfs")
+        if start not in graaf:
+            raise ValueError(f"bfs: startpunt \"{start}\" komt niet voor in de graaf")
+
+        bezocht = [start]
+        wachtrij = [start]
+        while wachtrij:
+            huidige = wachtrij.pop(0)
+            for buur in graaf.get(huidige, []):
+                if buur not in bezocht:
+                    bezocht.append(buur)
+                    wachtrij.append(buur)
+        return bezocht
+
+    def _dfs(self, graaf, start):
+        # Depth-First Search: doorloopt een graaf zo diep mogelijk in één
+        # richting vóór terug te keren, geeft de bezoekvolgorde terug.
+        # bv. dfs({"A":["B","C"],"B":["D"],"C":["D"]}, "A")
+        # → ["A", "B", "D", "C"]
+        self._check_graaf(graaf, "dfs")
+        if start not in graaf:
+            raise ValueError(f"dfs: startpunt \"{start}\" komt niet voor in de graaf")
+
+        bezocht = []
+
+        def verken(knoop):
+            if knoop in bezocht:
+                return
+            bezocht.append(knoop)
+            for buur in graaf.get(knoop, []):
+                verken(buur)
+
+        verken(start)
+        return bezocht
+
+    def _dijkstra(self, graaf, start):
+        # Kortste-pad-algoritme voor een graaf MET gewichten (bv.
+        # afstanden of kosten tussen knopen). Geeft voor elke bereikbare
+        # knoop de kortste totale afstand vanaf het startpunt terug.
+        # bv. dijkstra({"A":{"B":4,"C":2},"B":{"D":1},"C":{"B":1,"D":5}}, "A")
+        # → {"A":0, "B":3, "C":2, "D":4}
+        self._check_graaf(graaf, "dijkstra")
+        if start not in graaf:
+            raise ValueError(f"dijkstra: startpunt \"{start}\" komt niet voor in de graaf")
+        for knoop, buren in graaf.items():
+            if not isinstance(buren, dict):
+                raise ValueError(
+                    'dijkstra verwacht gewichten per verbinding, bv. '
+                    '{"A": {"B": 4, "C": 2}} — gebruik bfs()/dfs() voor een graaf zonder gewichten'
+                )
+
+        afstanden = {knoop: math.inf for knoop in graaf}
+        afstanden[start] = 0
+        onbezocht = set(graaf.keys())
+
+        while onbezocht:
+            huidige = min(onbezocht, key=lambda k: afstanden[k])
+            if afstanden[huidige] == math.inf:
+                break
+            onbezocht.remove(huidige)
+
+            for buur, gewicht in graaf.get(huidige, {}).items():
+                if buur not in afstanden:
+                    afstanden[buur] = math.inf
+                    onbezocht.add(buur)
+                nieuwe_afstand = afstanden[huidige] + gewicht
+                if nieuwe_afstand < afstanden[buur]:
+                    afstanden[buur] = nieuwe_afstand
+
+        return {k: v for k, v in afstanden.items() if v != math.inf}
+
+    def _levenshtein(self, woord1, woord2):
+        # Levenshtein-afstand (edit distance): minimum aantal invoeg-,
+        # verwijder- en vervangbewerkingen om van woord1 naar woord2 te
+        # gaan. Nova gebruikt dit concept al IMPLICIET via Python's
+        # difflib (bv. voor het herkennen van gelijkaardige woorden) —
+        # dit maakt het ook expliciet oproepbaar als eigen functie.
+        # bv. levenshtein("kitten", "sitting") → 3
+        if not all(isinstance(w, str) for w in (woord1, woord2)):
+            raise ValueError("levenshtein verwacht twee woorden als tekst")
+
+        n, m = len(woord1), len(woord2)
+        # tabel[i][j] = afstand tussen de eerste i letters van woord1 en
+        # de eerste j letters van woord2
+        tabel = [[0] * (m + 1) for _ in range(n + 1)]
+        for i in range(n + 1):
+            tabel[i][0] = i
+        for j in range(m + 1):
+            tabel[0][j] = j
+
+        for i in range(1, n + 1):
+            for j in range(1, m + 1):
+                if woord1[i - 1] == woord2[j - 1]:
+                    tabel[i][j] = tabel[i - 1][j - 1]
+                else:
+                    tabel[i][j] = 1 + min(
+                        tabel[i - 1][j],      # verwijderen
+                        tabel[i][j - 1],      # invoegen
+                        tabel[i - 1][j - 1],  # vervangen
+                    )
+
+        return tabel[n][m]
+
+    # -----------------------------------------------------------
+    # Fase 5, punt 16 — Afronding & precisie, 100% puur symbolisch
+    # -----------------------------------------------------------
+
+    def _significante_cijfers(self, getal, aantal):
+        # Rondt af op een gegeven aantal SIGNIFICANTE cijfers — anders
+        # dan het bestaande round() (dat afrondt op decimalen), telt dit
+        # vanaf het eerste niet-nul-cijfer. bv. significante_cijfers(
+        # 123456, 3) → 123000 (drie significante cijfers: 1,2,3)
+        # bv. significante_cijfers(0.0012345, 3) → 0.00123
+        if not isinstance(getal, (int, float)):
+            raise ValueError("significante_cijfers verwacht een getal")
+        if not isinstance(aantal, int) or aantal < 1:
+            raise ValueError("significante_cijfers: aantal moet een geheel getal ≥ 1 zijn")
+        if getal == 0:
+            return 0.0
+
+        macht = aantal - math.ceil(math.log10(abs(getal)))
+        factor = 10 ** macht
+        return round(getal * factor) / factor
+
+    def _stel_precisie_in(self, aantal_decimalen):
+        # Stelt een vaste precisie in voor de rest van de sessie: alle
+        # nieuwe berekeningsresultaten worden vanaf nu op dit aantal
+        # decimalen afgerond bij weergave (relevant bij fysica-
+        # berekeningen met meetonzekerheid, waar je consequent op
+        # bv. 3 decimalen wil blijven). bv. stel_precisie_in(3)
+        if not isinstance(aantal_decimalen, int) or aantal_decimalen < 0:
+            raise ValueError("stel_precisie_in verwacht een geheel getal ≥ 0")
+        self.sessie_precisie = aantal_decimalen
+        return f"Precisie ingesteld op {aantal_decimalen} decimalen voor de rest van deze sessie"
+
+    def _reset_precisie(self):
+        # Zet de sessie-precisie terug naar het standaardgedrag (geen
+        # vaste afronding, alle bestaande weergave-logica ongewijzigd).
+        self.sessie_precisie = None
+        return "Precisie teruggezet naar standaard"
+
+    # -----------------------------------------------------------
+    # Fase 5, punt 18 — Breuken als exact type
+    # -----------------------------------------------------------
+
+    def _breuk(self, teller, noemer):
+        # Gebruikt Python's ingebouwde Fraction i.p.v. gewone deling,
+        # zodat het resultaat EXACT blijft (bv. breuk(1,3) + breuk(1,3)
+        # → 2/3, niet 0.6666666666666666). Bewust een aparte, expliciete
+        # functie — GEEN wijziging aan bestaande "/"-deling, om niets
+        # bestaands te breken. Fraction ondersteunt zelf al +,-,*,/ met
+        # andere Fractions of gewone getallen, dus breuk(1,3)+breuk(1,6)
+        # werkt automatisch correct via de bestaande operator-afhandeling.
+        # bv. breuk(1, 3) → "1/3"
+        if not all(isinstance(v, int) for v in (teller, noemer)):
+            raise ValueError("breuk verwacht twee gehele getallen: teller, noemer")
+        if noemer == 0:
+            raise ValueError("breuk: noemer kan niet 0 zijn")
+        return Fraction(teller, noemer)
+
+    # -----------------------------------------------------------
+    # Fase 5, punt 19 — Reeksen/rijen
+    # -----------------------------------------------------------
+
+    def _som_reeks(self, van, tot):
+        # Som van alle gehele getallen van 'van' tot en met 'tot'
+        # (rekenkundige reeks 1+2+...+n). bv. som_reeks(1, 100) → 5050
+        if not all(isinstance(v, int) for v in (van, tot)):
+            raise ValueError("som_reeks verwacht twee gehele getallen")
+        if van > tot:
+            raise ValueError("som_reeks: 'van' moet kleiner of gelijk zijn aan 'tot'")
+        # Gauss-formule i.p.v. een expliciete lus: even snel bij n=10 als
+        # bij n=10.000.000, geen prestatieverlies bij grote reeksen.
+        n = tot - van + 1
+        return n * (van + tot) // 2
+
+    def _sigma(self, f, van, tot):
+        # Evalueert een sigma-sommatie Σ f(i) voor i van 'van' tot en met
+        # 'tot' — f is een vrije expressie met x (hergebruikt hetzelfde
+        # mechanisme als newton()/afgeleide()/enz., zie EXPR_FUNCS in de
+        # Call-afhandeling van _eval()).
+        # bv. sigma(x^2, 1, 5) → 1+4+9+16+25 = 55
+        if not callable(f):
+            raise ValueError("sigma verwacht als eerste argument een expressie met x, bv. \"x^2\"")
+        if not all(isinstance(v, int) for v in (van, tot)):
+            raise ValueError("sigma verwacht gehele getallen voor 'van' en 'tot'")
+        if van > tot:
+            raise ValueError("sigma: 'van' moet kleiner of gelijk zijn aan 'tot'")
+
+        return sum(f(i) for i in range(van, tot + 1))
+
+    def _meetkundige_reeks(self, eerste_term, reden, aantal_termen):
+        # Som van een meetkundige reeks: eerste_term + eerste_term*reden
+        # + eerste_term*reden^2 + ... (aantal_termen termen totaal).
+        # bv. meetkundige_reeks(1, 2, 5) → 1+2+4+8+16 = 31
+        if not all(isinstance(v, (int, float)) for v in (eerste_term, reden)):
+            raise ValueError("meetkundige_reeks verwacht getallen voor eerste_term en reden")
+        if not isinstance(aantal_termen, int) or aantal_termen < 1:
+            raise ValueError("meetkundige_reeks: aantal_termen moet een geheel getal ≥ 1 zijn")
+
+        if reden == 1:
+            return eerste_term * aantal_termen
+        resultaat = eerste_term * (1 - reden ** aantal_termen) / (1 - reden)
+        return round(resultaat, 6) if isinstance(resultaat, float) else resultaat
+
+    # -----------------------------------------------------------
+    # Fase 5, punt 20 — Eenvoudige kansrekening (discreet)
+    # -----------------------------------------------------------
+    # LET OP: nadrukkelijk iets anders dan Fase 3's Statistiek-module
+    # (die gaat over data/regressie/correlatie) — hier gaat het om basis
+    # kansberekening met combinatoriek, dobbelsteen/kaartspel-achtige
+    # modellen. Hergebruikt combinaties()/faculteit() uit Fase 3, punt 9.
+
+    def _kans_dobbelsteen(self, aantal_dobbelstenen, som):
+        # Kans op een bepaalde som bij het gooien van N dobbelstenen
+        # (elk met 6 zijden), via volledige enumeratie van alle
+        # mogelijke worpen — eenvoudig en exact voor een klein aantal
+        # dobbelstenen (praktisch haalbaar t/m een stuk of 6-8 stuks).
+        # bv. kans_dobbelsteen(2, 7) → kans op som=7 met 2 dobbelstenen
+        if not isinstance(aantal_dobbelstenen, int) or aantal_dobbelstenen < 1:
+            raise ValueError("kans_dobbelsteen: aantal_dobbelstenen moet een geheel getal ≥ 1 zijn")
+        if aantal_dobbelstenen > 8:
+            raise ValueError("kans_dobbelsteen: te veel dobbelstenen (max. 8), zou te lang duren om te enumereren")
+        if not isinstance(som, int):
+            raise ValueError("kans_dobbelsteen verwacht een geheel getal als som")
+
+        totaal_mogelijkheden = 6 ** aantal_dobbelstenen
+        gunstige = 0
+
+        def tel_worpen(resterend, huidige_som):
+            nonlocal gunstige
+            if resterend == 0:
+                if huidige_som == som:
+                    gunstige += 1
+                return
+            for worp in range(1, 7):
+                tel_worpen(resterend - 1, huidige_som + worp)
+
+        tel_worpen(aantal_dobbelstenen, 0)
+        return round(gunstige / totaal_mogelijkheden, 6)
+
+    def _kans_kaart(self, kaarten_gewenst, totaal_kaarten, trek_aantal):
+        # Kans om minstens 1 gewenste kaart te trekken uit een stapel,
+        # via de combinatie-formule (hypergeometrische verdeling): kans
+        # dat GEEN van de getrokken kaarten een gewenste kaart is,
+        # afgetrokken van 1.
+        # bv. kans_kaart(4, 52, 5) → kans op minstens 1 aas bij 5 kaarten
+        # trekken uit een kaartspel van 52 (met 4 azen)
+        if not all(isinstance(v, int) for v in (kaarten_gewenst, totaal_kaarten, trek_aantal)):
+            raise ValueError("kans_kaart verwacht drie gehele getallen")
+        if not (0 <= kaarten_gewenst <= totaal_kaarten):
+            raise ValueError("kans_kaart: kaarten_gewenst moet tussen 0 en totaal_kaarten liggen")
+        if not (1 <= trek_aantal <= totaal_kaarten):
+            raise ValueError("kans_kaart: trek_aantal moet tussen 1 en totaal_kaarten liggen")
+
+        ongewenst = totaal_kaarten - kaarten_gewenst
+        if trek_aantal > ongewenst:
+            # Het is onmogelijk om enkel ongewenste kaarten te trekken,
+            # dus de kans op minstens 1 gewenste kaart is gegarandeerd 1.
+            return 1.0
+
+        kans_geen_gewenste = self._combinaties(ongewenst, trek_aantal) / self._combinaties(totaal_kaarten, trek_aantal)
+        return round(1 - kans_geen_gewenste, 6)
+
     def _make_unitvalue(self, number, unit_name):
         # temperatuur-markers
         if isinstance(unit_name, tuple) and unit_name[0] == "TEMP":
@@ -1615,7 +2201,16 @@ class MathModule:
         # tuples (functie-argumenten)
         if isinstance(node, ast.Tuple):
             return [self._eval(e, variables) for e in node.elts]
-            
+
+        # NIEUW (Fase 5, punt 15 — CS-algoritmes): dictionaries, nodig om
+        # een graaf als functie-argument te kunnen intypen bij bfs()/
+        # dfs()/dijkstra(), bv. {"A": ["B","C"], "B": ["D"]}.
+        if isinstance(node, ast.Dict):
+            return {
+                self._eval(k, variables): self._eval(v, variables)
+                for k, v in zip(node.keys, node.values)
+            }
+
         # namen (constanten + eenheden)
         if isinstance(node, ast.Name):
             name = node.id
@@ -1807,6 +2402,7 @@ class MathModule:
             EXPR_FUNCS = {
                 "newton", "nulpunt", "polyeval", "bereken", "extremum", "minmax",
                 "afgeleide", "integraal", "limiet",
+                "sigma",  # Fase 5, punt 19 — Reeksen/rijen: sigma(x^2, 1, 5)
             }
             if fname in EXPR_FUNCS:
                 if len(node.args) < 1:
@@ -1952,7 +2548,46 @@ class MathModule:
         new_value = uv.value / factor
         return UnitValue(new_value, dims.copy(), label=target_unit).bind_math(self)
 
+    def _format_complex(self, c):
+        # Fase 5, punt 13 — Complexe getallen: vertaalt Python's eigen
+        # weergave (bv. "(3+4j)") naar de wiskundige notatie die de
+        # gebruiker gewend is (bv. "3 + 4i"). Coëfficiënt 1/-1 op het
+        # imaginaire deel wordt kort geschreven als "i"/"-i", niet "1i".
+        reeel, imag = c.real, c.imag
+
+        if imag == 0:
+            return str(int(reeel)) if reeel.is_integer() else str(reeel)
+
+        def imag_deel(waarde):
+            if waarde == 1:
+                return "i"
+            if waarde == -1:
+                return "-i"
+            getal_str = str(int(waarde)) if float(waarde).is_integer() else str(waarde)
+            return f"{getal_str}i"
+
+        if reeel == 0:
+            return imag_deel(imag)
+
+        reeel_str = str(int(reeel)) if reeel.is_integer() else str(reeel)
+        if imag > 0:
+            return f"{reeel_str} + {imag_deel(imag)}"
+        return f"{reeel_str} - {imag_deel(abs(imag))}"
+
     def _format_value(self, v):
+        # Fase 5, punt 13: complexe getallen krijgen hun eigen, nettere
+        # notatie (zie _format_complex) i.p.v. Python's "(3+4j)".
+        if isinstance(v, complex):
+            return self._format_complex(v)
+
+        # Fase 5, punt 16 — Afronding & precisie: als de gebruiker een
+        # vaste sessie-precisie heeft ingesteld (via stel_precisie_in()),
+        # ronden we elk float-resultaat daarop af vóór verdere opmaak.
+        # Gebeurt hier, niet dieper in elke losse functie, zodat het één
+        # centrale plek blijft en geen 50+ functies hoeft aan te passen.
+        if isinstance(v, float) and self.sessie_precisie is not None:
+            v = round(v, self.sessie_precisie)
+
         # 1. integer detectie
         if isinstance(v, float) and v.is_integer():
             return str(int(v))
@@ -2024,6 +2659,17 @@ class MathModule:
                 )
             elif isinstance(result, UnitValue):
                 msg = f"{origineel} = {result}"
+            # NIEUW: is_priem() geeft standaard True/False terug, wat kaal
+            # aanvoelt in een gesprek. We bouwen er een natuurlijke
+            # Nederlandse zin van, met het getal zelf uit de expressie
+            # gehaald (bv. "is_priem(17)" -> "17 is een priemgetal").
+            elif isinstance(result, bool) and re.match(r"^is_priem\s*\(", origineel.strip()):
+                getal_match = re.search(r"is_priem\s*\(\s*(-?\d+)", origineel)
+                getal_str = getal_match.group(1) if getal_match else "dat getal"
+                if result:
+                    msg = f"Ja, {getal_str} is een priemgetal!"
+                else:
+                    msg = f"Nee, {getal_str} is geen priemgetal."
             # NIEUW (Fase 4, punt 10): de symbolische algebra-functies
             # geven zelf al een volledige, leesbare string terug (bv.
             # "x = 2 of x = 3" voor solve_sym, of "3x^2 + 2" voor
@@ -2034,6 +2680,37 @@ class MathModule:
                 origineel.strip(),
             ):
                 msg = f"{origineel} → {result}"
+            # NIEUW (Fase 5, punt 13): complexe getallen krijgen hun
+            # eigen, nettere notatie (bv. "3 + 4i" i.p.v. Python's
+            # "(3+4j)") via _format_value()/_format_complex().
+            elif isinstance(result, complex):
+                msg = f"{origineel} = {self._format_value(result)}"
+            # NIEUW (Fase 5, punt 13): ook een LIJST met (mogelijk)
+            # complexe getallen — bv. solveQuadratic() bij een negatieve
+            # discriminant — moet elk element netjes formatteren i.p.v.
+            # Python's rauwe "[-1j, 1j]" te tonen.
+            elif isinstance(result, list) and any(isinstance(v, complex) for v in result):
+                opgemaakt = ", ".join(self._format_value(v) for v in result)
+                msg = f"{origineel} = [{opgemaakt}]"
+            # NIEUW: kansberekening-functies (binomiaal, normaal,
+            # kans_dobbelsteen, kans_kaart) geven intern nog steeds een
+            # decimaal getal terug (bv. 0.166667) — dat blijft zo voor
+            # eventuele verdere rekenkundige bewerkingen — maar we tonen
+            # het resultaat als PERCENTAGE, wat leesbaarder is dan een
+            # decimaal getal (bv. "16.6667%" i.p.v. "0.166667").
+            elif isinstance(result, float) and re.match(
+                r"^(binomiaal|normaal|kans_dobbelsteen|kans_kaart)\s*\(",
+                origineel.strip(),
+            ):
+                percentage = round(result * 100, 4)
+                msg = f"{origineel} = {self._format_value(percentage)}%"
+            # NIEUW (Fase 5, punt 16 — Afronding & precisie): een kaal
+            # float-resultaat (het meest voorkomende basisgeval, bv.
+            # "1/3") moet via _format_value() lopen, niet via Python's
+            # rauwe str() — anders wordt een ingestelde sessie_precisie
+            # (stel_precisie_in()) genegeerd voor alle gewone berekeningen.
+            elif isinstance(result, float):
+                msg = f"{origineel} = {self._format_value(result)}"
             else:
                 msg = f"{origineel} = {result}"
 
@@ -2085,6 +2762,13 @@ class MathModule:
                 "kracht:", "energie_kinetisch:", "energie_potentieel:",
                 "arbeid:", "snelheid_na:", "afstand_na:", "projectiel:",
                 "val_met_weerstand:",
+                "is_priem:", "priemgetallen:", "ggd:", "kgv:", "modulo:",
+                "naar_binair:", "naar_octaal:", "naar_hex:", "vanuit_talstelsel:",
+                "binary_search:", "bubble_sort:", "quick_sort:",
+                "bfs:", "dfs:", "dijkstra:", "levenshtein:",
+                "significante_cijfers:", "stel_precisie_in:",
+                "breuk:", "som_reeks:", "sigma:", "meetkundige_reeks:",
+                "kans_dobbelsteen:", "kans_kaart:",
             )):
                 msg = err
 

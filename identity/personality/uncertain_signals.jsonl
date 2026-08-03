@@ -324,3 +324,38 @@
 {"text": "snelheid_na(0, 9.81, 3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:57:55.405250"}
 {"text": "projectiel(20, 45)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:58:02.928078"}
 {"text": "val_met_weerstand(80, 1000, 0.2)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-02T21:58:17.620563"}
+{"text": "is_priem(17)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-03T19:06:48.383202"}
+{"text": "ggd(48, 18)", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0976, "bron": "model_fallback", "tijdstip": "2026-08-03T19:07:01.657351"}
+{"text": "kgv(4, 6)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T19:07:07.007790"}
+{"text": "modulo(17, 5)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-03T19:07:13.063304"}
+{"text": "is_priem(17)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-03T19:10:07.930572"}
+{"text": "ik ben moe", "signaal": "focus", "model_signaal": "focus", "marge": 0.0889, "bron": "model_fallback", "tijdstip": "2026-08-03T19:17:02.770958"}
+{"text": "3 + 4i", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T19:22:19.129630"}
+{"text": "(3+4i) * (1+2i)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T19:22:31.125401"}
+{"text": "i*i", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-03T19:22:44.862055"}
+{"text": "solveQuadratic(1, 0, 1)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T19:22:51.717963"}
+{"text": "solve_sym(x^2 + 1 = 0)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T19:22:58.064558"}
+{"text": "naar_binair(255)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:06:52.615706"}
+{"text": "naar_hex(255)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:06:59.198876"}
+{"text": "vanuit_talstelsel(\"ff\", 16)", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0772, "bron": "model_fallback", "tijdstip": "2026-08-03T21:07:05.459261"}
+{"text": "10nmi.to(km)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:07:11.812453"}
+{"text": "1stone.to(kg)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:07:36.840759"}
+{"text": "bubble_sort([5,2,8,1])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:24:00.139742"}
+{"text": "binary_search([1,3,5,7,9], 7)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:24:12.795985"}
+{"text": "bfs({\"A\":[\"B\",\"C\"],\"B\":[\"D\"],\"C\":[\"D\"]}, \"A\")", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:24:22.278826"}
+{"text": "dijkstra({\"A\":{\"B\":4,\"C\":2},\"B\":{\"D\":1},\"C\":{\"B\":1,\"D\":5}}, \"A\")", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:24:37.848071"}
+{"text": "levenshtein(\"kitten\", \"sitting\")", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:24:53.552551"}
+{"text": "significante_cijfers(123456, 3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:46:52.520955"}
+{"text": "20% * 150", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:47:07.217436"}
+{"text": "breuk(1,3) + breuk(1,6)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:47:15.474736"}
+{"text": "sigma(x^2, 1, 5)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:47:23.904188"}
+{"text": "kans_dobbelsteen(2, 7)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:47:30.121706"}
+{"text": "stel_precisie_in(3)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:47:36.898432"}
+{"text": "1/3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-03T21:47:52.338558"}
+{"text": "/exit", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T21:49:38.290095"}
+{"text": "som_reeks(1, 100)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:04:26.410054"}
+{"text": "kans_dobbelsteen(2, 7)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:09:04.886246"}
+{"text": "meetkundige_reeks(1, 2, 5)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:09:17.241257"}
+{"text": "naar_binair(100)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:04.680045"}
+{"text": "vanuit_talstelsel(\"ff\", 16)", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0772, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:18.937187"}
+{"text": "vanuit_talstelsel(\"ff\", 1100100)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:29.947883"}
