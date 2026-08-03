@@ -1,6 +1,6 @@
 # modules/help/help.py
 
-from modules.help.topics import algemeen, schaken, debug
+from modules.help.topics import algemeen, schaken, debug, math
 
 C_RESET = "\033[0m"
 C_GREEN = "\033[92m"
@@ -25,6 +25,11 @@ class HelpModule:
             tekst = schaken.get_help(chess_module)
         elif topic == "debug":
             tekst = debug.get_help()
+        elif topic in ("math", "wiskunde", "rekenen"):
+            # Drie synoniemen herkend ("help math"/"help wiskunde"/
+            # "help rekenen") zodat je niet perse de Engelse modulenaam
+            # hoeft te onthouden.
+            tekst = math.get_help()
         else:
             tekst = algemeen.get_help()
 

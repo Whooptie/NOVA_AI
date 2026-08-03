@@ -174,59 +174,70 @@ Onderweg gevonden en opgelost, tijdens dezelfde sessie:
 
 Alles hieronder is 100% puur symbolisch/deterministisch — geen ML/LLM nodig.
 
-### ➤ 12. **Getaltheorie & combinatoriek**
+### ✅ 12. **Getaltheorie & combinatoriek** (klaar, getest 2 aug 2026)
 
-- priemgetallen (test + genereren)
-- ggd / kgv
-- faculteit
-- combinaties/permutaties (`nCr`, `nPr`)
-- modulo-rekenen
+- ✔ priemgetallen — `is_priem()` (test), `priemgetallen()` (genereren via Zeef van Eratosthenes)
+- ✔ ggd / kgv — `ggd()`, `kgv()` (Euclidisch algoritme)
+- ✔ faculteit — `faculteit()` *(al gebouwd in Fase 3, punt 9, hergebruikt hier)*
+- ✔ combinaties/permutaties — `combinaties()`, `permutaties()` *(al gebouwd in Fase 3, punt 9, hergebruikt hier)*
+- ✔ modulo-rekenen — `modulo()`, als aparte benoemde functie (i.p.v. kaal `%`) om verwarring met de toekomstige percentage-notatie (punt 17) te vermijden
 
-### ➤ 13. **Complexe getallen**
+Dat corrigeert de tekstuele checkbox, in lijn met wat we effectief gebouwd hebben. Zullen we
 
-- Python's ingebouwde `complex` type integreren in `_eval()` en de operator-afhandeling
+### ✅ 13. **Complexe getallen** (klaar, getest 2 aug 2026)
 
-### ➤ 14. **Extra eenheden**
+- ✔ Python's ingebouwde `complex`/`cmath` geïntegreerd — gebruiker typt `i` (wiskundige notatie), vertaald naar Python's `j` via een veilige placeholder-stap in `preprocess()`
+- ✔ `solveQuadratic()` en `solve_sym()` tonen nu complexe oplossingen (bv. `x²+1=0` → `x = -i of x = i`) i.p.v. te weigeren zoals voorheen
+- ✔ Nette weergave: `3 + 4i` i.p.v. Python's `(3+4j)`, `i`/`-i` i.p.v. `1i`/`-1i`
 
-- imperial-eenheden (mijl, pond, ...) naast bestaande SI-set
-- basisconversies: binair / octaal / decimaal / hexadecimaal
+Onderweg gevonden en opgelost: de `i`→`j`-vertaling botste eerst met de bestaande eenheden-regex (die `4j` als "4 van eenheid j" zag, zelfde soort conflict als de eerdere "3x^2"-bug). Opgelost met een tijdelijke placeholder (`__IMAG__`) die pas na alle andere preprocessing naar `j` wordt omgezet.
 
-### ➤ 15. **Klassieke CS-algoritmes (losstaande module, geen wiskunde maar wel symbolisch)**
+**Bewuste voorzichtigheid in de router:** een kale, losstaande `i` wordt niet breed herkend als math-trigger (te generiek risico, vgl. Engelse tekst "I think..."). Enkel `cijfer+i` (bv. `4i`) wordt breed herkend.
 
-- zoek-/sorteeralgoritmes (binary search, BFS/DFS, Dijkstra)
-- string-/pattern-matching (Levenshtein/edit distance — nu al impliciet via `difflib`, hier pas expliciet als eigen functie)
-- **Let op:** graafalgoritmes specifiek gericht op `concepts.json` (kortste pad tussen concepten, cykel-detectie, topologische sortering) horen inhoudelijk beter bij de semantic-roadmap, niet hier — enkel algemene/losstaande CS-algoritmes horen in math.
+### ✅ 14. **Extra eenheden** (klaar, getest 2 aug 2026)
 
----
+- ✔ imperial-eenheden — grotendeels al aanwezig (mile, ft, inch, yard, lb, oz, gal, mph, enz.), aangevuld met `stone` (Britse gewichtseenheid) en `nmi` (nautische mijl)
+- ✔ binair/octaal/decimaal/hexadecimaal — `naar_binair()`, `naar_octaal()`, `naar_hex()` (vanuit decimaal), `vanuit_talstelsel(tekst, grondtal)` voor de omgekeerde richting (grondtal 2 t/m 36)
 
-## **Aanvulling op Fase 3/5 — Precisie, notatie & exacte vormen (nog niet gepland)**
+Onderweg gevonden en opgelost: `nmi` (nautische mijl) botste met het bestaande prefix-systeem (`n`=nano-prefix × `mi`=mile gaf een compleet verkeerd resultaat, `1.6e-6 km` i.p.v. `1852 m`) — zelfde soort naamconflict als eerdere `L`/`mL`-bug. Opgelost met een expliciete herstelregel na het prefix-genererende blok.
 
-Ook hier: alles 100% puur symbolisch, geen ML/LLM nodig.
+### ✅ 15. **Klassieke CS-algoritmes** (klaar, getest 2 aug 2026)
 
-### ➤ 16. **Afronding & precisie**
+- ✔ zoek-/sorteeralgoritmes — `binary_search()`, `bubble_sort()`, `quick_sort()`
+- ✔ graafalgoritmes — `bfs()`, `dfs()` (ongewogen), `dijkstra()` (gewogen kortste pad)
+- ✔ string-/pattern-matching — `levenshtein()`, nu ook expliciet oproepbaar (naast het al bestaande impliciete gebruik via `difflib`)
 
-- concept van significante cijfers (naast bestaande `round()`)
-- instelbare precisie voor een sessie (relevant bij fysica-berekeningen met meetonzekerheid)
+**Architectuur-uitbreiding:** eerste keer dat `_eval()` een `ast.Dict`-node moest verwerken (nodig om een graaf als `{"A": ["B","C"]}` te kunnen intypen voor bfs/dfs/dijkstra).
 
-### ➤ 17. **Percentages als eersteklas notatie**
+Onderweg gevonden en opgelost: de bestaande breuknotatie-regel (`:` → `/`, voor `10:4`) botste met dict-syntax — `{"A": [...]}` werd stiekem kapotgemaakt. Gefixt met een gerichte uitzondering (enkel een kale `getal:getal` wordt nog als breuk gelezen).
 
-- `20% * 150` direct parsen i.p.v. handmatig omzetten naar `0.20 * 150`
-- puur syntactische suiker rond bestaande vermenigvuldiging, geen nieuwe rekenlogica
+Bewuste afbakening gerespecteerd: geen graafalgoritmes specifiek voor `concepts.json` — die horen bij de semantic-roadmap.
 
-### ➤ 18. **Breuken als exact type**
+## **Aanvulling op Fase 3/5 — Precisie, notatie & exacte vormen** (klaar, getest 2 aug 2026)
 
-- Python's ingebouwde `fractions.Fraction` gebruiken i.p.v. float, zodat bv. `1/3 + 1/3` exact `2/3` geeft i.p.v. `0.666...`
-- relevant zodra exacte antwoorden gewenst zijn i.p.v. decimale benaderingen
+### ✅ 16. **Afronding & precisie**
 
-### ➤ 19. **Reeksen/rijen**
+- ✔ `significante_cijfers(getal, aantal)` — naast bestaande `round()`
+- ✔ `stel_precisie_in(n)` / `reset_precisie()` — instelbare sessie-precisie, toegepast via `_format_value()`
 
-- rekenkundige/meetkundige reeksen (som van 1 t/m n, sommaties)
-- sigma-notatie evalueren over een bereik
-- sluit aan bij Fase 3's calculus-plannen
+### ✅ 17. **Percentages als eersteklas notatie**
 
-### ➤ 20. **Eenvoudige kansrekening (discreet)**
+- ✔ `20% * 150` direct parsen → `30` — puur syntactische suiker, vroege preprocess-stap, geen conflict met `modulo()`
 
-- basiskansberekening met combinatoriek (dobbelsteen, kaartspel-achtige modellen)
-- nadrukkelijk iets anders dan Fase 3's "Statistiek-module" (die gaat over data/regressie/correlatie)
+### ✅ 18. **Breuken als exact type**
+
+- ✔ `breuk(teller, noemer)` — Python's `Fraction`, `breuk(1,3)+breuk(1,6)` → `1/2` exact. Bewust een aparte, expliciete functie (geen wijziging aan bestaande `/`-deling)
+
+### ✅ 19. **Reeksen/rijen**
+
+- ✔ `som_reeks(van, tot)` (Gauss-formule), `sigma(expr, van, tot)` (hergebruikt het `EXPR_FUNCS`-mechanisme), `meetkundige_reeks(eerste_term, reden, aantal_termen)`
+
+### ✅ 20. **Eenvoudige kansrekening (discreet)**
+
+- ✔ `kans_dobbelsteen(aantal, som)`, `kans_kaart(gewenst, totaal, trek_aantal)` — hergebruikt `combinaties()`/`faculteit()` uit Fase 3, punt 9
+
+**FASE 5 is hiermee volledig afgerond** (punt 12 t/m 20, alle negen onderdelen getest in Nova zelf).
+
+Onderweg gevonden en opgelost: de generieke weergave-tak in `on_math()` gebruikte Python's rauwe `str()` i.p.v. `_format_value()`, waardoor `stel_precisie_in()` genegeerd werd voor gewone berekeningen (bv. `1/3`) — gefixt.
 
 ---
