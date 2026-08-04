@@ -359,3 +359,24 @@
 {"text": "naar_binair(100)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:04.680045"}
 {"text": "vanuit_talstelsel(\"ff\", 16)", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0772, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:18.937187"}
 {"text": "vanuit_talstelsel(\"ff\", 1100100)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:29.947883"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:03:28.143667"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:03:33.541019"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:11:47.260972"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:17:53.628628"}
+{"text": "koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-08-04T21:18:00.723478"}
+{"text": "bereken x^2 = 5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:30:10.806913"}
+{"text": "solve x^2=5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:31:01.577057"}
+{"text": "bereken x^2=5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:32:02.352735"}
+{"text": "zet 5 kg om naar pond", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0595, "bron": "model_fallback", "tijdstip": "2026-08-04T21:34:00.050759"}
+{"text": "converteer 10 stone naar kg", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0149, "bron": "model_fallback", "tijdstip": "2026-08-04T21:34:06.892713"}
+{"text": "hoeveel inch is 30 cm", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0083, "bron": "model_fallback", "tijdstip": "2026-08-04T21:34:16.802656"}
+{"text": "1 zeemijl in km", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0178, "bron": "model_fallback", "tijdstip": "2026-08-04T21:34:33.743408"}
+{"text": "solve_sym(x^2 = 5)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:43:04.208199"}
+{"text": "nulpunt(x^2 - 5, 2)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:43:26.246102"}
+{"text": "x^2 = 5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:44:23.563430"}
+{"text": "dv(x - y, 1, 0, 5)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:45:38.698294"}
+{"text": "solve_stelsel(x+y=10, x-y=2)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-04T22:10:50.730374"}
+{"text": "solve_stelsel(2x+y=7, x-y=2)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T22:10:58.101058"}
+{"text": "solve_stelsel(x+y=10, x-y=2)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-04T22:12:54.443038"}
+{"text": "solve_stelsel(2x+y=7, x-y=2) → moet x = 3, y = 1", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.048, "bron": "model_fallback", "tijdstip": "2026-08-04T22:13:04.244019"}
+{"text": "solve_stelsel(2x+y=7, x-y=2)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T22:13:18.347866"}

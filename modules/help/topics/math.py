@@ -59,6 +59,7 @@ Alle notatie hieronder werkt zoals je het al gewend bent: "^" voor machten,
   differentiate(x^3 + 2x)         (symbolisch differentiëren)
   integrate_sym(x^2)              (symbolisch integreren)
   solve_sym(x^2 - 5x + 6 = 0)     (exact oplossen, ook hogere graad)
+  solve_stelsel(x+y=10, x-y=2)    (stelsel met x EN y tegelijk oplossen)
   simplify_sym(sin(x)^2 + cos(x)^2)  (vereenvoudigen)
   expand_sym((x+1)^2)             (haakjes uitwerken)
   factor_sym(x^2 - 4)             (ontbinden in factoren)

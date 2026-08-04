@@ -54,3 +54,6 @@
 {"tekst": "hoe warm wordt het morgen", "hoogste_gok": "weather", "confidence": 0.2627, "tijdstip": "2026-08-02T21:05:52.472148"}
 {"tekst": "dat is normaal gesproken zo", "hoogste_gok": "chess_evaluation", "confidence": 0.1769, "tijdstip": "2026-08-02T21:07:24.533688"}
 {"tekst": "ik ben moe", "hoogste_gok": "preference", "confidence": 0.2993, "tijdstip": "2026-08-03T19:17:02.807514"}
+{"tekst": "ik vind koffie eigenlijk wel oké maar niet top", "hoogste_gok": "preference", "confidence": 0.3053, "tijdstip": "2026-08-04T21:03:28.180668"}
+{"tekst": "ik vind koffie eigenlijk wel oké maar niet top", "hoogste_gok": "preference", "confidence": 0.3053, "tijdstip": "2026-08-04T21:03:33.693065"}
+{"tekst": "", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-04T21:34:26.734228"}

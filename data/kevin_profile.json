@@ -33,9 +33,9 @@
     },
     "koffie": {
       "automatisch": {
-        "sentiment": "positief",
-        "datum": "2026-07-26",
-        "aantal_keer_genoemd": 4
+        "sentiment": "neutraal_gemengd",
+        "datum": "2026-08-04",
+        "aantal_keer_genoemd": 5
       },
       "expliciet": {
         "sentiment": "neutraal_gemengd",
