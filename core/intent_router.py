@@ -51,6 +51,13 @@ class IntentRouter:
         # zelfde soort lokale, eigen state als semantic.py's
         # RelationFlowEngine.pending_relation.
         self._pending_sense_voorkeur = None
+        # Preference-via-classifier (4 augustus 2026): onthoudt de
+        # ORIGINELE volledige zin in afwachting van Kevin's antwoord op
+        # "Over welk woord gaat dat?" -- zelfde eigen-pending-state-
+        # patroon als concept_overview.py's _pending_overview (bewust
+        # GEEN pending_question.py hier, want dat is voor ja/nee, dit
+        # is een open woord-antwoord).
+        self._pending_preference_woord = None
         self._intent_tabel_deel1 = self._build_intent_tabel_deel1()
         self._intent_tabel_deel2 = self._build_intent_tabel_deel2()
 
@@ -1041,6 +1048,12 @@ class IntentRouter:
         "meter": "m", "meters": "m", "centimeter": "cm", "centimeters": "cm",
         "millimeter": "mm", "millimeters": "mm", "kilometer": "km", "kilometers": "km",
         "mijl": "mile", "mijlen": "mile", "voet": "ft", "yard": "yard",
+        # AANVULLING (2 aug 2026): eenheden die deze sessie zijn toegevoegd
+        # aan math.py (Fase 5, punt 14 — Extra eenheden) misten nog in dit
+        # woordenboek, zie het gekoppelde openstaande idee in nova_state.md.
+        "inch": "inch", "duim": "inch", "duimen": "inch",
+        "stone": "stone", "steen": "stone",
+        "zeemijl": "nmi", "zeemijlen": "nmi", "nautische mijl": "nmi",
         "gram": "g", "kilo": "kg", "kilogram": "kg", "milligram": "mg",
         "pond": "lb", "ons": "oz",
         "liter": "L", "liters": "L", "milliliter": "ml", "milliliters": "ml",
@@ -1078,6 +1091,24 @@ class IntentRouter:
         # patroon B: "<getal> <bron> in <doel>"
         m = re.search(
             r'(\d+(?:[.,]\d+)?)\s*([a-zA-Zµ°]+)\s+in\s+([a-zA-Zµ°éë]+)',
+            t, re.IGNORECASE
+        )
+        if m:
+            getal, bron_woord, doel_woord = m.groups()
+            bron = self._eenheid_naar_code(bron_woord)
+            doel = self._eenheid_naar_code(doel_woord)
+            getal = getal.replace(",", ".")
+            expr = f"{getal}{bron}.to({doel})"
+            self.event_bus.publish("intent_math", {"expr": expr})
+            return True
+
+        # patroon C: "zet/converteer/reken <getal> <bron> (om) naar <doel>"
+        # AANVULLING (2 aug 2026): dit was de tweede "losse haak" uit het
+        # openstaande idee in nova_state.md — patroon A/B dekten deze
+        # zinsvorm nog niet. "om" is optioneel: zowel "zet ... om naar
+        # ..." als "converteer ... naar ..." moeten werken.
+        m = re.search(
+            r'(?:zet|converteer|reken)\s+(\d+(?:[.,]\d+)?)\s*([a-zA-Zµ°]+)\s+(?:om\s+)?naar\s+([a-zA-Zµ°éë]+)',
             t, re.IGNORECASE
         )
         if m:
@@ -1182,7 +1213,7 @@ class IntentRouter:
             # (in tegenstelling tot "wortel"/"bereken"/"gemiddelde"/
             # "normaal" hierboven), dus die mogen gewoon breed matchen.
             "differentiate", "integrate_sym", "simplify_sym",
-            "expand_sym", "factor_sym", "solve_sym",
+            "expand_sym", "factor_sym", "solve_sym", "solve_stelsel",
             # UITBREIDING (Fase 4, punt 11 — Fysica-engine):
             # "energie_kinetisch", "energie_potentieel", "snelheid_na",
             # "afstand_na" en "val_met_weerstand" bevatten underscores en
@@ -1842,12 +1873,12 @@ class IntentRouter:
     #
     # Drempels (Kevin's keuze, 28 juli 2026):
     #   >= 0.70            -> direct de categorie afhandelen, geen vraag
-    #   0.35 t/m 0.70 (excl)-> pending_question stellen, wacht op ja/nee
-    #   < 0.35              -> loggen naar unmatched_intents.jsonl,
+    #   0.30 t/m 0.70 (excl)-> pending_question stellen, wacht op ja/nee
+    #   < 0.30              -> loggen naar unmatched_intents.jsonl,
     #                          daarna gewoon door naar fallback()
     # ---------------------------------------------------------
     DREMPEL_DIRECT = 0.70
-    DREMPEL_VRAAG = 0.35
+    DREMPEL_VRAAG = 0.30
 
     # Nederlandse, spreektalige labels per categorie -- gebruikt in de
     # bevestigingsvraag ("Bedoel je dat je wil <label>?"). Los van de
@@ -1907,10 +1938,13 @@ class IntentRouter:
     #     classifier-gok is niet zeker dat die naam er überhaupt
     #     herkenbaar in staat.
     #   - math: module zelf nog niet af (Kevin, 30 juli 2026).
-    #   - preference: heeft al een eigen gespecialiseerde classifier
-    #     (sentiment_classifier.py) voor de nuance -- koppeling met
-    #     dit register is een apart te bekijken vraagstuk, geen
-    #     "kan niet", gewoon nog niet beslist (Kevin, 30 juli 2026).
+    #   - preference: ✅ 4 augustus 2026, OPGELOST via een tussenvraag
+    #     (zie _actie_preference_classifier hieronder) -- geen sub_intent
+    #     zoals bij identity, maar een ONTBREKEND WOORD. In tegenstelling
+    #     tot identity/self_architecture/activity is dat woord niet uit
+    #     de bestaande tekst te herwinnen (zelfde regex die het al
+    #     miste, nog eens proberen verandert niets), dus lossen we het
+    #     op door er gewoon actief naar te vragen i.p.v. te gokken.
     def _actie_chess_classifier(self, text):
         """
         Zelfde sub-actie-keuze als de oude, hardcoded if-tak in
@@ -1931,6 +1965,26 @@ class IntentRouter:
     def _actie_greeting_classifier(self, text):
         self.event_bus.publish("intent_greeting", {"sender": self._get_sender_name()})
 
+    def _actie_preference_classifier(self, text):
+        """
+        Preference-via-classifier (4 augustus 2026): in tegenstelling
+        tot chess/weather/time/greeting kan hier geen event meteen
+        gepubliceerd worden -- _ontleed_voorkeur_zin() (dezelfde regex
+        als detect_preference() gebruikt) heeft deze tekst AL geprobeerd
+        en gemist, dus nog eens dezelfde regex aanroepen zou altijd
+        hetzelfde niks opleveren. In plaats van te gokken (bv. "laatste
+        zelfstandig naamwoord in de zin"), vraagt Nova gewoon actief
+        naar het ontbrekende woord. Het sentiment zelf hoeft niet
+        apart gevraagd te worden: sentiment_classifier.py kan de
+        VOLLEDIGE originele zin zelfstandig classificeren zodra we het
+        woord hebben (zie verwerk_preference_woord_antwoord()
+        hieronder) -- dat gebeurt daar, niet hier.
+        """
+        self._pending_preference_woord = {"volledige_zin": text}
+        self.event_bus.publish("chat_response", {
+            "text": "Over welk woord gaat dat?"
+        })
+
     _CLASSIFIER_ACTIE_REGISTER = {
         "chess": _actie_chess_classifier,
         "chess_evaluation": lambda self, text: self.event_bus.publish(
@@ -1943,7 +1997,63 @@ class IntentRouter:
             "intent_time_query", {"text": text}
         ),
         "greeting": _actie_greeting_classifier,
+        "preference": _actie_preference_classifier,
     }
+
+    # Sentiment-nuance-tekst per categorie, voor de bevestiging in
+    # verwerk_preference_woord_antwoord() hieronder -- puur cosmetisch,
+    # zelfde soort mapping als _CLASSIFIER_LABEL_NL_BEVESTIGING.
+    _SENTIMENT_NL = {
+        "positief": "dat je dat leuk vindt",
+        "negatief": "dat je dat niet leuk vindt",
+        "neutraal_gemengd": "dat het gemengde gevoelens bij je oproept",
+    }
+
+    def verwerk_preference_woord_antwoord(self, tekst: str) -> bool:
+        """
+        Checkt of er een openstaande "over welk woord gaat dat?"-vraag
+        is (zie _actie_preference_classifier hierboven), en verwerkt
+        'tekst' dan als het woord-antwoord. Geeft True terug als dit
+        bericht zo verwerkt is (aanroeper moet stoppen met verdere
+        routing), False als er niets open stond.
+
+        Moet door route() gecontroleerd worden vóór de generieke
+        fallback -- zelfde voorrang-redenering als concept_overview.py's
+        verwerk_overview_antwoord(): als Nova net deze vraag stelde,
+        mag het antwoord niet door een andere, generieke intent
+        opgevangen worden.
+
+        Roept BEWUST niet het bestaande 'intent_preference_detected'-
+        event aan (dat _on_preference_detected() zou opvangen) --
+        die subscriber slaat wel op, maar geeft geen chat_response
+        terug, dus Kevin zou na dit antwoord stilte krijgen. Hier
+        wordt dezelfde opslag-logica daarom rechtstreeks aangeroepen,
+        zodat het resultaat (het sentiment) meteen bevestigd kan
+        worden.
+        """
+        if not self._pending_preference_woord:
+            return False
+
+        volledige_zin = self._pending_preference_woord["volledige_zin"]
+        self._pending_preference_woord = None
+
+        woord = tekst.strip().lower().strip(".,!?;:")
+        if not woord:
+            self.event_bus.publish("chat_response", {
+                "text": "Dat heb ik niet goed verstaan, laten we het hier maar bij laten."
+            })
+            return True
+
+        sentiment = self._verfijn_sentiment(volledige_zin, "positief")
+
+        if self.kevin_profile:
+            self.kevin_profile.add_preference(woord, sentiment, bron="automatisch")
+
+        sentiment_nl = self._SENTIMENT_NL.get(sentiment, sentiment)
+        self.event_bus.publish("chat_response", {
+            "text": f"Genoteerd! Ik onthoud van '{woord}' {sentiment_nl}."
+        })
+        return True
 
     # Fase 4 (correcties, 28 juli 2026): omgekeerde mapping -- welk
     # Nederlands woord dat Kevin typt na "ik bedoelde ..." hoort bij
@@ -2427,6 +2537,16 @@ class IntentRouter:
         # worden.
         concept_overview = self.event_bus.modules.get("concept_overview")
         if concept_overview is not None and concept_overview.verwerk_overview_antwoord(text):
+            return
+
+        # -1E Pending preference-woord-vervolgantwoord (4 augustus
+        # 2026) -- zelfde voorrang-redenering als -1D hierboven: als
+        # Nova net vroeg "over welk woord gaat dat?" (na een bevestigde
+        # classifier-gok op preference, zie _actie_preference_classifier),
+        # mag dat antwoord nooit door een andere, generieke intent
+        # opgevangen worden. Eigen methode op IntentRouter zelf, geen
+        # aparte module dus geen modules.get() nodig.
+        if self.verwerk_preference_woord_antwoord(text):
             return
 
         # -1B Pending sense-voorkeur (Bug #10-fix, stap 7) -- zelfde

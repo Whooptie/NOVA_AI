@@ -193,3 +193,4 @@
 {"timestamp": "2026-08-02T19:07:24.534688", "event_type": "concept_created", "word": "normaal", "source": "system", "new_value": {"word": "normaal"}}
 {"timestamp": "2026-08-02T19:07:24.571693", "event_type": "concept_created", "word": "gesproken", "source": "system", "new_value": {"word": "gesproken"}}
 {"timestamp": "2026-08-03T17:17:02.808511", "event_type": "concept_created", "word": "moe", "source": "system", "new_value": {"word": "moe"}}
+{"timestamp": "2026-08-04T19:03:28.182677", "event_type": "concept_created", "word": "oké", "source": "system", "new_value": {"word": "oké"}}

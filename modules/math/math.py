@@ -211,6 +211,7 @@ class MathModule:
             "expand_sym": self._expand_sym,             # expand_sym((x+1)^2) -> "x^2 + 2x + 1"
             "factor_sym": self._factor_sym,             # factor_sym(x^2-4) -> "(x-2)(x+2)"
             "solve_sym": self._solve_sym,               # solve_sym(x^2-5x+6=0) -> "x = 2 of x = 3"
+            "solve_stelsel": self._solve_stelsel,       # solve_stelsel(x+y=10, x-y=2) -> "x = 6, y = 4
 
             # Fase 4, punt 11 — Fysica-engine, 100% puur symbolisch/numeriek
             "kracht": self._kracht,                                 # kracht(1000, 3) -> 3000 N
@@ -670,6 +671,14 @@ class MathModule:
         solve_sym_match = re.match(r"^solve_sym\s*\((.*)\)\s*$", expr.strip())
         if solve_sym_match:
             return self._solve_sym(solve_sym_match.group(1))
+
+        # UITZONDERING (solve_stelsel, 2 aug 2026): zelfde reden als
+        # hierboven bij solve_sym, maar dan met TWEE "="-tekens (één per
+        # vergelijking in het stelsel), bv.
+        # "solve_stelsel(x+y=10, x-y=2)".
+        solve_stelsel_match = re.match(r"^solve_stelsel\s*\((.*)\)\s*$", expr.strip())
+        if solve_stelsel_match:
+            return self._solve_stelsel(solve_stelsel_match.group(1))
 
         node = ast.parse(expr, mode="eval").body
         return self._eval(node)
@@ -1353,24 +1362,29 @@ class MathModule:
                 f"'pip install sympy' in Nova's virtuele omgeving en herstart Nova."
             )
 
-    def _ast_naar_sympy(self, node, x):
+    def _ast_naar_sympy(self, node, variabelen):
         # Eigen, beveiligde vertaler: AST-knoop → SymPy-object.
-        # Enkel getallen, de variabele x, +-*/^, unair min, en een
+        # Enkel getallen, bekende variabelen, +-*/^, unair min, en een
         # whitelist van functienamen worden geaccepteerd — alles
         # daarbuiten (attribute access, imports, willekeurige
         # functie-aanroepen) wordt geweigerd met een ValueError, exact
         # zoals _eval()'s bestaande Call-tak dat al doet.
+        # UPDATE (solve_stelsel, 2 aug 2026): 'variabelen' is een dict
+        # (bv. {"x": x_symbool} of {"x": x_symbool, "y": y_symbool}) i.p.v.
+        # een hardcoded losse 'x' — zodat dezelfde parser ook stelsels met
+        # meerdere onbekenden (x én y) kan verwerken, niet enkel x alleen.
         if isinstance(node, ast.Constant):
             return sp.Number(node.value)
         if isinstance(node, ast.Num):  # oudere Python-versies
             return sp.Number(node.n)
         if isinstance(node, ast.Name):
-            if node.id == "x":
-                return x
-            raise ValueError(f"Onbekende naam: {node.id} (enkel 'x' is ondersteund als variabele)")
+            if node.id in variabelen:
+                return variabelen[node.id]
+            bekende_namen = ", ".join(f"'{v}'" for v in variabelen)
+            raise ValueError(f"Onbekende naam: {node.id} (enkel {bekende_namen} is ondersteund als variabele)")
         if isinstance(node, ast.BinOp):
-            links = self._ast_naar_sympy(node.left, x)
-            rechts = self._ast_naar_sympy(node.right, x)
+            links = self._ast_naar_sympy(node.left, variabelen)
+            rechts = self._ast_naar_sympy(node.right, variabelen)
             if isinstance(node.op, ast.Add):
                 return links + rechts
             if isinstance(node.op, ast.Sub):
@@ -1383,7 +1397,7 @@ class MathModule:
                 return links ** rechts
             raise ValueError("Onbekende operator in symbolische expressie")
         if isinstance(node, ast.UnaryOp):
-            waarde = self._ast_naar_sympy(node.operand, x)
+            waarde = self._ast_naar_sympy(node.operand, variabelen)
             if isinstance(node.op, ast.USub):
                 return -waarde
             if isinstance(node.op, ast.UAdd):
@@ -1396,13 +1410,13 @@ class MathModule:
             toegestaan = self._sympy_functies()
             if fname not in toegestaan:
                 raise ValueError(f"Onbekende functie in symbolische expressie: {fname}")
-            args = [self._ast_naar_sympy(a, x) for a in node.args]
+            args = [self._ast_naar_sympy(a, variabelen) for a in node.args]
             return toegestaan[fname](*args)
         # Alles wat hier niet expliciet is toegestaan (Attribute, Call op
         # iets anders dan een Name, Subscript, enz.) wordt geweigerd.
         raise ValueError("Ongeldige of niet-ondersteunde symbolische expressie")
 
-    def _sympy_parse(self, expr_str, x):
+    def _sympy_parse(self, expr_str, variabelen):
         # Parseert een expressie-string (al voorbewerkt door preprocess(),
         # dus "^" is al "**") via Nova's eigen AST, NOOIT via sympify()
         # rechtstreeks op de string — zie veiligheidsuitleg hierboven.
@@ -1410,7 +1424,7 @@ class MathModule:
             tree = ast.parse(expr_str, mode="eval")
         except SyntaxError:
             raise ValueError(f"Kan de expressie niet lezen: \"{expr_str}\"")
-        return self._ast_naar_sympy(tree.body, x)
+        return self._ast_naar_sympy(tree.body, variabelen)
 
     def _sympy_str(self, sympy_obj):
         # Vertaalt een SymPy-resultaat terug naar Nova's eigen notatie
@@ -1443,7 +1457,7 @@ class MathModule:
         # Voor de numerieke variant (oppervlakte tussen twee punten): integraal()
         self._check_sympy("integrate_sym")
         x = sp.symbols("x")
-        expr = self._sympy_parse(expr_str, x)
+        expr = self._sympy_parse(expr_str, {"x": x})
         resultaat = sp.integrate(expr, x)
         resultaat = sp.simplify(resultaat)
         return self._sympy_str(resultaat)
@@ -1453,7 +1467,7 @@ class MathModule:
         # bv. simplify_sym(sin(x)^2 + cos(x)^2) → "1"
         self._check_sympy("simplify_sym")
         x = sp.symbols("x")
-        expr = self._sympy_parse(expr_str, x)
+        expr = self._sympy_parse(expr_str, {"x": x})
         resultaat = sp.simplify(expr)
         return self._sympy_str(resultaat)
 
@@ -1462,7 +1476,7 @@ class MathModule:
         # bv. expand_sym((x+1)^2) → "x^2 + 2x + 1"
         self._check_sympy("expand_sym")
         x = sp.symbols("x")
-        expr = self._sympy_parse(expr_str, x)
+        expr = self._sympy_parse(expr_str, {"x": x})
         resultaat = sp.expand(expr)
         return self._sympy_str(resultaat)
 
@@ -1471,7 +1485,7 @@ class MathModule:
         # bv. factor_sym(x^2 - 4) → "(x-2)(x+2)"
         self._check_sympy("factor_sym")
         x = sp.symbols("x")
-        expr = self._sympy_parse(expr_str, x)
+        expr = self._sympy_parse(expr_str, {"x": x})
         resultaat = sp.factor(expr)
         return self._sympy_str(resultaat)
 
@@ -1485,10 +1499,10 @@ class MathModule:
 
         if "=" in expr_str:
             links_str, rechts_str = expr_str.split("=", 1)
-            links = self._sympy_parse(links_str.strip(), x)
-            rechts = self._sympy_parse(rechts_str.strip(), x)
+            links = self._sympy_parse(links_str.strip(), {"x": x})
+            rechts = self._sympy_parse(rechts_str.strip(), {"x": x})
         else:
-            links = self._sympy_parse(expr_str.strip(), x)
+            links = self._sympy_parse(expr_str.strip(), {"x": x})
             rechts = sp.Number(0)
 
         vergelijking = sp.Eq(links, rechts)
@@ -1511,6 +1525,97 @@ class MathModule:
         # SymPy's "I" al naar onze "i"-notatie.
         opgeschreven = [self._sympy_str(o) for o in oplossingen]
         return "x = " + " of x = ".join(opgeschreven)
+
+    def _split_top_level(self, tekst, scheidingsteken=","):
+        # Splitst enkel op het scheidingsteken BUITEN haakjes, zodat een
+        # eventuele functie-aanroep met komma's binnenin (bv. "sin(x,y)",
+        # al komt dat in de praktijk zelden voor bij deze whitelist) niet
+        # per ongeluk kapotgesplitst wordt.
+        delen = []
+        diepte = 0
+        huidig = ""
+        for ch in tekst:
+            if ch == "(":
+                diepte += 1
+                huidig += ch
+            elif ch == ")":
+                diepte -= 1
+                huidig += ch
+            elif ch == scheidingsteken and diepte == 0:
+                delen.append(huidig.strip())
+                huidig = ""
+            else:
+                huidig += ch
+        if huidig.strip():
+            delen.append(huidig.strip())
+        return delen
+
+    def _solve_stelsel(self, vergelijkingen_str):
+        # Lost een STELSEL van twee vergelijkingen met x ÉN y tegelijk op
+        # (in tegenstelling tot solve_sym, dat maar 1 variabele aankan).
+        # Nodig omdat 1 vergelijking met 2 onbekenden (bv. x+y=10) altijd
+        # oneindig veel oplossingen heeft — pas met een TWEEDE, onaf-
+        # hankelijke vergelijking erbij (bv. x-y=2) is er een unieke
+        # oplossing. bv. solve_stelsel(x+y=10, x-y=2) → "x = 6, y = 4"
+        self._check_sympy("solve_stelsel")
+        x, y = sp.symbols("x y")
+        variabelen = {"x": x, "y": y}
+
+        delen = self._split_top_level(vergelijkingen_str)
+        if len(delen) != 2:
+            raise ValueError(
+                "solve_stelsel: verwacht precies TWEE vergelijkingen, gescheiden door een "
+                "komma, bv. solve_stelsel(x+y=10, x-y=2)"
+            )
+
+        vergelijkingen = []
+        for deel in delen:
+            if "=" not in deel:
+                raise ValueError(
+                    f"solve_stelsel: \"{deel}\" bevat geen \"=\"-teken — elke vergelijking "
+                    f"in het stelsel moet een gelijkheid zijn"
+                )
+            links_str, rechts_str = deel.split("=", 1)
+            links = self._sympy_parse(links_str.strip(), variabelen)
+            rechts = self._sympy_parse(rechts_str.strip(), variabelen)
+            vergelijkingen.append(sp.Eq(links, rechts))
+
+        try:
+            oplossing = sp.solve(vergelijkingen, [x, y])
+        except NotImplementedError:
+            raise ValueError(
+                "solve_stelsel: kan dit stelsel niet symbolisch/exact oplossen "
+                "(bv. te complex, of geen gesloten-vorm-oplossing)"
+            )
+
+        if not oplossing:
+            raise ValueError(
+                "solve_stelsel: geen oplossing gevonden — de twee vergelijkingen "
+                "zijn mogelijk strijdig, of hebben oneindig veel gemeenschappelijke oplossingen"
+            )
+
+        # sp.solve() geeft bij een lineair stelsel met 2 onbekenden een
+        # dict terug (bv. {x: 6, y: 4}); bij sommige niet-lineaire
+        # stelsels een lijst van dict/tuple-oplossingen — we normaliseren
+        # dat hier naar altijd een lijst van dicts, zodat de weergave
+        # verderop (on_math()) consistent 1 formaat krijgt.
+        if isinstance(oplossing, dict):
+            oplossingen_lijst = [oplossing]
+        elif isinstance(oplossing, list) and oplossing and isinstance(oplossing[0], dict):
+            oplossingen_lijst = oplossing
+        elif isinstance(oplossing, list):
+            # Lijst van tuples (x_waarde, y_waarde), SymPy's fallback-vorm
+            # bij sommige niet-lineaire stelsels.
+            oplossingen_lijst = [{x: o[0], y: o[1]} for o in oplossing]
+        else:
+            raise ValueError("solve_stelsel: onverwacht resultaatformaat van SymPy")
+
+        zinnen = []
+        for opl in oplossingen_lijst:
+            x_str = self._sympy_str(opl[x])
+            y_str = self._sympy_str(opl[y])
+            zinnen.append(f"x = {x_str}, y = {y_str}")
+        return " of ".join(zinnen)
 
     # -----------------------------------------------------------
     # Fase 4, punt 11 — Fysica-engine, 100% puur symbolisch/numeriek
@@ -2676,7 +2781,7 @@ class MathModule:
             # differentiate). Die tonen we met een pijl i.p.v. "=", zodat
             # solve_sym niet als "... = x = 2 of x = 3" verschijnt.
             elif isinstance(result, str) and re.match(
-                r"^(differentiate|integrate_sym|simplify_sym|expand_sym|factor_sym|solve_sym)\s*\(",
+                r"^(differentiate|integrate_sym|simplify_sym|expand_sym|factor_sym|solve_sym|solve_stelsel)\s*\(",
                 origineel.strip(),
             ):
                 msg = f"{origineel} → {result}"
@@ -2758,7 +2863,7 @@ class MathModule:
                 "regressie:", "correlatie:", "faculteit:", "combinaties:",
                 "permutaties:", "binomiaal:", "normaal:",
                 "differentiate:", "integrate_sym:", "simplify_sym:",
-                "expand_sym:", "factor_sym:", "solve_sym:",
+                "expand_sym:", "factor_sym:", "solve_sym:", "solve_stelsel:",
                 "kracht:", "energie_kinetisch:", "energie_potentieel:",
                 "arbeid:", "snelheid_na:", "afstand_na:", "projectiel:",
                 "val_met_weerstand:",

@@ -14703,5 +14703,52 @@
         "timestamp": "2026-08-03T17:17:02.809512"
       }
     ]
+  },
+  "oké": {
+    "senses": [
+      {
+        "sense_id": "oké#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-04T19:03:28.182677",
+      "updated_at": "2026-08-04T19:03:28.182677",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-04T19:03:28.182677",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-04T19:03:28.182677",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "oké"
+        },
+        "timestamp": "2026-08-04T19:03:28.182677"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "oké#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-04T19:03:28.182677"
+      }
+    ]
   }
 }
