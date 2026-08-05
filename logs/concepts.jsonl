@@ -196,3 +196,6 @@
 {"timestamp": "2026-08-04T19:03:28.182677", "event_type": "concept_created", "word": "oké", "source": "system", "new_value": {"word": "oké"}}
 {"timestamp": "2026-08-05T09:39:56.741218", "event_type": "concept_created", "word": "leg", "source": "system", "new_value": {"word": "leg"}}
 {"timestamp": "2026-08-05T09:39:56.773257", "event_type": "concept_created", "word": "kracht", "source": "system", "new_value": {"word": "kracht"}}
+{"timestamp": "2026-08-05T18:38:30.360951", "event_type": "concept_created", "word": "drie", "source": "system", "new_value": {"word": "drie"}}
+{"timestamp": "2026-08-05T18:38:30.409161", "event_type": "concept_created", "word": "plus", "source": "system", "new_value": {"word": "plus"}}
+{"timestamp": "2026-08-05T18:38:30.436154", "event_type": "concept_created", "word": "vijf", "source": "system", "new_value": {"word": "vijf"}}

@@ -401,3 +401,13 @@
 {"text": "hoe werkt kans_kaart", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0118, "bron": "woordenlijst", "tijdstip": "2026-08-05T14:51:37.961685"}
 {"text": "wortel(1, -5, 6)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T14:55:15.815266"}
 {"text": "det([[1,2],[3,4]])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T14:55:25.122080"}
+{"text": "solve_sym(4x = 6*7)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T19:42:12.688134"}
+{"text": "leg uit nulpunt", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T20:07:58.055027"}
+{"text": "x^2 - 9, 1", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T20:09:09.617162"}
+{"text": "leg uit newton", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T20:09:32.734452"}
+{"text": "levenshtein(\"kat\", \"hond\")", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0068, "bron": "model_fallback", "tijdstip": "2026-08-05T20:10:31.474046"}
+{"text": "leg uit dv_rk4", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T20:10:50.396738"}
+{"text": "leg uit nulpunt", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T20:18:06.352342"}
+{"text": "x^2 - 9, 1", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T20:19:04.481215"}
+{"text": "bereken 100 / 4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T20:42:47.626286"}
+{"text": "100/4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T20:43:05.007993"}
