@@ -515,6 +515,15 @@ Doorgerekend voorbeeld: solve_sym(x^2 - 5x + 6 = 0)
 - Controle via factor_sym(x^2 - 5x + 6): dit ontbindt tot (x-2)(x-3)
   — exact dezelfde twee oplossingen, nu zichtbaar als de twee factoren
   die 0 kunnen worden.
+
+Let op een schrijfwijze-valkuil: de VOLGORDE van letter en cijfer
+maakt hier echt uit. "4x" (cijfer eerst) lees ik als 4·x
+(vermenigvuldiging) — dat is waarschijnlijk wat je meestal bedoelt.
+Maar "x4" (letter eerst) lees ik als x⁴ (x tot de vierde macht), om
+dezelfde reden waarom ik "m2" als m² lees (de eenheden-notatie
+"letter+cijfer=macht" geldt namelijk overal, ook bij x/y). Bedoel je
+dus "4 keer x", schrijf dan "4x" of "4*x" — nooit "x4". Bedoel je
+expliciet een macht, kan "x^4" ook altijd, ongeacht de volgorde.
 """.strip(),
 
     # -----------------------------------------------------------------
@@ -950,6 +959,248 @@ def beschikbare_functies():
     return sorted(UITLEG_TEKSTEN.keys())
 
 
+# =======================================================================
+# Contextuele oplos-suggestie (nova_state.md, "Volgende stappen" punt 24,
+# 5 augustus 2026) -- als Kevin net "leg uit X" gebruikte en daarna een
+# bewerking typt, checken of die bewerking QUA VORM bij functie X past,
+# en zo ja voorstellen om hem meteen op te lossen.
+#
+# BEWUSTE SCOPE-BEPERKING (vastgelegd tijdens het ontwerpgesprek): dit
+# werkt ALLEEN voor functies met een UNIEKE, ondubbelzinnige invoervorm
+# -- niet voor alle 13 canonieke uitlegteksten. Van de 13 zijn er 7
+# waarvoor de vorm alleen al genoeg zegt om ze te onderscheiden van elke
+# andere math.py-functie:
+#   - newton            : expressie met 1 variabele + los startgetal
+#   - dv_rk4             : expressie + y0=/van=/tot=-syntax
+#   - bfs_dfs            : {...}-graafstructuur + startknoop-string
+#   - regressie_correlatie: twee losse [...]-lijsten
+#   - levenshtein        : twee tekst-strings
+#   - det_inverse        : matrix (geneste [[...],[...]]-lijst)
+#   - afgeleide_integraal: expressie + 1 getal (afgeleide) of 2 getallen
+#                          (integraal) -- onderling te onderscheiden via
+#                          het AANTAL getallen na de expressie
+#
+# BEWUST NIET IN DEZE LIJST (gedeelde/ambigue vorm, zou vaker fout dan
+# goed raden -- expliciet besproken en verworpen):
+#   - dijkstra           : deelt exact dezelfde graaf-vorm als bfs_dfs
+#     (dijkstra zelf blijft een normale, werkende functie/uitlegtekst,
+#     enkel deze automatische-suggestie-feature dekt hem niet)
+#   - solve_sym_factor_sym: een "="-teken alleen is GEEN betrouwbaar
+#     signaal -- "x4=6*7" heeft ook een "=" maar is eerder een simpele
+#     berekening dan een vergelijking-om-op-te-lossen (zie het
+#     ontwerpgesprek, 5 aug 2026)
+#   - wortel, binomiaal_normaal, kans_dobbelsteen_kaart,
+#     projectiel_valweerstand: delen allemaal de vorm "2-3 losse
+#     getallen" met elkaar EN met tientallen andere math.py-functies
+#     (ggd, kgv, modulo, kracht, energie_kinetisch, ...) -- op vorm
+#     alleen niet betrouwbaar te onderscheiden
+# =======================================================================
+
+import re as _re
+
+
+def _functienaam_in(tekst: str, namen: set) -> bool:
+    """Checkt of de tekst begint met één van de gegeven functienamen
+    gevolgd door een "(" (met optionele spatie ertussen), ongeacht
+    hoofd-/kleine letters. Dit is de meest betrouwbare vorm-check die
+    er is: als Kevin de functienaam zelf al typt, hoeft er niets
+    geraden te worden op basis van losse structuurkenmerken."""
+    t = tekst.strip().lower()
+    for naam in namen:
+        if _re.match(rf'{_re.escape(naam)}\s*\(', t):
+            return True
+    return False
+
+
+def _is_newton_vorm(tekst: str) -> bool:
+    """newton(expressie, startwaarde) / nulpunt(expressie, startwaarde).
+    Betrouwbaarst via de functienaam zelf; als fallback (kale expressie
+    zonder functienaam) een STRIKTE check: moet de letter x bevatten
+    (de enige variabele die newton/nulpunt ondersteunt) gevolgd door een
+    los getal, en GEEN y0=/van=/tot=-syntax (dat is dv_rk4's vorm)."""
+    if _functienaam_in(tekst, {"newton", "nulpunt"}):
+        return True
+    if "y0" in tekst or "van=" in tekst or "tot=" in tekst:
+        return False
+    # Strikt: minstens één "x" als op-zichzelf-staande variabele
+    # (woordgrens, geen deel van een functienaam als "kracht" of
+    # "kgv" -- vandaar \bx\b, niet zomaar "x" als losse letter overal)
+    return bool(_re.search(r'\bx\b', tekst)) and bool(
+        _re.search(r',\s*-?\d+(\.\d+)?\s*\)?\s*$', tekst.strip())
+    )
+
+
+def _is_dv_vorm(tekst: str) -> bool:
+    """dv_rk4(...)/dv_euler(...)/dv(...). Betrouwbaarst via de
+    functienaam zelf; als fallback de karakteristieke y0=/van=/tot=
+    -syntax, of x EN y allebei als op-zichzelf-staande variabelen."""
+    if _functienaam_in(tekst, {"dv_rk4", "dv_euler", "dv"}):
+        return True
+    if "y0" in tekst or "van=" in tekst or "tot=" in tekst:
+        return True
+    return bool(_re.search(r'\bx\b', tekst)) and bool(_re.search(r'\by\b', tekst))
+
+
+def _is_graaf_vorm(tekst: str) -> bool:
+    """bfs(...)/dfs(...) (dijkstra bewust uitgesloten, zie module-
+    docstring). Betrouwbaarst via de functienaam zelf; als fallback een
+    {...}-graafstructuur gevolgd door een aparte, aangehaalde
+    startknoop-string -- MAAR expliciet niet als de tekst met
+    "dijkstra(" begint, want die deelt exact dezelfde structuurvorm en
+    zou anders per ongeluk als bfs/dfs herkend worden."""
+    if _functienaam_in(tekst, {"bfs", "dfs"}):
+        return True
+    if _functienaam_in(tekst, {"dijkstra"}):
+        return False
+    return bool(_re.search(r'\{.*\}\s*,\s*["\'][^"\']+["\']', tekst, _re.DOTALL))
+
+
+def _is_twee_lijsten_vorm(tekst: str) -> bool:
+    """regressie(...)/correlatie(...). Betrouwbaarst via de
+    functienaam zelf; als fallback twee losse, NIET-geneste
+    [...]-lijsten na elkaar (sluit matrices bewust uit)."""
+    if _functienaam_in(tekst, {"regressie", "correlatie"}):
+        return True
+    if _re.search(r'\[\s*\[', tekst):
+        return False  # geneste lijst = matrix, niet twee data-reeksen
+    matches = _re.findall(r'\[[^\[\]]*\]', tekst)
+    return len(matches) == 2
+
+
+def _is_twee_strings_vorm(tekst: str) -> bool:
+    """levenshtein(...). Betrouwbaarst via de functienaam zelf; als
+    fallback twee losse, aangehaalde tekst-strings, zonder een
+    {...}-graafstructuur erbij (anders zou dit een graaf-startknoop
+    kunnen zijn, geen levenshtein-woordpaar)."""
+    if _functienaam_in(tekst, {"levenshtein"}):
+        return True
+    if "{" in tekst:
+        return False
+    matches = _re.findall(r'["\'][^"\']*["\']', tekst)
+    return len(matches) == 2
+
+
+def _is_matrix_vorm(tekst: str) -> bool:
+    """det(...)/inverse(...). Betrouwbaarst via de functienaam zelf;
+    als fallback een geneste lijst-van-lijsten ([[...],[...]])."""
+    if _functienaam_in(tekst, {"det", "inverse"}):
+        return True
+    return bool(_re.search(r'\[\s*\[', tekst))
+
+
+def _is_afgeleide_integraal_vorm(tekst: str):
+    """afgeleide(...)/integraal(...). ENKEL via de functienaam zelf
+    betrouwbaar te herkennen -- een kale expressie+getal(len) zonder
+    functienaam deelt exact dezelfde vorm met newton (expressie + 1
+    getal) en met tientallen andere functies (2 getallen), en is dus
+    NIET via structuur alleen te onderscheiden. Geeft "afgeleide",
+    "integraal" of None terug (niet enkel True/False, want dit
+    onderscheidt twee functies binnen dezelfde canonieke tekst)."""
+    if _functienaam_in(tekst, {"afgeleide"}):
+        return "afgeleide"
+    if _functienaam_in(tekst, {"integraal"}):
+        return "integraal"
+    return None
+
+
+# Volgorde: de functienaam-check zelf (binnen elke detector) is altijd
+# betrouwbaar en botst nergens mee -- verschillende functienamen kunnen
+# nooit tegelijk matchen. Enkel de STRUCTUUR-fallback (voor kale
+# expressies zonder herkenbare functienaam) kan in theorie overlappen
+# tussen newton en dv_rk4 (beide "expressie + getal(len)"), vandaar
+# newton pas NA dv_rk4 in deze lijst: een dv_rk4-fallback-match (x EN y
+# samen) is specifieker dan newton's fallback (enkel x), dus die moet
+# eerst de kans krijgen.
+_VORM_DETECTOREN = [
+    ("bfs_dfs", _is_graaf_vorm),
+    ("levenshtein", _is_twee_strings_vorm),
+    ("det_inverse", _is_matrix_vorm),
+    ("regressie_correlatie", _is_twee_lijsten_vorm),
+    ("dv_rk4", _is_dv_vorm),
+    ("newton", _is_newton_vorm),
+]
+
+
+def herken_vorm(tekst: str):
+    """
+    Kijkt naar de VORM (niet de betekenis) van een stuk ingegeven
+    tekst, en geeft de canonieke functienaam terug waar die vorm het
+    best bij past, of None als er geen enkele match is.
+
+    Dit is GEEN vrije-taal-begrip en GEEN garantie -- puur syntactische
+    pattern-matching op functienamen/komma's/haakjes/aanhalingstekens,
+    exact zoals de rest van Nova werkt (zie module-docstring hierboven
+    voor de volledige scope-afbakening: slechts 7 van de 13 canonieke
+    functies hebben een vorm die uniek genoeg is om hier betrouwbaar op
+    te gokken). Het betrouwbaarst is als Kevin de functienaam zelf al
+    typt (bv. "afgeleide(x^2, 3)") -- de structuur-only fallback (voor
+    een kale expressie zonder functienaam) werkt enkel voor newton en
+    dv_rk4, de overige 5 vereisen de functienaam zelf.
+    """
+    tekst = tekst.strip()
+    if not tekst:
+        return None
+
+    afg_int = _is_afgeleide_integraal_vorm(tekst)
+    if afg_int is not None:
+        return "afgeleide_integraal"
+
+    for canonieke_naam_kandidaat, detector in _VORM_DETECTOREN:
+        if detector(tekst):
+            return canonieke_naam_kandidaat
+
+    return None
+
+
+def check_vorm_tegen_verwachting(tekst: str, verwachte_naam: str):
+    """
+    Kijkt of 'tekst' qua vorm bij 'verwachte_naam' past (de functie
+    waarover Kevin net een uitleg kreeg), of beter bij een ANDERE
+    canonieke functie past, of bij geen enkele.
+
+    Geeft een van drie resultaten terug:
+    - ("match", verwachte_naam)     : de vorm past bij wat verwacht werd
+    - ("mismatch", andere_naam)     : de vorm past beter bij een andere
+                                       functie dan verwacht
+    - (None, None)                  : geen enkele match, geen suggestie
+    """
+    gevonden = herken_vorm(tekst)
+    if gevonden is None:
+        return (None, None)
+    if gevonden == verwachte_naam:
+        return ("match", gevonden)
+    return ("mismatch", gevonden)
+
+
+# Vriendelijke weergavenaam per canonieke sleutel, voor gebruik in
+# gesproken suggesties ("wil je dat ik dit oplos met...") -- de rauwe
+# interne sleutel (bv. "bfs_dfs", "regressie_correlatie") is prima als
+# dict-key maar niet als iets wat Nova hardop "zegt".
+WEERGAVENAAM = {
+    "newton": "newton/nulpunt",
+    "dv_rk4": "dv_rk4",
+    "dijkstra": "dijkstra",
+    "regressie_correlatie": "regressie/correlatie",
+    "binomiaal_normaal": "binomiaal/normaal",
+    "levenshtein": "levenshtein",
+    "bfs_dfs": "bfs/dfs",
+    "solve_sym_factor_sym": "solve_sym/factor_sym",
+    "projectiel_valweerstand": "projectiel/val_met_weerstand",
+    "afgeleide_integraal": "afgeleide/integraal",
+    "wortel": "wortel",
+    "det_inverse": "det/inverse",
+    "kans_dobbelsteen_kaart": "kans_dobbelsteen/kans_kaart",
+}
+
+
+def weergavenaam(canonieke_naam_: str) -> str:
+    """Geeft de vriendelijke weergavenaam terug voor gebruik in
+    gesproken suggesties, of de canonieke naam zelf als fallback
+    (bv. voor een toekomstige canonieke naam die nog niet in de
+    tabel hierboven is opgenomen)."""
+    return WEERGAVENAAM.get(canonieke_naam_, canonieke_naam_)
+
+
 class MathUitlegModule:
     """
     Dunne wrapper zodat deze module via module_loader.py's normale,
@@ -977,6 +1228,15 @@ class MathUitlegModule:
 
     def beschikbare_functies(self):
         return beschikbare_functies()
+
+    def herken_vorm(self, tekst: str):
+        return herken_vorm(tekst)
+
+    def check_vorm_tegen_verwachting(self, tekst: str, verwachte_naam: str):
+        return check_vorm_tegen_verwachting(tekst, verwachte_naam)
+
+    def weergavenaam(self, canonieke_naam_: str) -> str:
+        return weergavenaam(canonieke_naam_)
 
 
 def init_module(event_bus, sem=None):

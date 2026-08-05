@@ -70,6 +70,11 @@ class IntentRouter:
         # "mag_ik_storen" -- hergebruikt het bestaande
         # pending_question-mechanisme, geen nieuwe infrastructuur.
         event_bus.subscribe("pending_question:answered", self._on_classifier_pending_answered)
+        # Contextuele oplos-suggestie (nova_state.md punt 24, 5 aug
+        # 2026) -- luistert naar het antwoord op "wil je dat ik dit
+        # oplos met X?", zelfde hergebruik-patroon als de classifier-
+        # listener hierboven.
+        event_bus.subscribe("pending_question:answered", self._on_uitleg_oplossen_answered)
         dbg(f"{C_GREEN}IntentRouter geladen{C_RESET}")
 
     # ---------------------------------------------------------
@@ -1702,6 +1707,169 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Contextuele oplos-suggestie na "leg uit X" (nova_state.md punt
+    # 24, 5 aug 2026) -- als Kevin net een uitleg kreeg en daarna een
+    # bewerking typt die er qua VORM bij past, voorstellen om hem
+    # meteen op te lossen. Past de bewerking beter bij een ANDERE
+    # functie, dat expliciet aangeven i.p.v. domweg de verkeerde uit
+    # te voeren of te negeren.
+    #
+    # BEWUSTE SCOPE-BEPERKING: dekt enkel de 7 canonieke functies met
+    # een unieke, ondubbelzinnige invoervorm (zie de uitgebreide
+    # docstring bovenaan math_uitleg.py voor de volledige onderbouwing
+    # en de bewust uitgesloten functies zoals dijkstra/solve_sym).
+    # ---------------------------------------------------------
+    def _check_uitleg_vervolg_bewerking(self, text):
+        """
+        Wordt aangeroepen bij ELK bericht (net als _verwerk_pending_
+        antwoord()), maar doet enkel iets als er recent een "leg uit
+        X" is geweest (self._laatste_uitleg_naam is gezet) EN er nog
+        geen pending_question openstaat (anders zou dit een lopende,
+        andere vraag verstoren). Geeft True terug als een suggestie
+        gesteld is (dus de normale routing niet meer moet draaien),
+        anders False.
+        """
+        verwachte_naam = getattr(self, "_laatste_uitleg_naam", None)
+        if verwachte_naam is None:
+            return False
+
+        pending = self.event_bus.modules.get("pending_question")
+        if pending is None or pending.is_open():
+            # Al een andere vraag open (bv. classifier-twijfel) -- die
+            # heeft voorrang, deze check mag niet interfereren.
+            return False
+
+        math_uitleg = self.event_bus.modules.get("math_uitleg")
+        if math_uitleg is None:
+            return False
+
+        soort, gevonden_naam = math_uitleg.check_vorm_tegen_verwachting(
+            text, verwachte_naam
+        )
+
+        if soort is None:
+            # Geen enkele vorm-match -- dit is waarschijnlijk gewoon
+            # een nieuw, ongerelateerd bericht (bv. een vraag over het
+            # weer). We wissen HIER de _laatste_uitleg_naam niet
+            # expliciet: een volgend bericht kan alsnog de bedoelde
+            # bewerking zijn (bv. Kevin typt eerst iets tussendoor).
+            # Enkel een ECHTE suggestie (hieronder) of een nieuwe
+            # "leg uit Y" overschrijft deze waarde.
+            return False
+
+        # Vanaf hier is er een match (soort is "match" of "mismatch")
+        # -- in BEIDE gevallen wordt dit als de vervolg-bewerking
+        # behandeld, en de normale routing (bv. detect_math()) mag
+        # niet ook nog proberen dit te verwerken: anders zou Kevin een
+        # dubbel antwoord krijgen (de suggestie EN een losse
+        # berekening).
+        #
+        # BUGFIX (5 aug 2026, live ontdekt): herken_vorm() staat bij
+        # newton/dv_rk4 toe dat Kevin de KALE expressie typt, zonder
+        # functienaam (bv. "x^2-9, 1" i.p.v. "nulpunt(x^2-9, 1)") --
+        # math.py's intent_math verwacht echter altijd een volledige,
+        # aanroepbare expressie MET functienaam ervoor, anders faalt de
+        # evaluatie (math.py ziet dan enkel losse tokens, geen geldige
+        # functie-aanroep). Als de tekst zelf al met een bekende
+        # functienaam begint, blijft ze ongewijzigd; anders plakken we
+        # de bijpassende functienaam er automatisch voor. Dit raakt
+        # ENKEL newton/dv_rk4 (de twee met een structuur-only-fallback
+        # zonder functienaam) -- de overige 5 canonieke namen vereisen
+        # sowieso al de functienaam zelf om te kunnen matchen, dus daar
+        # doet dit probleem zich niet voor.
+        uit_te_voeren_tekst = self._voeg_functienaam_toe_indien_nodig(
+            text, gevonden_naam
+        )
+        self._pending_uitleg_bewerking_tekst = uit_te_voeren_tekst
+
+        if soort == "match":
+            naam_nl = math_uitleg.weergavenaam(gevonden_naam)
+            vraag_tekst = f"Wil je dat ik dit oplos met {naam_nl}?"
+        else:  # mismatch
+            verwachte_naam_nl = math_uitleg.weergavenaam(verwachte_naam)
+            naam_nl = math_uitleg.weergavenaam(gevonden_naam)
+            vraag_tekst = (
+                f"Dit is geen {verwachte_naam_nl}-bewerking, maar lijkt op "
+                f"{naam_nl} -- wil je dat ik hem daarmee oplos?"
+            )
+
+        pending.set("uitleg_oplossen", verval_seconden=60)
+        self._pending_uitleg_oplossen_functienaam = gevonden_naam
+        self.event_bus.publish("layer4_response", {"text": vraag_tekst})
+        return True
+
+    # Echte, aanroepbare math.py-functienamen per canonieke naam die
+    # een structuur-only-fallback ondersteunt (zie herken_vorm() in
+    # math_uitleg.py) -- gebruikt om een kale expressie zonder
+    # functienaam alsnog uitvoerbaar te maken. Bewust ENKEL newton en
+    # dv_rk4: de overige 5 canonieke namen vereisen sowieso al de
+    # functienaam zelf om te matchen (zie math_uitleg.py's
+    # _VORM_DETECTOREN), dus daar is de tekst altijd al compleet.
+    _FALLBACK_FUNCTIENAAM = {
+        "newton": "nulpunt",
+        "dv_rk4": "dv",
+    }
+
+    def _voeg_functienaam_toe_indien_nodig(self, text, gevonden_naam):
+        """
+        Als 'text' al met een bekende functienaam begint (bv.
+        "nulpunt(...)", "afgeleide(...)"), geeft deze ongewijzigd
+        terug. Bevat de tekst enkel de kale argumenten (mogelijk enkel
+        bij newton/dv_rk4, zie _FALLBACK_FUNCTIENAAM hierboven), plakt
+        de bijpassende functienaam ervoor + haakjes, zodat math.py's
+        intent_math een geldige, aanroepbare expressie krijgt i.p.v.
+        losse tokens die niet te evalueren zijn.
+        """
+        t = text.strip()
+        # Al een functie-aanroep-vorm ("naam(...)")? Dan niets doen.
+        if re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*\s*\(', t):
+            return t
+
+        fallback_naam = self._FALLBACK_FUNCTIENAAM.get(gevonden_naam)
+        if fallback_naam is None:
+            # Geen bekende fallback voor deze canonieke naam -- de
+            # tekst had dus sowieso al een functienaam moeten bevatten
+            # om hier ooit als match te zijn uitgekomen. Als fallback-
+            # van-de-fallback geven we de tekst toch ongewijzigd terug
+            # (beter een kans op een duidelijke foutmelding van math.py
+            # zelf dan stilzwijgend niets doen).
+            return t
+
+        # Kale argumenten, bv. "x^2 - 9, 1" -> "nulpunt(x^2 - 9, 1)".
+        # Sluit netjes af met ")" als dat nog ontbreekt.
+        binnenkant = t[:-1] if t.endswith(")") else t
+        return f"{fallback_naam}({binnenkant})"
+
+    def _on_uitleg_oplossen_answered(self, data):
+        """
+        Subscriber op 'pending_question:answered', filtert op onze
+        eigen vraag_type ("uitleg_oplossen") -- zelfde patroon als
+        _on_classifier_pending_answered() hierboven. Bij bevestiging
+        wordt de bewaarde tekst gewoon als een normale math-expressie
+        gepubliceerd (intent_math), math.py doet de rest zoals bij elke
+        andere berekening.
+        """
+        vraag_type = data.get("vraag_type", "")
+        if vraag_type != "uitleg_oplossen":
+            return
+
+        signaal = data.get("signaal")
+        tekst = getattr(self, "_pending_uitleg_bewerking_tekst", "")
+
+        if signaal == "bevestiging" and tekst:
+            dbg(f"{C_GREEN}→ uitleg-oplossen bevestigd: '{tekst}'{C_RESET}")
+            self.event_bus.publish("intent_math", {"expr": tekst})
+        else:
+            dbg(f"{C_YELLOW}→ uitleg-oplossen ontkend of geen tekst bewaard{C_RESET}")
+
+        # Opruimen ongeacht bevestiging/ontkenning -- een volgend,
+        # ongerelateerd bericht mag niet per ongeluk nog aan deze
+        # afgehandelde suggestie gekoppeld worden.
+        self._pending_uitleg_bewerking_tekst = None
+        self._pending_uitleg_oplossen_functienaam = None
+        self._laatste_uitleg_naam = None
+
+    # ---------------------------------------------------------
     # Activity Awareness (Deel A) — "ik ga <activiteit>"
     # ---------------------------------------------------------
     # Generiek patroon: werkt voor ONBEPERKT veel activiteiten, geen
@@ -2027,7 +2195,20 @@ class IntentRouter:
     #     tekst gehaald ("ik ga koken" -> "koken") -- bij een
     #     classifier-gok is niet zeker dat die naam er überhaupt
     #     herkenbaar in staat.
-    #   - math: module zelf nog niet af (Kevin, 30 juli 2026).
+    #   #   - math: ✅ 4 augustus 2026, kale koppeling toegevoegd (zoals
+    #     weather/time -- publiceert gewoon {"expr": text} zonder
+    #     verdere verwerking). BELANGRIJKE BEPERKING: dit dekt enkel
+    #     zinnen die de classifier op TAALGEBRUIK als "math" herkent
+    #     maar die Laag 1 (detect_math(), operator/keyword-check) MIST
+    #     -- en zulke zinnen bevatten per definitie geen symbolische
+    #     expressie die math.py (SymPy) kan parsen (bv. "wat is drie
+    #     plus vijf" i.p.v. "3+5", of "zoek de waarde van x, vergelijking
+    #     2x+3=7" i.p.v. "solve_sym(2*x+3-7, x)") -- die zouden dus
+    #     gewoon een nette foutmelding van math.py's bestaande
+    #     try/except krijgen, geen crash, maar ook geen bruikbaar
+    #     antwoord. Natuurlijke-taal-naar-SymPy-syntax vertalen is een
+    #     apart, nog te bouwen vervolgpunt -- zie "Volgende stappen" in
+    #     nova_state.md.
     #   - preference: ✅ 4 augustus 2026, OPGELOST via een tussenvraag
     #     (zie _actie_preference_classifier hieronder) -- geen sub_intent
     #     zoals bij identity, maar een ONTBREKEND WOORD. In tegenstelling
@@ -2088,6 +2269,9 @@ class IntentRouter:
         ),
         "greeting": _actie_greeting_classifier,
         "preference": _actie_preference_classifier,
+        "math": lambda self, text: self.event_bus.publish(
+            "intent_math", {"expr": text}
+        ),
     }
 
     # Sentiment-nuance-tekst per categorie, voor de bevestiging in
@@ -2605,6 +2789,17 @@ class IntentRouter:
         # vraag stelde en Kevin antwoordt "ja", mag dat nooit als een
         # gewoon, los bericht door de rest van de routing lopen.
         if self._verwerk_pending_antwoord(text):
+            return
+
+        # -1A Contextuele oplos-suggestie na "leg uit X" (nova_state.md
+        # punt 24, 5 aug 2026) -- MOET na de generieke pending-check
+        # hierboven (die vangt het ANTWOORD op de vraag die deze check
+        # zelf stelt af, via _on_uitleg_oplossen_answered()), maar VOOR
+        # alle andere routing: een bewerking die net na "leg uit X"
+        # komt, mag niet ook nog als een losse, gewone math-expressie
+        # door detect_math() verwerkt worden (dat zou een dubbel
+        # antwoord geven).
+        if self._check_uitleg_vervolg_bewerking(text):
             return
 
         # -1C Pending Wikipedia-disambiguatie-keuze (31 juli 2026, Bug

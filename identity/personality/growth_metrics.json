@@ -5,10 +5,10 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 16,
-      "negative_count": 85,
-      "total_shifts": 4,
-      "last_shift": "2026-08-02T10:25:14.672091",
+      "positive_count": 0,
+      "negative_count": 3,
+      "total_shifts": 5,
+      "last_shift": "2026-08-05T20:19:04.513216",
       "last_shift_direction": "negatief"
     },
     "loyalty": {
@@ -26,11 +26,11 @@
       "last_shift_direction": null
     },
     "curiosity": {
-      "positive_count": 21,
+      "positive_count": 0,
       "negative_count": 0,
-      "total_shifts": 0,
-      "last_shift": null,
-      "last_shift_direction": null
+      "total_shifts": 1,
+      "last_shift": "2026-08-05T20:18:06.379341",
+      "last_shift_direction": "positief"
     },
     "reflection_depth": {
       "positive_count": 23,
@@ -48,7 +48,7 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 5,
+      "negative_count": 14,
       "total_shifts": 13,
       "last_shift": "2026-08-05T11:54:58.589563",
       "last_shift_direction": "negatief"
@@ -61,11 +61,11 @@
       "last_shift_direction": null
     },
     "associative_thinking": {
-      "positive_count": 21,
+      "positive_count": 0,
       "negative_count": 0,
-      "total_shifts": 0,
-      "last_shift": null,
-      "last_shift_direction": null
+      "total_shifts": 1,
+      "last_shift": "2026-08-05T20:18:06.383272",
+      "last_shift_direction": "positief"
     },
     "focus_hyperfocus_tendency": {
       "positive_count": 12,
@@ -96,17 +96,17 @@
       "last_shift_direction": "negatief"
     },
     "energy_level": {
-      "positive_count": 9,
+      "positive_count": 1,
       "negative_count": 0,
-      "total_shifts": 1,
-      "last_shift": "2026-08-05T11:34:04.771977",
+      "total_shifts": 2,
+      "last_shift": "2026-08-05T20:10:50.428757",
       "last_shift_direction": "positief"
     },
     "dramatic_flair": {
-      "positive_count": 9,
+      "positive_count": 1,
       "negative_count": 0,
-      "total_shifts": 1,
-      "last_shift": "2026-08-05T11:34:04.775976",
+      "total_shifts": 2,
+      "last_shift": "2026-08-05T20:10:50.430818",
       "last_shift_direction": "positief"
     }
   }
