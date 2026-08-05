@@ -1608,13 +1608,96 @@ class IntentRouter:
         t = text.lower().strip().rstrip("?.")
 
         if t == "help":
+            # Layer 2-koppeling (5 aug 2026): kaal "help" heeft geen
+            # specifiek onderwerp -- expliciet leegmaken zodat een
+            # eerder bewaard topic (bv. "math" van een vorig "help
+            # math") niet per ongeluk hergebruikt wordt door route().
+            self._laatste_help_topic = None
             self.event_bus.publish("intent_help", {"topic": ""})
             return True
 
         if t.startswith("help "):
             topic = t[5:].strip()
+            # Layer 2-koppeling (5 aug 2026): bewaar het specifieke
+            # topic (bv. "math", "schaak"), zelfde patroon als
+            # detect_definition()'s _laatste_definitie_woord hieronder
+            # -- route() bouwt hiermee straks een dynamische topic-naam
+            # ("help_math" i.p.v. enkel het generieke "help"), zodat
+            # Layer 2 per help-onderwerp apart kan tellen.
+            self._laatste_help_topic = topic if topic else None
             self.event_bus.publish("intent_help", {"topic": topic})
             return True
+
+        return False
+
+    # ---------------------------------------------------------
+    # Uitgebreide uitleg per math-functie (nova_state.md, "Volgende
+    # stappen" punt 5, 2 aug 2026) — losstaand van help.py's korte
+    # commando-overzicht. Meerdere natuurlijke vraagvormen herkend
+    # ("leg uit X", "wat is X", "hoe werkt X"). math_uitleg.py wordt,
+    # net als elke andere module, door module_loader.py automatisch
+    # gevonden en geregistreerd -- opgehaald via event_bus.modules,
+    # zelfde patroon als wikipedia_teacher/concept_overview elders in
+    # dit bestand.
+    #
+    # MOET vóór detect_math() in de intent-tabel staan: anders zou een
+    # zin als "leg uit kracht" mogelijk al door detect_math() worden
+    # opgepikt (bv. via een keyword-match op de functienaam), nog
+    # vóór deze methode de kans krijgt. detect_uitleg() zelf bevat
+    # geen operator/cijfer-checks, dus botst niet omgekeerd met
+    # detect_math()'s eigen patronen.
+    UITLEG_PREFIXES = [
+        "leg uit ",
+        "leg me uit ",
+        "kan je uitleggen ",
+        "wat is ",
+        "hoe werkt ",
+    ]
+
+    def detect_uitleg(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        for prefix in self.UITLEG_PREFIXES:
+            if t.startswith(prefix):
+                naam = t[len(prefix):].strip()
+                if not naam:
+                    return False
+
+                # Zelfde ophaal-patroon als wikipedia_teacher/
+                # concept_overview elders in route(): via
+                # event_bus.modules i.p.v. een directe import, zodat
+                # math_uitleg.py als een gewone, door module_loader.py
+                # geregistreerde module blijft werken.
+                math_uitleg = self.event_bus.modules.get("math_uitleg")
+                if math_uitleg is None:
+                    return False
+
+                tekst = math_uitleg.get_uitleg(naam)
+                if tekst is None:
+                    # Bewust GEEN generieke "dat ken ik niet"-fout hier
+                    # -- "wat is" en "hoe werkt" zijn erg brede
+                    # prefixen die ook door andere detect_*()-methoden
+                    # (bv. definitie-vragen) bedoeld kunnen zijn. Geen
+                    # match op math_uitleg.py betekent dus NIET per
+                    # se "onbekend commando" -- gewoon False
+                    # teruggeven, zodat de rest van de intent-tabel
+                    # (bv. detect_definition()) de zin alsnog normaal
+                    # kan proberen herkennen.
+                    return False
+
+                # Layer 2-koppeling (5 aug 2026): bewaar de CANONIEKE
+                # functienaam (niet de rauwe, getypte alias) zodat
+                # "leg uit nulpunt" en "wat is newton-raphson" allebei
+                # netjes onder hetzelfde topic ("uitleg_newton")
+                # meetellen in Layer 2, ongeacht welke alias Kevin
+                # typte. Toekomstige uitleg-functies (bv. "kracht")
+                # werken hierdoor automatisch mee -- geen aparte
+                # aanpassing hier nodig zodra math_uitleg.py een
+                # nieuwe UITLEG_TEKSTEN-sleutel krijgt.
+                self._laatste_uitleg_naam = math_uitleg.canonieke_naam(naam)
+
+                self.event_bus.publish("layer4_response", {"text": tekst})
+                return True
 
         return False
 
@@ -1815,6 +1898,14 @@ class IntentRouter:
         Stappen 3 t/m 7 (zie route()) -- alles VOOR de definition-
         check, want die heeft een dynamische topic-naam en past niet
         in dit (topic, detect)-patroon.
+
+        LET OP (5 aug 2026): "help" en "uitleg" staan hier BEWUST NIET
+        meer in -- ze kregen elk een dynamische topic-naam (Layer
+        2-koppeling, zie nova_changelog.md) en verhuisden daarom naar
+        hun eigen expliciete stap in route(), net zoals detection
+        hieronder al deed. Ze worden nu vóór deze tabel-lus in route()
+        gecontroleerd, in dezelfde volgorde als voorheen (help/uitleg
+        vóór memory/self_architecture/identity/conversie/math).
         """
         return [
             ("greeting",         self.detect_greeting),
@@ -1823,7 +1914,6 @@ class IntentRouter:
             # chess vóór math: zetten zoals "e2e4" mogen niet als
             # math gezien worden
             ("chess",            self.detect_chess),
-            ("help",             self.detect_help),
             ("memory",           self.detect_memory),
             # self_architecture vóór identity: "hoe werk je" gaat over
             # architectuur, niet over persoonlijkheid, en moet niet
@@ -2581,6 +2671,33 @@ class IntentRouter:
 
         # 2B Preferences (Fase 2: expliciet 'onthoud:'/'vergeet:'-commando)
         if self.handle_preference(text):
+            return
+
+        # 2C Help (5 aug 2026) -- verhuisd uit de generieke intent-
+        # tabel naar hier, ZELFDE reden en patroon als de definition-
+        # check verderop (stap 8): detect_help() zelf bewaart het
+        # gevraagde topic (self._laatste_help_topic), en route() bouwt
+        # daarmee een dynamische Layer 2-topic-naam ("help_math" i.p.v.
+        # enkel het generieke "help"), zodat Layer 2 per help-
+        # onderwerp apart kan tellen. Kaal "help" (geen topic) blijft
+        # gewoon het generieke "help".
+        if self.detect_help(text):
+            topic = getattr(self, "_laatste_help_topic", None)
+            self._emit_topic(f"help_{topic}" if topic else "help", bron="detect")
+            return
+
+        # 2D Uitleg (5 aug 2026) -- zelfde reden/patroon als 2C
+        # hierboven: detect_uitleg() bewaart de CANONIEKE functienaam
+        # (self._laatste_uitleg_naam) zodat Layer 2 per uitgelegde
+        # functie apart telt ("uitleg_newton", "uitleg_dijkstra", ...),
+        # ongeacht welke alias Kevin typte. MOET hier staan, vóór de
+        # tabel-lus hieronder (stap 3 t/m 7): "leg uit kracht"/"wat is
+        # dijkstra" mag nooit als math-expressie opgepikt worden, en
+        # "wat is"/"hoe werkt" moeten hier eerst een kans krijgen vóór
+        # conversie/math verderop in de tabel.
+        if self.detect_uitleg(text):
+            naam = getattr(self, "_laatste_uitleg_naam", None)
+            self._emit_topic(f"uitleg_{naam}" if naam else "uitleg", bron="detect")
             return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).

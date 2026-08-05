@@ -14750,5 +14750,99 @@
         "timestamp": "2026-08-04T19:03:28.182677"
       }
     ]
+  },
+  "leg": {
+    "senses": [
+      {
+        "sense_id": "leg#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-05T09:39:56.741218",
+      "updated_at": "2026-08-05T09:39:56.742216",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-05T09:39:56.742216",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-05T09:39:56.742216",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "leg"
+        },
+        "timestamp": "2026-08-05T09:39:56.741218"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "leg#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-05T09:39:56.742216"
+      }
+    ]
+  },
+  "kracht": {
+    "senses": [
+      {
+        "sense_id": "kracht#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-05T09:39:56.773257",
+      "updated_at": "2026-08-05T09:39:56.774243",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-05T09:39:56.774243",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-05T09:39:56.774243",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kracht"
+        },
+        "timestamp": "2026-08-05T09:39:56.773257"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kracht#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-05T09:39:56.774243"
+      }
+    ]
   }
 }

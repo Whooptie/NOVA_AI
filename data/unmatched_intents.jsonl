@@ -57,3 +57,7 @@
 {"tekst": "ik vind koffie eigenlijk wel oké maar niet top", "hoogste_gok": "preference", "confidence": 0.3053, "tijdstip": "2026-08-04T21:03:28.180668"}
 {"tekst": "ik vind koffie eigenlijk wel oké maar niet top", "hoogste_gok": "preference", "confidence": 0.3053, "tijdstip": "2026-08-04T21:03:33.693065"}
 {"tekst": "", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-04T21:34:26.734228"}
+{"tekst": "leg uit kracht", "hoogste_gok": "chess_evaluation", "confidence": 0.1532, "tijdstip": "2026-08-05T11:39:56.739214"}
+{"tekst": "leg uit", "hoogste_gok": "chess_evaluation", "confidence": 0.1532, "tijdstip": "2026-08-05T11:40:04.121420"}
+{"tekst": "wat is", "hoogste_gok": "math", "confidence": 0.2234, "tijdstip": "2026-08-05T11:40:14.745448"}
+{"tekst": "hoe werkt een computer", "hoogste_gok": "chess", "confidence": 0.1276, "tijdstip": "2026-08-05T11:40:33.495282"}

@@ -380,3 +380,15 @@
 {"text": "solve_stelsel(x+y=10, x-y=2)", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-04T22:12:54.443038"}
 {"text": "solve_stelsel(2x+y=7, x-y=2) → moet x = 3, y = 1", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.048, "bron": "model_fallback", "tijdstip": "2026-08-04T22:13:04.244019"}
 {"text": "solve_stelsel(2x+y=7, x-y=2)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T22:13:18.347866"}
+{"text": "leg uit newton-raphson", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T11:33:02.944124"}
+{"text": "leg uit nulpunt", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T11:34:04.714202"}
+{"text": "hoe werkt rk4?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0118, "bron": "woordenlijst", "tijdstip": "2026-08-05T11:36:17.274696"}
+{"text": "leg me uit runge kutta", "signaal": "frustratie", "model_signaal": "neutraal", "marge": 0.0164, "bron": "woordenlijst", "tijdstip": "2026-08-05T11:37:29.901601"}
+{"text": "leg uit   nulpunt", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T11:38:45.895399"}
+{"text": "leg uit kracht", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T11:39:56.698219"}
+{"text": "leg uit", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T11:40:04.085016"}
+{"text": "hoe werkt een computer", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0107, "bron": "woordenlijst", "tijdstip": "2026-08-05T11:40:33.460285"}
+{"text": "leg uit dijkstra", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T11:40:38.880198"}
+{"text": "5 + 3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T11:42:45.653654"}
+{"text": "nulpunt(x^2 - 4, 1)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T11:42:51.584930"}
+{"text": "leg uit nulpunt", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T11:55:12.103809"}
