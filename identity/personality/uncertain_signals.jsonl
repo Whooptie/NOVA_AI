@@ -392,3 +392,12 @@
 {"text": "5 + 3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T11:42:45.653654"}
 {"text": "nulpunt(x^2 - 4, 1)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T11:42:51.584930"}
 {"text": "leg uit nulpunt", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T11:55:12.103809"}
+{"text": "leg uit regressie", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T14:37:44.558787"}
+{"text": "leg uit afgeleide", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T14:41:04.690209"}
+{"text": "regressie([1,2,3,4], [2,4,6,8])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T14:42:57.465810"}
+{"text": "leg uit newton-raphson", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T14:43:13.457345"}
+{"text": "leg uit wortel", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0164, "bron": "model_fallback", "tijdstip": "2026-08-05T14:47:30.829366"}
+{"text": "hoe werkt det", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0118, "bron": "woordenlijst", "tijdstip": "2026-08-05T14:49:51.505873"}
+{"text": "hoe werkt kans_kaart", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0118, "bron": "woordenlijst", "tijdstip": "2026-08-05T14:51:37.961685"}
+{"text": "wortel(1, -5, 6)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T14:55:15.815266"}
+{"text": "det([[1,2],[3,4]])", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T14:55:25.122080"}
