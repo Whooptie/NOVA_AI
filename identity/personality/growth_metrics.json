@@ -6,7 +6,7 @@
   "traits": {
     "social_warmth": {
       "positive_count": 16,
-      "negative_count": 82,
+      "negative_count": 85,
       "total_shifts": 4,
       "last_shift": "2026-08-02T10:25:14.672091",
       "last_shift_direction": "negatief"
@@ -26,14 +26,14 @@
       "last_shift_direction": null
     },
     "curiosity": {
-      "positive_count": 17,
+      "positive_count": 21,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "reflection_depth": {
-      "positive_count": 21,
+      "positive_count": 23,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-07-18T16:19:24.122381",
@@ -48,7 +48,7 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 2,
+      "negative_count": 5,
       "total_shifts": 13,
       "last_shift": "2026-08-05T11:54:58.589563",
       "last_shift_direction": "negatief"
@@ -61,7 +61,7 @@
       "last_shift_direction": null
     },
     "associative_thinking": {
-      "positive_count": 17,
+      "positive_count": 21,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -83,9 +83,9 @@
     },
     "impulsivity": {
       "positive_count": 0,
-      "negative_count": 11,
-      "total_shifts": 1,
-      "last_shift": "2026-07-25T22:13:50.774594",
+      "negative_count": 1,
+      "total_shifts": 2,
+      "last_shift": "2026-08-05T14:49:51.537853",
       "last_shift_direction": "negatief"
     },
     "chaotic_variability": {
@@ -96,14 +96,14 @@
       "last_shift_direction": "negatief"
     },
     "energy_level": {
-      "positive_count": 5,
+      "positive_count": 9,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-08-05T11:34:04.771977",
       "last_shift_direction": "positief"
     },
     "dramatic_flair": {
-      "positive_count": 5,
+      "positive_count": 9,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-08-05T11:34:04.775976",
