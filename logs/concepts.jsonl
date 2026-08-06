@@ -207,3 +207,10 @@
 {"timestamp": "2026-08-06T14:15:10.402950", "event_type": "concept_created", "word": "narwal", "source": "system", "new_value": {"word": "narwal"}}
 {"timestamp": "2026-08-06T14:41:21.895557", "event_type": "concept_hard_deleted", "word": "verzonnen", "source": "user", "aantal_senses_verwijderd": 1}
 {"timestamp": "2026-08-06T14:54:40.165468", "event_type": "concept_created", "word": "meubel", "source": "system", "new_value": {"word": "meubel"}}
+{"timestamp": "2026-08-06T17:53:52.354247", "event_type": "concept_created", "word": "21-jarige", "source": "system", "new_value": {"word": "21-jarige"}}
+{"timestamp": "2026-08-06T17:53:52.389236", "event_type": "concept_created", "word": "leeftijd", "source": "system", "new_value": {"word": "leeftijd"}}
+{"timestamp": "2026-08-06T17:53:52.419245", "event_type": "concept_created", "word": "verhuisd", "source": "system", "new_value": {"word": "verhuisd"}}
+{"timestamp": "2026-08-06T18:24:39.156965", "event_type": "concept_created", "word": "fotosynthese", "source": "system", "new_value": {"word": "fotosynthese"}}
+{"timestamp": "2026-08-06T18:26:22.715734", "event_type": "concept_created", "word": "memory", "source": "system", "new_value": {"word": "memory"}}
+{"timestamp": "2026-08-06T19:00:26.308237", "event_type": "concept_created", "word": "testwoordje", "source": "system", "new_value": {"word": "testwoordje"}}
+{"timestamp": "2026-08-06T19:02:26.430227", "event_type": "concept_hard_deleted", "word": "testwoordje", "source": "user", "aantal_senses_verwijderd": 1}

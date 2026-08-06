@@ -29,8 +29,42 @@ class ConceptStore:
         return {}
 
     def save(self) -> None:
-        with open(self.concepts_file, "w", encoding="utf-8") as f:
-            json.dump(self.concepts, f, indent=2, ensure_ascii=False)
+        """
+        Atomische write (6 augustus 2026, ConceptStore.save()
+        atomisch maken): schrijft eerst naar een tijdelijk bestand in
+        DEZELFDE map (belangrijk -- os.replace() is enkel atomisch
+        binnen hetzelfde bestandssysteem), en wisselt dat pas om naar
+        het echte concepts.json met os.replace(). Die laatste stap is
+        een enkele OS-niveau operatie: er bestaat geen tussentoestand
+        waarin het bestand half geschreven is. Een crash/stroomuitval
+        tijdens het schrijven naar het tijdelijke bestand laat het
+        oude, intacte concepts.json gewoon ongemoeid staan -- voorheen
+        (open(..., "w") direct op concepts.json zelf) leegde een
+        onderbroken schrijfactie het HELE bestand, niet enkel de
+        laatste wijziging.
+
+        PID in de tijdelijke bestandsnaam zodat twee gelijktijdige
+        save()-aanroepen (zou in Nova's huidige single-thread-
+        schrijfpatroon niet mogen voorkomen, maar kost niets als
+        extra veiligheid) elkaars tijdelijke bestand niet overschrijven.
+        """
+        tmp_pad = f"{self.concepts_file}.tmp{os.getpid()}"
+        try:
+            with open(tmp_pad, "w", encoding="utf-8") as f:
+                json.dump(self.concepts, f, indent=2, ensure_ascii=False)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp_pad, self.concepts_file)
+        except Exception:
+            # Opruimen als het tijdelijke bestand wel aangemaakt werd
+            # maar de write/replace zelf faalde (bv. schijf vol) --
+            # anders blijft er een verweesd .tmp<pid>-bestand liggen.
+            if os.path.exists(tmp_pad):
+                try:
+                    os.remove(tmp_pad)
+                except OSError:
+                    pass
+            raise
 
     def _write_log(self, event_type: str, word: str, source: str, extra: dict = None) -> None:
         entry = {

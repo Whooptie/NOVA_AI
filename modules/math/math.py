@@ -495,17 +495,16 @@ class MathModule:
         # superscripts → normale exponenten
         superscripts = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
         expr = expr.translate(superscripts)
-        # 1b. getal-exponent zonder ^ → voeg ^ toe
-        #    voorbeelden: 10-4 → 10^-4
-        # BUGFIX (Fase 3, Algebra-module): zonder de (?<!\^) negative
-        # lookbehind greep deze regel ook in bij expressies als "x^2-4"
-        # (bedoeld als x²-4, dus x-kwadraat MIN vier) — die had al een
-        # eigen "^" vlak ervoor staan, maar de regel voegde er stiekem
-        # nóg een "^" bovenop toe en maakte er "x^2^-4" (x tot de macht
-        # (2 tot de macht -4)) van, wiskundig compleet iets anders. Met
-        # de lookbehind slaat de regel niet meer toe zodra er al een "^"
-        # vlak vóór het eerste getal staat.
-        expr = re.sub(r'(?<!\^)(\d+)-(\d+)', r'\1^-\2', expr)
+
+        # VERWIJDERD (2 aug 2026, Kevin's verzoek): hier stond eerder een
+        # regel die kaal "getal-getal" (bv. "10-4") automatisch las als
+        # wetenschappelijke notatie ("10^-4"). Dat botste onoplosbaar met
+        # gewone aftrekking: "2-2" (bedoeld als 2 min 2 = 0) werd daardoor
+        # ook gelezen als "2^-2" (= 0.25) — een reken-fout, niet enkel een
+        # routeringsprobleem. Kevin typt voortaan altijd expliciet "^" bij
+        # machten (dus "10^-4" i.p.v. kaal "10-4"), dus deze regel is niet
+        # meer nodig. Zonder deze regel leest "getal-getal" nu altijd als
+        # gewone aftrekking, via Python's eigen "-"-operator.
 
         # 1. unit + exponent → unit^exponent
         #    voorbeelden: m3 → m^3, m2 → m^2, s-1 → s^-1

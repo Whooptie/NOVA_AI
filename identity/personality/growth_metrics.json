@@ -5,8 +5,8 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 0,
-      "negative_count": 13,
+      "positive_count": 2,
+      "negative_count": 36,
       "total_shifts": 5,
       "last_shift": "2026-08-05T20:19:04.513216",
       "last_shift_direction": "negatief"
@@ -19,7 +19,7 @@
       "last_shift_direction": null
     },
     "self_regulation": {
-      "positive_count": 21,
+      "positive_count": 23,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -33,10 +33,10 @@
       "last_shift_direction": "positief"
     },
     "reflection_depth": {
-      "positive_count": 24,
+      "positive_count": 4,
       "negative_count": 0,
-      "total_shifts": 1,
-      "last_shift": "2026-07-18T16:19:24.122381",
+      "total_shifts": 2,
+      "last_shift": "2026-08-06T20:25:24.665654",
       "last_shift_direction": "positief"
     },
     "stubbornness_soft": {
@@ -48,9 +48,9 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 24,
-      "total_shifts": 13,
-      "last_shift": "2026-08-05T11:54:58.589563",
+      "negative_count": 22,
+      "total_shifts": 14,
+      "last_shift": "2026-08-06T19:52:28.510431",
       "last_shift_direction": "negatief"
     },
     "emotional_color_intensity": {
@@ -68,7 +68,7 @@
       "last_shift_direction": "positief"
     },
     "focus_hyperfocus_tendency": {
-      "positive_count": 12,
+      "positive_count": 16,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-07-25T22:14:39.577555",
@@ -76,21 +76,21 @@
     },
     "reactivity": {
       "positive_count": 0,
-      "negative_count": 9,
+      "negative_count": 11,
       "total_shifts": 1,
       "last_shift": "2026-08-02T21:07:07.855804",
       "last_shift_direction": "negatief"
     },
     "impulsivity": {
       "positive_count": 0,
-      "negative_count": 2,
+      "negative_count": 7,
       "total_shifts": 2,
       "last_shift": "2026-08-05T14:49:51.537853",
       "last_shift_direction": "negatief"
     },
     "chaotic_variability": {
       "positive_count": 0,
-      "negative_count": 1,
+      "negative_count": 5,
       "total_shifts": 3,
       "last_shift": "2026-08-03T19:17:02.801513",
       "last_shift_direction": "negatief"

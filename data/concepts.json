@@ -15812,5 +15812,254 @@
         "timestamp": "2026-08-06T14:54:40.166470"
       }
     ]
+  },
+  "21-jarige": {
+    "senses": [
+      {
+        "sense_id": "21-jarige#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T17:53:52.354247",
+      "updated_at": "2026-08-06T17:53:52.355241",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-06T17:53:52.355241",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T17:53:52.355241",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "21-jarige"
+        },
+        "timestamp": "2026-08-06T17:53:52.354247"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "21-jarige#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-06T17:53:52.355241"
+      }
+    ]
+  },
+  "leeftijd": {
+    "senses": [
+      {
+        "sense_id": "leeftijd#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T17:53:52.389236",
+      "updated_at": "2026-08-06T17:53:52.390241",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-06T17:53:52.390241",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T17:53:52.390241",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "leeftijd"
+        },
+        "timestamp": "2026-08-06T17:53:52.389236"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "leeftijd#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-06T17:53:52.390241"
+      }
+    ]
+  },
+  "verhuisd": {
+    "senses": [
+      {
+        "sense_id": "verhuisd#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T17:53:52.419245",
+      "updated_at": "2026-08-06T17:53:52.420237",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-06T17:53:52.420237",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T17:53:52.420237",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "verhuisd"
+        },
+        "timestamp": "2026-08-06T17:53:52.419245"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "verhuisd#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-06T17:53:52.420237"
+      }
+    ]
+  },
+  "fotosynthese": {
+    "senses": [
+      {
+        "sense_id": "fotosynthese#1",
+        "definition": "Fotosynthese is het vermogen licht-energie om te zetten in chemische energie. Het is een vorm van biosynthese, waarbij energie uit zonlicht wordt gebruikt om gasvormig koolstofdioxide om te zetten in de vaste stof glucose.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vorm",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-08-06T18:24:39.211725"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T18:24:39.156965",
+      "updated_at": "2026-08-06T18:24:39.158968",
+      "sources": [
+        "wikipedia"
+      ],
+      "last_used_at": "2026-08-06T18:24:39.158968",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T18:24:39.158968",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "fotosynthese"
+        },
+        "timestamp": "2026-08-06T18:24:39.156965"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "wikipedia",
+        "sense_id": "fotosynthese#1",
+        "old_value": null,
+        "new_value": "Fotosynthese is het vermogen licht-energie om te zetten in chemische energie. Het is een vorm van biosynthese, waarbij energie uit zonlicht wordt gebruikt om gasvormig koolstofdioxide om te zetten in de vaste stof glucose.",
+        "timestamp": "2026-08-06T18:24:39.158968"
+      }
+    ]
+  },
+  "memory": {
+    "senses": [
+      {
+        "sense_id": "memory#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T18:26:22.715734",
+      "updated_at": "2026-08-06T18:26:22.716733",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-06T18:26:22.716733",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T18:26:22.716733",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "memory"
+        },
+        "timestamp": "2026-08-06T18:26:22.715734"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "memory#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-06T18:26:22.716733"
+      }
+    ]
   }
 }

@@ -63,3 +63,6 @@
 {"tekst": "hoe werkt een computer", "hoogste_gok": "chess", "confidence": 0.1276, "tijdstip": "2026-08-05T11:40:33.495282"}
 {"tekst": "hoeveel is drie plus vijf", "hoogste_gok": "math", "confidence": 0.2466, "tijdstip": "2026-08-05T20:38:30.353520"}
 {"tekst": "leer: fantasiedierxyz een verzonnen dier voor een test", "hoogste_gok": "chess", "confidence": 0.1674, "tijdstip": "2026-08-06T16:03:38.951640"}
+{"tekst": "ik ben op mijn 21-jarige leeftijd verhuisd", "hoogste_gok": "preference", "confidence": 0.2786, "tijdstip": "2026-08-06T19:53:52.353237"}
+{"tekst": "", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-06T20:08:09.421774"}
+{"tekst": "memory", "hoogste_gok": "chess", "confidence": 0.134, "tijdstip": "2026-08-06T20:26:22.714722"}

@@ -420,3 +420,23 @@
 {"text": "weerleg concept: verzonnen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T16:41:12.931129"}
 {"text": "verwijder definitief concept: verzonnen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T16:41:21.862557"}
 {"text": "weerleg: hond is_a meubel", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0068, "bron": "model_fallback", "tijdstip": "2026-08-06T16:55:20.926594"}
+{"text": "2 - 2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T19:52:28.349968"}
+{"text": "2-2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-06T19:52:33.516969"}
+{"text": "5m + 30cm", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T19:52:55.998724"}
+{"text": "5m+30cm", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T19:53:03.479678"}
+{"text": "newton(x^2-4, 1)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T19:53:18.436930"}
+{"text": "ik ben op mijn 21-jarige leeftijd verhuisd", "signaal": "focus", "model_signaal": "focus", "marge": 0.0544, "bron": "model_fallback", "tijdstip": "2026-08-06T19:53:52.318253"}
+{"text": "2 - 2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T20:02:26.813197"}
+{"text": "2-2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-06T20:02:29.083839"}
+{"text": "10^-4", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-06T20:02:36.560907"}
+{"text": "10^4", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0995, "bron": "model_fallback", "tijdstip": "2026-08-06T20:02:46.120209"}
+{"text": "pi", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-06T20:08:04.604573"}
+{"text": "2*2*pi", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T20:08:19.365064"}
+{"text": "e", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-06T20:08:33.545868"}
+{"text": "2*2*e", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T20:08:40.483350"}
+{"text": "hoe werk je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0903, "bron": "model_fallback", "tijdstip": "2026-08-06T20:27:02.621014"}
+{"text": "hoe werk je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0903, "bron": "model_fallback", "tijdstip": "2026-08-06T20:30:06.378213"}
+{"text": "teach testwoordje een simpel testconcept", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.094, "bron": "model_fallback", "tijdstip": "2026-08-06T21:00:26.278775"}
+{"text": "verwijder definitief concept: testwoordje", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T21:01:25.128226"}
+{"text": "weerleg concept: testwoordje", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T21:02:09.388634"}
+{"text": "verwijder definitief concept: testwoordje", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T21:02:26.399223"}
