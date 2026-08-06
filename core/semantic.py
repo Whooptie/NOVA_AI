@@ -158,6 +158,15 @@ class SenseEngine:
                     s["confidence"] = confidence
                     self._audit_sense(concept, s, "confidence_update", source,
                                       old_value=old_conf, new_value=confidence)
+                # Trust state (punt 3, 6 augustus 2026): een bevestiging
+                # door Kevin ("user") mag een eerdere unverified-status
+                # altijd overschrijven naar confirmed. Andersom nooit --
+                # een latere auto/wikipedia-match mag een reeds door
+                # Kevin bevestigde sense niet terugzetten naar unverified.
+                if source == "user":
+                    s["status"] = "confirmed"
+                elif "status" not in s:
+                    s["status"] = "unverified"
                 if source not in concept["metadata"]["sources"]:
                     concept["metadata"]["sources"].append(source)
                 self.store.touch_concept(word, s.get("confidence"))
@@ -172,6 +181,9 @@ class SenseEngine:
                 s["source"] = source
                 s["confidence"] = confidence
                 s["pos"] = pos
+                # Trust state (punt 3, 6 augustus 2026): status volgt de
+                # bron van deze upgrade -- zie deduplicatie-tak hierboven.
+                s["status"] = "confirmed" if source == "user" else "unverified"
                 concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
                 self._audit_sense(concept, s, "sense_upgrade", source,
                                   old_value=old_def, new_value=definition)
@@ -189,6 +201,11 @@ class SenseEngine:
             "relations": [],
             "source": source,
             "confidence": confidence,
+            # Trust state (punt 3, 6 augustus 2026): status volgt de bron
+            # -- "user" (teach()) is meteen bevestigd, alle andere bronnen
+            # (auto, auto_extract, wikipedia) starten als unverified totdat
+            # Kevin ze zelf bevestigt of afwijst (zie punt 1/2, later).
+            "status": "confirmed" if source == "user" else "unverified",
             "audit_log": []
         }
         senses.append(new_sense)
@@ -213,6 +230,10 @@ class SenseEngine:
                 s["definition"] = definition
                 s["source"] = "user"
                 s["confidence"] = 1.0
+                # Trust state (punt 3, 6 augustus 2026): deze methode
+                # wordt altijd met source="user" aangeroepen, dus status
+                # is hier altijd confirmed.
+                s["status"] = "confirmed"
                 concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
                 self._audit_sense(concept, s, "sense_upgrade", "user",
                                   old_value=old_def, new_value=definition)
@@ -220,6 +241,146 @@ class SenseEngine:
                 self.store.save()
                 return s
         return None
+
+    # ---------------------------------------------------------
+    # Verwijderpad (punt 1, 6 augustus 2026) — reject = tombstone,
+    # hard_delete = fysiek verwijderen. Zie find_contradictions()/
+    # reasoning-laag verderop, die "rejected" overal negeert.
+    # ---------------------------------------------------------
+    def reject_sense(self, word: str, sense_id: str, reason: str = "") -> dict | None:
+        """
+        Markeert een sense als afgewezen (tombstone). De sense blijft
+        in concepts.json staan -- enkel status verandert naar
+        "rejected" en de reden/tijdstip komen in de audit_log. De
+        reasoning-laag (get_best_definition, get_relations via
+        RelationEngine, is_a_chained, find_contradictions, ...)
+        negeert voortaan alles met status "rejected".
+
+        Geeft de sense terug bij succes, None als het woord of de
+        sense_id niet bestaat.
+        """
+        word = word.lower().strip()
+        concept = self.store.get_concept(word)
+        if not concept:
+            return None
+
+        for s in concept.get("senses", []):
+            if s.get("sense_id") == sense_id:
+                old_status = s.get("status")
+                s["status"] = "rejected"
+                concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+                self._audit_sense(concept, s, "sense_rejected", "user",
+                                  old_value=old_status, new_value="rejected",
+                                  extra={"reason": reason} if reason else None)
+                self.store.save()
+                return s
+        return None
+
+    def hard_delete_sense(self, word: str, sense_id: str) -> bool:
+        """
+        Verwijdert een sense fysiek uit concepts.json. Enkel toegestaan
+        als de sense al status "rejected" heeft (guard) -- zo blijft
+        er altijd eerst een tombstone/audit-spoor voordat iets echt
+        verdwijnt. Bedoeld voor pure ruis (bv. een interjectie die
+        nooit een concept had moeten worden), niet voor het gewone
+        afwijzen van een foute bewering (dat is reject_sense()).
+
+        Geeft True terug bij succesvol verwijderen, False als het
+        woord/de sense niet bestaat of niet eerst afgewezen was.
+        """
+        word = word.lower().strip()
+        concept = self.store.get_concept(word)
+        if not concept:
+            return False
+
+        senses = concept.get("senses", [])
+        for i, s in enumerate(senses):
+            if s.get("sense_id") == sense_id:
+                if s.get("status") != "rejected":
+                    return False  # guard: eerst reject_sense(), dan pas dit
+                verwijderde_sense = senses.pop(i)
+                concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+                # Audit-entry op CONCEPT-niveau (niet sense-niveau, want
+                # de sense zelf bestaat zo meteen niet meer om naar te
+                # verwijzen) -- bewaart wat er precies verdween.
+                self.store._append_audit(concept, {
+                    "event_type": "sense_hard_deleted",
+                    "source": "user",
+                    "sense_id": sense_id,
+                    "old_value": verwijderde_sense.get("definition"),
+                    "new_value": None,
+                }, word=word)
+                self.store.save()
+                return True
+        return False
+
+    def reject_concept(self, word: str, reason: str = "") -> int:
+        """
+        Zet ALLE senses van een concept op status "rejected" in één
+        keer -- bv. als een heel woord verzonnen/ruis bleek te zijn
+        (zoals 'oei', een interjectie die nooit een concept had moeten
+        worden), i.p.v. senses een voor een te moeten weerleggen.
+
+        Relaties eronder hoeven niet apart aangepast te worden: zodra
+        de sense zelf status "rejected" heeft, negeert get_relations()
+        (RelationEngine) toch al ALLES eronder, ongeacht de eigen
+        status van de relatie zelf.
+
+        Geeft het aantal senses terug dat effectief aangepast is (0
+        als het woord niet bestaat, of als alle senses al rejected
+        waren).
+        """
+        word = word.lower().strip()
+        concept = self.store.get_concept(word)
+        if not concept:
+            return 0
+
+        aangepast = 0
+        for s in concept.get("senses", []):
+            if s.get("status") != "rejected":
+                old_status = s.get("status")
+                s["status"] = "rejected"
+                self._audit_sense(concept, s, "sense_rejected", "user",
+                                  old_value=old_status, new_value="rejected",
+                                  extra={"reason": reason} if reason else None)
+                aangepast += 1
+
+        if aangepast:
+            concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+            self.store.save()
+        return aangepast
+
+    def hard_delete_concept(self, word: str) -> bool:
+        """
+        Verwijdert een heel concept-record fysiek uit concepts.json.
+        Guard: mag alleen als ALLE senses van dit concept al status
+        "rejected" hebben (dus eerst reject_concept(), of losse
+        reject_sense()-aanroepen voor elke sense).
+
+        Geeft True terug bij succesvol verwijderen, False als het
+        woord niet bestaat of nog niet-afgewezen senses heeft.
+        """
+        word = word.lower().strip()
+        concept = self.store.get_concept(word)
+        if not concept:
+            return False
+
+        senses = concept.get("senses", [])
+        if any(s.get("status") != "rejected" for s in senses):
+            return False  # guard: eerst reject_concept(), dan pas dit
+
+        del self.store.concepts[word]
+        # Geen audit-entry meer binnen het concept zelf mogelijk (het
+        # bestaat niet meer) -- wel naar het externe logbestand, zodat
+        # er alsnog een spoor blijft van WAT er verdween en WANNEER.
+        self.store._write_log(
+            event_type="concept_hard_deleted",
+            word=word,
+            source="user",
+            extra={"aantal_senses_verwijderd": len(senses)}
+        )
+        self.store.save()
+        return True
 
     def get_senses(self, word: str) -> list[dict]:
         concept = self.store.get_concept(word)
@@ -229,7 +390,14 @@ class SenseEngine:
 
     def get_best_definition(self, word: str, context_words: list[str] | None = None) -> str | None:
         senses = self.get_senses(word)
-        real_senses = [s for s in senses if s.get("definition") != "unknown"]
+        # Verwijderpad (punt 1/2, 6 augustus 2026): een afgewezen sense
+        # mag nooit meer als "het beste antwoord" naar buiten komen --
+        # get_senses() zelf blijft hem tonen (transparantie, bv. voor
+        # concept_overview.py), maar deze reasoning-query niet.
+        real_senses = [
+            s for s in senses
+            if s.get("definition") != "unknown" and s.get("status") != "rejected"
+        ]
         if not real_senses:
             return None
 
@@ -266,7 +434,12 @@ class SenseEngine:
           treffers in de context_words
         """
         senses = self.get_senses(word)
-        real_senses = [s for s in senses if s.get("definition") != "unknown"]
+        # Verwijderpad (punt 1/2, 6 augustus 2026): een afgewezen sense
+        # mag niet als disambiguatie-kandidaat voorgesteld worden.
+        real_senses = [
+            s for s in senses
+            if s.get("definition") != "unknown" and s.get("status") != "rejected"
+        ]
 
         if len(real_senses) <= 1:
             return None  # Niets om te disambigueren
@@ -450,6 +623,15 @@ class RelationEngine:
             "target": target,
             "confidence": 1.0,
             "source": "user",
+            # Trust state (punt 3, 6 augustus 2026): add_relation() wordt
+            # altijd met source="user" opgeslagen (zie hierboven -- geen
+            # source-parameter, dus elke aanroeper komt via de confirm-
+            # flow van een mens). Status is hier dus altijd confirmed.
+            # Mocht add_relation() ooit een source-parameter krijgen
+            # (bv. voor auto_extract_is_a), dan moet deze regel mee
+            # veranderen naar dezelfde "user" → confirmed / anders →
+            # unverified-regel als bij add_sense().
+            "status": "confirmed",
             "created_at": datetime.utcnow().isoformat()
         }
         sense["relations"].append(rel_obj)
@@ -460,6 +642,96 @@ class RelationEngine:
         self.store.save()
         return True
 
+    # ---------------------------------------------------------
+    # Verwijderpad (punt 1, 6 augustus 2026) — zelfde opzet als
+    # SenseEngine.reject_sense()/hard_delete_sense() hierboven.
+    # Een relatie heeft geen eigen id -- geïdentificeerd via de
+    # combinatie sense_id + relation_type + target, dezelfde
+    # combinatie die add_relation()'s duplicate-check al gebruikt.
+    # ---------------------------------------------------------
+    def reject_relation(self, word: str, sense_id: str, relation_type: str,
+                        target: str, reason: str = "") -> dict | None:
+        """
+        Markeert een relatie als afgewezen (tombstone). Blijft in
+        concepts.json staan -- enkel status verandert naar "rejected".
+        De reasoning-laag (get_relations, is_a_chained, ...) negeert
+        voortaan alles met status "rejected".
+
+        Geeft het relatie-object terug bij succes, None als het woord,
+        de sense of de relatie niet gevonden wordt.
+        """
+        word = word.lower().strip()
+        target = target.lower().strip()
+        concept = self.store.get_concept(word)
+        if not concept:
+            return None
+
+        sense = next((s for s in concept.get("senses", []) if s.get("sense_id") == sense_id), None)
+        if not sense:
+            return None
+
+        for rel in sense.get("relations", []):
+            if rel.get("type") == relation_type and rel.get("target") == target:
+                old_status = rel.get("status")
+                rel["status"] = "rejected"
+                concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+                entry = {
+                    "event_type": "relation_rejected",
+                    "source": "user",
+                    "sense_id": sense_id,
+                    "relation": {"type": relation_type, "target": target},
+                    "old_value": old_status,
+                    "new_value": "rejected",
+                }
+                if reason:
+                    entry["reason"] = reason
+                entry["timestamp"] = datetime.utcnow().isoformat()
+                concept.setdefault("audit_log", []).append(entry)
+                self.store.save()
+                return rel
+        return None
+
+    def hard_delete_relation(self, word: str, sense_id: str, relation_type: str,
+                             target: str) -> bool:
+        """
+        Verwijdert een relatie fysiek. Enkel toegestaan als de relatie
+        al status "rejected" heeft (guard, zelfde principe als
+        hard_delete_sense()).
+
+        Geeft True terug bij succesvol verwijderen, False anders.
+        """
+        word = word.lower().strip()
+        target = target.lower().strip()
+        concept = self.store.get_concept(word)
+        if not concept:
+            return False
+
+        sense = next((s for s in concept.get("senses", []) if s.get("sense_id") == sense_id), None)
+        if not sense:
+            return False
+
+        relations = sense.get("relations", [])
+        for i, rel in enumerate(relations):
+            if rel.get("type") == relation_type and rel.get("target") == target:
+                if rel.get("status") != "rejected":
+                    return False  # guard: eerst reject_relation(), dan pas dit
+                verwijderde_relatie = relations.pop(i)
+                concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+                self.store._append_audit(concept, {
+                    "event_type": "relation_hard_deleted",
+                    "source": "user",
+                    "sense_id": sense_id,
+                    "relation": {
+                        "type": verwijderde_relatie.get("type"),
+                        "target": verwijderde_relatie.get("target"),
+                    },
+                    "old_value": verwijderde_relatie.get("target"),
+                    "new_value": None,
+                }, word=word)
+                self.store.save()
+                return True
+        return False
+
     def get_relations(self, word: str, relation_type: Optional[str] = None) -> List[str]:
         word = word.lower().strip()
         concept = self.store.get_concept(word)
@@ -468,7 +740,18 @@ class RelationEngine:
 
         results = []
         for sense in concept["senses"]:
+            # Verwijderpad (punt 1/2, 6 augustus 2026): een afgewezen
+            # sense telt sowieso niet mee -- alle relaties eronder zijn
+            # dan irrelevant, wat er ook met hun eigen status is.
+            if sense.get("status") == "rejected":
+                continue
             for rel in sense["relations"]:
+                # Een individueel afgewezen relatie (de sense zelf kan
+                # prima confirmed/unverified blijven) telt ook niet mee.
+                # unverified blijft WEL meetellen -- enkel rejected
+                # wordt genegeerd, zie punt 3 se stand van zaken.
+                if rel.get("status") == "rejected":
+                    continue
                 if relation_type is None or rel["type"] == relation_type:
                     results.append(rel["target"])
 
@@ -506,7 +789,13 @@ class RelationEngine:
 
         result: Dict[str, List[str]] = {}
         for sense in concept["senses"]:
+            # Verwijderpad (punt 1/2, 6 augustus 2026): zelfde filter
+            # als get_relations() hierboven.
+            if sense.get("status") == "rejected":
+                continue
             for rel in sense["relations"]:
+                if rel.get("status") == "rejected":
+                    continue
                 rel_type = rel["type"]
                 target = rel["target"]
                 if rel_type not in result:
@@ -514,7 +803,6 @@ class RelationEngine:
                 if target not in result[rel_type]:
                     result[rel_type].append(target)
         return result
-
 
 # ---------------------------------------------------------
 # 4. ReasoningEngine – chaining, inference, contradictions
@@ -809,6 +1097,11 @@ class TeachEngine:
         # 3. unknown upgraden
         upgraded = self.sense_engine.upgrade_unknown_sense(word, definition)
         if upgraded:
+            # Trust state (punt 3, 6 augustus 2026): de sense zelf wordt
+            # hierboven al confirmed (Kevin typte deze definitie). De
+            # is_a-relatie die hieronder uit diezelfde tekst wordt
+            # GERADEN blijft bewust apart unverified -- Kevin bevestigde
+            # de definitie, niet noodzakelijk de afgeleide categorie.
             self._auto_extract_is_a(word, definition, upgraded)  # NIEUW
             return upgraded
 
@@ -822,6 +1115,7 @@ class TeachEngine:
             confidence=1.0,
             pos=pos
         )
+        # Trust state: zie opmerking hierboven -- zelfde redenering.
         self._auto_extract_is_a(word, definition, sense)  # NIEUW
         return sense
 
@@ -931,6 +1225,10 @@ class TeachEngine:
                 "target": target,
                 "confidence": 0.9,
                 "source": "auto_extract",
+                # Trust state (punt 3, 6 augustus 2026): automatisch uit
+                # een definitie geëxtraheerd, nooit door Kevin bevestigd
+                # -> unverified totdat hij het bevestigt of afwijst.
+                "status": "unverified",
                 "created_at": datetime.utcnow().isoformat()
             })
             self.store.save()
@@ -1398,6 +1696,27 @@ class SemanticConceptsModule:
 
     def find_contradictions(self, word):
         return self.reasoning_engine.find_contradictions(word)
+
+    # ---------------------------------------------------------
+    # Verwijderpad (punt 1, 6 augustus 2026)
+    # ---------------------------------------------------------
+    def reject_sense(self, word, sense_id, reason=""):
+        return self.sense_engine.reject_sense(word, sense_id, reason)
+
+    def hard_delete_sense(self, word, sense_id):
+        return self.sense_engine.hard_delete_sense(word, sense_id)
+
+    def reject_concept(self, word, reason=""):
+        return self.sense_engine.reject_concept(word, reason)
+
+    def hard_delete_concept(self, word):
+        return self.sense_engine.hard_delete_concept(word)
+
+    def reject_relation(self, word, sense_id, relation_type, target, reason=""):
+        return self.relation_engine.reject_relation(word, sense_id, relation_type, target, reason)
+
+    def hard_delete_relation(self, word, sense_id, relation_type, target):
+        return self.relation_engine.hard_delete_relation(word, sense_id, relation_type, target)
 
     def search(self, query: str) -> list:
         return self.store.search(query)

@@ -6,7 +6,7 @@
   "traits": {
     "social_warmth": {
       "positive_count": 0,
-      "negative_count": 3,
+      "negative_count": 13,
       "total_shifts": 5,
       "last_shift": "2026-08-05T20:19:04.513216",
       "last_shift_direction": "negatief"
@@ -33,7 +33,7 @@
       "last_shift_direction": "positief"
     },
     "reflection_depth": {
-      "positive_count": 23,
+      "positive_count": 24,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-07-18T16:19:24.122381",
@@ -48,7 +48,7 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 14,
+      "negative_count": 24,
       "total_shifts": 13,
       "last_shift": "2026-08-05T11:54:58.589563",
       "last_shift_direction": "negatief"
@@ -83,7 +83,7 @@
     },
     "impulsivity": {
       "positive_count": 0,
-      "negative_count": 1,
+      "negative_count": 2,
       "total_shifts": 2,
       "last_shift": "2026-08-05T14:49:51.537853",
       "last_shift_direction": "negatief"

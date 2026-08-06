@@ -138,6 +138,17 @@ EMERGENCE_CHECK_INTERVAL_MINUTEN = 10
 # CHECK_INTERVAL_MINUTEN-constantes hierboven).
 INTENT_CLASSIFIER_RETRAIN_INTERVAL_MINUTEN = 240
 
+# Punt 2 (find_contradictions() een aanroeper geven, 6 augustus 2026):
+# hoe vaak contradiction_checker.py over de VOLLEDIGE kennisgraaf loopt
+# op zoek naar botsende is_a-relaties (bv. 'hond' zowel 'dier' als
+# 'meubel'). Zelfde soort lichte, pure Python-berekening als
+# emergence_engine.reflect() hierboven (geen webcam, geen externe
+# API) -- vandaar een vergelijkbare interval. Eigen spam-preventie zit
+# al IN de module zelf (data/contradiction_state.json, onthoudt welke
+# conflicten al gemeld zijn), dus een kortere interval verhoogt geen
+# spam-risico, enkel hoe snel een nieuw conflict ontdekt wordt.
+CONTRADICTION_CHECK_INTERVAL_MINUTEN = 15
+
 
 def achtergrond_loop(loader):
     """
@@ -267,6 +278,20 @@ def achtergrond_loop(loader):
                     intent_classifier.retrain_vanuit_bestanden()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in intent_classifier.retrain_vanuit_bestanden(): {e}")
+
+        # Punt 2 (find_contradictions() een aanroeper geven, 6 augustus
+        # 2026): periodiek de volledige kennisgraaf checken op botsende
+        # is_a-relaties. Eigen spam-preventie zit in de module zelf
+        # (onthoudt welke conflicten al gemeld zijn), dus deze aanroep
+        # zorgt enkel dat de check OOIT vanzelf gebeurt -- net als bij
+        # emergence_engine hierboven, geen extra risico op spam.
+        if aantal_loops % CONTRADICTION_CHECK_INTERVAL_MINUTEN == 0:
+            contradiction_checker = loader.loaded_modules.get("contradiction_checker")
+            if contradiction_checker:
+                try:
+                    contradiction_checker.check_contradictions()
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in contradiction_checker.check_contradictions(): {e}")
 
 def main():
     global wachten_op_input

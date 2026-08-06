@@ -37,6 +37,15 @@ def get_help():
   welke soorten dier ken je
   noem soorten van dier
 
+🗑️ KENNIS WEERLEGGEN/VERWIJDEREN (verwijderpad, punt 1)
+  weerleg: hond is_a meubel                    (wijst 1 relatie af, blijft zichtbaar in geschiedenis)
+  weerleg betekenis: python 2                  (wijst 1 betekenis af, blijft zichtbaar)
+  weerleg concept: verzonnenwoord               (wijst ALLE betekenissen van een woord af)
+  verwijder definitief: hond is_a meubel        (verwijdert een AFGEWEZEN relatie echt,
+                                                  moet eerst geweerlegd zijn)
+  verwijder definitief betekenis: python 2      (idem, voor een betekenis)
+  verwijder definitief concept: verzonnenwoord  (idem, voor een heel woord)
+
 ♟️ SCHAKEN
   help schaken  (voor alle schaakcommando's)
 

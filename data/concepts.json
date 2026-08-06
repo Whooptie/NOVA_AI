@@ -15,43 +15,56 @@
             "target": "wolf",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-27T18:58:08.343041"
+            "created_at": "2026-06-27T18:58:08.343041",
+            "status": "unverified"
           },
           {
             "type": "is_a",
             "target": "zoogdier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "is_a",
             "target": "huisdier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "is_a",
             "target": "dier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "is_a",
+            "target": "meubel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "rejected",
+            "created_at": "2026-08-06T14:54:43.252116"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
       "created_at": "2026-06-27T18:58:08.343041",
-      "updated_at": "2026-06-29T17:36:35.210559",
+      "updated_at": "2026-08-06T14:55:20.980192",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-06-29T17:36:35.210559",
-      "usage_count": 3,
+      "last_used_at": "2026-08-06T14:54:43.252116",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-06-27T18:58:08.344044",
@@ -64,6 +77,10 @@
         {
           "timestamp": "2026-06-29T17:36:35.210559",
           "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-08-06T14:54:43.252116",
+          "confidence": 0.8
         }
       ]
     },
@@ -83,6 +100,29 @@
         "old_value": null,
         "new_value": "De hond is de gedomesticeerde ondersoort van de wolf.",
         "timestamp": "2026-06-27T18:58:08.344044"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "hond#1",
+        "relation": {
+          "type": "is_a",
+          "target": "meubel",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-08-06T14:54:43.252116"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "hond#1",
+        "relation": {
+          "type": "is_a",
+          "target": "meubel"
+        },
+        "old_value": "confirmed",
+        "new_value": "rejected",
+        "timestamp": "2026-08-06T14:55:20.980192"
       }
     ]
   },
@@ -102,96 +142,110 @@
             "target": "voertuig",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-27T18:58:32.285272"
+            "created_at": "2026-06-27T18:58:32.285272",
+            "status": "unverified"
           },
           {
             "type": "has_part",
             "target": "wiel",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "stuur",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "zadel",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "trap",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "rem",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "ketting",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "versnelling",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "frame",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "spatbord",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "bel",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "licht",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "reflector",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -256,12 +310,14 @@
             "target": "kat",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -314,12 +370,14 @@
             "target": "apparaat",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-27T19:05:44.415112"
+            "created_at": "2026-06-27T19:05:44.415112",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -372,12 +430,14 @@
             "target": "hemellichaam",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-27T19:05:57.120363"
+            "created_at": "2026-06-27T19:05:57.120363",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -430,12 +490,14 @@
             "target": "vel",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-27T19:18:13.053278"
+            "created_at": "2026-06-27T19:18:13.053278",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -488,12 +550,14 @@
             "target": "levend wezen",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-06-29T17:37:52.228284"
+            "created_at": "2026-06-29T17:37:52.228284",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -565,12 +629,14 @@
             "target": "dier",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -622,12 +688,14 @@
             "target": "zitmeubel",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-29T17:42:58.029225"
+            "created_at": "2026-06-29T17:42:58.029225",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -680,12 +748,14 @@
             "target": "weekdier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -737,12 +807,14 @@
             "target": "pitvrucht",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-29T17:55:24.949953"
+            "created_at": "2026-06-29T17:55:24.949953",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -794,12 +866,14 @@
             "target": "vrucht",
             "confidence": 0.9,
             "source": "auto_extract",
-            "created_at": "2026-06-29T18:01:54.304096"
+            "created_at": "2026-06-29T18:01:54.304096",
+            "status": "unverified"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -855,12 +929,14 @@
             "target": "bestuursvorm",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-29T18:20:52.412906"
+            "created_at": "2026-06-29T18:20:52.412906",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -912,12 +988,14 @@
             "target": "luchtvaartuig",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-29T18:21:37.185926"
+            "created_at": "2026-06-29T18:21:37.185926",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -969,12 +1047,14 @@
             "target": "voertuig",
             "confidence": 0.9,
             "source": "auto_extract",
-            "created_at": "2026-06-29T18:23:14.598637"
+            "created_at": "2026-06-29T18:23:14.598637",
+            "status": "unverified"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1026,12 +1106,14 @@
             "target": "bestuur",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -1083,12 +1165,14 @@
             "target": "hemellichaam",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -1140,12 +1224,14 @@
             "target": "theorie",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -1205,12 +1291,14 @@
             "target": "programmeertaal",
             "confidence": 1.0,
             "source": "auto_extract",
-            "created_at": "2026-07-02T11:50:21.407071"
+            "created_at": "2026-07-02T11:50:21.407071",
+            "status": "unverified"
           }
         ],
         "source": "auto_extract",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       },
       {
         "sense_id": "python#2",
@@ -1234,12 +1322,14 @@
             "target": "dier",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1291,12 +1381,14 @@
             "target": "beer",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-07-03T17:47:35.763145"
+            "created_at": "2026-07-03T17:47:35.763145",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -1348,12 +1440,14 @@
             "target": "bruine beer",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -1405,12 +1499,14 @@
             "target": "kunstmatige intelligentie",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -1463,19 +1559,22 @@
             "target": "meubelstuk",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "part_of",
             "target": "keuken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1528,12 +1627,14 @@
             "target": "bouwelement",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1586,12 +1687,14 @@
             "target": "bouwelement",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1644,12 +1747,14 @@
             "target": "zitmeubel",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1702,12 +1807,14 @@
             "target": "taal",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1760,19 +1867,22 @@
             "target": "vloeistof",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "used_for",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1825,12 +1935,14 @@
             "target": "plant",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1883,12 +1995,14 @@
             "target": "kunstvorm",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -1941,33 +2055,38 @@
             "target": "gebouw",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "deur",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "raam",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "keuken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2020,12 +2139,14 @@
             "target": "persoon",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2078,12 +2199,14 @@
             "target": "vloeistof",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2136,19 +2259,22 @@
             "target": "voedingsmiddel",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "snijden",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2201,12 +2327,14 @@
             "target": "eigenschap",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2259,19 +2387,22 @@
             "target": "trilling",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "muziek",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2321,7 +2452,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2374,12 +2506,14 @@
             "target": "wiel",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2432,12 +2566,14 @@
             "target": "dier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2490,19 +2626,22 @@
             "target": "materietoestand",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "water",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2555,19 +2694,22 @@
             "target": "deur",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "raam",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2620,12 +2762,14 @@
             "target": "levend wezen",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2678,19 +2822,22 @@
             "target": "zoogdier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "is_a",
             "target": "dier",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-25T19:20:53.181987"
+            "created_at": "2026-07-25T19:20:53.181987",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2758,19 +2905,22 @@
             "target": "computer",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "fornuis",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2823,19 +2973,22 @@
             "target": "planeet",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "zon",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2888,12 +3041,14 @@
             "target": "zoogdier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -2946,12 +3101,14 @@
             "target": "fiets",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3004,12 +3161,14 @@
             "target": "dier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3062,12 +3221,14 @@
             "target": "voedingsmiddel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3120,12 +3281,14 @@
             "target": "democratie",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3178,12 +3341,14 @@
             "target": "zoogdier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3236,12 +3401,14 @@
             "target": "beer",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3294,12 +3461,14 @@
             "target": "gebouw",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3352,12 +3521,14 @@
             "target": "kleur",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3410,12 +3581,14 @@
             "target": "machine learning",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3468,12 +3641,14 @@
             "target": "muziek",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3526,12 +3701,14 @@
             "target": "huis",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3584,19 +3761,22 @@
             "target": "mens",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "is_a",
             "target": "levend wezen",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3649,12 +3829,14 @@
             "target": "taal",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3707,12 +3889,14 @@
             "target": "relativiteitstheorie",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3765,12 +3949,14 @@
             "target": "geluid",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3830,12 +4016,14 @@
             "target": "trampoline",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "vel#2",
@@ -3857,12 +4045,14 @@
             "target": "lichaam",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3915,19 +4105,22 @@
             "target": "brood",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -3980,12 +4173,14 @@
             "target": "meubelstuk",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4038,12 +4233,14 @@
             "target": "symbolische AI",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4096,12 +4293,14 @@
             "target": "kunstmatige intelligentie",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4154,12 +4353,14 @@
             "target": "machine learning",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4212,12 +4413,14 @@
             "target": "module",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4270,12 +4473,14 @@
             "target": "EventBus",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4328,12 +4533,14 @@
             "target": "kleur",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4386,12 +4593,14 @@
             "target": "kleur",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4444,12 +4653,14 @@
             "target": "gevoel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4502,12 +4713,14 @@
             "target": "gevoel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4560,12 +4773,14 @@
             "target": "gevoel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4618,12 +4833,14 @@
             "target": "persoon",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4676,19 +4893,22 @@
             "target": "wolk",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "water",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4741,12 +4961,14 @@
             "target": "hemellichaam",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4799,12 +5021,14 @@
             "target": "wolk",
             "confidence": 0.5,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4857,19 +5081,22 @@
             "target": "water",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "regen",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4922,12 +5149,14 @@
             "target": "lichaam",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -4980,12 +5209,14 @@
             "target": "lichaam",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5045,12 +5276,14 @@
             "target": "hoofd",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "oog#2",
@@ -5072,12 +5305,14 @@
             "target": "wind",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5139,12 +5374,14 @@
             "target": "lichaam",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "hart#2",
@@ -5167,12 +5404,14 @@
             "target": "EventBus",
             "confidence": 0.5,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "hart#3",
@@ -5195,12 +5434,14 @@
             "target": "liefde",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "hart#4",
@@ -5224,19 +5465,22 @@
             "target": "kaartspel",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "speelkaart",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "hart#5",
@@ -5259,12 +5503,14 @@
             "target": "muziek",
             "confidence": 0.5,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5324,12 +5570,14 @@
             "target": "lichaam",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "been#2",
@@ -5352,12 +5600,14 @@
             "target": "bot",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5410,12 +5660,14 @@
             "target": "mens",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5468,12 +5720,14 @@
             "target": "schaak",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5526,12 +5780,14 @@
             "target": "bordspel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5584,12 +5840,14 @@
             "target": "been",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5642,12 +5900,14 @@
             "target": "drank",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5700,19 +5960,22 @@
             "target": "schaak",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "dammen",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5765,12 +6028,14 @@
             "target": "vloeistof",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5823,19 +6088,22 @@
             "target": "bordspel",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "schaakbord",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5888,12 +6156,14 @@
             "target": "drank",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -5946,19 +6216,22 @@
             "target": "boom",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "has_part",
             "target": "appel",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6011,12 +6284,14 @@
             "target": "lichaam",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6076,12 +6351,14 @@
             "target": "persoon",
             "confidence": 0.5,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "werk#2",
@@ -6104,12 +6381,14 @@
             "target": "kunstvorm",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6169,12 +6448,14 @@
             "target": "apparaat",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "schaal#2",
@@ -6197,12 +6478,14 @@
             "target": "apparaat",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "schaal#3",
@@ -6225,12 +6508,14 @@
             "target": "muziek",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6283,12 +6568,14 @@
             "target": "programmeertaal",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6341,12 +6628,14 @@
             "target": "patroon",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6399,12 +6688,14 @@
             "target": "algoritme",
             "confidence": 0.5,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6457,26 +6748,30 @@
             "target": "vloeistof",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "gas",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "druk",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6529,12 +6824,14 @@
             "target": "levend wezen",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6587,12 +6884,14 @@
             "target": "materietoestand",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6645,12 +6944,14 @@
             "target": "materietoestand",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6703,12 +7004,14 @@
             "target": "gevoel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6761,12 +7064,14 @@
             "target": "speelkaart",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6819,12 +7124,14 @@
             "target": "dier",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6877,12 +7184,14 @@
             "target": "fiets",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6935,12 +7244,14 @@
             "target": "fiets",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -6999,12 +7310,14 @@
             "target": "fiets",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "trap#2",
@@ -7027,12 +7340,14 @@
             "target": "huis",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7085,12 +7400,14 @@
             "target": "fiets",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7149,12 +7466,14 @@
             "target": "fiets",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "ketting#2",
@@ -7177,12 +7496,14 @@
             "target": "lichaam",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7235,12 +7556,14 @@
             "target": "fiets",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7293,12 +7616,14 @@
             "target": "fiets",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7351,12 +7676,14 @@
             "target": "fiets",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7409,12 +7736,14 @@
             "target": "fiets",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7467,12 +7796,14 @@
             "target": "fiets",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7525,12 +7856,14 @@
             "target": "fiets",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7583,12 +7916,14 @@
             "target": "planeet",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7641,19 +7976,22 @@
             "target": "hemellichaam",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "aarde",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7706,19 +8044,22 @@
             "target": "hemellichaam",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "zon",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7771,12 +8112,14 @@
             "target": "wolf",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7829,12 +8172,14 @@
             "target": "hart",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7887,12 +8232,14 @@
             "target": "hart",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -7945,12 +8292,14 @@
             "target": "kaartspel",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8003,26 +8352,30 @@
             "target": "trilling",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "muziek",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "part_of",
             "target": "gitaar",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T10:56:22.005354"
+            "created_at": "2026-07-12T10:56:22.005354",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8090,12 +8443,14 @@
             "target": "lichaam",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8148,12 +8503,14 @@
             "target": "lichaam",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8206,12 +8563,14 @@
             "target": "wolk",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8264,12 +8623,14 @@
             "target": "boek",
             "confidence": 0.5,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8322,12 +8683,14 @@
             "target": "gevoel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8380,12 +8743,14 @@
             "target": "sneeuw",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8438,12 +8803,14 @@
             "target": "boek",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000"
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8496,12 +8863,14 @@
             "target": "computer",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8571,12 +8940,14 @@
             "target": "teken",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-07-08T19:17:58.063114"
+            "created_at": "2026-07-08T19:17:58.063114",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       },
       {
         "sense_id": "rust#2",
@@ -8598,12 +8969,14 @@
             "target": "slaap",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8653,7 +9026,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8703,7 +9077,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8753,7 +9128,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8806,12 +9182,14 @@
             "target": "zoogdier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8861,7 +9239,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8914,12 +9293,14 @@
             "target": "gevoel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -8972,12 +9353,14 @@
             "target": "laptop",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9030,12 +9413,14 @@
             "target": "persoon",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9088,12 +9473,14 @@
             "target": "laptop",
             "confidence": 0.5,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9146,12 +9533,14 @@
             "target": "laptop",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9204,12 +9593,14 @@
             "target": "computer",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9262,12 +9653,14 @@
             "target": "tijd",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9320,19 +9713,22 @@
             "target": "wifi",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "server",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9385,12 +9781,14 @@
             "target": "broer",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9443,19 +9841,22 @@
             "target": "programmeertaal",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "algoritme",
             "confidence": 0.6,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9508,26 +9909,30 @@
             "target": "melk",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "is_a",
             "target": "voedingsmiddel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "snijden",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9580,12 +9985,14 @@
             "target": "gevoel",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9641,7 +10048,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       },
       {
         "sense_id": "mes#2",
@@ -9663,33 +10071,38 @@
             "target": "keukengerei",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "used_for",
             "target": "snijden",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "property_of",
             "target": "scherp",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "snijplank",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9747,7 +10160,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9800,26 +10214,30 @@
             "target": "voedingsmiddel",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "kip",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9872,26 +10290,30 @@
             "target": "ei",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "is_a",
             "target": "vogel",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -9944,12 +10366,14 @@
             "target": "dier",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-11T00:00:00.000000"
+            "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10002,12 +10426,14 @@
             "target": "berg",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-11T20:52:21.434865"
+            "created_at": "2026-07-11T20:52:21.434865",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10087,7 +10513,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10140,12 +10567,14 @@
             "target": "kat",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T21:15:00.000000"
+            "created_at": "2026-07-11T21:15:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10213,12 +10642,14 @@
             "target": "dier",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T21:15:00.000000"
+            "created_at": "2026-07-11T21:15:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10271,26 +10702,30 @@
             "target": "snaar",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T21:15:00.000000"
+            "created_at": "2026-07-11T21:15:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "is_a",
             "target": "instrument",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-11T21:15:00.000000"
+            "created_at": "2026-07-11T21:15:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "part_of",
             "target": "orkest",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T10:59:06.456349"
+            "created_at": "2026-07-12T10:59:06.456349",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10373,12 +10808,14 @@
             "target": "muziek",
             "confidence": 0.7,
             "source": "user",
-            "created_at": "2026-07-11T21:15:00.000000"
+            "created_at": "2026-07-11T21:15:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10431,12 +10868,14 @@
             "target": "gebied",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-11T21:15:00.000000"
+            "created_at": "2026-07-11T21:15:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10504,12 +10943,14 @@
             "target": "plek",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10562,19 +11003,22 @@
             "target": "grote massa ijs",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-11T21:00:25.781450"
+            "created_at": "2026-07-11T21:00:25.781450",
+            "status": "confirmed"
           },
           {
             "type": "is_a",
             "target": "ijsmassa",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-11T21:30:14.653410"
+            "created_at": "2026-07-11T21:30:14.653410",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10657,12 +11101,14 @@
             "target": "ijs",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-11T21:28:56.033821"
+            "created_at": "2026-07-11T21:28:56.033821",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10730,19 +11176,22 @@
             "target": "plek",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T21:00:38.040042"
+            "created_at": "2026-07-11T21:00:38.040042",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "woestijn",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-11T21:20:00.000000"
+            "created_at": "2026-07-11T21:20:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10810,12 +11259,14 @@
             "target": "hemellichaam",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-11T21:00:50.190504"
+            "created_at": "2026-07-11T21:00:50.190504",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10883,12 +11334,14 @@
             "target": "gebied",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -10941,12 +11394,14 @@
             "target": "vaste stof",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-11T21:23:58.115904"
+            "created_at": "2026-07-11T21:23:58.115904",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11029,12 +11484,14 @@
             "target": "materietoestand",
             "confidence": 0.9,
             "source": "user",
-            "created_at": "2026-07-12T00:00:00.000000"
+            "created_at": "2026-07-12T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11084,7 +11541,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11137,12 +11595,14 @@
             "target": "materietoestand",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-11T21:30:26.350069"
+            "created_at": "2026-07-11T21:30:26.350069",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11210,12 +11670,14 @@
             "target": "muziek",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-12T00:00:00.000000"
+            "created_at": "2026-07-12T00:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11268,19 +11730,22 @@
             "target": "huis",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "used_for",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11332,12 +11797,14 @@
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11389,26 +11856,30 @@
             "target": "keukengerei",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "used_for",
             "target": "snijden",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "mes",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11460,33 +11931,38 @@
             "target": "keukengerei",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "used_for",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "related_to",
             "target": "fornuis",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "part_of",
             "target": "keuken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11538,26 +12014,30 @@
             "target": "apparaat",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "part_of",
             "target": "keuken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "causes",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11610,12 +12090,14 @@
             "target": "fornuis",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11668,19 +12150,22 @@
             "target": "stomp",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "property_of",
             "target": "mes",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11732,12 +12217,14 @@
             "target": "scherp",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11789,19 +12276,22 @@
             "target": "hakken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "used_for",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11853,26 +12343,30 @@
             "target": "snijden",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "used_for",
             "target": "koken",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           },
           {
             "type": "used_for",
             "target": "bot",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T18:33:00.000000"
+            "created_at": "2026-07-12T18:33:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11922,12 +12416,14 @@
             "target": "vaartuig",
             "confidence": 0.9,
             "source": "auto_extract",
-            "created_at": "2026-07-19T11:05:12.293071"
+            "created_at": "2026-07-19T11:05:12.293071",
+            "status": "unverified"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -11980,12 +12476,14 @@
             "target": "zeilboot",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-12T20:21:25.000000"
+            "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -12038,12 +12536,14 @@
             "target": "muziekinstrument",
             "confidence": 1.0,
             "source": "user",
-            "created_at": "2026-07-27T21:00:00.000000"
+            "created_at": "2026-07-27T21:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -12104,12 +12604,14 @@
             "target": "programma",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-27T21:00:00.000000"
+            "created_at": "2026-07-27T21:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -12170,12 +12672,14 @@
             "target": "script",
             "confidence": 0.8,
             "source": "user",
-            "created_at": "2026-07-27T21:00:00.000000"
+            "created_at": "2026-07-27T21:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -12222,7 +12726,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12269,7 +12774,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12316,7 +12822,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12363,7 +12870,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12410,7 +12918,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12457,7 +12966,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12504,7 +13014,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12551,7 +13062,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12598,7 +13110,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12645,7 +13158,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12692,7 +13206,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12739,7 +13254,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12786,7 +13302,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12833,7 +13350,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12880,7 +13398,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12927,7 +13446,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -12974,7 +13494,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13021,7 +13542,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13068,7 +13590,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13115,7 +13638,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13162,7 +13686,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13209,7 +13734,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13256,7 +13782,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13303,7 +13830,8 @@
         "relations": [],
         "source": "user",
         "confidence": 1.0,
-        "audit_log": []
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
@@ -13362,7 +13890,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13409,7 +13938,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13456,7 +13986,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13503,7 +14034,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13550,7 +14082,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13597,7 +14130,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13644,7 +14178,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13691,7 +14226,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13738,7 +14274,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13785,7 +14322,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13832,7 +14370,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13879,7 +14418,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13926,7 +14466,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -13973,7 +14514,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14020,7 +14562,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14067,7 +14610,8 @@
         "relations": [],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       },
       {
         "sense_id": "fysica#2",
@@ -14080,12 +14624,14 @@
             "target": "wetenschappelijk",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-08-01T09:01:09.003682"
+            "created_at": "2026-08-01T09:01:09.003682",
+            "status": "unverified"
           }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14145,7 +14691,8 @@
         "relations": [],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14194,7 +14741,8 @@
         "relations": [],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14244,7 +14792,8 @@
         "relations": [],
         "source": "wikipedia",
         "confidence": 0.8,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14291,7 +14840,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14338,7 +14888,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14385,7 +14936,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14432,7 +14984,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14479,7 +15032,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14526,7 +15080,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14573,7 +15128,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14620,7 +15176,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14667,7 +15224,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14714,7 +15272,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14761,7 +15320,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14808,7 +15368,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14855,7 +15416,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14902,7 +15464,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14949,7 +15512,8 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "audit_log": []
+        "audit_log": [],
+        "status": "unverified"
       }
     ],
     "metadata": {
@@ -14983,6 +15547,269 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-05T18:38:30.436154"
+      }
+    ]
+  },
+  "leer": {
+    "senses": [
+      {
+        "sense_id": "leer#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T14:03:38.953655",
+      "updated_at": "2026-08-06T14:03:38.953655",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-06T14:03:38.953655",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T14:03:38.953655",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "leer"
+        },
+        "timestamp": "2026-08-06T14:03:38.953655"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "leer#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-06T14:03:38.953655"
+      }
+    ]
+  },
+  "fantasiedierxyz": {
+    "senses": [
+      {
+        "sense_id": "fantasiedierxyz#1",
+        "definition": "een verzonnen dier voor een test",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T14:03:38.984913",
+      "updated_at": "2026-08-06T14:04:08.101794",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-06T14:04:08.101794",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T14:03:38.985902",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-08-06T14:04:08.101794",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "fantasiedierxyz"
+        },
+        "timestamp": "2026-08-06T14:03:38.984913"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "fantasiedierxyz#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-06T14:03:38.985902"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "fantasiedierxyz#1",
+        "old_value": "unknown",
+        "new_value": "een verzonnen dier voor een test",
+        "timestamp": "2026-08-06T14:04:08.101794"
+      }
+    ]
+  },
+  "test": {
+    "senses": [
+      {
+        "sense_id": "test#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T14:03:39.051630",
+      "updated_at": "2026-08-06T14:03:39.051630",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-06T14:03:39.051630",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T14:03:39.051630",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "test"
+        },
+        "timestamp": "2026-08-06T14:03:39.051630"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "test#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-06T14:03:39.051630"
+      }
+    ]
+  },
+  "narwal": {
+    "senses": [
+      {
+        "sense_id": "narwal#1",
+        "definition": "De narwal is een arctische tandwalvis die behoort tot de familie van de grondeldolfijnen (Monodontidae). De wetenschappelijke naam van de soort werd in 1758 gepubliceerd door Carl Linnaeus in de tiende editie van Systema naturae.",
+        "pos": "noun",
+        "examples": [
+          "De bijnaam van de narwal is eenhoorn van de zee."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "arctische",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "unverified",
+            "created_at": "2026-08-06T14:15:10.401940"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T14:15:10.402950",
+      "updated_at": "2026-08-06T14:15:10.403952",
+      "sources": [
+        "wikipedia"
+      ],
+      "last_used_at": "2026-08-06T14:15:10.403952",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T14:15:10.403952",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "narwal"
+        },
+        "timestamp": "2026-08-06T14:15:10.402950"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "wikipedia",
+        "sense_id": "narwal#1",
+        "old_value": null,
+        "new_value": "De narwal is een arctische tandwalvis die behoort tot de familie van de grondeldolfijnen (Monodontidae). De wetenschappelijke naam van de soort werd in 1758 gepubliceerd door Carl Linnaeus in de tiende editie van Systema naturae.",
+        "timestamp": "2026-08-06T14:15:10.403952"
+      }
+    ]
+  },
+  "meubel": {
+    "senses": [
+      {
+        "sense_id": "meubel#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-06T14:54:40.165468",
+      "updated_at": "2026-08-06T14:54:40.166470",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-06T14:54:40.166470",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-06T14:54:40.166470",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "meubel"
+        },
+        "timestamp": "2026-08-06T14:54:40.165468"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "meubel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-06T14:54:40.166470"
       }
     ]
   }

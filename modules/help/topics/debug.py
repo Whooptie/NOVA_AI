@@ -11,6 +11,12 @@ def get_help():
   emergence feedback <type> <ok|slecht>  (geef feedback op een insight-type)
   emergence drempel <type>               (toont originele vs. effectieve drempel + stats)
 
+🧩 REASONING — CONTRADICTION CHECKER (punt 2)
+  contradicties                          (forceert nu meteen een volledige check op
+                                           tegenstrijdige is_a-relaties in concepts.json,
+                                           toont ALLE conflicten inclusief al eerder
+                                           gemelde — wijzigt de spam-preventie niet)
+
 🧠 LAYER 0 — MEMORY
   onderhoud                     (forceert een onderhoudsronde: archiveren/comprimeren/VACUUM)
   geheugen stats                (memory-statistieken, gebruikt cache indien < 120 sec oud)
