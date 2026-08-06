@@ -54,6 +54,7 @@ class DebugCommands:
             (lambda t: t.startswith("intent test"), self._intent_test),
             (lambda t: t == "intent retrain", self._intent_retrain),
             (lambda t: t.startswith("wiki debug"), self._wiki_debug),
+            (lambda t: t == "contradicties", self._contradicties),
         ]
 
         event_bus.subscribe("debug_command", self.handle_debug_command)
@@ -167,6 +168,38 @@ class DebugCommands:
         print(f"{C_CYAN}  Originele drempel: {origineel}{C_RESET}")
         print(f"{C_CYAN}  Effectieve drempel: {effectief}{C_RESET}")
         print(f"{C_CYAN}  Feedback-stats: {stats}{C_RESET}")
+
+    # ------------------------------------------------------------------
+    # Punt 2 — Contradiction Checker
+    # ------------------------------------------------------------------
+
+    def _contradicties(self, user_input):
+        """
+        Forceert nu meteen een volledige contradictie-check (i.p.v. te
+        wachten op CONTRADICTION_CHECK_INTERVAL_MINUTEN in main.py's
+        achtergrond_loop()). Toont ALLE huidige conflicten, ook al
+        eerder gemelde -- dit commando wijzigt de spam-preventie-state
+        niet (dat gebeurt alleen via de echte achtergrondcheck).
+        """
+        checker = self.loader.loaded_modules.get("contradiction_checker")
+        if not checker:
+            print(f"{C_RED}contradiction_checker-module niet gevonden.{C_RESET}")
+            return
+
+        conflicten = checker.alle_contradicties_nu()
+        if not conflicten:
+            print(f"{C_CYAN}Geen tegenstrijdigheden gevonden in de kennisgraaf.{C_RESET}")
+            return
+
+        print(f"{C_CYAN}--- {len(conflicten)} tegenstrijdigheid(en) gevonden ---{C_RESET}")
+        for c in conflicten:
+            woord = c["word"]
+            a, b = c["conflict"][0], c["conflict"][1]
+            sleutel = checker._conflict_sleutel(c)
+            al_gemeld = sleutel in checker._al_gemelde_conflicten
+            status = "al eerder gemeld aan Kevin" if al_gemeld else "nog niet gemeld"
+            print(f"{C_CYAN}  '{woord}': {c['reason']} ({status}){C_RESET}")
+            print(f"{C_CYAN}    Oplossen: weerleg: {woord} is_a {a}   OF   weerleg: {woord} is_a {b}{C_RESET}")
 
     # ------------------------------------------------------------------
     # Layer 0 — Memory

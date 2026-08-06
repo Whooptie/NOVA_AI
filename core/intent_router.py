@@ -303,6 +303,273 @@ class IntentRouter:
         )
 
     # ---------------------------------------------------------
+    # Weerleg-flow (punt 1, verwijderpad concepts.json, 6 augustus 2026)
+    # ---------------------------------------------------------
+    def handle_weerleg(self, text):
+        """
+        Herkent 6 varianten voor het afwijzen/verwijderen van kennis
+        (concepts.json) -- bewust een ANDER werkwoord dan 'vergeet:'
+        (dat is al bezet door kevin_profile.py, voorkeuren van Kevin
+        zelf, een compleet ander systeem). "weerleg" past inhoudelijk
+        beter: het is het tegenovergestelde van teach/onthoud (die een
+        bewering BEVESTIGEN), weerleg ONTKRACHT een bewering.
+
+        Zelfde stijl als handle_teach()/handle_preference() hierboven:
+        vaste prefix, splitsen, rechtstreeks doorsturen naar semantic.
+        Geen patroonherkenning -- expliciet en voorspelbaar, want dit
+        wijzigt bestaande kennis en mag nooit een gok zijn.
+
+        Varianten (concept- en betekenis-vormen MOETEN voor de kale
+        relatie-vorm gecheckt worden -- anders zou "weerleg concept:
+        hond" fout matchen op het generieke "weerleg: <woord> <type>
+        <target>"-patroon):
+            weerleg concept: <woord>
+                -> reject_concept(), ALLE senses ineens tombstoned
+            verwijder definitief concept: <woord>
+                -> hard_delete_concept(), heel het concept-record weg,
+                   enkel mogelijk als alle senses al rejected zijn
+            weerleg betekenis: <woord> <nummer>
+                -> reject_sense(), tombstone
+            verwijder definitief betekenis: <woord> <nummer>
+                -> hard_delete_sense(), enkel mogelijk als die sense
+                   al eerder geweerlegd (rejected) is
+            weerleg: <woord> <relatie_type> <target>
+                -> reject_relation(), tombstone (blijft zichtbaar,
+                   reasoning negeert het voortaan)
+            verwijder definitief: <woord> <relatie_type> <target>
+                -> hard_delete_relation(), enkel mogelijk als die
+                   relatie al eerder geweerlegd (rejected) is
+
+        Voorbeelden:
+            weerleg concept: verzonnenwoord
+            verwijder definitief concept: verzonnenwoord
+            weerleg betekenis: python 2
+            verwijder definitief betekenis: python 2
+            weerleg: hond is_a meubel
+            verwijder definitief: hond is_a meubel
+        """
+        t = text.strip()
+        tl = t.lower()
+
+        if not self.semantic:
+            if tl.startswith("weerleg") or tl.startswith("verwijder definitief"):
+                self.event_bus.publish("chat_response", {
+                    "text": "Ik kan nu geen kennis aanpassen, probeer later opnieuw."
+                })
+                return True
+            return False
+
+        # --- verwijder definitief concept: <woord> ---
+        if tl.startswith("verwijder definitief concept:") or tl.startswith("verwijder definitief concept "):
+            rest = t.split(":", 1)[1].strip() if ":" in t else t[len("verwijder definitief concept "):].strip()
+            return self._verwerk_weerleg_concept(rest, hard=True)
+
+        # --- weerleg concept: <woord> ---
+        if tl.startswith("weerleg concept:") or tl.startswith("weerleg concept "):
+            rest = t.split(":", 1)[1].strip() if ":" in t else t[len("weerleg concept "):].strip()
+            return self._verwerk_weerleg_concept(rest, hard=False)
+
+        # --- verwijder definitief betekenis: <woord> <nummer> ---
+        if tl.startswith("verwijder definitief betekenis:") or tl.startswith("verwijder definitief betekenis "):
+            rest = t.split(":", 1)[1].strip() if ":" in t else t[len("verwijder definitief betekenis "):].strip()
+            return self._verwerk_weerleg_betekenis(rest, hard=True)
+
+        # --- verwijder definitief: <woord> <relatie_type> <target> ---
+        if tl.startswith("verwijder definitief:") or tl.startswith("verwijder definitief "):
+            rest = t.split(":", 1)[1].strip() if ":" in t else t[len("verwijder definitief "):].strip()
+            return self._verwerk_weerleg_relatie(rest, hard=True)
+
+        # --- weerleg betekenis: <woord> <nummer> ---
+        if tl.startswith("weerleg betekenis:") or tl.startswith("weerleg betekenis "):
+            rest = t.split(":", 1)[1].strip() if ":" in t else t[len("weerleg betekenis "):].strip()
+            return self._verwerk_weerleg_betekenis(rest, hard=False)
+
+        # --- weerleg: <woord> <relatie_type> <target> ---
+        if tl.startswith("weerleg:") or tl.startswith("weerleg "):
+            rest = t.split(":", 1)[1].strip() if ":" in t else t[len("weerleg "):].strip()
+            return self._verwerk_weerleg_relatie(rest, hard=False)
+
+        return False
+
+    def _verwerk_weerleg_concept(self, rest, hard):
+        """
+        Verwacht 'rest' als één enkel woord, bv. 'verzonnenwoord'.
+        Werkt op het HELE concept -- alle senses ineens (en daarmee
+        impliciet ook alle relaties eronder, want get_relations()
+        negeert alles onder een rejected sense sowieso al).
+        """
+        woord = rest.strip().lower()
+        if not woord or " " in woord:
+            voorbeeld = "verwijder definitief concept: verzonnenwoord" if hard else "weerleg concept: verzonnenwoord"
+            self.event_bus.publish("chat_response", {
+                "text": f"Gebruik: {voorbeeld}"
+            })
+            return True
+
+        if not self.semantic.get_senses(woord):
+            self.event_bus.publish("chat_response", {
+                "text": f"Ik ken '{woord}' niet."
+            })
+            return True
+
+        if hard:
+            gelukt = self.semantic.hard_delete_concept(woord)
+            if gelukt:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Verwijderd: '{woord}' bestaat niet meer in mijn kennis."
+                })
+            else:
+                self.event_bus.publish("chat_response", {
+                    "text": (
+                        f"Ik kon '{woord}' niet definitief verwijderen -- "
+                        "weerleg eerst alle betekenissen met 'weerleg concept: ...' voor je het definitief verwijdert."
+                    )
+                })
+        else:
+            aantal = self.semantic.reject_concept(woord)
+            if aantal:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Genoteerd, ik reken niets meer van '{woord}' mee ({aantal} betekenis{'sen' if aantal != 1 else ''} geweerlegd)."
+                })
+            else:
+                self.event_bus.publish("chat_response", {
+                    "text": f"'{woord}' was al volledig geweerlegd, er was niets meer aan te passen."
+                })
+        return True
+
+    def _verwerk_weerleg_relatie(self, rest, hard):
+        """
+        Verwacht 'rest' in de vorm '<woord> <relatie_type> <target>',
+        bv. 'hond is_a meubel'. Zoekt zelf de juiste sense_id op (de
+        sense met de hoogste confidence die deze relatie draagt) --
+        Kevin hoeft geen sense_id te kennen, enkel het woord.
+        """
+        delen = rest.split(maxsplit=2)
+        if len(delen) != 3:
+            voorbeeld = "verwijder definitief: hond is_a meubel" if hard else "weerleg: hond is_a meubel"
+            self.event_bus.publish("chat_response", {
+                "text": f"Gebruik: {voorbeeld}"
+            })
+            return True
+
+        woord, relatie_type, target = delen
+        woord = woord.lower().strip()
+        target = target.lower().strip()
+
+        senses = self.semantic.get_senses(woord)
+        if not senses:
+            self.event_bus.publish("chat_response", {
+                "text": f"Ik ken '{woord}' niet."
+            })
+            return True
+
+        # Zoek de sense die deze specifieke relatie draagt. Bij
+        # meerdere kandidaten (zelfde relatie op 2+ senses, zeldzaam)
+        # wordt gewoon de eerste gevonden gebruikt -- een edge case die
+        # in de praktijk bijna nooit voorkomt gezien add_relation()'s
+        # eigen duplicate-check al per sense werkt.
+        gevonden_sense_id = None
+        for s in senses:
+            for rel in s.get("relations", []):
+                if rel.get("type") == relatie_type and rel.get("target") == target:
+                    gevonden_sense_id = s.get("sense_id")
+                    break
+            if gevonden_sense_id:
+                break
+
+        if not gevonden_sense_id:
+            self.event_bus.publish("chat_response", {
+                "text": f"Ik ken de relatie '{woord} {relatie_type} {target}' niet."
+            })
+            return True
+
+        if hard:
+            gelukt = self.semantic.hard_delete_relation(woord, gevonden_sense_id, relatie_type, target)
+            if gelukt:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Verwijderd: '{woord} {relatie_type} {target}' bestaat niet meer."
+                })
+            else:
+                self.event_bus.publish("chat_response", {
+                    "text": (
+                        f"Ik kon '{woord} {relatie_type} {target}' niet definitief verwijderen -- "
+                        "weerleg deze relatie eerst met 'weerleg: ...' voor je hem definitief verwijdert."
+                    )
+                })
+        else:
+            resultaat = self.semantic.reject_relation(woord, gevonden_sense_id, relatie_type, target)
+            if resultaat:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Genoteerd, ik reken '{woord} {relatie_type} {target}' niet meer mee."
+                })
+            else:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Ik kon '{woord} {relatie_type} {target}' niet weerleggen."
+                })
+        return True
+
+    def _verwerk_weerleg_betekenis(self, rest, hard):
+        """
+        Verwacht 'rest' in de vorm '<woord> <nummer>', bv. 'python 2'.
+        Nummer verwijst naar de positie in get_senses() (1-indexed),
+        zelfde volgorde als concept_overview.py en
+        handle_sense_voorkeur() al tonen -- Kevin ziet dat nummer dus
+        al ergens in een eerder antwoord staan.
+        """
+        delen = rest.rsplit(maxsplit=1)
+        if len(delen) != 2 or not delen[1].isdigit():
+            voorbeeld = "verwijder definitief betekenis: python 2" if hard else "weerleg betekenis: python 2"
+            self.event_bus.publish("chat_response", {
+                "text": f"Gebruik: {voorbeeld}"
+            })
+            return True
+
+        woord, nummer_str = delen
+        woord = woord.lower().strip()
+        nummer = int(nummer_str)
+
+        senses = self.semantic.get_senses(woord)
+        if not senses:
+            self.event_bus.publish("chat_response", {
+                "text": f"Ik ken '{woord}' niet."
+            })
+            return True
+
+        idx = nummer - 1
+        if not (0 <= idx < len(senses)):
+            self.event_bus.publish("chat_response", {
+                "text": f"Dat nummer kende ik niet voor '{woord}'."
+            })
+            return True
+
+        sense_id = senses[idx].get("sense_id")
+
+        if hard:
+            gelukt = self.semantic.hard_delete_sense(woord, sense_id)
+            if gelukt:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Verwijderd: betekenis {nummer} van '{woord}' bestaat niet meer."
+                })
+            else:
+                self.event_bus.publish("chat_response", {
+                    "text": (
+                        f"Ik kon betekenis {nummer} van '{woord}' niet definitief verwijderen -- "
+                        "weerleg deze betekenis eerst met 'weerleg betekenis: ...' voor je hem definitief verwijdert."
+                    )
+                })
+        else:
+            resultaat = self.semantic.reject_sense(woord, sense_id)
+            if resultaat:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Genoteerd, ik reken betekenis {nummer} van '{woord}' niet meer mee."
+                })
+            else:
+                self.event_bus.publish("chat_response", {
+                    "text": f"Ik kon betekenis {nummer} van '{woord}' niet weerleggen."
+                })
+        return True
+
+    # ---------------------------------------------------------
     # Sense-voorkeur commando (Bug #10-fix, stap 7)
     # ---------------------------------------------------------
     def handle_sense_voorkeur(self, text):
@@ -2853,6 +3120,14 @@ class IntentRouter:
 
         # 1B Example
         if self.handle_example(text):
+            return
+
+        # 1C Weerleg (punt 1, verwijderpad concepts.json, 6 augustus
+        # 2026) -- MOET voor handle_preference() gecontroleerd worden
+        # uit voorzorg (geen prefix-overlap met 'onthoud:'/'vergeet:',
+        # maar zelfde volgorde-principe: expliciete kennis-commando's
+        # gaan voor de generieke fallback-routing).
+        if self.handle_weerleg(text):
             return
 
         # 2A Sense-voorkeur commando (Bug #10-fix, stap 7) -- MOET voor

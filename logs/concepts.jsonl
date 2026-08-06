@@ -199,3 +199,11 @@
 {"timestamp": "2026-08-05T18:38:30.360951", "event_type": "concept_created", "word": "drie", "source": "system", "new_value": {"word": "drie"}}
 {"timestamp": "2026-08-05T18:38:30.409161", "event_type": "concept_created", "word": "plus", "source": "system", "new_value": {"word": "plus"}}
 {"timestamp": "2026-08-05T18:38:30.436154", "event_type": "concept_created", "word": "vijf", "source": "system", "new_value": {"word": "vijf"}}
+{"timestamp": "2026-08-06T14:03:38.953655", "event_type": "concept_created", "word": "leer", "source": "system", "new_value": {"word": "leer"}}
+{"timestamp": "2026-08-06T14:03:38.984913", "event_type": "concept_created", "word": "fantasiedierxyz", "source": "system", "new_value": {"word": "fantasiedierxyz"}}
+{"timestamp": "2026-08-06T14:03:39.017627", "event_type": "concept_created", "word": "verzonnen", "source": "system", "new_value": {"word": "verzonnen"}}
+{"timestamp": "2026-08-06T14:03:39.051630", "event_type": "concept_created", "word": "test", "source": "system", "new_value": {"word": "test"}}
+{"timestamp": "2026-08-06T14:08:01.341329", "event_type": "concept_created", "word": "narwal", "source": "system", "new_value": {"word": "narwal"}}
+{"timestamp": "2026-08-06T14:15:10.402950", "event_type": "concept_created", "word": "narwal", "source": "system", "new_value": {"word": "narwal"}}
+{"timestamp": "2026-08-06T14:41:21.895557", "event_type": "concept_hard_deleted", "word": "verzonnen", "source": "user", "aantal_senses_verwijderd": 1}
+{"timestamp": "2026-08-06T14:54:40.165468", "event_type": "concept_created", "word": "meubel", "source": "system", "new_value": {"word": "meubel"}}

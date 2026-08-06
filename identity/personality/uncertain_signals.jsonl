@@ -411,3 +411,12 @@
 {"text": "x^2 - 9, 1", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T20:19:04.481215"}
 {"text": "bereken 100 / 4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T20:42:47.626286"}
 {"text": "100/4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-05T20:43:05.007993"}
+{"text": "leer: fantasiedierxyz een verzonnen dier voor een test", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0856, "bron": "model_fallback", "tijdstip": "2026-08-06T16:03:38.909952"}
+{"text": "teach fantasiedierxyz een verzonnen dier voor een test", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0965, "bron": "model_fallback", "tijdstip": "2026-08-06T16:04:08.073783"}
+{"text": "wat vind je van blorpograaf", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "model_fallback", "tijdstip": "2026-08-06T16:04:32.083950"}
+{"text": "verwijder definitief verzonnen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T16:34:25.069567"}
+{"text": "verwijder definitief: verzonnen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T16:34:53.245385"}
+{"text": "verwijder definitief: verzonnen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T16:40:01.053618"}
+{"text": "weerleg concept: verzonnen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T16:41:12.931129"}
+{"text": "verwijder definitief concept: verzonnen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T16:41:21.862557"}
+{"text": "weerleg: hond is_a meubel", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0068, "bron": "model_fallback", "tijdstip": "2026-08-06T16:55:20.926594"}

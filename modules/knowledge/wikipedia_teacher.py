@@ -235,6 +235,12 @@ class WikipediaTeacher:
                         "target": target,
                         "confidence": WIKI_CONFIDENCE,
                         "source": "wikipedia",
+                        # Trust state (punt 3, 6 augustus 2026): automatisch
+                        # uit een Wikipedia-definitie geraden, nooit door
+                        # Kevin bevestigd -> unverified totdat hij het
+                        # bevestigt of afwijst (zie ook semantic.py's
+                        # _auto_extract_is_a(), dezelfde redenering).
+                        "status": "unverified",
                         "created_at": datetime.utcnow().isoformat()
                     })
                     break
@@ -284,6 +290,12 @@ class WikipediaTeacher:
                             if s.get("sense_id") == sense.get("sense_id"):
                                 s["definition"] = definition
                                 s["confidence"] = WIKI_CONFIDENCE
+                                # Trust state (punt 3, 6 augustus 2026): een
+                                # bijgewerkte Wikipedia-definitie blijft
+                                # bewust unverified -- de tekst kan
+                                # gewijzigd zijn, maar Kevin heeft ze nog
+                                # steeds niet zelf bevestigd.
+                                s["status"] = "unverified"
                                 s["relations"] = relations if relations else s.get("relations", [])
                                 s["examples"] = examples if examples else s.get("examples", [])
                                 concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
@@ -324,9 +336,44 @@ class WikipediaTeacher:
                         if sense.get("definition") == definition:
                             sense["source"] = "wikipedia"
                             sense["confidence"] = WIKI_CONFIDENCE
+                            # Trust state (punt 3, 6 augustus 2026): teach()
+                            # hierboven kent deze sense altijd status
+                            # "confirmed" toe (het gaat intern altijd via
+                            # source="user"). Omdat we de bron hier net
+                            # handmatig corrigeren naar "wikipedia", moet
+                            # status mee gecorrigeerd worden naar
+                            # "unverified" -- anders blijft een nooit door
+                            # Kevin geziene Wikipedia-definitie ten onrechte
+                            # als bevestigd geregistreerd staan.
+                            sense["status"] = "unverified"
                             if examples:
                                 sense["examples"] = examples
                             sense_id_voor_relaties = sense.get("sense_id")
+
+                            # Consistentie-fix (6 augustus 2026): teach()
+                            # hierboven schreef metadata.sources en de
+                            # audit_log-entry ("sense_created" of
+                            # "sense_upgrade") nog met source="user",
+                            # want dat wist het nog niet beter op het
+                            # moment van schrijven. Nu we de sense zelf
+                            # net gecorrigeerd hebben naar wikipedia,
+                            # trekken we deze twee sporen recht zodat de
+                            # audit-trail niet ten onrechte suggereert
+                            # dat Kevin dit zelf getypt heeft.
+                            if "user" in concept["metadata"]["sources"] and \
+                               "wikipedia" not in concept["metadata"]["sources"]:
+                                concept["metadata"]["sources"].remove("user")
+                                concept["metadata"]["sources"].append("wikipedia")
+                            elif "wikipedia" not in concept["metadata"]["sources"]:
+                                concept["metadata"]["sources"].append("wikipedia")
+
+                            audit_log = concept.get("audit_log", [])
+                            for entry in reversed(audit_log):
+                                if entry.get("event_type") in ("sense_created", "sense_upgrade") \
+                                   and entry.get("sense_id") == sense.get("sense_id") \
+                                   and entry.get("source") == "user":
+                                    entry["source"] = "wikipedia"
+                                    break
                     self.semantic.store.save()
         except Exception as e:
             return f"Fout bij opslaan van definitie: {e}"
