@@ -729,7 +729,7 @@ class IntentRouter:
         if not woord:
             return False
 
-        dbg(f"{C_GREEN}→ preference (automatisch): '{woord}' = {grof_sentiment}{C_RESET}")
+        dbg(f"{C_BLUE}→ preference (automatisch): '{woord}' = {grof_sentiment}{C_RESET}")
         self.event_bus.publish("intent_preference_detected", {
             "woord": woord,
             "sentiment": grof_sentiment,
@@ -808,16 +808,19 @@ class IntentRouter:
         ]
 
         if any(trig in t for trig in drink_triggers):
+            dbg(f"{C_BLUE}→ preference_query (drinken){C_RESET}")
             tekst = self._antwoord_categorie_vraag(self._DRANK_WOORDEN, "drinkt")
             self.event_bus.publish("layer4_response", {"text": tekst})
             return True
 
         if any(trig in t for trig in eet_triggers):
+            dbg(f"{C_BLUE}→ preference_query (eten){C_RESET}")
             tekst = self._antwoord_categorie_vraag(self._ETEN_WOORDEN, "eet")
             self.event_bus.publish("layer4_response", {"text": tekst})
             return True
 
         if any(trig in t for trig in breed_triggers):
+            dbg(f"{C_BLUE}→ preference_query (volledig profiel){C_RESET}")
             tekst = self._antwoord_volledig_profiel()
             self.event_bus.publish("layer4_response", {"text": tekst})
             return True
@@ -873,6 +876,7 @@ class IntentRouter:
         for p in ["wat zijn synoniemen van ", "wat is een synoniem van ", "synoniemen van "]:
             if t.startswith(p):
                 word = t[len(p):].strip().rstrip("?.")
+                dbg(f"{C_BLUE}→ definition (synoniem): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_synonym", {"word": word})
                 return True
 
@@ -880,6 +884,7 @@ class IntentRouter:
         for p in ["wat is het tegenovergestelde van ", "wat zijn antoniemen van ", "tegendeel van "]:
             if t.startswith(p):
                 word = t[len(p):].strip().rstrip("?.")
+                dbg(f"{C_BLUE}→ definition (antoniem): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_antonym", {"word": word})
                 return True
 
@@ -891,6 +896,7 @@ class IntentRouter:
                     if word.startswith(art):
                         word = word[len(art):].strip()
                         break
+                dbg(f"{C_BLUE}→ definition (used_for): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_used_for", {"word": word})
                 return True
 
@@ -898,6 +904,7 @@ class IntentRouter:
         for p in ["wat veroorzaakt ", "wat zorgt voor "]:
             if t.startswith(p):
                 word = t[len(p):].strip().rstrip("?.")
+                dbg(f"{C_BLUE}→ definition (causes): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_causes", {"word": word})
                 return True
 
@@ -905,6 +912,7 @@ class IntentRouter:
         for p in ["wat zijn eigenschappen van ", "wat zijn kenmerken van "]:
             if t.startswith(p):
                 word = t[len(p):].strip().rstrip("?.")
+                dbg(f"{C_BLUE}→ definition (properties): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_properties", {"word": word})
                 return True
             
@@ -916,6 +924,7 @@ class IntentRouter:
                     if word.startswith(art):
                         word = word[len(art):].strip()
                         break
+                dbg(f"{C_BLUE}→ definition (related_to): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_related_to", {"word": word})
                 return True
 
@@ -927,6 +936,7 @@ class IntentRouter:
                     if word.startswith(art):
                         word = word[len(art):].strip()
                         break
+                dbg(f"{C_BLUE}→ definition (wiki opzoeken): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_wiki", {"word": word})
                 return True
 
@@ -967,6 +977,7 @@ class IntentRouter:
                     woord = getattr(self, "_laatste_definitie_woord", None)
 
                 if not woord:
+                    dbg(f"{C_BLUE}→ definition (andere_betekenis: geen woord bekend){C_RESET}")
                     self.event_bus.publish("chat_response", {
                         "text": "Waarvan wil je andere betekenissen weten? "
                                 "Vraag eerst even 'wat is <woord>'."
@@ -983,6 +994,7 @@ class IntentRouter:
                 # chess_evaluation-tak hierboven: voorkomt dat route()'s
                 # stap 8 hierna ALSNOG het generieke "definitie_<woord>"
                 # emit (zie ook de bijbehorende aanpassing daar).
+                dbg(f"{C_BLUE}→ definition (andere_betekenis): '{woord}'{C_RESET}")
                 self._emit_topic(f"andere_betekenis_{woord}", bron="detect")
                 self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_wiki_andere_betekenis", {"word": woord})
@@ -1013,6 +1025,7 @@ class IntentRouter:
                 # als bij de andere-betekenis-tak hierboven -- "wat weet
                 # je allemaal over X" is een apart, herkenbaar
                 # gedragspatroon, geen gewone definitievraag.
+                dbg(f"{C_BLUE}→ definition (concept_overview): '{woord}'{C_RESET}")
                 self._emit_topic(f"concept_overview_{woord}" if woord else "concept_overview", bron="detect")
                 self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_concept_overview", {"word": woord})
@@ -1100,6 +1113,7 @@ class IntentRouter:
                     )
 
                     if resultaat.get("confidence", 0.0) > 0.2:
+                        dbg(f"{C_BLUE}→ definition (layer4, confidence={resultaat.get('confidence', 0.0):.2f}): '{word}'{C_RESET}")
                         self.event_bus.publish("layer4_response", {
                             "text": resultaat["text"]
                         })
@@ -1107,6 +1121,7 @@ class IntentRouter:
                     # confidence <= 0.2 -> Layer 4 wist het niet, val
                     # door naar de oude route hieronder (met Wikipedia).
 
+                dbg(f"{C_BLUE}→ definition (oude route/wikipedia-fallback): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_definition", {
                     "text": text,
                     "word": word
@@ -1121,7 +1136,7 @@ class IntentRouter:
     def detect_greeting(self, text):
         greetings = {"hallo", "hoi", "hey", "hello", "dag", "yo"}
         if text in greetings:
-            dbg(f"{C_GREEN}→ greeting{C_RESET}")
+            dbg(f"{C_BLUE}→ greeting{C_RESET}")
             self.event_bus.publish("intent_greeting", {"sender": self._get_sender_name()})
             return True
         return False
@@ -1187,7 +1202,7 @@ class IntentRouter:
             "hoe laat"
         ]
         if any(phrase in t for phrase in time_phrases):
-            dbg(f"{C_YELLOW}→ time_query{C_RESET}")
+            dbg(f"{C_BLUE}→ time_query{C_RESET}")
             self.event_bus.publish("intent_time_query", {"text": text})
             return True
 
@@ -1195,7 +1210,7 @@ class IntentRouter:
         time_words = ["tijd", "klok"]
         words_in_text = t.split()
         if any(w in words_in_text for w in time_words):
-            dbg(f"{C_YELLOW}→ time_query{C_RESET}")
+            dbg(f"{C_BLUE}→ time_query{C_RESET}")
             self.event_bus.publish("intent_time_query", {"text": text})
             return True
 
@@ -1218,7 +1233,7 @@ class IntentRouter:
             "wat had ik moeten spelen",
         ]
         if any(p in t for p in eval_vraag_phrases):
-            dbg(f"{C_GREEN}→ chess_evaluation_query{C_RESET}")
+            dbg(f"{C_BLUE}→ chess_evaluation_query{C_RESET}")
             self.event_bus.publish("intent_chess_evaluation_query", {})
             # Deze tak van detect_chess() hoort eigenlijk bij een
             # SPECIFIEKERE categorie dan het generieke "chess" dat de
@@ -1240,7 +1255,7 @@ class IntentRouter:
             "start schaken", "begin schaken", "nieuwe schaakpartij"
         ]
         if t in new_game_phrases or any(t.startswith(p) for p in new_game_phrases):
-            dbg(f"{C_GREEN}→ chess_new{C_RESET}")
+            dbg(f"{C_BLUE}→ chess_new{C_RESET}")
             self.event_bus.publish("intent_chess_new", {})
             return True
 
@@ -1250,13 +1265,13 @@ class IntentRouter:
             "schaakbord", "wat is de stand", "bord"
         ]
         if t in board_phrases:
-            dbg(f"{C_GREEN}→ chess_board{C_RESET}")
+            dbg(f"{C_BLUE}→ chess_board{C_RESET}")
             self.event_bus.publish("intent_chess_board", {})
             return True
 
         # Zet in UCI-notatie: bv "e2e4", "g1f3", "e7e8q" (promotie)
         if re.fullmatch(r"[a-h][1-8][a-h][1-8][qrbn]?", t):
-            dbg(f"{C_GREEN}→ chess_move{C_RESET}")
+            dbg(f"{C_BLUE}→ chess_move{C_RESET}")
             self.event_bus.publish("intent_chess_move", {"move": t})
             return True
 
@@ -1265,44 +1280,44 @@ class IntentRouter:
         heeft_stuk = any(s in t for s in stukken)
         heeft_veld = bool(re.search(r'[a-h][1-8]', t))
         if heeft_stuk and heeft_veld:
-            dbg(f"{C_GREEN}→ chess_move (natuurlijke taal){C_RESET}")
+            dbg(f"{C_BLUE}→ chess_move (natuurlijke taal){C_RESET}")
             self.event_bus.publish("intent_chess_move", {"move": t})
             return True
 
         # Alleen een veld (bv. "e4") — pion wordt aangenomen
         if re.fullmatch(r"[a-h][1-8]", t):
-            dbg(f"{C_GREEN}→ chess_move (veld alleen){C_RESET}")
+            dbg(f"{C_BLUE}→ chess_move (veld alleen){C_RESET}")
             self.event_bus.publish("intent_chess_move", {"move": t})
             return True
 
         # Moeilijkheidsgraad (bv. "moeilijkheid 5", "niveau 15")
         m = re.match(r"(?:moeilijkheid|niveau|level)\s+(\d+)", t)
         if m:
-            dbg(f"{C_GREEN}→ chess_difficulty{C_RESET}")
+            dbg(f"{C_BLUE}→ chess_difficulty{C_RESET}")
             self.event_bus.publish("intent_chess_difficulty", {"niveau": m.group(1)})
             return True
 
         # Denktijd (bv. "denktijd 3", "denktijd 0.5")
         m = re.match(r"denktijd\s+(\d+(?:\.\d+)?)", t)
         if m:
-            dbg(f"{C_GREEN}→ chess_think_time{C_RESET}")
+            dbg(f"{C_BLUE}→ chess_think_time{C_RESET}")
             self.event_bus.publish("intent_chess_think_time", {"seconden": m.group(1)})
             return True
 
         # Statistieken opvragen
         if t in ["statistieken", "stats", "score", "mijn score"]:
-            dbg(f"{C_GREEN}→ chess_stats{C_RESET}")
+            dbg(f"{C_BLUE}→ chess_stats{C_RESET}")
             self.event_bus.publish("intent_chess_stats", {})
             return True
 
         # Rokade
         if t in ["rokeer kort", "korte rokade", "rokade kort"]:
-            dbg(f"{C_GREEN}→ chess_move (rokade kort){C_RESET}")
+            dbg(f"{C_BLUE}→ chess_move (rokade kort){C_RESET}")
             self.event_bus.publish("intent_chess_move", {"move": "O-O"})
             return True
 
         if t in ["rokeer lang", "lange rokade", "rokade lang"]:
-            dbg(f"{C_GREEN}→ chess_move (rokade lang){C_RESET}")
+            dbg(f"{C_BLUE}→ chess_move (rokade lang){C_RESET}")
             self.event_bus.publish("intent_chess_move", {"move": "O-O-O"})
             return True
 
@@ -1357,6 +1372,7 @@ class IntentRouter:
             doel = self._eenheid_naar_code(doel_woord)
             getal = getal.replace(",", ".")
             expr = f"{getal}{bron}.to({doel})"
+            dbg(f"{C_BLUE}→ conversie (patroon A: hoeveel X is Y): {expr}{C_RESET}")
             self.event_bus.publish("intent_math", {"expr": expr})
             return True
 
@@ -1371,6 +1387,7 @@ class IntentRouter:
             doel = self._eenheid_naar_code(doel_woord)
             getal = getal.replace(",", ".")
             expr = f"{getal}{bron}.to({doel})"
+            dbg(f"{C_BLUE}→ conversie (patroon B: X in Y): {expr}{C_RESET}")
             self.event_bus.publish("intent_math", {"expr": expr})
             return True
 
@@ -1389,6 +1406,7 @@ class IntentRouter:
             doel = self._eenheid_naar_code(doel_woord)
             getal = getal.replace(",", ".")
             expr = f"{getal}{bron}.to({doel})"
+            dbg(f"{C_BLUE}→ conversie (patroon C: zet/converteer/reken naar): {expr}{C_RESET}")
             self.event_bus.publish("intent_math", {"expr": expr})
             return True
 
@@ -1399,14 +1417,25 @@ class IntentRouter:
     # ---------------------------------------------------------
     def detect_math(self, text):
         t = text.strip()
-        if any(op in t for op in ["+", "-", "*", "/", "^"]):
+        import re
+        heeft_rekenkundig_streepje = False
+        for m in re.finditer(r'-', t):
+            voor = t[max(0, m.start() - 3):m.start()]
+            na = t[m.start() + 1:m.start() + 4]
+            if re.search(r'\d', voor) and re.search(r'\d', na):
+                heeft_rekenkundig_streepje = True
+                break
+
+        if heeft_rekenkundig_streepje or any(op in t for op in ["+", "*", "/", "^"]):
+            dbg(f"{C_BLUE}→ math (operator){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
             return True
-        import re
         if re.search(r'\d\s*[x×]\s*\d', t):
+            dbg(f"{C_BLUE}→ math (x als vermenigvuldiging){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
             return True
         if re.fullmatch(r"\d+(\.\d+)?\s*°[CF]", t):
+            dbg(f"{C_BLUE}→ math (temperatuur){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
@@ -1415,6 +1444,7 @@ class IntentRouter:
         # herkend als math-intent. Het patroon ".to(" is heel specifiek
         # voor conversie-syntax en komt niet voor in gewone zinnen.
         if re.search(r'\.to\(', t):
+            dbg(f"{C_BLUE}→ math (.to conversie){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
@@ -1425,6 +1455,7 @@ class IntentRouter:
         # dubbelzinnigheid-check een duidelijke foutmelding i.p.v. dat
         # de zin in de fallback verdwijnt.
         if re.fullmatch(r"\d+(\.\d+)?\s*[A-Za-zµ]+", t):
+            dbg(f"{C_BLUE}→ math (kale eenheid){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
@@ -1526,8 +1557,8 @@ class IntentRouter:
             "som_reeks", "meetkundige_reeks", "kans_dobbelsteen", "kans_kaart",
         ]
         if any(re.search(rf"\b{k}\b", t) for k in math_keywords):
+            dbg(f"{C_BLUE}→ math (functienaam-keyword){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
-            return True
 
         # "wortel", "bereken", "afgeleide", "integraal", "limiet", "dv",
         # "gemiddelde", "modus", "regressie", "correlatie", "binomiaal",
@@ -1536,6 +1567,7 @@ class IntentRouter:
         # een openingshaakje) — zie toelichting hierboven waarom deze
         # niet in de brede math_keywords-lijst staan.
         if re.search(r'\b(wortel|bereken|afgeleide|integraal|limiet|dv|gemiddelde|modus|regressie|correlatie|binomiaal|normaal|kracht|arbeid|breuk|sigma)\s*\(', t):
+            dbg(f"{C_BLUE}→ math (functienaam met haakje){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
@@ -1543,8 +1575,19 @@ class IntentRouter:
         # "pi" en "e" zijn losse, korte woorden die ook buiten wiskunde-
         # context kunnen voorkomen. Enkel toevoegen als je dit risico
         # aanvaardt.
+        # BUGFIX (2 aug 2026): dit was de ECHTE oorzaak van het
+        # "e-mail"-probleem uit het aandachtspunt over detect_math()'s te
+        # brede triggers — niet de operator-check (die was al gefixt),
+        # maar DEZE regel. Python's \b (woordgrens) telt een koppelteken
+        # als "geen woordteken", dus in "e-mail" ziet \b de "e" vóór het
+        # streepje als een op-zichzelf-staand woord "e" — precies de
+        # wiskundige constante e. We vervangen \b hier door een striktere
+        # eigen check: "e"/"pi" matchen nog steeds los tussen spaties/
+        # leestekens (bv. "wat is e", "3 keer pi"), maar NIET meer als ze
+        # aan een koppelteken vastzitten (dus "e-mail", "up-to-date").
         math_constants = ["pi", "e"]
-        if any(re.search(rf"\b{k}\b", t) for k in math_constants):
+        if any(re.search(rf"(?<![a-zA-Z0-9-]){k}(?![a-zA-Z0-9-])", t) for k in math_constants):
+            dbg(f"{C_BLUE}→ math (constante pi/e){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
@@ -1556,6 +1599,7 @@ class IntentRouter:
         # aan Engelse tekst met "I" of losse letters/afkortingen) — het
         # risico op valse positieven weegt hier niet op tegen het nut.
         if re.search(r'\d\s*i\b', t):
+            dbg(f"{C_BLUE}→ math (complex getal){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
             return True
 
@@ -1570,6 +1614,7 @@ class IntentRouter:
         # 1. "is een X een Y"
         m = re.match(r"is\s+een\s+(\w+)\s+een\s+([\w\s]+)", t)
         if m:
+            dbg(f"{C_BLUE}→ relation_check (patroon 'is een X een Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_relation_check", {
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
@@ -1579,6 +1624,7 @@ class IntentRouter:
         # 2. "X is een Y"
         m = re.match(r"(\w+)\s+is\s+een\s+([\w\s]+)", t)
         if m:
+            dbg(f"{C_BLUE}→ relation_check (patroon 'X is een Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_relation_check", {
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
@@ -1598,6 +1644,7 @@ class IntentRouter:
         # 1. "is een X onderdeel van een Y" / "is een X een onderdeel van Y"
         m = re.match(r"is\s+een\s+(\w+)\s+(?:een\s+)?onderdeel\s+van\s+(?:een\s+)?([\w\s]+)", t)
         if m:
+            dbg(f"{C_BLUE}→ part_of_check (patroon 'is een X onderdeel van Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_part_of_check", {
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
@@ -1607,6 +1654,7 @@ class IntentRouter:
         # 2. "zit een X in een Y"
         m = re.match(r"zit\s+een\s+(\w+)\s+in\s+(?:een\s+)?([\w\s]+)", t)
         if m:
+            dbg(f"{C_BLUE}→ part_of_check (patroon 'zit een X in Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_part_of_check", {
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
@@ -1626,6 +1674,7 @@ class IntentRouter:
         # 1. "welke soorten X ken je" / "welke soorten van X ken je"
         m = re.match(r"welke\s+soorten\s+(?:van\s+)?(\w+)\s+ken\s+je", t)
         if m:
+            dbg(f"{C_BLUE}→ subtypes_query (patroon 'welke soorten X ken je'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_subtypes_query", {
                 "target": m.group(1).strip()
             })
@@ -1634,6 +1683,7 @@ class IntentRouter:
         # 2. "noem soorten van X" / "noem soorten X"
         m = re.match(r"noem\s+soorten\s+(?:van\s+)?(\w+)", t)
         if m:
+            dbg(f"{C_BLUE}→ subtypes_query (patroon 'noem soorten X'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_subtypes_query", {
                 "target": m.group(1).strip()
             })
@@ -1642,6 +1692,7 @@ class IntentRouter:
         # 3. "wat zijn allemaal X" (bv. "wat zijn allemaal dieren")
         m = re.match(r"wat\s+zijn\s+allemaal\s+([\w\s]+)", t)
         if m:
+            dbg(f"{C_BLUE}→ subtypes_query (patroon 'wat zijn allemaal X'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_subtypes_query", {
                 "target": m.group(1).strip()
             })
@@ -1743,6 +1794,7 @@ class IntentRouter:
         for sub_intent, zinnen in identity_patronen.items():
             for zin in zinnen:
                 if zin in t:
+                    dbg(f"{C_BLUE}→ identity_question (sub_intent='{sub_intent}', match='{zin}'){C_RESET}")
                     self.event_bus.publish("intent_identity", {"sub_intent": sub_intent})
                     return True
 
@@ -1804,6 +1856,7 @@ class IntentRouter:
         for topic, zinnen in architectuur_patronen.items():
             for zin in zinnen:
                 if zin in t:
+                    dbg(f"{C_BLUE}→ self_architecture (topic='{topic}', match='{zin}'){C_RESET}")
                     self.event_bus.publish("intent_self_architecture", {"topic": topic})
                     return True
 
@@ -1817,6 +1870,7 @@ class IntentRouter:
 
         # "memory stats"
         if t.lower() == "memory stats":
+            dbg(f"{C_BLUE}→ memory (stats){C_RESET}")
             mem = self.event_bus.modules.get("memory")
             if not mem:
                 self.event_bus.publish("chat_response", {"text": "Memory-module niet gevonden."})
@@ -1835,6 +1889,7 @@ class IntentRouter:
         # "memory search <woord>"
         if t.lower().startswith("memory search "):
             keyword = t[len("memory search "):].strip()
+            dbg(f"{C_BLUE}→ memory (search): '{keyword}'{C_RESET}")
             mem = self.event_bus.modules.get("memory")
             if not mem:
                 self.event_bus.publish("chat_response", {"text": "Memory-module niet gevonden."})
@@ -1853,6 +1908,7 @@ class IntentRouter:
         # "memory similar <woord>"
         if t.lower().startswith("memory similar "):
             woord = t[len("memory similar "):].strip()
+            dbg(f"{C_BLUE}→ memory (similar): '{woord}'{C_RESET}")
             mem = self.event_bus.modules.get("memory")
             if not mem:
                 self.event_bus.publish("chat_response", {"text": "Memory-module niet gevonden."})
@@ -1884,6 +1940,7 @@ class IntentRouter:
             # specifiek onderwerp -- expliciet leegmaken zodat een
             # eerder bewaard topic (bv. "math" van een vorig "help
             # math") niet per ongeluk hergebruikt wordt door route().
+            dbg(f"{C_BLUE}→ help (kaal, geen topic){C_RESET}")
             self._laatste_help_topic = None
             self.event_bus.publish("intent_help", {"topic": ""})
             return True
@@ -1896,6 +1953,7 @@ class IntentRouter:
             # -- route() bouwt hiermee straks een dynamische topic-naam
             # ("help_math" i.p.v. enkel het generieke "help"), zodat
             # Layer 2 per help-onderwerp apart kan tellen.
+            dbg(f"{C_BLUE}→ help (topic='{topic}'){C_RESET}")
             self._laatste_help_topic = topic if topic else None
             self.event_bus.publish("intent_help", {"topic": topic})
             return True
@@ -1968,6 +2026,7 @@ class IntentRouter:
                 # nieuwe UITLEG_TEKSTEN-sleutel krijgt.
                 self._laatste_uitleg_naam = math_uitleg.canonieke_naam(naam)
 
+                dbg(f"{C_BLUE}→ uitleg (prefix='{prefix.strip()}', naam='{naam}' -> canoniek='{self._laatste_uitleg_naam}'){C_RESET}")
                 self.event_bus.publish("layer4_response", {"text": tekst})
                 return True
 
@@ -2181,7 +2240,7 @@ class IntentRouter:
                 # herkennen via dezelfde prefix-check die het al
                 # gebruikt voor topic_detected, zonder aparte logica
                 # per event-soort.
-                dbg(f"{C_MAGENTA}→ activity_started:{activiteit}{C_RESET}")
+                dbg(f"{C_BLUE}→ activity_started:{activiteit}{C_RESET}")
                 self.event_bus.publish(f"activity_started:{activiteit}", {
                     "naam": activiteit,
                     "tijd": self._huidige_tijd_iso()
