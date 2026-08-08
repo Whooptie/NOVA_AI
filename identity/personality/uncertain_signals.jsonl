@@ -440,3 +440,32 @@
 {"text": "verwijder definitief concept: testwoordje", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T21:01:25.128226"}
 {"text": "weerleg concept: testwoordje", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T21:02:09.388634"}
 {"text": "verwijder definitief concept: testwoordje", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-06T21:02:26.399223"}
+{"text": "teach blorkwoord een compleet verzonnen ding", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.094, "bron": "model_fallback", "tijdstip": "2026-08-08T20:00:16.681225"}
+{"text": "weerleg concept: blorkwoord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:01:25.627185"}
+{"text": "teach blorkwoord een compleet verzonnen ding", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.094, "bron": "model_fallback", "tijdstip": "2026-08-08T20:01:50.690569"}
+{"text": "weerleg concept: blorkwoord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:02:14.819890"}
+{"text": "teach blorkwoord een compleet verzonnen ding", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.094, "bron": "model_fallback", "tijdstip": "2026-08-08T20:02:22.331588"}
+{"text": "verwijder definitief concept: blorkwoord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:02:45.985496"}
+{"text": "wiki banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:04:58.828184"}
+{"text": "weerleg concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:05:55.962170"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:06:02.044416"}
+{"text": "verwijder definitief concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:08:48.491277"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:08:55.774685"}
+{"text": "weerleg concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:09:06.931716"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:09:14.535428"}
+{"text": "zijn er nog andere betekenissen van fysica", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-08-08T20:11:20.931025"}
+{"text": "verwijder definitief concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:01.465671"}
+{"text": "weerleg concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:14.126943"}
+{"text": "verwijder definitief concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:17.125907"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:26.003688"}
+{"text": "weerleg concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:37.561043"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:43.912511"}
+{"text": "wat weet je van fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0079, "bron": "model_fallback", "tijdstip": "2026-08-08T20:19:59.497023"}
+{"text": "zijn er nog andere betekenissen van fysica", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-08-08T20:21:36.876902"}
+{"text": "wat weet je over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0213, "bron": "model_fallback", "tijdstip": "2026-08-08T20:24:17.210023"}
+{"text": "/wat weet je allemaal over gitaar", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0148, "bron": "model_fallback", "tijdstip": "2026-08-08T20:30:04.496002"}
+{"text": "wat weet je over gitaar", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0129, "bron": "model_fallback", "tijdstip": "2026-08-08T20:30:15.188777"}
+{"text": "zijn er nog betekenissen van gitaar", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0085, "bron": "model_fallback", "tijdstip": "2026-08-08T20:30:45.178469"}
+{"text": "wat weet je over gitaar", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0129, "bron": "model_fallback", "tijdstip": "2026-08-08T20:31:18.644186"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-08T20:31:53.916804"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-08T20:33:34.641236"}

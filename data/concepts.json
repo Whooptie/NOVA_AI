@@ -10686,112 +10686,6 @@
       }
     ]
   },
-  "gitaar": {
-    "senses": [
-      {
-        "sense_id": "gitaar#1",
-        "definition": "Een gitaar is een snaarinstrument dat bespeeld wordt door met de vingers of een plectrum op de snaren te tokkelen.",
-        "pos": "noun",
-        "examples": [
-          "Hij speelde een liedje op zijn gitaar.",
-          "De gitaar had zes snaren."
-        ],
-        "relations": [
-          {
-            "type": "related_to",
-            "target": "snaar",
-            "confidence": 0.7,
-            "source": "user",
-            "created_at": "2026-07-11T21:15:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "is_a",
-            "target": "instrument",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-11T21:15:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "part_of",
-            "target": "orkest",
-            "confidence": 1.0,
-            "source": "user",
-            "created_at": "2026-07-12T10:59:06.456349",
-            "status": "confirmed"
-          }
-        ],
-        "source": "user",
-        "confidence": 1.0,
-        "audit_log": [],
-        "status": "confirmed"
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-07-11T20:59:32.985684",
-      "updated_at": "2026-07-12T10:59:06.456349",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-07-12T10:59:06.456349",
-      "usage_count": 3,
-      "confidence_history": [
-        {
-          "timestamp": "2026-07-11T20:59:32.986694",
-          "confidence": 0.1
-        },
-        {
-          "timestamp": "2026-07-11T20:59:36.841945",
-          "confidence": 0.1
-        },
-        {
-          "timestamp": "2026-07-12T10:59:06.456349",
-          "confidence": 1.0
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "gitaar"
-        },
-        "timestamp": "2026-07-11T20:59:32.985684"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "gitaar#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-07-11T20:59:32.986694"
-      },
-      {
-        "event_type": "relation_add",
-        "source": "user",
-        "sense_id": "gitaar#1",
-        "relation": {
-          "type": "is_a",
-          "target": "instrument",
-          "confidence": 1.0
-        },
-        "timestamp": "2026-07-11T20:59:36.841945"
-      },
-      {
-        "event_type": "relation_add",
-        "source": "user",
-        "sense_id": "gitaar#1",
-        "relation": {
-          "type": "part_of",
-          "target": "orkest",
-          "confidence": 1.0
-        },
-        "timestamp": "2026-07-12T10:59:06.456349"
-      }
-    ]
-  },
   "instrument": {
     "senses": [
       {
@@ -16059,6 +15953,180 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-06T18:26:22.716733"
+      }
+    ]
+  },
+  "jou": {
+    "senses": [
+      {
+        "sense_id": "jou#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-08T13:07:04.983478",
+      "updated_at": "2026-08-08T13:07:04.984476",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-08T13:07:04.984476",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-08T13:07:04.984476",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "jou"
+        },
+        "timestamp": "2026-08-08T13:07:04.983478"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "jou#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-08T13:07:04.984476"
+      }
+    ]
+  },
+  "gitaar": {
+    "senses": [
+      {
+        "sense_id": "gitaar#1",
+        "definition": "Een gitaar is een snaarinstrument dat wordt bespeeld met de vingers of met een plectrum. Het woord gitaar stamt af van het Perzische \"tar\" dat \"snaar\" betekent.",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "snaarinstrument",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "unverified",
+            "created_at": "2026-08-08T18:14:27.166906"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-08T18:14:27.166906",
+      "updated_at": "2026-08-08T18:32:59.862935",
+      "sources": [
+        "wikipedia"
+      ],
+      "last_used_at": "2026-08-08T18:32:59.862935",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-08T18:14:27.168909",
+          "confidence": 0.8
+        },
+        {
+          "timestamp": "2026-08-08T18:32:59.862935",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gitaar"
+        },
+        "timestamp": "2026-08-08T18:14:27.166906"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "wikipedia",
+        "sense_id": "gitaar#1",
+        "old_value": null,
+        "new_value": "Een gitaar is een snaarinstrument dat wordt bespeeld met de vingers of met een plectrum. Het woord gitaar stamt af van het Perzische \"tar\" dat \"snaar\" betekent.",
+        "timestamp": "2026-08-08T18:14:27.168909"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "gitaar#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-08-08T18:14:37.594689"
+      },
+      {
+        "event_type": "sense_reactivated",
+        "source": "user",
+        "sense_id": "gitaar#1",
+        "old_value": "rejected",
+        "new_value": "confirmed",
+        "reden": "Kevin bevestigde expliciet opnieuw",
+        "timestamp": "2026-08-08T18:32:59.862935"
+      }
+    ]
+  },
+  "betekenissen": {
+    "senses": [
+      {
+        "sense_id": "betekenissen#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-08T18:30:45.215956",
+      "updated_at": "2026-08-08T18:30:45.216959",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-08T18:30:45.216959",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-08T18:30:45.216959",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "betekenissen"
+        },
+        "timestamp": "2026-08-08T18:30:45.215956"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "betekenissen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-08T18:30:45.216959"
       }
     ]
   }

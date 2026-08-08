@@ -50,20 +50,36 @@ RESET = "\033[0m"
 # Kleiner getal = sneller. Pas dit gerust aan naar smaak.
 TYPEWRITER_SNELHEID = 0.02
 
+# Bug #30-fix (typewriter/threading race condition, 8 aug 2026):
+# print_nova_typewriter() wordt aangeroepen vanuit on_chat_response(),
+# en on_chat_response() kan door ELKE thread getriggerd worden — de
+# hoofdthread (na Kevin's eigen input) ÉN de achtergrondthread
+# (session_watcher/emergence_engine/weather.py via achtergrond_loop()).
+# Zonder bescherming kunnen twee threads dus TEGELIJK letter-voor-letter
+# naar dezelfde stdout schrijven, wat de tekens door elkaar hustelt bij
+# lange antwoorden. Deze lock zorgt dat een tweede aanroep gewoon netjes
+# wacht tot de eerste volledig klaar is, in plaats van ertussendoor te
+# printen. wachten_op_input blijft apart bestaan — dat beschermt enkel
+# het opnieuw tekenen van de "Jij: "-prompt NA het printen, niet het
+# printen zelf.
+_typewriter_lock = threading.Lock()
+
 def print_nova_typewriter(tekst):
     """
     Print Nova's antwoord met een typewriter-effect: 'Nova: ' verschijnt
     direct in 1 blok, en de rest van de zin komt daarna letter per letter.
+    Thread-safe via _typewriter_lock — zie uitleg hierboven bij Bug #30.
     """
-    # "Nova: " blijft in 1 keer verschijnen — geen vertraging hier
-    print(f"{MAGENTA}Nova: {RESET}", end="", flush=True)
+    with _typewriter_lock:
+        # "Nova: " blijft in 1 keer verschijnen — geen vertraging hier
+        print(f"{MAGENTA}Nova: {RESET}", end="", flush=True)
 
-    # De rest van de tekst letter per letter
-    for letter in tekst:
-        print(f"{MAGENTA}{letter}{RESET}", end="", flush=True)
-        time.sleep(TYPEWRITER_SNELHEID)
+        # De rest van de tekst letter per letter
+        for letter in tekst:
+            print(f"{MAGENTA}{letter}{RESET}", end="", flush=True)
+            time.sleep(TYPEWRITER_SNELHEID)
 
-    print()  # nieuwe regel op het einde, anders plakt de volgende prompt eraan vast
+        print()  # nieuwe regel op het einde, anders plakt de volgende prompt eraan vast
 
 # Houdt bij of de hoofdthread op dit moment op input() staat te wachten.
 # Nodig om te weten of we na een proactief bericht de "Jij: "-prompt

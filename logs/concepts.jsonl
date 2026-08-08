@@ -214,3 +214,11 @@
 {"timestamp": "2026-08-06T18:26:22.715734", "event_type": "concept_created", "word": "memory", "source": "system", "new_value": {"word": "memory"}}
 {"timestamp": "2026-08-06T19:00:26.308237", "event_type": "concept_created", "word": "testwoordje", "source": "system", "new_value": {"word": "testwoordje"}}
 {"timestamp": "2026-08-06T19:02:26.430227", "event_type": "concept_hard_deleted", "word": "testwoordje", "source": "user", "aantal_senses_verwijderd": 1}
+{"timestamp": "2026-08-08T13:07:04.983478", "event_type": "concept_created", "word": "jou", "source": "system", "new_value": {"word": "jou"}}
+{"timestamp": "2026-08-08T18:00:16.829431", "event_type": "concept_created", "word": "blorkwoord", "source": "system", "new_value": {"word": "blorkwoord"}}
+{"timestamp": "2026-08-08T18:02:46.017847", "event_type": "concept_hard_deleted", "word": "blorkwoord", "source": "user", "aantal_senses_verwijderd": 1}
+{"timestamp": "2026-08-08T18:08:48.522410", "event_type": "concept_hard_deleted", "word": "gitaar", "source": "user", "aantal_senses_verwijderd": 2}
+{"timestamp": "2026-08-08T18:08:56.881050", "event_type": "concept_created", "word": "gitaar", "source": "system", "new_value": {"word": "gitaar"}}
+{"timestamp": "2026-08-08T18:14:17.156902", "event_type": "concept_hard_deleted", "word": "gitaar", "source": "user", "aantal_senses_verwijderd": 1}
+{"timestamp": "2026-08-08T18:14:27.166906", "event_type": "concept_created", "word": "gitaar", "source": "system", "new_value": {"word": "gitaar"}}
+{"timestamp": "2026-08-08T18:30:45.215956", "event_type": "concept_created", "word": "betekenissen", "source": "system", "new_value": {"word": "betekenissen"}}

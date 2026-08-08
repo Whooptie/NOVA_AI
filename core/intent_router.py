@@ -969,7 +969,18 @@ class IntentRouter:
             if t == kernzin or t.startswith(kernzin):
                 rest = t[len(kernzin):].strip().rstrip("?.")
                 woord = None
-                for koppel in [" van ", " voor "]:
+                # Bugfix (8 augustus 2026, live ontdekt door Kevin): rest
+                # is hierboven al .strip()'t, dus een eventuele voorloop-
+                # spatie is er al af. De oude check zocht nog op " van "/
+                # " voor " MET voorloop-spatie, wat daardoor NOOIT kon
+                # matchen -- "zijn er nog andere betekenissen van fysica"
+                # gaf dus altijd rest == "van fysica" (geen spatie vooraan),
+                # de koppel-check faalde altijd, en het woord viel stil
+                # terug op _laatste_definitie_woord (mogelijk een ouder,
+                # niet meer relevant woord) i.p.v. het net genoemde woord
+                # zelf te gebruiken. Nu zonder voorloop-spatie gecheckt --
+                # rest begint dan gewoon direct met "van "/"voor ".
+                for koppel in ["van ", "voor "]:
                     if rest.startswith(koppel):
                         woord = rest[len(koppel):].strip()
                         break
@@ -3158,6 +3169,21 @@ class IntentRouter:
         # opgevangen worden. Eigen methode op IntentRouter zelf, geen
         # aparte module dus geen modules.get() nodig.
         if self.verwerk_preference_woord_antwoord(text):
+            return
+
+        # -1F Pending sense-reactivatie (Bug #32-fix, 8 augustus 2026)
+        # -- als Kevin net gevraagd is of hij een eerder AFGEWEZEN
+        # (rejected) sense écht opnieuw wil bevestigen (zie semantic.py,
+        # SemanticConceptsModule.pending_reactivation), moet dat "ja"/
+        # "nee"-antwoord hier afgevangen worden, VOORDAT het generieke
+        # "text in ('ja', 'nee')"-confirm-blok verderop in deze functie
+        # (voor semantic.py's pending_relation) de kans krijgt. Zonder
+        # deze vroege, specifieke check zou een reactivatie-vraag altijd
+        # genegeerd worden zodra er toevallig ook een gewone relatie-
+        # bevestiging openstond -- dezelfde voorrang-redenering als bij
+        # -1C/-1D/-1E hierboven.
+        if self.semantic and self.semantic.pending_reactivation:
+            self.semantic.handle_reactivation_confirm(text)
             return
 
         # -1B Pending sense-voorkeur (Bug #10-fix, stap 7) -- zelfde

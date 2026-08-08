@@ -162,24 +162,28 @@ def test_get_relations_negeert_alles_onder_rejected_sense(engines):
 # het nu is, zodat een toekomstige wijziging bewust gebeurt.
 # ─────────────────────────────────────────────────────────────
 
-def test_add_sense_dedup_NEGEERT_rejected_status_BEKENDE_BEVINDING(engines):
+def test_add_sense_dedup_BLOKKEERT_rejected_status_BUG_32_FIX(engines):
     """
-    BEVINDING (beantwoordt de open vraag uit punt 26): add_sense()'s
-    deduplicatie-check (regel 188-209 van semantic.py) vergelijkt
-    ENKEL op `definition`-tekst, zonder te filteren op status. Een
-    rejected sense met exact dezelfde definitie-tekst komt daardoor
-    STILZWIJGEND terug tot leven zodra add_sense() opnieuw met die
-    tekst wordt aangeroepen (bv. via een nieuwe Wikipedia/auto-
-    extract-match) -- de status wordt teruggezet naar "confirmed"
-    (bij source="user") of blijft op zijn minst niet "rejected".
+    Bug #32-fix (8 augustus 2026): deze test verving
+    test_add_sense_dedup_NEGEERT_rejected_status_BEKENDE_BEVINDING,
+    die het OUDE, buggy gedrag vastlegde (een rejected sense kwam
+    stilzwijgend terug als "confirmed" zodra dezelfde definitie-tekst
+    opnieuw werd aangeboden). Dat gedrag is nu gefixt.
 
-    Dit is op dit moment BEVESTIGD GEDRAG, geen giswerk meer. Het is
-    aan Kevin om te beslissen of dit een bug is die gefixt moet
-    worden (dedup zou rejected-rijen moeten overslaan en een NIEUWE
-    sense moeten aanmaken i.p.v. de oude te doen herleven) of bewust
-    gedrag blijft. Deze test legt vast WAT er nu gebeurt, zodat een
-    toekomstige fix hier bewust tegenaan botst i.p.v. onopgemerkt te
-    passeren.
+    add_sense() checkt de dedup-match nu EERST op status == "rejected".
+    Is dat het geval, dan wordt de sense NIET aangepast en komt er in
+    plaats daarvan een herkenbaar "blocked"-signaal terug -- een dict
+    met "blocked": "rejected", niet de sense zelf. De aanroeper
+    (TeachEngine.teach() / SemanticConceptsModule.teach(), zie
+    semantic.py) beslist wat daarmee gebeurt: bij source="user" een
+    expliciete ja/nee-vraag aan Kevin, bij elke andere bron enkel een
+    melding. Dat vraag/meld-gedrag zelf wordt HIER niet getest -- dat
+    zit op SemanticConceptsModule-niveau (event_bus/chat), niet op
+    SenseEngine-niveau, en deze test blijft bewust op SenseEngine
+    zelf zitten, net als de rest van dit bestand (zie moduledocstring
+    bovenaan: SemanticConceptsModule vereist een EventBus en gebruikt
+    altijd het standaard concepts.json-pad, dus wordt hier bewust niet
+    gebruikt).
     """
     store, sense_engine, relation_engine, reasoning_engine = engines
 
@@ -194,20 +198,49 @@ def test_add_sense_dedup_NEGEERT_rejected_status_BEKENDE_BEVINDING(engines):
     # Re-assertie: exact dezelfde definitie-tekst opnieuw aanbieden,
     # zoals een nieuwe Wikipedia-match of hernieuwde chat-input zou
     # kunnen doen.
-    opnieuw = sense_engine.add_sense(
+    resultaat = sense_engine.add_sense(
         "verzonnenwoord", "een compleet verzonnen definitie", source="user"
     )
 
-    # BEVINDING: dit matcht de bestaande (rejected) sense via de
-    # dedup-tak, en source="user" zet status terug naar "confirmed".
-    assert opnieuw["sense_id"] == sense_id, (
-        "Verwacht: dedup matcht dezelfde sense_id (bevestigt dat het "
-        "de rejected rij hergebruikt i.p.v. een nieuwe aan te maken)."
+    assert isinstance(resultaat, dict) and resultaat.get("blocked") == "rejected", (
+        f"Verwacht een blocked-signaal terug, kreeg in plaats daarvan: {resultaat}"
     )
-    assert opnieuw["status"] == "confirmed", (
-        "BEVESTIGD: een rejected sense komt stilzwijgend terug als "
-        "'confirmed' zodra dezelfde definitie-tekst opnieuw met "
-        "source='user' wordt aangeboden. Dit is de kern van de open "
-        "vraag in punt 26 -- nu een vastgelegd feit i.p.v. een "
-        "vermoeden."
+    assert resultaat["sense"]["sense_id"] == sense_id, (
+        "Het blocked-signaal moet verwijzen naar de bestaande rejected sense."
     )
+
+    # KERN VAN DE FIX: de sense zelf mag NIET aangepast zijn.
+    concept_na = store.export_concept("verzonnenwoord")
+    assert concept_na["senses"][0]["status"] == "rejected", (
+        "REGRESSIE: de sense-status is niet meer 'rejected' na de "
+        "re-assertie -- de Bug #32-fix werkt niet (meer)."
+    )
+    assert len(concept_na["senses"]) == 1, (
+        "Er had geen nieuwe, tweede sense aangemaakt mogen worden."
+    )
+
+
+def test_add_sense_dedup_blokkeert_ook_voor_niet_user_bronnen(engines):
+    """
+    Aanvulling op de test hierboven: het blocked-signaal moet ook
+    optreden als een NIET-user-bron (bv. "wikipedia") dezelfde tekst
+    als een rejected sense aanbiedt -- niet enkel bij source="user".
+    Welke actie de aanroeper daarna kiest (vragen vs. enkel melden)
+    verschilt per bron, maar add_sense() zelf blokkeert in BEIDE
+    gevallen even streng.
+    """
+    store, sense_engine, relation_engine, reasoning_engine = engines
+
+    sense = sense_engine.add_sense("testwoord", "een testdefinitie", source="wikipedia", confidence=0.7)
+    sense_id = sense["sense_id"]
+    sense_engine.reject_sense("testwoord", sense_id, reason="test")
+
+    resultaat = sense_engine.add_sense(
+        "testwoord", "een testdefinitie", source="wikipedia", confidence=0.7
+    )
+
+    assert isinstance(resultaat, dict) and resultaat.get("blocked") == "rejected"
+    assert resultaat["attempted_source"] == "wikipedia"
+
+    concept = store.export_concept("testwoord")
+    assert concept["senses"][0]["status"] == "rejected"
