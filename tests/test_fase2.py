@@ -1,27 +1,23 @@
 # test_fase2.py
-"""
-Los testscript voor Fase 2 van Layer 1 (Word Associations Learner).
-
-Dit bestand test learn_from(): of woordfrequenties en co-occurrences
-correct opgeteld worden na een paar nep-interacties.
-
-Er wordt GEEN echte event_bus.py gebruikt — we simuleren een minimale
-nep-EventBus, enkel genoeg om subscribe()/publish() na te bootsen.
-Dit is puur voor testdoeleinden; in de echte Nova gebruikt
-module_loader.py de echte event_bus.py.
-
-Hoe te gebruiken:
-1. Zet dit bestand in dezelfde map als word_associations_learner.py.
-2. Run: python test_fase2.py
-3. Bekijk de output in je terminal.
-"""
+#
+# Echte pytest-test voor Fase 2 van Layer 1 (Word Associations Learner):
+# learn_from() -- of woordfrequenties en co-occurrences correct
+# opgeteld worden na een paar nep-interacties.
+#
+# Gebruikt een minimale NepEventBus (geen echte core/event_bus.py nodig)
+# -- exact dezelfde aanpak als het origineel, nu binnen een fixture.
+#
+# Uitvoeren: pytest tests/test_fase2.py -v
 
 import time
+
+import pytest
+
 from modules.learning.word_associations_learner import WordAssociationsLearner
 
 
 class NepEventBus:
-    """Minimale stand-in voor event_bus.py, enkel voor dit testscript."""
+    """Minimale stand-in voor event_bus.py, enkel voor deze test."""
 
     def __init__(self):
         self.subscribers = {}
@@ -34,67 +30,87 @@ class NepEventBus:
             callback(data)
 
 
-def stuur_interactie(bus, user_input, nova_response):
-    """Simuleert wat memory.py zou publiceren na een echt gesprek."""
+def stuur_interactie(bus, user_input, nova_response=None):
+    """Simuleert wat memory.py zou publiceren na een echt gesprek.
+
+    BELANGRIJK (gecorrigeerd t.o.v. eerdere versie): learn_from() in
+    word_associations_learner.py verwerkt ENKEL interacties met
+    event_type == "chat_message" en leest de tekst uit data["text"]
+    (zie learn_from(), regel 293 en 296 in het echte bestand) -- niet
+    "user:chat"/"user_input" zoals deze test eerder simuleerde. Met
+    de oude, foute structuur werd learn_from() altijd meteen
+    afgebroken op de event_type-check, en leerde er dus NOOIT iets
+    van deze testinteracties (dat bleef verborgen zolang de test ook
+    per ongeluk uit de echte word_associations.json las).
+
+    Nova's eigen antwoord (nova_response) wordt bewust NIET als apart
+    event gesimuleerd: memory.py's echte "chat_message"-event bevat
+    enkel Kevin's tekst, en learn_from() leert bewust niet van Nova's
+    eigen, door Kevin geschreven sjablonen (zie de toelichting in
+    learn_from() zelf). nova_response blijft als parameter staan voor
+    leesbaarheid van de testscenario's, maar wordt niet gebruikt.
+    """
     bus.publish("memory:interaction_added", {
         "timestamp": time.time(),
-        "event_type": "user:chat",
-        "data": {
-            "user_input": user_input,
-            "nova_response": nova_response,
-        }
+        "event_type": "chat_message",
+        "data": {"text": user_input},
     })
 
 
-if __name__ == "__main__":
-    print("=" * 60)
-    print("FASE 2 TEST — Word Associations Learner (co-occurrence)")
-    print("=" * 60)
+@pytest.fixture
+def leerder_met_gesprekken(tmp_path):
+    """Bouwt een WordAssociationsLearner op en voedt hem dezelfde
+    reeks nep-gesprekken als het originele script.
 
+    BELANGRIJK: save_path=tmp_path/... wordt hier bewust altijd
+    meegegeven, ook al testen we in dit bestand geen persistentie.
+    Reden: __init__() roept zelf altijd load_from_disk() aan (zie
+    word_associations_learner.py), en zonder save_path pakt dat
+    automatisch je ECHTE data/word_associations.json erbij -- waardoor
+    deze test stiekem met jouw eigen, groeiende chatgeschiedenis zou
+    mengen in plaats van een schone, voorspelbare test-staat te hebben.
+    """
     bus = NepEventBus()
-    leerder = WordAssociationsLearner(event_bus=bus)
+    leerder = WordAssociationsLearner(
+        event_bus=bus,
+        save_path=str(tmp_path / "test_word_associations.json"),
+    )
 
-    # Een reeks nep-gesprekken, zoals de voorbeelden uit de roadmap
     stuur_interactie(bus, "Python is mijn favoriet", "Leuk! Waarom vind je dat?")
     stuur_interactie(bus, "Python is snel", "Klopt, Python kan zeker snel zijn.")
     stuur_interactie(bus, "Ik hou van snelle talen", "Snelheid is inderdaad fijn.")
     stuur_interactie(bus, "Java is traag", "Dat hoor ik vaker over Java.")
     stuur_interactie(bus, "Rust is ook snel", "Rust staat inderdaad bekend als snel.")
 
-    snapshot = leerder.get_debug_snapshot()
+    return leerder
 
-    print(f"\nAantal unieke woorden geleerd: {snapshot['aantal_woorden']}")
-    print(f"Aantal woorden met minstens 1 associatie: "
-          f"{snapshot['aantal_woorden_met_associaties']}")
 
-    print("\n--- Woordfrequenties (word_stats) ---")
-    for woord, stats in sorted(
-        snapshot["word_stats"].items(),
-        key=lambda x: x[1]["frequency"],
-        reverse=True
-    ):
-        print(f"  {woord!r:15} frequentie={stats['frequency']}")
-
-    print("\n--- Associaties van 'python' ---")
+def test_python_heeft_associaties(leerder_met_gesprekken):
+    """'python' hoort een co-occurrence te hebben met 'snel'."""
+    snapshot = leerder_met_gesprekken.get_debug_snapshot()
     python_assoc = snapshot["associations"].get("python", {})
-    if python_assoc:
-        for woord, info in python_assoc.items():
-            print(f"  python <-> {woord!r:15} co_occurrence={info['co_occurrence']}")
-    else:
-        print("  (geen associaties gevonden voor 'python' — dat zou een probleem zijn!)")
 
-    print("\n--- Associaties van 'snel' ---")
+    assert python_assoc, "Geen associaties gevonden voor 'python' — dat zou een probleem zijn."
+    assert "snel" in python_assoc
+
+
+def test_snel_heeft_associaties(leerder_met_gesprekken):
+    """'snel' hoort een co-occurrence te hebben met 'python'."""
+    snapshot = leerder_met_gesprekken.get_debug_snapshot()
     snel_assoc = snapshot["associations"].get("snel", {})
-    if snel_assoc:
-        for woord, info in snel_assoc.items():
-            print(f"  snel <-> {woord!r:15} co_occurrence={info['co_occurrence']}")
-    else:
-        print("  (geen associaties gevonden voor 'snel' — dat zou een probleem zijn!)")
 
-    print("\n" + "=" * 60)
-    print("Verwacht (ruwweg):")
-    print("- 'python' heeft co-occurrence met 'favoriet' en 'snel'")
-    print("- 'snel' heeft co-occurrence met 'python', 'rust', 'hou', 'taal'")
-    print("- Woorden die vaker voorkomen (bv. 'python', 'snel') hebben")
-    print("  een hogere frequentie dan woorden die maar 1x voorkomen")
-    print("=" * 60)
+    assert snel_assoc, "Geen associaties gevonden voor 'snel' — dat zou een probleem zijn."
+    assert "python" in snel_assoc
+
+
+def test_veelvoorkomende_woorden_hebben_hogere_frequentie(leerder_met_gesprekken):
+    """
+    Woorden die vaker voorkomen ('python', 'snel' -- elk 2x) horen een
+    hogere frequentie te hebben dan woorden die maar 1x voorkomen
+    (bv. 'favoriet').
+    """
+    snapshot = leerder_met_gesprekken.get_debug_snapshot()
+    stats = snapshot["word_stats"]
+
+    assert stats["python"]["frequency"] >= stats["favoriet"]["frequency"]
+    assert stats["snel"]["frequency"] >= stats["favoriet"]["frequency"]

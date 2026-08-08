@@ -1,67 +1,67 @@
 # test_fase1.py
-"""
-Los testscript voor Fase 1 van Layer 1 (Word Associations Learner).
+#
+# Echte pytest-test voor Fase 1 van Layer 1 (Word Associations Learner):
+# de preprocessing-pijplijn (tokenize, stopwoorden filteren, lemmatizen).
+#
+# Geen event_bus nodig (event_bus=None mag, zoals het origineel al deed),
+# geen bestanden, geen echte data -- puur functie-input/output testen.
+#
+# Uitvoeren: pytest tests/test_fase1.py -v
 
-Dit bestand test ENKEL de preprocessing-pijplijn (tokenize, stopwoorden
-filteren, lemmatizen). Er wordt nog niets geleerd of opgeslagen.
-
-Hoe te gebruiken:
-1. Zet dit bestand in dezelfde map als word_associations_learner.py
-   (of pas de import hieronder aan naar het juiste pad).
-2. Run: python test_fase1.py
-3. Bekijk de output in je terminal.
-"""
+import pytest
 
 from modules.learning.word_associations_learner import WordAssociationsLearner
 
 
-def test(zin, verwacht_commentaar=""):
-    print(f"\nInput:  {zin!r}")
-    result = leerder.preprocess(zin)
-    print(f"Output: {result}")
-    if verwacht_commentaar:
-        print(f"       ({verwacht_commentaar})")
+@pytest.fixture
+def leerder():
+    return WordAssociationsLearner(event_bus=None)
 
 
-if __name__ == "__main__":
-    # We geven geen event_bus mee (None), want in Fase 1 hebben we die
-    # nog niet nodig.
-    leerder = WordAssociationsLearner(event_bus=None)
+def test_stopwoorden_worden_gefilterd(leerder):
+    """'is' en 'mijn' zijn stopwoorden en horen niet in het resultaat."""
+    result = leerder.preprocess("Python is mijn favoriet")
+    assert "is" not in result
+    assert "mijn" not in result
+    assert "python" in result
+    assert "favoriet" in result
 
-    print("=" * 60)
-    print("FASE 1 TEST — Word Associations Learner")
-    print("=" * 60)
 
-    test(
-        "Python is mijn favoriet",
-        "verwacht: ['python', 'favoriet'] (stopwoorden 'is'/'mijn' weg)"
-    )
+def test_lemmatize_snelle_naar_snel(leerder):
+    """'snelle' hoort gelemmatized te worden naar 'snel'."""
+    result = leerder.preprocess("Ik hou van snelle talen")
+    assert "ik" not in result
+    assert "van" not in result
+    assert "snel" in result
 
-    test(
-        "Ik hou van snelle talen",
-        "verwacht: iets als ['hou', 'snel', 'taal'] "
-        "('ik'/'van' weg, 'snelle'->'snel', 'talen'->'taal')"
-    )
 
-    test(
-        "Java is traag en dat is jammer",
-        "verwacht: ['java', 'traag', 'jammer'] "
-        "(stopwoorden 'is', 'en', 'dat' weg)"
-    )
+def test_meerdere_stopwoorden_in_1_zin(leerder):
+    """'is', 'en', 'dat' zijn stopwoorden; 'java'/'traag'/'jammer' niet."""
+    result = leerder.preprocess("Java is traag en dat is jammer")
+    assert "java" in result
+    assert "traag" in result
+    assert "jammer" in result
+    for stopwoord in ("is", "en", "dat"):
+        assert stopwoord not in result
 
-    test(
-        "Dat kopje koffie was echt lekker!",
-        "verwacht: iets als ['kop', 'koffie', 'lekker'] "
-        "('kopje'->'kop' via verkleinwoord-regel)"
-    )
 
-    test(
-        "De auto's van de buren staan er weer",
-        "verwacht: ['auto', 'buren'] of gelijkaardig "
-        "(let op: 'buren' is geen simpel meervoud op -en van 'buur', "
-        "dit toont de beperking van de simpele lemmatizer)"
-    )
+def test_verkleinwoord_kopje_naar_kop(leerder):
+    """'kopje' hoort via de verkleinwoord-regel naar 'kop' herleid te worden."""
+    result = leerder.preprocess("Dat kopje koffie was echt lekker!")
+    assert "kop" in result
+    assert "koffie" in result
+    assert "lekker" in result
 
-    print("\n" + "=" * 60)
-    print("Klaar. Controleer of de output logisch aanvoelt.")
-    print("=" * 60)
+
+def test_bekende_beperking_buren(leerder):
+    """
+    'buren' is geen simpel meervoud op -en van 'buur' -- dit bevestigt
+    een BEKENDE beperking van de simpele lemmatizer, geen bug. Deze
+    test legt vast wat het HUIDIGE gedrag is, zodat een toekomstige
+    wijziging aan de lemmatizer bewust gebeurt i.p.v. onopgemerkt.
+    """
+    result = leerder.preprocess("De auto's van de buren staan er weer")
+    assert "auto" in result
+    # Geen assert op 'buur' vs 'buren' hier -- dat is precies het
+    # randgeval dat nog niet correct opgelost is. Zodra dat verbeterd
+    # wordt, kan deze test uitgebreid worden met een echte assert.

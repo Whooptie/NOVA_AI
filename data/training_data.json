@@ -160,7 +160,11 @@
       "label": "weather",
       "bron": "handmatig"
     },
-    {"tekst": "hoe warm wordt het morgen", "label": "weather", "bron": "gecorrigeerd"},
+    {
+      "tekst": "hoe warm wordt het morgen",
+      "label": "weather",
+      "bron": "gecorrigeerd"
+    },
     {
       "tekst": "is het koud buiten",
       "label": "weather",
@@ -261,7 +265,11 @@
       "label": "chess",
       "bron": "handmatig"
     },
-    {"tekst": "laten we een potje spelen", "label": "chess", "bron": "gecorrigeerd"},
+    {
+      "tekst": "laten we een potje spelen",
+      "label": "chess",
+      "bron": "gecorrigeerd"
+    },
     {
       "tekst": "zin om te gaan schaken",
       "label": "chess",
@@ -984,8 +992,8 @@
     }
   ],
   "metadata": {
-    "laatst_getraind": "2026-07-31",
-    "aantal_voorbeelden": 196,
+    "laatst_getraind": "2026-08-08",
+    "aantal_voorbeelden": 198,
     "categorieën": [
       "activity",
       "chess",

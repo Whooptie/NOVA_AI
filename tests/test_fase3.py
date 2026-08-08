@@ -1,13 +1,16 @@
 # test_fase3.py
-"""
-Los testscript voor Fase 3 van Layer 1 (Word Associations Learner).
-
-Test of calculate_pmi() zinvolle sterkte-scores geeft: woorden die
-STEEDS samen voorkomen (python + snel) moeten een hogere score krijgen
-dan woorden die maar TOEVALLIG 1 keer samen opdoken.
-"""
+#
+# Echte pytest-test voor Fase 3 van Layer 1 (Word Associations Learner):
+# of calculate_pmi() zinvolle sterkte-scores geeft. Woorden die STEEDS
+# samen voorkomen (python + snel) horen een hogere score te krijgen
+# dan woorden die maar TOEVALLIG 1 keer samen opdoken (snel + kaas).
+#
+# Uitvoeren: pytest tests/test_fase3.py -v
 
 import time
+
+import pytest
+
 from modules.learning.word_associations_learner import WordAssociationsLearner
 
 
@@ -23,21 +26,27 @@ class NepEventBus:
             callback(data)
 
 
-def stuur_interactie(bus, user_input, nova_response):
+def stuur_interactie(bus, user_input, nova_response=None):
+    """Zie toelichting in test_fase2.py: event_type moet 'chat_message'
+    zijn en de tekst moet in data['text'] staan, anders breekt
+    learn_from() meteen af zonder iets te leren."""
     bus.publish("memory:interaction_added", {
         "timestamp": time.time(),
-        "event_type": "user:chat",
-        "data": {"user_input": user_input, "nova_response": nova_response}
+        "event_type": "chat_message",
+        "data": {"text": user_input},
     })
 
 
-if __name__ == "__main__":
-    print("=" * 60)
-    print("FASE 3 TEST — Word Associations Learner (PMI)")
-    print("=" * 60)
-
+@pytest.fixture
+def leerder_met_gesprekken(tmp_path):
+    """save_path wordt bewust altijd meegegeven -- zie toelichting in
+    test_fase2.py: zonder dit laadt __init__() automatisch je echte
+    data/word_associations.json in via load_from_disk()."""
     bus = NepEventBus()
-    leerder = WordAssociationsLearner(event_bus=bus)
+    leerder = WordAssociationsLearner(
+        event_bus=bus,
+        save_path=str(tmp_path / "test_word_associations.json"),
+    )
 
     # "python" en "snel" komen HERHAALDELIJK samen voor -> sterke band
     for _ in range(8):
@@ -53,31 +62,38 @@ if __name__ == "__main__":
     stuur_interactie(bus, "Het weer is mooi vandaag", "Fijn dat de zon schijnt.")
     stuur_interactie(bus, "Ik ga morgen fietsen", "Veel plezier met fietsen!")
 
-    snapshot = leerder.get_debug_snapshot()
-    python_assoc = snapshot["associations"].get("python", {})
+    return leerder
+
+
+def test_python_snel_sterker_dan_snel_kaas(leerder_met_gesprekken):
+    """
+    'snel' <-> 'python' (8x samen voorgekomen) hoort een hogere
+    pmi-score te hebben dan 'snel' <-> 'kaas' (1x toevallig samen).
+    """
+    snapshot = leerder_met_gesprekken.get_debug_snapshot()
     snel_assoc = snapshot["associations"].get("snel", {})
 
-    print("\n--- Associaties van 'python' (met PMI-score) ---")
-    for woord, info in sorted(
-        python_assoc.items(), key=lambda x: x[1].get("pmi", 0), reverse=True
-    ):
-        print(f"  python <-> {woord!r:12} "
-              f"co_occurrence={info['co_occurrence']:<3} "
-              f"pmi={info.get('pmi', 0):.3f}")
+    assert "python" in snel_assoc, "Geen associatie snel<->python gevonden."
+    assert "kaas" in snel_assoc, "Geen associatie snel<->kaas gevonden."
 
-    print("\n--- Associaties van 'snel' (met PMI-score) ---")
-    for woord, info in sorted(
-        snel_assoc.items(), key=lambda x: x[1].get("pmi", 0), reverse=True
-    ):
-        print(f"  snel <-> {woord!r:12} "
-              f"co_occurrence={info['co_occurrence']:<3} "
-              f"pmi={info.get('pmi', 0):.3f}")
+    pmi_python = snel_assoc["python"].get("pmi", 0)
+    pmi_kaas = snel_assoc["kaas"].get("pmi", 0)
 
-    print("\n" + "=" * 60)
-    print("Verwacht:")
-    print("- 'snel' <-> 'python' heeft een HOGE pmi-score (sterk verband,")
-    print("  komen 8x samen voor)")
-    print("- 'snel' <-> 'kaas' heeft een LAGE pmi-score (komen maar 1x")
-    print("  toevallig samen voor)")
-    print("- Alle scores liggen tussen 0.0 en 1.0")
-    print("=" * 60)
+    assert pmi_python > pmi_kaas, (
+        f"Verwachtte pmi(snel,python)={pmi_python} > pmi(snel,kaas)={pmi_kaas}, "
+        f"maar het sterke, herhaalde verband scoort niet hoger dan het "
+        f"toevallige, eenmalige verband."
+    )
+
+
+def test_alle_pmi_scores_binnen_bereik(leerder_met_gesprekken):
+    """Alle PMI-scores horen tussen 0.0 en 1.0 te liggen (genormaliseerd)."""
+    snapshot = leerder_met_gesprekken.get_debug_snapshot()
+
+    for woord, associaties in snapshot["associations"].items():
+        for ander_woord, info in associaties.items():
+            pmi = info.get("pmi", 0)
+            assert 0.0 <= pmi <= 1.0, (
+                f"pmi({woord},{ander_woord})={pmi} valt buiten het "
+                f"verwachte bereik [0.0, 1.0]"
+            )
