@@ -187,6 +187,28 @@ class SenseEngine:
         # Deduplicatie
         for s in senses:
             if s.get("definition") == definition:
+                # Bug #32-fix (8 augustus 2026): een sense met
+                # status == "rejected" mag NOOIT stilzwijgend terug
+                # "confirmed"/"unverified" worden zodra dezelfde
+                # definitie-tekst opnieuw wordt aangeboden. Vroeger liep
+                # dit hieronder gewoon door alsof er niets aan de hand
+                # was — een eerder afgewezen feit kwam dan ongemerkt
+                # terug. In plaats daarvan geven we hier een duidelijk
+                # herkenbaar "blocked"-signaal terug en raken we de
+                # sense zelf NIET aan. De aanroeper (TeachEngine.teach()
+                # / wikipedia_teacher.py) beslist wat daarmee gebeurt:
+                # bij source == "user" moet Kevin expliciet gevraagd
+                # worden of hij het écht opnieuw wil bevestigen; bij elke
+                # andere bron (auto/auto_extract/wikipedia) moet het
+                # gewoon gemeld worden, nooit automatisch verwerkt.
+                if s.get("status") == "rejected":
+                    return {
+                        "blocked": "rejected",
+                        "sense": s,
+                        "attempted_source": source,
+                        "attempted_confidence": confidence,
+                    }
+
                 old_conf = s.get("confidence", 0)
                 if confidence > old_conf:
                     s["confidence"] = confidence
@@ -252,7 +274,8 @@ class SenseEngine:
         self.store.save()
         return new_sense
 
-    def upgrade_unknown_sense(self, word: str, definition: str) -> dict | None:
+    def upgrade_unknown_sense(self, word: str, definition: str,
+                               source: str = "user", confidence: float = 1.0) -> dict | None:
         word = word.lower().strip()
         concept = self.store.get_concept(word)
         if not concept:
@@ -262,14 +285,19 @@ class SenseEngine:
             if s.get("definition") == "unknown":
                 old_def = s["definition"]
                 s["definition"] = definition
-                s["source"] = "user"
-                s["confidence"] = 1.0
-                # Trust state (punt 3, 6 augustus 2026): deze methode
-                # wordt altijd met source="user" aangeroepen, dus status
-                # is hier altijd confirmed.
-                s["status"] = "confirmed"
+                s["source"] = source
+                s["confidence"] = confidence
+                # Trust state (punt 3, 6 augustus 2026), uitgebreid voor
+                # Bug #32-fix (8 augustus 2026): status volgt nu de
+                # daadwerkelijk meegegeven source i.p.v. altijd "user"
+                # aan te nemen. Dit maakt het mogelijk dat
+                # wikipedia_teacher.py deze methode met source="wikipedia"
+                # aanroept en meteen de juiste status ("unverified")
+                # krijgt, zonder dat een aparte, foutgevoelige
+                # achteraf-correctie nog nodig is.
+                s["status"] = "confirmed" if source == "user" else "unverified"
                 concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
-                self._audit_sense(concept, s, "sense_upgrade", "user",
+                self._audit_sense(concept, s, "sense_upgrade", source,
                                   old_value=old_def, new_value=definition)
                 self.store.touch_concept(word, s.get("confidence"))
                 self.store.save()
@@ -1103,7 +1131,7 @@ class TeachEngine:
 
         return w
 
-    def teach(self, word: str, definition: str) -> dict:
+    def teach(self, word: str, definition: str, source: str = "user") -> dict:
         word = word.lower().strip()
         definition = definition.strip()
 
@@ -1121,7 +1149,7 @@ class TeachEngine:
                 concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
                 self.sense_engine._audit_sense(
                     concept, concept["senses"][0],
-                    event_type="example_add", source="user",
+                    event_type="example_add", source=source,
                     old_value=None, new_value=definition
                 )
                 self.store.touch_concept(word, concept["senses"][0].get("confidence"))
@@ -1129,7 +1157,10 @@ class TeachEngine:
                 return concept["senses"][0]
 
         # 3. unknown upgraden
-        upgraded = self.sense_engine.upgrade_unknown_sense(word, definition)
+        upgraded = self.sense_engine.upgrade_unknown_sense(
+            word, definition, source=source,
+            confidence=1.0 if source == "user" else 0.7
+        )
         if upgraded:
             # Trust state (punt 3, 6 augustus 2026): de sense zelf wordt
             # hierboven al confirmed (Kevin typte deze definitie). De
@@ -1145,10 +1176,23 @@ class TeachEngine:
         sense = self.sense_engine.add_sense(
             word=word,
             definition=definition,
-            source="user",
-            confidence=1.0,
+            source=source,
+            confidence=1.0 if source == "user" else 0.7,
             pos=pos
         )
+
+        # Bug #32-fix (8 augustus 2026): add_sense() geeft nu een
+        # "blocked"-signaal terug i.p.v. een sense, als de definitie
+        # matcht met een eerder AFGEWEZEN (rejected) sense. Dat mag hier
+        # NOOIT stilzwijgend als een normale, geslaagde sense behandeld
+        # worden -- dus geven we het signaal gewoon door aan de
+        # aanroeper (SemanticConceptsModule/wikipedia_teacher.py), die
+        # wél toegang heeft tot de chat om Kevin hierover te informeren
+        # of te vragen. _auto_extract_is_a() wordt hier bewust NIET op
+        # aangeroepen, want er is niets nieuws om relaties uit te halen.
+        if isinstance(sense, dict) and sense.get("blocked") == "rejected":
+            return sense
+
         # Trust state: zie opmerking hierboven -- zelfde redenering.
         self._auto_extract_is_a(word, definition, sense)  # NIEUW
         return sense
@@ -1636,6 +1680,12 @@ class SemanticConceptsModule:
         self.reasoning_engine = ReasoningEngine(self.store, self.relation_engine)  # NIEUW
         self.teach_engine = TeachEngine(self.store, self.sense_engine)
         self.parser = RelationParser()
+        # Bug #32-fix (8 augustus 2026): losse pending-state voor de
+        # "wil je deze eerder afgewezen sense echt heractiveren?"-vraag.
+        # Analoog aan flow_engine.pending_relation hieronder, maar een
+        # eigen, kleinere state -- dit gaat over sense-reactivatie, niet
+        # over een nieuwe relatie tussen twee woorden.
+        self.pending_reactivation = None
         self.flow_engine = RelationFlowEngine(
             self.store, self.sense_engine, self.relation_engine, event_bus
         )
@@ -1646,8 +1696,98 @@ class SemanticConceptsModule:
         event_bus.publish("module_loaded", {"name": "semantic"})
 
     # Publieke API
-    def teach(self, word, definition):
-        return self.teach_engine.teach(word, definition)
+    def _send_chat(self, text: str):
+        self.event_bus.publish("chat_response", {
+            "source": "semantic",
+            "text": text
+        })
+
+    def teach(self, word, definition, source="user"):
+        result = self.teach_engine.teach(word, definition, source=source)
+
+        # Bug #32-fix (8 augustus 2026): TeachEngine.teach() geeft een
+        # "blocked"-signaal terug i.p.v. een sense als de definitie
+        # matcht met een eerder afgewezen (rejected) sense. Hier, op
+        # module-niveau, hebben we wél toegang tot event_bus om Kevin
+        # hierover te informeren -- dat kon TeachEngine zelf niet.
+        if isinstance(result, dict) and result.get("blocked") == "rejected":
+            sense = result["sense"]
+            if source == "user":
+                # Kevin zelf biedt de tekst opnieuw aan -> expliciet
+                # vragen i.p.v. stilzwijgend heractiveren.
+                self.pending_reactivation = {
+                    "word": word.lower().strip(),
+                    "sense_id": sense.get("sense_id"),
+                    "definition": definition,
+                    "source": source,
+                    "confidence": result.get("attempted_confidence", 1.0),
+                }
+                self._send_chat(
+                    f"Ik had '{word}' → \"{sense.get('definition')}\" eerder al "
+                    f"afgewezen. Wil je dit echt opnieuw bevestigen? (ja/nee)"
+                )
+            else:
+                # Een niet-user-bron (wikipedia/auto/auto_extract) mag
+                # dit nooit zelf beslissen -- enkel melden, niets
+                # aanpassen aan de bestaande rejected sense.
+                self._send_chat(
+                    f"Een nieuwe bron ({source}) leverde voor '{word}' dezelfde "
+                    f"betekenis op die je eerder al had afgewezen — genegeerd, "
+                    f"laat het weten als je dit toch wil heroverwegen."
+                )
+            return result
+
+        return result
+
+    def handle_reactivation_confirm(self, user_input: str):
+        """
+        Bug #32-fix (8 augustus 2026): tegenhanger van RelationFlowEngine.
+        handle_confirm() hierboven, maar dan voor de "wil je deze eerder
+        afgewezen sense echt heractiveren?"-vraag. Zelfde ja/nee-patroon,
+        zelfde manier van aanroepen vanuit intent_router.py (via
+        pending_reactivation als "is er iets aan het wachten?"-check,
+        analoog aan hoe flow_engine.pending_relation al gebruikt wordt).
+        """
+        if not self.pending_reactivation:
+            return
+
+        answer = user_input.strip().lower()
+        pending = self.pending_reactivation
+
+        if answer in ("ja", "yes", "y"):
+            concept = self.store.get_concept(pending["word"])
+            if not concept:
+                self._send_chat("Dat woord kon ik niet meer terugvinden.")
+                self.pending_reactivation = None
+                return
+
+            for s in concept["senses"]:
+                if s.get("sense_id") == pending["sense_id"]:
+                    old_status = s.get("status")
+                    s["status"] = "confirmed"
+                    s["confidence"] = pending["confidence"]
+                    concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+                    self.sense_engine._audit_sense(
+                        concept, s, "sense_reactivated", pending["source"],
+                        old_value=old_status, new_value="confirmed",
+                        extra={"reden": "Kevin bevestigde expliciet opnieuw"}
+                    )
+                    self.store.touch_concept(pending["word"], s.get("confidence"))
+                    self.store.save()
+                    self._send_chat(
+                        f"Oké, ik onthoud '{pending['word']}' → "
+                        f"\"{s.get('definition')}\" weer opnieuw."
+                    )
+                    break
+            self.pending_reactivation = None
+            return
+
+        if answer in ("nee", "no", "n"):
+            self._send_chat("Oké, ik laat het zoals het was — afgewezen blijft afgewezen.")
+            self.pending_reactivation = None
+            return
+
+        self._send_chat("Kun je dat beantwoorden met 'ja' of 'nee'?")
 
     def auto_learn(self, word):
         return self.teach_engine.auto_learn(word)

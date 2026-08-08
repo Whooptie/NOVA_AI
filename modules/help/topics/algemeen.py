@@ -21,6 +21,12 @@ def get_help():
   wat is een zwart gat
   wat betekent fotosynthese
   wiki zwart gat
+  zijn er nog andere betekenissen        (na een "wat is X"-vraag: toont eventuele
+                                          andere Wikipedia-betekenissen van datzelfde woord)
+  wat weet je allemaal over fysica       (kort overzicht van ALLES wat Nova al weet
+                                          over een woord — alle betekenissen, relaties
+                                          en voorbeelden; typ 'ja' of een nummer voor
+                                          het volledige detail)
   teach fotosynthese een proces waarbij planten licht omzetten
   example appel Ik eet elke dag een appel.
   synoniemen van blij
@@ -84,7 +90,9 @@ def get_help():
       patronen topic_detected:help
       patronen topic_detected:memory
       patronen topic_detected:math
-      patronen topic_detected:definitie
+      patronen topic_detected:definitie_<woord>
+      patronen topic_detected:andere_betekenis_<woord>
+      patronen topic_detected:concept_overview_<woord>
       patronen topic_detected:relatie
       patronen topic_detected:part_of
       patronen topic_detected:subtypes
