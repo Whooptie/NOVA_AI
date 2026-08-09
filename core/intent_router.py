@@ -956,10 +956,14 @@ class IntentRouter:
         andere_betekenis_kernzinnen = [
             "zijn er nog andere betekenissen",
             "zijn er andere betekenissen",
+            "zijn er nog betekenissen",
+            "zijn er betekenissen",
             "heeft dat nog andere betekenissen",
             "heeft het nog andere betekenissen",
             "andere betekenissen",
+            "andere betekenis",
             "nog andere betekenissen",
+            "nog betekenissen",
             "wat betekent het nog meer",
             "wat betekent dat nog meer",
             "wat betekent het nog",
@@ -1041,6 +1045,22 @@ class IntentRouter:
                 self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_concept_overview", {"word": woord})
                 return True
+
+        # Vergelijking ("wat is het verschil tussen X en Y") — idee #6
+        # uit reasoning_engine_ideeen_roadmap.md. MOET vóór de brede
+        # "wat is "-prefixlijst hieronder staan, anders zou die de zin
+        # al afvangen en er "het verschil tussen gitaar en schaak" van
+        # maken als op te zoeken woord (live ontdekt 8 augustus 2026).
+        # Zelfde voorrang-patroon als de overview_prefixes-tak
+        # hierboven.
+        m = re.match(r"wat\s+is\s+het\s+verschil\s+tussen\s+(\w+)\s+en\s+([\w\s]+)", t)
+        if m:
+            dbg(f"{C_BLUE}→ definition (compare_concepts): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_compare_concepts", {
+                "word_a": m.group(1).strip(),
+                "word_b": m.group(2).strip()
+            })
+            return True
 
         # Definitievragen (crashfix: woord veilig ophalen)
         prefixes = [
@@ -1706,6 +1726,124 @@ class IntentRouter:
             dbg(f"{C_BLUE}→ subtypes_query (patroon 'wat zijn allemaal X'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_subtypes_query", {
                 "target": m.group(1).strip()
+            })
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
+    # Parts-vraag ("welke onderdelen heeft fiets", "waar bestaat
+    # een orkest uit", "wat zit er allemaal in een gitaar") —
+    # omgekeerde part_of-lookup, analoog aan detect_subtypes_query
+    # hierboven. Nieuw idee #1 uit reasoning_engine_ideeen_roadmap.md.
+    # ---------------------------------------------------------
+    def detect_parts_query(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        # 1. "welke onderdelen heeft X" / "welke onderdelen heeft een X"
+        m = re.match(r"welke\s+onderdelen\s+heeft\s+(?:een\s+)?(\w+)", t)
+        if m:
+            dbg(f"{C_BLUE}→ parts_query (patroon 'welke onderdelen heeft X'): '{m.group(1).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_parts_query", {
+                "target": m.group(1).strip()
+            })
+            return True
+
+        # 2. "waar bestaat X uit" / "waaruit bestaat X"
+        m = re.match(r"(?:waar\s+bestaat|waaruit\s+bestaat)\s+(?:een\s+)?(\w+)\s+uit", t)
+        if m:
+            dbg(f"{C_BLUE}→ parts_query (patroon 'waar bestaat X uit'): '{m.group(1).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_parts_query", {
+                "target": m.group(1).strip()
+            })
+            return True
+
+        # 3. "wat zit er allemaal in X" / "wat zit er in een X"
+        m = re.match(r"wat\s+zit\s+er\s+(?:allemaal\s+)?in\s+(?:een\s+)?(\w+)", t)
+        if m:
+            dbg(f"{C_BLUE}→ parts_query (patroon 'wat zit er in X'): '{m.group(1).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_parts_query", {
+                "target": m.group(1).strip()
+            })
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
+    # Related-to-check ("is X gerelateerd aan Y", "heeft X iets te
+    # maken met Y") — analoog aan detect_part_of_check hierboven, maar
+    # voor de related_to-keten. Idee #2 uit
+    # reasoning_engine_ideeen_roadmap.md.
+    # ---------------------------------------------------------
+    def detect_related_to_check(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        # 1. "is X gerelateerd aan Y"
+        m = re.match(r"is\s+(\w+)\s+gerelateerd\s+aan\s+([\w\s]+)", t)
+        if m:
+            dbg(f"{C_BLUE}→ related_to_check (patroon 'is X gerelateerd aan Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_related_to_check", {
+                "source": m.group(1).strip(),
+                "target": m.group(2).strip()
+            })
+            return True
+
+        # 2. "heeft X iets te maken met Y" / "heeft X te maken met Y"
+        m = re.match(r"heeft\s+(\w+)\s+(?:iets\s+)?te\s+maken\s+met\s+([\w\s]+)", t)
+        if m:
+            dbg(f"{C_BLUE}→ related_to_check (patroon 'heeft X te maken met Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_related_to_check", {
+                "source": m.group(1).strip(),
+                "target": m.group(2).strip()
+            })
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
+    # Vergelijking tussen 2 concepten ("vergelijk X met Y") — idee #6
+    # uit reasoning_engine_ideeen_roadmap.md.
+    #
+    # LET OP: "wat is het verschil tussen X en Y" zit NIET hier, maar
+    # in detect_definition() (zie de compare_prefix-tak daar) -- die
+    # zin begint met de brede "wat is "-prefix, die detect_definition()
+    # zelf al afvangt VOORDAT deze functie ooit bereikt wordt (stap 8
+    # in route() komt vóór de intent-tabel met deze functie erin).
+    # Live ontdekt 8 augustus 2026: Kevin's testzin viel op de oude
+    # Wikipedia-fallback i.p.v. op de vergelijking. Zelfde
+    # voorrang-probleem en oplossing als de bestaande
+    # overview_prefixes-tak in detect_definition() (regel ~1030).
+    # ---------------------------------------------------------
+    def detect_compare_concepts(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        # "vergelijk X met Y"
+        m = re.match(r"vergelijk\s+(\w+)\s+met\s+([\w\s]+)", t)
+        if m:
+            dbg(f"{C_BLUE}→ compare_concepts (patroon 'vergelijk X met Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_compare_concepts", {
+                "word_a": m.group(1).strip(),
+                "word_b": m.group(2).strip()
+            })
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
+    # Multi-hop: onderdelen met een eigenschap ("welke onderdelen
+    # van X zijn Y", "welke onderdelen van een X zijn Y") — idee #4
+    # uit reasoning_engine_ideeen_roadmap.md.
+    # ---------------------------------------------------------
+    def detect_parts_with_property(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        # "welke onderdelen van X zijn Y" / "welke onderdelen van een X zijn Y"
+        m = re.match(r"welke\s+onderdelen\s+van\s+(?:een\s+)?(\w+)\s+zijn\s+([\w\s]+)", t)
+        if m:
+            dbg(f"{C_BLUE}→ parts_with_property (patroon 'welke onderdelen van X zijn Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_parts_with_property", {
+                "target": m.group(1).strip(),
+                "property_value": m.group(2).strip()
             })
             return True
 
@@ -2443,6 +2581,9 @@ class IntentRouter:
             ("relatie",          self.detect_relation_check),
             ("part_of",          self.detect_part_of_check),
             ("subtypes",         self.detect_subtypes_query),
+            ("parts",            self.detect_parts_query),
+            ("related_to_check", self.detect_related_to_check),
+            ("compare_concepts", self.detect_compare_concepts),
             ("activity",         self.detect_activity),
             # preference_query VOOR preference (Fase 4 vóór Fase 3):
             # een VRAAG ("wat kan ik drinken?") moet niet per ongeluk
@@ -3275,6 +3416,24 @@ class IntentRouter:
                 # geschikt als toekomstig trainingsvoorbeeld.
                 self._emit_topic(topic_naam, bron="detect")
                 return
+
+        # 7B Multi-hop: onderdelen met een eigenschap (idee #4 uit
+        # reasoning_engine_ideeen_roadmap.md) -- MOET hier, VOOR stap 9
+        # (semantic._detect_relation()) staan: die herkent het woord
+        # " zijn " (met spaties) al als een is_a-uitspraak, en zou
+        # "welke onderdelen van keuken zijn scherp" dus verkeerd
+        # opvangen als "'welke onderdelen van keuken' is een soort van
+        # 'scherp'" -- live ontdekt 8 augustus 2026. Zelfde
+        # voorrang-probleem als bij de "wat is"-prefix/compare_concepts
+        # eerder (zie detect_definition()), maar dit keer kan de fix
+        # niet BINNEN een bestaande detect_-functie, want het
+        # conflicterende patroon zit in een andere module
+        # (semantic.py's RelationParser), niet in intent_router.py
+        # zelf. Vandaar hier als eigen, vroege stap, zelfde patroon als
+        # stap 2C/2D (detect_help/detect_uitleg) hierboven.
+        if self.detect_parts_with_property(text):
+            self._emit_topic("parts_with_property", bron="detect")
+            return
 
         # 8 Definition
         if self.detect_definition(text):

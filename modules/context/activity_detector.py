@@ -87,7 +87,7 @@ class ActivityDetector:
 
         # --- Communicatie ---
         "discord.exe": "communicating",
-        "outlook.exe": "communicating",
+        "outlook.exe": "mailen",
 
         # Voeg hier gerust meer toe, bv.:
         # "photoshop": "editing",

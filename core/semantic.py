@@ -879,6 +879,15 @@ class ReasoningEngine:
         self.store = store
         self.relation_engine = relation_engine
         self.MAX_DEPTH = 6  # maximale stappen bij chaining
+        # related_to is, anders dan is_a/part_of/causes, geen harde
+        # logische relatie maar een losse associatie — een lange keten
+        # verwatert daardoor snel tot een onzinverband (bv. via een
+        # kronkelpad "fiets" aan "democratie" koppelen). Eigen, lagere
+        # diepte dan MAX_DEPTH, bewust NIET gedeeld met de andere drie
+        # ketens hierboven/hieronder. Idee #2 uit
+        # reasoning_engine_ideeen_roadmap.md, gekozen na test op de
+        # echte concepts.json (8 augustus 2026).
+        self.MAX_DEPTH_RELATED = 4
 
     # ---------------------------------------------------------
     # 7.1 Chaining — is A via tussenstappen een B?
@@ -981,17 +990,91 @@ class ReasoningEngine:
         return False, []
 
     # ---------------------------------------------------------
+    # 7.2b related_to_chained — associatieve keten (idee #2 uit
+    # reasoning_engine_ideeen_roadmap.md)
+    # ---------------------------------------------------------
+    def related_to_chained(self, source: str, target: str, _visited: set = None) -> tuple[bool, list]:
+        """
+        Zoekt of source → target bestaat via related_to ketens, en
+        geeft altijd het KORTSTE pad terug (breadth-first search).
+
+        Geeft terug: (gevonden: bool, pad: list)
+        Voorbeeld: potlood → boek → taal
+                   related_to_chained("potlood", "taal") -> True, ["potlood", "boek", "taal"]
+
+        BEWUST breadth-first i.p.v. depth-first zoals is_a_chained/
+        part_of_chained/causes_chained hierboven: related_to-relaties
+        vormen vaker een dicht netwerk met meerdere kruisverbindingen
+        tussen dezelfde twee concepten (bv. zowel "snaar → muziek"
+        direct, als "snaar → trilling → geluid → muziek" via een
+        omweg). Depth-first zou daar toevallig het EERST gevonden pad
+        teruggeven, niet het kortste of meest voor de hand liggende --
+        live vastgesteld op 8 augustus 2026 (Kevin: "is snaar
+        gerelateerd aan muziek" gaf de lange omweg terug, terwijl het
+        directe pad ook bestond). BFS doorzoekt laag per laag (eerst
+        alle buren op 1 stap, dan pas 2 stappen, enz.), waardoor het
+        eerste gevonden pad gegarandeerd het kortste is.
+
+        De _visited-parameter blijft in de signatuur voor
+        compatibiliteit met het aanroeppatroon van de andere chained-
+        methodes, maar wordt hier niet meer gebruikt voor recursie
+        (BFS houdt zijn eigen bezochte-set intern bij) -- enkel als
+        eventuele call-site nog expliciet _visited zou meegeven, wordt
+        die genegeerd zonder fout te geven.
+        """
+        source = source.lower().strip()
+        target = target.lower().strip()
+
+        if source == target:
+            return True, [source]
+
+        # BFS: wachtrij van (woord, pad-tot-hier). Start met source
+        # zelf, pad = [source].
+        wachtrij = [(source, [source])]
+        bezocht = {source}
+
+        while wachtrij:
+            huidig, pad = wachtrij.pop(0)
+
+            if len(pad) - 1 >= self.MAX_DEPTH_RELATED:
+                continue
+
+            direct = self.relation_engine.get_relations(huidig, relation_type="related_to")
+            for buur in direct:
+                if buur in bezocht:
+                    continue
+                nieuw_pad = pad + [buur]
+                if buur == target:
+                    return True, nieuw_pad
+                bezocht.add(buur)
+                wachtrij.append((buur, nieuw_pad))
+
+        return False, []
+
+    # ---------------------------------------------------------
     # 7.3 Contradiction detection
     # ---------------------------------------------------------
     def find_contradictions(self, word: str) -> list[dict]:
         """
-        Zoekt conflicterende is_a relaties voor een woord.
-        Voorbeeld: als 'hond' zowel 'dier' als 'meubel' is → mogelijk conflict.
-        Geeft lijst van conflicten terug.
+        Zoekt conflicterende is_a relaties EN part_of-cirkels voor een
+        woord. Geeft lijst van conflicten terug.
+
+        Twee soorten conflicten:
+        1. is_a: als 'hond' zowel 'dier' als 'meubel' is -> conflict
+           (onverenigbare categorieën, zie INCOMPATIBLE_GROUPS).
+        2. part_of: als 'snaar' onderdeel is van 'gitaar', EN 'gitaar'
+           (via een keten) ook weer onderdeel is van 'snaar' -> een
+           logisch onmogelijke cirkel (idee #3 uit
+           reasoning_engine_ideeen_roadmap.md, gebouwd 8 augustus 2026).
+           BEWUST enkel achteraf-detectie (geen preventieve blokkade
+           bij het toevoegen zelf) -- consistent met hoe is_a-conflicten
+           hierboven ook al werken: contradiction_checker.py's
+           periodieke achtergrondcheck pikt dit vanzelf op, geen
+           wijziging nodig aan RelationEngine.add_relation().
         """
         contradictions = []
 
-        # Bekende incompatibele categorieën
+        # --- 1. is_a: onverenigbare categorieën ---
         INCOMPATIBLE_GROUPS = [
             {"dier", "plant", "meubel", "voertuig", "gebouw", "apparaat", "voedsel"},
             {"levend", "niet-levend"},
@@ -1009,6 +1092,29 @@ class ReasoningEngine:
                     "reason": f"'{word}' kan niet tegelijk {' en '.join(gevonden)} zijn"
                 })
 
+        # --- 2. part_of: cirkels in de keten ---
+        # Voor elke DIRECTE part_of-relatie van 'word' checken we of er
+        # via part_of_chained() een pad TERUG naar 'word' bestaat. Zo
+        # ja, is er een cirkel: word -> ... -> doel -> ... -> word.
+        # Bewust enkel de DIRECTE relaties van 'word' als startpunt
+        # (niet de volledige keten opnieuw doorlopen) -- elke losse
+        # cirkel wordt zo hoe dan ook minstens 1x gevonden, vanuit een
+        # van de woorden die erin zitten.
+        directe_parts = self.relation_engine.get_relations(word, relation_type="part_of")
+        for doel in directe_parts:
+            terug_gevonden, terug_pad = self.part_of_chained(doel, word)
+            if terug_gevonden:
+                volledige_cirkel = [word] + terug_pad
+                contradictions.append({
+                    "word": word,
+                    "conflict": [doel, word],
+                    "reason": (
+                        f"'{word}' is onderdeel van '{doel}', maar via een keten "
+                        f"is '{doel}' ook weer onderdeel van '{word}' "
+                        f"({' → '.join(volledige_cirkel)}) -- dat kan niet allebei"
+                    )
+                })
+
         return contradictions
 
     # ---------------------------------------------------------
@@ -1018,16 +1124,63 @@ class ReasoningEngine:
         """
         Geeft een leesbare uitleg van het redeneerpad.
         Voorbeeld: "hond is een dier, want: hond → dier → levend wezen"
+
+        Bij een negatief antwoord (idee #5 uit
+        reasoning_engine_ideeen_roadmap.md): als 'source' WEL andere
+        is_a-relaties heeft (enkel niet naar 'target'), wordt de
+        eerste/dichtstbijzijnde daarvan meegegeven i.p.v. een kaal
+        "kan niet bewijzen". Bij GEEN enkele is_a-relatie blijft het
+        kale antwoord, want dan is er niets zinvols om bij te tonen.
         """
         found, pad = self.is_a_chained(source, target)
         if not found:
-            return f"Ik kan niet bewijzen dat '{source}' een '{target}' is."
+            return self._geen_bewijs_met_alternatief(
+                source, target, relation_type="is_a",
+                sjabloon="Ik kan niet bewijzen dat '{source}' een '{target}' is, "
+                         "maar ik weet wel dat een {source} een {alt} is."
+            )
 
         if len(pad) == 2:
             return f"Ja, een {source} is een {target}."
 
         stappen = " → ".join(pad)
         return f"Ja, een {source} is een {target}, want: {stappen}."
+
+    # ---------------------------------------------------------
+    # 7.4b Hulpfunctie voor "waarom niet"-uitleg (idee #5)
+    # ---------------------------------------------------------
+    def _geen_bewijs_met_alternatief(self, source: str, target: str,
+                                       relation_type: str, sjabloon: str) -> str:
+        """
+        Gedeelde hulpfunctie voor explain_is_a/explain_part_of/
+        explain_related_to bij een negatief antwoord: kijkt of
+        'source' WEL minstens 1 directe relatie van relation_type
+        heeft (enkel niet naar 'target'), en bouwt dan een uitgebreid
+        antwoord met die eerste/dichtstbijzijnde relatie als
+        alternatief. Bewust de EERSTE (niet alle) — Kevin's keuze,
+        8 augustus 2026: bij meerdere bekende relaties enkel de
+        dichtstbijzijnde tonen, geen volledige opsomming.
+
+        Geeft het kale "geen bewijs"-antwoord terug (zonder {alt}) als
+        'source' helemaal geen relatie van dit type heeft — dan is er
+        niets zinvols om als alternatief te tonen.
+        """
+        source_clean = source.lower().strip()
+        alternatieven = self.relation_engine.get_relations(source_clean, relation_type=relation_type)
+
+        if not alternatieven:
+            # Geen enkele relatie van dit type bekend -- kaal antwoord,
+            # het {alt}-deel van het sjabloon simpelweg weglaten door
+            # het kale basisantwoord terug te geven i.p.v. het sjabloon.
+            if relation_type == "is_a":
+                return f"Ik kan niet bewijzen dat '{source}' een '{target}' is."
+            elif relation_type == "part_of":
+                return f"Ik kan niet bewijzen dat '{source}' onderdeel is van '{target}'."
+            else:
+                return f"Ik zie geen verband tussen '{source}' en '{target}'."
+
+        eerste_alt = alternatieven[0]
+        return sjabloon.format(source=source, target=target, alt=eerste_alt)
 
     def explain_causes(self, source: str, target: str) -> str:
         """
@@ -1049,16 +1202,48 @@ class ReasoningEngine:
         Voorbeeld: "een snaar is onderdeel van een orkest, want:
         snaar → gitaar → orkest"
         Analoog aan explain_is_a, maar voor part_of-ketens.
+
+        Bij een negatief antwoord (idee #5): zie
+        _geen_bewijs_met_alternatief() hierboven.
         """
         found, pad = self.part_of_chained(source, target)
         if not found:
-            return f"Ik kan niet bewijzen dat '{source}' onderdeel is van '{target}'."
+            return self._geen_bewijs_met_alternatief(
+                source, target, relation_type="part_of",
+                sjabloon="Ik kan niet bewijzen dat '{source}' onderdeel is van '{target}', "
+                         "maar ik weet wel dat een {source} onderdeel is van {alt}."
+            )
 
         if len(pad) == 2:
             return f"Ja, een {source} is onderdeel van {target}."
 
         stappen = " → ".join(pad)
         return f"Ja, een {source} is onderdeel van {target}, want: {stappen}."
+
+    def explain_related_to(self, source: str, target: str) -> str:
+        """
+        Geeft een leesbare uitleg van het related_to-redeneerpad.
+        Voorbeeld: "potlood is gerelateerd aan taal, want:
+        potlood → boek → taal"
+        Analoog aan explain_part_of, maar voor related_to-ketens
+        (idee #2 uit reasoning_engine_ideeen_roadmap.md).
+
+        Bij een negatief antwoord (idee #5): zie
+        _geen_bewijs_met_alternatief() hierboven.
+        """
+        found, pad = self.related_to_chained(source, target)
+        if not found:
+            return self._geen_bewijs_met_alternatief(
+                source, target, relation_type="related_to",
+                sjabloon="Ik zie geen verband tussen '{source}' en '{target}', "
+                         "maar ik weet wel dat {source} gerelateerd is aan {alt}."
+            )
+
+        if len(pad) == 2:
+            return f"Ja, {source} is gerelateerd aan {target}."
+
+        stappen = " → ".join(pad)
+        return f"Ja, {source} is gerelateerd aan {target}, via: {stappen}."
 
     # ---------------------------------------------------------
     # 7.5 Omgekeerde is_a-lookup — alle subtypes van een categorie
@@ -1087,6 +1272,147 @@ class ReasoningEngine:
                 subtypes.append(word)
 
         return subtypes
+
+    # ---------------------------------------------------------
+    # 7.6 get_all_parts — alle onderdelen van een geheel
+    # ---------------------------------------------------------
+    def get_all_parts(self, target: str, _visited: set = None) -> list:
+        """
+        Geeft alle concepten terug die (direct of via een part_of-
+        keten) ONDERDEEL zijn van 'target'. In tegenstelling tot
+        get_all_subtypes() hoeven we hier NIET alle concepten te
+        doorlopen: part_of-relaties zijn al opgeslagen vanaf het kleine
+        onderdeel richting het grote geheel (snaar → part_of → gitaar),
+        dus we kunnen vanaf 'target' terugzoeken door alle concepten
+        te vinden die DIRECT part_of 'target' zijn, en van daaruit
+        recursief verder — zonder de hele conceptenlijst te doorlopen.
+
+        Voorbeeld: als "snaar" part_of "gitaar" is, en "gitaar" part_of
+        "orkest", dan geeft get_all_parts("orkest") terug:
+        ["gitaar", "snaar"]
+
+        _visited voorkomt oneindige recursie bij een (foutieve)
+        part_of-cirkel in de data, zelfde patroon als bij
+        part_of_chained().
+        """
+        target = target.lower().strip()
+
+        if _visited is None:
+            _visited = set()
+
+        if target in _visited or len(_visited) >= self.MAX_DEPTH:
+            return []
+
+        _visited.add(target)
+
+        parts = []
+        for word in self.store.concepts.keys():
+            if word == target:
+                continue
+            direct = self.relation_engine.get_relations(word, relation_type="part_of")
+            if target in direct:
+                parts.append(word)
+                parts.extend(self.get_all_parts(word, _visited))
+
+        return parts
+
+    # ---------------------------------------------------------
+    # 7.6b compare_concepts — vergelijking tussen 2 concepten
+    # (idee #6 uit reasoning_engine_ideeen_roadmap.md)
+    # ---------------------------------------------------------
+    def compare_concepts(self, word_a: str, word_b: str) -> dict:
+        """
+        Vergelijkt ALLE relatietypes van 2 concepten (is_a, part_of/
+        has_part, related_to, causes, enz. — alles wat
+        get_all_relations() teruggeeft). Voor elk relatietype waar
+        MINSTENS ÉÉN van de twee iets heeft, wordt opgesplitst in:
+        - gedeeld: staat bij beide (bv. beide "is_a: zoogdier")
+        - enkel_a: staat enkel bij word_a
+        - enkel_b: staat enkel bij word_b
+
+        Relatietypes waar BEIDE leeg zijn, worden volledig weggelaten
+        -- bij de huidige, nog dunne concepts.json (veel concepten
+        hebben maar 1-2 relatietypes ingevuld, sommige zelfs 0) zou
+        anders elk vergelijkingsantwoord vol lege categorieën staan.
+        Gebouwd en dit gedrag gekozen na controle op de echte data,
+        8 augustus 2026.
+
+        Geeft een dict terug:
+        {
+            "word_a": ..., "word_b": ...,
+            "per_type": {
+                "is_a": {"gedeeld": [...], "enkel_a": [...], "enkel_b": [...]},
+                ...
+            }
+        }
+        Puur data — de leesbare tekst wordt opgebouwd door de
+        aanroeper (chat.py's on_compare_concepts()), zelfde
+        scheiding tussen data en presentatie als export_concept()
+        elders in dit bestand.
+        """
+        word_a = word_a.lower().strip()
+        word_b = word_b.lower().strip()
+
+        relaties_a = self.relation_engine.get_all_relations(word_a)
+        relaties_b = self.relation_engine.get_all_relations(word_b)
+
+        alle_types = set(relaties_a.keys()) | set(relaties_b.keys())
+
+        per_type = {}
+        for rel_type in alle_types:
+            targets_a = set(relaties_a.get(rel_type, []))
+            targets_b = set(relaties_b.get(rel_type, []))
+
+            if not targets_a and not targets_b:
+                continue
+
+            per_type[rel_type] = {
+                "gedeeld": sorted(targets_a & targets_b),
+                "enkel_a": sorted(targets_a - targets_b),
+                "enkel_b": sorted(targets_b - targets_a),
+            }
+
+        return {
+            "word_a": word_a,
+            "word_b": word_b,
+            "per_type": per_type,
+        }
+
+    # ---------------------------------------------------------
+    # 7.6c get_all_parts_with_property — multi-hop combinatie
+    # (idee #4 uit reasoning_engine_ideeen_roadmap.md)
+    # ---------------------------------------------------------
+    def get_all_parts_with_property(self, target: str, property_value: str) -> list:
+        """
+        Combineert 2 bestaande queries na elkaar (multi-hop, idee #4):
+        eerst get_all_parts(target) om alle onderdelen te vinden, dan
+        per gevonden onderdeel get_properties() checken of
+        property_value erbij zit.
+
+        Voorbeeld uit de roadmap: "welke onderdelen van een fiets zijn
+        rond?" -> get_all_parts_with_property("fiets", "rond").
+
+        BEWUST dit ene, specifieke patroon (parts x property) i.p.v.
+        een generieke combinatiemachine voor willekeurige query-paren
+        -- kleiner en veiliger om te bouwen en te testen. Staat als
+        volgend punt in nova_state.md om later uit te breiden naar
+        andere combinaties (bv. subtypes x related_to), zie Kevin's
+        keuze 8 augustus 2026.
+
+        Puur symbolisch: hergebruikt enkel get_all_parts() en
+        get_properties(), geen nieuwe opslag- of redeneerlogica.
+        """
+        property_value = property_value.lower().strip()
+
+        alle_parts = self.get_all_parts(target)
+
+        gefilterd = []
+        for onderdeel in alle_parts:
+            eigenschappen = self.relation_engine.get_properties(onderdeel)
+            if property_value in eigenschappen:
+                gefilterd.append(onderdeel)
+
+        return gefilterd
 
 # ---------------------------------------------------------
 # 5. TeachEngine
@@ -1864,7 +2190,19 @@ class SemanticConceptsModule:
     
     def get_all_subtypes(self, target):
         return self.reasoning_engine.get_all_subtypes(target)
-    
+
+    def get_all_parts(self, target):
+        return self.reasoning_engine.get_all_parts(target)
+
+    def get_all_parts_with_property(self, target, property_value):
+        return self.reasoning_engine.get_all_parts_with_property(target, property_value)
+
+    def compare_concepts(self, word_a, word_b):
+        return self.reasoning_engine.compare_concepts(word_a, word_b)
+
+    def explain_related_to(self, source, target):
+        return self.reasoning_engine.explain_related_to(source, target)
+
     def explain_causes(self, source, target):
         return self.reasoning_engine.explain_causes(source, target)
 

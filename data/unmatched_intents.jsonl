@@ -69,3 +69,9 @@
 {"tekst": "hoe is het met jou", "hoogste_gok": "weather", "confidence": 0.2547, "tijdstip": "2026-08-08T15:07:04.981478"}
 {"tekst": "wat weet je van fysica", "hoogste_gok": "identity", "confidence": 0.2261, "tijdstip": "2026-08-08T20:19:59.606206"}
 {"tekst": "zijn er nog betekenissen van gitaar", "hoogste_gok": "identity", "confidence": 0.1373, "tijdstip": "2026-08-08T20:30:45.214956"}
+{"tekst": "zijn er nog betekenissen", "hoogste_gok": "chess", "confidence": 0.1514, "tijdstip": "2026-08-09T11:57:55.718663"}
+{"tekst": "zijn er nog betekenissen", "hoogste_gok": "chess", "confidence": 0.1514, "tijdstip": "2026-08-09T11:58:38.800617"}
+{"tekst": "is hond een meubel", "hoogste_gok": "weather", "confidence": 0.182, "tijdstip": "2026-08-09T18:29:17.610748"}
+{"tekst": "is fiets een dier", "hoogste_gok": "weather", "confidence": 0.182, "tijdstip": "2026-08-09T18:29:40.060154"}
+{"tekst": "is snaar onderdeel van huis", "hoogste_gok": "math", "confidence": 0.2376, "tijdstip": "2026-08-09T18:29:50.941152"}
+{"tekst": "is een [onbekend woord] een dier", "hoogste_gok": "chess", "confidence": 0.1613, "tijdstip": "2026-08-09T18:34:41.540805"}
