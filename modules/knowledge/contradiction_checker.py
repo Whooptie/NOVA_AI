@@ -161,35 +161,73 @@ class ContradictionChecker:
         self.event_bus.publish("layer4_response", {"text": tekst})
 
     # ------------------------------------------------------------------
+    def _is_part_of_cirkel(self, c: dict) -> bool:
+        """
+        Onderscheidt een part_of-cirkelconflict (idee #3 uit
+        reasoning_engine_ideeen_roadmap.md, 8 augustus 2026) van een
+        gewoon is_a-conflict, puur op basis van de vorm van 'conflict':
+        bij een part_of-cirkel komt 'word' zelf altijd terug voor in
+        zijn eigen conflict-lijst (zie find_contradictions() in
+        semantic.py, sectie 2 -- conflict is daar altijd [doel, word]).
+        Bij een is_a-conflict staat 'word' zelf NOOIT in conflict
+        (dat zijn enkel de botsende ouder-categorieën).
+        """
+        return c.get("word") in c.get("conflict", [])
+
+    def _weerleg_type_voor(self, c: dict) -> str:
+        """Geeft 'part_of' of 'is_a' terug, voor de juiste weerleg:-suggestie."""
+        return "part_of" if self._is_part_of_cirkel(c) else "is_a"
+
+    def _bouw_melding_regel(self, c: dict) -> tuple[str, str]:
+        """
+        Bouwt de kernzin + de weerleg-suggestie voor 1 conflict, met
+        de juiste formulering en het juiste relatietype al naargelang
+        het een is_a-conflict of een part_of-cirkel is. Geeft
+        (kernzin, weerleg_suggestie) terug, telkens ZONDER leidende
+        opsommingstekens -- dat voegt de aanroeper toe.
+        """
+        woord = c["word"]
+        rel_type = self._weerleg_type_voor(c)
+
+        if self._is_part_of_cirkel(c):
+            doel = c["conflict"][0]
+            kernzin = f"'{woord}' zit zowel in '{doel}' als (via een omweg) andersom"
+            suggestie = f"'weerleg: {woord} {rel_type} {doel}'"
+        else:
+            a, b = c["conflict"][0], c["conflict"][1]
+            kernzin = f"'{woord}' staat bij mij zowel als '{a}' als '{b}' genoteerd"
+            suggestie = f"'weerleg: {woord} {rel_type} {a}' of 'weerleg: {woord} {rel_type} {b}'"
+
+        return kernzin, suggestie
+
     def _bouw_melding(self, conflicten: list) -> str:
         """
         Bouwt EEN samenvattend bericht voor alle nieuw gevonden
         conflicten tegelijk (i.p.v. apart per conflict) -- Kevin's
         voorkeur (6 augustus 2026), rustiger dan meerdere losse
         meldingen na elkaar.
+
+        Sinds idee #3 (8 augustus 2026): onderscheidt is_a-conflicten
+        van part_of-cirkels via _bouw_melding_regel(), zodat de
+        weerleg:-suggestie altijd het JUISTE relatietype gebruikt --
+        voorheen stond hier altijd hardcoded 'is_a', ook bij een
+        part_of-cirkel, wat een niet-werkende suggestie opleverde.
         """
         if len(conflicten) == 1:
             c = conflicten[0]
-            woord = c["word"]
-            a, b = c["conflict"][0], c["conflict"][1]
+            kernzin, suggestie = self._bouw_melding_regel(c)
             return (
                 f"Ik zag een tegenstrijdigheid in wat ik weet: "
-                f"'{woord}' staat bij mij zowel als '{a}' als '{b}' genoteerd, "
-                f"en dat kan niet allebei kloppen. "
-                f"Wil je dat ik een van de twee weerleg? "
-                f"Typ bv. 'weerleg: {woord} is_a {a}' of 'weerleg: {woord} is_a {b}'."
+                f"{kernzin}, en dat kan niet allebei kloppen. "
+                f"Wil je dat ik dit weerleg? Typ bv. {suggestie}."
             )
 
         regels = [
             f"Ik zag {len(conflicten)} tegenstrijdigheden in wat ik weet:"
         ]
         for i, c in enumerate(conflicten, start=1):
-            woord = c["word"]
-            a, b = c["conflict"][0], c["conflict"][1]
-            regels.append(
-                f"  {i}. '{woord}' staat zowel als '{a}' als '{b}' genoteerd "
-                f"(bv. 'weerleg: {woord} is_a {a}' om er een van te weerleggen)"
-            )
+            kernzin, suggestie = self._bouw_melding_regel(c)
+            regels.append(f"  {i}. {kernzin} (bv. {suggestie} om dit te weerleggen)")
         regels.append("Wil je dat ik dit voor je oplos, of los je het liever zelf op met 'weerleg: ...'?")
         return "\n".join(regels)
 

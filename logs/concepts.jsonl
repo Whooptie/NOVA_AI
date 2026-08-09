@@ -222,3 +222,7 @@
 {"timestamp": "2026-08-08T18:14:17.156902", "event_type": "concept_hard_deleted", "word": "gitaar", "source": "user", "aantal_senses_verwijderd": 1}
 {"timestamp": "2026-08-08T18:14:27.166906", "event_type": "concept_created", "word": "gitaar", "source": "system", "new_value": {"word": "gitaar"}}
 {"timestamp": "2026-08-08T18:30:45.215956", "event_type": "concept_created", "word": "betekenissen", "source": "system", "new_value": {"word": "betekenissen"}}
+{"timestamp": "2026-08-09T16:29:50.942149", "event_type": "concept_created", "word": "onderdeel", "source": "system", "new_value": {"word": "onderdeel"}}
+{"timestamp": "2026-08-09T16:34:41.542800", "event_type": "concept_created", "word": "[onbekend", "source": "system", "new_value": {"word": "[onbekend"}}
+{"timestamp": "2026-08-09T16:34:41.580347", "event_type": "concept_created", "word": "woord]", "source": "system", "new_value": {"word": "woord]"}}
+{"timestamp": "2026-08-09T17:16:20.900651", "event_type": "concept_created", "word": "welke onderdelen van keuken", "source": "system", "new_value": {"word": "welke onderdelen van keuken"}}

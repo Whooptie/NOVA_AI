@@ -13,6 +13,10 @@ class ChatModule:
         event_bus.subscribe("intent_relation_check", self.on_relation_check)
         event_bus.subscribe("intent_part_of_check", self.on_part_of_check)
         event_bus.subscribe("intent_subtypes_query", self.on_subtypes_query)
+        event_bus.subscribe("intent_parts_query", self.on_parts_query)
+        event_bus.subscribe("intent_related_to_check", self.on_related_to_check)
+        event_bus.subscribe("intent_compare_concepts", self.on_compare_concepts)
+        event_bus.subscribe("intent_parts_with_property", self.on_parts_with_property)
         event_bus.subscribe("intent_related_to", self.on_related_to)
         event_bus.subscribe("intent_synonym", self.on_synonym)
         event_bus.subscribe("intent_antonym", self.on_antonym)
@@ -171,6 +175,119 @@ class ChatModule:
         self.event_bus.publish("layer4_response", {"text": msg})
 
     # -------------------------
+    # 3B2. Related-to-check (nieuw, idee #2 uit
+    # reasoning_engine_ideeen_roadmap.md, analoog aan on_part_of_check
+    # hierboven maar voor related_to-ketens)
+    # -------------------------
+    def on_related_to_check(self, data, event_type=None):
+        source = data.get("source")
+        target = data.get("target")
+
+        if not source or not target:
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik begrijp de related-to-vraag niet helemaal."
+            })
+            return
+
+        if self.semantic and hasattr(self.semantic, "explain_related_to"):
+            msg = self.semantic.explain_related_to(source, target)
+        else:
+            msg = f"Ik kan nog niet controleren of '{source}' gerelateerd is aan '{target}'."
+
+        self.event_bus.publish("layer4_response", {"text": msg})
+
+    # -------------------------
+    # 3B3. Vergelijking tussen 2 concepten (nieuw, idee #6 uit
+    # reasoning_engine_ideeen_roadmap.md)
+    # -------------------------
+    # Nederlandse labels per relatietype, voor een leesbare tekst.
+    # Bewust hier als klasse-attribuut i.p.v. in semantic.py: dit is
+    # zuiver presentatie (Nederlandse taal), geen kennis-logica --
+    # zelfde scheiding als export_concept() (data) vs.
+    # concept_overview.py (presentatie) elders in de codebase.
+    _COMPARE_LABELS = {
+        "is_a": "is een",
+        "part_of": "is onderdeel van",
+        "has_part": "heeft als onderdeel",
+        "related_to": "is gerelateerd aan",
+        "causes": "veroorzaakt",
+        "used_for": "wordt gebruikt voor",
+        "synonym": "is een synoniem van",
+        "antonym": "is het tegenovergestelde van",
+        "instance_of": "is een voorbeeld van",
+        "property": "heeft als eigenschap",
+    }
+
+    def on_compare_concepts(self, data, event_type=None):
+        word_a = data.get("word_a")
+        word_b = data.get("word_b")
+
+        if not word_a or not word_b:
+            self.event_bus.publish("layer4_response", {
+                "text": "Welke twee dingen wil je dat ik vergelijk?"
+            })
+            return
+
+        if not self.semantic or not hasattr(self.semantic, "compare_concepts"):
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik kan nog niet vergelijken."
+            })
+            return
+
+        try:
+            resultaat = self.semantic.compare_concepts(word_a, word_b)
+        except Exception:
+            resultaat = None
+
+        if not resultaat or not resultaat.get("per_type"):
+            self.event_bus.publish("layer4_response", {
+                "text": f"Ik weet nog te weinig over '{word_a}' en/of '{word_b}' om ze te vergelijken."
+            })
+            return
+
+        regels = [f"Vergelijking tussen {word_a} en {word_b}:"]
+        for rel_type, groepen in resultaat["per_type"].items():
+            label = self._COMPARE_LABELS.get(rel_type, rel_type)
+
+            if groepen["gedeeld"]:
+                regels.append(f"  Allebei {label}: {', '.join(groepen['gedeeld'])}")
+            if groepen["enkel_a"]:
+                regels.append(f"  Enkel {word_a} {label}: {', '.join(groepen['enkel_a'])}")
+            if groepen["enkel_b"]:
+                regels.append(f"  Enkel {word_b} {label}: {', '.join(groepen['enkel_b'])}")
+
+        msg = "\n".join(regels)
+        self.event_bus.publish("layer4_response", {"text": msg})
+
+    # -------------------------
+    # 3B4. Multi-hop: onderdelen met een eigenschap (nieuw, idee #4
+    # uit reasoning_engine_ideeen_roadmap.md)
+    # -------------------------
+    def on_parts_with_property(self, data, event_type=None):
+        target = data.get("target")
+        property_value = data.get("property_value")
+
+        if not target or not property_value:
+            self.event_bus.publish("layer4_response", {
+                "text": "Van welk geheel, en welke eigenschap, wil je de onderdelen weten?"
+            })
+            return
+
+        gefilterd = []
+        if self.semantic and hasattr(self.semantic, "get_all_parts_with_property"):
+            try:
+                gefilterd = self.semantic.get_all_parts_with_property(target, property_value)
+            except Exception:
+                gefilterd = []
+
+        if gefilterd:
+            msg = f"Onderdelen van {target} die {property_value} zijn: {', '.join(gefilterd)}."
+        else:
+            msg = f"Ik ken geen onderdelen van {target} die {property_value} zijn."
+
+        self.event_bus.publish("layer4_response", {"text": msg})
+        
+    # -------------------------
     # 3C. Subtypes-vraag (nieuw, 12 juli 2026, omgekeerde is_a-lookup)
     # -------------------------
     def on_subtypes_query(self, data, event_type=None):
@@ -195,7 +312,35 @@ class ChatModule:
             msg = f"Ik ken nog geen soorten van {target}."
 
         self.event_bus.publish("layer4_response", {"text": msg})
-        
+
+    # -------------------------
+    # 3D. Parts-vraag (nieuw, idee #1 uit
+    # reasoning_engine_ideeen_roadmap.md, analoog aan on_subtypes_query
+    # hierboven maar voor part_of i.p.v. is_a)
+    # -------------------------
+    def on_parts_query(self, data, event_type=None):
+        target = data.get("target")
+
+        if not target:
+            self.event_bus.publish("layer4_response", {
+                "text": "Van welk geheel wil je de onderdelen weten?"
+            })
+            return
+
+        parts = []
+        if self.semantic and hasattr(self.semantic, "get_all_parts"):
+            try:
+                parts = self.semantic.get_all_parts(target)
+            except Exception:
+                parts = []
+
+        if parts:
+            msg = f"Onderdelen van {target} die ik ken: {', '.join(parts)}."
+        else:
+            msg = f"Ik ken nog geen onderdelen van {target}."
+
+        self.event_bus.publish("layer4_response", {"text": msg})
+
     # -------------------------
     # 4. Related-to vragen
     # -------------------------

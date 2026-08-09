@@ -42,6 +42,15 @@ def get_help():
   snaar is onderdeel van een gitaar   (leert Nova de part_of-relatie, met bevestiging)
   welke soorten dier ken je
   noem soorten van dier
+  welke onderdelen heeft fiets         (alle onderdelen, ook via een keten)
+  waar bestaat lichaam uit
+  wat zit er in huis
+  is snaar gerelateerd aan muziek      (associatief verband, ook via een keten)
+  heeft ei te maken met kip
+  is een hond een meubel               (bij "nee": toont het alternatief dat Nova wél weet)
+  vergelijk hond met huiskat           (gedeelde en verschillende kennis naast elkaar)
+  wat is het verschil tussen gitaar en schaak
+  welke onderdelen van keuken zijn scherp  (combineert onderdelen + eigenschap)
 
 🗑️ KENNIS WEERLEGGEN/VERWIJDEREN (verwijderpad, punt 1)
   weerleg: hond is_a meubel                    (wijst 1 relatie af, blijft zichtbaar in geschiedenis)
@@ -96,6 +105,10 @@ def get_help():
       patronen topic_detected:relatie
       patronen topic_detected:part_of
       patronen topic_detected:subtypes
+      patronen topic_detected:parts                  (idee #1: welke onderdelen heeft X)
+      patronen topic_detected:related_to_check        (idee #2: is X gerelateerd aan Y)
+      patronen topic_detected:compare_concepts         (idee #6: vergelijk X met Y)
+      patronen topic_detected:parts_with_property      (idee #4: welke onderdelen van X zijn Y)
     
 ❓ HELP
   help               (dit overzicht)

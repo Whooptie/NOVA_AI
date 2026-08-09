@@ -34,16 +34,17 @@ Gespecialiseerde externe modellen (vision, audio, ML-classificatie) mogen later 
 Nova_AI/
 ├── core/
 │   ├── event_bus.py
-│   ├── module_loader.py
 │   ├── intent_router.py
-│   ├── memory.py
-│   ├── patterns.py
+│   ├── interruption_tracker.py
+│   ├── llm_bridge.py
 │   ├── logger.py
-│   ├── reboot_manager.py
-│   ├── semantic.py
-│   ├── response_engine.py
+│   ├── memory.py
+│   ├── module_loader.py
+│   ├── patterns.py
 │   ├── pending_question.py
-│   └── interruption_tracker.py
+│   ├── reboot_manager.py
+│   ├── response_engine.py
+│   └── semantic.py
 ├── modules/
 │   ├── paths.py
 │   ├── activity/
@@ -133,24 +134,27 @@ Nova_AI/
 │       └── gesture_profiles.json
 ├── data/
 │   ├── chess_game.json
-│   ├── chess_stats.json
 │   ├── chess_settings.json
-│   ├── interactions.jsonl
-│   ├── interactions.db
+│   ├── chess_stats.json
 │   ├── concepts.json
-│   ├── word_associations.json
-│   ├── patterns_layer2.json
-│   ├── interruption_patterns.json
-│   ├── weather_history.json
-│   ├── kevin_profile.json
 │   ├── context_log.jsonl
-│   ├── training_data.json
+│   ├── contradiction_state.json
+│   ├── conversation_state.json
 │   ├── gecorrigeerde_voorbeelden.jsonl
-│   ├── unmatched_intents.jsonl
-│   ├── onbekende_correcties.jsonl
-│   ├── layer0_gebruikt.jsonl
+│   ├── insight_feedback.json
 │   ├── intent_classifier_model.pkl
-│   └── intent_classifier_vectorizer.pkl
+│   ├── intent_classifier_vectorizer.pkl
+│   ├── interactions.db
+│   ├── interactions.jsonl
+│   ├── interruption_patterns.json
+│   ├── kevin_profile.json
+│   ├── layer0_gebruikt.jsonl
+│   ├── onbekende_correcties.jsonl
+│   ├── patterns_layer2.json
+│   ├── training_data.json
+│   ├── unmatched_intents.jsonl
+│   ├── weather_history.json
+│   ├── word_associations.json
 │   └── models/
 │       └── blaze_face_short_range.tflite
 ├── logs/
@@ -175,7 +179,7 @@ Nova_AI/
 | logger.py | ✅ Klaar | Logt enkel fouten/waarschuwingen naar nova.log (RotatingFileHandler, max 5MB × 3 backups). Volledige eventgeschiedenis zit in memory.py (data/interactions.jsonl + .db). |
 | reboot_manager.py | ✅ Klaar en volledig getest | `/reboot`-commando (Fase 1 van reboot_hotreload_roadmap.md). Sluit memory-buffer + alle modules met `shutdown()` (o.a. Stockfish via chess_engine.py) netjes af, start dan een nieuw los proces via `subprocess.Popen` + `CREATE_NEW_CONSOLE`. Zie volledige sectie "Reboot & Hot Reload" verderop voor details en opgeloste bugs. |
 | main.py | ✅ Klaar, Bug #30 opgelost (8 augustus 2026) | Hoofdlus (`input()`) + `achtergrond_loop()` (daemon-thread, 60 sec-ritme) + `on_chat_response()` (rechtstreekse EventBus-subscriber op `chat_response`, print onmiddellijk ongeacht welke thread publiceert). **Bug #30-fix:** `print_nova_typewriter()` had geen bescherming tegen twee threads die tegelijk letter-voor-letter naar stdout schrijven (hoofdthread + achtergrondthread konden overlappen bij een lang antwoord) — opgelost met een module-brede `_typewriter_lock = threading.Lock()`, de hele typewriter-print zit nu in een `with _typewriter_lock:`-blok. `wachten_op_input` blijft apart bestaan (beschermt enkel het opnieuw tekenen van de "Jij: "-prompt NA het printen, niet het printen zelf). Live bevestigd via `tests/test_main_typewriter_lock.py`. Zie "Bekende bugs"-tabel (bug nu verwijderd, zie changelog) en de testsectie verderop. |
-| semantic.py |✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw:`teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`. **Nieuw (12 juli 2026):** `part_of_chained`/`explain_part_of` (analoog aan is_a_chained/explain_is_a, keten-redenering voor part_of-relaties) en `get_all_subtypes` (omgekeerde is_a-lookup: alle concepten die direct/via keten naar een categorie verwijzen) — beide gebouwd, getest en werkend. Zie sectie "Reasoning Engine — Fase 7.1b/7.5" verderop. **Nieuw (6 augustus 2026):** Trust state (`status`: confirmed/unverified/rejected op elke sense en relatie) + volledig verwijderpad (`reject_sense`/`reject_relation`/`reject_concept` als tombstone, `hard_delete_*` als guarded fysieke verwijdering) + reasoning-laag (`get_relations`, `get_best_definition`, `detect_sense`, en daarmee automatisch ook `is_a_chained`/`part_of_chained`/`causes_chained`/`find_contradictions`) negeert overal `status == "rejected"`. Zie nieuwe sectie "Verwijderpad, Trust State & Contradiction Checker" verderop voor het volledige overzicht. **Bug #32-fix (8 augustus 2026):** `add_sense()`'s dedup-check blokkeert nu een match op een `rejected` sense i.p.v. die stilzwijgend te heractiveren — geeft een `{"blocked": "rejected", ...}`-signaal terug. `upgrade_unknown_sense()` kreeg een `source`-parameter (was hardcoded `"user"`). `SemanticConceptsModule` kreeg een nieuwe `pending_reactivation`-state + `handle_reactivation_confirm()` voor de expliciete ja/nee-vraag aan Kevin bij een `source="user"`-herhaling. Zie `nova_changelog.md` bug #36 voor het volledige verslag, inclusief een apart gevonden en gefixte vervolgbug in `wikipedia_teacher.py`. |
+| semantic.py | ✅ VOLLEDIG KLAAR | Alle 7 fases klaar. Reasoning Layer actief (chaining, inference, contradiction detection). Auto-extract is_a. Wikipedia fallback geïntegreerd. Nieuw:`teach_example` event → eigen voorbeeldzinnen toevoegen via `example <woord> <zin>`. **Nieuw (12 juli 2026):** `part_of_chained`/`explain_part_of` (analoog aan is_a_chained/explain_is_a, keten-redenering voor part_of-relaties) en `get_all_subtypes` (omgekeerde is_a-lookup: alle concepten die direct/via keten naar een categorie verwijzen) — beide gebouwd, getest en werkend. Zie sectie "Reasoning Engine — Fase 7.1b/7.5" verderop. **Nieuw (6 augustus 2026):** Trust state (`status`: confirmed/unverified/rejected op elke sense en relatie) + volledig verwijderpad (`reject_sense`/`reject_relation`/`reject_concept` als tombstone, `hard_delete_*` als guarded fysieke verwijdering) + reasoning-laag (`get_relations`, `get_best_definition`, `detect_sense`, en daarmee automatisch ook `is_a_chained`/`part_of_chained`/`causes_chained`/`find_contradictions`) negeert overal `status == "rejected"`. Zie nieuwe sectie "Verwijderpad, Trust State & Contradiction Checker" verderop voor het volledige overzicht. **Bug #32-fix (8 augustus 2026):** `add_sense()`'s dedup-check blokkeert nu een match op een `rejected` sense i.p.v. die stilzwijgend te heractiveren — geeft een `{"blocked": "rejected", ...}`-signaal terug. `upgrade_unknown_sense()` kreeg een `source`-parameter (was hardcoded `"user"`). `SemanticConceptsModule` kreeg een nieuwe `pending_reactivation`-state + `handle_reactivation_confirm()` voor de expliciete ja/nee-vraag aan Kevin bij een `source="user"`-herhaling. Zie `nova_changelog.md` bug #36 voor het volledige verslag, inclusief een apart gevonden en gefixte vervolgbug in `wikipedia_teacher.py`. **Reasoning Engine Ideeën, alle 6 afgerond (8 augustus 2026):** `get_all_parts()` (spiegel van get_all_subtypes, idee #1), `related_to_chained()`/`explain_related_to()` met eigen `MAX_DEPTH_RELATED=4` en BFS voor kortste-pad (idee #2), `_geen_bewijs_met_alternatief()` toegepast op explain_is_a/explain_part_of/explain_related_to (idee #5), `find_contradictions()` uitgebreid met part_of-cirkeldetectie (idee #3), `compare_concepts()` (idee #6), `get_all_parts_with_property()` als multi-hop-combinatie (idee #4). Zie nieuwe sectie "Reasoning Engine Ideeën — alle 6 afgerond" verderop voor het volledige overzicht, en `nova_changelog.md` voor het complete bouwverslag incl. 3 gevonden en gefixte routing-bugs. |
 | response_engine.py | ✅ Klaar EN VOLLEDIG AANGESLOTEN (Layer 4, Fase 1-5 + 7; response_style-koppeling + associatie-bugfix 27 juli 2026) | Combineert semantic + word_associations + pattern_matcher tot sjabloon-antwoorden voor definitievragen.`generate()` houdt sinds 27 juli 2026 rekening met Layer 5's `response_style`: bij `"kort"` wordt de Layer 1-associatie en de Layer 2-timing-hint bewust overgeslagen. Bijkomend: `_sterkste_associatie()` miste sinds het begin een return-statement (viel altijd stil door naar `None`) — nu gefixt en live bevestigd. Zie volledige sectie "Layer 4" onder 7-Laags Memory Architectuur, en de werkpunt-sectie voor de volledige keten. |
 | paths.py | ✅ Klaar (nieuw, 19 juli 2026) | `get_project_root(__file__)` — zoekt vanaf elk modulebestand omhoog naar de map met `main.py`, i.p.v. een vast aantal `.parent`-stappen te tellen. Voorkomt stille padfouten bij modules op verschillende nestingdiepte. Staat in `modules/`, niet `core/` (fysieke locatie), maar functioneel een core-hulpmodule — vandaar hier vermeld. Eerste gebruiker: `weather.py`. Zie sectie "modules/paths.py" verderop. |
 | pending_question.py | ✅ Klaar en getest (22 juli 2026) | Activity-Aware Interaction: kortlevend "wacht ik op een antwoord?"-geheugen (`set`/`is_open`/`get_type`/`clear`, met automatisch verval). Geen permanente opslag, bewust in-memory. Bereikbaar via `event_bus.modules.get("pending_question")`. Handmatig geladen in `module_loader.py` (net als memory/patterns/logger), want `core/` wordt niet door de dynamische scan gevonden. Zie sectie "Activity-Aware Interaction" verderop. |
@@ -253,7 +257,6 @@ Gevestigd patroon, zie `tests/`:
 | --- | ---- | --- | --- | --- |
 | 8 | Automatische voorbeeldzin-extractie uit Wikipedia werkt niet (examples blijft leeg) | wikipedia_teacher.py | 🟢 Laag | 🔲 Open — omzeild met handmatig`example`-commando. (Het "geen bruikbare definitie voor 'fysica'"-deel van deze observatie is een APART probleem gebleken, opgelost en verplaatst naar bug #27 in `nova_changelog.md` — 31 juli 2026.) |
 | 31 | "wat is X"-zinnen met wiskundige inhoud (bv. "wat is drie plus vijf") worden door `detect_definition()`'s `"wat is "`-patroon onderschept VÓÓR `detect_math()` of de Intent Classifier ooit een kans krijgen — Nova behandelt de hele zin als een onbekend begrip en start een Wikipedia-opzoekactie i.p.v. de wiskundige inhoud te herkennen. Ontdekt tijdens het live testen van de nieuwe `math`-classifier-koppeling (5 aug 2026, zie `nova_changelog.md`). Bestond al vóór die koppeling (`detect_math()` had deze exacte zin sowieso al gemist — geen operator, "plus" staat niet in de keyword-lijst) en staat er los van; ontstaat puur door de VOLGORDE van detectiefuncties in `route()`. | intent_router.py (`route()`-volgorde tussen `detect_definition()` en `detect_math()`) | 🟡 Midden | 🔲 Open — voorlopig omzeild door "hoeveel is X" i.p.v. "wat is X" te gebruiken (dat patroon triggert `detect_definition()` niet). Structurele fix zou vereisen dat `detect_definition()` wiskundige inhoud herkent en overslaat, of dat `detect_math()` vóór `detect_definition()` gecontroleerd wordt in `route()`. |
-
 
 *(Bug #9#9 opgelost — 27 juli 2026: `detect_pos()` in `semantic.py` herkent nu ook vervoegde werkwoordsvormen (incl. Nederlandse klinkerverdubbelingsregel: speel→spelen, loop→lopen) via een uitgebreide infinitieven-check, en een nieuwe `FUNCTIEWOORDEN`-set voor bijwoorden/voorzetsels. Structurele fix i.p.v. de eerdere omzeiling (8 juli 2026, stopwoordenlijst in `response_pipeline.py`). Zie `nova_changelog.md` voor het volledige overzicht.)*
 *(Bug #10#10 opgelost — 26 juli 2026: volledige sense-disambiguatie gebouwd — signaalwoorden per sense in `concepts.json`, `detect_sense()` in `semantic.py`, Layer 1 slaat nu op per `woord#sense_id` i.p.v. per kaal woord, plus `kevin_profile.py`-voorkeur-fallback met nieuw commando `onthoud sense <woord>`. Zie `nova_changelog.md` voor het volledige overzicht.)*
@@ -349,9 +352,18 @@ Omgekeerde `is_a`-lookup: geeft alle concepten terug die (direct of via een kete
 
 **Getest:** live in Nova, "welke soorten dier ken je?" gaf correct 16 concepten terug (hond, huiskat, octopus, honingbeer, grizzlybeer, zoogdier, kat, wolf, weekdier, beer, bruine beer, paard, kip, vogel, tijger, roofdier).
 
-### Losse uitbreidingsideeën (niet ingepland)
+### Reasoning Engine Ideeën — alle 6 afgerond (8 augustus 2026)
 
-Tijdens dit gesprek kwamen 6 losse vervolgideeën naar boven (get_all_parts, related_to_chained, part_of-contradictiedetectie, multi-hop vragen, "waarom niet"-uitleg, concept-vergelijkingen). Deze zijn **niet volledig identiek** aan de bestaande Fase 8-10 in `semantic_extension_roadmap.md`, en daarom apart vastgelegd in een nieuw document: **reasoning_engine_ideeen_roadmap.md** — puur een ideeënbak, geen bouwvolgorde.
+De 6 losse vervolgideeën uit `reasoning_engine_ideeen_roadmap.md` (ontstaan 12 juli 2026 tijdens het bouwen van `part_of_chained`/`get_all_subtypes`) zijn allemaal gebouwd, en op 5 van de 6 live in Nova bevestigd. Bouwvolgorde: 1, 2, 5, 3, 6, 4 (afhankelijkheden eerst — #6/#4 bouwen voort op #1/#2).
+
+- **#1 `get_all_parts(target)`** — spiegel van `get_all_subtypes()`, maar simpeler (geen volledige scan nodig, part_of wijst al klein→groot). Nieuw intent `detect_parts_query()`/`on_parts_query()`. Live getest: fiets (12 onderdelen), lichaam (bevestigt keten oog→hoofd), huis (bevestigt keten pan→keuken).
+- **#2 `related_to_chained()`/`explain_related_to()`** — eigen `MAX_DEPTH_RELATED = 4` (i.p.v. de gedeelde `MAX_DEPTH = 6`), want related_to is een losse associatie i.p.v. een harde logische relatie. **Herbouwd van depth-first naar breadth-first (BFS)** na een live gevonden bug: bij een concept met zowel een direct als een omweg-pad naar hetzelfde doel gaf depth-first niet altijd het kortste pad terug. Nieuw intent `detect_related_to_check()`/`on_related_to_check()`.
+- **#5 "waarom niet"-uitleg** — nieuwe gedeelde hulpmethode `_geen_bewijs_met_alternatief()`, toegepast op alle drie `explain_is_a`/`explain_part_of`/`explain_related_to`. Toont bij een negatief antwoord de eerste/dichtstbijzijnde bekende relatie als alternatief (Kevin's keuze: enkel de eerste, geen opsomming). Geen wijziging aan intent_router.py's bestaande lidwoord-vereiste patronen (verruimen bleek regressierisico op te leveren tegen bestaande identity-/math-patronen).
+- **#3 part_of-cirkeldetectie** — `find_contradictions()` uitgebreid naast de bestaande is_a-check. Bewust ENKEL achteraf-detectie via de bestaande periodieke achtergrondcheck, geen preventieve blokkade. Bijvangst: `contradiction_checker.py`'s `_bouw_melding()` gaf bij een part_of-conflict altijd een niet-werkende `weerleg: ... is_a ...`-suggestie — gefixt met nieuwe `_is_part_of_cirkel()`/`_bouw_melding_regel()`. Niet live getest in Nova zelf, wel volledig gedekt door pytest.
+- **#6 `compare_concepts()`** — vergelijkt ALLE relatietypes (niet enkel is_a) tussen 2 concepten, gedeeld/enkel_a/enkel_b per type, lege types weggelaten. Nieuw intent `detect_compare_concepts()`/`on_compare_concepts()`. Live gevonden en gefixte routing-bug: "wat is het verschil tussen X en Y" werd afgevangen door detect_definition()'s brede "wat is "-prefix — opgelost door de check daar binnenin te verplaatsen (zelfde patroon als de bestaande overview_prefixes-tak).
+- **#4 `get_all_parts_with_property()`** — multi-hop-combinatie van #1 + `get_properties()`. Bewust dit ene, specifieke patroon i.p.v. een generieke combinatiemachine (zie "Volgende stappen" voor de generieke uitbreiding als toekomstig vervolgpunt). Live gevonden en gefixte, ernstigere routing-bug: de triggerzin bevatte het woord "zijn", wat `semantic.py`'s `RelationParser` al herkende als is_a-patroon in `_detect_relation()` (stap 9 van route(), vóór de intent-tabel). Kon niet binnen een bestaande detect_-functie opgelost worden (het conflict zat in een andere module) — opgelost als nieuwe, vroege stap 7B in `route()`, zelfde patroon als de bestaande help/uitleg-stappen 2C/2D.
+
+**Nieuwe testsuite:** `tests/test_reasoning_engine_ideeen.py`, 33 tests, volledige dekking van alle 6 ideeën. Volledig bouwverslag incl. alle 3 gevonden routing-bugs: zie `nova_changelog.md`.
 
 ---
 
@@ -1135,7 +1147,8 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 2. 🟢 **Fijner tijdsraster in Layer 2** — concept, nog niet ingepland (zie eigen sectie "💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2" verderop voor het volledige voorstel en de reden om nu nog niet te bouwen).
 3. 🟢 "Mag tegenspreken, moet feitelijk kloppen" — omzetten van afspraak naar werkende code. (raakt intent_router.py/response_engine.py/semantic.py)
 4. ✅ ~~add_relation()'s hardgecodeerde confidence/source rechttrekken~~ — **DEELS AFGEROND 6 augustus 2026** als bijvangst van de trust-state-migratie: `status` wordt nu overal correct afgeleid (source="user" → confirmed, anders → unverified), inclusief in `_teach_word()` (wikipedia_teacher.py), waar een eerdere source/status-inconsistentie ontdekt en gefixt werd. De hardgecodeerde `confidence: 1.0`/`source: "user"` in `add_relation()` zelf staat nog steeds vast (geen source-parameter) — dat specifieke punt blijft openstaan, zie sectie "Verwijderpad, Trust State & Contradiction Checker" verderop voor de precieze reden waarom dat voor nu bewust zo gelaten is.
-5. 🟡 Semantic Fase 8+ (semantic_extension_roadmap.md blijft leidend) — start met Fase 8 (Causal Reasoning), pure symbolisch, geen ML nodig reasoning_engine_ideeen_roadmap.md is een LOSSE ideeënbak zonder eigen bouwvolgorde (niet concurrerend) — idee #5 ("waarom niet"-uitleg) en #1 zijn daaruit de meest voor de hand liggende kandidaten om tussendoor op te pakken
+5. 🟡 Semantic Fase 8+ (semantic_extension_roadmap.md blijft leidend) — start met Fase 8 (Causal Reasoning), pure symbolisch, geen ML nodig. `reasoning_engine_ideeen_roadmap.md`'s 6 losse ideeën zijn ondertussen ALLE 6 afgerond (8 augustus 2026, zie nova_changelog.md) — dit punt gaat dus nu enkel nog over de eigenlijke Fase 8+ uit semantic_extension_roadmap.md.
+5b. 🟢 **Idee #4 generiek maken: multi-hop query-combinatiemachine** — `get_all_parts_with_property()` (8 augustus 2026) dekt bewust enkel het specifieke patroon "onderdelen × eigenschap". Vervolgstap, nog niet gepland: een generieke combinatielaag die willekeurige query-paren kan schakelen (bv. subtypes × related_to, "welke soorten dier zijn gerelateerd aan water"), i.p.v. voor elke nieuwe combinatie een aparte, specifieke methode + intent te bouwen. Vereist nadenken over hoe zo'n generieke vraag natuurlijke-taal-herkenbaar te maken is (een vaste triggerzin per combinatie werkt niet meer bij een generieke opzet). Puur symbolisch, geen ML nodig — enkel groter combinatiewerk dan idee #4 zelf.
 6. 🟢 **Layer 1 — 3 nooit-gebouwde "Advanced queries" uit memory_layer1_roadmap.md** — bij de fase-controle (29 juli 2026) gevonden als enige overgebleven gaten in een verder volledig afgeronde Layer 1:
    ├── `find_bridge(word1, word2)` — bruggen-woorden tussen twee concepten zoeken (bv. "python" en "art" → gedeelde associaties als "elegant"/"creativiteit"). Puur symbolisch, hergebruikt bestaande `associations`-data, geen nieuwe berekeningsmethode nodig.
    ├── `get_trending(window_days=7)` — recent sterk toegenomen associaties tonen ("waar leert Kevin nu over"), op basis van `first_seen`/`last_seen`-tijdstempels die al in de data zitten. Puur symbolisch.
@@ -1207,6 +1220,39 @@ Volledig beschreven in: **memory_24-7_daemon_addendum.md**
 - ml_components_overview.md — Overzicht per laag (1/2/3/4) van mogelijke bounded ML-toevoegingen — referentiedocument, geen bouwvolgorde. Layer 3 (GNN voor concepts.json) is Kevin's belangrijkste "achterhoofd"-optie, grootste ingreep van de lijst.
 - llm_codegen_tool_roadmap.md — Claude API als externe tool: (1) fallback/missing-intent tracking blijft 100% symbolisch in Nova zelf, (2) Claude API als codeer-tool ("live typen" in VSCode) en voor fallback-log-analyse — beide altijd Kevin-getriggerd, nooit autonoom binnen Nova's daemon-loop. Bevat kernprincipe "wie beslist wanneer" en uitleg waarom de kale API geen geheugen heeft tussen aanroepen. Concept (11 juli 2026), nog niet ingepland.
 - reasoning_engine_ideeen_roadmap.md — Losse ideeënbak (géén bouwvolgorde) voor 6 mogelijke Reasoning Engine-uitbreidingen: get_all_parts, related_to_chained, part_of-contradictiedetectie, multi-hop vragen combineren, "waarom niet"-uitleg bij negatief antwoord, concept-vergelijkingen. Ontstaan tijdens het bouwen van part_of_chained/get_all_subtypes (12 juli 2026); deels overlap met semantic_extension_roadmap.md Fase 7.4/8, deels compleet nieuw.
+
+---
+
+## 🧭 Embedders vs. classifiers — overzicht + nieuwe kandidaten (8 augustus 2026)
+
+**Ontstaan uit:** een gesprek waarin bleek dat "embedder" en "classifier" door elkaar gebruikt werden voor verschillende, niet-overlappende ML-ideeën verspreid over meerdere documenten. Dit blok verzamelt ze op één plek, zodat niets verloren gaat en de keuze tussen de twee soort modellen voortaan bewust gemaakt wordt.
+
+**Vaste regel (Kevin, 8 augustus 2026):** als het einddoel een embedder is (open-eindige gelijkenis/afstand tussen dingen, geen vaste, eindige set categorieën), dan wordt DIRECT de embedder gebouwd — nooit eerst een classifier als tussenstap "voor nu", want dat is dubbel werk zodra alsnog naar de embedder overgestapt wordt. Een classifier is enkel de juiste keuze als het doel écht een vaste, kleine, eindige set labels is met een vast antwoord/actie per label.
+
+### Bestaande documenten, samengevat (welke van de twee is het?)
+
+| # | Document | Wat het embed/classificeert | Type | Status |
+| --- | --- | --- | --- | --- |
+| 1 | `layer1_word_embeddings_roadmap.md` | Losse woorden → vectoren | **Embedder** | Concept, niet gebouwd |
+| 2 | `semantic_extension_roadmap.md` Fase 12 | Concept-definities → vectoren | **Embedder** | ❌ Toekomst (fase 12/13) |
+| 3 | `ml_components_overview.md` (Layer 3) | Graph Neural Network — voorspelt ontbrekende relaties | Ander soort model (geen embedder/classifier) | Kevin's "achterhoofd"-optie, grootste ingreep |
+| 4 | `emotional_statement_classifier_roadmap.md` | Vrije zin → vaste emotie-categorie (moe/blij/boos/verdrietig/gestrest/neutraal) | **Classifier** — bewust juiste keuze, want vaste kleine labelset + vast sjabloon-antwoord per label | Concept, niet gebouwd |
+| 5 (nog te bouwen, apart gepland) | `embedder.py` / `memory_vector_index.py` / `retrieval_router.py` (modules-overzicht, "Memory & Context") | Tekst-fragmenten/herinneringen → vectoren | **Embedder** | Nog niet gebouwd |
+| 5b | `intent_classifier.py` | Bericht → 1 van 10 vaste topic-categorieën (chess/chess_evaluation/weather/time/greeting/math/preference/identity/self_architecture/...) | **Classifier** | ✅ GEBOUWD (28-29 juli 2026) |
+| 5c | `microlearning.py` (Layer 6 Fase 6) | Bericht → 1 van 6 signaal-categorieën (frustratie/waardering/interesse/verwarring/focus/kilte) — past `traits.json` langzaam aan | **Classifier** | ✅ GEBOUWD (17-18 juli 2026) |
+| 5d | `sentiment_classifier.py` (User Preferences) | Bericht → positief/neutraal_gemengd/negatief, voor voorkeuren/afkeuren-detectie | **Classifier** | ✅ GEBOUWD (26 juli 2026) |
+
+**Belangrijk onderscheid dat dit gesprek verduidelijkte:** #2 en #5 embedden allebei iets, maar compleet iets anders — #2 gaat over **wereldkennis** (hoe gelijkaardig zijn twee concepten in `concepts.json`), #5 gaat over **Nova's eigen geheugen doorzoekbaar maken** (wat heeft Kevin hier ooit over gezegd, ook met andere woorden). Geen overlap, geen vervanging van elkaar.
+
+### Nieuwe kandidaten uit dit gesprek (8 augustus 2026)
+
+⚠️ **Belangrijke kanttekening: kandidaten 6 en 8 hieronder zijn Claude's eigen voorstellen, ontstaan tijdens het doordenken van "waar zou een embedder verder nuttig zijn" — nog NIET getoetst aan Kevin's prioriteiten, geen bouwvolgorde, puur om niet verloren te laten gaan.**
+
+| # | Idee | Type | Redenering |
+| --- | --- | --- | --- |
+| 6 | **Herkent Nova een eerder gestelde vraag opnieuw, ook anders geformuleerd?** (bv. "wat is een gitaar" drie weken geleden, nu "leg gitaar uit") — nuttig voor Layer 7's "iets terugkoppelen dat al bekend is", of om dubbele Wikipedia-opzoekacties te vermijden | **Embedder** | Bevestigd géén overlap met bestaand: `memory.py`'s `find_similar()` bestaat al, maar gebruikt `difflib` — puur SPELLING/tekenreeks-gelijkenis (bv. "pyton" → "python" bij typfouten), expliciet niet-semantisch (letterlijk zo gedocumenteerd bij de bouw ervan, 2 juli 2026: "geen semantisch vergelijkbare dingen... dat zou pas kunnen met embeddings"). Dit idee vult dus precies dat expliciet opengelaten gat op — geen vaste set "soorten vragen", puur betekenisgelijkenis tussen twee vrije zinnen, open-eindig |
+| 7 | **Welk SPECIFIEK concept uit `concepts.json` wordt bedoeld in een los bericht, zonder dat het woord letterlijk genoemd wordt** (bv. "mijn snaren klinken vals" → concept `gitaar`) | **Embedder** — LET OP, oorspronkelijk verkeerd geformuleerd als mogelijk classifier-alternatief; bij nader inzien (8 aug 2026) is dit GEEN alternatief voor de bestaande `intent_classifier.py`. Die bestaat al en doet precies "welke van Nova's 10 vaste topic-categorieën (chess/weather/time/greeting/...) raakt dit bericht" — dat deel van het idee was dus geen nieuw idee. Wat wél nieuw zou zijn: matchen tegen de OPEN-EINDIGE, groeiende set concepten in `concepts.json` (elk `teach`/`wiki`-concept), niet tegen 10 vaste labels. Een classifier zou hier niet passen — die zou bij elk nieuw concept opnieuw getraind moeten worden, wat niet schaalt naarmate `concepts.json` groeit. Vandaar direct embedder, geen classifier-tussenstap. |
+| 8 | **Dubbele/overlappende concepten in `concepts.json` opsporen** (bv. per ongeluk twee keer bijna hetzelfde concept aangeleerd met net andere bewoording) | **Embedder** | Bevestigd géén overlap met bestaand: `find_contradictions()`/`contradiction_checker.py` doet iets anders — die detecteert LOGISCHE tegenstrijdigheden binnen één concept via vaste, vooraf gedefinieerde `INCOMPATIBLE_GROUP`s (bv. "hond is_a dier" + "hond is_a meubel"), puur symbolisch, geen gelijkenis-meting nodig. Dit idee gaat over iets anders: TWEE aparte concepten die toevallig (bijna) hetzelfde betekenen (bv. "auto" en "wagen" los aangeleerd) — dat vereist gelijkenis MEDEN tussen concept-definities, waar geen bestaand mechanisme voor is |
 
 ---
 
