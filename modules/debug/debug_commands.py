@@ -50,6 +50,7 @@ class DebugCommands:
             (lambda t: t.startswith("patronen"), self._patronen),
             (lambda t: t == "preferences debug", self._preferences_debug),
             (lambda t: t.startswith("associaties"), self._associaties),
+            (lambda t: t.startswith("bridge"), self._bridge),
             (lambda t: t == "intent debug", self._intent_debug),
             (lambda t: t.startswith("intent test"), self._intent_test),
             (lambda t: t == "intent retrain", self._intent_retrain),
@@ -433,6 +434,40 @@ class DebugCommands:
             return
         print(associaties)
         print("Sentiment:", wa.get_word_sentiment(woord))
+
+    def _bridge(self, user_input):
+        """
+        Toont Layer 1's find_bridge(): welke woorden zijn zowel met
+        woord1 als woord2 geassocieerd, en hoe sterk (gemiddelde van
+        beide PMI-scores). Puur om te controleren of/hoeveel bruggen
+        er al gevonden worden, los van of dit ooit in een antwoord
+        gebruikt wordt (dat is nog niet gekoppeld, zie nova_state.md).
+
+        Gebruik: bridge <woord1> <woord2>
+        """
+        # Zelfde fallback-logica als _associaties(), zie uitleg daar.
+        wa = self.loader.loaded_modules.get("word_associations_learner")
+        if not wa:
+            wa = self.loader.loaded_modules.get("word_associations")
+        if not wa:
+            print(f"{C_RED}word_associations(_learner)-module niet gevonden.{C_RESET}")
+            return
+
+        delen = user_input.split()
+        if len(delen) < 3:
+            print(f"{C_RED}Gebruik: bridge <woord1> <woord2>{C_RESET}")
+            return
+
+        woord1 = delen[1].lower()
+        woord2 = delen[2].lower()
+
+        print(f"{C_CYAN}--- Bridge tussen '{woord1}' en '{woord2}' ---{C_RESET}")
+        bruggen = wa.find_bridge(woord1, woord2)
+        if not bruggen:
+            print(f"(geen gedeelde associaties gevonden tussen '{woord1}' en '{woord2}')")
+            return
+        for brugwoord, score in bruggen:
+            print(f"  {brugwoord}: {score:.3f}")
 
     # ------------------------------------------------------------------
     # Wikipedia Teacher — ruw API-antwoord inspecteren (Bug #8-onderzoek,

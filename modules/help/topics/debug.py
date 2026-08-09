@@ -49,6 +49,8 @@ def get_help():
 🔗 LAYER 1 — WORD ASSOCIATIONS
   associaties                    (algemene stats: hoeveel woorden/associaties totaal)
   associaties <woord>            (alle opgeslagen associaties + sentiment voor dat woord)
+  bridge <woord1> <woord2>       (brugwoorden tussen twee woorden: waar zijn ze
+                                   allebei mee geassocieerd, en hoe sterk)
 
 💛 USER PREFERENCES
   preferences debug              (profiel-aantallen, sentiment-classifier-status,
