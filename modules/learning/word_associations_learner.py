@@ -620,6 +620,44 @@ class WordAssociationsLearner:
 
         return gemiddelde * 0.5  # Indirecte link telt voor de helft
 
+    def find_bridge(self, word1: str, word2: str, top_k: int = 5,
+                     min_confidence: float = 0.0) -> List[tuple]:
+        """
+        Zoekt "brugwoorden": woorden die zowel met word1 als met word2
+        geassocieerd zijn.
+
+        Voorbeeld:
+            find_bridge("python", "kunst")
+            -> [("elegant", 0.58), ("creatief", 0.41)]
+            (Python is elegant, kunst is creatief — allebei ook
+            geassocieerd met "elegant", dus dat is de sterkste brug.)
+
+        De score per brugwoord is het gemiddelde van beide losse
+        associatiesterktes: hoe sterker het brugwoord bij ALLEBEI
+        hoort, hoe hoger de score.
+
+        Geeft een lege lijst terug als er geen gedeelde associaties
+        zijn (bv. bij twee woorden die Nova nog nooit samen in
+        eenzelfde context heeft gezien, of als een van de twee
+        woorden nog helemaal onbekend is).
+        """
+        assoc1 = self.get_associations(word1, min_confidence)
+        assoc2 = self.get_associations(word2, min_confidence)
+
+        gemeenschappelijk = set(assoc1.keys()) & set(assoc2.keys())
+
+        if not gemeenschappelijk:
+            return []
+
+        bruggen = [
+            (brugwoord, (assoc1[brugwoord] + assoc2[brugwoord]) / 2)
+            for brugwoord in gemeenschappelijk
+        ]
+
+        bruggen.sort(key=lambda x: x[1], reverse=True)
+
+        return bruggen[:top_k]
+
     def get_word_sentiment(self, word: str) -> Dict[str, float]:
         """
         Schat in of een woord positief, negatief, of neutraal aanvoelt.

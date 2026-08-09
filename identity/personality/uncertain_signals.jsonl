@@ -493,3 +493,4 @@
 {"text": "weerleg concept: welke onderdelen van keuken", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0333, "bron": "model_fallback", "tijdstip": "2026-08-09T19:19:48.947053"}
 {"text": "weerleg concept: woord]", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0146, "bron": "model_fallback", "tijdstip": "2026-08-09T19:20:19.650940"}
 {"text": "wat weet je over welke onderdelen van keuken", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-08-09T19:20:43.636695"}
+{"text": "bridge python kunst", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0067, "bron": "model_fallback", "tijdstip": "2026-08-09T21:45:58.380452"}
