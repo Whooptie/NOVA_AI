@@ -1046,7 +1046,7 @@ class IntentRouter:
                 self.event_bus.publish("intent_concept_overview", {"word": woord})
                 return True
 
-        # Vergelijking ("wat is het verschil tussen X en Y") — idee #6
+       # Vergelijking ("wat is het verschil tussen X en Y") — idee #6
         # uit reasoning_engine_ideeen_roadmap.md. MOET vóór de brede
         # "wat is "-prefixlijst hieronder staan, anders zou die de zin
         # al afvangen en er "het verschil tussen gitaar en schaak" van
@@ -1057,6 +1057,24 @@ class IntentRouter:
         if m:
             dbg(f"{C_BLUE}→ definition (compare_concepts): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_compare_concepts", {
+                "word_a": m.group(1).strip(),
+                "word_b": m.group(2).strip()
+            })
+            return True
+
+        # Bruggen-woorden ("wat hebben X en Y gemeen") — Layer 1
+        # find_bridge(), gekoppeld 9 augustus 2026. Zelfde voorrang-
+        # reden als de compare_concepts-tak hierboven: dit begint met
+        # "wat", dus moet vóór de brede "wat is "-prefixlijst staan.
+        # BEWUST GEEN duplicaat van compare_concepts hierboven: dat
+        # vergelijkt FORMELE semantic-kennis (is_a/part_of/...), dit
+        # hier vergelijkt STATISTISCHE co-occurrence uit Layer 1 (zie
+        # nova_state.md, punt 6b) — daarom een aparte trigger-zin i.p.v.
+        # hergebruik van "vergelijk"/"verschil".
+        m = re.match(r"wat\s+hebben\s+(\w+)\s+en\s+([\w\s]+?)\s+gemeen", t)
+        if m:
+            dbg(f"{C_BLUE}→ definition (bridge_query): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_bridge_query", {
                 "word_a": m.group(1).strip(),
                 "word_b": m.group(2).strip()
             })
@@ -1830,6 +1848,36 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Bruggen-woorden tussen 2 concepten ("bridge X en Y") — Layer 1
+    # find_bridge(), gekoppeld 9 augustus 2026 (nova_state.md punt 6b).
+    #
+    # LET OP: "wat hebben X en Y gemeen" zit NIET hier, maar in
+    # detect_definition() — die zin begint met de brede "wat "-prefix,
+    # zelfde voorrang-reden als bij compare_concepts hierboven.
+    #
+    # BEWUST GEEN duplicaat van compare_concepts: dat combineert
+    # FORMELE, geleerde kennis uit concepts.json (is_a/part_of/...).
+    # Dit hier combineert STATISTISCHE co-occurrence uit Layer 1
+    # (word_associations_learner.py) — een andere, complementaire
+    # databron, zie de uitleg in nova_state.md.
+    # ---------------------------------------------------------
+    def detect_bridge_query(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        # "bridge X en Y" / "bridge X met Y" — kort debug-achtig
+        # patroon, analoog aan "vergelijk X met Y" hierboven.
+        m = re.match(r"bridge\s+(\w+)\s+(?:en|met)\s+([\w\s]+)", t)
+        if m:
+            dbg(f"{C_BLUE}→ bridge_query (patroon 'bridge X en/met Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_bridge_query", {
+                "word_a": m.group(1).strip(),
+                "word_b": m.group(2).strip()
+            })
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Multi-hop: onderdelen met een eigenschap ("welke onderdelen
     # van X zijn Y", "welke onderdelen van een X zijn Y") — idee #4
     # uit reasoning_engine_ideeen_roadmap.md.
@@ -2584,6 +2632,7 @@ class IntentRouter:
             ("parts",            self.detect_parts_query),
             ("related_to_check", self.detect_related_to_check),
             ("compare_concepts", self.detect_compare_concepts),
+            ("bridge_query",     self.detect_bridge_query),
             ("activity",         self.detect_activity),
             # preference_query VOOR preference (Fase 4 vóór Fase 3):
             # een VRAAG ("wat kan ik drinken?") moet niet per ongeluk

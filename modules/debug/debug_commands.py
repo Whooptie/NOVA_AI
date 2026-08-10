@@ -17,6 +17,8 @@
 # dezelfde logica als voorheen in main.py, enkel verplaatst en
 # gebundeld. Geen ML/AI bij betrokken.
 
+import re
+
 C_RESET = "\033[0m"
 C_RED = "\033[91m"
 C_CYAN = "\033[96m"
@@ -453,13 +455,20 @@ class DebugCommands:
             print(f"{C_RED}word_associations(_learner)-module niet gevonden.{C_RESET}")
             return
 
-        delen = user_input.split()
-        if len(delen) < 3:
-            print(f"{C_RED}Gebruik: bridge <woord1> <woord2>{C_RESET}")
+        # Zelfde syntax als de "echte" intent (intent_router.py's
+        # detect_bridge_query(), 9 augustus 2026): "bridge X en Y" of
+        # "bridge X met Y", zodat dit debugcommando niet per ongeluk
+        # 'en'/'met' als tweede woord pakt (was een bug: "bridge python
+        # en kunst" gaf voorheen 'python' vs 'en' i.p.v. 'python' vs
+        # 'kunst', want dit commando keek enkel naar de eerste 2 losse
+        # woorden zonder een verbindingswoord te verwachten).
+        m = re.match(r"bridge\s+(\w+)\s+(?:en|met)\s+([\w\s]+)", user_input.lower().strip())
+        if not m:
+            print(f"{C_RED}Gebruik: bridge <woord1> en/met <woord2>{C_RESET}")
             return
 
-        woord1 = delen[1].lower()
-        woord2 = delen[2].lower()
+        woord1 = m.group(1).strip()
+        woord2 = m.group(2).strip()
 
         print(f"{C_CYAN}--- Bridge tussen '{woord1}' en '{woord2}' ---{C_RESET}")
         bruggen = wa.find_bridge(woord1, woord2)

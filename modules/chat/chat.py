@@ -16,6 +16,7 @@ class ChatModule:
         event_bus.subscribe("intent_parts_query", self.on_parts_query)
         event_bus.subscribe("intent_related_to_check", self.on_related_to_check)
         event_bus.subscribe("intent_compare_concepts", self.on_compare_concepts)
+        event_bus.subscribe("intent_bridge_query", self.on_bridge_query)
         event_bus.subscribe("intent_parts_with_property", self.on_parts_with_property)
         event_bus.subscribe("intent_related_to", self.on_related_to)
         event_bus.subscribe("intent_synonym", self.on_synonym)
@@ -257,6 +258,66 @@ class ChatModule:
                 regels.append(f"  Enkel {word_b} {label}: {', '.join(groepen['enkel_b'])}")
 
         msg = "\n".join(regels)
+        self.event_bus.publish("layer4_response", {"text": msg})
+
+    # -------------------------
+    # 3B3B. Bruggen-woorden tussen 2 concepten (Layer 1, find_bridge(),
+    # gekoppeld 9 augustus 2026, nova_state.md punt 6b)
+    # -------------------------
+    def on_bridge_query(self, data, event_type=None):
+        """
+        Zelfde structuur als on_compare_concepts() hierboven, maar
+        haalt Layer 1 (word_associations_learner) op i.p.v. semantic.
+        Bewust een aparte, eigen handler i.p.v. hergebruik van
+        on_compare_concepts() — andere databron, andere foutmeldingen,
+        en find_bridge() geeft een simpele lijst terug, geen geneste
+        per-type-structuur zoals compare_concepts().
+        """
+        word_a = data.get("word_a")
+        word_b = data.get("word_b")
+
+        if not word_a or not word_b:
+            self.event_bus.publish("layer4_response", {
+                "text": "Welke twee dingen wil je dat ik op gedeelde associaties vergelijk?"
+            })
+            return
+
+        # Zelfde fallback-patroon als debug_commands.py's _bridge():
+        # module_loader.py gebruikt de key "word_associations_learner",
+        # maar we checken defensief ook de kortere "word_associations"
+        # voor het geval dat ooit verandert.
+        word_assoc = self.event_bus.modules.get("word_associations_learner")
+        if word_assoc is None:
+            word_assoc = self.event_bus.modules.get("word_associations")
+
+        if word_assoc is None or not hasattr(word_assoc, "find_bridge"):
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik kan nog geen bruggen tussen woorden zoeken."
+            })
+            return
+
+        try:
+            bruggen = word_assoc.find_bridge(word_a, word_b)
+        except Exception:
+            bruggen = None
+
+        if not bruggen:
+            self.event_bus.publish("layer4_response", {
+                "text": f"Ik zie bij mij nog geen gedeelde associaties tussen '{word_a}' en '{word_b}'."
+            })
+            return
+
+        # Enkel het sterkste brugwoord in de hoofdzin, de rest (indien
+        # aanwezig) als korte opsomming erachter — zelfde "niet alles
+        # tegelijk opdreunen"-principe als idee #5's "waarom niet"-
+        # uitleg (nova_changelog.md, enkel eerste alternatief tonen).
+        sterkste_woord, sterkste_score = bruggen[0]
+        msg = f"'{word_a}' en '{word_b}' worden bij jou vaak samen genoemd met '{sterkste_woord}'."
+
+        overige = [w for w, _ in bruggen[1:]]
+        if overige:
+            msg += f" (en ook met: {', '.join(overige)})"
+
         self.event_bus.publish("layer4_response", {"text": msg})
 
     # -------------------------
