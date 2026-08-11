@@ -53,6 +53,8 @@ class DebugCommands:
             (lambda t: t == "preferences debug", self._preferences_debug),
             (lambda t: t.startswith("associaties"), self._associaties),
             (lambda t: t.startswith("bridge"), self._bridge),
+            (lambda t: t.startswith("trending"), self._trending),
+            (lambda t: t == "sentiment woorden", self._sentiment_woorden),
             (lambda t: t == "intent debug", self._intent_debug),
             (lambda t: t.startswith("intent test"), self._intent_test),
             (lambda t: t == "intent retrain", self._intent_retrain),
@@ -477,6 +479,81 @@ class DebugCommands:
             return
         for brugwoord, score in bruggen:
             print(f"  {brugwoord}: {score:.3f}")
+
+    def _trending(self, user_input):
+        """
+        Toont Layer 1's get_trending(): welke woorden Kevin de
+        laatste tijd het meest gebruikt heeft, met extra gewicht voor
+        woorden die NIEUW zijn binnen dat venster (zie de docstring
+        van get_trending() zelf in word_associations_learner.py voor
+        de volledige uitleg van de score-berekening). Puur symbolisch,
+        geen ML.
+
+        Gebruik:
+          trending                  (standaard: laatste 7 dagen)
+          trending <dagen>          (bv. "trending 14")
+        """
+        # Zelfde fallback-logica als _associaties(), zie uitleg daar.
+        wa = self.loader.loaded_modules.get("word_associations_learner")
+        if not wa:
+            wa = self.loader.loaded_modules.get("word_associations")
+        if not wa:
+            print(f"{C_RED}word_associations(_learner)-module niet gevonden.{C_RESET}")
+            return
+
+        delen = user_input.split()
+        window_days = 7
+        if len(delen) >= 2:
+            try:
+                window_days = int(delen[1])
+            except ValueError:
+                print(f"{C_RED}Gebruik: trending <dagen> (bv. 'trending 14'){C_RESET}")
+                return
+
+        print(f"{C_CYAN}--- Trending (laatste {window_days} dagen) ---{C_RESET}")
+        resultaten = wa.get_trending(window_days=window_days)
+        if not resultaten:
+            print(f"(geen recent actieve woorden binnen {window_days} dagen)")
+            return
+        for woord, score in resultaten:
+            print(f"  {woord}: {score:.2f}")
+
+    def _sentiment_woorden(self, user_input):
+        """
+        Toont Layer 1's get_positive_words()/get_negative_words().
+
+        BELANGRIJK — zelfde kanttekening als in get_word_sentiment()
+        zelf: dit is GEEN ML-sentimentmodel, enkel een simpele,
+        symbolische schatting op basis van twee vaste woordenlijsten.
+        Dit is bovendien bewust NIET de sentiment-bron die elders in
+        Nova gebruikt wordt (zie nova_state.md) — puur een los
+        opvraag-commando voor Layer 1's eigen inschatting.
+
+        Gebruik: sentiment woorden
+        """
+        wa = self.loader.loaded_modules.get("word_associations_learner")
+        if not wa:
+            wa = self.loader.loaded_modules.get("word_associations")
+        if not wa:
+            print(f"{C_RED}word_associations(_learner)-module niet gevonden.{C_RESET}")
+            return
+
+        positief = wa.get_positive_words()
+        negatief = wa.get_negative_words()
+
+        print(f"{C_CYAN}--- Positieve woorden (Layer 1) ---{C_RESET}")
+        if not positief:
+            print("(geen woorden boven de drempel)")
+        else:
+            for woord, score in positief:
+                print(f"  {woord}: {score:.2f}")
+
+        print(f"{C_CYAN}--- Negatieve woorden (Layer 1) ---{C_RESET}")
+        if not negatief:
+            print("(geen woorden boven de drempel)")
+        else:
+            for woord, score in negatief:
+                print(f"  {woord}: {score:.2f}")
 
     # ------------------------------------------------------------------
     # Wikipedia Teacher — ruw API-antwoord inspecteren (Bug #8-onderzoek,

@@ -51,6 +51,12 @@ def get_help():
   associaties <woord>            (alle opgeslagen associaties + sentiment voor dat woord)
   bridge <woord1> <woord2>       (brugwoorden tussen twee woorden: waar zijn ze
                                    allebei mee geassocieerd, en hoe sterk)
+  trending                       (welke woorden zijn recent actief, met extra
+                                   gewicht voor nieuwe woorden; standaard 7 dagen)
+  trending <dagen>                (idem, met een ander tijdvenster)
+  sentiment woorden               (Layer 1's eigen positieve/negatieve woordenlijst
+                                   — let op: dit is NIET de echte sentiment-bron
+                                   van Nova, puur Layer 1's simpele schatting)
 
 💛 USER PREFERENCES
   preferences debug              (profiel-aantallen, sentiment-classifier-status,

@@ -256,6 +256,7 @@ class EmergenceEngine:
                 "\"{concept}\" is het concept waarover ik de meeste verbanden ken: {aantal_relaties} stuks.",
                 "geen enkel ander concept heeft zoveel relaties als \"{concept}\" ({aantal_relaties}).",
                 "\"{concept}\" springt eruit qua kennis — {aantal_relaties} verbanden ernaartoe.",
+                "als ik moet kiezen waar ik het meeste vanaf weet, is het \"{concept}\" — {aantal_relaties} verbanden.",
             ],
             "afsluiting": [
                 "Tja.",
@@ -286,11 +287,14 @@ class EmergenceEngine:
                 "Zelfreflectie:",
                 "Ik zie dat ik zelf ook verander.",
                 "Dit valt me op over mijn eigen groei:",
+                "Even over mezelf nadenken:",
             ],
             "midden": [
                 "\"{trait}\" is bij mij het vaakst bijgesteld — {aantal_shifts} keer al.",
                 "van al mijn eigenschappen is \"{trait}\" het meest in beweging geweest, {aantal_shifts} keer.",
                 "ik verander het meest op het vlak van \"{trait}\" ({aantal_shifts} verschuivingen).",
+                "geen andere eigenschap schuift bij mij zo vaak als \"{trait}\" ({aantal_shifts} keer).",
+                "\"{trait}\" blijkt het meest bij te stellen zijn de laatste tijd — {aantal_shifts} keer.",
             ],
             "afsluiting": [
                 "Tja.",
