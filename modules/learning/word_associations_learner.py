@@ -658,6 +658,106 @@ class WordAssociationsLearner:
 
         return bruggen[:top_k]
 
+    def get_trending(self, window_days: int = 7, top_k: int = 10) -> List[tuple]:
+        """
+        Geeft de woorden terug waar Kevin de laatste tijd het meest
+        "mee bezig is" — puur symbolisch, gebaseerd op de bestaande
+        first_seen/last_seen/frequency-velden in word_stats. Geen ML.
+
+        Twee dingen tellen mee per woord:
+        1. Is het woord recent nog gebruikt? (last_seen binnen
+           window_days) — woorden die al lang niet meer vielen,
+           tellen sowieso niet mee.
+        2. Is het woord NIEUW in dit venster? (first_seen ook binnen
+           window_days) — een gloednieuw woord waar Kevin ineens veel
+           over praat, weegt zwaarder dan een oud/bekend woord dat
+           toevallig deze week ook nog eens viel.
+
+        Score = frequency x nieuwheid_factor, waarbij nieuwheid_factor
+        1.0 is voor een nieuw woord (first_seen binnen het venster) en
+        0.3 voor een al langer bekend woord (nog steeds actief, maar
+        minder prominent dan iets vers).
+
+        Voorbeeld:
+            get_trending(window_days=7)
+            -> [("neural_networks", 8.0), ("debugging", 3.5), ...]
+        """
+        nu = time.time()
+        venster_seconden = window_days * 86400
+
+        gescoord = []
+        for woord, stats in self.word_stats.items():
+            last_seen = stats.get("last_seen", 0)
+            if nu - last_seen > venster_seconden:
+                continue  # Niet recent meer actief
+
+            first_seen = stats.get("first_seen", last_seen)
+            is_nieuw = (nu - first_seen) <= venster_seconden
+            nieuwheid_factor = 1.0 if is_nieuw else 0.3
+
+            frequency = stats.get("frequency", 0)
+            score = frequency * nieuwheid_factor
+
+            gescoord.append((woord, score))
+
+        gescoord.sort(key=lambda x: x[1], reverse=True)
+        return gescoord[:top_k]
+
+    def get_positive_words(self, top_k: int = 10,
+                            min_score: float = 0.5) -> List[tuple]:
+        """
+        Geeft de woorden terug die volgens get_word_sentiment() het
+        sterkst positief scoren, MET hun score erbij (niet enkel het
+        kale woord) en met een minimumdrempel.
+
+        BELANGRIJK: dit voegt geen nieuwe sentiment-logica toe — het
+        is puur een opvraag-gemak bovenop de bestaande
+        get_word_sentiment(). Zoals daar al staat: dit is geen
+        sentiment-AI/ML-model, enkel een simpele symbolische schatting
+        op basis van twee vaste woordenlijsten + associaties.
+
+        Let op: get_word_sentiment() is bewust NIET de sentiment-bron
+        die elders in Nova gebruikt wordt (zie nova_state.md, en zie
+        sentiment_classifier.py voor de ECHTE sentiment-bron die
+        kevin_profile.py gebruikt) — deze methode geeft dus enkel een
+        los, opvraagbaar lijstje, geen nieuwe "sentiment-waarheid"
+        voor de rest van het systeem.
+
+        Waarom min_score=0.5 als standaard: zonder drempel komt bij
+        weinig data bijna elk woord met een verwaarloosbaar score'tje
+        (bv. 0.05) toch in de top_k terecht, puur om de lijst te
+        vullen — waardoor een woord soms zelfs in ZOWEL de positieve
+        als de negatieve lijst kan verschijnen. Met een drempel is de
+        lijst liever kort (of leeg) dan misleidend.
+
+        Voorbeeld:
+            get_positive_words()
+            -> [("snel", 0.9), ("mooi", 0.9)]
+        """
+        gescoord = [
+            (woord, self.get_word_sentiment(woord)["positive"])
+            for woord in self.word_stats
+        ]
+        gescoord = [(w, s) for w, s in gescoord if s >= min_score]
+        gescoord.sort(key=lambda x: x[1], reverse=True)
+        return gescoord[:top_k]
+
+    def get_negative_words(self, top_k: int = 10,
+                            min_score: float = 0.5) -> List[tuple]:
+        """
+        Geeft de woorden terug die volgens get_word_sentiment() het
+        sterkst negatief scoren, MET hun score erbij. Zie
+        get_positive_words() voor de volledige uitleg/kanttekening —
+        dit is het spiegelbeeld ervan.
+        """
+        gescoord = [
+            (woord, self.get_word_sentiment(woord)["negative"])
+            for woord in self.word_stats
+        ]
+        gescoord = [(w, s) for w, s in gescoord if s >= min_score]
+        gescoord.sort(key=lambda x: x[1], reverse=True)
+        return gescoord[:top_k]
+
     def get_word_sentiment(self, word: str) -> Dict[str, float]:
         """
         Schat in of een woord positief, negatief, of neutraal aanvoelt.
