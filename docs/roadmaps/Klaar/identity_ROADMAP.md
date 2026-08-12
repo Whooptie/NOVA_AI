@@ -1,4 +1,7 @@
 🧬 NOVA Identity Roadmap — v1.0
+
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
     Fase 1 — Blueprint Foundation (NU)
         De basisidentiteit van Nova wordt vastgelegd als een statisch document.
         🎯 Deliverables

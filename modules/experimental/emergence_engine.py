@@ -129,6 +129,47 @@ class EmergenceEngine:
         self.MIN_CO_OCCURRENCE_WOORDVERBAND = 5
 
         # ─────────────────────────────────
+        # Sjablonen — trending woord (Layer 1, get_trending())
+        # (11 augustus 2026, nova_state.md punt 6b, Layer 7-uitbreiding)
+        # ─────────────────────────────────
+        # BEWUST GEEN duplicaat van _sjablonen_woordverband hierboven:
+        # dat insight toont het STERKSTE verband over de HELE
+        # geschiedenis (verandert nauwelijks van dag tot dag); dit
+        # insight toont wat RECENT NIEUW/actief is (get_trending()'s
+        # nieuwheid_factor, zie word_associations_learner.py) — een
+        # complementair, sneller wisselend signaal.
+        self._sjablonen_trending = {
+            "opening": [
+                "Nog iets wat me opvalt.",
+                "Ik zie de laatste tijd iets terugkomen.",
+                "Weet je waar je de laatste tijd veel over praat, Kevin?",
+                "Dit valt me recent op.",
+            ],
+            "midden": [
+                "je hebt het de laatste tijd opvallend vaak over \"{woord}\".",
+                "\"{woord}\" komt de laatste dagen steeds terug in onze gesprekken.",
+                "\"{woord}\" lijkt momenteel iets waar je veel mee bezig bent.",
+            ],
+            "afsluiting": [
+                "Tja.",
+                "Gewoon een observatie.",
+                "Toevallig?",
+            ],
+        }
+
+        # Betrouwbaarheidsdrempel: hoeveel keer moet een woord recent
+        # ECHT gebruikt zijn vóór het als insight-KANDIDAAT meetelt
+        # (los van of het straks ook hardop gezegd mag worden, zie
+        # LAYER4_DREMPELS verderop) — zelfde soort tweetrapsopzet als
+        # MIN_CO_OCCURRENCE_WOORDVERBAND hierboven en
+        # MIN_RELATIES_VOOR_KENNISDICHTHEID verderop. Vaste,
+        # symbolische waarde, gekozen na controle tegen Kevin's echte
+        # get_trending()-data (11 augustus 2026): zijn top-10 liep van
+        # score 7 t/m 26, dus 5 filtert enkel eenmalige toevalstreffers
+        # weg zonder de echte top-10 te raken.
+        self.MIN_SCORE_VOOR_TRENDING = 5
+
+        # ─────────────────────────────────
         # Sjablonen — sterkste tijdspatroon (Layer 2)
         # ─────────────────────────────────
         self._sjablonen_tijdspatroon = {
@@ -355,6 +396,14 @@ class EmergenceEngine:
             "tijdspatroon": 0.85,
             "kennisdichtheid": 8,
             "personality_drift": 3,
+            # Aantal-gebaseerde schaal, zelfde soort als kennisdichtheid
+            # hierboven -- geen 0-1-confidence beschikbaar. Bewust hoger
+            # dan MIN_SCORE_VOOR_TRENDING (5): "kandidaat" is een lagere
+            # lat dan "hardop uitspreken", zelfde redenering als bij de
+            # andere insight-types. Gekozen na controle tegen Kevin's
+            # echte data (top-10 liep van 7 t/m 26) -- 10 laat dus enkel
+            # de sterkste 1-2 woorden ook echt hardop spreken.
+            "trending_topic": 10,
         }
 
         # ─────────────────────────────────
@@ -563,6 +612,86 @@ class EmergenceEngine:
             woord1=insight["woord1"], woord2=insight["woord2"]
         )
         afsluiting = random.choice(self._sjablonen_woordverband["afsluiting"])
+
+        return f"{opening} {midden} {afsluiting}"
+
+    # ─────────────────────────────────
+    # Insight-type: trending woord (Layer 1, get_trending())
+    # (11 augustus 2026, nova_state.md punt 6b, Layer 7-uitbreiding)
+    # ─────────────────────────────────
+
+    def analyze_trending_topic(self) -> Optional[Dict]:
+        """
+        Kijkt naar Layer 1 (word_associations_learner.py) en zoekt het
+        woord dat volgens get_trending() het sterkst RECENT actief is
+        (zie die methode zelf voor de volledige score-berekening:
+        frequency x nieuwheid_factor, standaard venster 7 dagen).
+
+        BEWUST GEEN duplicaat van analyze_topic_frequency() hierboven
+        — dat insight kijkt naar de STERKSTE associatie over de HELE
+        geschiedenis (een woordPAAR, verandert nauwelijks). Dit insight
+        kijkt naar een LOS woord dat recent is opgekomen of actief
+        gebleven is — een sneller wisselend, complementair signaal.
+
+        Betrouwbaarheidsgrens: MIN_SCORE_VOOR_TRENDING (5, zie
+        __init__ voor de onderbouwing tegen Kevin's echte data) --
+        een woord met een verwaarloosbare score telt niet mee als
+        kandidaat, ongeacht of get_trending() het al dan niet
+        teruggeeft (get_trending() zelf filtert enkel op window_days,
+        niet op score-hoogte).
+
+        Retourneert None als word_associations ontbreekt, get_trending()
+        niets teruggeeft, of geen enkel resultaat de betrouwbaarheids-
+        drempel haalt.
+        """
+        word_assoc = self.layers.get("word_associations")
+        if word_assoc is None:
+            return None
+
+        if not hasattr(word_assoc, "get_trending"):
+            return None
+
+        try:
+            trending = word_assoc.get_trending(window_days=7, top_k=10)
+        except Exception:
+            return None
+
+        if not trending:
+            return None
+
+        kandidaten = [
+            (woord, score) for woord, score in trending
+            if score >= self.MIN_SCORE_VOOR_TRENDING
+        ]
+        if not kandidaten:
+            return None
+
+        # get_trending() geeft al sterkste-eerst terug, maar niet
+        # aannemen -- expliciet opnieuw sorteren, zelfde defensieve
+        # houding als analyze_topic_frequency() hierboven.
+        kandidaten.sort(key=lambda x: x[1], reverse=True)
+        woord, score = kandidaten[0]
+
+        return {
+            "type": "trending_topic",
+            "woord": woord,
+            # Geen natuurlijke 0-1-confidence beschikbaar (zelfde
+            # situatie als kennisdichtheid) -- de ruwe score zelf
+            # dient als sterkte-indicator voor sortering/nazicht.
+            "confidence": score,
+        }
+
+    def _formuleer_trending(self, insight: Dict) -> str:
+        """
+        Bouwt een sjabloonzin voor een 'trending_topic'-insight.
+
+        Puur string-formatting op vaste tekstlijsten — geen generatie.
+        """
+        opening = random.choice(self._sjablonen_trending["opening"])
+        midden = random.choice(self._sjablonen_trending["midden"]).format(
+            woord=insight["woord"]
+        )
+        afsluiting = random.choice(self._sjablonen_trending["afsluiting"])
 
         return f"{opening} {midden} {afsluiting}"
 
@@ -845,6 +974,10 @@ class EmergenceEngine:
         if woordverband is not None:
             insights.append(woordverband)
 
+        trending_topic = self.analyze_trending_topic()
+        if trending_topic is not None:
+            insights.append(trending_topic)
+
         tijdspatroon = self.analyze_timing_pattern()
         if tijdspatroon is not None:
             insights.append(tijdspatroon)
@@ -924,6 +1057,8 @@ class EmergenceEngine:
         for insight in ruwe_insights:
             if insight["type"] == "woordverband":
                 tekst = self._formuleer_woordverband(insight)
+            elif insight["type"] == "trending_topic":
+                tekst = self._formuleer_trending(insight)
             elif insight["type"] == "tijdspatroon":
                 tekst = self._formuleer_tijdspatroon(insight)
             elif insight["type"] == "kennisdichtheid":

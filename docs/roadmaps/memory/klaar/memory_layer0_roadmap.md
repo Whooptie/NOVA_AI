@@ -1,5 +1,7 @@
 # Nova Memory Roadmap
 
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
 **Status:** Memory.py (Layer 0) fundament gebouwd, Layers 1-7 nog te implementeren  
 **Knowledge Cutoff:** Juni 2026  
 **Author:** Kevin (Brugge)  

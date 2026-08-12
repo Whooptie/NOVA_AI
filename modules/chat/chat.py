@@ -17,6 +17,7 @@ class ChatModule:
         event_bus.subscribe("intent_related_to_check", self.on_related_to_check)
         event_bus.subscribe("intent_compare_concepts", self.on_compare_concepts)
         event_bus.subscribe("intent_bridge_query", self.on_bridge_query)
+        event_bus.subscribe("intent_trending_query", self.on_trending_query)
         event_bus.subscribe("intent_parts_with_property", self.on_parts_with_property)
         event_bus.subscribe("intent_related_to", self.on_related_to)
         event_bus.subscribe("intent_synonym", self.on_synonym)
@@ -317,6 +318,48 @@ class ChatModule:
         overige = [w for w, _ in bruggen[1:]]
         if overige:
             msg += f" (en ook met: {', '.join(overige)})"
+
+        self.event_bus.publish("layer4_response", {"text": msg})
+
+    # -------------------------
+    # 3B3B2. Trending woorden (Layer 1, get_trending(), gekoppeld
+    # 11 augustus 2026, nova_state.md punt 6b, tweede deel)
+    # -------------------------
+    def on_trending_query(self, data, event_type=None):
+        """
+        Zelfde structuur/fallback-patroon als on_bridge_query()
+        hierboven. get_trending() heeft geen woord-argumenten nodig
+        (data is dus altijd leeg, {}), enkel een venster in dagen --
+        vaste 7 dagen hier, geen "trending 14"-achtige varianten in
+        het normale gesprek (dat blijft debugcommando-only).
+        """
+        word_assoc = self.event_bus.modules.get("word_associations_learner")
+        if word_assoc is None:
+            word_assoc = self.event_bus.modules.get("word_associations")
+
+        if word_assoc is None or not hasattr(word_assoc, "get_trending"):
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik kan nog niet bijhouden waar je de laatste tijd mee bezig bent."
+            })
+            return
+
+        try:
+            trending = word_assoc.get_trending(window_days=7, top_k=5)
+        except Exception:
+            trending = None
+
+        if not trending:
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik zie de laatste tijd nog geen duidelijk terugkerend onderwerp bij jou."
+            })
+            return
+
+        sterkste_woord, _ = trending[0]
+        msg = f"De laatste tijd praat je opvallend veel over '{sterkste_woord}'."
+
+        overige = [w for w, _ in trending[1:]]
+        if overige:
+            msg += f" (en ook over: {', '.join(overige)})"
 
         self.event_bus.publish("layer4_response", {"text": msg})
 

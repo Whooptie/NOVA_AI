@@ -1878,6 +1878,37 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Trending woorden ("waar leer ik nu over") — Layer 1
+    # get_trending(), gekoppeld 11 augustus 2026 (nova_state.md
+    # punt 6b, tweede deel na find_bridge()).
+    #
+    # BEWUST GEEN woord nodig in de triggerzin -- get_trending()
+    # heeft, anders dan find_bridge()/compare_concepts, geen 2
+    # (of zelfs 1) los woord als invoer nodig; het werkt over de
+    # HELE word_stats-dataset. Daarom hier gewone EXACTE/STARTSWITH-
+    # zinnen, geen regex met capture-groups.
+    # ---------------------------------------------------------
+    def detect_trending_query(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        trending_zinnen = [
+            "waar leer ik nu over",
+            "waar leer ik nu allemaal over",
+            "waar ben ik nu mee bezig",
+            "waar ben ik de laatste tijd mee bezig",
+            "wat heb ik je laatst geleerd",
+            "wat heb ik je de laatste tijd geleerd",
+            "waar praat ik de laatste tijd veel over",
+            "waarover praat ik de laatste tijd veel",
+        ]
+        if t in trending_zinnen:
+            dbg(f"{C_BLUE}→ trending_query: '{t}'{C_RESET}")
+            self.event_bus.publish("intent_trending_query", {})
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Multi-hop: onderdelen met een eigenschap ("welke onderdelen
     # van X zijn Y", "welke onderdelen van een X zijn Y") — idee #4
     # uit reasoning_engine_ideeen_roadmap.md.
@@ -2633,6 +2664,7 @@ class IntentRouter:
             ("related_to_check", self.detect_related_to_check),
             ("compare_concepts", self.detect_compare_concepts),
             ("bridge_query",     self.detect_bridge_query),
+            ("trending_query",   self.detect_trending_query),
             ("activity",         self.detect_activity),
             # preference_query VOOR preference (Fase 4 vóór Fase 3):
             # een VRAAG ("wat kan ik drinken?") moet niet per ongeluk

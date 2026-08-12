@@ -1,5 +1,7 @@
 # Memory Roadmap — 24/7 Daemon Addendum
 
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
 **Status:** Aanvulling op memory_layer0_roadmap.md  
 **Belangrijk:** Dit document WIJZIGT enkele keuzes uit de originele memory roadmap  
 **Reden:** Nova draait 24/7 (1 continue sessie), niet in losse chat-sessies  

@@ -1,8 +1,8 @@
 # Topic Events Roadmap: onderwerp-herkenning koppelen aan Layer 2
 
-**Status:** Ontwerp uitgewerkt, nog te bouwen
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
 **Depends on:** intent_router.py ✅, pattern_matcher.py (Layer 2) ✅
-**Gebruikt door:** Layer 4 (response_engine.py, nog te bouwen)
 **Datum:** 5 juli 2026
 
 ---
