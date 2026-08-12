@@ -1,7 +1,8 @@
 # Intent Classifier Roadmap: ML als specialist naast intent_router
 
-**Status:** Concept — nog niet gepland in bouwvolgorde
-**Depends on:** memory.py (Layer 0) ✅ Fase 1-4 klaar
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
+**Depends on:** memory.py (Layer 0)
 **Gebruikt door:** intent_router.py (als extra, optionele check)
 **Datum:** 4 juli 2026
 

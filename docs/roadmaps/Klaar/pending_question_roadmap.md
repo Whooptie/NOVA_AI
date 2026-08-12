@@ -1,5 +1,7 @@
 # Pending Question Roadmap: generiek "Nova wacht op antwoord"-mechanisme
 
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
 **Status:** ✅ VOLLEDIG GEBOUWD (bevestigd 29 juli 2026)
 **Depends on:** intent_router.py ✅, signal_classifier (Layer 6) ✅ reeds gebouwd
 **Vult aan:** `handle_confirmation()` (al jaren als "nog leeg" genoteerd), en generaliseert het scenario uit `interruption_learning_roadmap.md`

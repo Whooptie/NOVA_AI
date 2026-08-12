@@ -1,5 +1,7 @@
 # User Preferences Roadmap: Wat Nova over Kevin onthoudt
 
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
 **Status:** ✅ VOLLEDIG AFGEROND EN GETEST (Fase 1-4 op 25 juli 2026, sentiment-classifier + Layer 1-koppeling op 26 juli 2026) — zie `nova_state.md` voor de actuele status-tabel en `nova_changelog.md` voor de volledige bouwgeschiedenis. Dit document is NIET meer up-to-date als ontwerp van de huidige situatie — het beschrijft het ORIGINELE plan van 2 juli, vóór de v2-datastructuur en de ML-uitbreidingen. Bewaard als historische referentie voor de oorspronkelijke redenering (waarom apart van Layer 1, de eerste API-schets), niet als actuele documentatie.
 **Depends on:** memory.py (Layer 0) ✅ Fase 1-3 klaar
 **Gebruikt door:** Layer 4 (Response generation), `session_watcher.py` (activity-koppeling), `kandidaat_suggesties.py` (Layer 1-koppeling)

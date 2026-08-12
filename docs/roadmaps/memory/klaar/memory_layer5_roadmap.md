@@ -1,5 +1,7 @@
 # Layer 5 Roadmap: Context Manager
 
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
 **Status:** Ready to implement  
 **Depends on:** Layers 1-4, external sensors  
 **Used by:** Notification system, Interruption logic  

@@ -774,3 +774,38 @@ Laatste 2 van de 3 "nooit-gebouwde Advanced queries" uit `memory_layer1_roadmap.
 **Live getest en bevestigd in Nova:** `trending`/`trending 14` toonden zoals verwacht recente/nieuwe woorden uit Kevin's echte gesprekken. `sentiment woorden` toonde na de `min_score`-fix een schone, niet-overlappende lijst (`dank: 0.93`, `snel: 0.90`, `goed: 0.90`, `top: 0.90` positief; negatieve lijst leeg bij Kevin's huidige data — correct, geen bug, gewoon geen woord dat de drempel haalt).
 
 **Eindstand punt 6: volledig afgerond.** Alle 3 oorspronkelijke "Advanced queries" (`find_bridge()`, `get_trending()`, `get_positive_words()`/`get_negative_words()`) nu gebouwd, getest en bereikbaar via debugcommando's. Nieuw open vervolgpunt vastgelegd als punt 6b in `nova_state.md`: een echte gespreks-intent-koppeling (zoals destijds bij `find_bridge()` ook een apart vervolgpunt was) is bewust nog niet gebouwd.
+
+---
+
+## ✅ `get_trending()` gekoppeld aan Nova's echte gesprekslogica — punt 6b afgerond, reactief EN proactief (11 augustus 2026)
+
+Vervolg op de vorige entry. Anders dan bij `find_bridge()`'s punt 6b (waar bewust maar 1 van 2 opties gebouwd werd), zijn hier BEIDE kanten gebouwd in dezelfde sessie: een gespreks-intent (reactief) en een nieuw Layer 7-insight-type (proactief).
+
+**Deel A — Reactief: `detect_trending_query()` (`intent_router.py`) + `on_trending_query()` (`chat.py`).** Exact hetzelfde stramien als `find_bridge()`'s `bridge_query`-koppeling. Belangrijk verschil in ontwerp: `get_trending()` heeft, anders dan `find_bridge()`/`compare_concepts()`, GEEN los woord als invoer nodig — het werkt over de hele `word_stats`-dataset. Daarom een aparte, losse `detect_trending_query()` (niet binnen `detect_definition()`, geen prefix-conflict met "wat is ") met 8 vaste, EXACTE triggerzinnen ("waar leer ik nu over", "wat heb ik je laatst geleerd", ...) in plaats van een regex met capture-groups. Toegevoegd aan `_build_intent_tabel_deel2()` direct na `bridge_query` — de `_emit_topic()`-aanroep gebeurt hier automatisch via de tabel-lus in `route()`, geen risico om dat handmatig te vergeten (in tegenstelling tot een losse tak binnen `detect_definition()`, waar dat wel telkens apart moet).
+
+`on_trending_query()` volgt exact `on_bridge_query()`'s structuur: zelfde defensieve module-lookup (`word_associations_learner` met fallback op `word_associations`), zelfde "sterkste eerst, rest kort erachter"-format, zelfde stille afhandeling van een lege/ontbrekende module of een exceptie (geen crash, gewoon een nette voice-tekst).
+
+**Deel B — Proactief: 5e Layer 7-insight-type `analyze_trending_topic()` + `_formuleer_trending()` (`emergence_engine.py`).** Volgt het vaste stramien van de bestaande 4 insight-types (zie de `analyze_knowledge_density()`-sectie voor het meest vergelijkbare voorbeeld, ook een aantal-gebaseerde schaal zonder natuurlijke 0-1-confidence). Bewust geen duplicaat van het bestaande `analyze_topic_frequency()`-insight ("woordverband"): dat toont het STERKSTE verband over de HELE geschiedenis (verandert nauwelijks van dag tot dag), dit nieuwe insight toont wat RECENT actief/nieuw is (`get_trending()`'s nieuwheid_factor) — een complementair, sneller wisselend signaal.
+
+**Twee aparte drempels, bewust tegen Kevin's echte data gecontroleerd vóór het bouwen (dezelfde werkwijze als destijds bij `MIN_CO_OCCURRENCE_WOORDVERBAND`'s toevalstreffer-probleem):**
+
+- `MIN_SCORE_VOOR_TRENDING = 5` — of een woord ÜBERHAUPT als insight-kandidaat meetelt (analoog aan `MIN_CO_OCCURRENCE_WOORDVERBAND`/`MIN_RELATIES_VOOR_KENNISDICHTHEID`).
+- `LAYER4_DREMPELS["trending_topic"] = 10` — of het kandidaat-insight ook echt HARDOP gezegd mag worden. Bewust hoger dan `MIN_SCORE_VOOR_TRENDING`, zelfde redenering als overal elders: "noemenswaardig" is een lagere lat dan "hardop uitspreken".
+
+Beide waarden gekozen na controle tegen Kevin's echte `get_trending()`-uitvoer (top-10 liep van score 7 t/m 26) — Kevin's expliciete akkoord gevraagd en gekregen vóór het bouwen, i.p.v. de waarden blind te verzinnen.
+
+**`analyze_meta_patterns()` en `reflect()`'s sjabloon-dispatch uitgebreid** om het 5e insight-type mee te nemen — geen wijziging aan de bestaande confidence-gate (`_haalt_layer4_drempel()`) of timing-gate (`_mag_nu_spreken()`) nodig, die zijn al generiek genoeg voor een nieuw insight-type.
+
+**Testsuite, twee bestanden, samen 36 tests, ALLEMAAL gebouwd EN groen VÓÓR de live-test in Nova:**
+
+- `tests/test_trending_query.py` (20 tests) — `TestDetectTrendingQuery` (11, incl. een regressietest dat `bridge_query`-zinnen niet per ongeluk meematchen) en `TestOnTrendingQuery` (9 — module niet geladen, fallback-key, geen/1/meerdere resultaten, exceptie, module zonder de methode).
+- `tests/test_emergence_trending_topic.py` (16 tests) — `TestAnalyzeTrendingTopic` (8), `TestFormuleerTrending` (2), en `TestReflectMetAlleInsightTypes` (6). **Deze laatste groep volgt bewust de vaste procesregel sinds bug #22#22 (zie `nova_changelog.md`): een volledige `reflect()`-aanroep met ALLE insight-types tegelijk wordt getest, niet enkel het nieuwe insight-type geïsoleerd** — inclusief een expliciete test dat `trending_topic` naast het bestaande `woordverband`-insight verschijnt zonder conflicten, en dat de timing-gate (`context_manager.can_interrupt() == False`) het nieuwe insight-type net zo goed stilhoudt als de bestaande 4.
+
+**Live getest en bevestigd in Nova, beide delen tegelijk in dezelfde sessie:**
+
+- Reactief: "waar leer ik nu over" en "wat heb ik je laatst geleerd" gaven beide correct hetzelfde antwoord ("gitaar", plus 4 vervolgwoorden), via de tone-pipeline (`STYLE KEY: warm_normaal`).
+- Proactief: `emergence` toonde voortaan 5 insight-types i.p.v. 4, met `trending_topic` (confidence 26.00, "gitaar") die — terecht, 26 >= 10 — meteen hardop gezegd werd, naast de bestaande `woordverband`/`tijdspatroon`/`kennisdichtheid`/`personality_drift`. Herhaalde `emergence`-aanroepen bevestigden de sjabloonvariatie (`random.choice()` op opening/midden/afsluiting) werkt zoals bedoeld.
+
+**Klein, bewust NIET opgelost cosmetisch punt:** de reactieve antwoordtekst kan een dubbel leesteken tonen wanneer de haakjes-toevoeging ("... (en ook over: X, Y)") samenvalt met een uitroepteken dat de tone-pipeline/expression_injector erachter plakt (bv. "...)!"). Bestaat vermoedelijk ook al bij `on_bridge_query()`'s vergelijkbare format, dus geen nieuw probleem — Kevin's expliciete keuze om dit te laten staan, puur cosmetisch, geen functionele impact.
+
+**Eindstand punt 6b: volledig afgerond, beide invalshoeken gebouwd.** `get_trending()` nu bereikbaar via 3 ingangen: het bestaande debugcommando `trending [<dagen>]`, de nieuwe reactieve intent (8 triggerzinnen), en Nova's eigen proactieve initiatief via Layer 7. Nog open, bewust niet meegenomen (zie nova_state.md): `get_positive_words()`/`get_negative_words()`'s gespreks-koppeling, en `find_bridge()` proactief via Layer 7.

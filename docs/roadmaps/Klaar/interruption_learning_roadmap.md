@@ -1,6 +1,7 @@
 # Activity-Aware Interaction Roadmap: leren wanneer/hoe/wat Nova rond een activiteit mag zeggen
 
-**Status:** Concept — nog niet ingepland in bouwvolgorde
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
 **Depends on:** Activity Awareness Deel A (activity_started-events), Layer 2 (pattern_matcher.py, tel-mechanisme), Layer 5 (Context Manager, gebruikt de uitkomst). Deel 4 (contextuele suggesties) hangt bovendien af van Activity Awareness Deel C en, voor "alledaagse" acties, van een aparte sensor/integratie-laag (zie Deel 4).
 **Gebruikt door:** Layer 4 (response_engine.py) — kiest sjabloon op basis van confidence
 **Datum:** 9 juli 2026

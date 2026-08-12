@@ -1,5 +1,7 @@
 # Layer 1 Roadmap: Word Associations Learner
 
+**Status: VOLLEDIG AFGEROND — zie nova_changelog.md en nova_state.md voor details**
+
 **Status:** Ready to implement  
 **Depends on:** memory.py (Layer 0) ✅  
 **Used by:** Layer 3 (Semantic), Layer 4 (Response generation)  
