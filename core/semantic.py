@@ -652,7 +652,8 @@ class RelationEngine:
         concept.setdefault("audit_log", []).append(entry)
 
     def add_relation(self, subject: str, relation_type: str,
-                     target: str, sense_id: Optional[str] = None) -> bool:
+                     target: str, sense_id: Optional[str] = None,
+                     source: str = "user", confidence: float = 1.0) -> bool:
 
         subject = subject.lower().strip()
         target = target.lower().strip()
@@ -683,17 +684,16 @@ class RelationEngine:
         rel_obj = {
             "type": relation_type,
             "target": target,
-            "confidence": 1.0,
-            "source": "user",
-            # Trust state (punt 3, 6 augustus 2026): add_relation() wordt
-            # altijd met source="user" opgeslagen (zie hierboven -- geen
-            # source-parameter, dus elke aanroeper komt via de confirm-
-            # flow van een mens). Status is hier dus altijd confirmed.
-            # Mocht add_relation() ooit een source-parameter krijgen
-            # (bv. voor auto_extract_is_a), dan moet deze regel mee
-            # veranderen naar dezelfde "user" → confirmed / anders →
-            # unverified-regel als bij add_sense().
-            "status": "confirmed",
+            "confidence": confidence,
+            "source": source,
+            # Trust state (punt 3, 6 augustus 2026; source-parameter
+            # toegevoegd 13 augustus 2026): zelfde regel als
+            # SenseEngine.add_sense() -- een bevestiging door Kevin
+            # ("user") is confirmed, elke andere bron (auto,
+            # auto_extract, wikipedia, ...) is unverified. Bestaande
+            # aanroepers die geen source meegeven vallen terug op de
+            # default "user", dus hun gedrag verandert niet.
+            "status": "confirmed" if source == "user" else "unverified",
             "created_at": datetime.utcnow().isoformat()
         }
         sense["relations"].append(rel_obj)
@@ -2161,8 +2161,12 @@ class SemanticConceptsModule:
         return self.sense_engine.detect_sense(word, context_words)
 
 
-    def add_relation(self, subject, relation_type, target):
-        return self.relation_engine.add_relation(subject, relation_type, target)
+    def add_relation(self, subject, relation_type, target, sense_id=None,
+                     source="user", confidence=1.0):
+        return self.relation_engine.add_relation(
+            subject, relation_type, target,
+            sense_id=sense_id, source=source, confidence=confidence
+        )
 
     def get_relations(self, word, relation_type=None):
         return self.relation_engine.get_relations(word, relation_type)

@@ -124,6 +124,23 @@ class ModuleLoader:
             if group == "debug":
                 continue
 
+            # topic_suggestions wordt hierna handmatig geladen (stap
+            # 3E-2, met pattern_matcher/context_manager i.p.v. "sem").
+            # LET OP: dit NIET via "group" uitsluiten zoals debug
+            # hierboven — topic_suggestions.py zit in modules/knowledge/,
+            # samen met contradiction_checker.py en concept_overview.py,
+            # die WEL gewoon via deze generieke lus moeten blijven
+            # lopen. Daarom specifiek op bestandsnaam (mod) filteren,
+            # niet op de hele groep. Zonder deze uitsluiting zou de
+            # generieke lus hieronder init_module(event_bus, sem)
+            # aanroepen -- dat geeft GEEN TypeError (pattern_matcher/
+            # context_manager hebben allebei een default), dus de
+            # fallback op regel 142 zou NIET inspringen: er zou stil
+            # een verkeerde instantie ontstaan (sem als pattern_matcher
+            # doorgegeven), die pas later crasht in check_suggesties().
+            if mod == "topic_suggestions":
+                continue
+
             module = importlib.import_module(full_name)
 
             # Sla over als er geen init_module is (bv. subpackages zoals topics)
@@ -291,6 +308,29 @@ class ModuleLoader:
         emergence.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["emergence_engine"] = emergence
         self.event_bus.register_module("emergence_engine", emergence)
+
+        # ----------------------------------------------------
+        # 3E-2. TOPIC SUGGESTIONS (punt 7, topic_events_roadmap.md Fase 5)
+        # ----------------------------------------------------
+        # Handmatig geladen net als context_manager/emergence_engine
+        # hierboven, omdat de signature afwijkt van het gebruikelijke
+        # init_module(event_bus, sem)-patroon: TopicSuggestions heeft
+        # pattern_matcher EN context_manager nodig, geen "sem". Zou via
+        # de generieke dynamische scan (stap 3) verkeerd geladen worden
+        # (sem zou als pattern_matcher-argument doorgegeven worden).
+        # Moet NA context_manager staan (stap 3C hierboven), zodat
+        # loaded_modules["context_manager"] al bestaat.
+        from modules.knowledge import topic_suggestions
+
+        start = time.time()
+        topic_sugg = topic_suggestions.init_module(
+            self.event_bus,
+            pattern_matcher=self.loaded_modules.get("pattern_matcher"),
+            context_manager=self.loaded_modules.get("context_manager"),
+        )
+        topic_sugg.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["topic_suggestions"] = topic_sugg
+        self.event_bus.register_module("topic_suggestions", topic_sugg)
 
         # ----------------------------------------------------
         # 3F. DEBUG COMMANDS

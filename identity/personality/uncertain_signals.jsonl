@@ -496,3 +496,4 @@
 {"text": "bridge python kunst", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0067, "bron": "model_fallback", "tijdstip": "2026-08-09T21:45:58.380452"}
 {"text": "waar leer ik nu over", "signaal": "focus", "model_signaal": "focus", "marge": 0.0618, "bron": "model_fallback", "tijdstip": "2026-08-12T22:09:10.176944"}
 {"text": "wat heb ik je laatst geleerd", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0835, "bron": "model_fallback", "tijdstip": "2026-08-12T22:09:20.501958"}
+{"text": "hye", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-14T19:20:43.546054"}

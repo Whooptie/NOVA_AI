@@ -60,6 +60,8 @@ class DebugCommands:
             (lambda t: t == "intent retrain", self._intent_retrain),
             (lambda t: t.startswith("wiki debug"), self._wiki_debug),
             (lambda t: t == "contradicties", self._contradicties),
+            (lambda t: t == "topic suggesties", self._topic_suggesties),
+            (lambda t: t == "topic suggesties forceer", self._topic_suggesties_forceer),
         ]
 
         event_bus.subscribe("debug_command", self.handle_debug_command)
@@ -205,6 +207,53 @@ class DebugCommands:
             status = "al eerder gemeld aan Kevin" if al_gemeld else "nog niet gemeld"
             print(f"{C_CYAN}  '{woord}': {c['reason']} ({status}){C_RESET}")
             print(f"{C_CYAN}    Oplossen: weerleg: {woord} is_a {a}   OF   weerleg: {woord} is_a {b}{C_RESET}")
+
+    # ------------------------------------------------------------------
+    # Punt 7 — Topic Suggestions (topic_events_roadmap.md Fase 5)
+    # ------------------------------------------------------------------
+
+    def _topic_suggesties(self, user_input):
+        """
+        Toont per gewhitelist topic de huidige status (patroon actief?
+        mag onderbreken? al voorgesteld dit uur?), ZONDER de
+        spam-preventie-state te wijzigen of een echte layer4_response
+        te versturen. Analoog aan 'contradicties' hierboven.
+        """
+        module = self.loader.loaded_modules.get("topic_suggestions")
+        if not module:
+            print(f"{C_RED}topic_suggestions-module niet gevonden.{C_RESET}")
+            return
+
+        statussen = module.status_nu()
+        if not statussen:
+            print(f"{C_CYAN}Geen topics in de whitelist.{C_RESET}")
+            return
+
+        print(f"{C_CYAN}--- Topic suggesties, huidige status ---{C_RESET}")
+        for s in statussen:
+            print(
+                f"{C_CYAN}  '{s['topic']}' ({s['event_type']}): "
+                f"patroon actief={s['patroon_actief']}, "
+                f"mag onderbreken={s['mag_onderbreken']}, "
+                f"al voorgesteld dit uur={s['al_voorgesteld_dit_uur']} "
+                f"-> zou nu spreken: {s['zou_nu_spreken']}{C_RESET}"
+            )
+
+    def _topic_suggesties_forceer(self, user_input):
+        """
+        Roept check_suggesties() ECHT aan (i.p.v. te wachten op
+        TOPIC_SUGGESTIONS_CHECK_INTERVAL_MINUTEN in main.py's
+        achtergrond_loop()) -- publiceert dus een echte layer4_response
+        als er een geschikt topic is, en wijzigt de spam-preventie-
+        state net als de echte achtergrondcheck dat zou doen.
+        """
+        module = self.loader.loaded_modules.get("topic_suggestions")
+        if not module:
+            print(f"{C_RED}topic_suggestions-module niet gevonden.{C_RESET}")
+            return
+
+        print(f"{C_CYAN}check_suggesties() wordt geforceerd...{C_RESET}")
+        module.check_suggesties()
 
     # ------------------------------------------------------------------
     # Layer 0 — Memory
