@@ -165,6 +165,18 @@ INTENT_CLASSIFIER_RETRAIN_INTERVAL_MINUTEN = 240
 # spam-risico, enkel hoe snel een nieuw conflict ontdekt wordt.
 CONTRADICTION_CHECK_INTERVAL_MINUTEN = 15
 
+# Punt 7 (topic_events_roadmap.md Fase 5, 13 augustus 2026): hoe vaak
+# topic_suggestions.py checkt of er een geschikt moment is om een
+# tijdstip-gebaseerde topic-suggestie te doen (bv. "wil je een potje
+# schaken?"). Zelfde soort lichte, pure Python-berekening als
+# emergence_engine.reflect() en contradiction_checker hierboven (geen
+# webcam, geen externe API) -- vandaar een vergelijkbare interval.
+# Eigen spam-preventie zit al IN de module zelf (data/
+# topic_suggestion_state.json, onthoudt per topic het laatst
+# voorgestelde uur/dag), dus een kortere interval verhoogt geen
+# spam-risico, enkel hoe snel een geschikt moment ontdekt wordt.
+TOPIC_SUGGESTIONS_CHECK_INTERVAL_MINUTEN = 10
+
 
 def achtergrond_loop(loader):
     """
@@ -308,6 +320,19 @@ def achtergrond_loop(loader):
                     contradiction_checker.check_contradictions()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in contradiction_checker.check_contradictions(): {e}")
+
+        # Punt 7 (topic_events_roadmap.md Fase 5, 13 augustus 2026):
+        # periodiek checken of er een geschikt moment is voor een
+        # tijdstip-gebaseerde topic-suggestie. Eigen spam-preventie zit
+        # in de module zelf -- net als bij emergence_engine/
+        # contradiction_checker hierboven, geen extra risico op spam.
+        if aantal_loops % TOPIC_SUGGESTIONS_CHECK_INTERVAL_MINUTEN == 0:
+            topic_suggestions = loader.loaded_modules.get("topic_suggestions")
+            if topic_suggestions:
+                try:
+                    topic_suggestions.check_suggesties()
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in topic_suggestions.check_suggesties(): {e}")
 
 def main():
     global wachten_op_input

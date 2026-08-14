@@ -2,7 +2,8 @@
   "aartrijke": {
     "datum": "2026-08-11",
     "temp": 21,
-    "laatste_waarschuwing_tekst": null
+    "laatste_waarschuwing_tekst": null,
+    "laatste_waarschuwing_datum": "2026-08-14"
   },
   "brugge": {
     "laatste_waarschuwing_tekst": "Let op: het wordt erg warm.",

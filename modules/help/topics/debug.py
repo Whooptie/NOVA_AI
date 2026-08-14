@@ -17,6 +17,14 @@ def get_help():
                                            toont ALLE conflicten inclusief al eerder
                                            gemelde — wijzigt de spam-preventie niet)
 
+🎲 TOPIC SUGGESTIONS (punt 7, topic_events_roadmap.md Fase 5)
+  topic suggesties                       (toont per gewhitelist topic: patroon actief?
+                                           mag onderbreken? al voorgesteld dit uur?
+                                           — puur informatief, wijzigt niets)
+  topic suggesties forceer               (roept check_suggesties() ECHT aan — publiceert
+                                           een echte layer4_response als er een geschikt
+                                           topic is, en wijzigt de spam-preventie-state)
+
 🧠 LAYER 0 — MEMORY
   onderhoud                     (forceert een onderhoudsronde: archiveren/comprimeren/VACUUM)
   geheugen stats                (memory-statistieken, gebruikt cache indien < 120 sec oud)

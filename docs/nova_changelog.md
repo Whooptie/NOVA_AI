@@ -207,7 +207,7 @@ Drempelwaarden (0.8/0.2) bewust symmetrisch gekozen, besproken met Kevin — ver
 
 ---
 
-## Per-woord-timing (Layer 4/Layer 2-koppeling) — afgerond (23 juli 2026)
+## ✅ Per-woord-timing (Layer 4/Layer 2-koppeling) — afgerond (23 juli 2026)
 
 Loste de tot dan toe genoteerde beperking op: `response_engine.py`'s timing-hint gebruikte enkel het generieke topic `"definitie"` voor ALLE definitievragen samen. Vanaf nu krijgt elk woord zijn eigen `topic_detected:definitie_<woord>`-teller in Layer 2.
 
@@ -809,3 +809,50 @@ Beide waarden gekozen na controle tegen Kevin's echte `get_trending()`-uitvoer (
 **Klein, bewust NIET opgelost cosmetisch punt:** de reactieve antwoordtekst kan een dubbel leesteken tonen wanneer de haakjes-toevoeging ("... (en ook over: X, Y)") samenvalt met een uitroepteken dat de tone-pipeline/expression_injector erachter plakt (bv. "...)!"). Bestaat vermoedelijk ook al bij `on_bridge_query()`'s vergelijkbare format, dus geen nieuw probleem — Kevin's expliciete keuze om dit te laten staan, puur cosmetisch, geen functionele impact.
 
 **Eindstand punt 6b: volledig afgerond, beide invalshoeken gebouwd.** `get_trending()` nu bereikbaar via 3 ingangen: het bestaande debugcommando `trending [<dagen>]`, de nieuwe reactieve intent (8 triggerzinnen), en Nova's eigen proactieve initiatief via Layer 7. Nog open, bewust niet meegenomen (zie nova_state.md): `get_positive_words()`/`get_negative_words()`'s gespreks-koppeling, en `find_bridge()` proactief via Layer 7.
+
+---
+
+## ✅ `add_relation()` — source/confidence-parameter toegevoegd (13 augustus 2026)
+
+Laatste openstaande stuk van "Volgende stappen" punt 4 (het overige deel — `status` correct afleiden bij `add_sense()`/`_teach_word()` — was al op 6 augustus 2026 afgerond als bijvangst van de trust-state-migratie). `RelationEngine.add_relation()` had nog steeds geen `source`-parameter en sloeg elke relatie hardgecodeerd op als `confidence: 1.0`/`source: "user"`/`status: "confirmed"`, ongeacht wie de aanroeper eigenlijk was.
+
+**Gebouwd, `core/semantic.py`:**
+
+- `RelationEngine.add_relation(subject, relation_type, target, sense_id=None, source="user", confidence=1.0)` — twee nieuwe optionele parameters, default zodanig gekozen dat bestaande aanroepen exact hetzelfde gedrag behouden. `status` wordt nu afgeleid met dezelfde regel als `SenseEngine.add_sense()`: `source == "user"` → `confirmed`, alles anders → `unverified`.
+- De tweede, kortere `add_relation()`-facade verderop in hetzelfde bestand (de doorgeefmethode die `relation_engine.add_relation()` aanroept) kreeg dezelfde drie nieuwe parameters, en geeft ze nu correct door — zonder deze aanpassing zou een toekomstige aanroeper via de facade nooit bij de nieuwe functionaliteit kunnen, ook al zou `RelationEngine` het al ondersteunen.
+
+**Bevestigd: geen enkele bestaande aanroeper geraakt.** Nagekeken in `core/semantic.py` zelf: enkel twee plekken roepen `add_relation()` aan (`handle_confirm()` en de facade-wrapper), geen van beide geeft `source` mee — beide vallen dus terug op de nieuwe default `"user"`. Ook `wikipedia_teacher.py`, `concept_overview.py` en `contradiction_checker.py` nagekeken: geen van de drie roept `add_relation()` aan, dus geen van deze bestanden hoefde aangepast te worden.
+
+**Testsuite: `tests/test_add_relation_source.py` (8 tests), gebouwd EN groen vóór afronding.** `TestAddRelationBestaandGedragOngewijzigd` (2 — default source blijft "user", `sense_id` werkt nog zoals voorheen), `TestAddRelationMetSource` (4 — `source="user"` → confirmed, `source="auto"`/`"wikipedia"` → unverified, confidence wordt correct doorgegeven), `TestAddRelationDuplicateCheckBlijftWerken` (1 — een duplicate met andere source/confidence overschrijft de bestaande relatie niet), `TestAddRelationFacadeWrapper` (1 — sense_id/source/confidence worden correct doorgegeven via de facade).
+
+**Resultaat: `pytest tests/test_add_relation_source.py -v` → 8 passed**, bevestigd op Kevin's eigen Windows-installatie.
+
+**Eindstand punt 4: volledig afgerond.** Een toekomstige aanroeper (bv. een ooit te bouwen `auto_extract`-relatie-module, zie de code-commentaar die destijds al op deze uitbreiding vooruitliep) kan voortaan `source="auto"` meegeven en krijgt automatisch de juiste `unverified`-status — zonder dat bestaande code ergens aangepast moest worden.
+
+---
+
+## ✅ Punt 7 — Topic Suggestions: proactieve, tijdstip-gebaseerde suggesties (topic_events_roadmap.md Fase 5, 13 augustus 2026)
+
+Laatste openstaande gat in de topic-events-keten (Fase 1-4 waren al volledig af sinds 29 juli 2026): Nova die ONGEVRAAGD een sjabloonzin uitspreekt op basis van een topic-tijdspatroon, bv. "Het is 19u, wil je een potje schaken?" omdat dat het gebruikelijke moment is.
+
+**Nieuwe module: `modules/knowledge/topic_suggestions.py`.** `TopicSuggestions.check_suggesties()` loopt over een eigen, bewust kleine `TOPIC_WHITELIST` (voorlopig enkel `{"chess"}`) en checkt per topic `pattern_matcher.is_pattern_active("topic_detected:<naam>")` + `context_manager.can_interrupt()`. Bij een match: publiceert de sjabloonzin naar `layer4_response`, en onthoudt het uur/de dag in een eigen state-bestand (`data/topic_suggestion_state.json`) zodat hetzelfde topic niet elke minuut opnieuw voorgesteld wordt binnen hetzelfde uur.
+
+**Bewust een NIEUWE, eigen `_topic_naam_labels`-tabel, niet emergence_engine.py's bestaande tabel hergebruikt.** Die bestaande tabel bevat ook topics (`weer`, `rekenen`, `definities`) waarvoor "wil je een potje X?" nooit gepast zou zijn — een eigen, kleinere tabel voorkomt dat een toekomstige toevoeging aan de ándere tabel hier per ongeluk ook een ongepaste suggestie zou triggeren. Whitelist-principe (zelfde reden als `INSIGHT_WAARDIGE_ACTIVITEITEN`, 30 juli 2026): nieuwe topics (Plex, dammen, Go, ...) zijn standaard UITGESLOTEN totdat Kevin ze hier bewust toevoegt.
+
+**Bewust NIET meegenomen: "coderen" als suggestie.** Expliciet overwogen tijdens het ontwerp — `coderen` bestaat enkel als `activity_started:coderen` (afgeleid uit het actieve venster), niet als `topic_detected:coderen` (een expliciete uitspraak van Kevin). "Wil je coderen?" zou bovendien raar klinken als trigger juist ontstaat *omdat* Kevin al aan het coderen is. Andere soort event, ander soort vraagvorm — bewust buiten deze module gehouden.
+
+**Koppeling `main.py`:** nieuwe constante `TOPIC_SUGGESTIONS_CHECK_INTERVAL_MINUTEN = 10` + een nieuw blok in `achtergrond_loop()`, exact hetzelfde patroon als `contradiction_checker`/`emergence_engine` hierboven (eigen spam-preventie zit al in de module zelf, dus een kortere interval verhoogt geen spam-risico).
+
+**Koppeling `module_loader.py` — twee wijzigingen, niet één.** `TopicSuggestions` heeft `pattern_matcher` én `context_manager` nodig, geen `sem` — zou dus via de generieke dynamische scan verkeerd geladen worden (`sem` zou als `pattern_matcher`-argument doorgegeven worden, wat GEEN `TypeError` geeft omdat beide parameters een default hebben, en dus stil een foute instantie zou opleveren die pas later crasht). Twee aanpassingen nodig: (1) een expliciete uitsluiting op bestándsnaam (`if mod == "topic_suggestions": continue`) in de generieke lus — bewust NIET op `group` zoals bij `debug_commands`, want `modules/knowledge/` bevat ook `contradiction_checker.py`/`concept_overview.py` die wél gewoon via de generieke scan moeten blijven lopen; (2) een nieuwe, handmatige laadstap (3E-2) na Emergence Engine, vóór Debug Commands, die `pattern_matcher`/`context_manager` expliciet uit `loaded_modules` haalt en doorgeeft.
+
+**Nieuw, niet-destructief debug-commando: `topic suggesties`.** Nieuwe methode `status_nu()` in `topic_suggestions.py` toont per gewhitelist topic de huidige status (patroon actief? mag onderbreken? al voorgesteld dit uur? zou nu spreken?) zonder de spam-preventie-state te wijzigen of iets te publiceren — analoog aan `contradiction_checker.alle_contradicties_nu()`. Apart commando `topic suggesties forceer` roept `check_suggesties()` écht aan (publiceert een echte `layer4_response` als er een geschikt moment is, wijzigt de state net als de echte achtergrondcheck). `modules/help/topics/debug.py` aangevuld met beide.
+
+**Testsuite: `tests/test_topic_suggestions.py` (25 tests), gebouwd EN groen vóór en na de live-koppeling.** `TestCheckSuggestiesGeenPatternMatcher` (1), `TestCheckSuggestiesActiefPatroon` (2), `TestCheckSuggestiesTimingGate` (2 — incl. het "nooit stiller dan voorheen"-principe bij ontbrekende context_manager), `TestCheckSuggestiesSpamPreventie` (3), `TestCheckSuggestiesWhitelist` (1), `TestCheckSuggestiesExceptieAfhandeling` (1), `TestSjabloonVoor` (2), `TestStatusNu` (10 — de nieuwe read-only statusmethode), `TestInitModule` (1). Pattern_matcher/context_manager als lichte stubs (`StubPatternMatcher`/`StubContextManager`), geen echte zwaardere implementaties nodig voor deze isolatie-tests.
+
+**Resultaat: `pytest tests/` → 292 passed (waaronder alle 25 nieuwe), geen regressies.** Bevestigd op Kevin's eigen Windows-installatie, inclusief de volledige bestaande testsuite ernaast.
+
+**Live getest en bevestigd in Nova (13 augustus 2026):** opstart toont `[TopicSuggestions] module geladen` en `[ OK ] topic_suggestions (1 ms)` — de handmatige module_loader-stap werkt correct. Debug-commando `topic suggesties` toont correct `patroon actief=False, mag onderbreken=False` (Kevin was op dat moment actief aan het typen, en er was nog geen genoeg observaties op dat exacte uur) — eerlijk, verwacht gedrag, geen bug. `topic suggesties forceer` deed terecht niets zichtbaars zolang `patroon_actief=False` (stopt bij de eerste check in `check_suggesties()`). Volledige eind-tot-eind-flow (een échte, hoorbare "wil je een potje schaken?"-melding) nog niet live gezien — vereist genoeg schaak-observaties op hetzelfde uur, wat pas met verder, echt gebruik vanzelf ontstaat.
+
+**Bekende, bewust ONgekoppelde afhankelijkheid met punt 2 (fijner tijdsraster in Layer 2, nog niet ingepland):** `topic_suggestions.py`'s spam-preventie-sleutel (`f"{vandaag}:{huidig_uur}"`) is hardgecodeerd op uur-niveau. Mocht punt 2 ooit gebouwd worden (additief, zoals daar al vastgelegd), zou `topic_suggestions.py` daar NIET automatisch van meeprofiteren — een fijnere "om het half uur"-suggestie zou een apart, klein vervolgstukje in deze module zelf vereisen. Kanttekening toegevoegd op beide plekken in `nova_state.md` (punt 2 zelf + de uitgebreide "Idee (nog niet ingepland)"-sectie) zodat dit niet vergeten wordt.
+
+**Eindstand punt 7: volledig afgerond.** Topic-events-keten nu compleet van Fase 1 t/m 5: elke herkende intent publiceert een topic, Layer 2 telt het, en Nova kan er — mits genoeg data en een geschikt moment — nu ook zelf ongevraagd op terugkomen.

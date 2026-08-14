@@ -228,3 +228,4 @@
 {"timestamp": "2026-08-09T17:16:20.900651", "event_type": "concept_created", "word": "welke onderdelen van keuken", "source": "system", "new_value": {"word": "welke onderdelen van keuken"}}
 {"timestamp": "2026-08-09T19:45:58.424642", "event_type": "concept_created", "word": "bridge", "source": "system", "new_value": {"word": "bridge"}}
 {"timestamp": "2026-08-09T19:45:58.469058", "event_type": "concept_created", "word": "kunst", "source": "system", "new_value": {"word": "kunst"}}
+{"timestamp": "2026-08-14T17:20:43.588605", "event_type": "concept_created", "word": "hye", "source": "system", "new_value": {"word": "hye"}}
