@@ -77,3 +77,6 @@
 {"tekst": "is een [onbekend woord] een dier", "hoogste_gok": "chess", "confidence": 0.1613, "tijdstip": "2026-08-09T18:34:41.540805"}
 {"tekst": "bridge python kunst", "hoogste_gok": "chess", "confidence": 0.1371, "tijdstip": "2026-08-09T21:45:58.422641"}
 {"tekst": "hye", "hoogste_gok": "chess", "confidence": 0.1371, "tijdstip": "2026-08-14T19:20:43.586607"}
+{"tekst": "gisteren liep ik naar de winkel", "hoogste_gok": "preference", "confidence": 0.1511, "tijdstip": "2026-08-15T20:25:32.850141"}
+{"tekst": "gisteren liep ik ook door het bos", "hoogste_gok": "weather", "confidence": 0.1746, "tijdstip": "2026-08-15T20:26:09.430825"}
+{"tekst": "gisteren ging ik naar de winkel", "hoogste_gok": "chess", "confidence": 0.1399, "tijdstip": "2026-08-15T20:32:53.512974"}

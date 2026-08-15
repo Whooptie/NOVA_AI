@@ -530,6 +530,87 @@ class SenseEngine:
 
         return scores[0][0]
 
+    # Werkpunt 6 (15 augustus 2026): onregelmatige Nederlandse
+    # werkwoordsvormen die GEEN enkele reguliere regel volgen (dus
+    # niet via de klinkerverdubbelingsregel/vervoeging-afkappingen
+    # hieronder te vinden zijn). Vaste, symbolische lookup-tabel --
+    # zelfde aanpak als TeachEngine.IRREGULAR_PLURALS hieronder in dit
+    # bestand. Bewust beperkt tot de meest voorkomende/hoogfrequente
+    # basiswerkwoorden (~tegenwoordige tijd enkelvoud, verleden tijd
+    # enkelvoud/meervoud, voltooid deelwoord waar dat vaak voorkomt in
+    # spreektaal) -- geen poging tot volledige dekking van alle
+    # Nederlandse sterke werkwoorden, dat zou honderden ingangen vergen
+    # voor afnemende praktische winst. Uitbreidbaar: gewoon een regel
+    # toevoegen zodra Kevin een gemist woord tegenkomt.
+    IRREGULAR_VERBS = {
+        # zijn
+        "ben": "zijn", "bent": "zijn", "is": "zijn", "zijn": "zijn",
+        "was": "zijn", "waren": "zijn", "geweest": "zijn",
+        # hebben
+        "heb": "hebben", "hebt": "hebben", "heeft": "hebben",
+        "had": "hebben", "hadden": "hebben", "gehad": "hebben",
+        # gaan
+        "ga": "gaan", "gaat": "gaan", "ging": "gaan", "gingen": "gaan",
+        "gegaan": "gaan",
+        # staan
+        "sta": "staan", "staat": "staan", "stond": "staan",
+        "stonden": "staan", "gestaan": "staan",
+        # doen
+        "doe": "doen", "doet": "doen", "deed": "doen", "deden": "doen",
+        "gedaan": "doen",
+        # zien
+        "zie": "zien", "ziet": "zien", "zag": "zien", "zagen": "zien",
+        "gezien": "zien",
+        "kom": "komen", "komt": "komen", "kwam": "komen",
+        "kwamen": "komen", "gekomen": "komen",
+        # kunnen/mogen/moeten/willen/zullen (modale werkwoorden)
+        "kan": "kunnen", "kun": "kunnen", "kunt": "kunnen",
+        "kon": "kunnen", "konden": "kunnen", "gekund": "kunnen",
+        "mag": "mogen", "mocht": "mogen", "mochten": "mogen",
+        "gemogen": "mogen",
+        "moet": "moeten", "moest": "moeten", "moesten": "moeten",
+        "gemoeten": "moeten",
+        "wil": "willen", "wilt": "willen", "wilde": "willen",
+        "wou": "willen", "wilden": "willen", "gewild": "willen",
+        "zal": "zullen", "zult": "zullen", "zou": "zullen",
+        "zouden": "zullen",
+        # geven/nemen/vinden/spreken/schrijven/lezen (vaak gebruikt)
+        "geef": "geven", "geeft": "geven", "gaf": "geven",
+        "gaven": "geven", "gegeven": "geven",
+        "neem": "nemen", "neemt": "nemen", "nam": "nemen",
+        "namen": "nemen", "genomen": "nemen",
+        "vind": "vinden", "vindt": "vinden", "vond": "vinden",
+        "vonden": "vinden", "gevonden": "vinden",
+        "spreek": "spreken", "spreekt": "spreken", "sprak": "spreken",
+        "spraken": "spreken", "gesproken": "spreken",
+        "schrijf": "schrijven", "schrijft": "schrijven",
+        "schreef": "schrijven", "schreven": "schrijven",
+        "geschreven": "schrijven",
+        "lees": "lezen", "leest": "lezen", "las": "lezen",
+        "lazen": "lezen", "gelezen": "lezen",
+        # lopen/vragen/eten/drinken/liggen/zitten
+        "loop": "lopen", "loopt": "lopen", "liep": "lopen",
+        "liepen": "lopen", "gelopen": "lopen",
+        "vraag": "vragen", "vraagt": "vragen", "vroeg": "vragen",
+        "vroegen": "vragen", "gevraagd": "vragen",
+        "eet": "eten", "at": "eten", "aten": "eten", "gegeten": "eten",
+        "drink": "drinken", "drinkt": "drinken", "dronk": "drinken",
+        "dronken": "drinken", "gedronken": "drinken",
+        "lig": "liggen", "ligt": "liggen", "lag": "liggen",
+        "lagen": "liggen", "gelegen": "liggen",
+        "zit": "zitten", "zat": "zitten", "zaten": "zitten",
+        "gezeten": "zitten",
+        # denken/brengen/kopen/zoeken (kv-t patroon, vaak in spreektaal)
+        "denk": "denken", "denkt": "denken", "dacht": "denken",
+        "dachten": "denken", "gedacht": "denken",
+        "breng": "brengen", "brengt": "brengen", "bracht": "brengen",
+        "brachten": "brengen", "gebracht": "brengen",
+        "koop": "kopen", "koopt": "kopen", "kocht": "kopen",
+        "kochten": "kopen", "gekocht": "kopen",
+        "zoek": "zoeken", "zoekt": "zoeken", "zocht": "zoeken",
+        "zochten": "zoeken", "gezocht": "zoeken",
+    }
+
     def detect_pos(self, word: str) -> str:
         w = word.lower().strip()
 
@@ -539,6 +620,13 @@ class SenseEngine:
             real = [s for s in senses if s.get("definition") != "unknown"]
             if real and real[0].get("pos"):
                 return real[0]["pos"]
+
+        # Werkpunt 6 (15 augustus 2026): onregelmatige werkwoordsvormen
+        # eerst checken, VOOR de klinkerverdubbelingslogica hieronder --
+        # deze vormen volgen geen enkele regel (dat is precies waarom ze
+        # "onregelmatig" heten), dus moeten via een directe lookup.
+        if w in self.IRREGULAR_VERBS:
+            return "verb"
 
         if w.endswith("en") and len(w) > 3:
             stem = w[:-2]
@@ -621,6 +709,15 @@ class SenseEngine:
             "warm", "welke", "waarop", "waarin", "waaruit", "waardoor",
             "waarvoor", "toch", "wel", "niet", "ook", "nog", "al",
             "misschien", "gewoon", "zeker", "eigenlijk", "samen",
+            # Aanvulling (15 augustus 2026, live gevonden bijvangst
+            # tijdens het testen van werkpunt 6): tijdsbijwoorden
+            # werden nog niet gedekt -- "gisteren" werd bv. als los,
+            # betekenisloos noun-concept aangemaakt via de fallback-
+            # route (_auto_learn_from_sentence()), ondanks dat het
+            # taalkundig geen zelfstandig naamwoord is.
+            "gisteren", "vandaag", "morgen", "eergisteren",
+            "overmorgen", "straks", "zojuist", "onlangs", "vroeger",
+            "later", "nu", "meteen", "weldra", "binnenkort",
         }
         if w in FUNCTIEWOORDEN:
             return "function"
@@ -1427,6 +1524,24 @@ class TeachEngine:
         "koeien": "koe",
         "varkens": "varken",
         "lui": "luiaard",
+        # Uitbreiding werkpunt 6 (15 augustus 2026) -- zelfde aanpak,
+        # bewust beperkt tot vormen die de bestaande -en/-s-regel
+        # hieronder NIET zelf al correct oplost (dus enkel woorden waar
+        # simpelweg "-en" afhalen het verkeerde/geen bestaand concept
+        # oplevert). Woorden als "boeken"->"boek" of "wegen"->"weg"
+        # horen hier bewust NIET in, want die dekt de reguliere regel al.
+        "steden": "stad",
+        "schepen": "schip",
+        "glazen": "glas",
+        "gaten": "gat",
+        "raden": "rad",
+        "leden": "lid",
+        "beenderen": "been",
+        "kleren": "kleed",
+        "goederen": "goed",
+        "koningen": "koning",
+        "vaten": "vat",
+        "genen": "gen",
     }
     
     def __init__(self, store: ConceptStore, sense_engine: SenseEngine):

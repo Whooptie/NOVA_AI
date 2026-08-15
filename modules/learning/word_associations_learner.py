@@ -48,6 +48,74 @@ class WordAssociationsLearner:
     tonen (bv. weten dat Kevin "snel" en "Python" met elkaar associeert).
     """
 
+    # Werkpunt 6 (15 augustus 2026): onregelmatige Nederlandse
+    # werkwoordsvormen die lemmatize_nl()'s reguliere regels (verklein-
+    # woord/-en-meervoud/bijvoeglijke -e-vorm) niet dekken, want deze
+    # vormen volgen geen enkel regelmatig patroon. Zelfde tabel-aanpak
+    # en dezelfde inhoud als semantic.py's SenseEngine.IRREGULAR_VERBS
+    # (bewust los gedefinieerd, geen import tussen Layer 1 en Layer 3 --
+    # die koppeling bestaat nu niet en dit werkpunt introduceert die
+    # bewust ook niet). Bewust beperkt tot hoogfrequente basiswerk-
+    # woorden, geen poging tot volledige dekking.
+    IRREGULAR_VERBS = {
+        "ben": "zijn", "bent": "zijn", "is": "zijn", "was": "zijn",
+        "waren": "zijn", "geweest": "zijn",
+        "heb": "hebben", "hebt": "hebben", "heeft": "hebben",
+        "had": "hebben", "hadden": "hebben", "gehad": "hebben",
+        "ga": "gaan", "gaat": "gaan", "ging": "gaan", "gingen": "gaan",
+        "gegaan": "gaan",
+        "sta": "staan", "staat": "staan", "stond": "staan",
+        "stonden": "staan", "gestaan": "staan",
+        "doe": "doen", "doet": "doen", "deed": "doen", "deden": "doen",
+        "gedaan": "doen",
+        "zie": "zien", "ziet": "zien", "zag": "zien", "zagen": "zien",
+        "gezien": "zien",
+        "kom": "komen", "komt": "komen", "kwam": "komen",
+        "kwamen": "komen", "gekomen": "komen",
+        "kan": "kunnen", "kun": "kunnen", "kunt": "kunnen",
+        "kon": "kunnen", "konden": "kunnen", "gekund": "kunnen",
+        "mag": "mogen", "mocht": "mogen", "mochten": "mogen",
+        "gemogen": "mogen",
+        "moet": "moeten", "moest": "moeten", "moesten": "moeten",
+        "gemoeten": "moeten",
+        "wil": "willen", "wilt": "willen", "wilde": "willen",
+        "wou": "willen", "wilden": "willen", "gewild": "willen",
+        "zal": "zullen", "zult": "zullen", "zou": "zullen",
+        "zouden": "zullen",
+        "geef": "geven", "geeft": "geven", "gaf": "geven",
+        "gaven": "geven", "gegeven": "geven",
+        "neem": "nemen", "neemt": "nemen", "nam": "nemen",
+        "namen": "nemen", "genomen": "nemen",
+        "vind": "vinden", "vindt": "vinden", "vond": "vinden",
+        "vonden": "vinden", "gevonden": "vinden",
+        "spreek": "spreken", "spreekt": "spreken", "sprak": "spreken",
+        "spraken": "spreken", "gesproken": "spreken",
+        "schrijf": "schrijven", "schrijft": "schrijven",
+        "schreef": "schrijven", "schreven": "schrijven",
+        "geschreven": "schrijven",
+        "lees": "lezen", "leest": "lezen", "las": "lezen",
+        "lazen": "lezen", "gelezen": "lezen",
+        "loop": "lopen", "loopt": "lopen", "liep": "lopen",
+        "liepen": "lopen", "gelopen": "lopen",
+        "vraag": "vragen", "vraagt": "vragen", "vroeg": "vragen",
+        "vroegen": "vragen", "gevraagd": "vragen",
+        "eet": "eten", "at": "eten", "aten": "eten", "gegeten": "eten",
+        "drink": "drinken", "drinkt": "drinken", "dronk": "drinken",
+        "dronken": "drinken", "gedronken": "drinken",
+        "lig": "liggen", "ligt": "liggen", "lag": "liggen",
+        "lagen": "liggen", "gelegen": "liggen",
+        "zit": "zitten", "zat": "zitten", "zaten": "zitten",
+        "gezeten": "zitten",
+        "denk": "denken", "denkt": "denken", "dacht": "denken",
+        "dachten": "denken", "gedacht": "denken",
+        "breng": "brengen", "brengt": "brengen", "bracht": "brengen",
+        "brachten": "brengen", "gebracht": "brengen",
+        "koop": "kopen", "koopt": "kopen", "kocht": "kopen",
+        "kochten": "kopen", "gekocht": "kopen",
+        "zoek": "zoeken", "zoekt": "zoeken", "zocht": "zoeken",
+        "zochten": "zoeken", "gezocht": "zoeken",
+    }
+
     def __init__(self, event_bus=None, semantic_module=None, save_path=None):
         self.event_bus = event_bus
         self.semantic = semantic_module
@@ -204,12 +272,27 @@ class WordAssociationsLearner:
         - Bijvoeglijke vorm met -e: "snelle" -> "snel"
 
         Wat dit NIET afvangt (bewuste beperking, zie uitleg in de chat):
-        - Onregelmatige werkwoordsvervoegingen ("liep" -> "lopen")
         - Onregelmatig meervoud ("kind" -> "kinderen" andersom)
         - Homoniemen en context-afhankelijke gevallen
 
+        Werkpunt 6 (15 augustus 2026): onregelmatige werkwoordsvervoe-
+        gingen ("liep" -> "lopen") worden sinds deze uitbreiding WEL
+        afgevangen, via de vaste IRREGULAR_VERBS-lookup hieronder --
+        eerst gecheckt, vóór de reguliere regels, want deze vormen
+        volgen geen enkel regelmatig patroon.
+
         Dit blijft 100% regel-gebaseerd Python (geen ML/LLM).
         """
+        # Werkpunt 6 (15 augustus 2026): onregelmatige werkwoordsvorm
+        # eerst checken, want deze volgen geen regelmatig patroon en
+        # zouden anders onterecht door de -e/-en-regels hieronder
+        # verminkt kunnen worden (bv. "was" zou anders NIET geraakt
+        # worden door onderstaande regels en gewoon "was" blijven --
+        # maar iets als "gaven" zou zonder deze check fout op "gaf"
+        # i.p.v. het correcte lemma "geven" kunnen uitkomen).
+        if word in self.IRREGULAR_VERBS:
+            return self.IRREGULAR_VERBS[word]
+
         # Verkleinwoord op "-tje" (bv. "kopje" -> "kop")
         if word.endswith("tje") and len(word) > 5:
             return word[:-3]

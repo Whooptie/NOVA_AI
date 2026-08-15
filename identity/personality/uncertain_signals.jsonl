@@ -497,3 +497,10 @@
 {"text": "waar leer ik nu over", "signaal": "focus", "model_signaal": "focus", "marge": 0.0618, "bron": "model_fallback", "tijdstip": "2026-08-12T22:09:10.176944"}
 {"text": "wat heb ik je laatst geleerd", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0835, "bron": "model_fallback", "tijdstip": "2026-08-12T22:09:20.501958"}
 {"text": "hye", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-14T19:20:43.546054"}
+{"text": "teach voetbal een sport waar je een bal moet trappen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0834, "bron": "model_fallback", "tijdstip": "2026-08-15T20:23:40.336228"}
+{"text": "teach stad een plaats waar veel mensen wonen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.094, "bron": "model_fallback", "tijdstip": "2026-08-15T20:24:23.634733"}
+{"text": "gisteren liep ik naar de winkel", "signaal": "focus", "model_signaal": "focus", "marge": 0.0241, "bron": "model_fallback", "tijdstip": "2026-08-15T20:25:32.816839"}
+{"text": "ik hou van lopen in het bos", "signaal": "focus", "model_signaal": "focus", "marge": 0.0577, "bron": "model_fallback", "tijdstip": "2026-08-15T20:25:58.420172"}
+{"text": "gisteren liep ik ook door het bos", "signaal": "focus", "model_signaal": "focus", "marge": 0.0114, "bron": "model_fallback", "tijdstip": "2026-08-15T20:26:09.382639"}
+{"text": "gisteren ging ik naar de winkel", "signaal": "focus", "model_signaal": "focus", "marge": 0.0241, "bron": "model_fallback", "tijdstip": "2026-08-15T20:32:53.474617"}
+{"text": "zijn er nog betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-15T20:35:57.194115"}
