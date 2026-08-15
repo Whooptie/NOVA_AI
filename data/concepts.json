@@ -16296,5 +16296,311 @@
         "timestamp": "2026-08-09T19:45:58.471056"
       }
     ]
+  },
+  "voetbal": {
+    "senses": [
+      {
+        "sense_id": "voetbal#1",
+        "definition": "een sport waar je een bal moet trappen",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "sport",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-08-15T18:23:40.384660"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-15T18:23:40.362454",
+      "updated_at": "2026-08-15T18:23:40.362454",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-08-15T18:23:40.362454",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-15T18:23:40.362454",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "voetbal"
+        },
+        "timestamp": "2026-08-15T18:23:40.362454"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "voetbal#1",
+        "old_value": null,
+        "new_value": "een sport waar je een bal moet trappen",
+        "timestamp": "2026-08-15T18:23:40.362454"
+      }
+    ]
+  },
+  "stad": {
+    "senses": [
+      {
+        "sense_id": "stad#1",
+        "definition": "een plaats waar veel mensen wonen",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "plaats",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-08-15T18:24:23.707440"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-15T18:24:23.665549",
+      "updated_at": "2026-08-15T18:24:23.666890",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-08-15T18:24:23.666890",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-15T18:24:23.666890",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "stad"
+        },
+        "timestamp": "2026-08-15T18:24:23.665549"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "stad#1",
+        "old_value": null,
+        "new_value": "een plaats waar veel mensen wonen",
+        "timestamp": "2026-08-15T18:24:23.666890"
+      }
+    ]
+  },
+  "winkel": {
+    "senses": [
+      {
+        "sense_id": "winkel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-15T18:25:32.895615",
+      "updated_at": "2026-08-15T18:25:32.896618",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-15T18:25:32.896618",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-15T18:25:32.896618",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "winkel"
+        },
+        "timestamp": "2026-08-15T18:25:32.895615"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "winkel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-15T18:25:32.896618"
+      }
+    ]
+  },
+  "door": {
+    "senses": [
+      {
+        "sense_id": "door#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-15T18:26:09.431830",
+      "updated_at": "2026-08-15T18:26:09.432812",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-15T18:26:09.432812",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-15T18:26:09.432812",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "door"
+        },
+        "timestamp": "2026-08-15T18:26:09.431830"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "door#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-15T18:26:09.432812"
+      }
+    ]
+  },
+  "bos": {
+    "senses": [
+      {
+        "sense_id": "bos#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-15T18:26:09.474336",
+      "updated_at": "2026-08-15T18:26:09.475670",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-15T18:26:09.475670",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-15T18:26:09.475670",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bos"
+        },
+        "timestamp": "2026-08-15T18:26:09.474336"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "bos#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-15T18:26:09.475670"
+      }
+    ]
+  },
+  "gisteren": {
+    "senses": [
+      {
+        "sense_id": "gisteren#1",
+        "definition": "Gisteren, in Nederland ook gister, is vanuit het actuele tijdstip de dag die eerder om 12 uur 's nachts eindigde en 24 uren eerder begon. In de 24-uurstijdsindeling begint een nieuwe dag om 00:00:00 en eindigt deze om 23:59:59.",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-15T18:33:10.963605",
+      "updated_at": "2026-08-15T18:33:10.964608",
+      "sources": [
+        "wikipedia"
+      ],
+      "last_used_at": "2026-08-15T18:33:10.964608",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-15T18:33:10.964608",
+          "confidence": 0.8
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gisteren"
+        },
+        "timestamp": "2026-08-15T18:33:10.963605"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "wikipedia",
+        "sense_id": "gisteren#1",
+        "old_value": null,
+        "new_value": "Gisteren, in Nederland ook gister, is vanuit het actuele tijdstip de dag die eerder om 12 uur 's nachts eindigde en 24 uren eerder begon. In de 24-uurstijdsindeling begint een nieuwe dag om 00:00:00 en eindigt deze om 23:59:59.",
+        "timestamp": "2026-08-15T18:33:10.964608"
+      }
+    ]
   }
 }
