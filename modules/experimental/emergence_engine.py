@@ -225,6 +225,7 @@ class EmergenceEngine:
             "identity": "wie ik ben",
             "math": "rekenen",
             "memory": "mijn geheugen",
+            "memory_query": "vragen over mijn geheugen",
             "part_of": "onderdeel-relaties",
             "preference": "je voorkeuren",
             "relatie": "relaties tussen concepten",

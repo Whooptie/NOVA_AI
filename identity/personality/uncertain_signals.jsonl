@@ -504,3 +504,14 @@
 {"text": "gisteren liep ik ook door het bos", "signaal": "focus", "model_signaal": "focus", "marge": 0.0114, "bron": "model_fallback", "tijdstip": "2026-08-15T20:26:09.382639"}
 {"text": "gisteren ging ik naar de winkel", "signaal": "focus", "model_signaal": "focus", "marge": 0.0241, "bron": "model_fallback", "tijdstip": "2026-08-15T20:32:53.474617"}
 {"text": "zijn er nog betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-15T20:35:57.194115"}
+{"text": "memory search koffie", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0535, "bron": "model_fallback", "tijdstip": "2026-08-16T19:39:08.961034"}
+{"text": "wat heb ik je al gevraagd over python?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0086, "bron": "model_fallback", "tijdstip": "2026-08-16T19:55:52.883843"}
+{"text": "waar praten we vaak over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0002, "bron": "model_fallback", "tijdstip": "2026-08-16T19:56:01.865678"}
+{"text": "wat vroeg ik ook alweer over koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0248, "bron": "model_fallback", "tijdstip": "2026-08-16T20:53:40.673165"}
+{"text": "wat vroeg ik ook alweer over koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0248, "bron": "model_fallback", "tijdstip": "2026-08-16T20:56:45.029851"}
+{"text": "µkoffieµ", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-16T20:56:52.897704"}
+{"text": "wat vroeg ik ook alweer over koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0248, "bron": "model_fallback", "tijdstip": "2026-08-16T20:56:56.711023"}
+{"text": "koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-08-16T20:57:03.177102"}
+{"text": "wat vroeg ik ook alweer over koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0248, "bron": "model_fallback", "tijdstip": "2026-08-16T20:59:22.696811"}
+{"text": "koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-08-16T20:59:28.279225"}
+{"text": "waar gaat het meestal over tussen ons", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0242, "bron": "model_fallback", "tijdstip": "2026-08-16T21:00:18.482604"}

@@ -236,3 +236,11 @@
 {"timestamp": "2026-08-15T18:26:09.431830", "event_type": "concept_created", "word": "door", "source": "system", "new_value": {"word": "door"}}
 {"timestamp": "2026-08-15T18:26:09.474336", "event_type": "concept_created", "word": "bos", "source": "system", "new_value": {"word": "bos"}}
 {"timestamp": "2026-08-15T18:33:10.963605", "event_type": "concept_created", "word": "gisteren", "source": "system", "new_value": {"word": "gisteren"}}
+{"timestamp": "2026-08-16T18:53:32.533085", "event_type": "concept_created", "word": "waarover", "source": "system", "new_value": {"word": "waarover"}}
+{"timestamp": "2026-08-16T18:53:32.574543", "event_type": "concept_created", "word": "meest", "source": "system", "new_value": {"word": "meest"}}
+{"timestamp": "2026-08-16T18:53:40.708164", "event_type": "concept_created", "word": "alweer", "source": "system", "new_value": {"word": "alweer"}}
+{"timestamp": "2026-08-16T19:00:07.656724", "event_type": "concept_created", "word": "bespreken", "source": "system", "new_value": {"word": "bespreken"}}
+{"timestamp": "2026-08-16T19:00:07.700032", "event_type": "concept_created", "word": "vaak", "source": "system", "new_value": {"word": "vaak"}}
+{"timestamp": "2026-08-16T19:00:18.519736", "event_type": "concept_created", "word": "waar", "source": "system", "new_value": {"word": "waar"}}
+{"timestamp": "2026-08-16T19:00:18.566419", "event_type": "concept_created", "word": "meestal", "source": "system", "new_value": {"word": "meestal"}}
+{"timestamp": "2026-08-16T19:00:18.602231", "event_type": "concept_created", "word": "tussen", "source": "system", "new_value": {"word": "tussen"}}

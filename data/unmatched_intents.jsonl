@@ -80,3 +80,9 @@
 {"tekst": "gisteren liep ik naar de winkel", "hoogste_gok": "preference", "confidence": 0.1511, "tijdstip": "2026-08-15T20:25:32.850141"}
 {"tekst": "gisteren liep ik ook door het bos", "hoogste_gok": "weather", "confidence": 0.1746, "tijdstip": "2026-08-15T20:26:09.430825"}
 {"tekst": "gisteren ging ik naar de winkel", "hoogste_gok": "chess", "confidence": 0.1399, "tijdstip": "2026-08-15T20:32:53.512974"}
+{"tekst": "waarover praten we het meest", "hoogste_gok": "memory_query", "confidence": 0.1497, "tijdstip": "2026-08-16T20:53:32.528020"}
+{"tekst": "wat vroeg ik ook alweer over koffie", "hoogste_gok": "memory_query", "confidence": 0.1704, "tijdstip": "2026-08-16T20:53:40.706176"}
+{"tekst": "waarover praten we het meest", "hoogste_gok": "memory_query", "confidence": 0.2667, "tijdstip": "2026-08-16T20:56:24.308184"}
+{"tekst": "waarover praten we het meest", "hoogste_gok": "memory_query", "confidence": 0.2667, "tijdstip": "2026-08-16T20:59:55.830501"}
+{"tekst": "wat bespreken we vaak", "hoogste_gok": "memory_query", "confidence": 0.1415, "tijdstip": "2026-08-16T21:00:07.655722"}
+{"tekst": "waar gaat het meestal over tussen ons", "hoogste_gok": "memory_query", "confidence": 0.1671, "tijdstip": "2026-08-16T21:00:18.517732"}

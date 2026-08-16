@@ -16602,5 +16602,389 @@
         "timestamp": "2026-08-15T18:33:10.964608"
       }
     ]
+  },
+  "waarover": {
+    "senses": [
+      {
+        "sense_id": "waarover#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-16T18:53:32.533085",
+      "updated_at": "2026-08-16T18:53:32.535547",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-16T18:53:32.535547",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-16T18:53:32.535547",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "waarover"
+        },
+        "timestamp": "2026-08-16T18:53:32.533085"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "waarover#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-16T18:53:32.535547"
+      }
+    ]
+  },
+  "meest": {
+    "senses": [
+      {
+        "sense_id": "meest#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-16T18:53:32.574543",
+      "updated_at": "2026-08-16T18:53:32.575543",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-16T18:53:32.575543",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-16T18:53:32.575543",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "meest"
+        },
+        "timestamp": "2026-08-16T18:53:32.574543"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "meest#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-16T18:53:32.575543"
+      }
+    ]
+  },
+  "alweer": {
+    "senses": [
+      {
+        "sense_id": "alweer#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-16T18:53:40.708164",
+      "updated_at": "2026-08-16T18:53:40.708164",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-16T18:53:40.708164",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-16T18:53:40.708164",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "alweer"
+        },
+        "timestamp": "2026-08-16T18:53:40.708164"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "alweer#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-16T18:53:40.708164"
+      }
+    ]
+  },
+  "bespreken": {
+    "senses": [
+      {
+        "sense_id": "bespreken#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-16T19:00:07.656724",
+      "updated_at": "2026-08-16T19:00:07.657731",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-16T19:00:07.657731",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-16T19:00:07.657731",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bespreken"
+        },
+        "timestamp": "2026-08-16T19:00:07.656724"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "bespreken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-16T19:00:07.657731"
+      }
+    ]
+  },
+  "vaak": {
+    "senses": [
+      {
+        "sense_id": "vaak#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-16T19:00:07.700032",
+      "updated_at": "2026-08-16T19:00:07.701435",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-16T19:00:07.701435",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-16T19:00:07.701435",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vaak"
+        },
+        "timestamp": "2026-08-16T19:00:07.700032"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vaak#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-16T19:00:07.701435"
+      }
+    ]
+  },
+  "waar": {
+    "senses": [
+      {
+        "sense_id": "waar#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-16T19:00:18.519736",
+      "updated_at": "2026-08-16T19:00:18.519736",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-16T19:00:18.519736",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-16T19:00:18.519736",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "waar"
+        },
+        "timestamp": "2026-08-16T19:00:18.519736"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "waar#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-16T19:00:18.519736"
+      }
+    ]
+  },
+  "meestal": {
+    "senses": [
+      {
+        "sense_id": "meestal#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-16T19:00:18.566419",
+      "updated_at": "2026-08-16T19:00:18.567437",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-16T19:00:18.567437",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-16T19:00:18.567437",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "meestal"
+        },
+        "timestamp": "2026-08-16T19:00:18.566419"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "meestal#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-16T19:00:18.567437"
+      }
+    ]
+  },
+  "tussen": {
+    "senses": [
+      {
+        "sense_id": "tussen#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-16T19:00:18.602231",
+      "updated_at": "2026-08-16T19:00:18.603252",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-16T19:00:18.603252",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-16T19:00:18.603252",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tussen"
+        },
+        "timestamp": "2026-08-16T19:00:18.602231"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "tussen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-16T19:00:18.603252"
+      }
+    ]
   }
 }

@@ -58,6 +58,12 @@ class IntentRouter:
         # GEEN pending_question.py hier, want dat is voor ja/nee, dit
         # is een open woord-antwoord).
         self._pending_preference_woord = None
+        # Memory_query-via-classifier (6 augustus 2026): onthoudt dat
+        # er een openstaande "over welk onderwerp?"-vraag is, zodat het
+        # vervolgantwoord (het woord, of een leeg/negatief antwoord)
+        # correct verwerkt kan worden. Zelfde eigen-pending-state-
+        # patroon als _pending_preference_woord hierboven.
+        self._pending_memory_query_woord = None
         self._intent_tabel_deel1 = self._build_intent_tabel_deel1()
         self._intent_tabel_deel2 = self._build_intent_tabel_deel2()
 
@@ -2091,6 +2097,64 @@ class IntentRouter:
         return False
     
     # ---------------------------------------------------------
+    # Memory-vragen in natuurlijke taal (punt 14, nova_state.md) --
+    # reactieve toegang tot memory.py's Query API vanuit een gewoon
+    # gesprek. Bewust GEEN nieuwe topic-naam in de tabel (zie
+    # _build_intent_tabel_deel2 verderop) -- deze methode wordt apart
+    # aangeroepen in route(), net als detect_parts_with_property(),
+    # met een eigen vaste "memory_query"-topic bij _emit_topic().
+    #
+    # Twee soorten triggerzinnen:
+    #   1) MET een specifiek woord -> memory.search(keyword), gefilterd
+    #      op event_type == "raw_user_message" zodat enkel Kevins eigen
+    #      berichten terugkomen (anders zou bv. het help-menu, dat
+    #      toevallig een woord bevat, als "gesprek" meetellen -- live
+    #      ontdekt bij het testen van "memory search koffie").
+    #   2) ZONDER woord (algemeen, "wat komt vaak terug") -> hergebruikt
+    #      get_trending() (Layer 1), exact dezelfde databron als
+    #      detect_trending_query() hierboven -- bewust GEEN losse,
+    #      nieuwe implementatie, dit IS al "waar praat Kevin het vaakst
+    #      over", enkel een andere triggerzin ernaar toe. Zie
+    #      on_memory_query() in chat.py voor de afhandeling.
+    # ---------------------------------------------------------
+    def detect_memory_query(self, text):
+        t = text.lower().strip().rstrip("?.")
+
+        # Algemeen, GEEN woord nodig -- moet VOOR de woord-patronen
+        # gecheckt worden, want deze zinnen bevatten zelf geen los
+        # woord om te capturen.
+        algemene_zinnen = [
+            "wat komt vaak terug in onze gesprekken",
+            "wat komt er vaak terug in onze gesprekken",
+            "waar praten we vaak over",
+            "waar praten wij vaak over",
+            "waar hebben we het vaak over",
+        ]
+        if t in algemene_zinnen:
+            dbg(f"{C_BLUE}→ memory_query (algemeen, geen woord){C_RESET}")
+            self.event_bus.publish("intent_memory_query", {"keyword": None})
+            return True
+
+        # Specifiek onderwerp -- "wat heb ik je (al) (eens) gevraagd
+        # over X", "hebben we het al gehad over X", "wat weet je over
+        # onze gesprekken over X"
+        patronen = [
+            r"wat heb ik je (?:al )?(?:eens )?gevraagd over ([\w\s]+)",
+            r"hebben we het (?:al )?(?:eens )?gehad over ([\w\s]+)",
+            r"heb ik je al eens iets gevraagd over ([\w\s]+)",
+            r"wat weet je over onze gesprekken over ([\w\s]+)",
+        ]
+        for patroon in patronen:
+            m = re.match(patroon, t)
+            if m:
+                woord = m.group(1).strip()
+                dbg(f"{C_BLUE}→ memory_query (woord): '{woord}'{C_RESET}")
+                self.event_bus.publish("intent_memory_query", {"keyword": woord})
+                return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Memory test-commando's
     # ---------------------------------------------------------
     def detect_memory(self, text):
@@ -2104,9 +2168,24 @@ class IntentRouter:
                 self.event_bus.publish("chat_response", {"text": "Memory-module niet gevonden."})
                 return True
             stats = mem.get_stats()
+            # Sinds 16 augustus 2026: get_stats() splitst totaal_events
+            # nu op in totaal_events_recent/totaal_events_archief (zie
+            # memory.py -- interactions_old wordt sindsdien meegeteld).
+            # Archief-regel enkel tonen als er ook echt iets in zit --
+            # bij de meeste installaties is dit nu nog 0 (nog geen
+            # events ouder dan archive_after_days), en een kale "0"-
+            # regel voegt dan niets toe.
+            archief_aantal = stats.get('totaal_events_archief', 0)
             msg = (
                 f"Memory statistieken:\n"
                 f"  Totaal events: {stats.get('totaal_events', 0)}\n"
+            )
+            if archief_aantal > 0:
+                msg += (
+                    f"    waarvan recent: {stats.get('totaal_events_recent', 0)}\n"
+                    f"    waarvan archief (>90 dagen): {archief_aantal}\n"
+                )
+            msg += (
                 f"  Periode: {stats.get('periode', 'onbekend')}\n"
                 f"  Events in RAM: {stats.get('events_in_ram', 0)}\n"
                 f"  Database grootte: {stats.get('database_grootte_mb', 0)} MB"
@@ -2720,6 +2799,7 @@ class IntentRouter:
         "activity": "een activiteit wil starten",
         "preference": "een voorkeur wil delen",
         "chess_evaluation": "wil weten wat er mis ging met een zet",
+        "memory_query": "iets wil weten over een eerder gesprek",
     }
 
     _CLASSIFIER_LABEL_NL_BEVESTIGING = {
@@ -2733,6 +2813,7 @@ class IntentRouter:
         "activity": "een activiteit starten",
         "preference": "een voorkeur delen",
         "chess_evaluation": "weten wat er mis ging met een zet",
+        "memory_query": "iets weten over een eerder gesprek",
     }
 
     # Generieke actie-koppeling per Intent Classifier-categorie (30
@@ -2815,6 +2896,61 @@ class IntentRouter:
             "text": "Over welk woord gaat dat?"
         })
 
+    # Signaalwoorden voor "algemeen, geen specifiek onderwerp bedoeld"
+    # -- gebruikt door _actie_memory_query_classifier hieronder om te
+    # bepalen of meteen het woordloze resultaat getoond kan worden,
+    # zonder tussenvraag. Zelfde soort lichte, gerichte check als de
+    # bestaande detect_memory_query()'s exacte-lijst-match, maar losser
+    # (regex i.p.v. exacte zinnen) zodat ook AFWIJKENDE formuleringen
+    # van de algemene variant herkend worden.
+    _MEMORY_QUERY_ALGEMEEN_REGEX = re.compile(
+        r"\b(vaak|meestal|meeste|meest|regelmatig)\b"
+    )
+    _MEMORY_QUERY_SPECIFIEK_REGEX = re.compile(
+        r"(?<!waar)(?<!hier)(?<!daar)\bover\s+\w+"
+    )
+
+    def _lijkt_memory_query_algemeen(self, text: str) -> bool:
+        """
+        Geeft True terug als de tekst op de ALGEMENE variant lijkt
+        ("waar praten we vaak over", zonder specifiek onderwerp) i.p.v.
+        de SPECIFIEKE variant ("wat vroeg ik over python"). Bewust een
+        lichte, gerichte check (signaalwoorden + uitsluiting van "over
+        <woord>"), geen volledige NLP -- bij een foute inschatting is
+        het gevolg onschadelijk: hooguit een overbodige of ontbrekende
+        tussenvraag, nooit een verkeerd opgeslagen resultaat.
+        """
+        t = text.lower().strip()
+        heeft_signaal = bool(self._MEMORY_QUERY_ALGEMEEN_REGEX.search(t))
+        heeft_specifiek_onderwerp = bool(self._MEMORY_QUERY_SPECIFIEK_REGEX.search(t))
+        return heeft_signaal and not heeft_specifiek_onderwerp
+
+    def _actie_memory_query_classifier(self, text):
+        """
+        Memory_query-via-classifier (6 augustus 2026). In tegenstelling
+        tot chess_evaluation/weather/time (altijd kaal) en preference
+        (altijd een tussenvraag nodig), heeft memory_query TWEE
+        varianten: een woordloze ("waar praten we vaak over") en een
+        met specifiek onderwerp ("wat heb ik je gevraagd over X").
+
+        Bij de woordloze variant is een tussenvraag overbodig en zelfs
+        onnatuurlijk -- Kevin gaf expliciet aan dat zo'n zin DIRECT
+        naar het algemene resultaat moet gaan, geen extra rondje. Bij
+        de specifieke variant is een tussenvraag wel nodig: net als bij
+        preference kan het woord niet simpelweg herwonnen worden --
+        detect_memory_query()'s eigen regex heeft deze tekst al
+        geprobeerd en gemist (anders was de classifier-route nooit
+        bereikt).
+        """
+        if self._lijkt_memory_query_algemeen(text):
+            self.event_bus.publish("intent_memory_query", {"keyword": None})
+            return
+
+        self._pending_memory_query_woord = True
+        self.event_bus.publish("chat_response", {
+            "text": "Over welk onderwerp wil je dat weten?"
+        })
+
     _CLASSIFIER_ACTIE_REGISTER = {
         "chess": _actie_chess_classifier,
         "chess_evaluation": lambda self, text: self.event_bus.publish(
@@ -2831,6 +2967,7 @@ class IntentRouter:
         "math": lambda self, text: self.event_bus.publish(
             "intent_math", {"expr": text}
         ),
+        "memory_query": _actie_memory_query_classifier,
     }
 
     # Sentiment-nuance-tekst per categorie, voor de bevestiging in
@@ -2886,6 +3023,42 @@ class IntentRouter:
         self.event_bus.publish("chat_response", {
             "text": f"Genoteerd! Ik onthoud van '{woord}' {sentiment_nl}."
         })
+        return True
+
+    _MEMORY_QUERY_NEGATIEF_ANTWOORD = {
+        "nee", "neen", "geen", "niks", "niets", "weet niet", "weet ik niet",
+        "gewoon algemeen", "algemeen", "maakt niet uit",
+    }
+
+    def verwerk_memory_query_woord_antwoord(self, tekst: str) -> bool:
+        """
+        Checkt of er een openstaande "over welk onderwerp wil je dat
+        weten?"-vraag is (zie _actie_memory_query_classifier hierboven),
+        en verwerkt 'tekst' dan als het antwoord. Geeft True terug als
+        dit bericht zo verwerkt is (aanroeper moet stoppen met verdere
+        routing), False als er niets open stond.
+
+        Moet door route() gecontroleerd worden vóór de generieke
+        fallback, zelfde voorrangsprincipe als
+        verwerk_preference_woord_antwoord() hierboven.
+
+        Een leeg antwoord OF een expliciet negatief/onzeker antwoord
+        (zie _MEMORY_QUERY_NEGATIEF_ANTWOORD) valt terug op het
+        ALGEMENE resultaat (keyword=None) i.p.v. de vraag simpelweg te
+        laten vervallen -- zo gaat er nooit een compleet antwoord
+        verloren, enkel een minder specifiek.
+        """
+        if not self._pending_memory_query_woord:
+            return False
+
+        self._pending_memory_query_woord = None
+
+        woord = tekst.strip().lower().strip(".,!?;:")
+        if not woord or woord in self._MEMORY_QUERY_NEGATIEF_ANTWOORD:
+            self.event_bus.publish("intent_memory_query", {"keyword": None})
+            return True
+
+        self.event_bus.publish("intent_memory_query", {"keyword": woord})
         return True
 
     # Fase 4 (correcties, 28 juli 2026): omgekeerde mapping -- welk
@@ -3393,6 +3566,15 @@ class IntentRouter:
         if self.verwerk_preference_woord_antwoord(text):
             return
 
+        # -1F.5 Pending memory_query-woord-vervolgantwoord (6 augustus
+        # 2026) -- zelfde voorrang-redenering als -1E hierboven: als
+        # Nova net vroeg "over welk onderwerp wil je dat weten?" (na
+        # een bevestigde classifier-gok op memory_query, zie
+        # _actie_memory_query_classifier), mag dat antwoord nooit door
+        # een andere, generieke intent opgevangen worden.
+        if self.verwerk_memory_query_woord_antwoord(text):
+            return
+
         # -1F Pending sense-reactivatie (Bug #32-fix, 8 augustus 2026)
         # -- als Kevin net gevraagd is of hij een eerder AFGEWEZEN
         # (rejected) sense écht opnieuw wil bevestigen (zie semantic.py,
@@ -3512,6 +3694,10 @@ class IntentRouter:
         # (semantic.py's RelationParser), niet in intent_router.py
         # zelf. Vandaar hier als eigen, vroege stap, zelfde patroon als
         # stap 2C/2D (detect_help/detect_uitleg) hierboven.
+        if self.detect_memory_query(text):
+            self._emit_topic("memory_query", bron="detect")
+            return
+
         if self.detect_parts_with_property(text):
             self._emit_topic("parts_with_property", bron="detect")
             return

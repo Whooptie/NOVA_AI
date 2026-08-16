@@ -989,11 +989,91 @@
       "tekst": "was die zet nu eigenlijk wel verstandig",
       "label": "chess_evaluation",
       "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "waar praten we het meest over",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "wat komt vaak terug als we praten",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "waarover gaat het meestal tussen ons",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "wat bespreken we het vaakst",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "wat vroeg ik ook alweer over schaken",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "weet je nog wat ik over koffie zei",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "kun je me herinneren wat ik over python vroeg",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "hebben we het ooit over voetbal gehad",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "wat zei ik allemaal over mijn werk",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "heb ik je iets gevraagd over reizen",
+      "label": "memory_query",
+      "bron": "nieuw"
+    },
+    {
+      "tekst": "waarover praten we het meest",
+      "label": "memory_query",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "wat bespreken we vaak",
+      "label": "memory_query",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "waar gaat het meestal over tussen ons",
+      "label": "memory_query",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "wat is een terugkerend onderwerp tussen ons",
+      "label": "memory_query",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "waar hebben we het meestal over",
+      "label": "memory_query",
+      "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "wat komt telkens terug in onze gesprekken",
+      "label": "memory_query",
+      "bron": "gecorrigeerd"
     }
   ],
   "metadata": {
-    "laatst_getraind": "2026-08-08",
-    "aantal_voorbeelden": 198,
+    "laatst_getraind": "2026-08-16",
+    "aantal_voorbeelden": 214,
     "categorieën": [
       "activity",
       "chess",
@@ -1001,11 +1081,12 @@
       "greeting",
       "identity",
       "math",
+      "memory_query",
       "preference",
       "self_architecture",
       "time",
       "weather"
     ],
-    "laatste_layer0_scan": 1785474230.2917092
+    "laatste_layer0_scan": 1786907271.5736203
   }
 }
