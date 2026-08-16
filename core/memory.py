@@ -325,17 +325,32 @@ class MemoryModule:
     # Fase 3: Query API
     # -------------------------
 
-    def search(self, keyword, recent_weeks=None, limit=50):
+    def search(self, keyword, recent_weeks=None, limit=50, include_archief=True):
         """
         Simpel zoeken op een trefwoord.
 
         Hoe het werkt: we zoeken in de 'data' kolom van SQLite (dat is
         de JSON-inhoud van elk event) naar het opgegeven woord.
 
+        Doorzoekt sinds vandaag (16 augustus 2026) ZOWEL 'interactions'
+        (recent, <90 dagen) ALS 'interactions_old' (gearchiveerd, 90
+        dagen - 1 jaar) via een UNION ALL -- voorheen bleef alles in
+        interactions_old onvindbaar voor search()/query(), ook al stond
+        het gewoon in de database (zie nova_state.md punt 14 en de
+        "Nog open"-notitie over historische queries >90 dagen). Zeer
+        oude, GECOMPRIMEERDE events (>1 jaar, .jsonl.gz-bestanden op
+        schijf) zitten hier bewust NOG NIET bij -- dat vereist per
+        aanvraag bestanden decomprimeren, apart werkpunt.
+
+        Zet include_archief=False om enkel de recente hoofdtabel te
+        doorzoeken (bv. voor snellere, high-frequency aanroepen elders
+        die toch geen oude data nodig hebben).
+
         Voorbeeld:
             memory.search("python")
             memory.search("python", recent_weeks=4)   # enkel laatste 4 weken
             memory.search("python", limit=10)          # max 10 resultaten
+            memory.search("python", include_archief=False)  # enkel recent
         """
         if not self.conn:
             return []
@@ -345,21 +360,32 @@ class MemoryModule:
         # lock hier aangeroepen — anders zou de lock twee keer genomen worden)
         self._flush_buffer()
 
-        sql = "SELECT * FROM interactions WHERE data LIKE ?"
+        where = "WHERE data LIKE ?"
         params = [f"%{keyword}%"]
 
         if recent_weeks is not None:
             cutoff = time.time() - (recent_weeks * 7 * 24 * 3600)
-            sql += " AND timestamp >= ?"
+            where += " AND timestamp >= ?"
             params.append(cutoff)
 
-        sql += " ORDER BY timestamp DESC LIMIT ?"
-        params.append(limit)
+        if include_archief:
+            sql = (
+                f"SELECT * FROM interactions {where} "
+                f"UNION ALL "
+                f"SELECT * FROM interactions_old {where} "
+                f"ORDER BY timestamp DESC LIMIT ?"
+            )
+            # De WHERE-clausule (en dus params) komt twee keer voor --
+            # eenmaal per SELECT in de UNION ALL.
+            sql_params = params + params + [limit]
+        else:
+            sql = f"SELECT * FROM interactions {where} ORDER BY timestamp DESC LIMIT ?"
+            sql_params = params + [limit]
 
         with self.lock:
             try:
                 self.conn.row_factory = sqlite3.Row
-                cursor = self.conn.execute(sql, params)
+                cursor = self.conn.execute(sql, sql_params)
                 resultaten = [dict(row) for row in cursor.fetchall()]
                 return resultaten
             except Exception as e:
@@ -378,8 +404,16 @@ class MemoryModule:
                 "date_end": "2026-06-30",
                 "min_confidence": 0.7,
                 "sort": "recent_first",       # of "oldest_first"
-                "limit": 20
+                "limit": 20,
+                "include_archief": True       # ook interactions_old meenemen (default True)
             }
+
+        Doorzoekt sinds vandaag (16 augustus 2026) ZOWEL 'interactions'
+        ALS 'interactions_old' (gearchiveerd, >90 dagen), via UNION ALL
+        -- zelfde reden/beperking als bij search() hierboven (zie die
+        docstring: zeer oude .jsonl.gz-archieven zitten hier nog niet
+        bij). Zet filters["include_archief"] = False om enkel de
+        recente hoofdtabel te doorzoeken.
 
         Voorbeeld:
             memory.query({"keyword": "python", "limit": 10})
@@ -390,21 +424,21 @@ class MemoryModule:
         # _flush_buffer() heeft z'n eigen lock — bewust buiten onze lock hier
         self._flush_buffer()
 
-        sql = "SELECT * FROM interactions WHERE 1=1"
+        where = "WHERE 1=1"
         params = []
 
         if "keyword" in filters:
-            sql += " AND data LIKE ?"
+            where += " AND data LIKE ?"
             params.append(f"%{filters['keyword']}%")
 
         if "event_type" in filters:
-            sql += " AND event_type = ?"
+            where += " AND event_type = ?"
             params.append(filters["event_type"])
 
         if "date_start" in filters:
             try:
                 dt = datetime.strptime(filters["date_start"], "%Y-%m-%d")
-                sql += " AND timestamp >= ?"
+                where += " AND timestamp >= ?"
                 params.append(dt.timestamp())
             except ValueError:
                 print("Memory query: ongeldig date_start formaat, verwacht JJJJ-MM-DD")
@@ -412,28 +446,35 @@ class MemoryModule:
         if "date_end" in filters:
             try:
                 dt = datetime.strptime(filters["date_end"], "%Y-%m-%d")
-                sql += " AND timestamp <= ?"
+                where += " AND timestamp <= ?"
                 params.append(dt.timestamp())
             except ValueError:
                 print("Memory query: ongeldig date_end formaat, verwacht JJJJ-MM-DD")
 
         if "min_confidence" in filters and "confidence" in self._get_columns():
-            sql += " AND confidence >= ?"
+            where += " AND confidence >= ?"
             params.append(filters["min_confidence"])
 
-        if filters.get("sort") == "oldest_first":
-            sql += " ORDER BY timestamp ASC"
-        else:
-            sql += " ORDER BY timestamp DESC"
-
+        sort_sql = " ORDER BY timestamp ASC" if filters.get("sort") == "oldest_first" else " ORDER BY timestamp DESC"
         limit = filters.get("limit", 100)
-        sql += " LIMIT ?"
-        params.append(limit)
+        include_archief = filters.get("include_archief", True)
+
+        if include_archief:
+            sql = (
+                f"SELECT * FROM interactions {where} "
+                f"UNION ALL "
+                f"SELECT * FROM interactions_old {where}"
+                f"{sort_sql} LIMIT ?"
+            )
+            sql_params = params + params + [limit]
+        else:
+            sql = f"SELECT * FROM interactions {where}{sort_sql} LIMIT ?"
+            sql_params = params + [limit]
 
         with self.lock:
             try:
                 self.conn.row_factory = sqlite3.Row
-                cursor = self.conn.execute(sql, params)
+                cursor = self.conn.execute(sql, sql_params)
                 return [dict(row) for row in cursor.fetchall()]
             except Exception as e:
                 print("Memory query error:", e)
@@ -477,12 +518,23 @@ class MemoryModule:
 
         with self.lock:
             try:
+                # Sinds 16 augustus 2026: telt ZOWEL interactions ALS
+                # interactions_old mee (voorheen enkel de recente
+                # hoofdtabel, waardoor "totaal_events" stil te laag
+                # uitkwam zodra archive_old_events() ooit gedraaid had).
                 cursor = self.conn.execute("SELECT COUNT(*) FROM interactions")
-                totaal = cursor.fetchone()[0]
+                totaal_recent = cursor.fetchone()[0]
 
-                cursor = self.conn.execute(
-                    "SELECT MIN(timestamp), MAX(timestamp) FROM interactions"
-                )
+                cursor = self.conn.execute("SELECT COUNT(*) FROM interactions_old")
+                totaal_archief = cursor.fetchone()[0]
+
+                cursor = self.conn.execute("""
+                    SELECT MIN(ts_min), MAX(ts_max) FROM (
+                        SELECT MIN(timestamp) AS ts_min, MAX(timestamp) AS ts_max FROM interactions
+                        UNION ALL
+                        SELECT MIN(timestamp) AS ts_min, MAX(timestamp) AS ts_max FROM interactions_old
+                    )
+                """)
                 min_ts, max_ts = cursor.fetchone()
 
                 date_range = None
@@ -497,7 +549,9 @@ class MemoryModule:
                     db_size_mb = round(self.db_path.stat().st_size / (1024 * 1024), 2)
 
                 resultaat = {
-                    "totaal_events": totaal,
+                    "totaal_events": totaal_recent + totaal_archief,
+                    "totaal_events_recent": totaal_recent,
+                    "totaal_events_archief": totaal_archief,
                     "periode": date_range,
                     "events_in_ram": len(self.events),
                     "database_grootte_mb": db_size_mb

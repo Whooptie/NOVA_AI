@@ -18,6 +18,7 @@ class ChatModule:
         event_bus.subscribe("intent_compare_concepts", self.on_compare_concepts)
         event_bus.subscribe("intent_bridge_query", self.on_bridge_query)
         event_bus.subscribe("intent_trending_query", self.on_trending_query)
+        event_bus.subscribe("intent_memory_query", self.on_memory_query)
         event_bus.subscribe("intent_parts_with_property", self.on_parts_with_property)
         event_bus.subscribe("intent_related_to", self.on_related_to)
         event_bus.subscribe("intent_synonym", self.on_synonym)
@@ -360,6 +361,84 @@ class ChatModule:
         overige = [w for w, _ in trending[1:]]
         if overige:
             msg += f" (en ook over: {', '.join(overige)})"
+
+        self.event_bus.publish("layer4_response", {"text": msg})
+
+    # -------------------------
+    # 3B3b. Memory-vragen in natuurlijke taal (punt 14, nova_state.md)
+    # -------------------------
+    def on_memory_query(self, data, event_type=None):
+        """
+        Twee paden, zie detect_memory_query() in intent_router.py voor
+        de volledige uitleg:
+          - keyword aanwezig -> memory.search(), gefilterd op
+            event_type == "raw_user_message" (enkel Kevins eigen
+            berichten, geen chat_response-ruis zoals het help-menu).
+          - keyword == None -> get_trending() (Layer 1), zelfde bron
+            als on_trending_query() hierboven.
+        """
+        keyword = data.get("keyword")
+
+        if keyword is None:
+            word_assoc = self.event_bus.modules.get("word_associations_learner")
+            if word_assoc is None:
+                word_assoc = self.event_bus.modules.get("word_associations")
+
+            if word_assoc is None or not hasattr(word_assoc, "get_trending"):
+                self.event_bus.publish("layer4_response", {
+                    "text": "Ik kan nog niet goed bijhouden wat er vaak terugkomt in onze gesprekken."
+                })
+                return
+
+            try:
+                trending = word_assoc.get_trending(window_days=7, top_k=5)
+            except Exception:
+                trending = None
+
+            if not trending:
+                self.event_bus.publish("layer4_response", {
+                    "text": "Ik zie nog geen duidelijk terugkerend onderwerp in onze gesprekken."
+                })
+                return
+
+            sterkste_woord, _ = trending[0]
+            msg = f"We hebben het opvallend vaak over '{sterkste_woord}' gehad."
+            overige = [w for w, _ in trending[1:]]
+            if overige:
+                msg += f" (en ook over: {', '.join(overige)})"
+
+            self.event_bus.publish("layer4_response", {"text": msg})
+            return
+
+        mem = self.event_bus.modules.get("memory")
+        if mem is None:
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik kan er nu even niet bij, mijn geheugen-module is niet beschikbaar."
+            })
+            return
+
+        try:
+            resultaten = mem.search(keyword, limit=20)
+        except Exception:
+            resultaten = []
+
+        # Filter: enkel Kevins eigen berichten, geen chat_response-ruis
+        # (zoals een help-menu dat toevallig het woord bevat).
+        eigen_berichten = [
+            r for r in resultaten if r.get("event_type") == "raw_user_message"
+        ]
+
+        if not eigen_berichten:
+            self.event_bus.publish("layer4_response", {
+                "text": f"Ik vind niets terug over '{keyword}' in onze eerdere gesprekken."
+            })
+            return
+
+        aantal = len(eigen_berichten)
+        if aantal == 1:
+            msg = f"Je hebt me één keer iets gevraagd over '{keyword}'."
+        else:
+            msg = f"Je hebt me al {aantal} keer iets gevraagd over '{keyword}'."
 
         self.event_bus.publish("layer4_response", {"text": msg})
 
