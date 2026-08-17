@@ -73,6 +73,36 @@ class EmergenceEngine:
         self.insights: List[Dict] = []
 
         # ─────────────────────────────────
+        # Punt 15 (16 augustus 2026): gespreks-contextuele
+        # proactiviteit -- naast de periodieke EMERGENCE_CHECK_INTERVAL
+        # -klok (main.py) reageert reflect() nu OOK meteen wanneer
+        # Kevin NU over een specifiek, herkend onderwerp praat, i.p.v.
+        # enkel te wachten tot de klok toevallig op dat onderwerp
+        # uitkomt. Subscribet op "*" (zelfde bewezen patroon als
+        # memory.py, regel 98) en filtert zelf op "topic_detected:"-
+        # voorvoegsel -- de EventBus-implementatie zelf is hier niet
+        # bekend, dus GEEN aanname over prefix-wildcards zoals
+        # "topic_detected:*" (zou stilzwijgend nooit kunnen matchen
+        # als de implementatie exacte string-matching doet).
+        # Defensieve check (16 augustus 2026): voorkomt dat een
+        # verkeerd doorgegeven "layers"-argument (bv. per ongeluk het
+        # "sem"-object i.p.v. een echte layers-dict, zie module_loader.py's
+        # uitsluitingslijst-commentaar) stilzwijgend een kapotte "*"-
+        # subscriptie op de EventBus achterlaat.
+        if self.event_bus is not None and isinstance(self.layers, dict):
+            self.event_bus.subscribe("*", self._on_elk_event)
+
+        # Hoe lang (in minuten) hetzelfde onderwerp stil moet blijven
+        # nadat het hardop gezegd is -- losser dan topic_suggestions.py's
+        # "niet binnen hetzelfde kalenderuur" (Kevin's keuze, 16 aug
+        # 2026): als Kevin binnen 1 gesprek 3-4 verschillende dingen
+        # bespreekt, mag een insight over onderwerp A niet alle andere
+        # onderwerpen blokkeren, en zelfs onderwerp A zelf mag later
+        # dezelfde dag weer een kans krijgen zonder op de klok-grens
+        # (volgend kalenderuur) te moeten wachten.
+        self.EMERGENCE_TOPIC_COOLDOWN_MINUTEN = 15
+
+        # ─────────────────────────────────
         # Feedback-opslag (insight_feedback.json)
         # ─────────────────────────────────
         # Zelfde padconventie als weather.py (eerste gebruiker,
@@ -85,6 +115,16 @@ class EmergenceEngine:
         project_root = get_project_root(__file__)
         self._feedback_path = project_root / "data" / "insight_feedback.json"
         self.feedback_data: Dict = self._load_feedback()
+
+        # Gedeelde cooldown-state tussen het gerichte "topic_detected"-
+        # pad EN de bestaande periodieke klok in reflect() zelf (zie de
+        # nieuwe check in reflect() verderop) -- voorkomt dat Kevin
+        # binnen korte tijd TWEE keer hetzelfde hoort over hetzelfde
+        # onderwerp, of dat nu van deze gerichte check komt of
+        # toevallig van de 10-minuten-klok. Zelfde laad/opslaan-patroon
+        # als topic_suggestions.py's _laatst_voorgesteld.
+        self._cooldown_path = project_root / "data" / "emergence_topic_cooldown_state.json"
+        self._laatst_gemeld = self._laad_cooldown_state()
 
         # ─────────────────────────────────
         # Sjablonen — sterkste woordassociatie (Layer 1)
@@ -993,6 +1033,162 @@ class EmergenceEngine:
 
         return insights
 
+    def _laad_cooldown_state(self) -> Dict:
+        if self._cooldown_path.exists():
+            try:
+                with open(self._cooldown_path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, OSError):
+                return {}
+        return {}
+
+    def _sla_cooldown_state_op(self):
+        self._cooldown_path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with open(self._cooldown_path, "w", encoding="utf-8") as f:
+                json.dump(self._laatst_gemeld, f, ensure_ascii=False, indent=2)
+        except OSError:
+            pass
+
+    def _cooldown_sleutel(self, insight: Dict) -> str:
+        """
+        Bouwt de cooldown-sleutel voor 1 insight. Voor insight-types
+        met een echt "onderwerp" (tijdspatroon: event_type,
+        trending_topic/woordverband: het woord) wordt DAT als sleutel
+        gebruikt, zodat onderwerp A een cooldown krijgt zonder
+        onderwerp B te blokkeren. kennisdichtheid/personality_drift
+        gaan over Kevin/Nova zelf, geen los onderwerp -- daar dient
+        het insight_type zelf als sleutel (1 melding per keer is
+        voldoende, geen aparte "per-onderwerp"-nuance nodig).
+        """
+        insight_type = insight.get("type", "onbekend")
+
+        if insight_type == "tijdspatroon":
+            return f"tijdspatroon:{insight.get('event_type', '')}"
+        if insight_type == "trending_topic":
+            return f"trending_topic:{insight.get('woord', '')}"
+        if insight_type == "woordverband":
+            return f"woordverband:{insight.get('woord1', '')}:{insight.get('woord2', '')}"
+
+        return insight_type
+
+    def _op_cooldown(self, insight: Dict) -> bool:
+        """
+        True als dit insight (via zijn cooldown-sleutel) te recent al
+        eens hardop gezegd is -- ongeacht via welk pad (periodieke
+        klok of de gerichte topic_detected-check hieronder), dus altijd
+        even checken vlak vóór een layer4_response-publish.
+        """
+        sleutel = self._cooldown_sleutel(insight)
+        laatste_ts = self._laatst_gemeld.get(sleutel)
+        if laatste_ts is None:
+            return False
+
+        verstreken_minuten = (datetime.now().timestamp() - laatste_ts) / 60
+        return verstreken_minuten < self.EMERGENCE_TOPIC_COOLDOWN_MINUTEN
+
+    def _zet_cooldown(self, insight: Dict):
+        sleutel = self._cooldown_sleutel(insight)
+        self._laatst_gemeld[sleutel] = datetime.now().timestamp()
+        self._sla_cooldown_state_op()
+
+    def _check_topic_sterkte(self, topic_naam: str) -> Optional[Dict]:
+        """
+        Gerichte tegenhanger van analyze_timing_pattern(): checkt of
+        Layer 2 al iets sterks weet over PRECIES dit ene onderwerp,
+        i.p.v. de sterkste kandidaat over ALLE event_types te zoeken.
+
+        Bewust een APARTE, kleine methode i.p.v. analyze_timing_
+        pattern() zelf een parameter geven (16 augustus 2026, Kevin's
+        keuze) -- die functie wordt ook door de bestaande periodieke
+        klok gebruikt (reflect() -> analyze_meta_patterns()); een
+        aparte methode raakt dat bewezen pad niet aan, tegen de prijs
+        van een kleine stukje duplicatie van de kandidaat-logica
+        hieronder (zelfde MIN_OBSERVATIES_VOOR_ANOMALIE-drempel,
+        zelfde whitelist-check voor activity_started:*).
+
+        Geeft, net als analyze_timing_pattern(), een "tijdspatroon"-
+        insight-dict terug (of None) -- reflect() formuleert dit dus
+        via dezelfde _formuleer_tijdspatroon()-sjabloonmethode, geen
+        aparte sjablonen nodig voor dit pad.
+        """
+        pattern_matcher = self.layers.get("pattern_matcher")
+        if pattern_matcher is None:
+            return None
+
+        event_type = f"topic_detected:{topic_naam}"
+        pattern = pattern_matcher.get_pattern(event_type)
+        if not pattern:
+            return None
+
+        total = pattern.get("total", 0)
+        confidence = pattern.get("confidence")
+        uur = pattern.get("most_common_hour")
+
+        min_observaties = getattr(
+            pattern_matcher, "MIN_OBSERVATIES_VOOR_ANOMALIE", 10
+        )
+        if total < min_observaties:
+            return None
+        if confidence is None or uur is None:
+            return None
+
+        # topic_detected:*-namen mogen generiek door (zelfde regel als
+        # analyze_timing_pattern() hierboven) -- enkel activity_started:*
+        # zou hier een whitelist-check nodig hebben, maar dat event-type
+        # loopt nooit via dit pad (_on_elk_event filtert al op
+        # "topic_detected:").
+        return {
+            "type": "tijdspatroon",
+            "event_type": event_type,
+            "onderwerp": self._onderwerp_label(event_type),
+            "uur": uur,
+            "confidence": confidence,
+        }
+
+    def _on_elk_event(self, data, event_type=None):
+        """
+        Subscriber op "*" (zie __init__) -- filtert zelf op
+        "topic_detected:"-events. Bij een match: check meteen of Layer
+        2 al iets sterks weet over PRECIES dat onderwerp (_check_topic_
+        sterkte()), i.p.v. te wachten tot de periodieke klok toevallig
+        op dat onderwerp uitkomt (punt 15, 16 augustus 2026).
+
+        Zelfde drie gates als reflect()'s bestaande pad, in dezelfde
+        volgorde: confidence-gate (LAYER4_DREMPELS) -> timing-gate
+        (_mag_nu_spreken()) -> cooldown-gate (_op_cooldown()) -- geen
+        van de bestaande gates wordt versoepeld, dit pad krijgt enkel
+        een EXTRA, eerdere kans om hetzelfde soort insight te vinden.
+        """
+        if event_type is None or not event_type.startswith("topic_detected:"):
+            return
+
+        topic_naam = event_type.split(":", 1)[1]
+        insight = self._check_topic_sterkte(topic_naam)
+        if insight is None:
+            return
+
+        if not self._haalt_layer4_drempel(insight["type"], insight["confidence"]):
+            return
+        if not self._mag_nu_spreken():
+            return
+        if self._op_cooldown(insight):
+            return
+
+        tekst = self._formuleer_tijdspatroon(insight)
+        resultaat = {
+            "text": tekst,
+            "confidence": insight["confidence"],
+            "insight_type": insight["type"],
+            "brondata": insight,
+        }
+
+        self._zet_cooldown(insight)
+
+        if self.event_bus is not None:
+            self.event_bus.publish("emergence:insight", resultaat)
+            self.event_bus.publish("layer4_response", {"text": tekst})
+
     def _mag_nu_spreken(self) -> bool:
         """
         Timing-gate (22 juli 2026): activiteit-ONAFHANKELIJKE check of
@@ -1083,8 +1279,15 @@ class EmergenceEngine:
             if self.event_bus is not None:
                 self.event_bus.publish("emergence:insight", resultaat)
 
+                # Cooldown-gate (16 augustus 2026, punt 15): gedeeld met
+                # het gerichte topic_detected-pad (_on_elk_event
+                # hierboven) -- voorkomt dat Kevin binnen korte tijd
+                # TWEE keer hetzelfde hoort, ongeacht welk pad het als
+                # eerste zei.
                 if self._haalt_layer4_drempel(insight["type"], insight["confidence"]) \
-                        and self._mag_nu_spreken():
+                        and self._mag_nu_spreken() \
+                        and not self._op_cooldown(insight):
+                    self._zet_cooldown(insight)
                     self.event_bus.publish("layer4_response", {"text": tekst})
 
         self.insights = geformuleerd

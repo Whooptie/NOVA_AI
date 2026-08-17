@@ -141,6 +141,22 @@ class ModuleLoader:
             if mod == "topic_suggestions":
                 continue
 
+            # emergence_engine wordt hierna handmatig geladen (stap 3E,
+            # met een "layers"-dictionary i.p.v. "sem"). Zelfde
+            # uitsluitingsreden als topic_suggestions hierboven: de
+            # generieke lus zou init_module(event_bus, sem) aanroepen,
+            # wat GEEN TypeError geeft (layers heeft een default) --
+            # sem zou dus stilzwijgend als "layers" doorgegeven worden.
+            # Tot 16 augustus 2026 bleef dit onopgemerkt omdat de
+            # eerste (foute) instantie nergens op subscribete; sinds
+            # de nieuwe event_bus.subscribe("*", ...) in __init__
+            # (punt 15) hangt die kapotte eerste instantie WEL mee aan
+            # de EventBus en crasht bij elk "topic_detected:"-event,
+            # ook al gebruikt de rest van Nova de latere, correcte
+            # instantie uit stap 3E.
+            if mod == "emergence_engine":
+                continue
+
             module = importlib.import_module(full_name)
 
             # Sla over als er geen init_module is (bv. subpackages zoals topics)

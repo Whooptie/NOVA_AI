@@ -37,6 +37,8 @@ class DebugCommands:
             (lambda t: t == "emergence", self._emergence),
             (lambda t: t.startswith("emergence feedback"), self._emergence_feedback),
             (lambda t: t.startswith("emergence drempel"), self._emergence_drempel),
+            (lambda t: t.startswith("emergence topic") and t.endswith("forceer"), self._emergence_topic_forceer),
+            (lambda t: t.startswith("emergence topic"), self._emergence_topic),
             (lambda t: t == "onderhoud", self._onderhoud),
             (lambda t: t in ("geheugen stats", "geheugen stats vers"), self._geheugen_stats),
             (lambda t: t == "geheugen gezondheid", self._geheugen_gezondheid),
@@ -258,6 +260,81 @@ class DebugCommands:
     # ------------------------------------------------------------------
     # Layer 0 — Memory
     # ------------------------------------------------------------------
+
+    def _emergence_topic(self, user_input):
+        """
+        Punt 15 (16 augustus 2026): puur informatieve inspectie van
+        _check_topic_sterkte() voor 1 specifiek topic -- toont de
+        ruwe patroondata EN of elke afzonderlijke gate (confidence/
+        timing/cooldown) zou slagen, ZONDER iets te publiceren of de
+        cooldown-state te wijzigen. Analoog aan topic_suggestions.py's
+        status_nu() (read-only variant naast de "echte" forceer-actie).
+        """
+        emergence = self.loader.loaded_modules.get("emergence_engine")
+        if not emergence:
+            print(f"{C_RED}emergence_engine-module niet gevonden.{C_RESET}")
+            return
+
+        delen = user_input.split()
+        if len(delen) != 3:
+            print(f"{C_RED}Gebruik: 'emergence topic <naam>' "
+                  f"(bv. 'emergence topic memory_query').{C_RESET}")
+            return
+
+        topic_naam = delen[2]
+        insight = emergence._check_topic_sterkte(topic_naam)
+
+        if insight is None:
+            print(f"{C_CYAN}Geen sterk genoeg patroon voor 'topic_detected:{topic_naam}' "
+                  f"-- ontbrekende pattern_matcher, onbekend topic, te weinig "
+                  f"observaties (< MIN_OBSERVATIES_VOOR_ANOMALIE), of geen "
+                  f"most_common_hour/confidence beschikbaar.{C_RESET}")
+            return
+
+        haalt_drempel = emergence._haalt_layer4_drempel(insight["type"], insight["confidence"])
+        mag_spreken = emergence._mag_nu_spreken()
+        op_cooldown = emergence._op_cooldown(insight)
+
+        print(f"{C_CYAN}--- emergence topic '{topic_naam}' ---{C_RESET}")
+        print(f"{C_CYAN}  onderwerp: {insight['onderwerp']}, uur: {insight['uur']}, "
+              f"confidence: {insight['confidence']:.2f}{C_RESET}")
+        print(f"{C_CYAN}  haalt confidence-drempel: {haalt_drempel}{C_RESET}")
+        print(f"{C_CYAN}  mag nu spreken (timing-gate): {mag_spreken}{C_RESET}")
+        print(f"{C_CYAN}  op cooldown: {op_cooldown}{C_RESET}")
+        print(f"{C_CYAN}  zou nu spreken: {haalt_drempel and mag_spreken and not op_cooldown}{C_RESET}")
+
+    def _emergence_topic_forceer(self, user_input):
+        """
+        Punt 15: roept _on_elk_event() ECHT aan met een gesimuleerd
+        topic_detected:<naam>-event -- publiceert dus daadwerkelijk
+        naar layer4_response als alle gates slagen, EN wijzigt de
+        cooldown-state (zelfde patroon als topic_suggestions.py's
+        "topic suggesties forceer" -- geen gates omzeild, enkel de
+        wachttijd op een organisch topic_detected-event overgeslagen).
+        """
+        emergence = self.loader.loaded_modules.get("emergence_engine")
+        if not emergence:
+            print(f"{C_RED}emergence_engine-module niet gevonden.{C_RESET}")
+            return
+
+        delen = user_input.split()
+        # "emergence topic <naam> forceer" -> delen = [.., .., naam, "forceer"]
+        if len(delen) != 4:
+            print(f"{C_RED}Gebruik: 'emergence topic <naam> forceer' "
+                  f"(bv. 'emergence topic memory_query forceer').{C_RESET}")
+            return
+
+        topic_naam = delen[2]
+        aantal_voor = len([
+            e for e in getattr(emergence, "_test_gepubliceerd", [])
+        ])  # geen ingebouwde telling beschikbaar, dus simpelweg aanroepen en toelichten
+
+        emergence._on_elk_event({"bron": "debug"}, event_type=f"topic_detected:{topic_naam}")
+        print(f"{C_CYAN}_on_elk_event() aangeroepen voor 'topic_detected:{topic_naam}'. "
+              f"Als alle gates slaagden is er nu een layer4_response gepubliceerd "
+              f"(zie Nova's antwoord hierboven/hieronder) en is de cooldown-state "
+              f"bijgewerkt. Geen output hier betekent: een van de gates blokkeerde "
+              f"(gebruik 'emergence topic {topic_naam}' voor de exacte reden).{C_RESET}")
 
     def _onderhoud(self, user_input):
         mem = self.loader.loaded_modules.get("memory")

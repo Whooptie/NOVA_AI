@@ -10,6 +10,11 @@ def get_help():
   emergence feedback                     (toont opgeslagen feedback per insight-type)
   emergence feedback <type> <ok|slecht>  (geef feedback op een insight-type)
   emergence drempel <type>               (toont originele vs. effectieve drempel + stats)
+  emergence topic <naam>                 (punt 15: toont _check_topic_sterkte()-resultaat +
+                                           of elke gate zou slagen, puur informatief, wijzigt niets)
+  emergence topic <naam> forceer         (roept _on_elk_event() ECHT aan voor dit topic --
+                                           publiceert een echte layer4_response als de gates
+                                           slagen, en wijzigt de cooldown-state)
 
 🧩 REASONING — CONTRADICTION CHECKER (punt 2)
   contradicties                          (forceert nu meteen een volledige check op
