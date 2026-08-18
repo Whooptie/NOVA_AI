@@ -458,6 +458,15 @@ class DebugCommands:
     # ------------------------------------------------------------------
 
     def _interruption_test(self, user_input):
+        """
+        Gebruik: interruption test <activiteit> <ja|nee> <aantal> [tijd_min]
+        Het vijfde argument (tijd_min) is optioneel -- Fase 6
+        (tijdsvenster-verfijning). Zonder dit argument wordt enkel het
+        activiteit-brede totaal bijgewerkt, exact zoals voorheen.
+        Geef bv. "interruption test coderen ja 5 10" om 5x "ja" te
+        registreren op 10 minuten sinds start (dus in het "vroeg"
+        -venster bij de standaard 20-minutengrens).
+        """
         tracker = self.loader.loaded_modules.get("interruption_tracker")
         if not tracker:
             print(f"{C_RED}interruption_tracker-module niet gevonden.{C_RESET}")
@@ -465,7 +474,7 @@ class DebugCommands:
 
         delen = user_input.split()
         if len(delen) < 4:
-            print(f"{C_RED}Gebruik: interruption test <activiteit> <ja|nee> <aantal>{C_RESET}")
+            print(f"{C_RED}Gebruik: interruption test <activiteit> <ja|nee> <aantal> [tijd_min]{C_RESET}")
             return
 
         activiteit = delen[2]
@@ -473,16 +482,37 @@ class DebugCommands:
         aantal = int(delen[4]) if len(delen) >= 5 and delen[4].isdigit() else 1
         toegestaan = antwoord in ("ja", "yes", "true")
 
+        # Zesde argument (optioneel): tijd_sinds_start in minuten, om
+        # ook het venster-specifieke pad te kunnen testen zonder
+        # eerst 20 minuten te moeten wachten.
+        tijd_sinds_start = None
+        if len(delen) >= 6:
+            try:
+                tijd_sinds_start = float(delen[5])
+            except ValueError:
+                print(f"{C_YELLOW}Kon '{delen[5]}' niet als tijd (minuten) lezen, "
+                      f"negeer tijdsvenster{C_RESET}")
+
         for _ in range(aantal):
-            tracker.record_feedback(activiteit, toegestaan)
+            tracker.record_feedback(activiteit, toegestaan, tijd_sinds_start=tijd_sinds_start)
 
         print(
             f"{C_CYAN}{aantal}x geregistreerd: activiteit='{activiteit}', "
-            f"toegestaan={toegestaan}{C_RESET}"
+            f"toegestaan={toegestaan}"
+            + (f", tijd_sinds_start={tijd_sinds_start} min" if tijd_sinds_start is not None else "")
+            + C_RESET
         )
         print(f"{C_CYAN}Huidig patroon: {tracker.get_pattern(activiteit)}{C_RESET}")
 
     def _interruption_gedrag(self, user_input):
+        """
+        Gebruik: interruption gedrag <activiteit> [tijd_min]
+        Het optionele tweede deel laat toe te testen wat Nova zou
+        beslissen op een specifiek moment binnen de activiteit (Fase
+        6, tijdsvenster-verfijning) -- bv. "interruption gedrag
+        coderen 10" om het "vroeg"-gedrag te zien, "interruption
+        gedrag coderen 30" voor het "laat"-gedrag.
+        """
         resp_engine = self.loader.loaded_modules.get("response_engine")
         if not resp_engine:
             print(f"{C_RED}response_engine-module niet gevonden.{C_RESET}")
@@ -490,12 +520,25 @@ class DebugCommands:
 
         delen = user_input.split()
         if len(delen) < 3:
-            print(f"{C_RED}Gebruik: interruption gedrag <activiteit>{C_RESET}")
+            print(f"{C_RED}Gebruik: interruption gedrag <activiteit> [tijd_min]{C_RESET}")
             return
 
         activiteit = delen[2]
-        beslissing = resp_engine.beslis_interruption_gedrag(activiteit)
-        print(f"{C_CYAN}Beslissing voor '{activiteit}': {beslissing}{C_RESET}")
+
+        tijd_sinds_start = None
+        if len(delen) >= 4:
+            try:
+                tijd_sinds_start = float(delen[3])
+            except ValueError:
+                print(f"{C_YELLOW}Kon '{delen[3]}' niet als tijd (minuten) lezen, "
+                      f"negeer tijdsvenster{C_RESET}")
+
+        beslissing = resp_engine.beslis_interruption_gedrag(
+            activiteit, tijd_sinds_start=tijd_sinds_start
+        )
+        print(f"{C_CYAN}Beslissing voor '{activiteit}'"
+              + (f" (tijd={tijd_sinds_start} min)" if tijd_sinds_start is not None else "")
+              + f": {beslissing}{C_RESET}")
 
     # ------------------------------------------------------------------
     # Layer 2 — Pattern Matcher
