@@ -1,10 +1,22 @@
 {
   "interruption_patterns": {
     "coderen": {
-      "totaal_pogingen": 7,
-      "aantal_toegestaan": 6,
-      "confidence": 0.8571,
-      "laatst_bijgewerkt": "2026-07-22T21:21:36.029467"
+      "totaal_pogingen": 12,
+      "aantal_toegestaan": 11,
+      "confidence": 0.9167,
+      "laatst_bijgewerkt": "2026-08-18T22:17:02.572049",
+      "vensters": {
+        "vroeg": {
+          "totaal_pogingen": 5,
+          "aantal_toegestaan": 5,
+          "confidence": 1.0
+        },
+        "laat": {
+          "totaal_pogingen": 0,
+          "aantal_toegestaan": 0,
+          "confidence": null
+        }
+      }
     },
     "gamen": {
       "totaal_pogingen": 5,

@@ -407,8 +407,18 @@ class SessionWatcher:
         if resp_engine is None:
             return
 
+        # Fase 6: zelfde tijd_sinds_start-berekening als _on_pending_
+        # answered() hieronder al doet voor record_feedback() -- nu
+        # ook meegeven bij het BESLISSEN, niet enkel bij het
+        # achteraf REGISTREREN van feedback.
+        tijd_sinds_start = None
+        if self.activiteit_start_tijd is not None:
+            tijd_sinds_start = round((time.time() - self.activiteit_start_tijd) / 60, 1)
+
         try:
-            beslissing = resp_engine.beslis_interruption_gedrag(self.actieve_activiteit)
+            beslissing = resp_engine.beslis_interruption_gedrag(
+                self.actieve_activiteit, tijd_sinds_start=tijd_sinds_start
+            )
         except Exception as e:
             print(f"[SESSION_WATCHER] Fout bij beslis_interruption_gedrag(): {e}")
             return

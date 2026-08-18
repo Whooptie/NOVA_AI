@@ -895,3 +895,28 @@ Vervolg op het generieke actie-koppelingswerkpunt. **Belangrijk om vooraf te ver
 - **Specifiek:** "wat vroeg ik ook alweer over koffie" → classifier twijfel (0.3046) → bevestigd (met de gefixte, natuurlijke tekst) → tussenvraag → "koffie" → `intent_memory_query` met `keyword="koffie"` → correct, herhaald resultaat via punt 14's bestaande afhandeling ("Je hebt me al 4 keer iets gevraagd over 'koffie'").
 - **Algemeen:** "waarover praten we het meest" → na de tweede trainingsronde (18 voorbeelden): confidence 0.3154, twijfel → bevestigd → DIRECT (geen tussenvraag) `intent_memory_query` met `keyword=None` → correct, algemeen resultaat via `get_trending()` ("We hebben het opvallend vaak over 'weer' gehad...").
 - **Terugval getest:** een onzinnig/leeg woord-antwoord op de tussenvraag werd correct doorgegeven en netjes afgehandeld door de ontvangende module (geen crash, "Ik vind niets terug over ... in onze eerdere gesprekken").
+
+---
+
+## ✅ Punt 7 — Interruption Learning Fase 6: tijdsvenster-verfijning (18 augustus 2026)
+
+Optioneel, additief puntje uit `interruption_learning_roadmap.md`'s eigen Fase-roadmap (Fase 1-5 al sinds 22 juli 2026 volledig af): Nova leerde tot nu toe enkel OF storen bij een activiteit meestal oké was, niet WANNEER binnen die activiteit. Twee tegenovergestelde patronen (bv. "vroeg in coderen bijna nooit oké" vs. "laat in coderen meestal wel oké") werden gemiddeld tot één vage confidence-score die bij geen van beide momenten goed paste.
+
+**Gebouwd, `core/interruption_tracker.py`:**
+
+- `VENSTER_GRENS_MINUTEN = 20` + `_bepaal_venster(tijd_sinds_start)` — vertaalt minuten-sinds-activiteit-start naar `"vroeg"`/`"laat"`, of `None` als geen tijd meegegeven wordt.
+- `record_feedback()` telt nu, NAAST het bestaande activiteit-brede totaal (ongewijzigd), ook apart per venster in een nieuwe `"vensters"`-substructuur — puur additief, geen bestaand gedrag verandert voor aanroepen zonder `tijd_sinds_start`.
+- `get_confidence()`/`has_enough_data()` kregen een nieuw, optioneel `tijd_sinds_start`-argument. Zonder dit argument: exact het oude, activiteit-brede gedrag. Met dit argument: venster-specifieke score/drempelcheck. `has_enough_data()` checkt de drempel (`MIN_OBSERVATIES = 5`) per venster apart — een activiteit kan in totaal ruim genoeg observaties hebben terwijl één venster daarbinnen nog te dun bezet is (kernscenario, expliciet getest).
+- Backward-compatible met bestaande, al opgeslagen data: activiteiten zonder `"vensters"`-sleutel (van vóór deze uitbreiding) krijgen die er bij de eerstvolgende `record_feedback()`-aanroep alsnog automatisch bijgemaakt, geen crash/migratie-stap nodig.
+
+**Koppeling `response_engine.py`/`session_watcher.py`:** `beslis_interruption_gedrag()` kreeg een nieuw, optioneel derde argument `tijd_sinds_start`, dat het rechtstreeks doorgeeft aan `tracker.has_enough_data()`/`tracker.get_confidence()`. `session_watcher.py`'s `check_activity_interruption()` berekent dit nu (zelfde berekening die `_on_pending_answered()` al langer deed voor `record_feedback()`) en geeft het mee bij het BESLISSEN, niet enkel bij het achteraf registreren van feedback.
+
+**Koppeling `debug_commands.py`:** beide bestaande commando's uitgebreid met een optioneel tijd-argument, puur om te kunnen testen zonder 20 minuten te hoeven wachten — `interruption test <activiteit> <ja|nee> <aantal> [tijd_min]` en `interruption gedrag <activiteit> [tijd_min]`. `modules/help/topics/debug.py` bijgewerkt met de nieuwe syntax.
+
+**Testsuite: `tests/test_interruption_tracker_fase6.py` (11 tests), gebouwd EN groen vóór de live-koppeling.** `TestBackwardCompatibiliteit` (4 — oude aanroepen/data zonder venster blijven ongewijzigd werken), `TestVensterVerfijning` (6 — vroeg/laat apart geteld, venstergrens exact op 20.0 minuten als expliciete grenswaarde-test, venster-specifieke confidence, het kernscenario "activiteit-breed genoeg data maar één venster te dun", onbekende activiteit geeft nette `None`/`False`), `TestPersistentie` (1 — venster-data overleeft een save/load-cyclus, simuleert een `/reboot`). Isolatie via `tmp_path`, zelfde conventie als de rest van de testsuite.
+
+**Resultaat: `pytest tests/` → 374 passed (waaronder alle 11 nieuwe), geen regressies.** Bevestigd op Kevin's eigen Windows-installatie.
+
+**Live getest en bevestigd in Nova (18 augustus 2026):** `interruption test coderen ja 5 10` registreerde correct 5x in het "vroeg"-venster (`vensters.vroeg.totaal_pogingen: 5`, `vensters.laat` bleef op 0). `interruption gedrag coderen 30` gaf terecht `vraag_eerst`/`confidence: None` terug — het "laat"-venster had op dat moment nog 0 observaties, dus `has_enough_data()` viel correct terug op het voorzichtige standaardgedrag in plaats van een onbetrouwbare score te gebruiken.
+
+**Eindstand punt 7 (Interruption Learning): volledig afgerond, inclusief het optionele Fase 6-stuk.** Nova kan nu, zodra er genoeg observaties per venster zijn, verschillend reageren op "net begonnen" versus "al een tijdje bezig" binnen dezelfde activiteit.

@@ -509,7 +509,7 @@ class ResponseEngine:
             "sources": [],
         }
 
-    def beslis_interruption_gedrag(self, activiteit: str) -> Dict:
+    def beslis_interruption_gedrag(self, activiteit: str, tijd_sinds_start: float = None) -> Dict:
         """
         Activity-Aware Interaction (interruption_learning_roadmap.md,
         22 juli 2026): beslist wat Nova moet doen zodra de tijdsdrempel
@@ -545,7 +545,14 @@ class ResponseEngine:
         """
         tracker = self.layers.get("interruption_tracker")
 
-        if tracker is None or not tracker.has_enough_data(activiteit):
+        # Fase 6 (optioneel, tijdsvenster-verfijning): 'tijd_sinds_start'
+        # is een NIEUW, optioneel derde argument van deze methode zelf
+        # (zie signatuur hieronder) -- session_watcher.py geeft dit al
+        # door aan record_feedback(), dus dezelfde waarde hergebruiken
+        # we hier voor het OPVRAGEN. Blijft None werken als de
+        # aanroeper dit (nog) niet meegeeft -- dan gewoon het
+        # activiteit-brede gedrag van vóór deze uitbreiding.
+        if tracker is None or not tracker.has_enough_data(activiteit, tijd_sinds_start=tijd_sinds_start):
             return {
                 "actie": "vraag_eerst",
                 "tekst": self._kies_variant("interruption_vraag"),
@@ -553,7 +560,7 @@ class ResponseEngine:
             }
 
         try:
-            confidence = tracker.get_confidence(activiteit)
+            confidence = tracker.get_confidence(activiteit, tijd_sinds_start=tijd_sinds_start)
         except Exception:
             # Zelfde principe als bij Layer 1/2/3 hierboven: een
             # opzoekfout mag Nova's gedrag nooit laten crashen --

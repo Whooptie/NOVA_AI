@@ -49,11 +49,14 @@ def get_help():
   traits                        (live, in-memory trait-waarden van Nova's personality_engine)
 
 ⏱️ ACTIVITY-AWARE INTERACTION
-  interruption test <activiteit> <ja|nee> <aantal>
+  interruption test <activiteit> <ja|nee> <aantal> [tijd_min]
                                  (simuleert feedback zonder te wachten op de tijdsdrempel,
-                                  bv. "interruption test coderen ja 5")
-  interruption gedrag <activiteit>
-                                 (toont wat beslis_interruption_gedrag() nu zou teruggeven)
+                                  bv. "interruption test coderen ja 5 10" -- 5x geregistreerd
+                                  op 10 min sinds start, dus in het "vroeg"-venster)
+  interruption gedrag <activiteit> [tijd_min]
+                                 (toont wat beslis_interruption_gedrag() nu zou teruggeven;
+                                  optioneel tijd_min om een specifiek venster te testen,
+                                  bv. "interruption gedrag coderen 30" voor het "laat"-venster)
 
 📊 LAYER 2 — PATTERN MATCHER
   patronen                       (algemene stats: hoeveel event_types en observaties)

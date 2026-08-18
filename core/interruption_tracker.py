@@ -36,6 +36,31 @@ class InterruptionTracker:
     # zou zelfs 1x "ja" al confidence 1.0 geven, wat niks zegt.
     MIN_OBSERVATIES = 5
 
+    # Fase 6 (optioneel, tijdsvenster-verfijning): grens in minuten
+    # tussen "vroeg" en "laat" binnen een lopende activiteit. Zelfde
+    # 20-minutengrens als het voorbeeld in interruption_learning_
+    # roadmap.md -- geen aparte drempel per activiteit (dat zou een
+    # extra configuratielaag vergen zonder dat daar nu bewijs voor
+    # is dat het nodig is).
+    VENSTER_GRENS_MINUTEN = 20
+    VROEG = "vroeg"
+    LAAT = "laat"
+
+    def _bepaal_venster(self, tijd_sinds_start):
+        """
+        Vertaalt een tijdstip (minuten sinds activiteit-start) naar
+        een vast venster-label. Geeft None terug als tijd_sinds_start
+        None is (bv. oude data van vóór deze uitbreiding, of een
+        aanroeper die het gewoon niet meegeeft) -- dan valt de rest
+        van deze klasse terug op het activiteit-brede totaal, zie
+        get_confidence()/has_enough_data() hieronder.
+        """
+        if tijd_sinds_start is None:
+            return None
+        if tijd_sinds_start < self.VENSTER_GRENS_MINUTEN:
+            return self.VROEG
+        return self.LAAT
+
     def __init__(self, event_bus=None):
         self.event_bus = event_bus
 
@@ -80,18 +105,52 @@ class InterruptionTracker:
                 "totaal_pogingen": 0,
                 "aantal_toegestaan": 0,
                 "confidence": None,
-                "laatst_bijgewerkt": None
+                "laatst_bijgewerkt": None,
+                # Fase 6: per-venster tellingen, in EXACT dezelfde
+                # vorm als het activiteit-brede totaal hierboven --
+                # zo kan get_confidence()/has_enough_data() straks
+                # dezelfde logica hergebruiken voor beide niveaus.
+                "vensters": {
+                    self.VROEG: {"totaal_pogingen": 0, "aantal_toegestaan": 0, "confidence": None},
+                    self.LAAT: {"totaal_pogingen": 0, "aantal_toegestaan": 0, "confidence": None},
+                }
             }
 
         entry = self.patterns[activiteit]
+
+        # Bestaande, activiteit-brede telling -- ONGEWIJZIGD, blijft
+        # bestaan als terugvalwaarde voor wie geen tijd_sinds_start
+        # meegeeft (bv. oude aanroepen, of toekomstige aanroepers die
+        # het venster niet kennen).
         entry["totaal_pogingen"] += 1
         if toegestaan:
             entry["aantal_toegestaan"] += 1
-
         entry["confidence"] = round(
             entry["aantal_toegestaan"] / entry["totaal_pogingen"], 4
         )
         entry["laatst_bijgewerkt"] = datetime.now().isoformat()
+
+        # Fase 6: bijkomend, in het venster tellen -- puur additief,
+        # het activiteit-brede totaal hierboven blijft even correct
+        # als voorheen, ongeacht of tijd_sinds_start meegegeven werd.
+        venster = self._bepaal_venster(tijd_sinds_start)
+        if venster is not None:
+            # Backward-compat: activiteiten die al bestonden VOOR
+            # deze uitbreiding hebben nog geen "vensters"-sleutel in
+            # hun opgeslagen JSON -- die dan hier alsnog aanmaken in
+            # plaats van te crashen op een KeyError.
+            if "vensters" not in entry:
+                entry["vensters"] = {
+                    self.VROEG: {"totaal_pogingen": 0, "aantal_toegestaan": 0, "confidence": None},
+                    self.LAAT: {"totaal_pogingen": 0, "aantal_toegestaan": 0, "confidence": None},
+                }
+            venster_entry = entry["vensters"][venster]
+            venster_entry["totaal_pogingen"] += 1
+            if toegestaan:
+                venster_entry["aantal_toegestaan"] += 1
+            venster_entry["confidence"] = round(
+                venster_entry["aantal_toegestaan"] / venster_entry["totaal_pogingen"], 4
+            )
 
         self._dirty = True
         self.save_to_disk()
@@ -110,33 +169,62 @@ class InterruptionTracker:
     # Opvragen
     # ------------------------------------------------------------------
 
-    def get_confidence(self, activiteit):
+    def get_confidence(self, activiteit, tijd_sinds_start=None):
         """
         Geeft de confidence-score terug (0.0-1.0), of None als er nog
         te weinig observaties zijn (zie has_enough_data()).
+
+        Fase 6 (optioneel): geef tijd_sinds_start mee om de confidence
+        van het SPECIFIEKE tijdsvenster te krijgen (bv. "vroeg" in
+        plaats van het activiteit-brede gemiddelde). Bestaande
+        aanroepen zonder dit argument blijven ONGEWIJZIGD werken --
+        tijd_sinds_start=None geeft gewoon het activiteit-brede
+        gedrag van vóór deze uitbreiding.
         """
         entry = self.patterns.get(activiteit)
         if entry is None:
             return None
-        if not self.has_enough_data(activiteit):
+
+        if tijd_sinds_start is None:
+            if not self.has_enough_data(activiteit):
+                return None
+            return entry["confidence"]
+
+        venster = self._bepaal_venster(tijd_sinds_start)
+        if not self.has_enough_data(activiteit, tijd_sinds_start=tijd_sinds_start):
             return None
-        return entry["confidence"]
+        return entry.get("vensters", {}).get(venster, {}).get("confidence")
 
     def get_pattern(self, activiteit):
         """Geeft de volledige, ruwe data terug voor een activiteit."""
         return self.patterns.get(activiteit)
 
-    def has_enough_data(self, activiteit, min_observaties=None):
+    def has_enough_data(self, activiteit, min_observaties=None, tijd_sinds_start=None):
         """
         Zijn er genoeg observaties om de confidence-score te
         vertrouwen? min_observaties override mogelijk, anders wordt
         de klasse-constante MIN_OBSERVATIES gebruikt.
+
+        Fase 6 (optioneel): met tijd_sinds_start wordt gecheckt of
+        specifiek DAT VENSTER genoeg observaties heeft -- een
+        activiteit kan in totaal ruim genoeg observaties hebben, maar
+        het "vroeg"-venster kan daarbinnen nog steeds te dun bezet
+        zijn om op te vertrouwen. Zonder tijd_sinds_start blijft dit
+        exact het oude, activiteit-brede gedrag.
         """
         drempel = min_observaties if min_observaties is not None else self.MIN_OBSERVATIES
         entry = self.patterns.get(activiteit)
         if entry is None:
             return False
-        return entry["totaal_pogingen"] >= drempel
+
+        if tijd_sinds_start is None:
+            return entry["totaal_pogingen"] >= drempel
+
+        venster = self._bepaal_venster(tijd_sinds_start)
+        venster_entry = entry.get("vensters", {}).get(venster)
+        if venster_entry is None:
+            return False
+        return venster_entry["totaal_pogingen"] >= drempel
 
     def get_stats(self):
         """Kort overzicht, zelfde stijl als pattern_matcher.py's get_stats()."""
