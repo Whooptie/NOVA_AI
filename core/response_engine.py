@@ -63,8 +63,9 @@ Volgende stappen (samen met Kevin, niet in dit bestand):
           welke variant gekozen wordt.
 """
 
-import random
 from typing import Dict, Optional
+
+from modules.response_learning.variant_kiezer import kies_variant
 
 
 class ResponseEngine:
@@ -276,23 +277,58 @@ class ResponseEngine:
 
         return woord
 
-    def _kies_variant(self, sjabloon_naam: str, **invulwaarden) -> str:
+    def _kies_variant(self, sjabloon_naam: str, response_style: str = None, **invulwaarden) -> str:
         """
-        Kiest willekeurig één variant uit self.templates[sjabloon_naam]
-        en vult die in met invulwaarden (bv. entity=..., definition=...).
+        Kiest een variant uit self.templates[sjabloon_naam] en vult
+        die in met invulwaarden (bv. entity=..., definition=...).
 
         Dit is de centrale plek waar Fase 5's "meerdere natuurlijke
         varianten"-aanpak gebeurt — elke aanroeper (generate(),
         get_timing_hint()) hoeft zelf niet te weten dat er meerdere
         varianten bestaan, die roepen gewoon deze ene methode aan.
 
-        BLIJFT 100% VAST/SYMBOLISCH: random.choice() kiest enkel WELKE
-        van de vooraf geschreven zinnen gebruikt wordt — er wordt nooit
-        een nieuwe zin gegenereerd of samengesteld die niet letterlijk
-        al in self.templates staat.
+        BLIJFT 100% VAST/SYMBOLISCH: er wordt nooit een nieuwe zin
+        gegenereerd of samengesteld die niet letterlijk al in
+        self.templates staat — enkel WELKE van de vooraf geschreven
+        zinnen gebruikt wordt, kan nu ook door eerdere ervaring
+        bijgestuurd worden (zie Fase 2 hieronder), i.p.v. altijd exact
+        gelijke kansen.
+
+        Response Variant Learning (response_variant_learning_
+        roadmap.md), Fase 1+2:
+        - Fase 1 (altijd actief): elke keuze wordt via het
+          "variant_gekozen"-event gepubliceerd — pure observatie,
+          verandert niets aan WELKE variant gekozen wordt.
+        - Fase 2 (enkel actief zodra er genoeg data is): als
+          variant_feedback_logger.py (via de "variant_feedback_logger"-
+          laag) al genoeg observaties heeft voor DIT sjabloon, gebruiken
+          we random.choices() met gewogen kansen i.p.v. gelijke kansen.
+          Zonder genoeg data (of als die laag niet geladen is) blijft
+          dit exact het oude gedrag: gelijke kans voor elke variant.
+          Blijft ALTIJD toeval bevatten: get_gewichten() garandeert
+          zelf dat geen gewicht ooit 0 wordt.
+
+        response_style als apart, optioneel argument (i.p.v. enkel in
+        **invulwaarden): niet elk sjabloon gebruikt "{response_style}"
+        als invulplek in de tekst zelf (geen enkele doet dat vandaag),
+        dus dit wordt NIET aan .format() doorgegeven — puur om mee te
+        loggen in het variant_gekozen-event, zodat Fase 2 later kan
+        analyseren of het antwoordstijl (kort/normaal/uitgebreid) een
+        rol speelt. Bestaande aanroepen die dit niet meegeven blijven
+        gewoon werken (response_style logt dan als None).
         """
         varianten = self.templates[sjabloon_naam]
-        gekozen = random.choice(varianten)
+
+        gewichten_module = self.layers.get("variant_feedback_logger")
+        gekozen = kies_variant(
+            varianten,
+            sjabloon_naam=sjabloon_naam,
+            event_bus=self.event_bus,
+            variant_feedback_logger=gewichten_module,
+            entity=invulwaarden.get("entity"),
+            response_style=response_style,
+        )
+
         return gekozen.format(**invulwaarden)
 
     def get_timing_hint(self, topic_naam: str) -> Optional[str]:
@@ -459,6 +495,7 @@ class ResponseEngine:
             if associatie_woord:
                 text = self._kies_variant(
                     "met_associatie",
+                    response_style=response_style,
                     entity=entity,
                     definition=definition,
                     associatie=associatie_woord,
@@ -471,7 +508,7 @@ class ResponseEngine:
                 }
 
             text = self._kies_variant(
-                "definitie", entity=entity, definition=definition
+                "definitie", response_style=response_style, entity=entity, definition=definition
             )
             if not is_kort:
                 text = self._voeg_timing_hint_toe(text, entity=entity)
@@ -490,7 +527,7 @@ class ResponseEngine:
 
             if parents:
                 text = self._kies_variant(
-                    "is_a_fallback", entity=entity, parent=parents[0]
+                    "is_a_fallback", response_style=response_style, entity=entity, parent=parents[0]
                 )
                 text = self._voeg_timing_hint_toe(text, entity=entity)
                 return {
@@ -502,7 +539,7 @@ class ResponseEngine:
         # --- Stap 3: echt niets gevonden -> eerlijk toegeven ---
         # GEEN timing-hint hier: "ik weet het niet, trouwens je vraagt
         # hier vaak naar" zou een vreemde, ongepaste combinatie zijn.
-        text = self._kies_variant("onbekend", entity=entity)
+        text = self._kies_variant("onbekend", response_style=response_style, entity=entity)
         return {
             "text": text,
             "confidence": 0.2,

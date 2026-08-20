@@ -516,3 +516,5 @@
 {"text": "koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-08-16T20:59:28.279225"}
 {"text": "waar gaat het meestal over tussen ons", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0242, "bron": "model_fallback", "tijdstip": "2026-08-16T21:00:18.482604"}
 {"text": "/rebbot", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-17T21:37:06.657212"}
+{"text": "asdfqwerlkj onzin", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-20T21:10:07.955193"}
+{"text": "ik ben moe", "signaal": "focus", "model_signaal": "focus", "marge": 0.0889, "bron": "model_fallback", "tijdstip": "2026-08-20T21:10:54.255147"}

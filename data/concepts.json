@@ -13069,28 +13069,41 @@
     "senses": [
       {
         "sense_id": "schaken#1",
-        "definition": "unknown",
+        "definition": "Schaken is een aanduiding voor een groep verwante bordspellen. Dit artikel beschrijft het westers schaakspel, een strategisch bordspel voor twee spelers.",
         "pos": "noun",
         "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "aanduiding",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "unverified",
+            "created_at": "2026-08-20T18:49:38.747169"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
         "audit_log": [],
         "status": "unverified"
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T18:21:48.370870",
-      "updated_at": "2026-07-28T18:21:48.370870",
+      "updated_at": "2026-08-20T18:49:38.747169",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-07-28T18:21:48.370870",
-      "usage_count": 1,
+      "last_used_at": "2026-08-20T18:49:38.747169",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T18:21:48.370870",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-08-20T18:49:38.747169",
+          "confidence": 0.8
         }
       ]
     },
@@ -13110,6 +13123,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-28T18:21:48.370870"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "wikipedia",
+        "sense_id": "schaken#1",
+        "old_value": "unknown",
+        "new_value": "Schaken is een aanduiding voor een groep verwante bordspellen. Dit artikel beschrijft het westers schaakspel, een strategisch bordspel voor twee spelers.",
+        "timestamp": "2026-08-20T18:49:38.747169"
       }
     ]
   },
@@ -16984,6 +17005,102 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-16T19:00:18.603252"
+      }
+    ]
+  },
+  "asdfqwerlkj": {
+    "senses": [
+      {
+        "sense_id": "asdfqwerlkj#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-20T19:10:07.998157",
+      "updated_at": "2026-08-20T19:10:08.001040",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-20T19:10:08.001040",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-20T19:10:08.001040",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "asdfqwerlkj"
+        },
+        "timestamp": "2026-08-20T19:10:07.998157"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "asdfqwerlkj#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-20T19:10:08.001040"
+      }
+    ]
+  },
+  "onzin": {
+    "senses": [
+      {
+        "sense_id": "onzin#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-20T19:10:08.036050",
+      "updated_at": "2026-08-20T19:10:08.037053",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-20T19:10:08.037053",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-20T19:10:08.037053",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "onzin"
+        },
+        "timestamp": "2026-08-20T19:10:08.036050"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "onzin#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-20T19:10:08.037053"
       }
     ]
   }

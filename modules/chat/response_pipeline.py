@@ -5,6 +5,7 @@ import random
 from identity.personality.personality_engine import PersonalityEngine
 from identity.emotion.emotion_engine import EmotionEngine
 from identity.expression.tone_engine import ToneEngine
+from modules.response_learning.variant_kiezer import kies_variant
 
 
 class ResponsePipeline:
@@ -177,7 +178,15 @@ class ResponsePipeline:
                 base = conv_engine.probeer_activiteit_observatie()
 
         if base is None:
-            base = random.choice(self._sjablonen_fallback)
+            response_style = self._get_response_style()
+            base = kies_variant(
+                self._sjablonen_fallback,
+                sjabloon_naam="fallback_algemeen",
+                event_bus=self.event_bus,
+                variant_feedback_logger=self.event_bus.modules.get("variant_feedback_logger"),
+                entity=None,
+                response_style=response_style,
+            )
             if user_text:
                 base += f" Je zei: '{user_text}'."
 
