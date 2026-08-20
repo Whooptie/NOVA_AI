@@ -202,12 +202,29 @@ def test_anomalie_bij_sterk_afwijkend_uur_na_betrouwbaar_patroon(matcher):
     """Zodra het patroon sterk genoeg is (genoeg observaties, hoge
     confidence) EN het huidige moment > 4 uur afwijkt van het
     gebruikelijke uur, hoort dit als 'ongewone_timing'-anomalie
-    gelogd te worden."""
-    _bouw_sterk_patroon(matcher, uur=9)  # patroon: altijd om 9u
+    gelogd te worden.
+
+    LET OP (20 augustus 2026, gerepareerd): gebruikte voorheen een
+    hardcoded kalenderdatum (10/11 augustus 2026). get_anomalies()
+    filtert intern op de ECHTE systeemklok (datetime.now(), zie
+    pattern_matcher.py) met een standaard 7-dagen-venster -- een
+    vaste datum "verloopt" dus vanzelf zodra de test lang genoeg na
+    die datum gedraaid wordt, ook al werkt de detectielogica zelf
+    perfect (zie _log_anomalie() -- die triggert nog steeds correct).
+    Daarom nu relatief aan datetime.now(): de test blijft kloppen
+    ongeacht wanneer hij draait.
+    """
+    vandaag = datetime.now().replace(minute=0, second=0, microsecond=0)
+    gisteren = vandaag - timedelta(days=1)
+
+    _bouw_sterk_patroon(matcher, uur=9, dag_datum=vandaag)  # patroon: altijd om 9u
 
     # Nu een observatie op 23u -- verschil met 9u is 10 (of 24-10=14,
-    # dus min(10,14)=10), ruim boven de drempel van 4.
-    _stuur_event(matcher, "chat_message", datetime(2026, 8, 11, 23, 0))
+    # dus min(10,14)=10), ruim boven de drempel van 4. Gisteren i.p.v.
+    # vandaag gebruikt (net als de oorspronkelijke test een dag na
+    # het patroon), zodat dit niet toevallig buiten get_anomalies()'s
+    # 7-dagen-venster kan vallen naarmate de tijd verstrijkt.
+    _stuur_event(matcher, "chat_message", gisteren.replace(hour=23))
 
     anomalieen = matcher.get_anomalies()
     assert len(anomalieen) == 1

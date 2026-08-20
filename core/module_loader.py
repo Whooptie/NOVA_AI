@@ -157,6 +157,24 @@ class ModuleLoader:
             if mod == "emergence_engine":
                 continue
 
+            # variant_feedback_logger wordt hierna handmatig geladen (stap
+            # 3B-2, met sentiment_classifier i.p.v. "sem"). Zelfde
+            # uitsluitingsreden als topic_suggestions/emergence_engine
+            # hierboven: module.init_module(event_bus, sem) hierbeneden
+            # geeft GEEN TypeError (sentiment_classifier heeft een
+            # default), dus "sem" (de semantic-module) zou hier
+            # stilzwijgend als sentiment_classifier doorgegeven worden.
+            # Dat maakt een EERSTE, FOUTE instantie aan die zich ook al
+            # abonneert op "variant_gekozen"/"raw_user_message" in zijn
+            # __init__ -- zonder deze uitsluiting blijven ER TWEE
+            # instanties aan de EventBus hangen (deze foute EN de
+            # correcte uit stap 3B-2), wat elk variant_gekozen-event
+            # dubbel logt. Bevestigd via live-test 20 augustus 2026
+            # (variant_feedback.jsonl bevatte 2 identieke regels per
+            # keuze).
+            if mod == "variant_feedback_logger":
+                continue
+
             module = importlib.import_module(full_name)
 
             # Sla over als er geen init_module is (bv. subpackages zoals topics)
@@ -215,6 +233,36 @@ class ModuleLoader:
         resp_engine.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["response_engine"] = resp_engine
         self.event_bus.register_module("response_engine", resp_engine)
+
+        # ----------------------------------------------------
+        # 3B-2. RESPONSE VARIANT LEARNING (response_variant_learning_
+        #        roadmap.md, Fase 1+2)
+        # ----------------------------------------------------
+        # Zelfde reden als response_engine hierboven: afwijkende
+        # signature (sentiment_classifier i.p.v. "sem"), dus niet via
+        # de dynamische scan (stap 3) te laden. sentiment_classifier
+        # (modules/preferences/) zit WEL in de dynamische scan en
+        # staat dus op dit punt al gegarandeerd in loaded_modules.
+        #
+        # MOET NA response_engine hierboven staan: response_engine.py
+        # is al geladen (resp_engine), dus we prikken de referentie
+        # naar deze module meteen in resp_engine.layers -- net zoals
+        # session_watcher/kandidaat_suggesties hieronder met andere
+        # modules doen. Zonder deze regel zou _kies_variant() de
+        # "variant_feedback_logger"-laag nooit vinden en altijd
+        # random.choice() (Fase 1-gedrag) blijven gebruiken -- geen
+        # crash, maar Fase 2 zou dan nooit actief worden.
+        from modules.response_learning import variant_feedback_logger
+
+        start = time.time()
+        variant_logger = variant_feedback_logger.init_module(
+            self.event_bus,
+            sentiment_classifier=self.loaded_modules.get("sentiment_classifier"),
+        )
+        variant_logger.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["variant_feedback_logger"] = variant_logger
+        self.event_bus.register_module("variant_feedback_logger", variant_logger)
+        resp_engine.layers["variant_feedback_logger"] = variant_logger
 
         # ----------------------------------------------------
         # 3C. CONTEXT MANAGER (Layer 5)

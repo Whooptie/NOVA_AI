@@ -24,6 +24,7 @@ import random
 import time
 
 from modules.paths import get_project_root
+from modules.response_learning.variant_kiezer import kies_variant
 
 
 class ConversationEngine:
@@ -194,18 +195,40 @@ class ConversationEngine:
         if not self._mag_opnieuw_observeren():
             return None
 
-        # Overprikkeling heeft voorrang -- het is het meest
+                # Overprikkeling heeft voorrang -- het is het meest
         # betekenisvolle signaal van de drie categorieën.
+        #
+        # Response Variant Learning: elke emotionele staat krijgt een
+        # EIGEN, apart sjabloon_naam (i.p.v. alle MOOD_*_OPENINGEN
+        # samen als 1 pot te behandelen). Dat is bewust -- een
+        # "energiek"-opening en een "rustig"-opening worden nooit in
+        # dezelfde situatie gekozen, dus ze eerlijk tegen elkaar laten
+        # concurreren voor gewichten zou appels met peren vergelijken.
         if overstimulation > self.OVERSTIMULATION_DREMPEL:
-            opening = random.choice(self.MOOD_OVERPRIKKELD_OPENINGEN)
+            sjabloon_naam = "mood_overprikkeld_opening"
+            varianten = self.MOOD_OVERPRIKKELD_OPENINGEN
         elif energie > self.ENERGIE_HOOG_DREMPEL:
-            opening = random.choice(self.MOOD_ENERGIEK_OPENINGEN)
+            sjabloon_naam = "mood_energiek_opening"
+            varianten = self.MOOD_ENERGIEK_OPENINGEN
         elif energie < self.ENERGIE_LAAG_DREMPEL:
-            opening = random.choice(self.MOOD_RUSTIG_OPENINGEN)
+            sjabloon_naam = "mood_rustig_opening"
+            varianten = self.MOOD_RUSTIG_OPENINGEN
         else:
             return None  # gemiddelde staat, niets noemenswaardigs
 
-        afsluiting = random.choice(self.MOOD_AFSLUITINGEN)
+        variant_logger = self.event_bus.modules.get("variant_feedback_logger")
+        opening = kies_variant(
+            varianten,
+            sjabloon_naam=sjabloon_naam,
+            event_bus=self.event_bus,
+            variant_feedback_logger=variant_logger,
+        )
+        afsluiting = kies_variant(
+            self.MOOD_AFSLUITINGEN,
+            sjabloon_naam="mood_afsluiting",
+            event_bus=self.event_bus,
+            variant_feedback_logger=variant_logger,
+        )
         volledige_tekst = f"{opening} {afsluiting}"
 
         self.laatste_praatvorm = "mood_observatie"
@@ -233,13 +256,33 @@ class ConversationEngine:
         activiteit_tekst = self.ACTIVITEIT_LABELS[activiteit_raw]
         duur_tekst = self._formatteer_duur(duur_minuten)
 
-        opening = random.choice(self.ACTIVITEIT_OPENINGEN)
-        if "{duur}" in opening and duur_tekst is None:
-            opening = random.choice(
-                [o for o in self.ACTIVITEIT_OPENINGEN if "{duur}" not in o]
-            )
+        # Response Variant Learning: ALTIJD de volledige, vaste
+        # ACTIVITEIT_OPENINGEN-lijst gebruiken (stabiele indices voor
+        # get_gewichten()) -- de "{duur}"-variant(en) worden via
+        # uitsluiten_indices vermeden als duur_tekst ontbreekt, in
+        # plaats van de lijst zelf te filteren (dat zou de betekenis
+        # van elke index laten verschuiven tussen aanroepen).
+        uit_te_sluiten = [
+            i for i, opening in enumerate(self.ACTIVITEIT_OPENINGEN)
+            if "{duur}" in opening
+        ] if duur_tekst is None else None
 
-        afsluiting = random.choice(self.ACTIVITEIT_AFSLUITINGEN)
+        variant_logger = self.event_bus.modules.get("variant_feedback_logger")
+        opening = kies_variant(
+            self.ACTIVITEIT_OPENINGEN,
+            sjabloon_naam="activiteit_observatie_opening",
+            event_bus=self.event_bus,
+            variant_feedback_logger=variant_logger,
+            entity=activiteit_raw,
+            uitsluiten_indices=uit_te_sluiten,
+        )
+        afsluiting = kies_variant(
+            self.ACTIVITEIT_AFSLUITINGEN,
+            sjabloon_naam="activiteit_observatie_afsluiting",
+            event_bus=self.event_bus,
+            variant_feedback_logger=variant_logger,
+            entity=activiteit_raw,
+        )
 
         zin = opening.format(activiteit=activiteit_tekst, duur=duur_tekst)
         volledige_tekst = f"{zin} {afsluiting}"

@@ -5,14 +5,14 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 0,
-      "negative_count": 15,
+      "positive_count": 2,
+      "negative_count": 18,
       "total_shifts": 6,
       "last_shift": "2026-08-16T19:39:08.992068",
       "last_shift_direction": "negatief"
     },
     "loyalty": {
-      "positive_count": 17,
+      "positive_count": 19,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -48,7 +48,7 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 9,
+      "negative_count": 12,
       "total_shifts": 17,
       "last_shift": "2026-08-16T21:02:21.702086",
       "last_shift_direction": "negatief"
@@ -68,7 +68,7 @@
       "last_shift_direction": "positief"
     },
     "focus_hyperfocus_tendency": {
-      "positive_count": 2,
+      "positive_count": 4,
       "negative_count": 0,
       "total_shifts": 2,
       "last_shift": "2026-08-16T20:57:03.204566",
@@ -90,7 +90,7 @@
     },
     "chaotic_variability": {
       "positive_count": 0,
-      "negative_count": 4,
+      "negative_count": 6,
       "total_shifts": 4,
       "last_shift": "2026-08-16T20:56:45.059912",
       "last_shift_direction": "negatief"

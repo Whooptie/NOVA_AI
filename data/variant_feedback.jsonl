@@ -1,0 +1,6 @@
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 3, "variant_tekst": "Je zit al een poosje in de {activiteit}-modus.", "entity": "talking_to_nova", "response_style": null, "moment": "2026-08-20T21:10:08.110050", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles nog onder controle?", "entity": "talking_to_nova", "response_style": null, "moment": "2026-08-20T21:10:08.111052", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 3, "reactie_sentiment": "negatief", "moment": 1787253008.1100507, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "negatief", "moment": 1787253008.112051, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "variant_tekst": "Dat snap ik nog niet helemaal, maar ik onthoud het wel.", "entity": null, "response_style": "normaal", "moment": "2026-08-20T21:10:54.407526", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1787253054.4088268, "type": "sentiment_koppeling"}
