@@ -48,6 +48,7 @@ class DebugCommands:
             (lambda t: t == "presence debug", self._presence_debug),
             (lambda t: t == "context", self._context),
             (lambda t: t == "traits", self._traits),
+            (lambda t: t == "emotie debug", self._emotie_debug),
             (lambda t: t.startswith("context geschiedenis"), self._context_geschiedenis),
             (lambda t: t.startswith("interruption test"), self._interruption_test),
             (lambda t: t.startswith("interruption gedrag"), self._interruption_gedrag),
@@ -64,6 +65,7 @@ class DebugCommands:
             (lambda t: t == "contradicties", self._contradicties),
             (lambda t: t == "topic suggesties", self._topic_suggesties),
             (lambda t: t == "topic suggesties forceer", self._topic_suggesties_forceer),
+            (lambda t: t.startswith("variant debug"), self._variant_debug),
         ]
 
         event_bus.subscribe("debug_command", self.handle_debug_command)
@@ -256,6 +258,111 @@ class DebugCommands:
 
         print(f"{C_CYAN}check_suggesties() wordt geforceerd...{C_RESET}")
         module.check_suggesties()
+
+    # ------------------------------------------------------------------
+    # Response Variant Learning (response_variant_learning_roadmap.md)
+    # ------------------------------------------------------------------
+
+    def _variant_debug(self, user_input):
+        """
+        Toont Response Variant Learning's status: per (sjabloon_naam,
+        variant_index) hoeveel observaties en welk gemiddeld sentiment
+        er gelogd is, of de MIN_OBSERVATIES_PER_VARIANT-drempel gehaald
+        is, en -- als die gehaald is -- de gewichten zoals
+        get_gewichten() ze ECHT aan response_engine.py/response_
+        pipeline.py/conversation_engine.py zou teruggeven. Puur
+        informatief, wijzigt niets (leest enkel de al bestaande
+        in-memory state, geen bestand-IO).
+
+        Zonder sjabloon_naam: overzicht van ALLE sjablonen met minstens
+        1 observatie, met bondige samenvatting per sjabloon.
+        Met sjabloon_naam ("variant debug definitie"): volledig
+        detailoverzicht voor dat ene sjabloon, inclusief de
+        uiteindelijke gewichten of "nog niet actief: drempel niet
+        gehaald" als dat van toepassing is.
+
+        LET OP: leest self._scores rechtstreeks (een intern attribuut
+        van variant_feedback_logger.py, geen publieke API) -- dat mag
+        hier, voor een developer-only debug-commando, maar is geen
+        patroon om elders in Nova's eigen modules te herhalen. Andere
+        modules horen enkel get_gewichten() te gebruiken.
+        """
+        module = self.loader.loaded_modules.get("variant_feedback_logger")
+        if not module:
+            print(f"{C_RED}variant_feedback_logger-module niet gevonden.{C_RESET}")
+            return
+
+        delen = user_input.split()
+        if len(delen) < 3:
+            self._variant_debug_overzicht(module)
+        else:
+            sjabloon_naam = delen[2]
+            self._variant_debug_detail(module, sjabloon_naam)
+
+    def _variant_debug_overzicht(self, module):
+        if not module._scores:
+            print(f"{C_CYAN}Nog geen enkele observatie met sentiment gelogd.{C_RESET}")
+            print(f"(Fase 1-logging zelf loopt al -- data/variant_feedback.jsonl "
+                  f"groeit bij elke variant-keuze, maar er is nog geen sentiment "
+                  f"gekoppeld aan een van die keuzes.)")
+            return
+
+        print(f"{C_CYAN}--- Response Variant Learning: overzicht per sjabloon ---{C_RESET}")
+        print(f"Drempel: {module.MIN_OBSERVATIES_PER_VARIANT} observaties per variant, "
+              f"minimum gewicht: {module.MIN_GEWICHT}")
+        print()
+
+        for sjabloon_naam in sorted(module._scores.keys()):
+            per_variant = module._scores[sjabloon_naam]
+            totaal_observaties = sum(info["aantal"] for info in per_variant.values())
+            aantal_varianten_met_data = len(per_variant)
+            drempel_gehaald = any(
+                info["aantal"] >= module.MIN_OBSERVATIES_PER_VARIANT
+                for info in per_variant.values()
+            )
+            status = "✅ Fase 2 ACTIEF" if drempel_gehaald else "⏳ nog Fase 1 (gelijke kansen)"
+            print(f"  {sjabloon_naam}: {totaal_observaties} observatie(s) over "
+                  f"{aantal_varianten_met_data} variant(en) -- {status}")
+
+        print()
+        print("Detail per sjabloon: 'variant debug <sjabloon_naam>'")
+
+    def _variant_debug_detail(self, module, sjabloon_naam):
+        per_variant = module._scores.get(sjabloon_naam)
+
+        print(f"{C_CYAN}--- Response Variant Learning: '{sjabloon_naam}' ---{C_RESET}")
+
+        if not per_variant:
+            print(f"(nog geen observaties met sentiment gelogd voor dit sjabloon)")
+            return
+
+        for variant_index in sorted(per_variant.keys()):
+            info = per_variant[variant_index]
+            gemiddelde = info["totaal_score"] / info["aantal"] if info["aantal"] else 0.0
+            gehaald = "✅" if info["aantal"] >= module.MIN_OBSERVATIES_PER_VARIANT else "  "
+            print(f"  {gehaald} index {variant_index}: {info['aantal']} observatie(s), "
+                  f"gemiddeld sentiment {gemiddelde:.2f}")
+
+        # Bepaal het grootste aantal_varianten dat get_gewichten() nodig
+        # heeft om ALLE bekende indices mee te nemen -- puur voor dit
+        # debug-commando (in de echte pipeline geeft response_engine.py
+        # dit door als len(self.templates[sjabloon_naam])).
+        max_index = max(per_variant.keys())
+        gewichten = module.get_gewichten(sjabloon_naam, max_index + 1)
+
+        print()
+        if gewichten is None:
+            print(f"{C_RED}Fase 2 nog niet actief voor dit sjabloon "
+                  f"(geen enkele variant heeft de drempel van "
+                  f"{module.MIN_OBSERVATIES_PER_VARIANT} gehaald).{C_RESET}")
+            print("_kies_variant() gebruikt momenteel nog gewone gelijke kansen.")
+        else:
+            print(f"{C_CYAN}Gewichten zoals get_gewichten() ze nu teruggeeft:{C_RESET}")
+            for idx, gewicht in enumerate(gewichten):
+                print(f"  index {idx}: {gewicht:.3f}")
+            print("(let op: dit toont enkel de indices tot en met de hoogste met "
+                  "bekende data -- als het sjabloon meer varianten heeft dan hier "
+                  "getoond, krijgen die het neutrale gewicht in de echte pipeline.)")
 
     # ------------------------------------------------------------------
     # Layer 0 — Memory
@@ -490,7 +597,7 @@ class DebugCommands:
             try:
                 tijd_sinds_start = float(delen[5])
             except ValueError:
-                print(f"{C_YELLOW}Kon '{delen[5]}' niet als tijd (minuten) lezen, "
+                print(f"{C_RED}Kon '{delen[5]}' niet als tijd (minuten) lezen, "
                       f"negeer tijdsvenster{C_RESET}")
 
         for _ in range(aantal):
@@ -530,7 +637,7 @@ class DebugCommands:
             try:
                 tijd_sinds_start = float(delen[3])
             except ValueError:
-                print(f"{C_YELLOW}Kon '{delen[3]}' niet als tijd (minuten) lezen, "
+                print(f"{C_RED}Kon '{delen[3]}' niet als tijd (minuten) lezen, "
                       f"negeer tijdsvenster{C_RESET}")
 
         beslissing = resp_engine.beslis_interruption_gedrag(
@@ -829,6 +936,57 @@ class DebugCommands:
             n_gesuggereerd = len(kandidaten._al_gesuggereerd)
             print(f"{C_CYAN}Kandidaat-suggesties: {n_gesuggereerd} suggestie(s) ooit gedaan "
                   f"(PMI-drempel: {kandidaten.MIN_PMI_DREMPEL}).{C_RESET}")
+
+    # ------------------------------------------------------------------
+    # Layer 6 — Emotion Engine + MicroLearning-koppeling
+    # (nova_state.md punt 8, koppeling emotion_engine <-> microlearning)
+    # ------------------------------------------------------------------
+
+    def _emotie_debug(self, user_input):
+        """
+        Toont in één oogopslag de actuele emotion_engine-state EN of
+        de nieuwe MicroLearning-koppeling actief is (personality/
+        emotion correct geregistreerd in event_bus.modules). Puur
+        uitlezen, geen wijzigingen -- zelfde opzet als _traits()/
+        _preferences_debug() hierboven.
+
+        Handig om na een testbericht (bv. "dankjewel, dat helpt echt")
+        meteen te zien of current_mood/intensity/overstimulation.level
+        daadwerkelijk veranderd zijn, zonder zelf emotion_state.json
+        te moeten openen.
+        """
+        emotion = self.event_bus.modules.get("emotion")
+        personality = self.event_bus.modules.get("personality")
+
+        print(f"{C_CYAN}--- Emotion Engine: status ---{C_RESET}")
+
+        if not emotion:
+            print(f"{C_RED}emotion-module niet gevonden in event_bus.modules "
+                  f"-- controleer of response_pipeline.py's "
+                  f"event_bus.register_module('emotion', self.emotion) "
+                  f"is doorgevoerd.{C_RESET}")
+            return
+
+        state = emotion.state
+        print(f"{C_CYAN}current_mood: {state.get('current_mood')}{C_RESET}")
+        print(f"{C_CYAN}intensity: {state.get('intensity')}{C_RESET}")
+        print(f"{C_CYAN}last_trigger: {state.get('last_trigger')}{C_RESET}")
+        print(f"{C_CYAN}last_reaction: {state.get('last_reaction')}{C_RESET}")
+
+        overstim = state.get("overstimulation", {})
+        print(f"{C_CYAN}overstimulation.level: {overstim.get('level')} "
+              f"(drempel: {overstim.get('threshold')}){C_RESET}")
+        print(f"{C_CYAN}overstimulation.last_overflow_behavior: "
+              f"{overstim.get('last_overflow_behavior')}{C_RESET}")
+
+        if not personality:
+            print(f"{C_RED}personality-module niet gevonden in event_bus.modules "
+                  f"-- MicroLearning-koppeling kan hierdoor niet werken.{C_RESET}")
+        else:
+            print(f"{C_CYAN}identity_state.current_energy: "
+                  f"{personality.state.get('current_energy')}{C_RESET}")
+            print(f"{C_CYAN}identity_state.overstimulation_level: "
+                  f"{personality.state.get('overstimulation_level')}{C_RESET}")
 
     # ------------------------------------------------------------------
     # Intent Classifier (Fase 1-6, 28 juli 2026)

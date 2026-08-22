@@ -31,6 +31,18 @@
       "hyperfocus_mode": true,
       "reaction": "stilte_korte_zinnen",
       "overflow_behavior": "tijd_vergeten"
+    },
+    "waardering": {
+      "energy_boost": 0.08,
+      "expressiveness_boost": 0.08,
+      "reaction": "warme_glimlach",
+      "recovery_hint": null
+    },
+    "kilte": {
+      "energy_drop": 0.05,
+      "expressiveness_boost": -0.05,
+      "reaction": "neutrale_blik",
+      "recovery_hint": "even_afstand_nemen"
     }
   },
 

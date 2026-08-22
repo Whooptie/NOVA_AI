@@ -342,6 +342,28 @@ class MicroLearning:
     # ---------------------------------------------------------
     # 3. Eén signaal verwerken: tellers bijwerken, evt. trait verschuiven
     # ---------------------------------------------------------
+    # Layer 6, Fase 6 uitbreiding (koppeling met emotion_engine.py,
+    # nova_state.md punt 8): MicroLearning herkent hier al een signaal
+    # in Kevin's bericht, maar dat signaal bereikte tot nu toe ENKEL
+    # traits.json (via _update_teller() hieronder) — emotion_engine.py's
+    # apply_trigger() werd in de hele codebase maar op 1 plek aangeroepen
+    # (response_pipeline.py's on_greeting(), altijd hardcoded
+    # "excitement"). Deze mapping hergebruikt het AL BESTAANDE
+    # classificatiemodel/signaal, in plaats van een nieuwe, aparte
+    # detectie te bouwen — 1 signaal, 2 bestemmingen (traits EN emotie).
+    #
+    # "kilte" heeft bewust GEEN tegenhanger: emotion_rules.json kent
+    # geen bijpassende trigger, en die zelf verzinnen is een aparte
+    # ontwerpbeslissing die hier niet gemaakt wordt.
+    _SIGNAAL_NAAR_EMOTION_TRIGGER = {
+        "frustratie": "frustration",
+        "interesse": "interest",
+        "verwarring": "confusion",
+        "focus": "focus",
+        "waardering": "waardering",
+        "kilte": "kilte",
+    }
+
     def _verwerk_signaal(self, signaal: str):
         signaal_info = self.mapping.get("signalen", {}).get(signaal)
         if not signaal_info:
@@ -351,6 +373,32 @@ class MicroLearning:
 
         for trait_naam, richting in effecten.items():
             self._update_teller(trait_naam, richting)
+
+        self._apply_emotion_trigger_indien_van_toepassing(signaal)
+
+    def _apply_emotion_trigger_indien_van_toepassing(self, signaal: str):
+        """
+        Stuurt hetzelfde signaal ook naar emotion_engine.py, via de
+        al bestaande PersonalityEngine-instantie (event_bus.modules
+        ["personality"], geregistreerd in response_pipeline.py).
+
+        Faalt dit ooit (personality/emotion nog niet geladen, of een
+        onverwachte fout) — dan gewoon stilzwijgend niets doen, zelfde
+        principe als de rest van deze module: adaptive learning/emotie
+        is een aanvullende laag, mag Nova's kernwerking nooit breken.
+        """
+        trigger = self._SIGNAAL_NAAR_EMOTION_TRIGGER.get(signaal)
+        if not trigger:
+            return
+
+        try:
+            personality = self.event_bus.modules.get("personality")
+            emotion = self.event_bus.modules.get("emotion")
+            if personality is None or emotion is None:
+                return
+            emotion.apply_trigger(trigger, personality_engine=personality)
+        except Exception:
+            pass
 
     def _update_teller(self, trait_naam: str, richting: str):
         """

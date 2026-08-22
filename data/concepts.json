@@ -17008,54 +17008,6 @@
       }
     ]
   },
-  "asdfqwerlkj": {
-    "senses": [
-      {
-        "sense_id": "asdfqwerlkj#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
-        "audit_log": []
-      }
-    ],
-    "metadata": {
-      "created_at": "2026-08-20T19:10:07.998157",
-      "updated_at": "2026-08-20T19:10:08.001040",
-      "sources": [
-        "auto"
-      ],
-      "last_used_at": "2026-08-20T19:10:08.001040",
-      "usage_count": 1,
-      "confidence_history": [
-        {
-          "timestamp": "2026-08-20T19:10:08.001040",
-          "confidence": 0.1
-        }
-      ]
-    },
-    "audit_log": [
-      {
-        "event_type": "concept_created",
-        "source": "system",
-        "new_value": {
-          "word": "asdfqwerlkj"
-        },
-        "timestamp": "2026-08-20T19:10:07.998157"
-      },
-      {
-        "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "asdfqwerlkj#1",
-        "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-08-20T19:10:08.001040"
-      }
-    ]
-  },
   "onzin": {
     "senses": [
       {
@@ -17101,6 +17053,390 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-20T19:10:08.037053"
+      }
+    ]
+  },
+  "dankjewel": {
+    "senses": [
+      {
+        "sense_id": "dankjewel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-22T16:21:15.300656",
+      "updated_at": "2026-08-22T16:21:15.302659",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-22T16:21:15.302659",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-22T16:21:15.302659",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "dankjewel"
+        },
+        "timestamp": "2026-08-22T16:21:15.300656"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "dankjewel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-22T16:21:15.302659"
+      }
+    ]
+  },
+  "echt": {
+    "senses": [
+      {
+        "sense_id": "echt#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-22T16:21:15.342123",
+      "updated_at": "2026-08-22T16:21:15.343161",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-22T16:21:15.343161",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-22T16:21:15.343161",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "echt"
+        },
+        "timestamp": "2026-08-22T16:21:15.342123"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "echt#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-22T16:21:15.343161"
+      }
+    ]
+  },
+  "frustrerend": {
+    "senses": [
+      {
+        "sense_id": "frustrerend#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-22T16:22:07.014270",
+      "updated_at": "2026-08-22T16:22:07.015259",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-22T16:22:07.015259",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-22T16:22:07.015259",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "frustrerend"
+        },
+        "timestamp": "2026-08-22T16:22:07.014270"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "frustrerend#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-22T16:22:07.015259"
+      }
+    ]
+  },
+  "hey": {
+    "senses": [
+      {
+        "sense_id": "hey#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-22T16:45:13.829467",
+      "updated_at": "2026-08-22T16:45:13.830527",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-22T16:45:13.830527",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-22T16:45:13.830527",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hey"
+        },
+        "timestamp": "2026-08-22T16:45:13.829467"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "hey#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-22T16:45:13.830527"
+      }
+    ]
+  },
+  "nova": {
+    "senses": [
+      {
+        "sense_id": "nova#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-22T16:45:13.863899",
+      "updated_at": "2026-08-22T16:45:13.863899",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-22T16:45:13.863899",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-22T16:45:13.863899",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "nova"
+        },
+        "timestamp": "2026-08-22T16:45:13.863899"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "nova#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-22T16:45:13.863899"
+      }
+    ]
+  },
+  "preferences": {
+    "senses": [
+      {
+        "sense_id": "preferences#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-22T16:50:29.046410",
+      "updated_at": "2026-08-22T16:50:29.047402",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-22T16:50:29.047402",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-22T16:50:29.047402",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "preferences"
+        },
+        "timestamp": "2026-08-22T16:50:29.046410"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "preferences#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-22T16:50:29.047402"
+      }
+    ]
+  },
+  "debugintent": {
+    "senses": [
+      {
+        "sense_id": "debugintent#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-22T16:50:29.089258",
+      "updated_at": "2026-08-22T16:50:29.090403",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-22T16:50:29.090403",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-22T16:50:29.090403",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "debugintent"
+        },
+        "timestamp": "2026-08-22T16:50:29.089258"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "debugintent#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-22T16:50:29.090403"
+      }
+    ]
+  },
+  "debug": {
+    "senses": [
+      {
+        "sense_id": "debug#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-08-22T16:50:29.124967",
+      "updated_at": "2026-08-22T16:50:29.124967",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-08-22T16:50:29.124967",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-08-22T16:50:29.124967",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "debug"
+        },
+        "timestamp": "2026-08-22T16:50:29.124967"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "debug#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-08-22T16:50:29.124967"
       }
     ]
   }

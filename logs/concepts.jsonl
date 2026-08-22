@@ -246,3 +246,11 @@
 {"timestamp": "2026-08-16T19:00:18.602231", "event_type": "concept_created", "word": "tussen", "source": "system", "new_value": {"word": "tussen"}}
 {"timestamp": "2026-08-20T19:10:07.998157", "event_type": "concept_created", "word": "asdfqwerlkj", "source": "system", "new_value": {"word": "asdfqwerlkj"}}
 {"timestamp": "2026-08-20T19:10:08.036050", "event_type": "concept_created", "word": "onzin", "source": "system", "new_value": {"word": "onzin"}}
+{"timestamp": "2026-08-22T16:21:15.300656", "event_type": "concept_created", "word": "dankjewel", "source": "system", "new_value": {"word": "dankjewel"}}
+{"timestamp": "2026-08-22T16:21:15.342123", "event_type": "concept_created", "word": "echt", "source": "system", "new_value": {"word": "echt"}}
+{"timestamp": "2026-08-22T16:22:07.014270", "event_type": "concept_created", "word": "frustrerend", "source": "system", "new_value": {"word": "frustrerend"}}
+{"timestamp": "2026-08-22T16:45:13.829467", "event_type": "concept_created", "word": "hey", "source": "system", "new_value": {"word": "hey"}}
+{"timestamp": "2026-08-22T16:45:13.863899", "event_type": "concept_created", "word": "nova", "source": "system", "new_value": {"word": "nova"}}
+{"timestamp": "2026-08-22T16:50:29.046410", "event_type": "concept_created", "word": "preferences", "source": "system", "new_value": {"word": "preferences"}}
+{"timestamp": "2026-08-22T16:50:29.089258", "event_type": "concept_created", "word": "debugintent", "source": "system", "new_value": {"word": "debugintent"}}
+{"timestamp": "2026-08-22T16:50:29.124967", "event_type": "concept_created", "word": "debug", "source": "system", "new_value": {"word": "debug"}}

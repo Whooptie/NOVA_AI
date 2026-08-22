@@ -27,13 +27,21 @@ class ResponsePipeline:
         self.emotion = EmotionEngine()
         self.tone_engine = ToneEngine()
 
-        # Registratie zodat andere modules (bv. conversation_engine.py)
+                # Registratie zodat andere modules (bv. conversation_engine.py)
         # de actuele Layer 6-state kunnen opvragen via
         # event_bus.modules.get("personality"), net zoals dat al voor
         # context_manager (Layer 5) gebeurt. PersonalityEngine wordt
         # hier aangemaakt i.p.v. via module_loader.py, dus zonder deze
         # regel zou het nergens in event_bus.modules terechtkomen.
         event_bus.register_module("personality", self.personality)
+
+        # Zelfde reden, nu ook voor EmotionEngine (nova_state.md punt 8,
+        # koppeling met microlearning.py): zonder deze registratie kan
+        # geen enkele andere module apply_trigger() aanroepen op DEZE
+        # actieve emotion-instantie -- ze zouden anders per ongeluk een
+        # eigen, aparte EmotionEngine() aanmaken met een eigen state,
+        # los van wat de tone-pipeline hierboven al gebruikt.
+        event_bus.register_module("emotion", self.emotion)
 
         # Voor nu: greeting + fallback + Layer 4 (definitie-antwoorden)
         event_bus.subscribe("intent_greeting", self.on_greeting)

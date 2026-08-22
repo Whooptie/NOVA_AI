@@ -518,3 +518,8 @@
 {"text": "/rebbot", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-17T21:37:06.657212"}
 {"text": "asdfqwerlkj onzin", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-20T21:10:07.955193"}
 {"text": "ik ben moe", "signaal": "focus", "model_signaal": "focus", "marge": 0.0889, "bron": "model_fallback", "tijdstip": "2026-08-20T21:10:54.255147"}
+{"text": "kan je me de tijd geven", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0067, "bron": "model_fallback", "tijdstip": "2026-08-22T16:02:44.995768"}
+{"text": "tijd", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-22T16:02:48.095722"}
+{"text": "wat vind je van mij?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0844, "bron": "model_fallback", "tijdstip": "2026-08-22T16:03:01.721089"}
+{"text": "hoe werk je?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0903, "bron": "model_fallback", "tijdstip": "2026-08-22T16:03:42.949588"}
+{"text": "/rebboot", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-22T18:25:57.832799"}

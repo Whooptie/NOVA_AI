@@ -90,3 +90,9 @@
 {"tekst": "at is python", "hoogste_gok": "math", "confidence": 0.141, "tijdstip": "2026-08-20T20:51:23.434774"}
 {"tekst": "asdfqwerlkj onzin", "hoogste_gok": "chess", "confidence": 0.1267, "tijdstip": "2026-08-20T21:10:07.996157"}
 {"tekst": "ik ben moe", "hoogste_gok": "preference", "confidence": 0.2823, "tijdstip": "2026-08-20T21:10:54.313149"}
+{"tekst": "dankjewel, dat helpt echt", "hoogste_gok": "chess_evaluation", "confidence": 0.1916, "tijdstip": "2026-08-22T18:21:15.299657"}
+{"tekst": "dit werkt niet, frustrerend", "hoogste_gok": "preference", "confidence": 0.1713, "tijdstip": "2026-08-22T18:22:07.012261"}
+{"tekst": "dankjewel, dat helpt echt.", "hoogste_gok": "chess_evaluation", "confidence": 0.1916, "tijdstip": "2026-08-22T18:26:35.966393"}
+{"tekst": "dit werkt niet, frustrerend!", "hoogste_gok": "preference", "confidence": 0.1713, "tijdstip": "2026-08-22T18:27:00.964810"}
+{"tekst": "hey nova", "hoogste_gok": "greeting", "confidence": 0.2755, "tijdstip": "2026-08-22T18:45:13.828475"}
+{"tekst": "preferences debugintent debug", "hoogste_gok": "chess", "confidence": 0.1267, "tijdstip": "2026-08-22T18:50:29.045402"}

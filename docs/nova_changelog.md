@@ -102,12 +102,12 @@ Reasoning-laag aangepast om `status == "rejected"` overal te negeren, terwijl `g
 
 Zes nieuwe chat-commando's in `intent_router.py`'s nieuwe `handle_weerleg()` — bewust het werkwoord "weerleg" i.p.v. "vergeet" (dat laatste is al bezet door `kevin_profile.py`'s voorkeuren-commando's, een compleet ander systeem):µ
 
-- weerleg: <woord> <relatie_type> <target>
-- weerleg betekenis: <woord> <nummer>
-- weerleg concept: <woord>
-- verwijder definitief: <woord> <relatie_type> <target>
-- verwijder definitief betekenis: <woord> <nummer>
-- verwijder definitief concept: <woord>
+- `weerleg: <woord> <relatie_type> <target>`
+- `weerleg betekenis: <woord> <nummer>`
+- `weerleg concept: <woord>`
+- `verwijder definitief: <woord> <relatie_type> <target>`
+- `verwijder definitief betekenis: <woord> <nummer>`
+- `verwijder definitief concept: <woord>`
 
 `<nummer>` verwijst naar de positie in `get_senses()` (1-indexed), zelfde volgorde als `concept_overview.py` al toont. Gedocumenteerd in `algemeen.py`/`help`.
 
@@ -961,3 +961,28 @@ Volledige originele roadmap: `response_variant_learning_roadmap.md` (bewust los 
 **Tests:** `tests/test_variant_feedback_logger.py` (13 tests) + `tests/test_variant_kiezer.py` (9 tests) — beide inclusief counter-tests die de kernfixes tijdelijk breken om te bevestigen dat de tests écht falen zonder de fix (nooit gokken zonder geladen model; `uitsluiten_indices` wint altijd, ook van een hoog gewicht). `pytest tests/` → **396 passed**, bevestigd op Kevin's eigen Windows-installatie, geen regressies.
 
 **Live end-to-end bevestigd in Nova (meerdere sessies, 20 augustus 2026):** Fase 1-logging voor `definitie`/`met_associatie`/`onbekend`/`timing_hint` (inclusief de correcte variant-index en entity per regel); Fase 2-sentiment-koppeling met de échte classifier (`positief`/`neutraal_gemengd`/`negatief`, incl. verwachte ruis zoals "dank je!" dat als `negatief` classificeerde — een proxy-signaal-onnauwkeurigheid van `sentiment_classifier.py` zelf, geen bug in Response Variant Learning); de "twee vragen zonder tussenliggende reactie"-situatie (enkel de laatste variant-keuze kreeg de koppeling, zoals ontworpen); en na de dubbele-logging-fix: `fallback_algemeen`/`activiteit_observatie_opening`/`activiteit_observatie_afsluiting` loggen correct vanuit `response_pipeline.py`/`conversation_engine.py`, elk met de juiste sjabloon_naam en zonder dubbele regels.
+
+#### Emotie-triggers uitgebreid — meerdere trigger-bronnen + last_trigger-bugfix (22 augustus 2026)
+
+**Uitgangspunt (voorheen nova_state.md punt 9):** `emotion.apply_trigger()` werd in de hele codebase maar op één plek aangeroepen (`response_pipeline.py`'s `on_greeting()`, altijd hardcoded `"excitement"`). Overige triggers uit `emotion_rules.json` (`interest`, `confusion`, `frustration`, `focus`) bestonden al als kant-en-klare regels, maar werden nergens geactiveerd buiten een groet.
+
+**Oplossing: hergebruik van het bestaande signaal-classificatiemodel (Layer 6 Fase 6).** In plaats van een nieuwe, aparte detectie te bouwen, stuurt `microlearning.py`'s al-bestaande signaalherkenning (`frustratie`/`waardering`/`interesse`/`verwarring`/`focus`/`kilte`, via `signal_model.pkl`) nu ook door naar `emotion_engine.apply_trigger()` — één signaal, twee bestemmingen (traits.json blijft ongewijzigd bijgewerkt, emotion_state.json krijgt er nu ook een update bovenop).
+
+**Wijzigingen:**
+
+- `response_pipeline.py`: `self.emotion` wordt nu ook geregistreerd via `event_bus.register_module("emotion", self.emotion)`, naast de al bestaande `"personality"`-registratie — nodig zodat andere modules bij dezelfde actieve `EmotionEngine`-instantie kunnen.
+- `emotion_rules.json`: twee nieuwe triggers toegevoegd, `waardering` en `kilte`, in dezelfde stijl/structuur als de bestaande vijf. Beide zonder `overflow_behavior` (geen opjagende triggers, vallen in `apply_trigger()`'s rustige afkoelingstak).
+- `microlearning.py`: `_verwerk_signaal()` roept nu, bovenop de bestaande trait-tellers, ook `_apply_emotion_trigger_indien_van_toepassing()` aan, via een nieuwe `_SIGNAAL_NAAR_EMOTION_TRIGGER`-mapping (`frustratie→frustration`, `interesse→interest`, `verwarring→confusion`, `focus→focus`, `waardering→waardering`, `kilte→kilte`). Faalt stil (try/except) als `personality`/`emotion` nog niet geregistreerd zijn — zelfde beschermende stijl als de rest van dit bestand.
+
+**Bugfix, live ontdekt tijdens het testen van bovenstaande (zie `emotie debug`-sessie 22 augustus 2026):** `emotion_engine.py`'s `apply_trigger()` werkte `state["last_trigger"]` nergens bij — enkel `last_reaction`/`last_recovery_hint` kregen een update. Viel nooit op zolang `"excitement"` (via een groet) de enige trigger-bron was (het veld toonde toevallig altijd de juiste waarde, er was er maar 1). Zodra `frustration`/`waardering`/`kilte` ook gingen triggeren, bleef `last_trigger` permanent op `"excitement"` hangen. Gefixt met één regel: `self.state["last_trigger"] = trigger`, vlak voor de bestaande mood/intensity-update in `apply_trigger()`.
+
+**Nieuw debug-commando:** `emotie debug` (in `debug_commands.py`/`debug.py`) — toont `emotion.state` (mood, intensity, last_trigger, last_reaction, overstimulation) én de gespiegelde `personality.state`-velden in één oogopslag, inclusief een expliciete foutmelding als de nieuwe `"emotion"`-registratie in `response_pipeline.py` ontbreekt. Gebruikt voor live-verificatie van deze wijziging, blijft daarna bruikbaar als permanent debug-hulpmiddel.
+
+**Tests toegevoegd:**
+
+- `test_microlearning_emotion_koppeling.py` (11 tests) — geïsoleerde kopie van de nieuwe mapping-logica (`DummyEventBus`/`DummyEmotionEngine`), dekt alle 6 signaal→trigger-koppelingen, onbekend signaal, ontbrekende personality/emotion-modules, interne fout in `apply_trigger()`.
+- `test_emotion_engine_last_trigger.py` (3 tests) — regressietest tegen de ECHTE `EmotionEngine` (via `__new__()` + handmatig opgebouwde `rules`/`state`, zelfde `__init__()`-I/O-omzeiling als bij `ContradictionChecker`/`PatternMatcher`). Bevestigd rood-zonder-fix/groen-met-fix voor de `last_trigger`-bug specifiek.
+
+**Live geverifieerd in Nova zelf (22 augustus 2026):** via `emotie debug` vóór/na een reeks testberichten (`hey` → `excitement`, `"dankjewel, dat helpt echt."` → `waardering`, `"dit werkt niet, frustrerend!"` → `frustration`) — `last_trigger` en `last_reaction` bewegen nu correct mee met elk bericht, niet langer enkel bij groeten.
+
+**Testsuite:** 410/410 groen (396 bestaande basis + 11 koppeling-tests, al eerder toegevoegd + 3 nieuwe `last_trigger`-tests uit deze sessie — zie ook nova_state.md's testsuite-hoofdstuk voor de volledige, bijgewerkte lijst).
