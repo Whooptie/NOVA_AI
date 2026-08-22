@@ -15,3 +15,12 @@
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:23:39.222944"}
 {"text": "dit werkt niet, frustrerend!", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:27:00.930815"}
 {"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:46:46.927832"}
+{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:40:33.520136"}
+{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:41:35.485268"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:41:46.251047"}
+{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:13.492454"}
+{"text": "wat is java", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:20.358536"}
+{"text": "andere betekenissen", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:45.569335"}
+{"text": "wat is een hond", "categorie": "positief", "marge": 0.0552, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:11.906329"}
+{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:20.631452"}
+{"text": "vergelijk kat met hond", "categorie": "negatief", "marge": 0.0853, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:35.326310"}

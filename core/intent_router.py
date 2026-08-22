@@ -64,6 +64,26 @@ class IntentRouter:
         # correct verwerkt kan worden. Zelfde eigen-pending-state-
         # patroon als _pending_preference_woord hierboven.
         self._pending_memory_query_woord = None
+        # Referentie-resolutie (Taal & Redeneerlimieten, idee 1+2, zie
+        # taal_en_redeneerlimieten_roadmap.md): onthoudt dat Nova net
+        # "Waar heb je het over?" heeft gevraagd omdat een verwijzing
+        # ("dat"/"die"/...) niet oplosbaar was via last_context. Zelfde
+        # eigen-pending-state-patroon als _pending_preference_woord/
+        # _pending_memory_query_woord hierboven -- BEWUST geen
+        # pending_question.py hier, want dat is voor ja/nee, dit is een
+        # open woord-antwoord (exact dezelfde reden als bij die twee).
+        self._pending_referentie_vraag = None
+        # Taal & Redeneerlimieten (idee 1+2), vervolg: generiek kanaal
+        # waarmee een detect_*()-methode uit de intent-tabel (deel2,
+        # zie _build_intent_tabel_deel2()) het concept dat ZIJ zelf net
+        # herkende kan doorgeven aan last_context, zonder dat de
+        # tabel-lus in route() elke detect_*() individueel moet kennen.
+        # Zelfde soort "zet een instance-attribuut, lees het na de
+        # aanroep" patroon als _topic_al_ge_emit/_laatste_definitie_woord
+        # hierboven -- en wordt net als _topic_al_ge_emit telkens weer
+        # op None gezet na gebruik, zodat dit nooit per ongeluk
+        # "aanblijft" voor een volgend, ongerelateerd bericht.
+        self._laatste_concept_kandidaat = None
         self._intent_tabel_deel1 = self._build_intent_tabel_deel1()
         self._intent_tabel_deel2 = self._build_intent_tabel_deel2()
 
@@ -1016,7 +1036,7 @@ class IntentRouter:
                 # stap 8 hierna ALSNOG het generieke "definitie_<woord>"
                 # emit (zie ook de bijbehorende aanpassing daar).
                 dbg(f"{C_BLUE}→ definition (andere_betekenis): '{woord}'{C_RESET}")
-                self._emit_topic(f"andere_betekenis_{woord}", bron="detect")
+                self._emit_topic(f"andere_betekenis_{woord}", bron="detect", concept=woord)
                 self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_wiki_andere_betekenis", {"word": woord})
                 return True
@@ -1047,7 +1067,7 @@ class IntentRouter:
                 # je allemaal over X" is een apart, herkenbaar
                 # gedragspatroon, geen gewone definitievraag.
                 dbg(f"{C_BLUE}→ definition (concept_overview): '{woord}'{C_RESET}")
-                self._emit_topic(f"concept_overview_{woord}" if woord else "concept_overview", bron="detect")
+                self._emit_topic(f"concept_overview_{woord}" if woord else "concept_overview", bron="detect", concept=woord or None)
                 self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_concept_overview", {"word": woord})
                 return True
@@ -1674,6 +1694,12 @@ class IntentRouter:
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
             })
+            # Taal & Redeneerlimieten (idee 1+2): vaste regel over alle
+            # source/target-detects heen -- de EERST genoemde term
+            # (source) als concept-kandidaat, voor consistentie/
+            # voorspelbaarheid i.p.v. een per-geval-verschillende
+            # inschatting van "welke term is interessanter".
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         # 2. "X is een Y"
@@ -1684,6 +1710,7 @@ class IntentRouter:
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         return False
@@ -1704,6 +1731,9 @@ class IntentRouter:
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
             })
+            # Taal & Redeneerlimieten (idee 1+2): zelfde vaste
+            # source-regel als relation_check hierboven.
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         # 2. "zit een X in een Y"
@@ -1714,6 +1744,7 @@ class IntentRouter:
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         return False
@@ -1733,6 +1764,7 @@ class IntentRouter:
             self.event_bus.publish("intent_subtypes_query", {
                 "target": m.group(1).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         # 2. "noem soorten van X" / "noem soorten X"
@@ -1742,6 +1774,7 @@ class IntentRouter:
             self.event_bus.publish("intent_subtypes_query", {
                 "target": m.group(1).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         # 3. "wat zijn allemaal X" (bv. "wat zijn allemaal dieren")
@@ -1751,6 +1784,7 @@ class IntentRouter:
             self.event_bus.publish("intent_subtypes_query", {
                 "target": m.group(1).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         return False
@@ -1771,6 +1805,7 @@ class IntentRouter:
             self.event_bus.publish("intent_parts_query", {
                 "target": m.group(1).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         # 2. "waar bestaat X uit" / "waaruit bestaat X"
@@ -1780,6 +1815,7 @@ class IntentRouter:
             self.event_bus.publish("intent_parts_query", {
                 "target": m.group(1).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         # 3. "wat zit er allemaal in X" / "wat zit er in een X"
@@ -1789,6 +1825,7 @@ class IntentRouter:
             self.event_bus.publish("intent_parts_query", {
                 "target": m.group(1).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         return False
@@ -1810,6 +1847,9 @@ class IntentRouter:
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
             })
+            # Taal & Redeneerlimieten (idee 1+2): zelfde vaste
+            # source-regel als relation_check/part_of_check hierboven.
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         # 2. "heeft X iets te maken met Y" / "heeft X te maken met Y"
@@ -1820,6 +1860,7 @@ class IntentRouter:
                 "source": m.group(1).strip(),
                 "target": m.group(2).strip()
             })
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         return False
@@ -1849,6 +1890,11 @@ class IntentRouter:
                 "word_a": m.group(1).strip(),
                 "word_b": m.group(2).strip()
             })
+            # Taal & Redeneerlimieten (idee 1+2): zelfde vaste regel als
+            # relation_check/part_of_check/related_to_check hierboven
+            # -- altijd de EERST genoemde term (hier: word_a), voor
+            # consistentie/voorspelbaarheid over alle detects heen.
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         return False
@@ -1879,6 +1925,10 @@ class IntentRouter:
                 "word_a": m.group(1).strip(),
                 "word_b": m.group(2).strip()
             })
+            # Taal & Redeneerlimieten (idee 1+2): zelfde vaste regel als
+            # de andere source/target-detects -- altijd de EERST
+            # genoemde term.
+            self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
         return False
@@ -3466,7 +3516,7 @@ class IntentRouter:
     # ---------------------------------------------------------
     # Topic events (Layer 2 topic-bewustzijn)
     # ---------------------------------------------------------
-    def _emit_topic(self, naam, bron="detect"):
+    def _emit_topic(self, naam, bron="detect", concept=None):
         """
         Stuurt een 'topic_detected:<naam>' event de EventBus op.
         Layer 2 (pattern_matcher.py) telt dit generiek mee op uur/dag,
@@ -3482,8 +3532,197 @@ class IntentRouter:
         ENKEL "detect"-topics als nieuw trainingsvoorbeeld te
         vertrouwen -- classifier-gokken opnieuw laten meetrainen zou
         een zelfbevestigend risico zijn (Kevin's keuze, 28 juli 2026).
+
+        Taal & Redeneerlimieten (idee 1+2): optioneel 'concept' --
+        indien meegegeven, wordt dit meteen vastgelegd in last_context
+        als het nieuwe, expliciet besproken onderwerp (veiligheidsklep
+        uit het ontwerp). Bestaande aanroepen die dit niet meegeven
+        blijven volledig ongewijzigd werken (default None doet niets).
         """
         self.event_bus.publish(f"topic_detected:{naam}", {"bron": bron})
+
+        if concept:
+            last_ctx = self.event_bus.modules.get("last_context")
+            if last_ctx is not None:
+                last_ctx.set_concept(concept, antwoord_type=naam)
+
+    # ---------------------------------------------------------
+    # Taal & Redeneerlimieten, idee 1+2: referentie-resolutie +
+    # ellipsis (zie taal_en_redeneerlimieten_roadmap.md)
+    # ---------------------------------------------------------
+
+    # Vaste, bewust kleine verwijswoorden-lijst -- makkelijker later
+    # uit te breiden dan een te ruime lijst terug te snoeien nadat hij
+    # al verkeerde matches gaf. "hij"/"zij"/"ze" bewust NIET
+    # opgenomen (te dubbelzinnig zonder personenregistratie in
+    # concepts.json); tijd-verwijzingen ("gisteren"/"toen") bewust
+    # NIET (ander probleem, zou naar Layer 0-geschiedenis moeten
+    # kijken, niet naar last_context).
+    _VERWIJSWOORDEN = {
+        "die", "dat", "deze", "dit", "hetzelfde", "hem", "het",
+    }
+
+    # Vaste combinatie "hetzelfde als (daar)net" -- apart van de
+    # generieke functiewoorden-check hieronder, want "net"/"daarnet"
+    # zijn zelf geen functiewoorden in de gewone zin, maar horen hier
+    # wel bij een kale verwijzing.
+    _VERWIJZING_TIJDSBIJWOORDEN = {"net", "daarnet", "zonet"}
+
+    # Functiewoorden die overblijven mogen bij een "kale" verwijzing
+    # (voorzetsels, hulpwerkwoorden, korte vraagwoorden) -- zelfde
+    # soort vaste-lijst-aanpak als response_pipeline.py's
+    # stopwoorden-lijst bij _auto_learn_from_sentence().
+    _REFERENTIE_FUNCTIEWOORDEN = {
+        "wat", "hoe", "waarom", "wanneer", "welke",
+        "is", "was", "zijn", "waren",
+        "bedoel", "bedoelde", "je", "meen", "meende",
+        "ook", "nog", "eens", "weer", "en", "of", "dan", "als", "zo",
+    }
+
+    def _is_kale_verwijzing(self, text):
+        """
+        True als 'text' een verwijswoord bevat ZONDER eigen
+        zelfstandig naamwoord -- d.w.z. na het strippen van het
+        verwijswoord en de vaste tijdsbijwoorden blijven enkel nog
+        functiewoorden over (of niets).
+
+        Bewust GEEN NLP/coreference-model: een vaste woordenlijst +
+        dictionary-lookup, volledig uitlegbaar/auditeerbaar. Zie
+        taal_en_redeneerlimieten_roadmap.md voor de volledige
+        onderbouwing.
+        """
+        t = text.lower().strip().rstrip("?.!")
+        woorden = t.split()
+        if not woorden:
+            return False
+
+        heeft_verwijswoord = any(w in self._VERWIJSWOORDEN for w in woorden)
+        if not heeft_verwijswoord:
+            return False
+
+        for w in woorden:
+            if w in self._VERWIJSWOORDEN:
+                continue
+            if w in self._VERWIJZING_TIJDSBIJWOORDEN:
+                continue
+            if w in self._REFERENTIE_FUNCTIEWOORDEN:
+                continue
+            # Onbekend woord dat geen verwijswoord/functiewoord is ->
+            # vermoedelijk een eigen zelfstandig naamwoord, dus GEEN
+            # kale verwijzing.
+            return False
+
+        return True
+
+    def _verwerk_referentie(self, text):
+        """
+        Referentie-resolutie (idee 1). Wordt vroeg in route()
+        aangeroepen, vóór de normale patroonmatching.
+
+        - Geen kale verwijzing -> geeft de tekst ONGEWIJZIGD terug,
+          rest van route() gaat gewoon verder (dit is de meeste
+          gevallen, dus bewust een goedkope check als eerste stap).
+        - Kale verwijzing + last_context heeft een geldig concept ->
+          herschrijft de tekst (verwijswoord vervangen door het
+          concept), ververst enkel de timestamp (GEEN nieuwe inhoud,
+          zie last_context.py), en geeft de HERSCHREVEN tekst terug
+          zodat de rest van route() daarmee verder werkt.
+        - Kale verwijzing + last_context leeg/verlopen -> Nova kan de
+          verwijzing niet oplossen. Stelt een tegenvraag ("Waar heb je
+          het over?"), onthoudt de oorspronkelijke zin in
+          self._pending_referentie_vraag, en geeft None terug -- de
+          aanroeper (route()) moet dan META de normale routing
+          overslaan (er is al een chat_response gepubliceerd).
+
+        Let op: de ORIGINELE tekst blijft altijd getoond in dbg()/
+        raw_user_message (die publicatie gebeurt al vóór deze stap in
+        route()) -- enkel de routing zelf werkt met de herschreven
+        versie, zodat het debug-logboek nooit afwijkt van wat Kevin
+        letterlijk typte.
+        """
+        if not self._is_kale_verwijzing(text):
+            return text
+
+        last_ctx = self.event_bus.modules.get("last_context")
+        concept = last_ctx.get_concept() if last_ctx is not None else None
+
+        if concept is None:
+            # Niet oplosbaar -- Nova vraagt actief door, zelfde
+            # eigen-pending-state-patroon als
+            # verwerk_preference_woord_antwoord()/
+            # verwerk_memory_query_woord_antwoord().
+            self._pending_referentie_vraag = {"oorspronkelijke_tekst": text}
+            self.event_bus.publish("chat_response", {
+                "text": "Waar heb je het over?"
+            })
+            return None
+
+        herschreven = self._herschrijf_met_concept(text, concept)
+        dbg(f"{C_YELLOW}→ referentie opgelost: '{text}' → '{herschreven}'{C_RESET}")
+        last_ctx.ververs_timestamp()
+        return herschreven
+
+    def _herschrijf_met_concept(self, text, concept):
+        """
+        Vervangt het EERSTE gevonden verwijswoord in 'text' door
+        'concept', met behoud van de rest van de zin (incl.
+        hoofdletters/leestekens van de rest). Puur woord-voor-woord
+        vervanging, geen grammaticale aanpassing (bv. lidwoord) --
+        bewust simpel gehouden, zie roadmap voor de erkende beperking
+        dat complexere gevallen hier buiten vallen.
+        """
+        woorden = text.split()
+        for i, w in enumerate(woorden):
+            kaal = w.lower().strip("?.!")
+            if kaal in self._VERWIJSWOORDEN:
+                woorden[i] = concept
+                break
+        return " ".join(woorden)
+
+    def verwerk_referentie_antwoord(self, tekst: str) -> bool:
+        """
+        Checkt of er een openstaande "waar heb je het over?"-vraag is
+        (zie _verwerk_referentie() hierboven), en verwerkt 'tekst' dan
+        als het antwoord: herbouwt de ORSPRONKELIJKE zin met het
+        verwijswoord vervangen door Kevins antwoord, en stuurt die
+        herbouwde zin gewoon opnieuw door route() -- zelfde
+        hergebruik-principe als de geslaagde-referentie-resolutie
+        hierboven: geen enkele bestaande detect_-logica hoeft
+        gedupliceerd te worden.
+
+        Geeft True terug als dit bericht zo verwerkt is (aanroeper
+        moet stoppen met verdere routing), False als er niets open
+        stond.
+
+        Moet door route() gecontroleerd worden vóór de generieke
+        fallback -- zelfde voorrangsprincipe als
+        verwerk_preference_woord_antwoord()/
+        verwerk_memory_query_woord_antwoord().
+        """
+        if not self._pending_referentie_vraag:
+            return False
+
+        oorspronkelijke_tekst = self._pending_referentie_vraag["oorspronkelijke_tekst"]
+        self._pending_referentie_vraag = None
+
+        antwoord = tekst.strip().rstrip(".,!?;:")
+        if not antwoord:
+            self.event_bus.publish("chat_response", {
+                "text": "Dat heb ik niet goed verstaan, laten we het hier maar bij laten."
+            })
+            return True
+
+        herbouwde_zin = self._herschrijf_met_concept(oorspronkelijke_tekst, antwoord)
+        dbg(f"{C_YELLOW}→ referentie-vraag beantwoord: '{oorspronkelijke_tekst}' → '{herbouwde_zin}'{C_RESET}")
+
+        # Meteen vastleggen als nieuw, expliciet onderwerp (veiligheids
+        # klep) -- Kevin heeft het woord immers net zelf genoemd.
+        last_ctx = self.event_bus.modules.get("last_context")
+        if last_ctx is not None:
+            last_ctx.set_concept(antwoord)
+
+        self.route({"text": herbouwde_zin})
+        return True
 
     # ---------------------------------------------------------
     # Fallback
@@ -3590,6 +3829,15 @@ class IntentRouter:
             self.semantic.handle_reactivation_confirm(text)
             return
 
+        # -1G Pending referentie-vraag (Taal & Redeneerlimieten, idee
+        # 1+2, zie taal_en_redeneerlimieten_roadmap.md) -- als Nova net
+        # "Waar heb je het over?" vroeg omdat een verwijzing niet
+        # oplosbaar was, mag dat antwoord nooit door een andere,
+        # generieke intent opgevangen worden. Zelfde voorrang-
+        # redenering als -1D/-1E hierboven.
+        if self.verwerk_referentie_antwoord(text):
+            return
+
         # -1B Pending sense-voorkeur (Bug #10-fix, stap 7) -- zelfde
         # voorrang-redenering als hierboven: als Kevin net gevraagd is
         # een nummer te kiezen na "onthoud sense <woord>", mag dat
@@ -3658,6 +3906,19 @@ class IntentRouter:
             naam = getattr(self, "_laatste_uitleg_naam", None)
             self._emit_topic(f"uitleg_{naam}" if naam else "uitleg", bron="detect")
             return
+        # 2E Referentie-resolutie (Taal & Redeneerlimieten, idee 1+2)
+        # -- MOET hier staan: na alle bovenstaande pending-checks (een
+        # openstaande vraag heeft altijd voorrang), maar VOOR de
+        # normale intent-tabel hieronder, zodat een kale verwijzing
+        # ("wat is dat?") herschreven wordt VOOR detect_definition()
+        # etc. de zin te zien krijgen. _verwerk_referentie() geeft de
+        # tekst ongewijzigd terug als er geen kale verwijzing is (de
+        # meeste gevallen) -- enkel bij een ECHTE, niet-oplosbare
+        # verwijzing geeft het None terug (Nova heeft dan al zelf een
+        # tegenvraag gepubliceerd, route() moet meteen stoppen).
+        text = self._verwerk_referentie(text)
+        if text is None:
+            return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).
         # Zelfde volgorde, zelfde detect_*()-functies als voorheen --
@@ -3724,7 +3985,12 @@ class IntentRouter:
             # -- zo kan dit nooit stil breken als _laatste_definitie_woord
             # om een onverwachte reden leeg zou zijn.
             woord = getattr(self, "_laatste_definitie_woord", None)
-            self._emit_topic(f"definitie_{woord}" if woord else "definitie")
+            # Taal & Redeneerlimieten (idee 1+2): dit is de belangrijkste,
+            # meest voorkomende plek waar Kevin een concept expliciet
+            # noemt ("wat is python") -- vult last_context zodat een
+            # latere kale verwijzing ("en wat kan je ermee?", "wat is
+            # dat?") hierop kan terugvallen.
+            self._emit_topic(f"definitie_{woord}" if woord else "definitie", concept=woord)
             return
 
         # 9 Relation-flow (eerst! anders pikt relation-check het op
@@ -3742,10 +4008,24 @@ class IntentRouter:
                 # voor de volledige uitleg).
                 if self._topic_al_ge_emit:
                     self._topic_al_ge_emit = False
+                    self._laatste_concept_kandidaat = None
                     return
+                # Taal & Redeneerlimieten (idee 1+2): geeft het concept
+                # door dat de detect_*()-methode hierboven eventueel op
+                # self._laatste_concept_kandidaat zette (relation_check,
+                # part_of_check, subtypes_query, parts_query,
+                # related_to_check, compare_concepts, bridge_query) --
+                # None bij de overige (trending_query, activity,
+                # preference_query, preference), wat _emit_topic() al
+                # correct als "geen concept" afhandelt. ALTIJD resetten
+                # na gebruik, zelfde reden als _topic_al_ge_emit: nooit
+                # laten "aanblijven" voor een volgend, ongerelateerd
+                # bericht.
+                concept = self._laatste_concept_kandidaat
+                self._laatste_concept_kandidaat = None
                 # Fase 6: expliciet bron="detect", zelfde reden als
                 # bij _intent_tabel_deel1 hierboven.
-                self._emit_topic(topic_naam, bron="detect")
+                self._emit_topic(topic_naam, bron="detect", concept=concept)
                 return
 
         # Sense-choice (antwoord met nummer)

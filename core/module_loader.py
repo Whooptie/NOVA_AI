@@ -14,7 +14,7 @@ class ModuleLoader:
         # ----------------------------------------------------
         # 1. CORE MODULES
         # ----------------------------------------------------
-        from core import memory, semantic, patterns, logger, intent_router, reboot_manager, pending_question, interruption_tracker
+        from core import memory, semantic, patterns, logger, intent_router, reboot_manager, pending_question, interruption_tracker, last_context
 
         # Memory
         start = time.time()
@@ -76,6 +76,19 @@ class ModuleLoader:
         pending_q.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["pending_question"] = pending_q
         self.event_bus.register_module("pending_question", pending_q)
+
+        # Last Context (Taal & Redeneerlimieten, idee 1+2 -- zie
+        # core/last_context.py). Doorlopend "waar ging het net
+        # over?"-geheugen, BEWUST los van pending_question hierboven
+        # (andere levenscyclus: zie last_context.py's eigen
+        # toelichting). MOET vóór intent_router geladen zijn, om
+        # dezelfde reden als pending_question: intent_router raadpleegt
+        # dit bij elk bericht via event_bus.modules.get("last_context").
+        start = time.time()
+        last_ctx = last_context.init_module(self.event_bus)
+        last_ctx.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules["last_context"] = last_ctx
+        self.event_bus.register_module("last_context", last_ctx)
 
         # Interruption Tracker (Activity-Aware Interaction, zie
         # core/interruption_tracker.py) -- houdt per activiteit een

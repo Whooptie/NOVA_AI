@@ -962,7 +962,7 @@ Volledige originele roadmap: `response_variant_learning_roadmap.md` (bewust los 
 
 **Live end-to-end bevestigd in Nova (meerdere sessies, 20 augustus 2026):** Fase 1-logging voor `definitie`/`met_associatie`/`onbekend`/`timing_hint` (inclusief de correcte variant-index en entity per regel); Fase 2-sentiment-koppeling met de échte classifier (`positief`/`neutraal_gemengd`/`negatief`, incl. verwachte ruis zoals "dank je!" dat als `negatief` classificeerde — een proxy-signaal-onnauwkeurigheid van `sentiment_classifier.py` zelf, geen bug in Response Variant Learning); de "twee vragen zonder tussenliggende reactie"-situatie (enkel de laatste variant-keuze kreeg de koppeling, zoals ontworpen); en na de dubbele-logging-fix: `fallback_algemeen`/`activiteit_observatie_opening`/`activiteit_observatie_afsluiting` loggen correct vanuit `response_pipeline.py`/`conversation_engine.py`, elk met de juiste sjabloon_naam en zonder dubbele regels.
 
-#### Emotie-triggers uitgebreid — meerdere trigger-bronnen + last_trigger-bugfix (22 augustus 2026)
+### Emotie-triggers uitgebreid — meerdere trigger-bronnen + last_trigger-bugfix (22 augustus 2026)
 
 **Uitgangspunt (voorheen nova_state.md punt 9):** `emotion.apply_trigger()` werd in de hele codebase maar op één plek aangeroepen (`response_pipeline.py`'s `on_greeting()`, altijd hardcoded `"excitement"`). Overige triggers uit `emotion_rules.json` (`interest`, `confusion`, `frustration`, `focus`) bestonden al als kant-en-klare regels, maar werden nergens geactiveerd buiten een groet.
 
@@ -986,3 +986,49 @@ Volledige originele roadmap: `response_variant_learning_roadmap.md` (bewust los 
 **Live geverifieerd in Nova zelf (22 augustus 2026):** via `emotie debug` vóór/na een reeks testberichten (`hey` → `excitement`, `"dankjewel, dat helpt echt."` → `waardering`, `"dit werkt niet, frustrerend!"` → `frustration`) — `last_trigger` en `last_reaction` bewegen nu correct mee met elk bericht, niet langer enkel bij groeten.
 
 **Testsuite:** 410/410 groen (396 bestaande basis + 11 koppeling-tests, al eerder toegevoegd + 3 nieuwe `last_trigger`-tests uit deze sessie — zie ook nova_state.md's testsuite-hoofdstuk voor de volledige, bijgewerkte lijst).
+
+---
+
+## ✅ Taal & Redeneerlimieten, idee 1+2 — referentie-resolutie + ellipsis (22 augustus 2026)
+
+Volledige originele roadmap: `taal_en_redeneerlimieten_roadmap.md`, idee 1+2 (voorheen nova_state.md punt 8, eerste twee bullets). Idee 3 (case-based reasoning) en idee 4 (hypothetisch redeneren) blijven open, zie dat document.
+
+**Ontwerp vooraf volledig doorgesproken met Kevin** (referentiepunt, geldigheidsduur, veiligheidsklep, wel/niet een NLP-library) vóór er één regel code geschreven werd — zie de opgeslagen memory-samenvatting van die sessie voor het volledige ontwerptraject.
+
+**Nieuw bestand: `core/last_context.py`.** Bewust GEEN uitbreiding van `pending_question.py` — andere levenscyclus (doorlopend gespreksgeheugen i.p.v. vraag-verwacht-antwoord). Kleine klasse zonder I/O in `__init__()` (net als `pending_question.py`/`interruption_tracker.py`), handmatig geladen in `module_loader.py` (`core/` wordt niet door de dynamische scan gevonden), vóór `intent_router` (die raadpleegt het bij elk bericht via `event_bus.modules.get("last_context")`).
+
+**API:** `set_concept(concept, antwoord_type=None)` / `set_opties(opties)` / `get_concept()` / `get_antwoord_type()` / `get_opties()` / `is_geldig()` / `ververs_timestamp()` / `clear()`.
+
+**Vervalgedrag, precies zoals ontworpen:**
+
+- Vangnet: `VERVAL_SECONDEN = 300` (bewust langer dan `pending_question.py`'s 120 sec — ander doel, geen direct-verwacht-antwoord maar doorlopend gespreksgeheugen).
+- Veiligheidsklep: `set_concept()` overschrijft ALTIJD onmiddellijk, ongeacht de klok, en wist meteen ook de oude opties-lijst (een nieuw hoofdonderwerp maakt een eerder aangeboden keuzelijst irrelevant).
+- Nuance: `ververs_timestamp()` verlengt enkel de geldigheidsduur, wijzigt de inhoud niet — aangeroepen ná een geslaagde referentie-resolutie, zodat een reeks vervolgvragen ("die?" → "en dat?" → "ook die?") niet halverwege stilvalt, zonder dat dit als een "vers" nieuw onderwerp telt.
+
+**Aansluiting in `intent_router.py`:**
+
+- `_emit_topic()` kreeg een nieuw, optioneel `concept`-argument — indien meegegeven, wordt dit meteen vastgelegd in `last_context`. Bestaande aanroepen zonder dit argument blijven ongewijzigd werken (default `None` doet niets).
+- **Referentie-resolutie** (`_is_kale_verwijzing()` + `_verwerk_referentie()` + `_herschrijf_met_concept()`): nieuwe stap **2E** in `route()`, na alle bestaande pending-checks maar vóór de normale intent-tabel — zodat een kale verwijzing ("wat is dat?") al herschreven is vóórdat `detect_definition()` etc. de zin te zien krijgen. Vaste, bewust kleine woordenlijst (`_VERWIJSWOORDEN`: die/dat/deze/dit/hetzelfde/hem/het), plus een vaste functiewoorden-lijst (`_REFERENTIE_FUNCTIEWOORDEN`) om te bepalen of een verwijswoord "kaal" staat (geen eigen zelfstandig naamwoord ernaast). Drie paden: geen verwijzing → tekst ongewijzigd; oplosbaar → tekst herschreven + `ververs_timestamp()`; niet oplosbaar → Nova vraagt "Waar heb je het over?" en onthoudt de oorspronkelijke zin in een nieuwe `_pending_referentie_vraag`-state (zelfde eigen-pending-state-patroon als `_pending_preference_woord`/`_pending_memory_query_woord` — BEWUST geen `pending_question.py`, want dat is voor ja/nee, dit is een open woord-antwoord).
+- **`verwerk_referentie_antwoord()`:** nieuwe stap **-1G** in `route()`, verwerkt het vervolgantwoord op "Waar heb je het over?" — herbouwt de oorspronkelijke zin met het verwijswoord vervangen door Kevins antwoord, en stuurt die gewoon opnieuw door `route()` (hergebruikt alle bestaande `detect_*()`-logica, geen duplicatie). Legt het genoemde woord meteen vast als nieuw, expliciet concept (Kevin noemt het nu zelf).
+- **Bugfix tijdens live-testen:** `"is dat zo"` werd initieel niet als kale verwijzing herkend (`"zo"` ontbrak in `_REFERENTIE_FUNCTIEWOORDEN`) — toegevoegd na ontdekking via de testsuite.
+
+**Generieke uitbreiding naar de tabel-gedreven detects (`_build_intent_tabel_deel2()`):** de eerste versie vulde `last_context` enkel vanuit `detect_definition()`/de "andere betekenissen"/"concept overview"-takken. Op Kevins vraag uitgebreid naar de 7 detect-functies die via de generieke intent-tabel lopen: `detect_relation_check`, `detect_part_of_check`, `detect_subtypes_query`, `detect_parts_query`, `detect_related_to_check`, `detect_compare_concepts`, `detect_bridge_query`. Nieuw generiek kanaal: `self._laatste_concept_kandidaat` (instance-attribuut, zelfde "zet-en-lees-na-de-aanroep"-patroon als `_topic_al_ge_emit`/`_laatste_definitie_woord`), gezet door elke detect-functie zelf, uitgelezen en ALTIJD gereset door de tabel-lus in `route()` (ook bij een vroege `_topic_al_ge_emit`-return, om nooit te "lekken" naar een volgend bericht).
+
+**Vaste regel voor welke term als kandidaat gekozen wordt (na overleg, bewust GEEN per-geval-afweging):** altijd de EERST genoemde term in de zin (`source` bij relation/part_of/related_to-checks, `word_a` bij compare_concepts/bridge_query) — gekozen voor consistentie/voorspelbaarheid boven een net iets slimmere maar moeilijker te onthouden per-functie-regel.
+
+**Testsuite, gebouwd EN groen vóór live-testen (vaste werkwijze):**
+
+- `tests/test_last_context.py` (25 tests) — tegen de ECHTE `LastContext`, geen monkeypatch nodig (geen I/O in `__init__()`). Eigen `NepKlok`-helper i.p.v. echte `sleep()`. Dekt basisgedrag, de veiligheidsklep (nieuw concept overschrijft altijd, ook binnen de vervaltijd, wist de opties-lijst mee), vangnet-verval (incl. de exacte grenswaarde, `>` i.p.v. `>=`), `ververs_timestamp()` (incl. een expliciete simulatie van een hele reeks vervolgvragen die het gesprek levend houdt, én de tegenhanger die bevestigt dat het wél stopt bij echte stilte), `clear()`, `init_module()`.
+- `tests/test_referentie_resolutie.py` (55 tests) — tegen de ECHTE `IntentRouter` + `LastContext`, nep-EventBus (bevestigd injecteerbaar zonder monkeypatch, zelfde patroon als bij `bridge_query`/`memory_query`). Dekt `_is_kale_verwijzing()` geparametriseerd, `_herschrijf_met_concept()`, alle drie paden van `_verwerk_referentie()` (incl. een counter-test dat `ververs_timestamp()` aangeroepen wordt zonder de inhoud te wijzigen, en het randgeval dat `last_context` nog niet geregistreerd is), `verwerk_referentie_antwoord()` (incl. dat de pending-state ALTIJD gewist wordt, ook bij een leeg antwoord), `_emit_topic(concept=...)`, alle 7 detect-functies uit deel2 (bevestigen de vaste eerst-genoemde-term-regel), de tabel-lus (geeft door, reset altijd), en 5 end-to-end-scenario's door de echte `route()` heen (kernscenario, niet-oplosbare-verwijzing-met-tegenvraag, veiligheidsklep, vergelijkingsvraag-als-anker, verwijzing-zonder-voorgeschiedenis).
+
+**Resultaat: `pytest tests/` → 490 passed (410 bestaand + 80 nieuw), geen regressies.** Bevestigd op Kevin's eigen Windows-installatie.
+
+**Live end-to-end bevestigd in Nova (22 augustus 2026):**
+
+- Kernscenario: "wat is python" → "wat is dat" geeft correct dezelfde definitie terug, ook na een `/reboot` opnieuw bevestigd (en bevestigt tegelijk dat `last_context` terecht NIET persisteert — bewust in-memory, zoals `pending_question.py`).
+- Niet-oplosbare verwijzing als allereerste bericht: "wat is dat" → "Waar heb je het over?" → "python" → correct herbouwd tot "wat is python" en beantwoord.
+- Veiligheidsklep: "wat is python" → "wat is java" → "wat is dat" lost correct op naar "java", niet meer "python".
+- Vergelijkingsvraag als anker (de generieke uitbreiding): "vergelijk kat met hond" → "wat is dat" lost correct op naar "kat" (eerst genoemde term), niet "hond".
+- Bekende, geaccepteerde niet-bug: bij "wat is java" koos de Wikipedia-fallback het eiland/de plaatsnaam i.p.v. de programmeertaal (Wikipedia-disambiguatie, los van dit werk) — `detect_definition()`'s oude Wikipedia-fallback-pad geeft sowieso geen `concept=` door aan `last_context`, dus dit beïnvloedt idee 1+2 niet.
+
+**Nog open (idee 3+4 uit dezelfde roadmap, ongepland):** case-based reasoning (Layer 0/2 actief raadplegen als referentiepunt) en hypothetisch redeneren (tijdelijke aannames binnen de kennisgraaf) — zie `taal_en_redeneerlimieten_roadmap.md` voor de volledige uitwerking.
