@@ -40,6 +40,19 @@ class EmotionEngine:
         # -----------------------------
         # MOOD + INTENSITY
         # -----------------------------
+        # Bugfix (22 augustus 2026, ontdekt tijdens live-testen van de
+        # nieuwe microlearning.py-koppeling, nova_state.md punt 8):
+        # state["last_trigger"] werd HIER NERGENS bijgewerkt -- enkel
+        # last_reaction/last_recovery_hint kregen een update. Zolang
+        # "excitement" (bij een groet) de enige trigger-bron was, viel
+        # dit niet op (last_trigger toonde toevallig altijd de juiste
+        # waarde, want er was er maar 1). Zodra meerdere triggers actief
+        # werden (frustration/waardering/kilte via microlearning.py),
+        # bleef last_trigger permanent op "excitement" hangen -- een
+        # emotie debug/emotion_state.json-lezer zag dus een verouderd
+        # veld, ook al werkte de rest van apply_trigger() wel degelijk
+        # met de juiste trigger.
+        self.state["last_trigger"] = trigger
         self.state["current_mood"] = rule.get("target_mood", self.state["current_mood"])
         self.state["intensity"] = self._clamp(
             self.state["intensity"] + rule.get("intensity_delta", 0.0)

@@ -30,6 +30,15 @@ def get_help():
                                            een echte layer4_response als er een geschikt
                                            topic is, en wijzigt de spam-preventie-state)
 
+🎯 RESPONSE VARIANT LEARNING (response_variant_learning_roadmap.md)
+  variant debug                          (overzicht: welke sjablonen hebben al
+                                           observaties, en is Fase 2 (gewogen keuze)
+                                           daar al actief? — puur informatief)
+  variant debug <sjabloon_naam>          (detail: observaties + gemiddeld sentiment
+                                           per variant-index, en de ECHTE gewichten
+                                           zoals get_gewichten() ze nu teruggeeft —
+                                           bv. "variant debug definitie")
+
 🧠 LAYER 0 — MEMORY
   onderhoud                     (forceert een onderhoudsronde: archiveren/comprimeren/VACUUM)
   geheugen stats                (memory-statistieken, gebruikt cache indien < 120 sec oud)
@@ -47,6 +56,8 @@ def get_help():
 
 🎭 LAYER 6 — PERSONALITY
   traits                        (live, in-memory trait-waarden van Nova's personality_engine)
+  emotie debug                  (emotion_engine-state: mood, intensity, overstimulation,
+                                  + of de MicroLearning-koppeling correct actief is)
 
 ⏱️ ACTIVITY-AWARE INTERACTION
   interruption test <activiteit> <ja|nee> <aantal> [tijd_min]

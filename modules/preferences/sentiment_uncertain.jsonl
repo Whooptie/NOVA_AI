@@ -11,3 +11,7 @@
 {"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:45.337640"}
 {"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:51.327812"}
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T21:08:16.376359"}
+{"text": "dit werkt niet, frustrerend", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:22:06.975259"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:23:39.222944"}
+{"text": "dit werkt niet, frustrerend!", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:27:00.930815"}
+{"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:46:46.927832"}
