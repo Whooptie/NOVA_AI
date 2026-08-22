@@ -523,3 +523,6 @@
 {"text": "wat vind je van mij?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0844, "bron": "model_fallback", "tijdstip": "2026-08-22T16:03:01.721089"}
 {"text": "hoe werk je?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0903, "bron": "model_fallback", "tijdstip": "2026-08-22T16:03:42.949588"}
 {"text": "/rebboot", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-22T18:25:57.832799"}
+{"text": "python", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0067, "bron": "model_fallback", "tijdstip": "2026-08-22T21:42:03.726998"}
+{"text": "andere betekenissen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-22T21:42:45.599337"}
+{"text": "vergelijk kat met hond", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0074, "bron": "model_fallback", "tijdstip": "2026-08-22T21:43:35.354308"}
