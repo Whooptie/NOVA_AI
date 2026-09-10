@@ -25,3 +25,4 @@
 {"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:20.631452"}
 {"text": "vergelijk kat met hond", "categorie": "negatief", "marge": 0.0853, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:35.326310"}
 {"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-05T22:23:05.900525"}
+{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-09-09T19:39:56.840912"}
