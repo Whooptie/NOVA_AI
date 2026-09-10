@@ -1,2 +1,3 @@
 {"succes": true, "aantal_training_voorbeelden": 44, "aantal_extra_uit_uncertain": 0, "nieuwe_score": 0.9167, "huidige_score": null, "wordt_actief": true, "tijdstip": "2026-07-26T12:09:49.859921"}
 {"succes": true, "aantal_training_voorbeelden": 57, "aantal_extra_uit_uncertain": 13, "nieuwe_score": 0.8333, "huidige_score": 0.9167, "wordt_actief": false, "tijdstip": "2026-08-20T21:08:27.009302"}
+{"succes": true, "aantal_training_voorbeelden": 72, "aantal_extra_uit_uncertain": 28, "nieuwe_score": 0.8333, "huidige_score": 0.9167, "wordt_actief": false, "tijdstip": "2026-09-09T19:39:56.855254"}

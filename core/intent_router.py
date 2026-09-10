@@ -3579,6 +3579,29 @@ class IntentRouter:
         "ook", "nog", "eens", "weer", "en", "of", "dan", "als", "zo",
     }
 
+    # Woorden die zelf al een volledig, op-zichzelf-staand onderwerp
+    # aanduiden (Bug #33) -- ook al staan ze OOK in
+    # _REFERENTIE_FUNCTIEWOORDEN als bijwoord/functiewoord. Zonder
+    # deze check werd bv. "wat is het weer" foutief herkend als een
+    # kale verwijzing: "wat"/"is" zijn functiewoorden, en "weer" staat
+    # ZELF ook in _REFERENTIE_FUNCTIEWOORDEN (als bijwoord, "doe het
+    # weer") -- waardoor de hele zin "leeg" leek terwijl "weer" hier
+    # net het hoofdonderwerp is. Elke module met zo'n dubbelzinnig
+    # woord hoort hier een eigen regel bij te krijgen. Bewust een losse
+    # woordenlijst i.p.v. de echte detect_*()-functies aanroepen: die
+    # publiceren meteen een event op de EventBus, wat hier ongewenst is
+    # (dit is enkel een test, geen echte routing-stap).
+    _EIGEN_ONDERWERP_WOORDEN = {"weer", "weerbericht", "temperatuur"}
+
+    def _heeft_eigen_onderwerp(self, woorden):
+        """
+        True als de zin (los van verwijswoorden/tijdsbijwoorden) een
+        woord bevat dat zelf al een volledig onderwerp aanduidt, zoals
+        "weer" in "wat is het weer". Zo'n zin is per definitie GEEN
+        kale verwijzing, ongeacht wat er verder nog in de zin staat.
+        """
+        return any(w in self._EIGEN_ONDERWERP_WOORDEN for w in woorden)
+
     def _is_kale_verwijzing(self, text):
         """
         True als 'text' een verwijswoord bevat ZONDER eigen
@@ -3598,6 +3621,13 @@ class IntentRouter:
 
         heeft_verwijswoord = any(w in self._VERWIJSWOORDEN for w in woorden)
         if not heeft_verwijswoord:
+            return False
+
+        # Bug #33: een zin met een eigen, herkenbaar onderwerp (bv.
+        # "weer") is nooit een kale verwijzing, ook al zijn alle
+        # OVERIGE woorden functiewoorden. Moet VOOR de generieke
+        # functiewoorden-lus gecontroleerd worden.
+        if self._heeft_eigen_onderwerp(woorden):
             return False
 
         for w in woorden:

@@ -529,3 +529,4 @@
 {"text": "Ctrl+P", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-05T20:18:14.380639"}
 {"text": "hoe warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-05T20:21:01.886201"}
 {"text": "pion naar e4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-05T21:52:24.620583"}
+{"text": "zet pion naar e4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-09T19:28:53.936443"}

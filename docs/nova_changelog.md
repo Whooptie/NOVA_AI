@@ -1033,3 +1033,31 @@ Volledige originele roadmap: `taal_en_redeneerlimieten_roadmap.md`, idee 1+2 (vo
 - Bekende, geaccepteerde niet-bug: bij "wat is java" koos de Wikipedia-fallback het eiland/de plaatsnaam i.p.v. de programmeertaal (Wikipedia-disambiguatie, los van dit werk) — `detect_definition()`'s oude Wikipedia-fallback-pad geeft sowieso geen `concept=` door aan `last_context`, dus dit beïnvloedt idee 1+2 niet.
 
 **Nog open (idee 3+4 uit dezelfde roadmap, ongepland):** case-based reasoning (Layer 0/2 actief raadplegen als referentiepunt) en hypothetisch redeneren (tijdelijke aannames binnen de kennisgraaf) — zie `taal_en_redeneerlimieten_roadmap.md` voor de volledige uitwerking.
+
+## Bug #34 — Stockfish start niet in Docker-container (9 september 2026)
+
+**Probleem:** `[CHESS] Kon Stockfish niet starten: [Errno 2] No such file or directory: 'stockfish'` bij het uitvoeren van een schaakzet in de Docker-container.
+
+**Diagnose:** `which stockfish` gaf niets terug. `find / -iname "*stockfish*" 2>/dev/null` toonde dat het binary wél degelijk geïnstalleerd was, op `/usr/games/stockfish` — Debian/Ubuntu plaatst spelletjes-pakketten via apt daar standaard, niet in `/usr/bin`. Die map staat niet in de PATH van de container, dus Python's `subprocess`-aanroep (via `os.getenv("STOCKFISH_PATH", "stockfish")` in `chess_engine.py`) kon het commando niet vinden.
+
+**Oplossing:** geen codewijziging. `STOCKFISH_PATH=/usr/games/stockfish` toegevoegd als environment variable in de Unraid Docker-configuratie van `nova-ai`. De bestaande fallback-logica in `chess_engine.py` was hier al specifiek voor voorzien.
+
+**Live bevestigd:** `[CHESS] Stockfish gestart` verschijnt in de logs, Stockfish antwoordt correct op een geopende partij (e2e4 → e7e5).
+
+**Restpunt:** `/app/engines/stockfish/stockfish-windows-x86-64-avx2.exe` (oude Windows-installatie) staat nog in de projectmap — werkt niet op Linux, kan later opgeruimd worden, geen functioneel probleem.
+
+## Bug #33 — "wat is het weer" foutief herschreven als kale verwijzing (9 september 2026)
+
+**Probleem:** een op zichzelf staande weervraag ("wat is het weer") werd na een eerdere, andersluidende weervraag ("wat wordt het weer morgen") foutief herschreven met de oude tijdsaanduiding erin, en gaf daardoor het weer van morgen terug i.p.v. vandaag — zonder foutmelding.
+
+**Diagnose:** woordbotsing in `intent_router.py`'s `_REFERENTIE_FUNCTIEWOORDEN`-lijst. "weer" stond daar opgenomen als bijwoord (zoals in "doe het weer"), maar is tegelijk het zelfstandig naamwoord waarmee `detect_weather()` weervragen herkent. In de zin "wat is het weer" werden na het aftrekken van het verwijswoord ("het") en de functiewoorden ("wat", "is", en dus ook "weer") geen overblijvende woorden meer gevonden — `_is_kale_verwijzing()` concludeerde daardoor onterecht dat de hele zin "leeg"/verwijzend was.
+
+**Oplossing:** nieuwe `_EIGEN_ONDERWERP_WOORDEN`-set (voorlopig: "weer", "weerbericht", "temperatuur") + `_heeft_eigen_onderwerp()`-helperfunctie, aangeroepen vroeg in `_is_kale_verwijzing()`, vóór de generieke functiewoorden-lus. Een zin die zo'n woord bevat, wordt nooit als kale verwijzing behandeld — ongeacht welke andere woorden erin staan. Bewust een losse woordenlijst i.p.v. de echte `detect_*()`-functies aanroepen als test, om te vermijden dat er per ongeluk al een event gepubliceerd wordt vóór de echte routing-stap.
+
+**Waarom niet gewoon "weer" uit de functiewoordenlijst halen (het simpelere alternatief):** dat had enkel dit ene geval gedekt. Deze aanpak lost het structurele patroon op (een woord dat zowel functiewoord als eigen onderwerp kan zijn) en is uitbreidbaar voor toekomstige, gelijkaardige modules/woordbotsingen.
+
+**Live bevestigd:**
+- "wat wordt het weer morgen" → "wat is het weer": geeft nu correct vandaag terug, geen "→ referentie opgelost"-regel meer.
+- Regressietest: "wat is een gitaar" → "wat is dat": nog steeds correct herschreven naar "wat is gitaar", echte kale verwijzingen blijven dus werken.
+
+**Bijvangst, apart genoteerd (geen onderdeel van deze bug):** "wat is dat" na een schaak-commando ("bord") lost niet op ("Waar heb je het over?") — `chess_engine.py` roept blijkbaar nergens `last_context.set_concept()` aan. Ontbrekende koppeling in de schaakmodule, geen referentie-resolutie-fout. Toegevoegd aan "Volgende stappen" in `nova_state.md`.
