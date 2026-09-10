@@ -526,3 +526,6 @@
 {"text": "python", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0067, "bron": "model_fallback", "tijdstip": "2026-08-22T21:42:03.726998"}
 {"text": "andere betekenissen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-22T21:42:45.599337"}
 {"text": "vergelijk kat met hond", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0074, "bron": "model_fallback", "tijdstip": "2026-08-22T21:43:35.354308"}
+{"text": "Ctrl+P", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-05T20:18:14.380639"}
+{"text": "hoe warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-05T20:21:01.886201"}
+{"text": "pion naar e4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-05T21:52:24.620583"}
