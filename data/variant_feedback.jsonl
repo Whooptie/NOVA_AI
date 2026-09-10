@@ -40,3 +40,5 @@
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 3, "variant_tekst": "{entity}, dat is: {definition} Dat associeer je hier trouwens opvallend vaak met '{associatie}'.", "entity": "hond", "response_style": "normaal", "moment": "2026-08-22T21:43:20.717826", "reactie_sentiment": null}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 3, "reactie_sentiment": "negatief", "moment": 1787427800.7188275, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 4, "variant_tekst": "Wat ik weet over '{entity}': {definition} Bij jou hoort daar meestal ook '{associatie}' bij.", "entity": "kat", "response_style": "normaal", "moment": "2026-08-22T21:43:43.296556", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "variant_tekst": "Dat snap ik nog niet helemaal, maar ik onthoud het wel.", "entity": null, "response_style": "normaal", "moment": "2026-09-05T22:22:59.465805", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "reactie_sentiment": "negatief", "moment": 1788639779.4659965, "type": "sentiment_koppeling"}

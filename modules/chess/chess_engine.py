@@ -3,10 +3,15 @@
 import chess
 import chess.engine
 import json
+import os
 import random
 import threading
 import time
 from pathlib import Path
+
+from modules.paths import get_project_root
+
+PROJECT_ROOT = get_project_root(__file__)
 
 C_RESET = "\033[0m"
 C_GREEN = "\033[92m"
@@ -30,11 +35,16 @@ class ChessModule:
     def __init__(self, event_bus):
         self.event_bus = event_bus
 
-        # Pad naar Stockfish
-        self.stockfish_path = r"C:\Nova_AI\engines\stockfish\stockfish-windows-x86-64-avx2.exe"
+                # Pad naar Stockfish -- verschilt per platform (Windows .exe vs.
+        # Linux systeem-binary), daarom configureerbaar via .env i.p.v.
+        # hardcoded. Valt terug op "stockfish" (verwacht dan in PATH,
+        # zoals na 'apt-get install stockfish' op Linux) als er niets
+        # in .env staat.
+        self.stockfish_path = os.getenv("STOCKFISH_PATH", "stockfish")
 
-        # Pad waar we de partijstand opslaan
-        self.save_path = Path(r"C:\Nova_AI\data") / "chess_game.json"
+        # Pad waar we de partijstand opslaan -- relatief aan de project-root,
+        # werkt zo automatisch op zowel Windows als Linux.
+        self.save_path = PROJECT_ROOT / "data" / "chess_game.json"
         self.save_path.parent.mkdir(parents=True, exist_ok=True)
 
         # Het schaakbord (begint leeg = startpositie)
@@ -51,11 +61,11 @@ class ChessModule:
         self._start_inactivity_watcher()
 
         # Instellingen
-        self.settings_path = Path(r"C:\Nova_AI\data") / "chess_settings.json"
+        self.settings_path = PROJECT_ROOT / "data" / "chess_settings.json"
         self.skill_level, self.think_time = self.load_settings()
 
         # Statistieken
-        self.stats_path = Path(r"C:\Nova_AI\data") / "chess_stats.json"
+        self.stats_path = PROJECT_ROOT / "data" / "chess_stats.json"
         self.stats = self.load_stats()
         if "streak" not in self.stats:
             self.stats["streak"] = 0  # positief = jij wint op rij, negatief = jij verliest op rij

@@ -37,7 +37,16 @@ except ImportError:
 try:
     import pygetwindow as gw
     PYGETWINDOW_BESCHIKBAAR = True
-except ImportError:
+except (ImportError, NotImplementedError):
+    # ImportError: pakket niet geïnstalleerd.
+    # NotImplementedError: pakket WEL geïnstalleerd, maar dit platform
+    # (bv. Linux, zoals in de Docker-container op de server) wordt
+    # niet ondersteund -- pygetwindow gooit dit zelf al bij het
+    # importeren, niet pas bij gebruik. Venster-detectie is sowieso
+    # enkel zinvol op Kevin's eigen Windows-PC (waar het scherm
+    # staat), dus op de server geeft deze module voortaan gewoon
+    # altijd "geen info" terug, zonder de hele boot-sequentie te
+    # breken. Blijft zo tot de Windows-companion-client bestaat.
     PYGETWINDOW_BESCHIKBAAR = False
 
 
