@@ -54,3 +54,4 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 2, "reactie_sentiment": "negatief", "moment": 1789306288.1578667, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "variant_tekst": "Dat snap ik nog niet helemaal, maar ik onthoud het wel.", "entity": null, "response_style": "normaal", "moment": "2026-09-13T18:57:32.741560", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1789318652.7417865, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "variant_tekst": "Hier heb ik nog geen goed antwoord op, maar vertel gerust meer.", "entity": null, "response_style": "normaal", "moment": "2026-09-14T19:57:49.764191", "reactie_sentiment": null}

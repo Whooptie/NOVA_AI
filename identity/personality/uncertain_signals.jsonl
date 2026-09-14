@@ -544,3 +544,4 @@
 {"text": "hoe warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-14T16:30:48.104530"}
 {"text": "hoe warm warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-14T16:31:43.608133"}
 {"text": "hoe warm wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0797, "bron": "model_fallback", "tijdstip": "2026-09-14T16:31:55.558494"}
+{"text": "cont", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-14T19:57:49.733481"}

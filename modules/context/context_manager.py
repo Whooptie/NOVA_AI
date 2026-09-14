@@ -147,6 +147,28 @@ class ContextManager:
     RESPONSE_STYLE_NORMAAL = "normaal"
     RESPONSE_STYLE_UITGEBREID = "uitgebreid"
 
+    # Layer 5-restje "get_relevant_topics()" (13 sept 2026): welke
+    # topics horen bij welke activiteit? Zelfde principe/stijl als
+    # activity_detector.py's ACTIVITEIT_MAPPING — een vaste, door
+    # Kevin uit te breiden tabel, geen classifier/embedder. Puur
+    # symbolisch: een simpele lookup, geen betekenis-analyse.
+    #
+    # Sluit inhoudelijk aan bij topic_suggestions.py (Fase 5) — nog
+    # GEEN aanroeper vandaag. Deze mapping/methode legt enkel de data
+    # klaar voor het moment dat activiteit-gekoppelde topic-
+    # suggesties (i.p.v. enkel tijd-gebaseerde) ooit gebouwd worden.
+    ACTIVITEIT_NAAR_TOPICS = {
+        "coding": ["code", "python", "debugging"],
+        "gaming": ["games"],
+        "communicating": ["chat", "berichten"],
+        "mailen": ["email", "werk"],
+        "talking_to_nova": ["nova"],
+    }
+
+    # Als een activiteit niet in de mapping voorkomt (bv. "unknown"),
+    # dit teruggeven — een lege lijst, geen gok.
+    GEEN_TOPICS = []
+
     def __init__(self, event_bus, layers=None):
         self.event_bus = event_bus
         # "layers" volgt dezelfde conventie als response_engine.py:
@@ -221,18 +243,31 @@ class ContextManager:
         # --- Fase 2: activiteit ophalen ---
         activiteit_label = "unknown"
         activiteit_duur_minuten = 0.0
+        # Layer 5-restje "screen_focus" (13 sept 2026): de RAUWE
+        # venstertitel apart bewaren naast het afgeleide label.
+        # activity_detector.py berekent deze al (raw_window_title in
+        # zijn resultaat-dict) en gebruikt hem intern voor de
+        # is_working_on_nova-check, maar publiceerde hem tot nu toe
+        # nergens als apart, herbruikbaar veld in Layer 5's eigen
+        # context. Puur symbolisch: enkel doorgeven van bestaande data,
+        # geen nieuwe detectie. Nog GEEN aanroeper vandaag (bv. Layer 7
+        # die ooit "je was lang in VS Code bezig" zou kunnen zeggen) —
+        # dit legt enkel de data klaar voor later.
+        screen_focus = None
 
         if activity_detector is not None:
             try:
                 activiteit_info = activity_detector.detect_activity()
                 activiteit_label = activiteit_info.get("activity", "unknown")
                 activiteit_duur_minuten = activiteit_info.get("duration_minutes", 0.0)
+                screen_focus = activiteit_info.get("raw_window_title")
             except Exception:
                 # activity_detector.py ontbreekt pygetwindow, of
                 # een ander onverwacht probleem — nooit Layer 5 laten
                 # crashen, gewoon terugvallen op "unknown".
                 activiteit_label = "unknown"
                 activiteit_duur_minuten = 0.0
+                screen_focus = None
 
         # --- Fase 3: focus ophalen ---
         focus_niveau = "onbekend"
@@ -308,6 +343,7 @@ class ContextManager:
             "aantal_anomalieen_vandaag": len(anomalieen_vandaag),
             "activity": activiteit_label,
             "activity_duration_minutes": activiteit_duur_minuten,
+            "screen_focus": screen_focus,
             "focus_level": focus_niveau,
             "seconds_since_input": seconden_sinds_input,
             "faces_detected": aantal_gezichten,
@@ -650,12 +686,37 @@ class ContextManager:
             f"Anomalieën vandaag: {ctx['aantal_anomalieen_vandaag']} — "
             f"Activiteit: {ctx['activity']} "
             f"({ctx['activity_duration_minutes']:.1f} min) — "
+            f"Scherm: {ctx.get('screen_focus') or 'onbekend'} — "
             f"Focus: {ctx['focus_level']} (laatste input: {seconden_tekst}) — "
             f"Gezichten: {gezichten_tekst} — "
             f"Mag onderbreken: {ctx['should_interrupt']} — "
             f"Response-stijl: {ctx.get('response_style', '?')} "
             f"(reden: {ctx['reden']})"
         )
+
+    def get_relevant_topics(self):
+        """
+        Layer 5-restje (13 sept 2026): geeft een lijst relevante
+        topics terug op basis van de HUIDIGE activiteit (bv.
+        ["code", "python", "debugging"] tijdens "coding").
+
+        Puur een vaste lookup in ACTIVITEIT_NAAR_TOPICS hierboven —
+        geen classifier, geen embedder, geen gok. Roept zelf
+        get_current() aan (zelfde patroon als can_interrupt()) zodat
+        dit altijd de meest actuele activiteit gebruikt, zonder dat
+        de aanroeper zelf eerst get_current() moet aanroepen.
+
+        Geeft een lege lijst terug als de huidige activiteit niet in
+        de mapping voorkomt (bv. "unknown") — nooit een gok wagen.
+
+        Nog GEEN aanroeper vandaag (zie toelichting bij
+        ACTIVITEIT_NAAR_TOPICS) — deze methode ligt klaar voor
+        topic_suggestions.py (Fase 5), maar wordt daar nu nog nergens
+        aangeroepen.
+        """
+        ctx = self.get_current()
+        activiteit_label = ctx.get("activity", "unknown")
+        return self.ACTIVITEIT_NAAR_TOPICS.get(activiteit_label, self.GEEN_TOPICS)
 
 
 def init_module(event_bus, layers=None):

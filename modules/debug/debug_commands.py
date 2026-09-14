@@ -47,6 +47,7 @@ class DebugCommands:
             (lambda t: t == "presence debug context", self._presence_debug_context),
             (lambda t: t == "presence debug", self._presence_debug),
             (lambda t: t == "context", self._context),
+            (lambda t: t == "topics debug", self._topics_debug),
             (lambda t: t == "traits", self._traits),
             (lambda t: t == "emotie debug", self._emotie_debug),
             (lambda t: t.startswith("context geschiedenis"), self._context_geschiedenis),
@@ -523,6 +524,24 @@ class DebugCommands:
             print(f"{C_RED}context_manager-module niet gevonden.{C_RESET}")
             return
         print(f"{C_CYAN}{ctx_mgr.get_context_summary()}{C_RESET}")
+
+    def _topics_debug(self, user_input):
+        ctx_mgr = self.loader.loaded_modules.get("context_manager")
+        if not ctx_mgr:
+            print(f"{C_RED}context_manager-module niet gevonden.{C_RESET}")
+            return
+        topics = ctx_mgr.get_relevant_topics()
+        huidige_activiteit = ctx_mgr.context.get("activity", "?")
+        if not topics:
+            print(
+                f"{C_CYAN}Huidige activiteit: {huidige_activiteit} — "
+                f"geen topics gekoppeld in ACTIVITEIT_NAAR_TOPICS.{C_RESET}"
+            )
+            return
+        print(
+            f"{C_CYAN}Huidige activiteit: {huidige_activiteit} — "
+            f"topics: {', '.join(topics)}{C_RESET}"
+        )
 
     def _context_geschiedenis(self, user_input):
         ctx_mgr = self.loader.loaded_modules.get("context_manager")
