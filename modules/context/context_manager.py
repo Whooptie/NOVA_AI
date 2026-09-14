@@ -252,16 +252,33 @@ class ContextManager:
                 seconden_sinds_input = None
 
         # --- Fase 4: aanwezigheid ophalen ---
-        # BELANGRIJK: we roepen presence_detector.detect_presence() HIER
-        # NIET rechtstreeks aan — dat zou de webcam bij ELKE
-        # get_current()-aanroep openen (elke minuut, via de
-        # achtergrondthread), wat het lampje veel te vaak zou laten
-        # flikkeren. In plaats daarvan gebruiken we de LAATST BEKENDE
-        # waarde, die main.py's achtergrond_loop() apart en spaarzamer
-        # (elke PRESENCE_CHECK_INTERVAL_MINUTEN) bijwerkt via
-        # update_presence_info().
-        aantal_gezichten = self._laatst_bekende_presence.get("faces_detected")
-        is_alleen = self._laatst_bekende_presence.get("is_alone")
+        # AANGEPAST (Windows-companion-client, 13 sept 2026): dit riep
+        # presence_detector.detect_presence() vroeger bewust NIET
+        # rechtstreeks aan, om te vermijden dat de webcam bij ELKE
+        # get_current()-aanroep zou opengaan (elke minuut) — dat liet
+        # het cameralampje te vaak flikkeren. Die reden vervalt nu:
+        # presence_detector is hier een RemotePresenceDetector
+        # (client_bridge.py), die GEEN webcam meer opent — hij leest
+        # enkel de laatst-ontvangen data die de laptop-client zelf al
+        # spaarzaam (elke 5 min) verzameld heeft. Rechtstreeks
+        # aanroepen is dus nu even goedkoop als bij activity/focus
+        # hierboven, en voorkomt de eerdere bug waarbij deze data nooit
+        # ververst werd omdat update_presence_info() enkel vanuit
+        # main.py's achtergrond_loop() aangeroepen werd, niet vanuit
+        # get_current() zelf.
+        aantal_gezichten = None
+        is_alleen = None
+
+        if presence_detector is not None:
+            try:
+                presence_info = presence_detector.detect_presence()
+                aantal_gezichten = presence_info.get("faces_detected")
+                is_alleen = presence_info.get("is_alone")
+            except Exception:
+                # Zelfde defensieve stijl als activity/focus hierboven:
+                # nooit Layer 5 laten crashen, terugvallen op "geen info".
+                aantal_gezichten = None
+                is_alleen = None
 
         should_interrupt, reden = self._bepaal_interrupt(
             is_gebruikelijk_moment,

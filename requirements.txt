@@ -25,13 +25,17 @@ pygetwindow>=0.0.9         # activity_detector.py — active window/process dete
 mediapipe>=0.10.9          # presence_detector.py — BlazeFace face detection (bounded ML tool, not an LLM)
 
 # --- Layer 6: Personality / Adaptive Learning ---
-scikit-learn>=1.4.0        # train_classifier.py / microlearning.py — signal_model.pkl (bounded ML classifier, not an LLM)
+scikit-learn==1.9.0        # train_classifier.py / microlearning.py — signal_model.pkl (bounded ML classifier, not an LLM). VAST gepind (i.p.v. >=) omdat signal_model.pkl via volume mount buiten het image blijft en dus niet automatisch meegroeit bij een herbouw — een latere scikit-learn-versie zou het opgeslagen model kunnen breken zonder duidelijke foutmelding. Zie Bug #38 in nova_changelog.md.
 
 # --- Testing ---
 pytest>=8.2.0              # Unit tests
 
 # --- Math ---
 numpy>=1.14.0            # math.py
+
+websockets
+opencv-python
+mediapipe
 
 # --- Standard library (no installation needed) ---
 # sqlite3      — Layer 0 memory (built into Python)

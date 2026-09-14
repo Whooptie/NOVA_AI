@@ -530,3 +530,17 @@
 {"text": "hoe warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-05T20:21:01.886201"}
 {"text": "pion naar e4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-05T21:52:24.620583"}
 {"text": "zet pion naar e4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-09T19:28:53.936443"}
+{"text": "zet pion naar c4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:04:23.094273"}
+{"text": "paard naar f3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:04:38.358922"}
+{"text": "paard naar e5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:05:21.833454"}
+{"text": "pion naar a3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:05:58.163978"}
+{"text": "paard naar d7", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:06:35.283105"}
+{"text": "pion naar d4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:06:45.661723"}
+{"text": "pion naar c5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:07:04.758846"}
+{"text": "pion naar e5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:07:20.180187"}
+{"text": "pion naar f6", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0957, "bron": "model_fallback", "tijdstip": "2026-09-13T21:07:45.662220"}
+{"text": "hoe warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-14T16:20:25.716570"}
+{"text": "hoe warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-14T16:20:38.561767"}
+{"text": "hoe warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-14T16:30:48.104530"}
+{"text": "hoe warm warm wordt het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0647, "bron": "model_fallback", "tijdstip": "2026-09-14T16:31:43.608133"}
+{"text": "hoe warm wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0797, "bron": "model_fallback", "tijdstip": "2026-09-14T16:31:55.558494"}
