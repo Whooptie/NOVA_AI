@@ -254,3 +254,4 @@
 {"timestamp": "2026-08-22T16:50:29.046410", "event_type": "concept_created", "word": "preferences", "source": "system", "new_value": {"word": "preferences"}}
 {"timestamp": "2026-08-22T16:50:29.089258", "event_type": "concept_created", "word": "debugintent", "source": "system", "new_value": {"word": "debugintent"}}
 {"timestamp": "2026-08-22T16:50:29.124967", "event_type": "concept_created", "word": "debug", "source": "system", "new_value": {"word": "debug"}}
+{"timestamp": "2026-09-13T13:31:28.134465", "event_type": "concept_created", "word": "context", "source": "system", "new_value": {"word": "context"}}

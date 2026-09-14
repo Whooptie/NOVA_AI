@@ -170,6 +170,17 @@ class ModuleLoader:
             if mod == "emergence_engine":
                 continue
 
+            # client_bridge wordt hierna handmatig geladen (stap 3C,
+            # vóór context_manager) omdat de instance zelf nodig is om
+            # de drie Remote*-detectors te bouwen — niet enkel via
+            # loaded_modules.get() zoals de andere context_layers-
+            # onderdelen. Zonder deze uitsluiting zou de generieke lus
+            # hieronder EEN TWEEDE ClientBridge-instance aanmaken, die
+            # een tweede WebSocket-server op dezelfde poort probeert te
+            # starten -> crash ("Address already in use").
+            if mod == "client_bridge":
+                continue
+
             # variant_feedback_logger wordt hierna handmatig geladen (stap
             # 3B-2, met sentiment_classifier i.p.v. "sem"). Zelfde
             # uitsluitingsreden als topic_suggestions/emergence_engine
@@ -287,13 +298,25 @@ class ModuleLoader:
         # (beide dynamische modules-stap), zodat loaded_modules[...]
         # al bestaat op het moment dat context_manager ze nodig heeft.
         from modules.context import context_manager
+        from modules.network import client_bridge
+
+        # Windows-companion-client (Fase 1, 13 sept 2026): activity/
+        # focus/presence-detectie draait niet meer lokaal op battleserver
+        # (headless Linux, geen scherm/webcam) maar op Kevin's Windows-
+        # laptop, via nova_client.py. client_bridge.py ontvangt die data
+        # via WebSocket; de drie Remote*-klassen hieronder geven
+        # EXACT dezelfde interface als de oude, lokale detectors, dus
+        # context_manager.py hoeft hier zelf niets van te weten.
+        bridge = client_bridge.init_module(self.event_bus)
+        self.loaded_modules["client_bridge"] = bridge
+        self.event_bus.register_module("client_bridge", bridge)
 
         start = time.time()
         context_layers = {
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
-            "activity_detector": self.loaded_modules.get("activity_detector"),
-            "focus_detector": self.loaded_modules.get("focus_detector"),
-            "presence_detector": self.loaded_modules.get("presence_detector"),
+            "activity_detector": client_bridge.RemoteActivityDetector(bridge),
+            "focus_detector": client_bridge.RemoteFocusDetector(bridge),
+            "presence_detector": client_bridge.RemotePresenceDetector(bridge),
         }
         ctx_mgr = context_manager.init_module(self.event_bus, layers=context_layers)
         ctx_mgr.__load_time_ms__ = int((time.time() - start) * 1000)

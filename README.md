@@ -5,7 +5,7 @@
 **A fully symbolic, local AI companion — built without an LLM, without the cloud.**
 
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Linux%20%2B%20Windows%20client-0078D6?style=for-the-badge&logo=linux&logoColor=white)
 ![Privacy](https://img.shields.io/badge/Privacy-100%25%20Local-2ea44f?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red?style=for-the-badge)
@@ -121,7 +121,7 @@ User → IntentRouter → EventBus → Modules
 | Layer 2 | Behavioral patterns (timing, frequency, anomaly detection) | ✅ Done |
 | Layer 3 | Semantic reasoning (concepts, relations, chained inference, contradiction detection, trust state) | ✅ Done |
 | Layer 4 | Response generator (templates, tone variation, routing) | ✅ Done |
-| Layer 5 | Context management (time, activity, focus, presence, weighted interruption logic) | ✅ Done |
+| Layer 5 | Context management (time, activity, focus, presence, weighted interruption logic — activity/focus/presence sensed via a companion client on Windows, streamed to the core over WebSocket) | ✅ Done |
 | Layer 6 | Personality & emotion engine (incl. adaptive learning from feedback) | ✅ Done |
 | Layer 7 | Emergent behavior (self-generated insights, confidence + timing gated) | ✅ Done |
 
@@ -174,6 +174,7 @@ Nova_AI/
 │   │                          #   concept overview, proactive topic suggestions
 │   ├── learning/                # Word associations, behavioral patterns, intent classifier
 │   ├── context/                  # Activity/focus/presence detection, interruption logic
+│   ├── network/                   # WebSocket bridge to the Windows companion client
 │   ├── preferences/               # What Nova learns about how I like to be spoken to
 │   ├── math/                       # Calculations + worked-out explanations
 │   └── debug/                       # Development/testing commands
@@ -215,7 +216,7 @@ This repository serves primarily as a **personal backup**, and has been made pub
 - 🔮 Avatar / desktop companion (animated avatar, lipsync)
 - 🔮 More board games (checkers, Go)
 - 🔮 Smart home integration (lights, sensors, TV)
-- 🔮 Client-server architecture (Nova's "brain" on one machine, lightweight clients elsewhere)
+- 🟢 Client-server architecture — Phase 1 done: a lightweight Windows companion client streams activity/focus/presence to the core over WebSocket (Tailscale-reachable, auto-reconnecting). Next: the client executing commands sent back from the core, and a phone-side client.
 - 🔮 Robotics integration (far future)
 
 ---
@@ -223,7 +224,7 @@ This repository serves primarily as a **personal backup**, and has been made pub
 ## 🛠️ Technical requirements
 
 - Python 3.10+
-- Windows (tested on Windows 11)
+- Linux (core daemon, tested in Docker on Unraid) — a Windows companion client is required for activity/focus/presence awareness (see `client_server_control_roadmap.md`)
 - Stockfish engine (for chess — download it yourself at stockfishchess.org)
 - OpenWeatherMap API key (free to create at openweathermap.org)
 
