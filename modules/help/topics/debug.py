@@ -46,7 +46,8 @@ def get_help():
   geheugen gezondheid           (health check: detecteert problemen in de memory-module)
 
 🖥️ LAYER 5 — CONTEXT (activiteit / focus / presence)
-  context                       (toont huidige context-samenvatting)
+  context                       (toont huidige context-samenvatting, incl. screen_focus)
+  topics debug                  (toont get_relevant_topics() voor de huidige activiteit)
   context geschiedenis          (laatste 10 Layer 5-beslissingen)
   context geschiedenis <n>      (laatste n beslissingen)
   activiteit debug              (ruwe venstertitel/procesnaam + herkende activiteit)
