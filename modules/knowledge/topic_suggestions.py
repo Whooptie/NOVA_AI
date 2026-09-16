@@ -28,6 +28,23 @@ onderwerp is geschikt om ONGEVRAAGD als "wil je een potje X?"
 voorgesteld te worden -- "wil je een potje het weer?" zou raar klinken.
 Nieuwe topics zijn dus standaard stil totdat Kevin ze hier expliciet
 toevoegt. Voorlopig enkel "chess" (Kevin's akkoord, 13 augustus 2026).
+
+Tweede trigger (15 september 2026, nova_state.md punt 18): naast de
+bestaande TIJD-trigger (is_pattern_active()) telt nu ook een
+ACTIVITEIT-trigger mee, via context_manager.get_relevant_topics()
+(Layer 5-restje van 13 sept 2026, tot nu toe zonder aanroeper). Puur
+symbolisch: get_relevant_topics() is zelf enkel een vaste lookup in
+ACTIVITEIT_NAAR_TOPICS, geen classifier/embedder. Beide triggers delen
+dezelfde TOPIC_WHITELIST/spam-preventie/can_interrupt()-gate hieronder
+-- enkel de MANIER waarop een topic als "kandidaat" gevonden wordt is
+verschillend (klok vs. huidige activiteit).
+
+Eerlijke kanttekening: ACTIVITEIT_NAAR_TOPICS (context_manager.py)
+bevat vandaag geen enkele activiteit die naar "chess" wijst -- deze
+koppeling verandert dus nog NIETS zichtbaars totdat Kevin ooit een
+activiteit expliciet aan "chess" koppelt in die tabel. Bewust toch nu
+al gebouwd (Kevin's akkoord, 15 september 2026), zelfde "klaarzetten
+voor later"-aanpak als get_relevant_topics() zelf destijds.
 """
 
 import json
@@ -142,42 +159,85 @@ class TopicSuggestions:
         return resultaat
 
     # ------------------------------------------------------------------
+    # Kandidaat-bepaling -- twee onafhankelijke triggers, zelfde
+    # whitelist/gates erna (punt 18, 15 september 2026)
+    # ------------------------------------------------------------------
+    def _tijd_kandidaten(self) -> set[str]:
+        """
+        Trigger 1 (bestaand): topics waarvoor NU het gebruikelijke
+        moment is, volgens Layer 2 (pattern_matcher.is_pattern_active()
+        op "topic_detected:<naam>"). Enkel topics uit TOPIC_WHITELIST.
+        """
+        if not self.pattern_matcher:
+            return set()
+
+        kandidaten = set()
+        for topic_naam in self.TOPIC_WHITELIST:
+            event_type = f"topic_detected:{topic_naam}"
+            try:
+                actief = self.pattern_matcher.is_pattern_active(event_type)
+            except Exception as e:
+                print(f"[TopicSuggestions] Fout bij is_pattern_active('{event_type}'): {e}")
+                continue
+            if actief:
+                kandidaten.add(topic_naam)
+        return kandidaten
+
+    def _activiteit_kandidaten(self) -> set[str]:
+        """
+        Trigger 2 (nieuw, punt 18): topics die horen bij de HUIDIGE
+        activiteit, via context_manager.get_relevant_topics() (Layer 5-
+        restje, 13 sept 2026). Puur een vaste lookup in
+        ACTIVITEIT_NAAR_TOPICS aan de kant van context_manager.py --
+        hier enkel doorgefilterd tegen TOPIC_WHITELIST, zelfde principe
+        als bij _tijd_kandidaten hierboven: een topic dat relevant is
+        voor de activiteit, mag nog steeds niet ongevraagd voorgesteld
+        worden als het niet expliciet gewhitelist is.
+
+        Ontbrekende context_manager, of een fout in get_relevant_topics()
+        zelf -- geeft gewoon een lege set terug, nooit een crash (zelfde
+        defensieve stijl als de rest van deze module).
+        """
+        if not self.context_manager:
+            return set()
+
+        try:
+            relevante_topics = self.context_manager.get_relevant_topics()
+        except Exception as e:
+            print(f"[TopicSuggestions] Fout bij get_relevant_topics(): {e}")
+            return set()
+
+        return {t for t in relevante_topics if t in self.TOPIC_WHITELIST}
+
+    # ------------------------------------------------------------------
     # Kernmethode -- wordt aangeroepen vanuit main.py's achtergrond_loop(),
     # zelfde patroon als contradiction_checker.check_contradictions() en
     # emergence.reflect().
     # ------------------------------------------------------------------
     def check_suggesties(self):
         """
-        Loopt over de TOPIC_WHITELIST en checkt per topic of
-        is_pattern_active("topic_detected:<naam>") True is (dit is het
-        gebruikelijke moment) EN of context_manager.can_interrupt()
-        het toelaat. Bij een match: publiceert de sjabloonzin naar
-        layer4_response, en onthoudt dat dit topic dit uur al
-        voorgesteld is (spam-preventie).
+        Verzamelt kandidaat-topics uit TWEE onafhankelijke triggers
+        (_tijd_kandidaten: gebruikelijk moment volgens Layer 2;
+        _activiteit_kandidaten: relevant voor de huidige activiteit,
+        via context_manager.get_relevant_topics()) en checkt per
+        kandidaat of context_manager.can_interrupt() het toelaat. Bij
+        een match: publiceert de sjabloonzin naar layer4_response, en
+        onthoudt dat dit topic dit uur al voorgesteld is (spam-preventie)
+        -- ongeacht via welke trigger het gevonden werd.
 
         Stopt na de EERSTE geschikte suggestie in deze cyclus -- twee
         losse "wil je een potje X?"-vragen na elkaar zou raar aanvoelen,
         en de whitelist is momenteel toch nog klein (1 topic).
         """
-        if not self.pattern_matcher:
+        kandidaten = self._tijd_kandidaten() | self._activiteit_kandidaten()
+        if not kandidaten:
             return
 
         nu = datetime.now()
         huidig_uur = nu.hour
         vandaag = nu.strftime("%Y-%m-%d")
 
-        for topic_naam in self.TOPIC_WHITELIST:
-            event_type = f"topic_detected:{topic_naam}"
-
-            try:
-                actief = self.pattern_matcher.is_pattern_active(event_type)
-            except Exception as e:
-                print(f"[TopicSuggestions] Fout bij is_pattern_active('{event_type}'): {e}")
-                continue
-
-            if not actief:
-                continue
-
+        for topic_naam in kandidaten:
             # Spam-preventie: dit exacte topic is dit exacte uur, op
             # deze exacte dag, al eens voorgesteld -- niet opnieuw.
             sleutel = f"{vandaag}:{huidig_uur}"

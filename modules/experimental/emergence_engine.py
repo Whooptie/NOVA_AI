@@ -410,6 +410,71 @@ class EmergenceEngine:
         }
 
         # ─────────────────────────────────
+        # Sjablonen — scherm_focus (Layer 5, vijfde insight-type,
+        # nova_state.md punt 17, 15 september 2026)
+        # ─────────────────────────────────
+        # Koppelt context_manager.py's "screen_focus"-veld (13 sept
+        # 2026, tot nu toe zonder aanroeper) aan Layer 7: een preciezer
+        # insight dan enkel het activiteitslabel, bv. "je was lang bezig
+        # met coderen, in 'main.py - Nova' " i.p.v. enkel "je was lang
+        # aan het coderen". Puur symbolisch: screen_focus is de RAUWE
+        # venstertitel zoals activity_detector.py die al doorgeeft, hier
+        # enkel 1-op-1 in een sjabloon geplakt -- geen NLP/analyse van
+        # de titel zelf.
+        self._sjablonen_scherm_focus = {
+            "opening": [
+                "Nog iets wat ik opmerk:",
+                "Even over waar je mee bezig was:",
+                "Dit viel me op vanuit je scherm:",
+                "Kleine observatie:",
+                "Iets over je activiteit net:",
+            ],
+            "midden": [
+                "je was lang bezig met {activiteit} — het venster \"{screen_focus}\" stond al {duur} minuten open.",
+                "\"{screen_focus}\" stond al {duur} minuten open, tijdens {activiteit}.",
+                "je zat al {duur} minuten in \"{screen_focus}\" ({activiteit}).",
+                "{duur} minuten aan één stuk in \"{screen_focus}\" — je was duidelijk bezig met {activiteit}.",
+            ],
+            "afsluiting": [
+                "Tja.",
+                "Gewoon een observatie.",
+                "Interessant, vind ik.",
+            ],
+        }
+
+        # Vanaf hoeveel minuten ononderbroken dezelfde activiteit is
+        # een screen_focus-insight de moeite waard? Bewust dezelfde
+        # waarde als context_manager.py's CODING_ONDERBREEK_DREMPEL_
+        # MINUTEN hergebruiken kan niet zomaar (die drempel zit op het
+        # ContextManager-object, niet hier) -- daarom een eigen, maar
+        # bewust IDENTIEKE vaste waarde, zelfde redenering als Layer 2's
+        # bestaande drempels: consistent "lang genoeg" betekent overal
+        # in Nova hetzelfde aantal minuten.
+        # TIJDELIJK OP 1 VOOR LIVE-TEST (15 sept 2026) -- terugzetten
+        # naar 15 zodra scherm_focus bevestigd werkt in de echte Nova!
+        self.MIN_DUUR_VOOR_SCHERM_FOCUS_MINUTEN = 15
+
+        # BUGFIX (15 september 2026, live-test): INSIGHT_WAARDIGE_
+        # ACTIVITEITEN (hierboven) bevat pattern_matcher/activity_
+        # started:*-namen ("coderen", "coding_gedetecteerd", ...) --
+        # dat is de VERKEERDE bron voor scherm_focus. context_manager.
+        # get_current()["activity"] levert namelijk activity_detector.
+        # py's EIGEN, ANDERE labels ("coding", "gaming",
+        # "communicating", "mailen", "talking_to_nova" -- zie
+        # activity_detector.py's ACTIVITEIT_MAPPING-waarden). Zelfde
+        # soort naamgevingsmismatch als Bug #33 (het "weer"-woord-
+        # botsing), hier tussen twee lagen die "coderen" net anders
+        # spellen. Daarom een EIGEN, kleinere whitelist -- zelfde
+        # bewuste keuze als topic_suggestions.py's TOPIC_WHITELIST
+        # (losstaand van emergence_engine.py's eigen INSIGHT_WAARDIGE_
+        # ACTIVITEITEN, om te vermijden dat een toekomstige toevoeging
+        # aan de ENE tabel per ongeluk ook de ANDERE beïnvloedt).
+        # Voorlopig enkel "coding" (Kevin's akkoord, 15 september 2026)
+        # -- uitbreidbaar zodra andere activiteiten hier ook geschikt
+        # blijken.
+        self.SCHERM_FOCUS_ACTIVITEITEN = {"coding"}
+
+        # ─────────────────────────────────
         # Confidence-gate: vanaf welke drempel mag Nova een insight
         # ECHT HARDOP zeggen (via layer4_response), i.p.v. het enkel
         # intern bij te houden (via emergence:insight)?
@@ -445,6 +510,13 @@ class EmergenceEngine:
             # echte data (top-10 liep van 7 t/m 26) -- 10 laat dus enkel
             # de sterkste 1-2 woorden ook echt hardop spreken.
             "trending_topic": 10,
+            # scherm_focus heeft geen PMI/aantal-schaal -- de confidence
+            # is simpelweg 1.0 zodra de MIN_DUUR-drempel gehaald is (zie
+            # analyze_screen_focus()), dus 1.0 als LAYER4_DREMPELS-waarde
+            # betekent hier "elke gevonden screen_focus-insight mag ook
+            # hardop", zelfde als hoe kennisdichtheid/personality_drift
+            # hun eigen, niet-0-1-schaal hebben.
+            "scherm_focus": 1.0,
         }
 
         # ─────────────────────────────────
@@ -997,6 +1069,115 @@ class EmergenceEngine:
         return f"{opening} {midden} {afsluiting}"
 
     # ─────────────────────────────────
+    # Insight-type 5: scherm_focus (Layer 5, nova_state.md punt 17,
+    # 15 september 2026)
+    # ─────────────────────────────────
+
+    # Vertaalt activity_detector.py's EIGEN labels ("coding", "gaming",
+    # ...) naar een leesbaar Nederlands woord voor in de sjabloonzin.
+    # Bewust een KLEINE, aparte tabel -- NIET _activity_naam_labels
+    # hergebruiken, want die is gevuld met pattern_matcher-namen
+    # ("coderen"/"coding_gedetecteerd"), een andere naamgeving voor
+    # hetzelfde begrip (zie de bugfix-toelichting hierboven).
+    _SCHERM_FOCUS_ACTIVITEIT_LABELS = {
+        "coding": "coderen",
+    }
+
+    def _scherm_focus_activiteit_label(self, activiteit_label: str) -> str:
+        """Onbekend label: gewoon de kale naam teruggeven, geen crash."""
+        return self._SCHERM_FOCUS_ACTIVITEIT_LABELS.get(
+            activiteit_label, activiteit_label
+        )
+
+    def analyze_screen_focus(self) -> Optional[Dict]:
+        """
+        Kijkt naar context_manager.py's HUIDIGE context (get_current())
+        en bouwt, indien geschikt, een 'scherm_focus'-insight: "je was
+        lang bezig met <activiteit>, in <screen_focus>".
+
+        BELANGRIJK — eerlijkheid over wat dit wel/niet is: dit is GEEN
+        historisch/statistisch patroon zoals de andere 4 insight-types
+        (die kijken naar Layer 1/2/3/6-data die over tijd opgebouwd is).
+        Dit insight-type kijkt enkel naar het HUIDIGE moment — is Kevin
+        NU al lang genoeg bezig met dezelfde activiteit, in hetzelfde
+        venster? Daarom ook geen 0-1/aantal-confidence zoals de andere
+        types: confidence is hier gewoon 1.0 zodra alle voorwaarden
+        gehaald zijn (zie LAYER4_DREMPELS's toelichting hierboven).
+
+        Voorwaarden, ALLEMAAL vereist:
+        - context_manager is geladen;
+        - screen_focus is niet leeg/None (activity_detector.py kon een
+          venstertitel bepalen);
+        - de huidige activiteit staat in INSIGHT_WAARDIGE_ACTIVITEITEN
+          (zelfde whitelist als analyze_timing_pattern() hierboven
+          gebruikt voor activity_started:* — bewust hergebruikt, geen
+          nieuwe, aparte whitelist: dezelfde activiteiten die geschikt
+          zijn om als tijdspatroon te noemen, zijn ook geschikt om hier
+          te noemen);
+        - de activiteit loopt al minstens
+          MIN_DUUR_VOOR_SCHERM_FOCUS_MINUTEN minuten.
+
+        Retourneert None zodra één van deze voorwaarden niet gehaald
+        wordt — geen gok, gewoon stil blijven.
+        """
+        context_manager = self.layers.get("context_manager")
+        if context_manager is None:
+            return None
+
+        try:
+            ctx = context_manager.get_current()
+        except Exception:
+            # Zelfde defensieve stijl als de andere analyze_*-methodes:
+            # nooit Layer 7 laten crashen op een ontbrekende/kapotte
+            # onderliggende laag.
+            return None
+
+        screen_focus = ctx.get("screen_focus")
+        if not screen_focus:
+            return None
+
+        activiteit_label = ctx.get("activity", "unknown")
+        if activiteit_label not in self.SCHERM_FOCUS_ACTIVITEITEN:
+            return None
+
+        duur_minuten = ctx.get("activity_duration_minutes", 0.0)
+        if duur_minuten < self.MIN_DUUR_VOOR_SCHERM_FOCUS_MINUTEN:
+            return None
+
+        return {
+            "type": "scherm_focus",
+            # _activity_naam_labels is gevuld met pattern_matcher-namen
+            # ("coderen", "coding_gedetecteerd", ...), niet met
+            # activity_detector.py's eigen labels ("coding") -- een
+            # opzoek hier zou dus altijd terugvallen op de kale naam.
+            # Eigen, kleine vertaaltabel i.p.v. de bestaande hergebruiken
+            # (zelfde les als de SCHERM_FOCUS_ACTIVITEITEN-fix hierboven).
+            "activiteit": self._scherm_focus_activiteit_label(activiteit_label),
+            "screen_focus": screen_focus,
+            "duur": round(duur_minuten),
+            "confidence": 1.0,
+        }
+
+    def _formuleer_scherm_focus(self, insight: Dict) -> str:
+        """
+        Bouwt een sjabloonzin voor een 'scherm_focus'-insight.
+
+        Puur string-formatting op vaste tekstlijsten — geen generatie.
+        De venstertitel zelf (screen_focus) komt 1-op-1 van
+        activity_detector.py, ongewijzigd doorgegeven — geen NLP/
+        analyse van de titel zelf, zoals de moduledocstring vereist.
+        """
+        opening = random.choice(self._sjablonen_scherm_focus["opening"])
+        midden = random.choice(self._sjablonen_scherm_focus["midden"]).format(
+            activiteit=insight["activiteit"],
+            screen_focus=insight["screen_focus"],
+            duur=insight["duur"],
+        )
+        afsluiting = random.choice(self._sjablonen_scherm_focus["afsluiting"])
+
+        return f"{opening} {midden} {afsluiting}"
+
+    # ─────────────────────────────────
     # Overkoepelende analyse
     # ─────────────────────────────────
 
@@ -1030,6 +1211,10 @@ class EmergenceEngine:
         drift = self.analyze_personality_drift()
         if drift is not None:
             insights.append(drift)
+
+        scherm_focus = self.analyze_screen_focus()
+        if scherm_focus is not None:
+            insights.append(scherm_focus)
 
         return insights
 
@@ -1262,6 +1447,8 @@ class EmergenceEngine:
                 tekst = self._formuleer_kennisdichtheid(insight)
             elif insight["type"] == "personality_drift":
                 tekst = self._formuleer_drift(insight)
+            elif insight["type"] == "scherm_focus":
+                tekst = self._formuleer_scherm_focus(insight)
             else:
                 # Toekomstige insight-types die nog geen sjabloon
                 # hebben: bewust overslaan i.p.v. een kale/rare tekst
