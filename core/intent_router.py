@@ -1263,6 +1263,62 @@ class IntentRouter:
 
         return False
     # ---------------------------------------------------------
+    # Calendar (dag/datum/maand/jaar/week)
+    # ---------------------------------------------------------
+    def detect_calendar(self, text):
+        t = text.lower().strip().rstrip("?.!")
+
+        # Vaste (zin, type)-tabel, specifiekste/langste zinnen
+        # eerst zodat bv. "welke dag is het vandaag" niet per
+        # ongeluk als "algemeen" matcht via een korter patroon
+        # verderop in dezelfde lus.
+        calendar_phrases = [
+            ("welke dag is het vandaag", "dag"),
+            ("welke dag is het", "dag"),
+            ("wat is de dag vandaag", "dag"),
+            ("wat is de datum", "datum"),
+            ("welke datum is het", "datum"),
+            ("welke maand is het", "maand"),
+            ("in welke maand zitten we", "maand"),
+            ("welk jaar is het", "jaar"),
+            ("in welk jaar zitten we", "jaar"),
+            ("welke week is het", "week"),
+            ("in welke week zitten we", "week"),
+            ("het hoeveelste is het", "datum"),
+            ("wat is het vandaag", "algemeen"),
+            ("welke dag datum is het", "algemeen"),
+        ]
+        for phrase, vraag_type in calendar_phrases:
+            if phrase in t:
+                dbg(f"{C_BLUE}→ calendar ({vraag_type}){C_RESET}")
+                self.event_bus.publish(
+                    "intent_calendar_query", {"text": text, "type": vraag_type}
+                )
+                return True
+
+        # Losse woorden -- alleen als heel woord, niet als deel
+        # van een ander woord (zelfde aanpak als detect_time()'s
+        # time_words hieronder).
+        losse_woorden_naar_type = {
+            "dag": "dag",
+            "datum": "datum",
+            "maand": "maand",
+            "jaar": "jaar",
+            "week": "week",
+            "weeknummer": "week",
+        }
+        words_in_text = t.split()
+        for woord, vraag_type in losse_woorden_naar_type.items():
+            if woord in words_in_text:
+                dbg(f"{C_BLUE}→ calendar ({vraag_type}){C_RESET}")
+                self.event_bus.publish(
+                    "intent_calendar_query", {"text": text, "type": vraag_type}
+                )
+                return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Time
     # ---------------------------------------------------------
     def detect_time(self, text):
@@ -2760,6 +2816,7 @@ class IntentRouter:
         """
         return [
             ("greeting",         self.detect_greeting),
+            ("calendar",         self.detect_calendar),
             ("time",             self.detect_time),
             ("weather",          self.detect_weather),
             # chess vóór math: zetten zoals "e2e4" mogen niet als

@@ -1126,3 +1126,19 @@ Volledige originele roadmap: `taal_en_redeneerlimieten_roadmap.md`, idee 1+2 (vo
 **Zijspoor tijdens hetzelfde live-testen (geen bug, bestaand/verwacht gedrag):** `activiteit debug` toonde herhaaldelijk `Ruwe venstertitel: None`/`Herkend als: unknown`, terwijl `context` kort daarvoor wél verse data toonde. Verklaring: `client_bridge.py`'s `DATA_VERVAL_SECONDEN = 180`-veroudering — als de laptop-client toevallig net niet binnen de laatste 3 minuten gepusht had op het moment van de aanroep, valt `RemoteActivityDetector` terecht terug op "geen info". Geen actie ondernomen, buiten scope van deze twee punten.
 
 **Getest:** 35 nieuwe pytest-tests (`test_emergence_screen_focus.py`, 16 tests; `test_topic_suggestions_activiteit.py`, 19 tests) — zie tests/-hoofdstuk. Bevat 2 gerichte regressietests tegen precies de hierboven beschreven bugfix. Volledige suite (525 tests) blijft groen.
+
+## ✅ `calendar.py` — nieuwe kalendermodule (dag/datum/maand/jaar/week) (16 september 2026)
+
+**Aanleiding:** onderdeel van punt 22 (date_calendar_roadmap.md) — het eerste, meest basale stukje: Nova kon nog geen enkele vraag over de huidige dag/datum/maand/jaar/week beantwoorden, ook al bestond `time.py` (huidig uur) al wel.
+
+**Nieuwe module `modules/time/calendar.py`**, zelfde patroon als `time.py`: luistert op één intent-event (`intent_calendar_query`), gebruikt `zone.now_local()` indien beschikbaar (fallback op `datetime.now()`), antwoordt via `layer4_response` (tone-pipeline). `CalendarModule` heeft geen I/O in `__init__()`.
+
+**Bewust GEEN `locale.setlocale()`/`strftime("%A"/"%B")` voor Nederlandse dag-/maandnamen** — bevestigd dat de Nederlandse locale niet gegarandeerd beschikbaar is (getest: `nl_BE.UTF-8`/`nl_NL.UTF-8` beide "unsupported locale setting" in een kale container), wat op de ene machine zou werken en op de andere stil Engelse namen zou teruggeven zonder foutmelding. In plaats daarvan: eigen, vaste `DAGNAMEN`/`MAANDNAMEN`-dictionaries — puur symbolisch, geen enkele externe dependency, zelfde soort keuze als de rest van `time.py`/`zone.py`.
+
+**Antwoordgedrag, expliciete keuze (Kevin, tijdens ontwerp):** gerichte vragen ("welke dag is het") krijgen een kort, specifiek antwoord (enkel de dag) — niet het volledige overzicht. Enkel de algemene vraag ("wat is het vandaag") geeft alles in één zin (dag + datum + maand + jaar + week).
+
+**`intent_router.py`:** nieuwe `detect_calendar()`-functie (zelfde stijl als `detect_time()`), toegevoegd aan `_build_intent_tabel_deel1()` vóór `time` — bevestigd dat volgorde ertoe doet (zie bekende beperking hieronder). Stuurt het gevraagde type (`dag`/`datum`/`maand`/`jaar`/`week`/`algemeen`) mee in het event, zodat `calendar.py` zelf geen tekst-parsing meer hoeft te doen.
+
+**Bekende, bewust geaccepteerde beperking, gevonden tijdens live-testen:** "dag \<naam\>" (bv. "dag Nova") wordt door `detect_calendar()`'s losse-woordherkenning op het woord "dag" opgepikt als kalendervraag (antwoord: "Het is vandaag woensdag!") in plaats van door `detect_greeting()` als groet. Onderzocht: `detect_greeting()` doet enkel een exacte-zin-match (`if text in greetings`) — "dag Nova" werd dus ook VÓÓR deze wijziging al nooit als groet herkend, dit is geen nieuwe regressie maar een al bestaand gat dat nu enkel zichtbaar wordt (voorheen greep niets anders het woord "dag" op). **Bewust niet gefixt:** Kevin gebruikt deze groetvorm niet. Vastgelegd zodat een toekomstige sessie dit niet als onverwachte regressie interpreteert.
+
+**Getest:** 28 nieuwe pytest-tests (`test_calendar.py`) — zie tests/-hoofdstuk. Volledige suite (553 tests) blijft groen. Live bevestigd voor alle 5 gerichte vragen + het algemene overzicht + de "dag Nova"-randgeval-check (bevestigd bestaand gedrag, geen fix nodig).
