@@ -1263,10 +1263,50 @@ class IntentRouter:
 
         return False
     # ---------------------------------------------------------
-    # Calendar (dag/datum/maand/jaar/week)
+    # Calendar (dag/datum/maand/jaar/week + datumrekenen)
     # ---------------------------------------------------------
     def detect_calendar(self, text):
         t = text.lower().strip().rstrip("?.!")
+
+        # Datumreken-zinnen EERST (specifieker en anders qua vorm
+        # dan de basiskalender-zinnen hieronder) -- deze vier sturen
+        # de RUWE tekst mee, want calendar.py moet zelf nog de
+        # genoemde datum eruit halen (zie _parse_datum() in
+        # calendar.py).
+        #
+        # "hoeveel dagen tot X" en "hoeveel dagen geleden was X" delen
+        # bewust hetzelfde vraag_type ("dagen_tot") -- dagen_tot()
+        # geeft al vanzelf een negatief getal terug voor een datum in
+        # het verleden, en antwoord_dagen_tot() formuleert dat al
+        # correct als "X was N dagen geleden". Geen apart vraag_type
+        # nodig voor het omgekeerde geval.
+        if re.search(r"\bhoeveel dagen\b.*\bgeleden\b", t):
+            dbg(f"{C_BLUE}→ calendar (dagen_tot, verleden){C_RESET}")
+            self.event_bus.publish(
+                "intent_calendar_query", {"text": text, "type": "dagen_tot"}
+            )
+            return True
+
+        if re.search(r"\bhoeveel dagen\b.*\btot\b", t):
+            dbg(f"{C_BLUE}→ calendar (dagen_tot){C_RESET}")
+            self.event_bus.publish(
+                "intent_calendar_query", {"text": text, "type": "dagen_tot"}
+            )
+            return True
+
+        if "welke dag van de week" in t:
+            dbg(f"{C_BLUE}→ calendar (dag_van_de_week){C_RESET}")
+            self.event_bus.publish(
+                "intent_calendar_query", {"text": text, "type": "dag_van_de_week"}
+            )
+            return True
+
+        if "wat is de datum over" in t or "welke datum is het over" in t:
+            dbg(f"{C_BLUE}→ calendar (datum_plus){C_RESET}")
+            self.event_bus.publish(
+                "intent_calendar_query", {"text": text, "type": "datum_plus"}
+            )
+            return True
 
         # Vaste (zin, type)-tabel, specifiekste/langste zinnen
         # eerst zodat bv. "welke dag is het vandaag" niet per
