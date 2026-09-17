@@ -1,6 +1,6 @@
 {
   "current_mood": "positief_speels",
-  "current_energy": 0.4303515324124195,
+  "current_energy": 0.42857575422376215,
   "current_focus": "interaction",
   "emotional_tone": "warm_en_enthousiast",
   "emotional_history": [],
@@ -41,9 +41,9 @@
     "task_switch_speed": "snel_met_korte_reset"
   },
   "emotion_engine_state": {
-    "last_trigger": "confusion",
-    "last_reaction": "korte_denkpauze_vragen_stellen",
-    "last_recovery": "even_herkaderen"
+    "last_trigger": "kilte",
+    "last_reaction": "neutrale_blik",
+    "last_recovery": "even_afstand_nemen"
   },
   "behavior_modulation_state": {
     "mirroring_intensity": "laag_tot_medium",

@@ -547,3 +547,8 @@
 {"text": "cont", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-14T19:57:49.733481"}
 {"text": "dag nova", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-16T21:07:16.310820"}
 {"text": "hou houd bee", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0553, "bron": "model_fallback", "tijdstip": "2026-09-16T21:10:26.861436"}
+{"text": "hoeveel dagen tot 25 december", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-17T19:24:45.087086"}
+{"text": "hoeveel dagen tot 15 augustus", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0104, "bron": "model_fallback", "tijdstip": "2026-09-17T19:24:55.782377"}
+{"text": "hoeveel dagen geleden was 15/08/2020", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0104, "bron": "model_fallback", "tijdstip": "2026-09-17T19:25:06.896064"}
+{"text": "hoeveel dagen tot kerst", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-17T19:25:40.919536"}
+{"text": "hoe warm wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0797, "bron": "model_fallback", "tijdstip": "2026-09-17T19:29:32.296273"}

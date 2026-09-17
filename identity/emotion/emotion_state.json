@@ -6,9 +6,9 @@
     "warmte": 0.6,
     "spanning": 0.3
   },
-  "last_trigger": "confusion",
-  "last_reaction": "korte_denkpauze_vragen_stellen",
-  "last_recovery_hint": "even_herkaderen",
+  "last_trigger": "kilte",
+  "last_reaction": "neutrale_blik",
+  "last_recovery_hint": "even_afstand_nemen",
   "stability": 0.6,
   "volatility": 0.7,
   "regulation": {
@@ -21,7 +21,7 @@
     "threshold": 0.75,
     "signs_active": [],
     "last_overflow_behavior": "iets_sneller_pratend",
-    "last_trigger_timestamp": 1789585832.2035465,
+    "last_trigger_timestamp": 1789666292.287016,
     "decay_per_minute": 0.05
   },
   "sync": {
