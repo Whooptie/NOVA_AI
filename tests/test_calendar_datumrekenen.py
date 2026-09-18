@@ -184,10 +184,14 @@ class TestParseDatumDagPlusMaandnaam:
 
 
 class TestParseDatumOnherkend:
-    def test_feestdagnaam_wordt_nog_niet_herkend(self, mod):
-        # Bewuste scope-keuze: "kerst"/"pasen" als woord is
-        # feestdagen-kennis (Onderdeel 2, nog niet gebouwd).
-        assert mod._parse_datum("kerstmis") is None
+    def test_feestdagnaam_wordt_nu_wel_herkend_via_holidays_koppeling(self, mod):
+        # Bijgewerkt 18 september 2026: sinds de koppeling met
+        # holidays.py (patroon 6 in _parse_datum()) wordt "kerstmis"
+        # WEL herkend. Zie test_calendar_holidays_koppeling.py voor
+        # de volledige dekking van deze koppeling -- deze test hier
+        # legt enkel vast dat het OUDE "nog niet herkend"-gedrag
+        # bewust is achterhaald, niet een stille regressie.
+        assert mod._parse_datum("kerstmis") == date(2026, 12, 25)
 
     def test_willekeurige_tekst_geeft_none(self, mod):
         assert mod._parse_datum("wat een mooie dag vandaag niet") is not None
@@ -230,7 +234,11 @@ class TestAntwoordDagenTot:
         assert bus.laatste_tekst() == "15 augustus 2020 was 2224 dagen geleden."
 
     def test_onherkende_datum_geeft_tegenvraag(self, bus, mod):
-        mod.on_calendar_intent({"text": "hoeveel dagen tot kerstmis", "type": "dagen_tot"})
+        # Bijgewerkt 18 september 2026: "kerstmis" wordt nu WEL
+        # herkend via de holidays.py-koppeling (zie
+        # test_calendar_holidays_koppeling.py), dus deze test gebruikt
+        # nu een naam die ook na die koppeling nog onbekend is.
+        mod.on_calendar_intent({"text": "hoeveel dagen tot oktoberfest", "type": "dagen_tot"})
         tekst = bus.laatste_tekst()
         assert "Welke datum bedoel je" in tekst
 

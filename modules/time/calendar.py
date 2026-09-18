@@ -26,10 +26,14 @@
 # dependency nodig -- dit is 100% Python's ingebouwde datetime,
 # net als time.py.
 #
-# BEWUST NOG GEEN feestdag-namen ("kerst", "pasen", ...) als
-# datum-invoer -- dat is inhoudelijk feestdagen-kennis
-# (date_calendar_roadmap.md, Onderdeel 2), nog niet gebouwd.
-# calendar.py herkent hier enkel EXPLICIETE datums.
+# FEESTDAGNAMEN ("kerst", "pasen", ...) als datum-invoer: sinds
+# 18 september 2026 herkend via _parse_feestdagnaam(), die
+# holidays.py raadpleegt (date_calendar_roadmap.md, Onderdeel 2).
+# holidays.py is bewust OPTIONEEL voor calendar.py -- als die
+# module niet beschikbaar is, geeft dit patroon gewoon None terug,
+# nooit een crash. Lazy import (binnen de functie) om een
+# circulaire import te vermijden: holidays.py importeert op zijn
+# beurt DAGNAMEN/MAANDNAMEN vanuit dit bestand, ook lazy.
 #
 # Eigen, kleine dag-offset-herkenning ("morgen"/"overmorgen"/
 # weekdagnamen) -- bewust NIET hergebruikt vanuit weather.py's
@@ -212,9 +216,13 @@ class CalendarModule:
         if "vandaag" in t:
             return vandaag
 
-        # 2) weekdagnaam -- eerstvolgende gelegenheid
+        # 2) weekdagnaam -- eerstvolgende gelegenheid. Woordgrens
+        # (\b) verplicht: zonder die grens zou "maandag" ook matchen
+        # binnen "pinkstermaandag" (een feestdagnaam, patroon 6
+        # hieronder) en het verkeerde antwoord geven -- gevonden
+        # tijdens testen vóór livegang, zie test_calendar_holidays_koppeling.py.
         for naam, weekday_nr in DAGNAAM_NAAR_NUMMER.items():
-            if naam in t:
+            if re.search(r"\b" + naam + r"\b", t):
                 offset = (weekday_nr - vandaag.weekday()) % 7
                 if offset == 0:
                     offset = 7  # vandaag toevallig die dag = volgende week bedoeld
@@ -252,7 +260,80 @@ class CalendarModule:
                 vandaag=vandaag,
             )
 
-        return None
+        # 6) feestdagnaam: "kerst", "pasen", "pinkstermaandag", ...
+        return self._parse_feestdagnaam(t, vandaag)
+
+    def _parse_feestdagnaam(self, t, vandaag):
+        """Probeert een feestdagnaam (of alias, bv. "kerst" voor
+        "Kerstmis") te herkennen in de tekst en de bijhorende datum
+        op te zoeken via holidays.py. Geeft None terug als er geen
+        feestdagnaam gevonden wordt, of als holidays.py niet
+        beschikbaar is.
+
+        Lazy import (binnen deze functie, niet bovenaan calendar.py)
+        om een circulaire import te vermijden: holidays.py importeert
+        op zijn beurt DAGNAMEN/MAANDNAMEN vanuit calendar.py, ook al
+        lazy (binnen zijn eigen functies). Zo kunnen beide modules
+        naar elkaar verwijzen zonder dat een van de twee als eerste
+        volledig geladen moet zijn.
+
+        holidays.py is bewust OPTIONEEL voor calendar.py: als die
+        module (nog) niet bestaat of niet geladen is -- bv. een test
+        die enkel calendar.py test, of een oudere installatie van
+        vóór 18 september 2026 -- geeft dit gewoon None terug, nooit
+        een crash."""
+        try:
+            from modules.time.holidays import (
+                HolidaysModule,
+                VASTE_FEESTDAGEN,
+                BEWEGENDE_FEESTDAGEN_OFFSET,
+                FEESTDAG_ALIASSEN,
+            )
+        except ImportError:
+            return None
+
+        # Langste namen (inclusief aliassen) eerst, zodat
+        # "pinkstermaandag" niet per ongeluk als het kortere
+        # "pinksteren" matcht -- zelfde regel als holidays.py's
+        # eigen antwoord_wanneer_is().
+        officiele_namen = list(VASTE_FEESTDAGEN.values()) + list(
+            BEWEGENDE_FEESTDAGEN_OFFSET.keys()
+        )
+        zoek_paren = [(naam.lower(), naam) for naam in officiele_namen]
+        zoek_paren += list(FEESTDAG_ALIASSEN.items())
+        zoek_paren_gesorteerd = sorted(
+            zoek_paren, key=lambda paar: len(paar[0]), reverse=True
+        )
+
+        gevonden_naam = None
+        for gezochte_tekst, officiele_naam in zoek_paren_gesorteerd:
+            if gezochte_tekst in t:
+                gevonden_naam = officiele_naam
+                break
+
+        if gevonden_naam is None:
+            return None
+
+        # Geen event_bus/zone nodig voor een pure naam-opzoeking --
+        # datum_van_feestdag() gebruikt today() niet, dus __new__()
+        # (object aanmaken zonder __init__() aan te roepen) is hier
+        # veilig en voorkomt dat we een nep-event_bus moeten optuigen
+        # enkel om deze ene opzoekmethode te gebruiken.
+        tijdelijke_holidays = HolidaysModule.__new__(HolidaysModule)
+
+        datum = tijdelijke_holidays.datum_van_feestdag(gevonden_naam, vandaag.year)
+        if datum is None:
+            return None
+
+        # Zelfde automatische-jaarsprong-regel als de andere patronen
+        # hierboven: als de feestdag dit jaar al voorbij is, naar
+        # volgend jaar.
+        if datum < vandaag:
+            datum = tijdelijke_holidays.datum_van_feestdag(
+                gevonden_naam, vandaag.year + 1
+            )
+
+        return datum
 
     def _bouw_datum_met_jaarsprong(self, dag, maand, jaar_str, vandaag):
         """Bouwt een date() uit dag/maand (+ optioneel jaar). Zonder

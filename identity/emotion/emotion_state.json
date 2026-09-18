@@ -21,7 +21,7 @@
     "threshold": 0.75,
     "signs_active": [],
     "last_overflow_behavior": "iets_sneller_pratend",
-    "last_trigger_timestamp": 1789666292.287016,
+    "last_trigger_timestamp": 1789758163.3497407,
     "decay_per_minute": 0.05
   },
   "sync": {

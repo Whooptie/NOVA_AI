@@ -1263,6 +1263,85 @@ class IntentRouter:
 
         return False
     # ---------------------------------------------------------
+    # Vakanties (Vlaamse schoolvakanties: wanneer is X / zijn we nu in vakantie / volgende vakantie / dagen tot vakantie)
+    # ---------------------------------------------------------
+    def detect_vakantie(self, text):
+        t = text.lower().strip().rstrip("?.!")
+
+        # Specifiekste zin eerst: "hoeveel dagen tot de vakantie"
+        # moet vóór de calendar.py-achtige "hoeveel dagen tot X"
+        # gecontroleerd worden (calendar staat sowieso al later in
+        # de tabel, maar dit blok zelf moet ook intern de juiste
+        # volgorde aanhouden).
+        if re.search(r"\bhoeveel dagen\b.*\btot\b.*\bvakantie\b", t):
+            dbg(f"{C_BLUE}→ vakantie (dagen_tot_vakantie){C_RESET}")
+            self.event_bus.publish(
+                "intent_vakantie_query", {"text": text, "type": "dagen_tot_vakantie"}
+            )
+            return True
+
+        if "volgende vakantie" in t:
+            dbg(f"{C_BLUE}→ vakantie (volgende_vakantie){C_RESET}")
+            self.event_bus.publish(
+                "intent_vakantie_query", {"text": text, "type": "volgende_vakantie"}
+            )
+            return True
+
+        if "vakantie" in t and ("nu" in t or "zijn we" in t or "is het" in t):
+            dbg(f"{C_BLUE}→ vakantie (is_nu_vakantie){C_RESET}")
+            self.event_bus.publish(
+                "intent_vakantie_query", {"text": text, "type": "is_nu_vakantie"}
+            )
+            return True
+
+        # "wanneer is/valt" MOET expliciet het woord "vakantie"
+        # bevatten -- anders zou "wanneer is kerst" hier ook matchen
+        # en nooit meer bij detect_holiday() terechtkomen (die verderop
+        # in de tabel staat).
+        if re.search(r"\bwanneer (is|valt)\b", t) and "vakantie" in t:
+            dbg(f"{C_BLUE}→ vakantie (wanneer_is){C_RESET}")
+            self.event_bus.publish(
+                "intent_vakantie_query", {"text": text, "type": "wanneer_is"}
+            )
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
+    # Holidays (feestdagen: wanneer is X / is vandaag feestdag / volgende feestdag)
+    # ---------------------------------------------------------
+    def detect_holiday(self, text):
+        t = text.lower().strip().rstrip("?.!")
+
+        # Specifiekste zin EERST: "wanneer is de volgende feestdag"
+        # matcht zowel op "wanneer is" als op "volgende feestdag" --
+        # dit moet dus vóór de "wanneer is/valt"-check staan, anders
+        # gaat deze zin ten onrechte naar wanneer_is (die dan tevergeefs
+        # naar een feestdagnaam zoekt in "de volgende feestdag").
+        if "volgende feestdag" in t:
+            dbg(f"{C_BLUE}→ holiday (volgende_feestdag){C_RESET}")
+            self.event_bus.publish(
+                "intent_holiday_query", {"text": text, "type": "volgende_feestdag"}
+            )
+            return True
+
+        if "feestdag" in t and ("vandaag" in t or "is het" in t):
+            dbg(f"{C_BLUE}→ holiday (is_vandaag_feestdag){C_RESET}")
+            self.event_bus.publish(
+                "intent_holiday_query", {"text": text, "type": "is_vandaag_feestdag"}
+            )
+            return True
+
+        if re.search(r"\bwanneer (is|valt)\b", t):
+            dbg(f"{C_BLUE}→ holiday (wanneer_is){C_RESET}")
+            self.event_bus.publish(
+                "intent_holiday_query", {"text": text, "type": "wanneer_is"}
+            )
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Calendar (dag/datum/maand/jaar/week + datumrekenen)
     # ---------------------------------------------------------
     def detect_calendar(self, text):
@@ -2856,6 +2935,8 @@ class IntentRouter:
         """
         return [
             ("greeting",         self.detect_greeting),
+            ("vakantie",         self.detect_vakantie),
+            ("holiday",          self.detect_holiday),
             ("calendar",         self.detect_calendar),
             ("time",             self.detect_time),
             ("weather",          self.detect_weather),

@@ -17439,5 +17439,149 @@
         "timestamp": "2026-09-13T13:31:28.134903"
       }
     ]
+  },
+  "hoelang": {
+    "senses": [
+      {
+        "sense_id": "hoelang#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-09-18T16:42:03.150159",
+      "updated_at": "2026-09-18T16:42:03.151039",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-09-18T16:42:03.151039",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-09-18T16:42:03.151039",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hoelang"
+        },
+        "timestamp": "2026-09-18T16:42:03.150164"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "hoelang#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-18T16:42:03.151036"
+      }
+    ]
+  },
+  "tot": {
+    "senses": [
+      {
+        "sense_id": "tot#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-09-18T16:42:03.163889",
+      "updated_at": "2026-09-18T16:42:03.164160",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-09-18T16:42:03.164160",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-09-18T16:42:03.164160",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tot"
+        },
+        "timestamp": "2026-09-18T16:42:03.163896"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "tot#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-18T16:42:03.164158"
+      }
+    ]
+  },
+  "kerst": {
+    "senses": [
+      {
+        "sense_id": "kerst#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-09-18T16:42:03.176515",
+      "updated_at": "2026-09-18T16:42:03.176728",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-09-18T16:42:03.176728",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-09-18T16:42:03.176728",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kerst"
+        },
+        "timestamp": "2026-09-18T16:42:03.176520"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kerst#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-18T16:42:03.176726"
+      }
+    ]
   }
 }

@@ -552,3 +552,11 @@
 {"text": "hoeveel dagen geleden was 15/08/2020", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0104, "bron": "model_fallback", "tijdstip": "2026-09-17T19:25:06.896064"}
 {"text": "hoeveel dagen tot kerst", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-17T19:25:40.919536"}
 {"text": "hoe warm wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0797, "bron": "model_fallback", "tijdstip": "2026-09-17T19:29:32.296273"}
+{"text": "hoelang nog tot kerst", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0241, "bron": "model_fallback", "tijdstip": "2026-09-18T18:42:03.139913"}
+{"text": "hoeveel dagen tot kerst", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-18T18:54:16.388299"}
+{"text": "hoeveel dagen tot pasen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-18T18:54:32.439517"}
+{"text": "hoeveel dagen tot pinkstermaandag", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-18T18:54:48.312572"}
+{"text": "hoeveel dagen tot paasmaandag", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-18T18:54:58.934450"}
+{"text": "hoeveel dagen tot maandag", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-18T18:55:14.153187"}
+{"text": "zijn we nu in vakantie", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0168, "bron": "model_fallback", "tijdstip": "2026-09-18T21:01:49.837661"}
+{"text": "hoeveel dagen tot de vakantie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0102, "bron": "model_fallback", "tijdstip": "2026-09-18T21:02:09.563398"}
