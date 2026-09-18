@@ -30,3 +30,4 @@
 {"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-13T15:31:40.612071"}
 {"text": "wat is het weer", "categorie": "neutraal_gemengd", "marge": 0.063, "grof_sentiment_regex": null, "tijdstip": "2026-09-13T18:58:18.327215"}
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-15T20:29:02.579101"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-18T18:54:01.284206"}

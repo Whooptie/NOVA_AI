@@ -257,3 +257,6 @@
 {"timestamp": "2026-09-13T13:31:28.134465", "event_type": "concept_created", "word": "context", "source": "system", "new_value": {"word": "context"}}
 {"timestamp": "2026-09-14T17:57:49.741543", "event_type": "concept_created", "word": "cont", "source": "system", "new_value": {"word": "cont"}}
 {"timestamp": "2026-09-16T19:10:26.870063", "event_type": "concept_created", "word": "bee", "source": "system", "new_value": {"word": "bee"}}
+{"timestamp": "2026-09-18T16:42:03.150168", "event_type": "concept_created", "word": "hoelang", "source": "system", "new_value": {"word": "hoelang"}}
+{"timestamp": "2026-09-18T16:42:03.163900", "event_type": "concept_created", "word": "tot", "source": "system", "new_value": {"word": "tot"}}
+{"timestamp": "2026-09-18T16:42:03.176523", "event_type": "concept_created", "word": "kerst", "source": "system", "new_value": {"word": "kerst"}}
