@@ -783,7 +783,7 @@
         "19": 1924,
         "20": 1777,
         "21": 2229,
-        "22": 1948,
+        "22": 1953,
         "6": 1885,
         "7": 1905,
         "10": 1857,
@@ -807,13 +807,13 @@
       "days": {
         "donderdag": 6183,
         "vrijdag": 6113,
-        "zaterdag": 6432,
+        "zaterdag": 6437,
         "zondag": 7649,
         "maandag": 6103,
         "dinsdag": 6040,
         "woensdag": 5970
       },
-      "total": 44490,
+      "total": 44495,
       "most_common_hour": 21,
       "confidence": 0.05,
       "day_frequency": {
