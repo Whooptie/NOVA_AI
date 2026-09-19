@@ -31,3 +31,5 @@
 {"text": "wat is het weer", "categorie": "neutraal_gemengd", "marge": 0.063, "grof_sentiment_regex": null, "tijdstip": "2026-09-13T18:58:18.327215"}
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-15T20:29:02.579101"}
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-18T18:54:01.284206"}
+{"text": "wat is er gebeurd op 9 december", "categorie": "positief", "marge": 0.0561, "grof_sentiment_regex": null, "tijdstip": "2026-09-19T10:51:04.897944"}
+{"text": "open vlc", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-19T20:55:21.259075"}

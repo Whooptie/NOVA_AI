@@ -102,3 +102,5 @@
 {"tekst": "cont", "hoogste_gok": "chess", "confidence": 0.1296, "tijdstip": "2026-09-14T19:57:49.741163"}
 {"tekst": "hou houd bee", "hoogste_gok": "preference", "confidence": 0.2405, "tijdstip": "2026-09-16T21:10:26.868996"}
 {"tekst": "hoelang nog tot kerst", "hoogste_gok": "chess", "confidence": 0.1524, "tijdstip": "2026-09-18T18:42:03.149126"}
+{"tekst": "wat gebeurde er op 9 december", "hoogste_gok": "math", "confidence": 0.1534, "tijdstip": "2026-09-19T10:50:44.250839"}
+{"tekst": "sluit chrome", "hoogste_gok": "chess", "confidence": 0.1267, "tijdstip": "2026-09-19T20:52:19.827695"}

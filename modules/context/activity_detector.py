@@ -26,7 +26,11 @@ of de win32-API nodig. Dit bestand gebruikt daarom EEN VAN BEIDE,
 afhankelijk van wat beschikbaar is — zie _detecteer_actief_venster().
 """
 
+import json
 from datetime import datetime
+from pathlib import Path
+
+from modules.paths import get_project_root
 
 try:
     import psutil
@@ -106,6 +110,24 @@ class ActivityDetector:
     # Als geen enkele match gevonden wordt, dit label gebruiken.
     ONBEKEND_LABEL = "unknown"
 
+    # Waar houden we bij welke venstertitels als "unknown" binnenkwamen?
+    # Puur symbolisch: een teller per unieke titel + laatst-gezien-
+    # tijdstip, GEEN classificatie of automatisch label-verzinnen (zie
+    # het gesprek met Kevin, 19 september 2026 — Nova beslist zelf
+    # NOOIT welk activiteit-label bij een titel hoort, dat blijft
+    # Kevins eigen keuze in ACTIVITEIT_MAPPING hierboven). Dit bestand
+    # is enkel een hulpmiddel om te ZIEN welke titels vaak voorkomen,
+    # zodat Kevin gericht kan aanvullen i.p.v. te moeten gokken.
+    ONBEKENDE_ACTIVITEITEN_BESTAND = "data/onbekende_activiteiten.json"
+
+    # Vanaf hoeveel keer meldt Nova PROACTIEF dat een onbekende titel
+    # vaak voorkomt? Zelfde soort anti-spam-drempel-principe als
+    # nova_state.md punt 15 (Layer 7 whitelist-onderhoud) — een
+    # kleine, aparte drempel, GEEN nieuw insight-type in
+    # emergence_engine.py (dit is systeemonderhoud, geen inhoudelijke
+    # observatie over Kevin).
+    ONBEKEND_MELD_DREMPEL = 10
+
     # Herkenningsfragment specifiek voor "Kevin werkt in VS Code aan
     # Nova's EIGEN broncode" (i.p.v. een willekeurig ander Python-
     # project). VS Code toont de mapnaam van het geopende project
@@ -125,6 +147,10 @@ class ActivityDetector:
         # aan het doen, en sinds wanneer?
         self._huidige_activiteit = None
         self._activiteit_sinds = None
+
+        # Pad naar het onbekende-activiteiten-logbestand, zelfde
+        # get_project_root()-patroon als conversation_engine.py.
+        self._onbekend_pad = get_project_root(__file__) / self.ONBEKENDE_ACTIVITEITEN_BESTAND
 
         if not PSUTIL_BESCHIKBAAR:
             print(
@@ -283,7 +309,71 @@ class ActivityDetector:
             if sleutel_lower in titel_lower or sleutel_lower in proces_lower:
                 return label
 
+        # Geen match -- bijhouden voor later (zie ONBEKENDE_ACTIVITEITEN
+        # _BESTAND hierboven), zodat Kevin op termijn kan zien welke
+        # titels vaak voorkomen en gericht ACTIVITEIT_MAPPING kan
+        # aanvullen. Enkel loggen als er ECHT een titel was -- een
+        # lege titel (bv. geen enkel venster had focus) is ruis, geen
+        # nuttig signaal.
+        if raw_titel:
+            self._log_onbekende_titel(raw_titel)
+
         return self.ONBEKEND_LABEL
+
+    def _log_onbekende_titel(self, titel):
+        """
+        Houdt een simpele teller + laatst-gezien-tijdstip bij per
+        unieke, onbekende venstertitel, in ONBEKENDE_ACTIVITEITEN_
+        BESTAND. Puur tellen en wegschrijven -- GEEN classificatie,
+        GEEN automatisch label toekennen. Faalt eerlijk stil bij een
+        schrijffout (bv. schijf vol) -- dit is een hulpmiddel, geen
+        kernfunctionaliteit, dus een falende log mag Nova's normale
+        werking nooit onderbreken.
+
+        Meldt PROACTIEF (via layer4_response) zodra een titel voor het
+        EERST ONBEKEND_MELD_DREMPEL bereikt -- met een "gemeld"-vlag
+        per titel, zodat dit maar 1x per titel gebeurt. Zonder die
+        vlag zou Nova, bij het huidige 15s-meetinterval, dezelfde
+        melding steeds opnieuw kunnen herhalen zolang je op dezelfde
+        pagina/venster blijft -- exact het spam-risico dat
+        nova_state.md punt 15 al benoemde voor een vergelijkbaar geval.
+        """
+        try:
+            if self._onbekend_pad.exists():
+                with open(self._onbekend_pad, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            else:
+                data = {}
+        except (json.JSONDecodeError, OSError):
+            data = {}
+
+        entry = data.get(titel, {"aantal": 0, "laatst_gezien": None, "gemeld": False})
+        entry["aantal"] += 1
+        entry["laatst_gezien"] = datetime.now().isoformat()
+        data[titel] = entry
+
+        moet_melden = (
+            entry["aantal"] >= self.ONBEKEND_MELD_DREMPEL
+            and not entry.get("gemeld", False)
+        )
+        if moet_melden:
+            entry["gemeld"] = True
+
+        try:
+            self._onbekend_pad.parent.mkdir(parents=True, exist_ok=True)
+            with open(self._onbekend_pad, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except OSError:
+            pass
+
+        if moet_melden and self.event_bus is not None:
+            self.event_bus.publish("layer4_response", {
+                "text": (
+                    f"Ik zie dat het venster '{titel}' al {entry['aantal']} keer "
+                    "voorkwam zonder dat ik weet wat voor activiteit dat is. "
+                    "Wil je dat toevoegen aan mijn activiteitenlijst?"
+                )
+            })
 
 
 def init_module(event_bus, sem=None):

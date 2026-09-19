@@ -1262,6 +1262,152 @@ class IntentRouter:
             return True
 
         return False
+
+    # ---------------------------------------------------------
+    # Open app op de laptop (server → laptop-koppeling, Deel A,
+    # client_server_control_roadmap.md) — 100% symbolisch: een woord
+    # herkennen en doorsturen naar client_bridge.py. Geen ML.
+    # ---------------------------------------------------------
+    def detect_open_app(self, text):
+        t = text.lower().strip().rstrip("?.!")
+
+        match = re.search(r"\b(?:open|start)\s+(?:mijn\s+|de\s+)?(\w+)", t)
+        if not match:
+            return False
+
+        app_naam = match.group(1)
+
+        dbg(f"{C_BLUE}→ open_app ({app_naam}){C_RESET}")
+
+        # Eigen, per-app Layer 2-topic (19 september 2026), zelfde
+        # patroon als detect_definition()'s "definitie_<woord>" en
+        # detect_uitleg()'s "uitleg_<naam>" -- zonder dit zou Layer 2
+        # enkel het vage, generieke "open_app" kunnen tellen, nooit
+        # WELKE app (bv. "je opent 's avonds vaak chrome" zou anders
+        # nooit als tijdspatroon-inzicht kunnen ontstaan). Vlag-patroon
+        # zoals overal elders: voorkomt dat de tabel-lus in route()
+        # hierna ALSNOG het kale "open_app" emit.
+        self._emit_topic(f"open_app_{app_naam}", bron="detect")
+        self._topic_al_ge_emit = True
+
+        client_bridge = self.event_bus.modules.get("client_bridge")
+
+        if client_bridge is None:
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik kan geen apps openen — de laptop-verbinding is nog niet geladen."
+            })
+            return True
+
+        if not client_bridge.is_laptop_verbonden():
+            self.event_bus.publish("layer4_response", {
+                "text": "Je laptop is momenteel niet verbonden, ik kan niets openen."
+            })
+            return True
+
+        resultaat = client_bridge.stuur_commando_naar_laptop(
+            "open_app", {"app": app_naam}
+        )
+
+        if resultaat.get("ok"):
+            self.event_bus.publish("layer4_response", {
+                "text": f"{app_naam.capitalize()} is geopend."
+            })
+        else:
+            reden = resultaat.get("reden", "onbekende fout")
+            self.event_bus.publish("layer4_response", {
+                "text": f"Dat lukte niet: {reden}"
+            })
+
+        return True
+
+    # ---------------------------------------------------------
+    # Sluit app op de laptop — vervolg op detect_open_app()
+    # hierboven, zelfde patroon, zelfde 100% symbolische aanpak.
+    # ---------------------------------------------------------
+    def detect_close_app(self, text):
+        t = text.lower().strip().rstrip("?.!")
+
+        match = re.search(r"\b(?:sluit|stop|close)\s+(?:mijn\s+|de\s+)?(\w+)", t)
+        if not match:
+            return False
+
+        app_naam = match.group(1)
+
+        dbg(f"{C_BLUE}→ close_app ({app_naam}){C_RESET}")
+
+        # Zelfde per-app Layer 2-topic-redenering als detect_open_app()
+        # hierboven.
+        self._emit_topic(f"close_app_{app_naam}", bron="detect")
+        self._topic_al_ge_emit = True
+
+        client_bridge = self.event_bus.modules.get("client_bridge")
+
+        if client_bridge is None:
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik kan geen apps sluiten — de laptop-verbinding is nog niet geladen."
+            })
+            return True
+
+        if not client_bridge.is_laptop_verbonden():
+            self.event_bus.publish("layer4_response", {
+                "text": "Je laptop is momenteel niet verbonden, ik kan niets sluiten."
+            })
+            return True
+
+        resultaat = client_bridge.stuur_commando_naar_laptop(
+            "close_app", {"app": app_naam}
+        )
+
+        if resultaat.get("ok"):
+            self.event_bus.publish("layer4_response", {
+                "text": f"{app_naam.capitalize()} is gesloten."
+            })
+        else:
+            reden = resultaat.get("reden", "onbekende fout")
+            self.event_bus.publish("layer4_response", {
+                "text": f"Dat lukte niet: {reden}"
+            })
+
+        return True
+
+    # ---------------------------------------------------------
+    # On This Day (Wikipedia historische datums: wat is er gebeurd / wie is er geboren / wie is er overleden)
+    # ---------------------------------------------------------
+    def detect_on_this_day(self, text):
+        t = text.lower().strip().rstrip("?.!")
+
+        # "geboren"/"overleden" MOETEN met "wie"/"wat" gecombineerd
+        # zijn, NIET met "wanneer" -- "wanneer is Einstein geboren"
+        # is de omgekeerde (naam -> datum) richting, die deze module
+        # bewust NIET ondersteunt (de On This Day API werkt alleen
+        # datum -> namen). Zonder deze uitsluiting zou zo'n zin hier
+        # ten onrechte gevangen worden en een zinloos/fout antwoord
+        # geven i.p.v. eerlijk door te vallen naar de fallback.
+        heeft_wie_of_wat = "wie" in t or "wat" in t
+
+        if "geboren" in t and heeft_wie_of_wat:
+            dbg(f"{C_BLUE}→ on_this_day (geboren){C_RESET}")
+            self.event_bus.publish(
+                "intent_on_this_day_query", {"text": text, "type": "geboren"}
+            )
+            return True
+
+        if ("overleden" in t or "gestorven" in t) and heeft_wie_of_wat:
+            dbg(f"{C_BLUE}→ on_this_day (overleden){C_RESET}")
+            self.event_bus.publish(
+                "intent_on_this_day_query", {"text": text, "type": "overleden"}
+            )
+            return True
+
+        if re.search(r"\bwat is er gebeurd\b", t) or "op deze dag" in t:
+            dbg(f"{C_BLUE}→ on_this_day (events){C_RESET}")
+            self.event_bus.publish(
+                "intent_on_this_day_query", {"text": text, "type": "events"}
+            )
+            return True
+
+        return False
+
     # ---------------------------------------------------------
     # Vakanties (Vlaamse schoolvakanties: wanneer is X / zijn we nu in vakantie / volgende vakantie / dagen tot vakantie)
     # ---------------------------------------------------------
@@ -2935,11 +3081,14 @@ class IntentRouter:
         """
         return [
             ("greeting",         self.detect_greeting),
+            ("on_this_day",      self.detect_on_this_day),
             ("vakantie",         self.detect_vakantie),
             ("holiday",          self.detect_holiday),
             ("calendar",         self.detect_calendar),
             ("time",             self.detect_time),
             ("weather",          self.detect_weather),
+            ("open_app",         self.detect_open_app),
+            ("close_app",        self.detect_close_app),
             # chess vóór math: zetten zoals "e2e4" mogen niet als
             # math gezien worden
             ("chess",            self.detect_chess),

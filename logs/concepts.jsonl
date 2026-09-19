@@ -260,3 +260,7 @@
 {"timestamp": "2026-09-18T16:42:03.150168", "event_type": "concept_created", "word": "hoelang", "source": "system", "new_value": {"word": "hoelang"}}
 {"timestamp": "2026-09-18T16:42:03.163900", "event_type": "concept_created", "word": "tot", "source": "system", "new_value": {"word": "tot"}}
 {"timestamp": "2026-09-18T16:42:03.176523", "event_type": "concept_created", "word": "kerst", "source": "system", "new_value": {"word": "kerst"}}
+{"timestamp": "2026-09-19T08:50:44.251720", "event_type": "concept_created", "word": "gebeurde", "source": "system", "new_value": {"word": "gebeurde"}}
+{"timestamp": "2026-09-19T08:50:44.264864", "event_type": "concept_created", "word": "december", "source": "system", "new_value": {"word": "december"}}
+{"timestamp": "2026-09-19T18:52:19.828317", "event_type": "concept_created", "word": "sluit", "source": "system", "new_value": {"word": "sluit"}}
+{"timestamp": "2026-09-19T18:52:19.842289", "event_type": "concept_created", "word": "chrome", "source": "system", "new_value": {"word": "chrome"}}

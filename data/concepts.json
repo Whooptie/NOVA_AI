@@ -17583,5 +17583,197 @@
         "timestamp": "2026-09-18T16:42:03.176726"
       }
     ]
+  },
+  "gebeurde": {
+    "senses": [
+      {
+        "sense_id": "gebeurde#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-09-19T08:50:44.251711",
+      "updated_at": "2026-09-19T08:50:44.252322",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-09-19T08:50:44.252322",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-09-19T08:50:44.252322",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gebeurde"
+        },
+        "timestamp": "2026-09-19T08:50:44.251716"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "gebeurde#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-19T08:50:44.252320"
+      }
+    ]
+  },
+  "december": {
+    "senses": [
+      {
+        "sense_id": "december#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-09-19T08:50:44.264854",
+      "updated_at": "2026-09-19T08:50:44.265046",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-09-19T08:50:44.265046",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-09-19T08:50:44.265046",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "december"
+        },
+        "timestamp": "2026-09-19T08:50:44.264860"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "december#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-19T08:50:44.265043"
+      }
+    ]
+  },
+  "sluit": {
+    "senses": [
+      {
+        "sense_id": "sluit#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-09-19T18:52:19.828308",
+      "updated_at": "2026-09-19T18:52:19.829234",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-09-19T18:52:19.829234",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-09-19T18:52:19.829234",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "sluit"
+        },
+        "timestamp": "2026-09-19T18:52:19.828313"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "sluit#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-19T18:52:19.829231"
+      }
+    ]
+  },
+  "chrome": {
+    "senses": [
+      {
+        "sense_id": "chrome#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-09-19T18:52:19.842279",
+      "updated_at": "2026-09-19T18:52:19.842526",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-09-19T18:52:19.842526",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-09-19T18:52:19.842526",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "chrome"
+        },
+        "timestamp": "2026-09-19T18:52:19.842285"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "chrome#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-19T18:52:19.842524"
+      }
+    ]
   }
 }

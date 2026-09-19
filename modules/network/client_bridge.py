@@ -133,6 +133,30 @@ class ClientBridge:
         self._server_thread = None
         self._verbonden_clients = 0
 
+        # --- NIEUW: server → laptop (commando's terugsturen) ---
+        # De actieve websocket-verbinding zelf (niet enkel de data die
+        # ze doorgeeft) — nodig om vanuit de hoofdthread iets NAAR de
+        # laptop te kunnen sturen. None zolang er geen laptop verbonden
+        # is; als er ooit meerdere clients tegelijk verbinden, houden
+        # we bewust enkel de LAATST verbonden client bij (er is maar
+        # één laptop van Kevin, geen multi-client-ondersteuning nodig).
+        self._actieve_websocket = None
+
+        # De asyncio-event-loop waarin de WebSocket-server draait.
+        # Nodig voor run_coroutine_threadsafe() hieronder — dezelfde
+        # truc die nova_client.py al gebruikt, nu in omgekeerde
+        # richting (server-hoofdthread → WebSocket-thread, in plaats
+        # van laptop-workerthread → laptop-event-loop).
+        self._event_loop = None
+
+        # Wachtende commando's: command_id -> threading.Event, plus
+        # het resultaat zodra het binnenkomt. Hiermee kan de
+        # aanroepende code (intent_router.py, in de hoofdthread) na
+        # het versturen van een commando WACHTEN op het antwoord van
+        # de laptop, in plaats van blind te hopen dat het lukte.
+        self._wachtende_commandos = {}
+        self._volgend_commando_id = 0
+
         if not WEBSOCKETS_BESCHIKBAAR:
             print(
                 "[CLIENT_BRIDGE] WAARSCHUWING: 'websockets' is niet "
@@ -178,7 +202,13 @@ class ClientBridge:
         de laptop 'm via Tailscale kan bereiken, ook van buiten het
         thuisnetwerk. Zie de uitleg hierover in
         client_server_control_roadmap.md.
+
+        NIEUW: bewaart ook de event-loop waarin dit draait, zodat
+        stuur_commando_naar_laptop() hieronder — aangeroepen vanuit
+        de hoofdthread — hier veilig iets kan inplannen.
         """
+        self._event_loop = asyncio.get_running_loop()
+
         async with websockets.serve(self._verwerk_client, "0.0.0.0", LUISTER_POORT):
             print(f"[CLIENT_BRIDGE] WebSocket-server actief op 0.0.0.0:{LUISTER_POORT}")
             await asyncio.Future()  # blijft eeuwig draaien
@@ -191,8 +221,17 @@ class ClientBridge:
         """
         Wordt aangeroepen zolang de laptop-client verbonden blijft.
         Verwerkt elk binnenkomend bericht en slaat het op naar type.
+
+        NIEUW: bewaart ook 'websocket' zelf in self._actieve_websocket,
+        zodat stuur_commando_naar_laptop() hieronder weet WAARHEEN te
+        sturen. Bij het verbreken van de verbinding wordt dit weer
+        teruggezet naar None — een commando versturen terwijl er geen
+        laptop verbonden is, moet een duidelijke, eerlijke fout geven,
+        geen stille mislukking.
         """
         self._verbonden_clients += 1
+        with self._lock:
+            self._actieve_websocket = websocket
         print(f"[CLIENT_BRIDGE] Laptop-client verbonden (totaal actief: {self._verbonden_clients})")
 
         if self.event_bus is not None:
@@ -205,6 +244,9 @@ class ClientBridge:
             print(f"[CLIENT_BRIDGE] Verbinding met laptop-client verbroken: {e}")
         finally:
             self._verbonden_clients -= 1
+            with self._lock:
+                if self._actieve_websocket is websocket:
+                    self._actieve_websocket = None
             if self.event_bus is not None:
                 self.event_bus.publish("client_bridge:verbroken", {"time": time.time()})
 
@@ -235,6 +277,14 @@ class ClientBridge:
             elif bericht_type == "presence_status":
                 self._laatste_presence = data
                 self._laatste_presence_tijd = nu
+            elif bericht_type == "command_result":
+                # NIEUW: resultaat van een eerder verstuurd commando
+                # (bv. "open_app"). Wordt hier apart afgehandeld, niet
+                # met de drie types hierboven, want dit hoort niet bij
+                # de laptop→server-sensordata, maar bij het antwoord
+                # op een server→laptop-commando (zie
+                # stuur_commando_naar_laptop() hieronder).
+                self._verwerk_commando_resultaat(data)
             else:
                 print(f"[CLIENT_BRIDGE] Onbekend berichttype genegeerd: {bericht_type!r}")
 
@@ -269,6 +319,117 @@ class ClientBridge:
             if self._is_vers(self._laatste_presence_tijd):
                 return self._laatste_presence
             return None
+
+    # ------------------------------------------------------------
+    # NIEUW: server → laptop — commando's versturen en op resultaat
+    # wachten (Deel A van client_server_control_roadmap.md)
+    # ------------------------------------------------------------
+
+    def is_laptop_verbonden(self):
+        """
+        Simpele check, vooral bedoeld zodat aanroepende code (bv.
+        intent_router.py) meteen een eerlijke melding kan geven
+        ("je laptop is niet verbonden") in plaats van blind te
+        proberen versturen en pas nadien een fout te zien.
+        """
+        with self._lock:
+            return self._actieve_websocket is not None
+
+    def stuur_commando_naar_laptop(self, commando_type, payload, timeout_seconden=10):
+        """
+        Stuurt een commando naar de laptop-client en WACHT op het
+        resultaat (blokkerend, want dit wordt aangeroepen vanuit
+        intent_router.py's synchrone route()-hoofdpad — Nova moet
+        weten of "open chrome" lukte VOORDAT ze erop antwoordt).
+
+        commando_type: bv. "open_app" — komt terecht in het "type"-
+        veld van het JSON-bericht dat nova_client.py ontvangt.
+        payload: dict met de rest van de gegevens, bv. {"app": "chrome"}.
+
+        Geeft een dict terug:
+            {"ok": True, ...}   bij een geslaagd resultaat
+            {"ok": False, "reden": "..."} bij mislukking of timeout
+
+        Gooit NOOIT een exception naar de aanroeper — elke fout
+        (geen laptop verbonden, timeout, verzendfout) komt netjes
+        terug als {"ok": False, "reden": ...}, want intent_router.py
+        moet hier gewoon een chat-antwoord van kunnen maken, geen
+        stacktrace hoeven vangen.
+        """
+        with self._lock:
+            websocket = self._actieve_websocket
+            event_loop = self._event_loop
+
+        if websocket is None or event_loop is None:
+            return {"ok": False, "reden": "Je laptop is momenteel niet verbonden."}
+
+        # Elk commando krijgt een uniek ID, zodat het resultaat dat
+        # later terugkomt (via _verwerk_commando_resultaat hieronder)
+        # gekoppeld kan worden aan de JUISTE wachtende aanroep — nodig
+        # zodra er ooit twee commando's kort na elkaar verstuurd worden.
+        with self._lock:
+            self._volgend_commando_id += 1
+            commando_id = self._volgend_commando_id
+            wacht_event = threading.Event()
+            self._wachtende_commandos[commando_id] = {
+                "event": wacht_event,
+                "resultaat": None,
+            }
+
+        bericht = dict(payload)
+        bericht["type"] = commando_type
+        bericht["command_id"] = commando_id
+
+        try:
+            future = asyncio.run_coroutine_threadsafe(
+                websocket.send(json.dumps(bericht, default=str)), event_loop
+            )
+            # Wachten tot de VERZENDING zelf lukt (niet het resultaat) —
+            # dezelfde .result() zoals nova_client.py's publish() al
+            # deed, in omgekeerde richting.
+            future.result(timeout=5)
+        except Exception as e:
+            with self._lock:
+                self._wachtende_commandos.pop(commando_id, None)
+            return {"ok": False, "reden": f"Versturen naar laptop mislukt: {e}"}
+
+        # Wachten op het antwoord van de laptop (of een timeout).
+        kreeg_antwoord = wacht_event.wait(timeout=timeout_seconden)
+
+        with self._lock:
+            info = self._wachtende_commandos.pop(commando_id, None)
+
+        if not kreeg_antwoord or info is None:
+            return {"ok": False, "reden": "Geen antwoord van de laptop binnen de tijd."}
+
+        return info["resultaat"]
+
+    def _verwerk_commando_resultaat(self, data):
+        """
+        Wordt aangeroepen vanuit _verwerk_bericht() zodra er een
+        "command_result"-bericht binnenkomt van de laptop. Koppelt het
+        resultaat via "command_id" aan de juiste wachtende aanroep in
+        stuur_commando_naar_laptop() hierboven, en maakt die wakker.
+
+        Wordt zelf al binnen de self._lock van _verwerk_bericht()
+        aangeroepen — GEEN eigen lock hier nemen (zou een deadlock
+        geven, want threading.Lock is hier niet-herbetreedbaar).
+        """
+        commando_id = data.get("command_id")
+        info = self._wachtende_commandos.get(commando_id)
+
+        if info is None:
+            # Te laat binnengekomen (timeout al verstreken en
+            # opgeruimd) of een onbekend ID — negeren, geen crash.
+            print(f"[CLIENT_BRIDGE] Commando-resultaat voor onbekend/verlopen ID genegeerd: {commando_id!r}")
+            return
+
+        info["resultaat"] = {
+            "ok": data.get("ok", False),
+            "reden": data.get("reden"),
+            "app": data.get("app"),
+        }
+        info["event"].set()
 
     def shutdown(self):
         """Nette opruiming bij /reboot — de daemon-thread stopt vanzelf mee."""

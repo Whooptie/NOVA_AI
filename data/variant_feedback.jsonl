@@ -60,3 +60,9 @@
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1789585826.8915472, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Ik weet nog niet goed hoe ik daarop moet antwoorden, maar ik leer graag bij.", "entity": null, "response_style": "normaal", "moment": "2026-09-18T18:42:03.197450", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "reactie_sentiment": "negatief", "moment": 1789749723.1976423, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "variant_tekst": "Hier heb ik nog geen goed antwoord op, maar vertel gerust meer.", "entity": null, "response_style": "normaal", "moment": "2026-09-19T10:50:44.285940", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1789807844.2860734, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "variant_tekst": "Ik zie dat je al een tijdje met {activiteit} bezig bent.", "entity": "coding", "response_style": null, "moment": "2026-09-19T20:52:19.862748", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe gaat het ermee?", "entity": "coding", "response_style": null, "moment": "2026-09-19T20:52:19.863147", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "reactie_sentiment": "negatief", "moment": 1789843939.8629243, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "negatief", "moment": 1789843939.863268, "type": "sentiment_koppeling"}

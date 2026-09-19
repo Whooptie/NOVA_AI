@@ -266,6 +266,7 @@ class EmergenceEngine:
             "math": "rekenen",
             "memory": "mijn geheugen",
             "memory_query": "vragen over mijn geheugen",
+            "parts_with_property": "onderdelen met een bepaalde eigenschap",
             "part_of": "onderdeel-relaties",
             "preference": "je voorkeuren",
             "relatie": "relaties tussen concepten",
@@ -274,6 +275,18 @@ class EmergenceEngine:
             "time": "de tijd",
             "weather": "het weer",
             "activity": "je activiteiten",
+            "calendar": "je kalender",
+            "close_app": "een programma sluiten",
+            "compare_concepts": "concepten vergelijken",
+            "conversie": "eenheden omrekenen",
+            "holiday": "feestdagen",
+            "on_this_day": "wat er vandaag ooit gebeurde",
+            "open_app": "een programma openen",
+            "parts": "onderdeel-vragen",
+            "related_to_check": "of concepten verwant zijn",
+            "trending_query": "wat recent populair is",
+            "uitleg": "uitleg vragen",
+            "vakantie": "vakantie",
         }
 
         # Vertaalt het stuk na "activity_started:" naar een Nederlands
@@ -296,6 +309,7 @@ class EmergenceEngine:
             "lezen": "lezen",
             "slapen": "slapen",
             "koffie zetten": "koffie zetten",
+            "een e-mail versturen": "een e-mail versturen",
         }
 
         # WHITELIST (30 juli 2026): enkel event_types die hier expliciet
@@ -320,6 +334,8 @@ class EmergenceEngine:
             "schaken",
             "lezen",
             "slapen",
+            "koffie zetten",
+            "een e-mail versturen",
         }
 
         # ─────────────────────────────────
@@ -633,6 +649,22 @@ class EmergenceEngine:
 
         if event_type.startswith("topic_detected:"):
             topic_naam = event_type.split(":", 1)[1]
+
+            # Generieke tak voor "open_app_<naam>"/"close_app_<naam>"
+            # (19 september 2026): net als "definitie_<woord>" en
+            # "uitleg_<naam>" is dit een DYNAMISCH samengestelde naam
+            # -- oneindig veel mogelijke apps, dus niet vooraf één
+            # voor één op te nemen in _topic_naam_labels. Anders dan
+            # bij definitie/uitleg wil Kevin dit WEL generiek als
+            # tijdspatroon-inzicht laten verschijnen voor ELKE app
+            # (dat was net de reden om per-app te gaan tellen), dus
+            # hier expliciet, generiek vertaald i.p.v. de kale
+            # "open_app_chrome" te tonen.
+            if topic_naam.startswith("open_app_"):
+                return f"{topic_naam[len('open_app_'):]} openen"
+            if topic_naam.startswith("close_app_"):
+                return f"{topic_naam[len('close_app_'):]} sluiten"
+
             return self._topic_naam_labels.get(topic_naam, topic_naam)
 
         if event_type.startswith("activity_started:"):
