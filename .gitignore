@@ -10,3 +10,4 @@ data/*.db-shm
 data/*.db-wal
 data/models/blobs
 data/models/manifests
+data/backups
