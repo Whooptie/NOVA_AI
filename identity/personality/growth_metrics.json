@@ -5,28 +5,28 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 5,
-      "negative_count": 58,
+      "positive_count": 9,
+      "negative_count": 66,
       "total_shifts": 7,
       "last_shift": "2026-09-13T21:08:04.097127",
       "last_shift_direction": "negatief"
     },
     "loyalty": {
-      "positive_count": 21,
+      "positive_count": 24,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "self_regulation": {
-      "positive_count": 36,
+      "positive_count": 37,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
       "last_shift_direction": null
     },
     "curiosity": {
-      "positive_count": 1,
+      "positive_count": 2,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-08-05T20:18:06.379341",
@@ -48,7 +48,7 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 8,
+      "negative_count": 16,
       "total_shifts": 22,
       "last_shift": "2026-09-19T21:16:50.409510",
       "last_shift_direction": "negatief"
@@ -61,14 +61,14 @@
       "last_shift_direction": null
     },
     "associative_thinking": {
-      "positive_count": 1,
+      "positive_count": 2,
       "negative_count": 0,
       "total_shifts": 1,
       "last_shift": "2026-08-05T20:18:06.383272",
       "last_shift_direction": "positief"
     },
     "focus_hyperfocus_tendency": {
-      "positive_count": 4,
+      "positive_count": 7,
       "negative_count": 0,
       "total_shifts": 2,
       "last_shift": "2026-08-16T20:57:03.204566",
@@ -76,7 +76,7 @@
     },
     "reactivity": {
       "positive_count": 0,
-      "negative_count": 0,
+      "negative_count": 1,
       "total_shifts": 3,
       "last_shift": "2026-09-19T14:33:13.831601",
       "last_shift_direction": "negatief"
@@ -90,20 +90,20 @@
     },
     "chaotic_variability": {
       "positive_count": 0,
-      "negative_count": 6,
+      "negative_count": 9,
       "total_shifts": 4,
       "last_shift": "2026-08-16T20:56:45.059912",
       "last_shift_direction": "negatief"
     },
     "energy_level": {
-      "positive_count": 2,
+      "positive_count": 3,
       "negative_count": 0,
       "total_shifts": 2,
       "last_shift": "2026-08-05T20:10:50.428757",
       "last_shift_direction": "positief"
     },
     "dramatic_flair": {
-      "positive_count": 2,
+      "positive_count": 3,
       "negative_count": 0,
       "total_shifts": 2,
       "last_shift": "2026-08-05T20:10:50.430818",

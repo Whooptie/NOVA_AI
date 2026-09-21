@@ -267,6 +267,8 @@ class ClientBridge:
         bericht_type = data.get("type")
         nu = time.time()
 
+        onbekende_melding_data = None
+
         with self._lock:
             if bericht_type == "activity_status":
                 self._laatste_activity = data
@@ -285,8 +287,50 @@ class ClientBridge:
                 # op een server→laptop-commando (zie
                 # stuur_commando_naar_laptop() hieronder).
                 self._verwerk_commando_resultaat(data)
+            elif bericht_type == "onbekende_activiteit_melding":
+                # NIEUW (19 september 2026): ActivityDetector op de
+                # laptop meldt dat een onbekende venstertitel de
+                # ONBEKEND_MELD_DREMPEL bereikt heeft. Enkel de RUWE
+                # DATA hier binnen de lock overnemen — de effectieve
+                # event_bus.publish() gebeurt HIERONDER, BUITEN de
+                # lock.
+                #
+                # BUGFIX (19 september 2026, live ontdekt: Nova bleef
+                # hangen op elk bericht na zo'n melding): publish()
+                # hier binnen de lock aanroepen gaf een ZELF-DEADLOCK.
+                # event_bus.publish("layer4_response", ...) triggert
+                # uiteindelijk (via response_pipeline.py ->
+                # context_manager.py -> RemoteActivityDetector ->
+                # self.bridge.get_laatste_activity()) een AANROEP TERUG
+                # naar get_laatste_activity() HIERONDER — die zelf ook
+                # "with self._lock:" gebruikt. self._lock is een
+                # threading.Lock() (NIET herbetreedbaar), dus die
+                # tweede aanroep, vanuit DEZELFDE thread die de lock al
+                # vasthoudt, blokkeert voor altijd. Vandaar dat de
+                # EERSTE "hey" na een herstart nog gewoon werkte (geen
+                # onbekende_activiteit_melding ertussen), maar elk
+                # bericht NA zo'n melding stil bleef hangen.
+                if self.event_bus is not None:
+                    onbekende_melding_data = {
+                        "titel": data.get("titel", "een onbekend venster"),
+                        "aantal": data.get("aantal", "meerdere"),
+                    }
             else:
                 print(f"[CLIENT_BRIDGE] Onbekend berichttype genegeerd: {bericht_type!r}")
+
+        # BUITEN de lock — hier mag event_bus.publish() zonder risico
+        # op een deadlock aanroepen, ook al leidt dat intern weer tot
+        # get_laatste_activity()/get_laatste_focus()/enz.
+        if onbekende_melding_data is not None:
+            titel = onbekende_melding_data["titel"]
+            aantal = onbekende_melding_data["aantal"]
+            self.event_bus.publish("layer4_response", {
+                "text": (
+                    f"Ik zie dat het venster '{titel}' al {aantal} keer "
+                    "voorkwam zonder dat ik weet wat voor activiteit dat is. "
+                    "Wil je dat toevoegen aan mijn activiteitenlijst?"
+                )
+            })
 
     # ------------------------------------------------------------
     # Interne helper: is de laatst-ontvangen data nog vers genoeg?
@@ -451,8 +495,33 @@ class ClientBridge:
 class RemoteActivityDetector:
     """Vervangt ActivityDetector — leest laatst-ontvangen data van de laptop."""
 
-    def __init__(self, bridge):
+    def __init__(self, bridge, event_bus=None):
         self.bridge = bridge
+        self.event_bus = event_bus
+
+        # BUGFIX (19 september 2026, gevonden tijdens het uitpluizen
+        # van waarom "werken_aan_uurrooster" niet in patterns_layer2.json
+        # verscheen): het origineel (activity_detector.py, de klasse
+        # die vóór de Windows-companion-client hier stond) publiceerde
+        # zelf "activity_started:<label>_gedetecteerd" bij ELKE
+        # detect_activity()-aanroep (zie dat bestand, regel 208) —
+        # zonder dat, telt Layer 2 (pattern_matcher.py) GEEN ENKELE
+        # activiteit meer mee, voor GEEN ENKEL label, sinds deze
+        # RemoteActivityDetector het origineel verving (13 sept 2026).
+        # De bestaande "coding_gedetecteerd: 683"-tellingen in
+        # patterns_layer2.json zijn dus HISTORISCH, van vóór die
+        # overstap -- er kwam sindsdien NIETS meer bij, voor geen
+        # enkel activiteit-label, niet enkel voor nieuwe labels.
+        #
+        # Om exact hetzelfde gedrag als het origineel te herstellen
+        # (incl. de "alleen bij een ECHTE wissel opnieuw publiceren"
+        # -logica, zie _vorig_label hieronder), houden we hier ONS
+        # EIGEN laatst-geziene label bij -- de laptop-kant
+        # (nova_client.py) doet dat OOK al voor zijn eigen
+        # duration_minutes-berekening, maar dat is een aparte,
+        # onafhankelijke teller; wij hebben hier onze eigen nodig om
+        # te weten WANNEER we opnieuw moeten publiceren.
+        self._vorig_label = None
 
     def detect_activity(self):
         data = self.bridge.get_laatste_activity()
@@ -460,7 +529,7 @@ class RemoteActivityDetector:
         if data is None:
             # Zelfde eerlijke fallback als het origineel gaf wanneer
             # pygetwindow ontbrak: "unknown", geen crash.
-            return {
+            resultaat = {
                 "activity": "unknown",
                 "duration_minutes": 0.0,
                 "raw_window_title": None,
@@ -468,16 +537,39 @@ class RemoteActivityDetector:
                 "is_working_on_nova": False,
                 "time": None,
             }
+        else:
+            resultaat = {
+                "activity": data.get("activity", "unknown"),
+                "duration_minutes": data.get("duration_minutes", 0.0),
+                "raw_window_title": data.get("raw_window_title"),
+                "raw_process_name": data.get("raw_process_name"),
+                "is_working_on_nova": data.get("is_working_on_nova", False),
+                "time": data.get("time"),
+            }
 
-        return {
-            "activity": data.get("activity", "unknown"),
-            "duration_minutes": data.get("duration_minutes", 0.0),
-            "raw_window_title": data.get("raw_window_title"),
-            "raw_process_name": data.get("raw_process_name"),
-            "is_working_on_nova": data.get("is_working_on_nova", False),
-            "time": data.get("time"),
-        }
+        label = resultaat["activity"]
 
+        # Enkel publiceren bij een ECHTE wissel van activiteit, niet
+        # bij ELKE detect_activity()-aanroep (die gebeurt elke paar
+        # seconden via main.py's achtergrond_loop()) — anders zou
+        # Layer 2 "coding" honderden keren per minuut tellen zolang je
+        # gewoon in VS Code blijft zitten, wat de tellingen zinloos
+        # zou opblazen. Zelfde bedoeling als het origineel had via
+        # zijn "if label != self._huidige_activiteit"-check
+        # (activity_detector.py) — hier op onze eigen, aparte
+        # _vorig_label herbouwd, want DIE detectie/duur-berekening
+        # gebeurt nu op de laptop (nova_client.py), niet hier.
+        if self.event_bus is not None and label != self._vorig_label:
+            self.event_bus.publish(f"activity_started:{label}_gedetecteerd", resultaat)
+
+            if resultaat.get("is_working_on_nova"):
+                self.event_bus.publish("activity_started:werken_aan_nova_gedetecteerd", resultaat)
+
+            self.event_bus.publish("activity_detected", resultaat)
+
+        self._vorig_label = label
+
+        return resultaat
 
 class RemoteFocusDetector:
     """Vervangt FocusDetector — leest laatst-ontvangen data van de laptop."""

@@ -586,3 +586,8 @@
 {"text": "open notepad", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:19:26.905779"}
 {"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:53:45.856163"}
 {"text": "sluit vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:53:57.208745"}
+{"text": "ik ben moe vandaag", "signaal": "focus", "model_signaal": "focus", "marge": 0.0673, "bron": "model_fallback", "tijdstip": "2026-09-21T19:33:04.588243"}
+{"text": "pff, wat een dag, veel te druk geweest", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0598, "bron": "model_fallback", "tijdstip": "2026-09-21T19:35:26.067790"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-09-21T20:04:26.019143"}
+{"text": "had ik dat anders moeten aanpakken", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0623, "bron": "model_fallback", "tijdstip": "2026-09-21T20:04:44.079044"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-09-21T20:14:45.956728"}

@@ -314,7 +314,18 @@ class ModuleLoader:
         start = time.time()
         context_layers = {
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
-            "activity_detector": client_bridge.RemoteActivityDetector(bridge),
+            # event_bus=self.event_bus (19 sept 2026, bugfix): nodig
+            # zodat RemoteActivityDetector zelf "activity_started:
+            # <label>_gedetecteerd" kan publiceren -- zonder dit
+            # argument telt Layer 2 (pattern_matcher.py) GEEN ENKELE
+            # activiteit meer mee, voor geen enkel label. Zie
+            # client_bridge.py's RemoteActivityDetector voor de
+            # volledige toelichting. focus_detector/presence_detector
+            # hebben dit BEWUST NIET nodig -- hun originelen
+            # publiceerden dit soort event ook nooit (enkel
+            # activity_detector.py deed dat), dus er is voor hen niets
+            # "verloren gegaan" bij de overstap naar Remote.
+            "activity_detector": client_bridge.RemoteActivityDetector(bridge, event_bus=self.event_bus),
             "focus_detector": client_bridge.RemoteFocusDetector(bridge),
             "presence_detector": client_bridge.RemotePresenceDetector(bridge),
         }

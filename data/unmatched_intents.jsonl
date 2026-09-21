@@ -104,3 +104,11 @@
 {"tekst": "hoelang nog tot kerst", "hoogste_gok": "chess", "confidence": 0.1524, "tijdstip": "2026-09-18T18:42:03.149126"}
 {"tekst": "wat gebeurde er op 9 december", "hoogste_gok": "math", "confidence": 0.1534, "tijdstip": "2026-09-19T10:50:44.250839"}
 {"tekst": "sluit chrome", "hoogste_gok": "chess", "confidence": 0.1267, "tijdstip": "2026-09-19T20:52:19.827695"}
+{"tekst": "ik ben moe vandaag", "hoogste_gok": "preference", "confidence": 0.2255, "tijdstip": "2026-09-21T19:33:04.595520"}
+{"tekst": "ik voel me nogal gestrest", "hoogste_gok": "preference", "confidence": 0.1636, "tijdstip": "2026-09-21T19:33:14.507569"}
+{"tekst": "ik voel me nogal gestrest", "hoogste_gok": "preference", "confidence": 0.1636, "tijdstip": "2026-09-21T19:35:14.119556"}
+{"tekst": "pff, wat een dag, veel te druk geweest", "hoogste_gok": "chess", "confidence": 0.1709, "tijdstip": "2026-09-21T19:35:26.072636"}
+{"tekst": "ik vind koffie eigenlijk wel oké maar niet top", "hoogste_gok": "preference", "confidence": 0.2909, "tijdstip": "2026-09-21T20:04:26.027229"}
+{"tekst": "dankjewel, dat helpt echt", "hoogste_gok": "chess_evaluation", "confidence": 0.1916, "tijdstip": "2026-09-21T20:04:58.615649"}
+{"tekst": "dit werkt niet, frustrerend", "hoogste_gok": "preference", "confidence": 0.1713, "tijdstip": "2026-09-21T20:05:06.968285"}
+{"tekst": "de limiet van mijn geduld is bereikt", "hoogste_gok": "math", "confidence": 0.2077, "tijdstip": "2026-09-21T20:05:15.832388"}

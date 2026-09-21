@@ -186,6 +186,15 @@ class ResponsePipeline:
                 base = conv_engine.probeer_activiteit_observatie()
 
         if base is None:
+            # Patroon-gebaseerde zin-reflectie (decompositie +
+            # keyword-vangnet) -- geeft None terug als geen van
+            # beide lagen iets herkende, dan valt dit gewoon door
+            # naar de kale sjabloon-fallback hieronder.
+            reflectie = self.event_bus.modules.get("fallback_reflectie")
+            if reflectie is not None:
+                base = reflectie.reflecteer(user_text)
+
+        if base is None:
             response_style = self._get_response_style()
             base = kies_variant(
                 self._sjablonen_fallback,

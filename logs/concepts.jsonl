@@ -264,3 +264,8 @@
 {"timestamp": "2026-09-19T08:50:44.264864", "event_type": "concept_created", "word": "december", "source": "system", "new_value": {"word": "december"}}
 {"timestamp": "2026-09-19T18:52:19.828317", "event_type": "concept_created", "word": "sluit", "source": "system", "new_value": {"word": "sluit"}}
 {"timestamp": "2026-09-19T18:52:19.842289", "event_type": "concept_created", "word": "chrome", "source": "system", "new_value": {"word": "chrome"}}
+{"timestamp": "2026-09-21T17:33:14.507833", "event_type": "concept_created", "word": "voel", "source": "system", "new_value": {"word": "voel"}}
+{"timestamp": "2026-09-21T17:33:14.521770", "event_type": "concept_created", "word": "nogal", "source": "system", "new_value": {"word": "nogal"}}
+{"timestamp": "2026-09-21T17:33:14.534501", "event_type": "concept_created", "word": "gestrest", "source": "system", "new_value": {"word": "gestrest"}}
+{"timestamp": "2026-09-21T17:35:26.072993", "event_type": "concept_created", "word": "pff", "source": "system", "new_value": {"word": "pff"}}
+{"timestamp": "2026-09-21T17:35:26.086100", "event_type": "concept_created", "word": "veel", "source": "system", "new_value": {"word": "veel"}}

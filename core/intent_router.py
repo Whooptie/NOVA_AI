@@ -276,6 +276,55 @@ class IntentRouter:
                 woord = self._kap_woord_af(woord)
                 return "positief", woord or None
 
+        # "ik vind [onderwerp] [oordeel]" -- ANDERE zinsvorm dan
+        # "ik vind leuk [onderwerp]" hierboven: hier komt het ONDERWERP
+        # EERST, gevolgd door een los oordeelwoord verderop in de zin.
+        # Ontdekt als gemist patroon via fallback_reflectie.py's
+        # unmatched_intents.jsonl-analyse (21 september 2026) -- "ik
+        # vind koffie eigenlijk wel oké maar niet top" werd voorheen
+        # NERGENS herkend, viel gewoon door naar fallback i.p.v. als
+        # voorkeur opgeslagen te worden. Het grove "positief"/"negatief"
+        # hieronder wordt zoals altijd nog verfijnd door
+        # _verfijn_sentiment() (leest de VOLLEDIGE zin, kan dus b.v.
+        # "wel oké maar niet top" alsnog naar "neutraal_gemengd"
+        # bijstellen) -- deze functie hier hoeft die nuance zelf niet
+        # te vangen.
+        if z.startswith("ik vind "):
+            rest = z[len("ik vind "):].strip()
+            if rest and not rest.startswith("leuk "):
+                woorden_rest = rest.split()
+                # Een lidwoord/aanwijzend voornaamwoord is nooit zelf
+                # het onderwerp -- sla het over en pak het woord erna
+                # (bv. "dit spelletje" -> "spelletje", "het weer" ->
+                # "weer"). Bekende, aanvaarde grens: een bijvoeglijk
+                # naamwoord ERTUSSEN ("de nieuwe cursus") wordt niet
+                # herkend -- zou woordsoort-detectie vereisen, buiten
+                # scope van deze gerichte uitbreiding.
+                index_onderwerp = 0
+                if woorden_rest and woorden_rest[0] in {"de", "het", "een", "dit", "die", "deze", "dat"}:
+                    index_onderwerp = 1
+                if index_onderwerp < len(woorden_rest):
+                    onderwerp_kandidaat = woorden_rest[index_onderwerp]
+                    oordeel_deel = " ".join(woorden_rest[index_onderwerp + 1:])
+
+                    negatieve_oordelen = [
+                        "niet leuk", "niet lekker", "niet oké", "niet ok",
+                        "slecht", "vervelend", "niks", "niet goed", "niet mooi",
+                    ]
+                    positieve_oordelen = [
+                        "leuk", "lekker", "oké", "ok", "goed", "fijn", "top", "mooi",
+                    ]
+                    # Negatieve oordelen EERST checken: "niet oké" bevat
+                    # zelf de substring "oké", dus een positieve check
+                    # zonder deze volgorde zou "niet oké" verkeerd als
+                    # positief herkennen.
+                    for oordeel in negatieve_oordelen:
+                        if oordeel in oordeel_deel:
+                            return "negatief", onderwerp_kandidaat or None
+                    for oordeel in positieve_oordelen:
+                        if oordeel in oordeel_deel:
+                            return "positief", onderwerp_kandidaat or None
+
         return "positief", None
 
     # Signaalwoorden die typisch een nuance-bijzin inleiden (bugfix

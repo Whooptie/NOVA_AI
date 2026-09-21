@@ -66,3 +66,22 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe gaat het ermee?", "entity": "coding", "response_style": null, "moment": "2026-09-19T20:52:19.863147", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "reactie_sentiment": "negatief", "moment": 1789843939.8629243, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "negatief", "moment": 1789843939.863268, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "variant_tekst": "Nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-09-21T19:33:04.600444", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles nog onder controle?", "entity": "coding", "response_style": null, "moment": "2026-09-21T19:33:04.600831", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "negatief", "moment": 1790011984.6006107, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "negatief", "moment": 1790011984.6009455, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "reflectie_voel_me", "gekozen_variant_index": 3, "variant_tekst": "Voel je je vaker {1}?", "entity": null, "response_style": null, "moment": "2026-09-21T19:33:14.552725", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_voel_me", "gekozen_variant_index": 0, "variant_tekst": "Sinds wanneer voel je je {1}?", "entity": null, "response_style": null, "moment": "2026-09-21T19:35:14.125193", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_voel_me", "gekozen_variant_index": 0, "reactie_sentiment": "negatief", "moment": 1790012114.1254108, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "reflectie_kw_druk", "gekozen_variant_index": 0, "variant_tekst": "Klinkt behoorlijk druk allemaal -- wat speelt er?", "entity": null, "response_style": null, "moment": "2026-09-21T19:35:26.103355", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_kw_druk", "gekozen_variant_index": 0, "reactie_sentiment": "negatief", "moment": 1790012126.1035535, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "variant_tekst": "Je bent nu al {duur} met {activiteit} bezig.", "entity": "talking_to_nova", "response_style": null, "moment": "2026-09-21T20:04:26.034141", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles nog onder controle?", "entity": "talking_to_nova", "response_style": null, "moment": "2026-09-21T20:04:26.034626", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "reactie_sentiment": "negatief", "moment": 1790013866.0343342, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "negatief", "moment": 1790013866.0347667, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "reflectie_kw_dank", "gekozen_variant_index": 1, "variant_tekst": "Fijn dat het helpt.", "entity": null, "response_style": null, "moment": "2026-09-21T20:04:58.621173", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_kw_dank", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1790013898.6213596, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "reflectie_kw_frustratie_technisch", "gekozen_variant_index": 0, "variant_tekst": "Klinkt vervelend -- wat loopt er precies mis?", "entity": null, "response_style": null, "moment": "2026-09-21T20:05:06.972833", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_kw_frustratie_technisch", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1790013906.9730396, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "reflectie_kw_geduld", "gekozen_variant_index": 0, "variant_tekst": "Klinkt alsof je geduld op de proef gesteld wordt -- wat speelt er?", "entity": null, "response_style": null, "moment": "2026-09-21T20:05:15.837830", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_kw_geduld", "gekozen_variant_index": 0, "reactie_sentiment": "negatief", "moment": 1790013915.838038, "type": "sentiment_koppeling"}

@@ -1,0 +1,159 @@
+{
+  "_toelichting": "Data voor modules/chat/fallback_reflectie.py. Patronen toevoegen = enkel dit bestand bewerken, geen code aanraken. 'decompositie'-entries matchen een VASTE ZINSVORM en vangen tekst op via de regex-groep (gebruik {1} in varianten). 'keywords'-entries matchen losse woorden, geen opvangst, dus geen {1} in de varianten. Bij twijfel: decompositie is specifieker en gaat altijd eerst; keywords is het bredere vangnet erna. Sommige keyword-groepen (bv. dank_waardering) zijn BEWUST GEEN vraag maar een korte bevestiging -- niet elke reflectie hoort een tegenvraag te zijn.",
+  "decompositie": [
+    {
+      "patroon": "\\bik voel me (.+)",
+      "sjabloon_naam": "reflectie_voel_me",
+      "varianten": [
+        "Sinds wanneer voel je je {1}?",
+        "Wat maakt dat je je {1} voelt?",
+        "Hoe komt het dat je je {1} voelt?",
+        "Voel je je vaker {1}?"
+      ]
+    },
+    {
+      "patroon": "\\bik ben (.+)",
+      "sjabloon_naam": "reflectie_ben",
+      "varianten": [
+        "Sinds wanneer ben je {1}?",
+        "Wat maakt dat je {1} bent?",
+        "Hoe komt het dat je {1} bent?"
+      ]
+    },
+    {
+      "patroon": "\\bik heb (.+)",
+      "sjabloon_naam": "reflectie_heb",
+      "varianten": [
+        "Sinds wanneer heb je {1}?",
+        "Vertel eens, hoe komt dat, dat je {1} hebt?",
+        "Hoe voelt het om {1} te hebben?"
+      ]
+    },
+    {
+      "patroon": "\\bik wil (.+)",
+      "sjabloon_naam": "reflectie_wil",
+      "varianten": [
+        "Wat zou het voor je betekenen als je {1}?",
+        "Wat houdt je tegen om {1}?",
+        "Hoe belangrijk is het voor je om {1}?"
+      ]
+    },
+    {
+      "patroon": "\\bik denk dat (.+)",
+      "sjabloon_naam": "reflectie_denk_dat",
+      "varianten": [
+        "Wat maakt dat je denkt dat {1}?",
+        "Hoe zeker ben je daarvan, dat {1}?",
+        "Waar komt dat idee vandaan, dat {1}?"
+      ]
+    },
+    {
+      "patroon": "\\bik vind (.+)",
+      "sjabloon_naam": "reflectie_vind",
+      "varianten": [
+        "Wat maakt dat je {1} vindt?",
+        "Hoe kom je daarbij, dat {1}?",
+        "Vind je dat altijd al, dat {1}?"
+      ]
+    },
+    {
+      "patroon": "\\bhad ik (.+?) moeten (.+)",
+      "sjabloon_naam": "reflectie_had_moeten",
+      "varianten": [
+        "Wat maakt dat je denkt dat je {1} had moeten {2}?",
+        "Waarom twijfel je daarover, of je {1} had moeten {2}?",
+        "Hoe had je het liever anders aangepakt?"
+      ]
+    }
+  ],
+  "keywords": [
+    {
+      "trefwoorden": [
+        "moe",
+        "vermoeid",
+        "uitgeput"
+      ],
+      "sjabloon_naam": "reflectie_kw_moe",
+      "varianten": [
+        "Klinkt alsof je moe bent -- wil je daar iets meer over vertellen?",
+        "Ben je al lang zo moe?"
+      ]
+    },
+    {
+      "trefwoorden": [
+        "druk",
+        "stress",
+        "gestrest",
+        "gehaast"
+      ],
+      "sjabloon_naam": "reflectie_kw_druk",
+      "varianten": [
+        "Klinkt behoorlijk druk allemaal -- wat speelt er?",
+        "Wat maakt het nu zo druk voor je?"
+      ]
+    },
+    {
+      "trefwoorden": [
+        "blij",
+        "gelukkig",
+        "content"
+      ],
+      "sjabloon_naam": "reflectie_kw_blij",
+      "varianten": [
+        "Fijn om te horen -- wat maakt je nu blij?",
+        "Wat is er gebeurd waar je blij van wordt?"
+      ]
+    },
+    {
+      "trefwoorden": [
+        "boos",
+        "kwaad",
+        "geïrriteerd",
+        "gefrustreerd"
+      ],
+      "sjabloon_naam": "reflectie_kw_boos",
+      "varianten": [
+        "Dat klinkt frustrerend -- wat is er gebeurd?",
+        "Waar zit de frustratie precies in?"
+      ]
+    },
+    {
+      "trefwoorden": [
+        "dankjewel",
+        "dankje",
+        "bedankt",
+        "dank"
+      ],
+      "sjabloon_naam": "reflectie_kw_dank",
+      "varianten": [
+        "Graag gedaan!",
+        "Fijn dat het helpt.",
+        "Altijd blij als ik kan helpen."
+      ]
+    },
+    {
+      "trefwoorden": [
+        "frustrerend",
+        "werkt",
+        "kapot",
+        "bug",
+        "buggy"
+      ],
+      "sjabloon_naam": "reflectie_kw_frustratie_technisch",
+      "varianten": [
+        "Klinkt vervelend -- wat loopt er precies mis?",
+        "Wat werkt er niet zoals verwacht?"
+      ]
+    },
+    {
+      "trefwoorden": [
+        "geduld"
+      ],
+      "sjabloon_naam": "reflectie_kw_geduld",
+      "varianten": [
+        "Klinkt alsof je geduld op de proef gesteld wordt -- wat speelt er?",
+        "Wat test je geduld nu zo erg?"
+      ]
+    }
+  ]
+}

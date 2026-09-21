@@ -33,3 +33,7 @@
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-18T18:54:01.284206"}
 {"text": "wat is er gebeurd op 9 december", "categorie": "positief", "marge": 0.0561, "grof_sentiment_regex": null, "tijdstip": "2026-09-19T10:51:04.897944"}
 {"text": "open vlc", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-19T20:55:21.259075"}
+{"text": "pff, wat een dag, veel te druk geweest", "categorie": "negatief", "marge": 0.019, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T19:35:26.065569"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T19:48:04.356623"}
+{"text": "dit werkt niet, frustrerend", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T20:05:06.961916"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T20:14:28.093165"}
