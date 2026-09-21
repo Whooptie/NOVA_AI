@@ -7,16 +7,6 @@ import time
 import threading
 from datetime import datetime
 
-# --- TIJDELIJKE DIAGNOSE (haperige antwoorden na lange uptime) ---
-# Meet hoe lang elke stap in achtergrond_loop() duurt. Print enkel
-# als een stap langer dan 0,3 sec duurt, zodat normale, snelle loops
-# geen ruis geven. Weg te halen zodra de oorzaak gevonden is.
-def _timing(naam, start_tijd):
-    duur = time.time() - start_tijd
-    if duur > 0.3:
-        tijdstip = datetime.now().strftime("%H:%M:%S")
-        print(f"[TIMING {tijdstip}] {naam} duurde {duur:.2f}s")
-
 # ---------------------------------------------------------------
 # ANSI-kleurcodes activeren in het Windows-console-venster
 # ---------------------------------------------------------------
@@ -81,20 +71,7 @@ def print_nova_typewriter(tekst):
     direct in 1 blok, en de rest van de zin komt daarna letter per letter.
     Thread-safe via _typewriter_lock — zie uitleg hierboven bij Bug #30.
     """
-    # TIJDELIJKE DIAGNOSE: meet apart hoelang we op de lock WACHTEN
-    # (een andere thread was al aan het printen) versus hoelang het
-    # printen ZELF duurt (afhankelijk van de lengte van tekst, altijd
-    # ~0,02s per letter). Een oplopende wachttijd wijst op een
-    # achtergrondtaak die de lock lang bezet houdt of vaak claimt.
-    _wacht_start = time.time()
     with _typewriter_lock:
-        _wachttijd = time.time() - _wacht_start
-        if _wachttijd > 0.3:
-            tijdstip = datetime.now().strftime("%H:%M:%S")
-            print(f"[TIMING {tijdstip}] print_nova_typewriter() wachtte {_wachttijd:.2f}s op de lock")
-
-        _print_start = time.time()
-
         # "Nova: " blijft in 1 keer verschijnen — geen vertraging hier
         print(f"{MAGENTA}Nova: {RESET}", end="", flush=True)
 
@@ -104,8 +81,6 @@ def print_nova_typewriter(tekst):
             time.sleep(TYPEWRITER_SNELHEID)
 
         print()  # nieuwe regel op het einde, anders plakt de volgende prompt eraan vast
-
-        _timing(f"print_nova_typewriter() zelf ({len(tekst)} tekens)", _print_start)
 
 # Houdt bij of de hoofdthread op dit moment op input() staat te wachten.
 # Nodig om te weten of we na een proactief bericht de "Jij: "-prompt
@@ -124,13 +99,6 @@ def on_chat_response(data, event_type=None):
     thread zou anders onzichtbaar in de memory-buffer blijven liggen
     tot de volgende keer dat Kevin toevallig iets intypt.
     """
-    # TIJDELIJKE DIAGNOSE: welke thread roept dit aan, en wanneer.
-    # Als hoofdthread- en achtergrondthread-aanroepen vlak na elkaar
-    # vallen, verklaart dat een deel van het "haperige" gevoel (de
-    # lock in print_nova_typewriter() laat de tweede dan netjes wachten).
-    _thread_naam = threading.current_thread().name
-    _tijdstip = datetime.now().strftime("%H:%M:%S")
-    print(f"[TIMING {_tijdstip}] on_chat_response() aangeroepen vanuit thread '{_thread_naam}'")
 
     msg = data.get("text") or data.get("msg") or ""
 
@@ -229,22 +197,18 @@ def achtergrond_loop(loader):
 
         watcher = loader.loaded_modules.get("session_watcher")
         if watcher:
-            _t = time.time()
             try:
                 watcher.check_pauze()
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in check_pauze(): {e}")
-            _timing("check_pauze()", _t)
 
             # Activity-Aware Interaction (22 juli 2026): checkt of de
             # actieve activiteit al lang genoeg loopt om Nova's "mag
             # ik storen?"-vraag te triggeren.
-            _t = time.time()
             try:
                 watcher.check_activity_interruption()
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in check_activity_interruption(): {e}")
-            _timing("check_activity_interruption()", _t)
 
         # Layer 5, Fase 2: activiteit periodiek detecteren, zodat
         # Layer 2 (pattern_matcher.py) dit als event_type kan meetellen
@@ -252,12 +216,10 @@ def achtergrond_loop(loader):
         # klaarstaan, ook als er ondertussen niemand "context" typt.
         activity_detector = loader.loaded_modules.get("activity_detector")
         if activity_detector:
-            _t = time.time()
             try:
                 activity_detector.detect_activity()
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in detect_activity(): {e}")
-            _timing("detect_activity()", _t)
 
         # Layer 5, Fase 3: focus ook periodiek detecteren — dit is
         # BELANGRIJK om op een moment te meten waarop Kevin NIET zelf
@@ -267,12 +229,10 @@ def achtergrond_loop(loader):
         # via het "context"/"focus debug"-commando.
         focus_detector = loader.loaded_modules.get("focus_detector")
         if focus_detector:
-            _t = time.time()
             try:
                 focus_detector.get_focus_info()
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in get_focus_info(): {e}")
-            _timing("get_focus_info()", _t)
 
         # Layer 5, Fase 4: webcam-aanwezigheid, ENKEL elke
         # PRESENCE_CHECK_INTERVAL_MINUTEN minuten (spaarzamer dan de
@@ -285,12 +245,10 @@ def achtergrond_loop(loader):
         if aantal_loops % PRESENCE_CHECK_INTERVAL_MINUTEN == 0:
             context_manager_voor_presence = loader.loaded_modules.get("context_manager")
             if context_manager_voor_presence:
-                _t = time.time()
                 try:
                     context_manager_voor_presence.update_presence_info()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in update_presence_info(): {e}")
-                _timing("update_presence_info()", _t)
 
         # Layer 5: ook de volledige context (incl. should_interrupt-
         # beslissing) periodiek laten berekenen en loggen, zodat
@@ -300,12 +258,10 @@ def achtergrond_loop(loader):
         # input).
         context_manager = loader.loaded_modules.get("context_manager")
         if context_manager:
-            _t = time.time()
             try:
                 context_manager.get_current()
             except Exception as e:
                 print(f"[Achtergrondthread] Fout in context_manager.get_current(): {e}")
-            _timing("context_manager.get_current()", _t)
 
         # Proactieve weerwaarschuwing — ENKEL elke
         # WEATHER_CHECK_INTERVAL_MINUTEN minuten (zelfde soort spaarzame
@@ -316,12 +272,10 @@ def achtergrond_loop(loader):
         if aantal_loops % WEATHER_CHECK_INTERVAL_MINUTEN == 0:
             weather = loader.loaded_modules.get("weather")
             if weather:
-                _t = time.time()
                 try:
                     weather.check_proactieve_waarschuwing()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in check_proactieve_waarschuwing(): {e}")
-                _timing("weather.check_proactieve_waarschuwing()", _t)
 
         # Layer 7 — periodiek reflecteren op verzamelde inzichten
         # (woordverband/tijdspatroon/kennisdichtheid/personality_drift).
@@ -336,12 +290,10 @@ def achtergrond_loop(loader):
         if aantal_loops % EMERGENCE_CHECK_INTERVAL_MINUTEN == 0:
             emergence = loader.loaded_modules.get("emergence_engine")
             if emergence:
-                _t = time.time()
                 try:
                     emergence.reflect()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in emergence.reflect(): {e}")
-                _timing("emergence.reflect()", _t)
 
         # Fase 5 (periodieke hertraining Intent Classifier, 28 juli
         # 2026): traint het ML-model opnieuw op training_data.json +
@@ -352,12 +304,10 @@ def achtergrond_loop(loader):
         if aantal_loops % INTENT_CLASSIFIER_RETRAIN_INTERVAL_MINUTEN == 0:
             intent_classifier = loader.loaded_modules.get("intent_classifier")
             if intent_classifier:
-                _t = time.time()
                 try:
                     intent_classifier.retrain_vanuit_bestanden()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in intent_classifier.retrain_vanuit_bestanden(): {e}")
-                _timing("intent_classifier.retrain_vanuit_bestanden()", _t)
 
         # Punt 2 (find_contradictions() een aanroeper geven, 6 augustus
         # 2026): periodiek de volledige kennisgraaf checken op botsende
@@ -368,12 +318,10 @@ def achtergrond_loop(loader):
         if aantal_loops % CONTRADICTION_CHECK_INTERVAL_MINUTEN == 0:
             contradiction_checker = loader.loaded_modules.get("contradiction_checker")
             if contradiction_checker:
-                _t = time.time()
-                try:
+µ                try:
                     contradiction_checker.check_contradictions()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in contradiction_checker.check_contradictions(): {e}")
-                _timing("contradiction_checker.check_contradictions()", _t)
 
         # Punt 7 (topic_events_roadmap.md Fase 5, 13 augustus 2026):
         # periodiek checken of er een geschikt moment is voor een
@@ -383,12 +331,10 @@ def achtergrond_loop(loader):
         if aantal_loops % TOPIC_SUGGESTIONS_CHECK_INTERVAL_MINUTEN == 0:
             topic_suggestions = loader.loaded_modules.get("topic_suggestions")
             if topic_suggestions:
-                _t = time.time()
                 try:
                     topic_suggestions.check_suggesties()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in topic_suggestions.check_suggesties(): {e}")
-                _timing("topic_suggestions.check_suggesties()", _t)
 
 def main():
     global wachten_op_input
