@@ -5,7 +5,6 @@ import sys
 import ctypes
 import time
 import threading
-from datetime import datetime
 
 # ---------------------------------------------------------------
 # ANSI-kleurcodes activeren in het Windows-console-venster
@@ -318,7 +317,7 @@ def achtergrond_loop(loader):
         if aantal_loops % CONTRADICTION_CHECK_INTERVAL_MINUTEN == 0:
             contradiction_checker = loader.loaded_modules.get("contradiction_checker")
             if contradiction_checker:
-µ                try:
+                try:
                     contradiction_checker.check_contradictions()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in contradiction_checker.check_contradictions(): {e}")
