@@ -112,3 +112,6 @@
 {"tekst": "dankjewel, dat helpt echt", "hoogste_gok": "chess_evaluation", "confidence": 0.1916, "tijdstip": "2026-09-21T20:04:58.615649"}
 {"tekst": "dit werkt niet, frustrerend", "hoogste_gok": "preference", "confidence": 0.1713, "tijdstip": "2026-09-21T20:05:06.968285"}
 {"tekst": "de limiet van mijn geduld is bereikt", "hoogste_gok": "math", "confidence": 0.2077, "tijdstip": "2026-09-21T20:05:15.832388"}
+{"tekst": "ik voel me moe", "hoogste_gok": "preference", "confidence": 0.1636, "tijdstip": "2026-09-24T19:57:40.633490"}
+{"tekst": "ik ben moe", "hoogste_gok": "preference", "confidence": 0.2823, "tijdstip": "2026-09-24T19:57:47.387688"}
+{"tekst": "omdat ik veel moet werken", "hoogste_gok": "preference", "confidence": 0.1449, "tijdstip": "2026-09-24T19:58:49.626475"}

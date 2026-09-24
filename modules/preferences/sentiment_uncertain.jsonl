@@ -37,3 +37,4 @@
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T19:48:04.356623"}
 {"text": "dit werkt niet, frustrerend", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T20:05:06.961916"}
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T20:14:28.093165"}
+{"text": "ik drink graag café", "categorie": "positief", "marge": 0.0941, "grof_sentiment_regex": "positief", "tijdstip": "2026-09-24T19:55:35.103292"}

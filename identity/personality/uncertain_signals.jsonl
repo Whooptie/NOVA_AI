@@ -591,3 +591,8 @@
 {"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-09-21T20:04:26.019143"}
 {"text": "had ik dat anders moeten aanpakken", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0623, "bron": "model_fallback", "tijdstip": "2026-09-21T20:04:44.079044"}
 {"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-09-21T20:14:45.956728"}
+{"text": "ik drink graag café", "signaal": "focus", "model_signaal": "focus", "marge": 0.0913, "bron": "model_fallback", "tijdstip": "2026-09-24T19:55:35.094922"}
+{"text": "wiki fiets", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0175, "bron": "model_fallback", "tijdstip": "2026-09-24T19:55:48.043818"}
+{"text": "ik voel me moe", "signaal": "focus", "model_signaal": "focus", "marge": 0.0459, "bron": "model_fallback", "tijdstip": "2026-09-24T19:57:40.625222"}
+{"text": "ik ben moe", "signaal": "focus", "model_signaal": "focus", "marge": 0.0889, "bron": "model_fallback", "tijdstip": "2026-09-24T19:57:47.382624"}
+{"text": "omdat ik veel moet werken", "signaal": "focus", "model_signaal": "focus", "marge": 0.0772, "bron": "model_fallback", "tijdstip": "2026-09-24T19:58:49.621915"}

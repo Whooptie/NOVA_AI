@@ -5,6 +5,7 @@ import sys
 import ctypes
 import time
 import threading
+import traceback
 
 # ---------------------------------------------------------------
 # ANSI-kleurcodes activeren in het Windows-console-venster
@@ -80,6 +81,41 @@ def print_nova_typewriter(tekst):
             time.sleep(TYPEWRITER_SNELHEID)
 
         print()  # nieuwe regel op het einde, anders plakt de volgende prompt eraan vast
+
+def maak_invoer_veilig(tekst):
+    """
+    Bug #36-fix (24 september 2026): maakt getypte tekst veilig voor de
+    rest van Nova, VOORDAT ze de EventBus op gaat.
+
+    Het probleem: als er bij het typen een kapotte byte in de terminal
+    terechtkomt (bv. een half doorgekomen 'é', of een verdwaalde
+    toetsaanslag), geeft Python die door als een "surrogaat"-teken
+    (zoals \\udcc3) -- een plaatshouder voor "hier stond een byte die
+    ik niet snapte". Zo'n teken ziet er onschuldig uit, maar crasht
+    later op elke plek die de tekst echt naar bytes omzet: een
+    Wikipedia-URL opbouwen, opslaan in JSON/SQLite, en afhankelijk van
+    de terminal zelfs gewoon printen.
+
+    Werkwijze, in twee stappen:
+      1. Probeer de oorspronkelijke bytes terug te winnen
+         (errors="surrogateescape" doet precies het omgekeerde van wat
+         Python bij het inlezen deed). Kwamen ALLE bytes van een teken
+         wel door (bv. beide helften van een 'é'), dan krijg je zo het
+         juiste teken gewoon terug.
+      2. Bytes die ook samen geen geldig teken vormen (een losse,
+         halve helft), worden weggelaten (errors="ignore").
+
+    Gewone tekst (ook met é/ë/ç) komt hier 100% ongewijzigd door.
+    """
+    if not isinstance(tekst, str):
+        return tekst
+    try:
+        ruwe_bytes = tekst.encode("utf-8", errors="surrogateescape")
+    except UnicodeEncodeError:
+        # Een surrogaat dat NIET van het inlezen komt (zeldzaam) --
+        # dan kunnen we de bytes niet terugwinnen, gewoon weglaten.
+        ruwe_bytes = tekst.encode("utf-8", errors="ignore")
+    return ruwe_bytes.decode("utf-8", errors="ignore")
 
 # Houdt bij of de hoofdthread op dit moment op input() staat te wachten.
 # Nodig om te weten of we na een proactief bericht de "Jij: "-prompt
@@ -400,15 +436,15 @@ def main():
         user_input = input(f"{GREEN}Jij: {RESET}")
         wachten_op_input = False
 
-        # Debug-/testcommando's (Layer 0/2/5/6/7, Activity-Aware
-        # Interaction) zijn verhuisd naar modules/debug/debug_commands.py
-        # om main.py overzichtelijk te houden. Zie 'help debug' voor
-        # het volledige overzicht van beschikbare commando's.
-        debug_module = loader.loaded_modules.get("debug_commands")
-        if debug_module and debug_module.is_debug_command(user_input):
-            bus.publish("debug_command", {"text": user_input})
-            continue
+        # Bug #36-fix (24 september 2026): kapotte tekens (surrogaten,
+        # bv. een half doorgekomen toetsaanslag) meteen hier weghalen,
+        # VOORDAT een module de tekst ooit te zien krijgt. Zie de uitleg
+        # bij maak_invoer_veilig() bovenaan dit bestand.
+        user_input = maak_invoer_veilig(user_input)
 
+        # "exit" staat bewust BUITEN het vangnet hieronder: als het
+        # afsluiten zelf ooit een fout zou geven, moet Nova toch stoppen,
+        # niet stilletjes verder draaien.
         if user_input.lower() == "exit":
             # Chess-engine (Stockfish) netjes afsluiten, anders blijft het proces hangen
             chess_module = loader.loaded_modules.get("chess_engine")
@@ -439,59 +475,83 @@ def main():
                 interruption_module.shutdown()
             break
 
-        # Teach-flow wordt nu volledig afgehandeld door IntentRouter
-        bus.publish("chat_message", {"sender": "Kevin", "text": user_input})
+        # Bug #36-fix (24 september 2026): vangnet rond de verwerking van
+        # elk bericht. Voorheen kon EEN fout diep in eender welke module
+        # (via bus.publish) de hele hoofdloop -- en dus heel Nova --
+        # laten crashen. Nu wordt de fout getoond (met volledige
+        # traceback, zodat hij niet verborgen raakt) en wacht Nova
+        # gewoon op het volgende bericht. Zelfde patroon als de
+        # try/except-blokken in achtergrond_loop() hierboven.
+        # except Exception vangt GEEN Ctrl+C (KeyboardInterrupt) --
+        # handmatig stoppen blijft dus gewoon werken.
+        try:
+            # Debug-/testcommando's (Layer 0/2/5/6/7, Activity-Aware
+            # Interaction) zijn verhuisd naar modules/debug/debug_commands.py
+            # om main.py overzichtelijk te houden. Zie 'help debug' voor
+            # het volledige overzicht van beschikbare commando's.
+            debug_module = loader.loaded_modules.get("debug_commands")
+            if debug_module and debug_module.is_debug_command(user_input):
+                bus.publish("debug_command", {"text": user_input})
+                continue
 
-        # Memory events ophalen
-        mem = loader.loaded_modules.get("memory")
-        if mem:
-            for e in mem.get_recent_events():
-                key = (e["event_type"], str(e["data"]))
+            # Teach-flow wordt nu volledig afgehandeld door IntentRouter
+            bus.publish("chat_message", {"sender": "Kevin", "text": user_input})
 
-                # Chat mag NOOIT gededupliceerd worden
-                if e["event_type"] != "chat_response":
-                    if key in printed:
-                        continue
-                    printed.add(key)
+            # Memory events ophalen
+            mem = loader.loaded_modules.get("memory")
+            if mem:
+                for e in mem.get_recent_events():
+                    key = (e["event_type"], str(e["data"]))
 
-                etype = e["event_type"]
-                data = e["data"]
+                    # Chat mag NOOIT gededupliceerd worden
+                    if e["event_type"] != "chat_response":
+                        if key in printed:
+                            continue
+                        printed.add(key)
 
-                # Semantic updates
-                if etype == "semantic_update":
-                    meaning = data.get("meaning") or data.get("definition") or "onbekend"
-                    status = data.get("status", "")
-                    word = data.get("word", "")
-                    if status == "new":
-                        print(f"Nova leerde een nieuw woord: {word} → {meaning}")
-                    elif status == "updated":
-                        print(f"Nova herkende {word} nu als {meaning}")
-                    elif status == "duplicate":
-                        print(f"Nova wist dit al: {word} betekent {meaning}")
-                    elif status == "auto":
-                        print(f"Nova herkende automatisch {word} als {meaning}")
+                    etype = e["event_type"]
+                    data = e["data"]
 
-                # Pattern updates
-                elif etype == "pattern_update":
-                    counts = data["event_counts"]
-                    words = data["word_counts"]
-                    print("Nova zag patronen:")
-                    print("  Events:", counts)
-                    print("  Top woorden:", words)
+                    # Semantic updates
+                    if etype == "semantic_update":
+                        meaning = data.get("meaning") or data.get("definition") or "onbekend"
+                        status = data.get("status", "")
+                        word = data.get("word", "")
+                        if status == "new":
+                            print(f"Nova leerde een nieuw woord: {word} → {meaning}")
+                        elif status == "updated":
+                            print(f"Nova herkende {word} nu als {meaning}")
+                        elif status == "duplicate":
+                            print(f"Nova wist dit al: {word} betekent {meaning}")
+                        elif status == "auto":
+                            print(f"Nova herkende automatisch {word} als {meaning}")
 
-                # Chat responses worden nu NIET meer hier geprint —
-                # dat gebeurt via de rechtstreekse on_chat_response()
-                # subscriber hierboven (nodig voor proactieve berichten
-                # van de achtergrondthread). We slaan dit event-type
-                # hier gewoon over om dubbel printen te voorkomen.
-                elif etype == "chat_response":
-                    pass
+                    # Pattern updates
+                    elif etype == "pattern_update":
+                        counts = data["event_counts"]
+                        words = data["word_counts"]
+                        print("Nova zag patronen:")
+                        print("  Events:", counts)
+                        print("  Top woorden:", words)
 
-                # Timezone ready
-                elif etype == "time_zone_ready":
-                    offset = data["offset_minutes"]
-                    dst = data["dst_active"]
-                    print(f"TimeZoneModule geladen → offset: {offset} min, DST actief: {dst}")
+                    # Chat responses worden nu NIET meer hier geprint —
+                    # dat gebeurt via de rechtstreekse on_chat_response()
+                    # subscriber hierboven (nodig voor proactieve berichten
+                    # van de achtergrondthread). We slaan dit event-type
+                    # hier gewoon over om dubbel printen te voorkomen.
+                    elif etype == "chat_response":
+                        pass
+
+                    # Timezone ready
+                    elif etype == "time_zone_ready":
+                        offset = data["offset_minutes"]
+                        dst = data["dst_active"]
+                        print(f"TimeZoneModule geladen → offset: {offset} min, DST actief: {dst}")
+
+        except Exception as e:
+            print(f"{RED}[Hoofdloop] Onverwachte fout bij het verwerken van je bericht: {e}{RESET}")
+            traceback.print_exc()
+            print(f"{RED}[Hoofdloop] Nova draait gewoon verder.{RESET}")
 
 
 if __name__ == "__main__":

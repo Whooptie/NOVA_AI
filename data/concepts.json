@@ -130,7 +130,7 @@
     "senses": [
       {
         "sense_id": "fiets#1",
-        "definition": "Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven.",
+        "definition": "Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven. Een basisfiets bestaat uit twee wielen, een frame, een zadel, een stuur en een trapas met pedalen.",
         "pos": "noun",
         "examples": [
           "Ik ga elke dag met de fiets naar het werk.",
@@ -142,115 +142,19 @@
             "target": "voertuig",
             "confidence": 0.8,
             "source": "wikipedia",
-            "created_at": "2026-06-27T18:58:32.285272",
-            "status": "unverified"
-          },
-          {
-            "type": "has_part",
-            "target": "wiel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "stuur",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "zadel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "trap",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "rem",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "ketting",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "versnelling",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "frame",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "spatbord",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "bel",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "licht",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          },
-          {
-            "type": "has_part",
-            "target": "reflector",
-            "confidence": 0.9,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
+            "status": "unverified",
+            "created_at": "2026-09-24T17:55:49.115266"
           }
         ],
         "source": "wikipedia",
-        "confidence": 1.0,
+        "confidence": 0.8,
         "audit_log": [],
         "status": "unverified"
       }
     ],
     "metadata": {
       "created_at": "2026-06-27T18:58:32.285272",
-      "updated_at": "2026-07-19T11:02:09.764642",
+      "updated_at": "2026-09-24T17:55:49.115288",
       "sources": [
         "user"
       ],
@@ -6389,20 +6293,36 @@
         "confidence": 1.0,
         "audit_log": [],
         "status": "confirmed"
+      },
+      {
+        "sense_id": "werk#3",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-09-24T17:58:49.641049",
       "sources": [
-        "user"
+        "user",
+        "auto"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-09-24T17:58:49.641049",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
           "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-09-24T17:58:49.641049",
+          "confidence": 0.1
         }
       ]
     },
@@ -6422,6 +6342,14 @@
         "old_value": null,
         "new_value": "Werk is een activiteit die iemand uitvoert, meestal in ruil voor inkomen of om een taak te vervullen.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "werk#3",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-24T17:58:49.641047"
       }
     ]
   },
@@ -18013,6 +17941,54 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-09-21T17:35:26.086268"
+      }
+    ]
+  },
+  "omdat": {
+    "senses": [
+      {
+        "sense_id": "omdat#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-09-24T17:58:49.626851",
+      "updated_at": "2026-09-24T17:58:49.627693",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-09-24T17:58:49.627693",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-09-24T17:58:49.627693",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "omdat"
+        },
+        "timestamp": "2026-09-24T17:58:49.626857"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "omdat#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-09-24T17:58:49.627691"
       }
     ]
   }

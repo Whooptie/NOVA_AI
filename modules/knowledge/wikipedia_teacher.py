@@ -81,10 +81,18 @@ class WikipediaTeacher:
         if word and word[0].islower():
             word = word[0].upper() + word[1:]
 
-        encoded = urllib.parse.quote(word)
-        url = WIKI_API + encoded
-
+        # Bug #36-fix (24 september 2026): de URL-opbouw staat nu BINNEN
+        # de try. Voorheen stond urllib.parse.quote(word) erbuiten: een
+        # woord met een kapot teken (een "surrogaat" zoals \udcc3, typisch
+        # een terminal-encoding-hikje bij het typen) gaf daar een
+        # UnicodeEncodeError die door niets opgevangen werd en de hele
+        # hoofdloop liet crashen. Nu valt zo'n woord gewoon in de
+        # bestaande "except Exception: return None"-tak, net als elk
+        # ander onvindbaar woord.
         try:
+            encoded = urllib.parse.quote(word)
+            url = WIKI_API + encoded
+
             req = urllib.request.Request(
                 url,
                 headers={"User-Agent": "Nova-AI/1.0 (educational project)"}
@@ -597,9 +605,12 @@ class WikipediaTeacher:
             "pllimit": "20",
             "plnamespace": "0",  # enkel echte artikelen, geen Wikipedia:/Categorie:/...
         }
-        url = "https://nl.wikipedia.org/w/api.php?" + urllib.parse.urlencode(params)
-
+        # Bug #36-fix (24 september 2026): zelfde probleem als in
+        # _fetch_summary() -- urlencode() crasht op een woord met een
+        # kapot teken, dus de URL-opbouw staat nu ook hier BINNEN de try.
         try:
+            url = "https://nl.wikipedia.org/w/api.php?" + urllib.parse.urlencode(params)
+
             req = urllib.request.Request(
                 url,
                 headers={"User-Agent": "Nova-AI/1.0 (educational project)"}

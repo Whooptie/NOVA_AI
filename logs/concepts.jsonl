@@ -269,3 +269,4 @@
 {"timestamp": "2026-09-21T17:33:14.534501", "event_type": "concept_created", "word": "gestrest", "source": "system", "new_value": {"word": "gestrest"}}
 {"timestamp": "2026-09-21T17:35:26.072993", "event_type": "concept_created", "word": "pff", "source": "system", "new_value": {"word": "pff"}}
 {"timestamp": "2026-09-21T17:35:26.086100", "event_type": "concept_created", "word": "veel", "source": "system", "new_value": {"word": "veel"}}
+{"timestamp": "2026-09-24T17:58:49.626860", "event_type": "concept_created", "word": "omdat", "source": "system", "new_value": {"word": "omdat"}}

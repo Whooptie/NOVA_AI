@@ -1343,3 +1343,20 @@ Volledige originele roadmap: `taal_en_redeneerlimieten_roadmap.md`, idee 1+2 (vo
 **Getest:** `test_fallback_reflectie.py` van 23→28 tests (5 nieuw: 3 voor meerdere vanggroepen, 2 voor niet-vragende reflectie). Nieuw `test_preference_ik_vind_uitbreiding.py`, 27 tests, tegen de ECHTE `IntentRouter` — dekt het nieuwe patroon (7), de negatief-vóór-positief-volgorde (3), lidwoord-overslaan incl. de vastgelegde beperking (5), geen-match-gevallen (3), volledige regressie op alle bestaande patronen (6), en een end-to-end-integratietest via `detect_preference()` (3). Volledige suite (874 tests) groen.
 
 **Live bevestigd op battleserver (21 september 2026):** "ik vind koffie eigenlijk wel oké maar niet top" → `[ROUTER] → preference (automatisch): 'koffie' = positief` → `[KEVIN_PROFILE] 'koffie' → neutraal_gemengd (automatisch, x6)` — volledige keten bevestigd end-to-end, inclusief de sentiment-verfijning naar "neutraal_gemengd". "dankjewel, dat helpt echt" → "Fijn dat het helpt!" (geen vraagteken, zoals bedoeld). "dit werkt niet, frustrerend" → "Klinkt vervelend -- wat loopt er precies mis!". "de limiet van mijn geduld is bereikt" → "Klinkt alsof je geduld op de proef gesteld wordt -- wat speelt er!". Nog niet apart live bevestigd via de reflectie-laag zelf (onderschept telkens eerder in de keten door activiteit-observatie resp. de intent_classifier): `reflectie_vind` en `reflectie_had_moeten`.
+
+---
+
+## 🐛 Bug #36 opgelost — crash van de hoofdloop bij kapotte invoer (24 september 2026)
+
+**Oorzaak:** een kapotte byte bij het typen (terminal-encoding-hikje) werd door Python een surrogaat-teken (`\udcc3`), dat pas crashte bij `urllib.parse.quote()` in `wikipedia_teacher.py`'s `_fetch_summary()`. Die aanroep stond buiten de `try`, en `main.py` had geen vangnet, dus heel Nova stopte.
+
+**Fix in drie lagen:**
+1. Nieuwe `maak_invoer_veilig()` in `main.py` maakt de invoer meteen na `input()` schoon. Volledig doorgekomen tekens worden hersteld via `surrogateescape`, halve bytes weggelaten, en gewone tekst blijft ongewijzigd.
+2. De URL-opbouw staat nu binnen de `try` in `_fetch_summary()` én in `_fetch_disambiguation_links_meerdere()`, waar hetzelfde probleem zat met `urlencode()`.
+3. Een `try/except`-vangnet rond de berichtverwerking in de hoofdloop van `main.py`, met volledige traceback (zelfde patroon als `achtergrond_loop()`). `exit` staat bewust buiten het vangnet en wordt nu vóór de debug-check gecontroleerd.
+
+**Bijvangst:** tijdens het onderzoek een apart, latent risico gevonden in `EventBus.publish()` (dubbele handler-aanroep bij een `TypeError`) — vastgelegd als bug #46 in `nova_state.md`, niet meegenomen in deze fix.
+
+**Getest:** `test_bug36_kapotte_invoer.py`, 12 tests, waarvan de 6 bugrelevante tests aantoonbaar falen op de oude code. Volledige suite (886 tests) groen.
+
+**Live bevestigd op battleserver (24 september 2026):** "ik drink graag café" → `'café'` intact doorgegeven (schoonmaakstap laat gewone accenttekens ongemoeid); "wiki fiets" → correcte Wikipedia-definitie (verplaatste `try` in `_fetch_summary()` werkt); "exit" → netjes afgesloten (exit-check buiten het vangnet werkt).

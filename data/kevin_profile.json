@@ -49,6 +49,13 @@
         "datum": "2026-07-26",
         "aantal_keer_genoemd": 2
       }
+    },
+    "café": {
+      "automatisch": {
+        "sentiment": "positief",
+        "datum": "2026-09-24",
+        "aantal_keer_genoemd": 1
+      }
     }
   },
   "afkeuren": {
