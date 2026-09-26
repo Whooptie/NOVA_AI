@@ -596,3 +596,5 @@
 {"text": "ik voel me moe", "signaal": "focus", "model_signaal": "focus", "marge": 0.0459, "bron": "model_fallback", "tijdstip": "2026-09-24T19:57:40.625222"}
 {"text": "ik ben moe", "signaal": "focus", "model_signaal": "focus", "marge": 0.0889, "bron": "model_fallback", "tijdstip": "2026-09-24T19:57:47.382624"}
 {"text": "omdat ik veel moet werken", "signaal": "focus", "model_signaal": "focus", "marge": 0.0772, "bron": "model_fallback", "tijdstip": "2026-09-24T19:58:49.621915"}
+{"text": "meer", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0037, "bron": "model_fallback", "tijdstip": "2026-09-26T10:27:08.086093"}
+{"text": "6", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-09-26T10:27:24.926521"}

@@ -1360,3 +1360,23 @@ Volledige originele roadmap: `taal_en_redeneerlimieten_roadmap.md`, idee 1+2 (vo
 **Getest:** `test_bug36_kapotte_invoer.py`, 12 tests, waarvan de 6 bugrelevante tests aantoonbaar falen op de oude code. Volledige suite (886 tests) groen.
 
 **Live bevestigd op battleserver (24 september 2026):** "ik drink graag café" → `'café'` intact doorgegeven (schoonmaakstap laat gewone accenttekens ongemoeid); "wiki fiets" → correcte Wikipedia-definitie (verplaatste `try` in `_fetch_summary()` werkt); "exit" → netjes afgesloten (exit-check buiten het vangnet werkt).
+
+---
+
+## ✅ Onderdeel 5 — "wil je erover lezen?"-flow voor `on_this_day.py` (26 september 2026)
+
+date_calendar_roadmap.md Onderdeel 5 + het vervolgontwerp uit nova_state.md punt 22 (stap 1, 2 en 3), in één keer gebouwd.
+
+**Wat het doet:** elk On This Day-antwoord is nu een genummerde lijst (3 feiten). "meer"/"nog meer"/"is er nog meer gebeurd" toont de volgende 3, met doorlopende nummering (4-6, 7-9, ...). Een nummer toont een korte Wikipedia-samenvatting met de paginatitel ervoor (max. 400 tekens, afgekapt op een volledige zin). Is de laptop verbonden, dan vraagt Nova of de volledige pagina geopend moet worden; "ja" opent die in de standaardbrowser op de laptop.
+
+**Hoe:**
+- `on_this_day.py`: eigen, lichte state `self._vervolg` (bewust GEEN `pending_question.py`, zelfde keuze als `wikipedia_teacher.py`'s `_pending_wiki_choice`). Nieuwe publieke `verwerk_vervolg(text)`. De state vervalt bij een ander bericht of na 10 minuten (`VERVOLG_VERVAL_SECONDEN`). Geen extra netwerkaanroep voor de samenvatting: de On This Day-respons bevat per feit al een `pages`-lijst met `extract` en `content_urls`. Eerste bruikbare pagina wordt gekozen, pure jaartalpagina's worden overgeslagen (eerlijke grens: structurele keuze, geen inhoudelijk begrip — daarom staat de paginatitel er altijd bij).
+- `intent_router.py`: nieuwe stap -1C2 in `route()`, direct na de Wikipedia-keuzevraag (-1C), vóór de generieke `text.isdigit()`-sense-keuze. Bewust geen `_emit_topic()`, zelfde als -1C.
+- `nova_client.py` (laptop): nieuw commandotype `open_url` in `AppController`, via `webbrowser.open()` in `asyncio.to_thread()`. Nieuwe `URL_WHITELIST_DOMEINEN` + `is_toegestane_url()`: enkel `https://`-links naar `wikipedia.org` (of subdomeinen) worden geopend — zelfde "vaste whitelist"-principe als `APP_WHITELIST`, de laptop vertrouwt niet blind wat battleserver stuurt.
+- `client_bridge.py`: ongewijzigd (resultaat gebruikt `app="browser"` zodat het `command_result`-formaat hetzelfde blijft).
+
+**Getest:** nieuw `test_on_this_day_vervolg.py` (25 tests, incl. integratie via de ECHTE `IntentRouter.route()`, aantoonbaar falend zonder stap -1C2) en `test_nova_client_open_url.py` (17 tests: toegestane links, geweigerde links zoals `http://`, `file://`, `javascript:`, nep-subdomeinen en de `gebruiker@`-truc, plus een test die de kopie vergelijkt met de echte `nova_client.py` — overgeslagen op battleserver, waar dat bestand niet staat). 3 tests in `test_on_this_day.py` aangepast aan het nieuwe lijstformaat. Volledige suite: 927 geslaagd, 1 overgeslagen.
+
+**Live bevestigd op battleserver (26 september 2026):** "wat is er gebeurd vandaag" → genummerde lijst 1-3, netjes onder elkaar; "meer" → 4-6 als "(vervolg)"; "6" → samenvatting "MV Le Joola: ..." + open-vraag; "ja" → pagina geopend in Chrome op de laptop.
+
+**Klein, cosmetisch, niet opgelost:** de toon-pipeline zet een "!" achter de laatste zin, ook achter een vraag ("(ja/nee)!"). Eigenschap van de pipeline, niet van deze module.

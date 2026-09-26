@@ -4191,6 +4191,22 @@ class IntentRouter:
         if wiki_teacher is not None and wiki_teacher.verwerk_wiki_keuze(text):
             return
 
+        # -1C2 On This Day-vervolgvraag (Onderdeel 5, 26 september
+        # 2026) -- zelfde voorrang-redenering als -1C hierboven: als
+        # Nova net een genummerde lijst historische feiten toonde, mag
+        # een nummer ("2"), "meer" of een "ja" op "wil je de pagina
+        # openen?" nooit door een andere intent opgevangen worden (een
+        # losse "2" zou anders bv. als sense-keuze of math gezien
+        # worden). Na -1C, zodat een openstaande Wikipedia-
+        # disambiguatievraag altijd voorrang houdt. Geeft zelf False
+        # terug (en laat haar lijst vervallen) zodra Kevin over iets
+        # anders begint -- dan loopt de routing hieronder gewoon door.
+        # Bewust GEEN _emit_topic() hier, net als bij -1C: dit is een
+        # vervolg op een vraag die al als "on_this_day" geteld werd.
+        on_this_day = self.event_bus.modules.get("on_this_day")
+        if on_this_day is not None and on_this_day.verwerk_vervolg(text):
+            return
+
         # -1D Pending "wat weet je over X"-vervolgantwoord (1 augustus
         # 2026, nieuwe module concept_overview.py) -- zelfde voorrang-
         # redenering als -1C hierboven: als Nova net het korte overzicht

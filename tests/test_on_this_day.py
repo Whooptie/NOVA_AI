@@ -301,11 +301,16 @@ class TestAntwoordEvents:
         mod._fetch_dag_data = lambda maand, dag: NEPPE_RESPONS_RIJK
         mod.on_this_day_intent({"text": "wat is er gebeurd vandaag", "type": "events"})
         tekst = bus.laatste_tekst()
-        assert tekst.startswith("Op deze dag: ")
-        assert "1793" in tekst
-        assert "1810" in tekst
-        assert "1948" in tekst
+        # Sinds Onderdeel 5 (26 september 2026): genummerde lijst,
+        # één feit per regel, i.p.v. "feit / feit / feit".
+        assert tekst.startswith("Op deze dag:\n")
+        assert "  1. 1793: De eerste steen van het Capitool wordt gelegd." in tekst
+        assert "  2. 1810: Chili verklaart zich onafhankelijk van Spanje." in tekst
+        assert "  3. 1948: Koningin Wilhelmina doet troonsafstand." in tekst
         assert "2001" not in tekst  # 4e event, moet afgekapt zijn
+        assert "4." not in tekst
+        # Er is nog een 4e event -> Nova biedt "meer" aan.
+        assert tekst.endswith("Typ een nummer voor meer uitleg, of 'meer' voor de volgende.")
 
     def test_lege_data_geeft_eerlijke_weinig_gevonden_melding(self, bus, mod):
         mod._fetch_dag_data = lambda maand, dag: NEPPE_RESPONS_LEEG
@@ -337,7 +342,13 @@ class TestAntwoordGeboren:
     def test_toont_geboortes(self, bus, mod):
         mod._fetch_dag_data = lambda maand, dag: NEPPE_RESPONS_RIJK
         mod.on_this_day_intent({"text": "wie is er geboren vandaag", "type": "geboren"})
-        assert bus.laatste_tekst() == "Geboren op deze dag: 1709: Samuel Johnson, Engels schrijver."
+        # Sinds Onderdeel 5 (26 september 2026): genummerde lijst. Maar
+        # 1 geboorte -> geen "meer"-hint, want er is niets meer.
+        assert bus.laatste_tekst() == (
+            "Geboren op deze dag:\n"
+            "  1. 1709: Samuel Johnson, Engels schrijver.\n"
+            "Typ een nummer voor meer uitleg."
+        )
 
     def test_lege_data_geeft_eerlijke_melding(self, bus, mod):
         mod._fetch_dag_data = lambda maand, dag: NEPPE_RESPONS_LEEG
@@ -363,7 +374,7 @@ class TestOnbekendVraagType:
         # crash, valt terug op de events-tak.
         mod._fetch_dag_data = lambda maand, dag: NEPPE_RESPONS_RIJK
         mod.on_this_day_intent({"text": "iets", "type": "onbekend_type_xyz"})
-        assert bus.laatste_tekst().startswith("Op deze dag: ")
+        assert bus.laatste_tekst().startswith("Op deze dag:\n")
 
 
 # ============================================================
