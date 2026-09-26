@@ -1365,7 +1365,7 @@ Ondanks de naam is `layer4_response` intussen **niet meer exclusief voor Layer 4
 
 ## 🧪 tests/ — pytest-testsuite (sinds 8 augustus 2026)
 
-`C:\Nova_AI\tests\`. Draaien vanuit de project-root: `pytest tests/ -v`. Stand 21 september 2026: **874 tests, allemaal groen** (~3.7s).
+`/app/tests/` in de `nova-ai`-container op battleserver (bewerken via VSCode over SSH, geen lokale kopie meer). Draaien vanuit de project-root in de container: `pytest tests/ -v`. Stand 26 september 2026: **928 tests: 927 groen, 1 bewust overgeslagen** (~3.7s). De overgeslagen test is `test_kopie_is_gelijk_aan_nova_client` in `test_nova_client_open_url.py`: `nova_client.py` staat op de laptop, niet op battleserver.
 
 Startpunt was een externe review (5 assertions in 21 print-gebaseerde scripts, plus een `SystemExit` die `pytest tests/` liet crashen bij collectie) — sindsdien in meerdere rondes opgebouwd, telkens risico-gebaseerd geprioriteerd (kans op stille regressie, niet moduleomvang):
 
