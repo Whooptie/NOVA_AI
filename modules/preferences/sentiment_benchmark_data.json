@@ -15,6 +15,13 @@
     {"text": "ik moet echt niks hebben van kou", "categorie": "negatief"},
     {"text": "wachtrijen zijn een regelrechte kwelling", "categorie": "negatief"},
     {"text": "ik kan er niet tegen, echt niet", "categorie": "negatief"},
-    {"text": "dat vind ik ronduit vervelend", "categorie": "negatief"}
+    {"text": "dat vind ik ronduit vervelend", "categorie": "negatief"},
+    {"text": "merci, dat lukt nu", "categorie": "positief"},
+    {"text": "helemaal goed zo", "categorie": "positief"},
+    {"text": "geef me het bord", "categorie": "neutraal_gemengd"},
+    {"text": "wat is een vulkaan", "categorie": "neutraal_gemengd"},
+    {"text": "sluit notepad", "categorie": "neutraal_gemengd"},
+    {"text": "dat is niet wat ik vroeg", "categorie": "negatief"},
+    {"text": "klopt niet hoor", "categorie": "negatief"}
   ]
 }

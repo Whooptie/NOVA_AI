@@ -1,40 +1,44 @@
-{"text": "ik hou van koffie maar het is niet mijn favoriet", "categorie": "neutraal_gemengd", "marge": 0.073, "grof_sentiment_regex": "positief", "tijdstip": "2026-07-26T12:12:41.041050"}
-{"text": "ik hou van koffie maar het is niet mijn favoriet", "categorie": "neutraal_gemengd", "marge": 0.073, "grof_sentiment_regex": "positief", "tijdstip": "2026-07-26T12:14:55.179111"}
-{"text": "ik hou van koffie maar het is niet mijn favoriet", "categorie": "neutraal_gemengd", "marge": 0.073, "grof_sentiment_regex": "positief", "tijdstip": "2026-07-26T12:15:15.303029"}
-{"text": "ik hou van koffie maar het is niet mijn favoriet", "categorie": "neutraal_gemengd", "marge": 0.073, "grof_sentiment_regex": "positief", "tijdstip": "2026-07-26T12:18:32.433581"}
-{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:47:13.712215"}
-{"text": "dank je, dat is duidelijk!", "categorie": "positief", "marge": 0.0067, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:49:57.353768"}
-{"text": "wat is thee", "categorie": "neutraal_gemengd", "marge": 0.0407, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:50:21.166555"}
-{"text": "dank je!", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:50:28.537476"}
-{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:34.725282"}
-{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:41.034480"}
-{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:45.337640"}
-{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:51.327812"}
-{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T21:08:16.376359"}
-{"text": "dit werkt niet, frustrerend", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:22:06.975259"}
-{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:23:39.222944"}
-{"text": "dit werkt niet, frustrerend!", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:27:00.930815"}
-{"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:46:46.927832"}
-{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:40:33.520136"}
-{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:41:35.485268"}
-{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:41:46.251047"}
-{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:13.492454"}
-{"text": "wat is java", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:20.358536"}
-{"text": "andere betekenissen", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:45.569335"}
-{"text": "wat is een hond", "categorie": "positief", "marge": 0.0552, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:11.906329"}
-{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:20.631452"}
-{"text": "vergelijk kat met hond", "categorie": "negatief", "marge": 0.0853, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:35.326310"}
-{"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-05T22:23:05.900525"}
-{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-09-09T19:39:56.840912"}
-{"text": "hey", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-12T21:49:34.589549"}
-{"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-13T15:31:40.612071"}
-{"text": "wat is het weer", "categorie": "neutraal_gemengd", "marge": 0.063, "grof_sentiment_regex": null, "tijdstip": "2026-09-13T18:58:18.327215"}
-{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-15T20:29:02.579101"}
-{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-18T18:54:01.284206"}
-{"text": "wat is er gebeurd op 9 december", "categorie": "positief", "marge": 0.0561, "grof_sentiment_regex": null, "tijdstip": "2026-09-19T10:51:04.897944"}
-{"text": "open vlc", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-19T20:55:21.259075"}
-{"text": "pff, wat een dag, veel te druk geweest", "categorie": "negatief", "marge": 0.019, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T19:35:26.065569"}
-{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T19:48:04.356623"}
-{"text": "dit werkt niet, frustrerend", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T20:05:06.961916"}
-{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T20:14:28.093165"}
-{"text": "ik drink graag café", "categorie": "positief", "marge": 0.0941, "grof_sentiment_regex": "positief", "tijdstip": "2026-09-24T19:55:35.103292"}
+{"text": "ik hou van koffie maar het is niet mijn favoriet", "categorie": "neutraal_gemengd", "marge": 0.073, "grof_sentiment_regex": "positief", "tijdstip": "2026-07-26T12:12:41.041050", "label_kevin": "neutraal_gemengd"}
+{"text": "ik hou van koffie maar het is niet mijn favoriet", "categorie": "neutraal_gemengd", "marge": 0.073, "grof_sentiment_regex": "positief", "tijdstip": "2026-07-26T12:14:55.179111", "label_kevin": "neutraal_gemengd"}
+{"text": "ik hou van koffie maar het is niet mijn favoriet", "categorie": "neutraal_gemengd", "marge": 0.073, "grof_sentiment_regex": "positief", "tijdstip": "2026-07-26T12:15:15.303029", "label_kevin": "neutraal_gemengd"}
+{"text": "ik hou van koffie maar het is niet mijn favoriet", "categorie": "neutraal_gemengd", "marge": 0.073, "grof_sentiment_regex": "positief", "tijdstip": "2026-07-26T12:18:32.433581", "label_kevin": "neutraal_gemengd"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:47:13.712215", "label_kevin": "neutraal_gemengd"}
+{"text": "dank je, dat is duidelijk!", "categorie": "positief", "marge": 0.0067, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:49:57.353768", "label_kevin": "positief"}
+{"text": "wat is thee", "categorie": "neutraal_gemengd", "marge": 0.0407, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:50:21.166555", "label_kevin": "neutraal_gemengd"}
+{"text": "dank je!", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:50:28.537476", "label_kevin": "positief"}
+{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:34.725282", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:41.034480", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:45.337640", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T20:51:51.327812", "label_kevin": "neutraal_gemengd"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-20T21:08:16.376359", "label_kevin": "neutraal_gemengd"}
+{"text": "dit werkt niet, frustrerend", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:22:06.975259", "label_kevin": "negatief"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:23:39.222944", "label_kevin": "neutraal_gemengd"}
+{"text": "dit werkt niet, frustrerend!", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:27:00.930815", "label_kevin": "negatief"}
+{"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T18:46:46.927832", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:40:33.520136", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:41:35.485268", "label_kevin": "neutraal_gemengd"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:41:46.251047", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is python", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:13.492454", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is java", "categorie": "positief", "marge": 0.023, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:20.358536", "label_kevin": "neutraal_gemengd"}
+{"text": "andere betekenissen", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:42:45.569335", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is een hond", "categorie": "positief", "marge": 0.0552, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:11.906329", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:20.631452", "label_kevin": "neutraal_gemengd"}
+{"text": "vergelijk kat met hond", "categorie": "negatief", "marge": 0.0853, "grof_sentiment_regex": null, "tijdstip": "2026-08-22T21:43:35.326310", "label_kevin": "neutraal_gemengd"}
+{"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-05T22:23:05.900525", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is dat", "categorie": "positief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-09-09T19:39:56.840912", "label_kevin": "neutraal_gemengd"}
+{"text": "hey", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-12T21:49:34.589549", "label_kevin": "neutraal_gemengd"}
+{"text": "help debug", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-13T15:31:40.612071", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is het weer", "categorie": "neutraal_gemengd", "marge": 0.063, "grof_sentiment_regex": null, "tijdstip": "2026-09-13T18:58:18.327215", "label_kevin": "neutraal_gemengd"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-15T20:29:02.579101", "label_kevin": "neutraal_gemengd"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-18T18:54:01.284206", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is er gebeurd op 9 december", "categorie": "positief", "marge": 0.0561, "grof_sentiment_regex": null, "tijdstip": "2026-09-19T10:51:04.897944", "label_kevin": "neutraal_gemengd"}
+{"text": "open vlc", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-19T20:55:21.259075", "label_kevin": "neutraal_gemengd"}
+{"text": "pff, wat een dag, veel te druk geweest", "categorie": "negatief", "marge": 0.019, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T19:35:26.065569", "label_kevin": "neutraal_gemengd"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T19:48:04.356623", "label_kevin": "neutraal_gemengd"}
+{"text": "dit werkt niet, frustrerend", "categorie": "neutraal_gemengd", "marge": 0.0463, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T20:05:06.961916", "label_kevin": "negatief"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-21T20:14:28.093165", "label_kevin": "neutraal_gemengd"}
+{"text": "ik drink graag café", "categorie": "positief", "marge": 0.0941, "grof_sentiment_regex": "positief", "tijdstip": "2026-09-24T19:55:35.103292", "label_kevin": "positief"}
+{"text": "wat is er vandaag gebeurt", "categorie": "neutraal_gemengd", "marge": 0.0182, "grof_sentiment_regex": null, "tijdstip": "2026-09-30T20:23:10.082184", "label_kevin": "neutraal_gemengd"}
+{"text": "wat is er vandaag gebeurd", "categorie": "neutraal_gemengd", "marge": 0.0182, "grof_sentiment_regex": null, "tijdstip": "2026-09-30T20:23:28.399276", "label_kevin": "neutraal_gemengd"}
+{"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-30T20:27:09.950649", "label_kevin": "neutraal_gemengd"}
+{"text": "hey", "categorie": "negatief", "marge": 0.007, "grof_sentiment_regex": null, "tijdstip": "2026-10-02T20:57:46.558237", "label_kevin": "neutraal_gemengd"}

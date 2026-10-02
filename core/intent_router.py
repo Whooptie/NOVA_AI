@@ -1448,7 +1448,7 @@ class IntentRouter:
             )
             return True
 
-        if re.search(r"\bwat is er gebeurd\b", t) or "op deze dag" in t:
+        if re.search(r"\bwat is er\b.*\bgebeur(d|t)\b", t) or "op deze dag" in t:
             dbg(f"{C_BLUE}→ on_this_day (events){C_RESET}")
             self.event_bus.publish(
                 "intent_on_this_day_query", {"text": text, "type": "events"}

@@ -115,3 +115,7 @@
 {"tekst": "ik voel me moe", "hoogste_gok": "preference", "confidence": 0.1636, "tijdstip": "2026-09-24T19:57:40.633490"}
 {"tekst": "ik ben moe", "hoogste_gok": "preference", "confidence": 0.2823, "tijdstip": "2026-09-24T19:57:47.387688"}
 {"tekst": "omdat ik veel moet werken", "hoogste_gok": "preference", "confidence": 0.1449, "tijdstip": "2026-09-24T19:58:49.626475"}
+{"tekst": "emercence", "hoogste_gok": "chess", "confidence": 0.1267, "tijdstip": "2026-09-30T20:21:13.777846"}
+{"tekst": "hyey", "hoogste_gok": "chess", "confidence": 0.1267, "tijdstip": "2026-09-30T20:27:22.028874"}
+{"tekst": "HEY", "hoogste_gok": "greeting", "confidence": 0.2062, "tijdstip": "2026-10-02T20:57:41.536601"}
+{"tekst": "", "hoogste_gok": "chess", "confidence": 0.1267, "tijdstip": "2026-10-02T22:01:12.090248"}

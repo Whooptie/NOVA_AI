@@ -100,6 +100,17 @@ LUISTER_POORT = 8765
 # (bv. omdat de laptop-client gecrasht is of de laptop uit staat).
 DATA_VERVAL_SECONDEN = 180  # 3 minuten
 
+# Aparte, LANGERE vervaltijd voor de webcam (30 sept 2026). De laptop
+# stuurt activity/focus elke 15 seconden, maar de webcam slechts elke
+# 5 minuten (PRESENCE_INTERVAL_SECONDEN in nova_client.py). Met de
+# gewone 3 minuten hierboven werd elke webcammeting na 3 minuten al
+# weggegooid, zodat Nova 2 van elke 5 minuten "onbekend" zag i.p.v. de
+# laatste meting. 7 minuten = het meetinterval (5 min) plus wat marge
+# voor een trage meting of een korte herverbinding. Wijzig je het
+# webcaminterval in nova_client.py, pas dit dan mee aan (altijd iets
+# groter dan dat interval houden).
+PRESENCE_VERVAL_SECONDEN = 420  # 7 minuten
+
 
 class ClientBridge:
     """
@@ -336,10 +347,10 @@ class ClientBridge:
     # Interne helper: is de laatst-ontvangen data nog vers genoeg?
     # ------------------------------------------------------------
 
-    def _is_vers(self, tijdstip):
+    def _is_vers(self, tijdstip, max_leeftijd=DATA_VERVAL_SECONDEN):
         if tijdstip == 0.0:
             return False  # nog nooit iets ontvangen
-        return (time.time() - tijdstip) <= DATA_VERVAL_SECONDEN
+        return (time.time() - tijdstip) <= max_leeftijd
 
     # ------------------------------------------------------------
     # Publieke, thread-safe lees-API voor de Remote*-klassen hieronder
@@ -359,8 +370,8 @@ class ClientBridge:
 
     def get_laatste_presence(self):
         with self._lock:
-            leeftijd = time.time() - self._laatste_presence_tijd if self._laatste_presence_tijd else None
-            if self._is_vers(self._laatste_presence_tijd):
+            # Eigen, langere vervaltijd -- zie PRESENCE_VERVAL_SECONDEN.
+            if self._is_vers(self._laatste_presence_tijd, PRESENCE_VERVAL_SECONDEN):
                 return self._laatste_presence
             return None
 

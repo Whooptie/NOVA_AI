@@ -5,8 +5,9 @@ import random
 
 class SessionWatcher:
     """
-    Houdt bij hoe lang Kevin al aan het chatten is met Nova, en stuurt
-    na een ingestelde tijd één keer een korte pauze-melding.
+    Houdt bij hoe lang Kevin al onafgebroken actief is op zijn laptop
+    (sinds 30 sept 2026, zie check_pauze()), en stuurt na een ingestelde
+    tijd een korte pauze-melding.
 
     Sinds 22 juli 2026 OOK: houdt bij welke activiteit nu loopt en
     stuurt op het juiste moment Nova's "mag ik storen?"-vraag
@@ -20,6 +21,16 @@ class SessionWatcher:
     # Na hoeveel seconden zonder pauze stuurt Nova een melding?
     # 1800 seconden = 30 minuten. Zet dit tijdelijk lager (bv. 60) om te testen.
     PAUZE_DREMPEL_SECONDEN = 1800
+
+    # Pauzetimer-herontwerp (30 sept 2026): hoe lang moet Kevin GEEN
+    # input geven (muis/toetsenbord, gemeten door de laptop-client)
+    # voor dat telt als een ECHTE pauze, waarna de teller opnieuw
+    # begint? 600 seconden = 10 minuten -- zelfde grens als
+    # FocusDetector's "waarschijnlijk_weg" in nova_client.py. Een kort
+    # moment zonder input (iets lezen, even nadenken) reset de teller
+    # dus NIET; 10 minuten weg van de laptop wel. Staat de laptop uit
+    # of komt er geen data binnen, dan telt dat ook als "geen input".
+    PAUZE_RESET_SECONDEN = 600
 
     # Na hoeveel MINUTEN sinds het starten van een activiteit vraagt
     # Nova voor het eerst "mag ik storen?" -- vaste waarde, besproken
@@ -35,6 +46,16 @@ class SessionWatcher:
         self.event_bus = event_bus
         self.start_time = time.time()
         self.laatste_melding_time = None
+
+        # Pauzetimer-herontwerp (30 sept 2026): de pauzeteller meet nu
+        # hoe lang KEVIN onafgebroken actief is op zijn laptop, niet meer
+        # hoe lang NOVA al draait (self.start_time hierboven blijft
+        # bestaan, maar check_pauze() gebruikt het niet meer).
+        #   _sessie_start: wanneer de huidige, onafgebroken actieve
+        #                  periode begon (None = geen lopende sessie)
+        #   _laatst_actief: laatste moment waarop focus "actief" was
+        self._sessie_start = None
+        self._laatst_actief = None
         # Layer 5 — bepaalt of dit een goed moment is om te onderbreken.
         # Kan None zijn (bv. als context_manager nog niet geladen is),
         # daarom altijd voorzichtig checken met "if self.context_manager".
@@ -513,55 +534,117 @@ class SessionWatcher:
 
         return f"{opening} {midden} {afsluiting}"
 
+    def _haal_focus_niveau(self):
+        """
+        Vraagt het huidige focus-niveau op ("actief", "mogelijk_afwezig",
+        "waarschijnlijk_weg" of "onbekend"). Sinds de Windows-companion-
+        client komt dit van de laptop (RemoteFocusDetector); staat de
+        laptop uit, dan is het "onbekend".
+
+        BEWUST GEEN fail-open zoals _is_kevin_actief() hierboven: voor
+        de pauzeteller betekent "geen info" gewoon "we weten niet dat
+        Kevin werkt", dus geen sessie laten oplopen.
+        """
+        detector = self.event_bus.modules.get("focus_detector") if hasattr(self.event_bus, "modules") else None
+        if detector is None:
+            return "onbekend"
+
+        try:
+            info = detector.get_focus_info()
+            return info.get("focus_level", "onbekend")
+        except Exception:
+            return "onbekend"
+
     def check_pauze(self):
         """
-        Wordt periodiek aangeroepen door de achtergrondthread in main.py.
-        Kijkt of de sessie al lang genoeg loopt sinds de start (of sinds
-        de vorige melding) om een pauze voor te stellen.
+        Wordt periodiek (elke 60 seconden) aangeroepen door de
+        achtergrondthread in main.py.
+
+        HERONTWERP (30 sept 2026): meet hoe lang KEVIN al onafgebroken
+        actief is op zijn laptop -- niet meer hoe lang Nova al draait.
+        De oude versie telde vanaf Nova's opstart (self.start_time), wat
+        klopte zolang Nova enkel tijdens een sessie op de laptop draaide,
+        maar sinds de 24/7-verhuizing naar battleserver elke 30 minuten
+        een melding gaf, dag en nacht, ook zonder dat Kevin er was.
+
+        Werking, puur symbolisch (tijdstippen vergelijken):
+        1. Focus "actief" (recente muis/toetsenbord-input op de laptop)?
+           -> start een sessie als er nog geen liep, en onthoud "nu
+              was Kevin actief".
+        2. Al PAUZE_RESET_SECONDEN (10 min) geen actieve focus meer
+           gezien (Kevin is weg, of de laptop staat uit)?
+           -> dat was een echte pauze: sessie en melding-tijdstip
+              wissen, de teller begint later opnieuw.
+        3. Loopt er een sessie, is Kevin NU actief, en zijn er sinds het
+           sessiebegin (of sinds de vorige melding) PAUZE_DREMPEL_SECONDEN
+           verstreken? -> Layer 5 vragen of het een goed moment is
+           (can_interrupt(), dat sinds 30 sept 2026 ook checkt of Kevin
+           het bericht kan ZIEN), en zo ja: melden.
         """
         nu = time.time()
+        focus_niveau = self._haal_focus_niveau()
 
-        # Referentiepunt: sinds de laatste melding, of sinds de start
-        # als er nog nooit gemeld is.
-        referentie = self.laatste_melding_time or self.start_time
+        # --- Stap 1: actief? Dan loopt (of start) de sessie ---
+        if focus_niveau == "actief":
+            if self._sessie_start is None:
+                self._sessie_start = nu
+            self._laatst_actief = nu
 
-        verstreken = nu - referentie
+        # --- Stap 2: lang genoeg inactief? Dan was dat een pauze ---
+        elif (
+            self._laatst_actief is not None
+            and nu - self._laatst_actief >= self.PAUZE_RESET_SECONDEN
+        ):
+            self._sessie_start = None
+            self._laatst_actief = None
+            self.laatste_melding_time = None
 
-        if verstreken >= self.PAUZE_DREMPEL_SECONDEN:
-            # Layer 5 vragen: is dit een goed moment om te onderbreken?
-            # Als context_manager niet beschikbaar is (bv. door een
-            # laadvolgorde-probleem), gaan we voorzichtig gewoon door —
-            # Layer 5 ontbreken mag nooit de pauze-melding blokkeren,
-            # want dat zou de bestaande functionaliteit stiller maken
-            # dan voorheen. We proberen het WEL opnieuw bij de
-            # eerstvolgende check (verstreken blijft oplopen), in
-            # plaats van laatste_melding_time hier al bij te werken.
-            if self.context_manager is not None:
-                try:
-                    mag_onderbreken = self.context_manager.can_interrupt()
-                except Exception:
-                    mag_onderbreken = True
-            else:
+        # --- Stap 3: melden? ---
+        if self._sessie_start is None:
+            return
+
+        if focus_niveau != "actief":
+            # Kevin is net even niet actief (bv. 3 min iets aan het
+            # lezen) -- geen melding tegen een leeg scherm, maar de
+            # sessie blijft wel doorlopen tot stap 2 ze afsluit.
+            return
+
+        # Referentiepunt: sinds de laatste melding BINNEN deze sessie,
+        # of sinds het begin van de sessie.
+        referentie = self._sessie_start
+        if self.laatste_melding_time is not None and self.laatste_melding_time > referentie:
+            referentie = self.laatste_melding_time
+
+        if nu - referentie < self.PAUZE_DREMPEL_SECONDEN:
+            return
+
+        # Layer 5 vragen: is dit een goed moment om te onderbreken?
+        # Ontbreekt context_manager (laadvolgorde-probleem), dan gaan we
+        # voorzichtig gewoon door -- zelfde keuze als vroeger.
+        if self.context_manager is not None:
+            try:
+                mag_onderbreken = self.context_manager.can_interrupt()
+            except Exception:
                 mag_onderbreken = True
+        else:
+            mag_onderbreken = True
 
-            if not mag_onderbreken:
-                # Nog niet melden — probeer het over 60 seconden
-                # opnieuw (achtergrond_loop() roept dit sowieso elke
-                # minuut aan). laatste_melding_time NIET bijwerken,
-                # anders "verliest" de sessie deze wachttijd stilletjes.
-                #
-                # Enkel een console-print voor Kevin (debug), GEEN
-                # chat_response — Nova "zegt" dit niet tegen zichzelf,
-                # dit is puur zichtbaar voor wie main.py's terminal leest.
-                print("[SESSION_WATCHER] Pauze-melding uitgesteld door Layer 5 (context_manager.can_interrupt() == False)")
-                return
+        if not mag_onderbreken:
+            # Nog niet melden -- probeer het over 60 seconden opnieuw.
+            # laatste_melding_time NIET bijwerken, anders "verliest" de
+            # sessie deze wachttijd stilletjes. Enkel een console-print
+            # voor debug, GEEN chat_response.
+            print("[SESSION_WATCHER] Pauze-melding uitgesteld door Layer 5 (context_manager.can_interrupt() == False)")
+            return
 
-            self.laatste_melding_time = nu
-            minuten = int(self.PAUZE_DREMPEL_SECONDEN / 60)
+        self.laatste_melding_time = nu
+        # Het ECHTE aantal minuten sinds het begin van de sessie (bij een
+        # tweede melding dus bv. 60 i.p.v. opnieuw 30).
+        minuten = int((nu - self._sessie_start) / 60)
 
-            self.event_bus.publish("chat_response", {
-                "text": self._formuleer_pauze_melding(minuten)
-            })
+        self.event_bus.publish("chat_response", {
+            "text": self._formuleer_pauze_melding(minuten)
+        })
 
 
 def init_module(event_bus, sem=None):

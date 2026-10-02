@@ -6,6 +6,7 @@ import ctypes
 import time
 import threading
 import traceback
+from datetime import datetime
 
 # ---------------------------------------------------------------
 # ANSI-kleurcodes activeren in het Windows-console-venster
@@ -51,6 +52,17 @@ RESET = "\033[0m"
 # Kleiner getal = sneller. Pas dit gerust aan naar smaak.
 TYPEWRITER_SNELHEID = 0.02
 
+# Tijdstempel ([HH:MM]) voor elke "Nova:"- en "Jij:"-regel (30 sept
+# 2026). Handig om te zien WANNEER een proactief bericht kwam. Zet op
+# False om ze weer uit te zetten.
+TOON_TIJDSTEMPELS = True
+
+def tijdstempel():
+    """Geeft bv. '[20:15] ' terug (in cyaan), of '' als het uit staat."""
+    if not TOON_TIJDSTEMPELS:
+        return ""
+    return f"{CYAN}[{datetime.now():%H:%M}]{RESET} "
+
 # Bug #30-fix (typewriter/threading race condition, 8 aug 2026):
 # print_nova_typewriter() wordt aangeroepen vanuit on_chat_response(),
 # en on_chat_response() kan door ELKE thread getriggerd worden — de
@@ -73,7 +85,7 @@ def print_nova_typewriter(tekst):
     """
     with _typewriter_lock:
         # "Nova: " blijft in 1 keer verschijnen — geen vertraging hier
-        print(f"{MAGENTA}Nova: {RESET}", end="", flush=True)
+        print(f"{tijdstempel()}{MAGENTA}Nova: {RESET}", end="", flush=True)
 
         # De rest van de tekst letter per letter
         for letter in tekst:
@@ -140,7 +152,7 @@ def on_chat_response(data, event_type=None):
     # instant=True (bv. help.py) betekent: lang, opgemaakt overzicht,
     # geen gesproken zin — toon in 1 keer, geen typewriter-effect.
     if data.get("instant"):
-        print(f"{MAGENTA}Nova: {msg}{RESET}")
+        print(f"{tijdstempel()}{MAGENTA}Nova: {msg}{RESET}")
     else:
         print_nova_typewriter(msg)
 
@@ -441,6 +453,21 @@ def main():
         # VOORDAT een module de tekst ooit te zien krijgt. Zie de uitleg
         # bij maak_invoer_veilig() bovenaan dit bestand.
         user_input = maak_invoer_veilig(user_input)
+
+        # Tijdstempel bij Kevin's eigen regel (30 sept 2026): de "Jij: "-
+        # prompt verscheen al toen Nova klaar was met antwoorden -- dat
+        # kan lang voor het typen zijn. Daarom herschrijven we de regel
+        # pas NA Enter, met de echte verzendtijd:
+        #   \033[A  = cursor 1 regel omhoog (naar de regel die je typte)
+        #   \r      = naar het begin van die regel
+        #   \033[K  = die regel leegmaken
+        # Bewust NA maak_invoer_veilig(): kapotte tekens zouden het
+        # printen anders kunnen laten crashen (Bug #36).
+        # Beperking: is je bericht langer dan de breedte van de
+        # terminal (loopt het over 2 regels), dan wordt enkel de
+        # onderste regel herschreven -- puur cosmetisch.
+        if TOON_TIJDSTEMPELS:
+            print(f"\033[A\r\033[K{tijdstempel()}{GREEN}Jij: {RESET}{user_input}")
 
         # "exit" staat bewust BUITEN het vangnet hieronder: als het
         # afsluiten zelf ooit een fout zou geven, moet Nova toch stoppen,

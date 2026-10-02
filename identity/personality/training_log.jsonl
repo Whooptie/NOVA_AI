@@ -29,3 +29,7 @@
 {"succes": true, "aantal_training_voorbeelden": 594, "aantal_extra_uit_uncertain": 542, "nieuwe_score": 0.8947, "huidige_score": 1.0, "wordt_actief": false, "tijdstip": "2026-09-14T16:20:38.601737"}
 {"succes": true, "aantal_training_voorbeelden": 614, "aantal_extra_uit_uncertain": 562, "nieuwe_score": 0.8947, "huidige_score": 1.0, "wordt_actief": false, "tijdstip": "2026-09-19T10:31:35.928166"}
 {"succes": true, "aantal_training_voorbeelden": 634, "aantal_extra_uit_uncertain": 582, "nieuwe_score": 0.8947, "huidige_score": 1.0, "wordt_actief": false, "tijdstip": "2026-09-19T21:17:12.922400"}
+{"succes": true, "aantal_training_voorbeelden": 654, "aantal_extra_uit_uncertain": 602, "nieuwe_score": 0.8947, "huidige_score": 1.0, "wordt_actief": false, "tijdstip": "2026-09-30T20:28:31.574801"}
+{"succes": true, "aantal_training_voorbeelden": 654, "aantal_extra_uit_uncertain": 586, "nieuwe_score": 0.7273, "huidige_score": 0.7727, "wordt_actief": false, "tijdstip": "2026-10-02T20:55:26.500829"}
+{"succes": true, "aantal_training_voorbeelden": 68, "aantal_extra_uit_uncertain": 0, "nieuwe_score": 0.8636, "huidige_score": 0.7727, "wordt_actief": true, "tijdstip": "2026-10-02T21:12:35.954511"}
+{"succes": true, "aantal_training_voorbeelden": 78, "aantal_extra_uit_uncertain": 10, "nieuwe_score": 0.8636, "huidige_score": 0.8636, "wordt_actief": true, "tijdstip": "2026-10-02T21:48:35.742812"}

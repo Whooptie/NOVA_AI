@@ -67,7 +67,14 @@ class DebugCommands:
             (lambda t: t == "topic suggesties", self._topic_suggesties),
             (lambda t: t == "topic suggesties forceer", self._topic_suggesties_forceer),
             (lambda t: t.startswith("variant debug"), self._variant_debug),
+            (lambda t: t == "label status", self._label_status),
+            (lambda t: t.startswith("label signaal") or t.startswith("label sentiment"), self._label),
         ]
+
+        # Fase B (2 oktober 2026): welke twijfelzin er per soort laatst
+        # getoond werd door 'label signaal'/'label sentiment' -- het
+        # volgende 'label <soort> <label>' slaat op DEZE zin.
+        self._label_huidig = {"signaal": None, "sentiment": None}
 
         event_bus.subscribe("debug_command", self.handle_debug_command)
 
@@ -364,6 +371,111 @@ class DebugCommands:
             print("(let op: dit toont enkel de indices tot en met de hoogste met "
                   "bekende data -- als het sjabloon meer varianten heeft dan hier "
                   "getoond, krijgen die het neutrale gewicht in de echte pipeline.)")
+
+    # ------------------------------------------------------------------
+    # Fase B (2 oktober 2026) — twijfelgevallen labelen
+    # ------------------------------------------------------------------
+
+    def _label(self, user_input):
+        """
+        Gebruik:
+          label signaal              -> toont de volgende ongelabelde twijfelzin
+          label signaal <label>      -> labelt de getoonde zin, toont de volgende
+          label signaal skip         -> slaat de zin over (nooit trainingsdata)
+          (idem met 'sentiment')
+
+        Het label geldt voor ALLE identieke regels tegelijk. Logica zit
+        in core/twijfel_labeler.py; dit is enkel de bediening.
+        """
+        # Late import: een fout in twijfel_labeler mag nooit alle andere
+        # debug-commando's onbruikbaar maken.
+        from core import twijfel_labeler
+
+        delen = user_input.lower().split()
+        if len(delen) not in (2, 3) or delen[1] not in twijfel_labeler.BRONNEN:
+            print(f"{C_RED}Gebruik: 'label signaal' / 'label signaal <label>' "
+                  f"(idem met 'sentiment'), of 'label status'.{C_RESET}")
+            return
+
+        soort = delen[1]
+        bron = twijfel_labeler.BRONNEN[soort]
+        uncertain_pad = twijfel_labeler.pad(soort, "uncertain")
+        toegestaan = twijfel_labeler.toegestane_labels(
+            twijfel_labeler.pad(soort, "training"), bron["label_veld"]
+        )
+
+        if len(delen) == 3:
+            label = delen[2]
+            if label != twijfel_labeler.SKIP and label not in toegestaan:
+                print(f"{C_RED}Onbekend label '{label}'. Geldig: "
+                      f"{', '.join(sorted(toegestaan))} (of: skip).{C_RESET}")
+                return
+
+            huidig = self._label_huidig.get(soort)
+            if not huidig:
+                print(f"{C_RED}Er is nog geen zin getoond. Typ eerst 'label {soort}'.{C_RESET}")
+                return
+
+            aantal = twijfel_labeler.zet_label(uncertain_pad, huidig, label)
+            self._label_huidig[soort] = None
+
+            if aantal == 0:
+                print(f"{C_RED}'{huidig}' niet (meer) gevonden in het bestand "
+                      f"-- niets gewijzigd.{C_RESET}")
+            else:
+                print(f"{C_CYAN}'{huidig}' -> {label} ({aantal} regel(s) bijgewerkt).{C_RESET}")
+                if label != twijfel_labeler.SKIP:
+                    self._label_check_hertraining(bron["module"])
+            print()
+
+        self._label_toon_volgende(soort, uncertain_pad, bron, toegestaan)
+
+    def _label_toon_volgende(self, soort, uncertain_pad, bron, toegestaan):
+        from core import twijfel_labeler
+
+        volgende = twijfel_labeler.volgende_ongelabelde(uncertain_pad, bron["gok_veld"])
+        if volgende is None:
+            self._label_huidig[soort] = None
+            print(f"{C_CYAN}Geen ongelabelde twijfelzinnen meer voor '{soort}'.{C_RESET}")
+            return
+
+        self._label_huidig[soort] = volgende["tekst"]
+        print(f"{C_CYAN}--- Label {soort} ({volgende['nog_te_gaan']} ongelabelde "
+              f"unieke zin(nen)) ---{C_RESET}")
+        print(f"{C_CYAN}Zin: \"{volgende['tekst']}\"  ({volgende['aantal']}x gelogd){C_RESET}")
+        print(f"{C_CYAN}Gok van het model: {volgende['model_gok']}{C_RESET}")
+        print(f"{C_CYAN}Geldige labels: {', '.join(sorted(toegestaan))} (of: skip){C_RESET}")
+        print(f"{C_CYAN}Antwoord met: label {soort} <label>{C_RESET}")
+
+    def _label_check_hertraining(self, module_naam):
+        """
+        Na een label meteen checken of de hertraining-drempel gehaald
+        is, i.p.v. te wachten tot er toevallig een nieuw twijfelgeval
+        gelogd wordt. De module zelf beslist (en de veiligheidsrem in
+        de trainer blijft gelden).
+        """
+        module = self.loader.loaded_modules.get(module_naam)
+        if module is None:
+            module = getattr(self.event_bus, "modules", {}).get(module_naam)
+
+        if module is None or not hasattr(module, "_check_hertraining"):
+            print(f"(hertraining-check overgeslagen: module '{module_naam}' niet gevonden)")
+            return
+
+        try:
+            module._check_hertraining(bij_opstart=False)
+        except Exception as e:
+            print(f"{C_RED}Fout bij hertraining-check: {e}{C_RESET}")
+
+    def _label_status(self, user_input):
+        from core import twijfel_labeler
+
+        print(f"{C_CYAN}--- Twijfelgevallen: labelstatus ---{C_RESET}")
+        for soort in twijfel_labeler.BRONNEN:
+            s = twijfel_labeler.status(twijfel_labeler.pad(soort, "uncertain"))
+            print(f"{C_CYAN}{soort}: {s['unieke_zinnen']} unieke zinnen ({s['regels']} regels) -- "
+                  f"{s['ongelabeld']} ongelabeld, {s['kevin']} door jou, "
+                  f"{s['auto']} automatisch, {s['skip']} overgeslagen.{C_RESET}")
 
     # ------------------------------------------------------------------
     # Layer 0 — Memory
@@ -941,12 +1053,15 @@ class DebugCommands:
         else:
             model_status = "geladen" if classifier.model is not None else "NIET geladen (train_sentiment_classifier.py nog niet gedraaid)"
             status = classifier._laad_hertraining_status()
-            n_twijfel = classifier._tel_huidige_uncertain_regels()
-            n_sinds_laatste = n_twijfel - status["aantal_bij_laatste_training"]
+            # Fase A (2 oktober 2026): telt door Kevin gelabelde unieke
+            # twijfelzinnen, niet meer ruwe logregels (zie
+            # sentiment_classifier.py).
+            n_gelabeld = classifier._tel_gelabelde_twijfelzinnen()
+            n_sinds_laatste = n_gelabeld - status["gelabeld_bij_laatste_training"]
 
             print(f"{C_CYAN}Sentiment-classifier: model {model_status}.{C_RESET}")
             print(f"{C_CYAN}Laatste hertraining: {status['laatste_training'] or 'nog nooit'}.{C_RESET}")
-            print(f"{C_CYAN}Twijfelgevallen: {n_twijfel} totaal, {n_sinds_laatste} nieuw sinds "
+            print(f"{C_CYAN}Gelabelde twijfelzinnen: {n_gelabeld} totaal, {n_sinds_laatste} nieuw sinds "
                   f"laatste hertraining (drempel: {classifier.HERTRAINING_DREMPEL}).{C_RESET}")
 
         if not kandidaten:

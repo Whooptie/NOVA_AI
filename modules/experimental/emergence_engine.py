@@ -103,6 +103,43 @@ class EmergenceEngine:
         self.EMERGENCE_TOPIC_COOLDOWN_MINUTEN = 15
 
         # ─────────────────────────────────
+        # Periodiek pad (reflect(), elke 10 min via main.py): strengere
+        # regels dan het reactieve pad hierboven (30 sept 2026)
+        # ─────────────────────────────────
+        # Probleem dat dit oplost: reflect() sprak ELK insight uit dat
+        # zijn drempel haalde (een blok van 3-4 zinnen), en omdat de
+        # 15-min-cooldown korter dan 2 rondes (2x10 min) is, kwam
+        # hetzelfde blok om de 20 minuten gewoon terug.
+        #
+        # Drie nieuwe regels, ENKEL voor het periodieke pad (het
+        # reactieve pad _on_elk_event blijft zoals het was: dat reageert
+        # op wat Kevin NU zegt, en mag dus sneller reageren):
+        #
+        # 1. Maximaal 1 insight per ronde: het insight dat zijn drempel
+        #    het RUIMST haalt (confidence gedeeld door de effectieve
+        #    drempel -- zo worden de verschillende schalen, 0-1 vs.
+        #    ruwe aantallen, eerlijk vergelijkbaar).
+        # 2. Enkel NIEUWE INHOUD: hetzelfde insight-type wordt pas
+        #    opnieuw uitgesproken als de inhoud veranderd is (een ander
+        #    woord/concept/eigenschap/uur, of een getal dat minstens
+        #    INHOUD_GROEI_DREMPEL hoger ligt dan de vorige keer). Dit is
+        #    wat het gedrag "emergent" maakt: Nova reageert op
+        #    verandering in de data, niet op een klok.
+        # 3. Een lange cooldown per insight-type met SPREIDING: na het
+        #    uitspreken wordt een willekeurig moment tussen MIN en MAX
+        #    uur later gekozen waarop dat type pas weer mag -- zodat het
+        #    nooit als een vast uurwerk aanvoelt. (Het willekeurige deel
+        #    bepaalt enkel WANNEER, nooit WAT -- dat komt uit de data.)
+        #
+        # Opgeslagen onder de sleutel "_periodiek" in hetzelfde
+        # cooldown-bestand (emergence_topic_cooldown_state.json), niet
+        # in een apart bestand: zo blijven bestaande tests die dat
+        # bestand al naar tmp_path omleiden, automatisch geïsoleerd.
+        self.PERIODIEK_COOLDOWN_MIN_UUR = 18
+        self.PERIODIEK_COOLDOWN_MAX_UUR = 30
+        self.INHOUD_GROEI_DREMPEL = 0.25  # 25% hoger telt als "nieuw"
+
+        # ─────────────────────────────────
         # Feedback-opslag (insight_feedback.json)
         # ─────────────────────────────────
         # Zelfde padconventie als weather.py (eerste gebruiker,
@@ -1309,6 +1346,125 @@ class EmergenceEngine:
         self._laatst_gemeld[sleutel] = datetime.now().timestamp()
         self._sla_cooldown_state_op()
 
+    # ─────────────────────────────────
+    # Periodiek pad: inhoud-geheugen + lange cooldown (30 sept 2026)
+    # ─────────────────────────────────
+
+    _PERIODIEK_SLEUTEL = "_periodiek"
+
+    def _periodiek_state(self) -> Dict:
+        """
+        Het deel van de cooldown-state dat enkel voor het periodieke pad
+        dient: per insight-TYPE wat er laatst gezegd is en vanaf wanneer
+        dat type opnieuw mag. Bestaat het nog niet (of is het kapot),
+        dan wordt het leeg aangemaakt -- geen crash.
+        """
+        state = self._laatst_gemeld.get(self._PERIODIEK_SLEUTEL)
+        if not isinstance(state, dict):
+            state = {}
+            self._laatst_gemeld[self._PERIODIEK_SLEUTEL] = state
+        return state
+
+    def _inhoud_van(self, insight: Dict):
+        """
+        Vat de INHOUD van een insight samen als (label, getal), om te
+        kunnen vergelijken met wat de vorige keer gezegd werd:
+        - label: waarover het gaat (woord, concept, eigenschap, ...)
+        - getal: een aantal dat kan groeien, of None als er geen is
+
+        Puur symbolisch: velden uit de insight-dictionary lezen.
+        """
+        insight_type = insight.get("type")
+
+        if insight_type == "woordverband":
+            woorden = sorted([str(insight.get("woord1", "")), str(insight.get("woord2", ""))])
+            return "|".join(woorden), None
+        if insight_type == "trending_topic":
+            return str(insight.get("woord", "")), None
+        if insight_type == "tijdspatroon":
+            return f"{insight.get('event_type', '')}|{insight.get('uur', '')}", None
+        if insight_type == "kennisdichtheid":
+            return str(insight.get("concept", "")), insight.get("aantal_relaties")
+        if insight_type == "personality_drift":
+            return str(insight.get("trait", "")), insight.get("aantal_shifts")
+        if insight_type == "scherm_focus":
+            return str(insight.get("screen_focus", "")), None
+
+        # Onbekend type: de volledige tekst van de insight-dict als label
+        # -- elke wijziging telt dus als nieuw, nooit een crash.
+        return str(sorted(insight.items())), None
+
+    def _is_nieuwe_inhoud(self, insight: Dict) -> bool:
+        """
+        True als dit insight iets NIEUWS zegt t.o.v. wat Nova de vorige
+        keer over dit insight-type hardop zei:
+        - nog nooit iets over dit type gezegd -> nieuw
+        - ander label (ander woord/concept/eigenschap/uur) -> nieuw
+        - zelfde label, maar het getal ligt minstens INHOUD_GROEI_DREMPEL
+          hoger dan de vorige keer (bv. 23 -> 29 of meer) -> nieuw
+        - anders -> niet nieuw (dit heeft Kevin al gehoord)
+        """
+        vorige = self._periodiek_state().get(insight.get("type"))
+        if not isinstance(vorige, dict):
+            return True
+
+        label, getal = self._inhoud_van(insight)
+        if label != vorige.get("label"):
+            return True
+
+        vorig_getal = vorige.get("getal")
+        if getal is not None and vorig_getal is not None:
+            try:
+                return float(getal) >= float(vorig_getal) * (1 + self.INHOUD_GROEI_DREMPEL)
+            except (TypeError, ValueError):
+                return False
+
+        return False
+
+    def _periodieke_cooldown_voorbij(self, insight: Dict) -> bool:
+        """True als dit insight-type opnieuw mag (lange cooldown verstreken)."""
+        vorige = self._periodiek_state().get(insight.get("type"))
+        if not isinstance(vorige, dict):
+            return True
+        volgende = vorige.get("volgende_toegestaan")
+        if volgende is None:
+            return True
+        return datetime.now().timestamp() >= volgende
+
+    def _registreer_periodiek(self, insight: Dict):
+        """
+        Onthoudt wat er over dit insight-type hardop gezegd is, en kiest
+        een willekeurig moment tussen PERIODIEK_COOLDOWN_MIN_UUR en
+        PERIODIEK_COOLDOWN_MAX_UUR later waarop dit type pas weer mag.
+        Meteen opgeslagen, zodat dit een herstart overleeft.
+        """
+        label, getal = self._inhoud_van(insight)
+        nu = datetime.now().timestamp()
+        wacht_uur = random.uniform(self.PERIODIEK_COOLDOWN_MIN_UUR, self.PERIODIEK_COOLDOWN_MAX_UUR)
+
+        self._periodiek_state()[insight.get("type")] = {
+            "label": label,
+            "getal": getal,
+            "gezegd_op": nu,
+            "volgende_toegestaan": nu + wacht_uur * 3600,
+        }
+        self._sla_cooldown_state_op()
+
+    def _marge(self, insight: Dict) -> float:
+        """
+        Hoe RUIM haalt dit insight zijn drempel? confidence gedeeld door
+        de effectieve drempel (1.0 = net gehaald, 1.6 = 60% erboven).
+        Maakt de verschillende schalen (0-1 vs. ruwe aantallen) eerlijk
+        vergelijkbaar om het sterkste insight van een ronde te kiezen.
+        """
+        drempel = self._effectieve_drempel(insight["type"])
+        if not drempel:
+            return 0.0
+        try:
+            return float(insight["confidence"]) / float(drempel)
+        except (TypeError, ValueError, ZeroDivisionError):
+            return 0.0
+
     def _check_topic_sterkte(self, topic_naam: str) -> Optional[Dict]:
         """
         Gerichte tegenhanger van analyze_timing_pattern(): checkt of
@@ -1401,6 +1557,10 @@ class EmergenceEngine:
         }
 
         self._zet_cooldown(insight)
+        # 30 sept 2026: ook in het periodieke geheugen noteren -- anders
+        # zou reflect() hetzelfde tijdspatroon kort nadien nog eens
+        # "ontdekken" en herhalen.
+        self._registreer_periodiek(insight)
 
         if self.event_bus is not None:
             self.event_bus.publish("emergence:insight", resultaat)
@@ -1440,33 +1600,35 @@ class EmergenceEngine:
         """
         Voert een volledige reflectie-ronde uit: analyseert alle
         beschikbare lagen, formuleert elk insight via de juiste
-        sjabloon-methode, en publiceert "emergence:insight" per insight.
+        sjabloon-methode, en publiceert "emergence:insight" per insight
+        (intern bijhouden -- dat gebeurt nog altijd voor ALLE insights).
 
-        Insights die hun eigen, insight-type-specifieke LAYER4_DREMPELS
-        -grens halen EN waarvoor het een geschikt moment is (zie
-        _mag_nu_spreken()), worden OOK naar "layer4_response"
-        gepubliceerd — dat is de universele route naar Nova's
-        tone-pipeline (zie nova_state.md, sinds 11 juli 2026 niet meer
-        exclusief voor Layer 4).
+        HARDOP ZEGGEN (via "layer4_response", de universele route naar
+        Nova's tone-pipeline) gebeurt sinds 30 sept 2026 voor HOOGSTENS
+        1 insight per ronde. Een insight is kandidaat als het:
+        1. zijn eigen, feedback-aangepaste drempel haalt
+           (_haalt_layer4_drempel(), zie LAYER4_DREMPELS);
+        2. niet op de korte, gedeelde cooldown staat (_op_cooldown(),
+           15 min, gedeeld met het reactieve pad _on_elk_event);
+        3. NIEUWE inhoud heeft t.o.v. wat Nova de vorige keer over dit
+           type zei (_is_nieuwe_inhoud());
+        4. de lange, gespreide cooldown per type voorbij is
+           (_periodieke_cooldown_voorbij()).
+        Uit de kandidaten wordt het insight gekozen dat zijn drempel het
+        ruimst haalt (_marge()). Pas daarna wordt EENMAAL de timing-gate
+        gevraagd (_mag_nu_spreken() -> context_manager.can_interrupt(),
+        dat sinds 30 sept 2026 ook checkt of Kevin het kan ZIEN).
 
-        TIMING-GATE (22 juli 2026, na afronding van Activity-Aware
-        Interaction): raadpleegt context_manager.can_interrupt() —
-        dezelfde activiteit-ONAFHANKELIJKE check die session_watcher.
-        check_pauze() ook al gebruikt voor de pauze-melding (combineert
-        tijd/focus/aanwezigheid/gebruikelijk-moment tot één boolean).
-        BEWUST NIET interruption_tracker.py/beslis_interruption_gedrag()
-        gebruikt — dat mechanisme is specifiek ontworpen rond EEN
-        LOPENDE, MET-NAAM-GENOEMDE activiteit (bv. "coderen") en
-        genereert zelf zijn eigen vraag-tekst; Layer 7 heeft al een
-        kant-en-klare insight-tekst en wil enkel weten "is dit sowieso
-        een geschikt algemeen moment", niet "mag ik deze specifieke
-        activiteit onderbreken". Ontbreekt context_manager (bv. nog
-        niet geladen) — dan mag Nova gewoon spreken (fail-open, zelfde
-        defensieve aanpak als session_watcher.check_pauze() bij een
-        ontbrekende context_manager).
+        Zegt Nova niets deze ronde (geen kandidaat, of geen goed
+        moment), dan verandert er niets aan het geheugen: dezelfde
+        kandidaat krijgt bij een volgende ronde gewoon een nieuwe kans.
+
+        Elk teruggegeven resultaat krijgt een extra veld "uitgesproken"
+        (True/False), handig voor het emergence-debugcommando.
         """
         ruwe_insights = self.analyze_meta_patterns()
         geformuleerd = []
+        kandidaten = []
 
         for insight in ruwe_insights:
             if insight["type"] == "woordverband":
@@ -1492,24 +1654,40 @@ class EmergenceEngine:
                 "confidence": insight["confidence"],
                 "insight_type": insight["type"],
                 "brondata": insight,
+                "uitgesproken": False,
             }
             geformuleerd.append(resultaat)
 
             if self.event_bus is not None:
                 self.event_bus.publish("emergence:insight", resultaat)
 
-                # Cooldown-gate (16 augustus 2026, punt 15): gedeeld met
-                # het gerichte topic_detected-pad (_on_elk_event
-                # hierboven) -- voorkomt dat Kevin binnen korte tijd
-                # TWEE keer hetzelfde hoort, ongeacht welk pad het als
-                # eerste zei.
-                if self._haalt_layer4_drempel(insight["type"], insight["confidence"]) \
-                        and self._mag_nu_spreken() \
-                        and not self._op_cooldown(insight):
-                    self._zet_cooldown(insight)
-                    self.event_bus.publish("layer4_response", {"text": tekst})
+            if (
+                self._haalt_layer4_drempel(insight["type"], insight["confidence"])
+                and not self._op_cooldown(insight)
+                and self._is_nieuwe_inhoud(insight)
+                and self._periodieke_cooldown_voorbij(insight)
+            ):
+                kandidaten.append((self._marge(insight), insight, resultaat))
 
         self.insights = geformuleerd
+
+        if not kandidaten or self.event_bus is None:
+            return geformuleerd
+
+        if not self._mag_nu_spreken():
+            return geformuleerd
+
+        # Het insight dat zijn drempel het ruimst haalt. Bij een
+        # gelijkstand wint het eerste in de lijst (vaste volgorde van
+        # analyze_meta_patterns()) -- voorspelbaar, geen gok.
+        kandidaten.sort(key=lambda k: k[0], reverse=True)
+        _, gekozen_insight, gekozen_resultaat = kandidaten[0]
+
+        self._zet_cooldown(gekozen_insight)
+        self._registreer_periodiek(gekozen_insight)
+        gekozen_resultaat["uitgesproken"] = True
+        self.event_bus.publish("layer4_response", {"text": gekozen_resultaat["text"]})
+
         return geformuleerd
 
     def get_insights(self) -> List[Dict]:

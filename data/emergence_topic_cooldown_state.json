@@ -1,9 +1,29 @@
 {
   "kennisdichtheid": 1790189086.437669,
-  "personality_drift": 1790361854.330478,
-  "trending_topic:weer": 1789757108.018891,
+  "personality_drift": 1790792458.600563,
+  "trending_topic:weer": 1790792465.983727,
   "scherm_focus": 1789498308.476603,
   "trending_topic:gebeurd": 1789843351.832547,
-  "trending_topic:open": 1790361851.775128,
-  "woordverband:oké:top": 1790361849.28299
+  "trending_topic:open": 1790448087.099271,
+  "woordverband:oké:top": 1790792477.393647,
+  "_periodiek": {
+    "personality_drift": {
+      "label": "expressiveness",
+      "getal": 23,
+      "gezegd_op": 1790792458.600768,
+      "volgende_toegestaan": 1790859688.5405424
+    },
+    "trending_topic": {
+      "label": "weer",
+      "getal": null,
+      "gezegd_op": 1790792465.98396,
+      "volgende_toegestaan": 1790882421.6779778
+    },
+    "woordverband": {
+      "label": "oké|top",
+      "getal": null,
+      "gezegd_op": 1790792477.393937,
+      "volgende_toegestaan": 1790898231.9078858
+    }
+  }
 }

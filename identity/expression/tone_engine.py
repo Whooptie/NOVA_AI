@@ -2,6 +2,12 @@
 import json
 import os
 
+# Debug-print van de gekozen stijl-sleutel (bv. "STYLE KEY: warm_normaal")
+# bij ELK antwoord. Stond vroeger altijd aan en verscheen daardoor ook
+# midden in Nova's chatvenster, na elk proactief bericht (30 sept 2026).
+# Zet op True als je tijdelijk wil zien welke stijl gekozen wordt.
+TOON_STYLE_DEBUG = False
+
 
 class ToneEngine:
     def __init__(self):
@@ -144,7 +150,8 @@ class ToneEngine:
             return tone
 
         key = f"{tone['tone']}_{tone['pace']}"
-        print("STYLE KEY:", key)
+        if TOON_STYLE_DEBUG:
+            print("STYLE KEY:", key)
 
         if key in self.style_profiles:
             tone.update(self.style_profiles[key])
@@ -163,7 +170,8 @@ class ToneEngine:
         prefix = f"{tone['tone']}_"
         for bestaande_key, profiel in self.style_profiles.items():
             if bestaande_key.startswith(prefix):
-                print(f"STYLE KEY FALLBACK: '{key}' bestaat niet, gebruik '{bestaande_key}'")
+                if TOON_STYLE_DEBUG:
+                    print(f"STYLE KEY FALLBACK: '{key}' bestaat niet, gebruik '{bestaande_key}'")
                 tone.update(profiel)
                 return tone
 

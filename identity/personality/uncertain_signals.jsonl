@@ -1,60 +1,40 @@
 {"text": "oke", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0061, "bron": "woordenlijst", "tijdstip": "2026-07-18T15:56:37.539133"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0615, "bron": "model_fallback", "tijdstip": "2026-07-18T16:10:17.482320"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0615, "bron": "model_fallback", "tijdstip": "2026-07-18T16:12:17.711590"}
-{"text": "test bericht 1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:00"}
-{"text": "test bericht 2", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:01"}
-{"text": "test bericht 3", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:02"}
-{"text": "test bericht 4", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:03"}
-{"text": "test bericht 5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:04"}
-{"text": "test bericht 6", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:05"}
-{"text": "test bericht 7", "signaal": "focus", "model_signaal": "focus", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:06"}
-{"text": "test bericht 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:07"}
-{"text": "test bericht 9", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:08"}
-{"text": "test bericht 10", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:09"}
-{"text": "test bericht 11", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:10"}
-{"text": "test bericht 12", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:11"}
-{"text": "test bericht 13", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:12"}
-{"text": "test bericht 14", "signaal": "focus", "model_signaal": "focus", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:13"}
-{"text": "test bericht 15", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:14"}
-{"text": "test bericht 16", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:15"}
-{"text": "test bericht 17", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:16"}
-{"text": "test bericht 18", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:17"}
-{"text": "test bericht 19", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:18"}
-{"text": "test bericht 20", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.05, "bron": "test", "tijdstip": "2026-07-18T16:00:19"}{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-18T21:26:12.135863"}
 {"text": "wat betekent hond!", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-07-19T12:41:28.889558"}
 {"text": "wat is fysica?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0664, "bron": "model_fallback", "tijdstip": "2026-07-19T12:41:55.107753"}
 {"text": "teach fiets Een fiets is een voertuig dat doorgaans met spierkracht wordt aangedreven.", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0584, "bron": "model_fallback", "tijdstip": "2026-07-19T13:02:09.739637"}
 {"text": "teach zeilboot Een zeilboot is een vaartuig dat wordt voortgestuwd door de wind.", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0591, "bron": "model_fallback", "tijdstip": "2026-07-19T13:05:12.233498"}
-{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:25:07.009553"}
-{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:27:36.768764"}
-{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:31:16.279070"}
-{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:33:32.864172"}
-{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:48:50.193895"}
-{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:59:21.449264"}
-{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T20:28:01.102539"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:25:07.009553", "label_kevin": "neutraal"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:27:36.768764", "label_kevin": "neutraal"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:31:16.279070", "label_kevin": "neutraal"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:33:32.864172", "label_kevin": "neutraal"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:48:50.193895", "label_kevin": "neutraal"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T19:59:21.449264", "label_kevin": "neutraal"}
+{"text": "wat is het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-07-19T20:28:01.102539", "label_kevin": "neutraal"}
 {"text": "wat is het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0832, "bron": "model_fallback", "tijdstip": "2026-07-19T20:28:22.847142"}
-{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:37.284653"}
-{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:42.131604"}
-{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:45.267634"}
-{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:48.249398"}
-{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:51.269013"}
-{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:54.173418"}
-{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:57.369318"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:37.284653", "label_kevin": "neutraal"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:42.131604", "label_kevin": "neutraal"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:45.267634", "label_kevin": "neutraal"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:48.249398", "label_kevin": "neutraal"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:51.269013", "label_kevin": "neutraal"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:54.173418", "label_kevin": "neutraal"}
+{"text": "hey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0114, "bron": "woordenlijst", "tijdstip": "2026-07-21T12:48:57.369318", "label_kevin": "neutraal"}
 {"text": "python is snel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0331, "bron": "model_fallback", "tijdstip": "2026-07-21T13:12:24.093445"}
 {"text": "emergence", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0, "bron": "model_fallback", "tijdstip": "2026-07-21T13:13:40.311624"}
-{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:22:38.415694"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:22:38.415694", "label_kevin": "neutraal"}
 {"text": "ik ga koffie zetten", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:23:16.303986"}
 {"text": "ik ga gamen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:23:27.682741"}
 {"text": "ik ga lezen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:23:31.749809"}
 {"text": "ik ga slapen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:26:25.802209"}
-{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:10.306160"}
-{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:28.095966"}
-{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:45.492049"}
-{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:06:55.051626"}
-{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:10:08.999411"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:10.306160", "label_kevin": "neutraal"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:28.095966", "label_kevin": "neutraal"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T20:29:45.492049", "label_kevin": "neutraal"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:06:55.051626", "label_kevin": "neutraal"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:10:08.999411", "label_kevin": "neutraal"}
 {"text": "nee", "signaal": "kilte", "model_signaal": "neutraal", "marge": 0.0, "bron": "woordenlijst", "tijdstip": "2026-07-22T21:12:05.094145"}
-{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:23:31.437993"}
-{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:41:47.423449"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:23:31.437993", "label_kevin": "neutraal"}
+{"text": "ik ga coderen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:41:47.423449", "label_kevin": "neutraal"}
 {"text": "ik ga slapen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:43:48.341796"}
 {"text": "ik ga lezen", "signaal": "focus", "model_signaal": "focus", "marge": 0.0816, "bron": "model_fallback", "tijdstip": "2026-07-22T21:49:55.092525"}
 {"text": "hoe onthoud je dingen", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0366, "bron": "model_fallback", "tijdstip": "2026-07-23T19:54:52.309973"}
@@ -64,9 +44,9 @@
 {"text": "help", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:14:58.747118"}
 {"text": "help schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:15:06.262821"}
 {"text": "help debug", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:15:13.555872"}
-{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:28:37.118500"}
-{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:33:54.801056"}
-{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:34:27.982993"}
+{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:28:37.118500", "label_kevin": "neutraal"}
+{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:33:54.801056", "label_kevin": "neutraal"}
+{"text": "bord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:34:27.982993", "label_kevin": "neutraal"}
 {"text": "toren naar a8", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-24T20:35:08.714543"}
 {"text": "hoi", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "woordenlijst", "tijdstip": "2026-07-25T13:37:20.956046"}
 {"text": "e2e4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-25T13:37:53.475859"}
@@ -111,10 +91,10 @@
 {"text": "Ik vind python heel krachtig en snel", "signaal": "focus", "model_signaal": "focus", "marge": 0.0012, "bron": "model_fallback", "tijdstip": "2026-07-26T21:55:26.151688"}
 {"text": "gene", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-26T21:58:23.067954"}
 {"text": "python is code", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-07-26T21:58:29.076460"}
-{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T20:57:17.524856"}
-{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:02:19.502860"}
-{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:02:58.401720"}
-{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:08:56.799349"}
+{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T20:57:17.524856", "label_kevin": "neutraal"}
+{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:02:19.502860", "label_kevin": "neutraal"}
+{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:02:58.401720", "label_kevin": "neutraal"}
+{"text": "dat werkt graag samen", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-27T21:08:56.799349", "label_kevin": "neutraal"}
 {"text": "alles goed?", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.025, "bron": "model_fallback", "tijdstip": "2026-07-28T11:33:11.556737"}
 {"text": "oei", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-07-28T11:34:41.574694"}
 {"text": "met mij wel", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0184, "bron": "model_fallback", "tijdstip": "2026-07-28T11:34:50.579339"}
@@ -139,11 +119,11 @@
 {"text": "zin om te gaan schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0126, "bron": "model_fallback", "tijdstip": "2026-07-28T20:25:27.992679"}
 {"text": "nee ik bedoelde weer", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0204, "bron": "model_fallback", "tijdstip": "2026-07-28T21:56:50.689215"}
 {"text": "nee ik bedoelde koken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0159, "bron": "model_fallback", "tijdstip": "2026-07-28T21:58:32.331256"}
-{"text": "zin om nog wat te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-07-28T22:08:41.695608"}
-{"text": "zin om nog wat te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-07-28T22:09:00.134730"}
-{"text": "zin om nog wat te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-07-28T22:11:58.842547"}
+{"text": "zin om nog wat te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-07-28T22:08:41.695608", "label_kevin": "neutraal"}
+{"text": "zin om nog wat te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-07-28T22:09:00.134730", "label_kevin": "neutraal"}
+{"text": "zin om nog wat te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-07-28T22:11:58.842547", "label_kevin": "neutraal"}
 {"text": "laat me eens goed nadenken over iets", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0042, "bron": "model_fallback", "tijdstip": "2026-07-28T22:12:25.478106"}
-{"text": "zin om nog wat te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-07-28T22:12:40.723884"}
+{"text": "zin om nog wat te schaken", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-07-28T22:12:40.723884", "label_kevin": "neutraal"}
 {"text": "neen, filosoferen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T22:12:45.555903"}
 {"text": "Jij: hallo", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0208, "bron": "model_fallback", "tijdstip": "2026-07-28T22:33:33.843640"}
 {"text": "type data\\layer0_gebruikt.jsonl", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-28T23:01:44.536199"}
@@ -160,13 +140,13 @@
 {"text": "waarom was dat een blunder?", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0157, "bron": "model_fallback", "tijdstip": "2026-07-29T15:12:05.703557"}
 {"text": "waarom was dat een blunder", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0157, "bron": "model_fallback", "tijdstip": "2026-07-29T15:33:22.143567"}
 {"text": "waarom was dat een blunder", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0157, "bron": "model_fallback", "tijdstip": "2026-07-29T15:34:05.951407"}
-{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:35:38.525137"}
-{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:35:56.424782"}
+{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:35:38.525137", "label_kevin": "neutraal"}
+{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:35:56.424782", "label_kevin": "neutraal"}
 {"text": "had ik dat anders moeten aanpakken", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0623, "bron": "model_fallback", "tijdstip": "2026-07-29T15:36:05.256080"}
-{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:37:59.668019"}
-{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:39:15.191753"}
-{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:42:54.457288"}
-{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:47:35.323455"}
+{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:37:59.668019", "label_kevin": "neutraal"}
+{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:39:15.191753", "label_kevin": "neutraal"}
+{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:42:54.457288", "label_kevin": "neutraal"}
+{"text": "was die zet nu eigenlijk wel verstandig", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0108, "bron": "model_fallback", "tijdstip": "2026-07-29T15:47:35.323455", "label_kevin": "neutraal"}
 {"text": "activiteit", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-30T18:54:39.713182"}
 {"text": "ok dankje", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-07-30T19:22:36.867737"}
 {"text": "teach koi noun", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0207, "bron": "model_fallback", "tijdstip": "2026-07-30T21:17:02.089490"}
@@ -185,16 +165,16 @@
 {"text": "2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-07-31T22:14:10.748237"}
 {"text": "4", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T10:37:02.149410"}
 {"text": "zijn er nog andere betekenissen van fysica", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-08-01T10:54:49.496889"}
-{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T10:57:49.843223"}
-{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T10:58:38.718843"}
-{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T11:00:30.103988"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T10:57:49.843223", "label_kevin": "neutraal"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T10:58:38.718843", "label_kevin": "neutraal"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T11:00:30.103988", "label_kevin": "neutraal"}
 {"text": "3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T11:01:08.716207"}
 {"text": "wat weet je allemaal over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0396, "bron": "model_fallback", "tijdstip": "2026-08-01T12:40:08.906770"}
 {"text": "wat weet je allemaal over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0396, "bron": "model_fallback", "tijdstip": "2026-08-01T12:40:44.821790"}
 {"text": "2", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T12:41:03.953033"}
 {"text": "wat weet je allemaal over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0396, "bron": "model_fallback", "tijdstip": "2026-08-01T12:41:34.689344"}
 {"text": "33", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T12:41:51.302367"}
-{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T13:02:59.740109"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-01T13:02:59.740109", "label_kevin": "neutraal"}
 {"text": "44", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-08-01T13:03:11.167660"}
 {"text": "wat weet je allemaal over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0396, "bron": "model_fallback", "tijdstip": "2026-08-01T13:03:17.717208"}
 {"text": "xyzabc test 123", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0196, "bron": "model_fallback", "tijdstip": "2026-08-01T19:05:59.820797"}
@@ -359,10 +339,10 @@
 {"text": "naar_binair(100)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:04.680045"}
 {"text": "vanuit_talstelsel(\"ff\", 16)", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0772, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:18.937187"}
 {"text": "vanuit_talstelsel(\"ff\", 1100100)", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-03T22:10:29.947883"}
-{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:03:28.143667"}
-{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:03:33.541019"}
-{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:11:47.260972"}
-{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:17:53.628628"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:03:28.143667", "label_kevin": "neutraal"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:03:33.541019", "label_kevin": "neutraal"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:11:47.260972", "label_kevin": "neutraal"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-08-04T21:17:53.628628", "label_kevin": "neutraal"}
 {"text": "koffie", "signaal": "focus", "model_signaal": "focus", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-08-04T21:18:00.723478"}
 {"text": "bereken x^2 = 5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:30:10.806913"}
 {"text": "solve x^2=5", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-04T21:31:01.577057"}
@@ -448,18 +428,18 @@
 {"text": "verwijder definitief concept: blorkwoord", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:02:45.985496"}
 {"text": "wiki banaan", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:04:58.828184"}
 {"text": "weerleg concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:05:55.962170"}
-{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:06:02.044416"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:06:02.044416", "label_kevin": "neutraal"}
 {"text": "verwijder definitief concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:08:48.491277"}
-{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:08:55.774685"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:08:55.774685", "label_kevin": "neutraal"}
 {"text": "weerleg concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:09:06.931716"}
-{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:09:14.535428"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:09:14.535428", "label_kevin": "neutraal"}
 {"text": "zijn er nog andere betekenissen van fysica", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-08-08T20:11:20.931025"}
 {"text": "verwijder definitief concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:01.465671"}
 {"text": "weerleg concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:14.126943"}
 {"text": "verwijder definitief concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:17.125907"}
-{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:26.003688"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:26.003688", "label_kevin": "neutraal"}
 {"text": "weerleg concept: gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:37.561043"}
-{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:43.912511"}
+{"text": "wiki gitaar", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-08-08T20:14:43.912511", "label_kevin": "neutraal"}
 {"text": "wat weet je van fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0079, "bron": "model_fallback", "tijdstip": "2026-08-08T20:19:59.497023"}
 {"text": "zijn er nog andere betekenissen van fysica", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-08-08T20:21:36.876902"}
 {"text": "wat weet je over fysica", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0213, "bron": "model_fallback", "tijdstip": "2026-08-08T20:24:17.210023"}
@@ -467,8 +447,8 @@
 {"text": "wat weet je over gitaar", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0129, "bron": "model_fallback", "tijdstip": "2026-08-08T20:30:15.188777"}
 {"text": "zijn er nog betekenissen van gitaar", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0085, "bron": "model_fallback", "tijdstip": "2026-08-08T20:30:45.178469"}
 {"text": "wat weet je over gitaar", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0129, "bron": "model_fallback", "tijdstip": "2026-08-08T20:31:18.644186"}
-{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-08T20:31:53.916804"}
-{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-08T20:33:34.641236"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-08T20:31:53.916804", "label_kevin": "neutraal"}
+{"text": "zijn er nog andere betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-08T20:33:34.641236", "label_kevin": "neutraal"}
 {"text": "wat weet je over gitaar", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0129, "bron": "model_fallback", "tijdstip": "2026-08-09T11:57:19.210337"}
 {"text": "zijn er nog betekenissen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0103, "bron": "model_fallback", "tijdstip": "2026-08-09T11:57:55.678396"}
 {"text": "wat weet je over gitaar", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0129, "bron": "model_fallback", "tijdstip": "2026-08-09T11:58:21.662612"}
@@ -566,11 +546,11 @@
 {"text": "wat gebeurde er op 9 december", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0003, "bron": "model_fallback", "tijdstip": "2026-09-19T10:50:44.242535"}
 {"text": "wie is er geboren op 26 november", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0023, "bron": "model_fallback", "tijdstip": "2026-09-19T14:33:13.828005"}
 {"text": "open chrome", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T20:51:53.634009"}
-{"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T20:52:06.090244"}
+{"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T20:52:06.090244", "label_kevin": "neutraal"}
 {"text": "sluit chrome", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T20:52:19.818439"}
-{"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T20:55:21.261345"}
+{"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T20:55:21.261345", "label_kevin": "neutraal"}
 {"text": "open vls", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:13:02.288089"}
-{"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:13:06.564016"}
+{"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:13:06.564016", "label_kevin": "neutraal"}
 {"text": "sluit vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:13:16.412172"}
 {"text": "open chrome", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:13:30.008027"}
 {"text": "sluit chrome", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:13:34.963090"}
@@ -584,13 +564,13 @@
 {"text": "open verkenner", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:18:56.595283"}
 {"text": "sluit verkenner", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:19:02.411565"}
 {"text": "open notepad", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:19:26.905779"}
-{"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:53:45.856163"}
+{"text": "open vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:53:45.856163", "label_kevin": "neutraal"}
 {"text": "sluit vlc", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-19T21:53:57.208745"}
 {"text": "ik ben moe vandaag", "signaal": "focus", "model_signaal": "focus", "marge": 0.0673, "bron": "model_fallback", "tijdstip": "2026-09-21T19:33:04.588243"}
 {"text": "pff, wat een dag, veel te druk geweest", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0598, "bron": "model_fallback", "tijdstip": "2026-09-21T19:35:26.067790"}
-{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-09-21T20:04:26.019143"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-09-21T20:04:26.019143", "label_kevin": "neutraal"}
 {"text": "had ik dat anders moeten aanpakken", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0623, "bron": "model_fallback", "tijdstip": "2026-09-21T20:04:44.079044"}
-{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-09-21T20:14:45.956728"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "kilte", "marge": 0.0709, "bron": "woordenlijst", "tijdstip": "2026-09-21T20:14:45.956728", "label_kevin": "neutraal"}
 {"text": "ik drink graag café", "signaal": "focus", "model_signaal": "focus", "marge": 0.0913, "bron": "model_fallback", "tijdstip": "2026-09-24T19:55:35.094922"}
 {"text": "wiki fiets", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0175, "bron": "model_fallback", "tijdstip": "2026-09-24T19:55:48.043818"}
 {"text": "ik voel me moe", "signaal": "focus", "model_signaal": "focus", "marge": 0.0459, "bron": "model_fallback", "tijdstip": "2026-09-24T19:57:40.625222"}
@@ -598,3 +578,16 @@
 {"text": "omdat ik veel moet werken", "signaal": "focus", "model_signaal": "focus", "marge": 0.0772, "bron": "model_fallback", "tijdstip": "2026-09-24T19:58:49.621915"}
 {"text": "meer", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0037, "bron": "model_fallback", "tijdstip": "2026-09-26T10:27:08.086093"}
 {"text": "6", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-09-26T10:27:24.926521"}
+{"text": "emercence", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-30T20:21:13.769075"}
+{"text": "hyey", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "model_fallback", "tijdstip": "2026-09-30T20:27:22.021861"}
+{"text": "3", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-09-30T20:28:31.543188"}
+{"text": "wie is er geboren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.054, "bron": "model_fallback", "tijdstip": "2026-09-30T20:31:31.438193"}
+{"text": "meer", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0037, "bron": "model_fallback", "tijdstip": "2026-09-30T20:31:38.791367"}
+{"text": "6", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0568, "bron": "woordenlijst", "tijdstip": "2026-09-30T20:31:47.334106"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0276, "bron": "model_fallback", "tijdstip": "2026-10-02T21:14:03.568313", "label_kevin": "neutraal"}
+{"text": "bord", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0983, "bron": "model_fallback", "tijdstip": "2026-10-02T21:15:30.915039", "label_kevin": "neutraal"}
+{"text": "open vlc", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0842, "bron": "model_fallback", "tijdstip": "2026-10-02T21:15:40.157109", "label_kevin": "neutraal"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0276, "bron": "model_fallback", "tijdstip": "2026-10-02T21:15:50.988975", "label_kevin": "neutraal"}
+{"text": "open vlc", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0842, "bron": "model_fallback", "tijdstip": "2026-10-02T21:27:12.559415", "label_kevin": "neutraal"}
+{"text": "sluit vlc", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0983, "bron": "model_fallback", "tijdstip": "2026-10-02T21:27:17.801794"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0595, "bron": "model_fallback", "tijdstip": "2026-10-02T21:42:43.044032"}

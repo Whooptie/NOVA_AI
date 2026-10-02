@@ -44,7 +44,9 @@ class SentimentClassifier:
     # HERTRAINING_DREMPEL, hier iets lager omdat deze module een pas
     # gestarte, kleinere dataset heeft -- eerder bijleren is hier
     # waardevoller. Kevin kan dit later optrekken als de dataset groeit.
-    HERTRAINING_DREMPEL = 15
+    # Fase A (2 oktober 2026): telt nu NIEUWE, DOOR KEVIN GELABELDE
+    # unieke twijfelzinnen i.p.v. ruwe logregels.
+    HERTRAINING_DREMPEL = 10
 
     def __init__(self, event_bus=None):
         self.event_bus = event_bus
@@ -136,6 +138,18 @@ class SentimentClassifier:
             # verandert.
             self._log_uncertain(tekst, top_klasse, marge, grof_sentiment)
 
+            # Fase A (2 oktober 2026): zonder regex-context (geen
+            # grof_sentiment, bv. wanneer variant_feedback_logger.py
+            # Kevin's reactie op een antwoord laat beoordelen) betekent
+            # twijfel: geen uitgesproken oordeel. Voorheen werd ook
+            # dan de onzekere top-klasse gebruikt, waardoor bv.
+            # "/reboot" als negatieve reactie telde. MET grof_sentiment
+            # (de voorkeur-flow) blijft de top-klasse leidend: daar is
+            # de zin al als voorkeur herkend en is de nuance juist het
+            # werk van dit model.
+            if grof_sentiment is None:
+                return "neutraal_gemengd"
+
         return top_klasse
 
     # ---------------------------------------------------------
@@ -149,12 +163,12 @@ class SentimentClassifier:
         hertraining (zie train_sentiment_classifier.py's gebruik van
         deze data).
 
-        Het model-resultaat wordt gelogd als het "categorie"-veld --
-        dat is wat train_sentiment_classifier.py later als label zal
-        gebruiken bij hertraining. GEEN mensencontrole op dit moment --
-        bewust zo ontworpen, zelfde als microlearning.py: het ijkpunt-
-        testsetje (sentiment_benchmark_data.json) is de kwaliteitsrem,
-        niet elke individuele log-regel.
+        Het "categorie"-veld bevat de onzekere GOK van het model --
+        louter informatief. Fase A (2 oktober 2026): dit veld wordt
+        NIET meer als trainingslabel gebruikt (zelfbevestigend leren).
+        Een twijfelgeval telt pas mee bij hertraining zodra Kevin het
+        een eigen label gaf (veld "label_kevin", zie
+        train_sentiment_classifier.py).
         """
         try:
             with open(self._uncertain_pad, "a", encoding="utf-8") as f:
@@ -174,11 +188,34 @@ class SentimentClassifier:
     # ---------------------------------------------------------
     # Automatische hertraining
     # ---------------------------------------------------------
-    def _tel_huidige_uncertain_regels(self):
+    def _tel_gelabelde_twijfelzinnen(self):
+        """
+        Fase A (2 oktober 2026): telt het aantal UNIEKE twijfelzinnen
+        waaraan Kevin een eigen label gaf ("label_kevin", niet leeg en
+        niet "skip"). Zelfde logica als microlearning.py.
+        """
         if not os.path.exists(self._uncertain_pad):
             return 0
+
+        unieke_teksten = set()
         with open(self._uncertain_pad, "r", encoding="utf-8") as f:
-            return sum(1 for regel in f if regel.strip())
+            for regel in f:
+                regel = regel.strip()
+                if not regel:
+                    continue
+                try:
+                    item = json.loads(regel)
+                except json.JSONDecodeError:
+                    continue
+                # Fase B: Kevins label wint (ook "skip"); anders telt
+                # een automatisch label mee. Sentiment krijgt bewust
+                # (nog) geen automatische labels, maar zo blijft de
+                # logica gelijk aan microlearning.py.
+                label = item.get("label_kevin") or item.get("label_auto")
+                tekst = item.get("text", "").strip().lower()
+                if label and label != "skip" and tekst:
+                    unieke_teksten.add(tekst)
+        return len(unieke_teksten)
 
     def _laad_hertraining_status(self):
         """
@@ -187,18 +224,26 @@ class SentimentClassifier:
         NIEUWE twijfelgevallen er sindsdien zijn bijgekomen, zonder
         steeds dezelfde oude regels opnieuw te tellen.
         """
+        leeg = {"gelabeld_bij_laatste_training": 0, "laatste_training": None}
         if not os.path.exists(self._hertraining_status_pad):
-            return {"aantal_bij_laatste_training": 0, "laatste_training": None}
+            return leeg
 
         try:
             with open(self._hertraining_status_pad, "r", encoding="utf-8") as f:
-                return json.load(f)
+                status = json.load(f)
         except Exception:
-            return {"aantal_bij_laatste_training": 0, "laatste_training": None}
+            return leeg
 
-    def _save_hertraining_status(self, aantal_regels):
+        # Fase A (2 oktober 2026): oude sleutel "aantal_bij_laatste_
+        # training" (ruwe logregels) is niet vergelijkbaar met het
+        # nieuwe aantal gelabelde zinnen -- bewust genegeerd.
+        status.setdefault("gelabeld_bij_laatste_training", 0)
+        status.setdefault("laatste_training", None)
+        return status
+
+    def _save_hertraining_status(self, aantal_gelabeld):
         status = {
-            "aantal_bij_laatste_training": aantal_regels,
+            "gelabeld_bij_laatste_training": aantal_gelabeld,
             "laatste_training": datetime.now().isoformat(),
         }
         with open(self._hertraining_status_pad, "w", encoding="utf-8") as f:
@@ -226,9 +271,9 @@ class SentimentClassifier:
         -- anders blijft deze lopende instantie het OUDE model
         gebruiken tot de volgende herstart.
         """
-        huidig_aantal = self._tel_huidige_uncertain_regels()
+        huidig_aantal = self._tel_gelabelde_twijfelzinnen()
         status = self._laad_hertraining_status()
-        nieuwe_sinds_laatste = huidig_aantal - status["aantal_bij_laatste_training"]
+        nieuwe_sinds_laatste = huidig_aantal - status["gelabeld_bij_laatste_training"]
 
         moet_hertrainen = (
             nieuwe_sinds_laatste >= self.HERTRAINING_DREMPEL
@@ -245,7 +290,7 @@ class SentimentClassifier:
             from modules.preferences import train_sentiment_classifier
 
             print(
-                f"[SENTIMENT_CLASSIFIER] {nieuwe_sinds_laatste} nieuwe twijfelgevallen "
+                f"[SENTIMENT_CLASSIFIER] {nieuwe_sinds_laatste} nieuwe door Kevin gelabelde twijfelzinnen "
                 f"sinds de laatste hertraining -- automatische hertraining wordt gestart."
             )
             resultaat = train_sentiment_classifier.train_model()

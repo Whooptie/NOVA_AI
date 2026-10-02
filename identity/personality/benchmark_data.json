@@ -15,14 +15,17 @@
     {"text": "oké prima", "signaal": "kilte"},
     {"text": "tof", "signaal": "kilte"},
     {"text": "wat is 5 keer 12", "signaal": "neutraal"},
-    {"text": "reboot jezelf even", "signaal": "neutraal"},
+    {"text": "zet de weersvoorspelling op het scherm", "signaal": "neutraal"},
+    {"text": "loper naar c4", "signaal": "neutraal"},
+    {"text": "open notepad", "signaal": "neutraal"},
+    {"text": "help schaken", "signaal": "neutraal"},
 
-    {"text": "ik ga even helemaal focussen op dit stuk code", "signaal": "focus"},
-    {"text": "stil even, ik ben aan het doorwerken", "signaal": "focus"},
-    {"text": "laat me even geconcentreerd hieraan werken", "signaal": "focus"},
-    {"text": "ik zit nu even helemaal in de flow", "signaal": "focus"},
-    {"text": "geen afleiding nu, ik moet dit afmaken", "signaal": "focus"},
-    {"text": "ik ben even helemaal gefocust bezig", "signaal": "focus"},
-    {"text": "laat me even niet storen, ik werk door", "signaal": "focus"}
+    {"text": "even niet praten nu, ik ben bezig", "signaal": "focus"},
+    {"text": "ik moet me nu concentreren op deze bug", "signaal": "focus"},
+    {"text": "nu even doorwerken zonder pauze", "signaal": "focus"},
+    {"text": "hou je even stil, ik zit midden in iets", "signaal": "focus"},
+    {"text": "ik wil dit eerst afwerken", "signaal": "focus"},
+    {"text": "ik zit diep in de code nu", "signaal": "focus"},
+    {"text": "concentratie nu, straks praten we verder", "signaal": "focus"}
   ]
 }

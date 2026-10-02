@@ -29,6 +29,7 @@ opgezet.
 import json
 import os
 import pickle
+import re
 from datetime import datetime
 
 
@@ -43,6 +44,22 @@ class MicroLearning:
     # klasse: hoe groter dat verschil, hoe overtuigder het model is,
     # ongeacht de absolute hoogte van de scores zelf.
     MARGE_DREMPEL = 0.10
+
+    # Fase B (2 oktober 2026): STRIKTE trefwoorden om twijfelgevallen
+    # AUTOMATISCH te labelen ("label_auto"). Bewust apart van de grove
+    # woordenlijst in _detecteer_signaal_woordenlijst(), die blijft voor
+    # de directe signaalherkenning. Hier: enkel hele woorden/zinsdelen,
+    # enkel ondubbelzinnige trefwoorden. Bewust NIET opgenomen: "top"
+    # (zit ook in "stop"), "leuk"/"cool"/"wow" (kan sarcastisch zijn),
+    # "hoe werkt" (gewone vraag, geen verwarring).
+    STRIKTE_TREFWOORDEN = {
+        "frustratie": ["frustrerend", "irritant", "werkt niet", "werkt gewoon niet"],
+        "waardering": ["dank je", "dankjewel", "dank u", "bedankt", "merci", "dat helpt"],
+        "verwarring": ["snap ik niet", "begrijp ik niet", "snap het niet",
+                       "begrijp het niet", "wat bedoel je"],
+        "focus": ["niet storen", "in de flow", "geconcentreerd"],
+        "interesse": ["interessant", "vertel meer", "vertel eens meer"],
+    }
 
     def __init__(self, event_bus):
         self.event_bus = event_bus
@@ -74,7 +91,10 @@ class MicroLearning:
         # een doorlopende check na elk nieuw gelogd twijfelgeval (zie
         # _log_uncertain(), die nu _check_hertraining() aanroept).
         self._hertraining_status_pad = os.path.join(base, "hertraining_status.json")
-        self.HERTRAINING_DREMPEL = 20
+        # Fase A (2 oktober 2026): telt nu NIEUWE, DOOR KEVIN GELABELDE
+        # unieke twijfelzinnen (niet meer ruwe logregels) -- vandaar
+        # een lagere drempel dan de vroegere 20.
+        self.HERTRAINING_DREMPEL = 10
 
         self._check_hertraining(bij_opstart=True)
 
@@ -148,6 +168,11 @@ class MicroLearning:
                                  woordenlijst_signaal=woordenlijst_resultaat)
             if woordenlijst_resultaat:
                 return woordenlijst_resultaat
+            # Fase A (2 oktober 2026): twijfel zonder bevestiging door
+            # de woordenlijst = GEEN signaal. Voorheen viel de code hier
+            # door naar het model-resultaat, waardoor bv. elke schaakzet
+            # (marge 0.0957) als "kilte" telde en traits liet schuiven.
+            return []
 
         if top_klasse == "neutraal":
             return []
@@ -167,7 +192,9 @@ class MicroLearning:
         interesse_woorden = ["interessant", "leuk", "wow", "cool", "gaaf", "vertel meer"]
         verwarring_woorden = ["snap ik niet", "begrijp niet", "wat bedoel", "hoe werkt", "onduidelijk"]
         focus_woorden = ["focussen", "geconcentreerd", "niet storen", "in de flow", "even stil", "doorwerken"]
-        kilte_indicatie = len(text.strip()) <= 3
+        # Fase A (2 oktober 2026): de oude regel "bericht van max. 3
+        # tekens = kilte" is geschrapt -- die gaf vooral foute signalen
+        # ("hey", "pi", "3", een getal als antwoord op een vraag).
 
         if any(w in tekst_lower for w in frustratie_woorden):
             signalen.append("frustratie")
@@ -179,8 +206,6 @@ class MicroLearning:
             signalen.append("verwarring")
         elif any(w in tekst_lower for w in focus_woorden):
             signalen.append("focus")
-        elif kilte_indicatie:
-            signalen.append("kilte")
 
         return signalen
 
@@ -193,27 +218,39 @@ class MicroLearning:
         (zie train_classifier.py's gebruik van deze data, en
         onderdeel 6 hierna: de automatische hertraining-trigger).
 
-        Het uiteindelijk gebruikte signaal (woordenlijst indien die
-        een match had, anders het model-resultaat) wordt gelogd als
-        het "signaal"-veld — dat is wat train_classifier.py later als
-        label zal gebruiken bij hertraining. GEEN mensencontrole op
-        dit moment — bewust zo ontworpen (zie ontwerpgesprek): het
-        ijkpunt-testsetje (benchmark_data.json) is de kwaliteitsrem,
-        niet elke individuele log-regel.
+        Het "signaal"-veld bevat de GOK van de woordenlijst of het
+        model -- louter informatief. Fase A (2 oktober 2026): dit veld
+        wordt NIET meer als trainingslabel gebruikt (dat gaf
+        zelfbevestigend leren: het model leerde van zijn eigen
+        onzekere gokken). Een twijfelgeval telt pas mee bij
+        hertraining zodra Kevin het een eigen label gaf (veld
+        "label_kevin", zie train_classifier.py).
         """
         gebruikt_signaal = (woordenlijst_signaal[0] if woordenlijst_signaal
                              else model_signaal)
 
+        regel = {
+            "text": text,
+            "signaal": gebruikt_signaal,
+            "model_signaal": model_signaal,
+            "marge": round(marge, 4),
+            "bron": "woordenlijst" if woordenlijst_signaal else "model_fallback",
+            "tijdstip": datetime.now().isoformat(),
+        }
+
+        # Fase B (2 oktober 2026): bij een ondubbelzinnig strikt
+        # trefwoord krijgt het twijfelgeval meteen een automatisch
+        # label. Dat label komt van een bron BUITEN het model, dus geen
+        # zelfbevestigend leren. Kevins eigen label ("label_kevin")
+        # wint later altijd.
+        auto_label = self._auto_label(text)
+        if auto_label:
+            regel["label_auto"] = auto_label
+            regel["label_bron"] = "woordenlijst_strikt"
+
         try:
             with open(self._uncertain_path, "a", encoding="utf-8") as f:
-                f.write(json.dumps({
-                    "text": text,
-                    "signaal": gebruikt_signaal,
-                    "model_signaal": model_signaal,
-                    "marge": round(marge, 4),
-                    "bron": "woordenlijst" if woordenlijst_signaal else "model_fallback",
-                    "tijdstip": datetime.now().isoformat(),
-                }, ensure_ascii=False) + "\n")
+                f.write(json.dumps(regel, ensure_ascii=False) + "\n")
         except Exception:
             pass
 
@@ -223,14 +260,68 @@ class MicroLearning:
         # hoeft te wachten tot een volgende herstart.
         self._check_hertraining(bij_opstart=False)
 
+    def _auto_label(self, text: str):
+        """
+        Fase B (2 oktober 2026): geeft een signaal-label terug als
+        PRECIES ÉÉN categorie uit STRIKTE_TREFWOORDEN matcht, anders
+        None. Zoekt op hele woorden (niet als stukje van een ander
+        woord). Een ontkenning direct ervoor of erna ("niet
+        interessant", "dat helpt niet") blokkeert het automatische
+        label volledig -- liever geen label dan een fout label.
+        Trefwoorden die zelf al "niet" bevatten ("werkt niet",
+        "niet storen") worden daarbij niet als ontkend gezien.
+        """
+        tekst = (text or "").lower()
+        gevonden = set()
+
+        for signaal, trefwoorden in self.STRIKTE_TREFWOORDEN.items():
+            for woord in trefwoorden:
+                patroon = r"(?<!\w)" + re.escape(woord) + r"(?!\w)"
+                for match in re.finditer(patroon, tekst):
+                    if "niet" not in woord and "geen" not in woord:
+                        ervoor = tekst[:match.start()]
+                        erna = tekst[match.end():]
+                        if (re.search(r"(?<!\w)(niet|geen)\s+$", ervoor)
+                                or re.match(r"\s+(niet|geen)(?!\w)", erna)):
+                            return None
+                    gevonden.add(signaal)
+
+        if len(gevonden) == 1:
+            return gevonden.pop()
+        return None
+
     # ---------------------------------------------------------
     # 7. Automatische hertraining (Fase 6, onderdeel 6)
     # ---------------------------------------------------------
-    def _tel_huidige_uncertain_regels(self):
+    def _tel_gelabelde_twijfelzinnen(self):
+        """
+        Fase A (2 oktober 2026): telt het aantal UNIEKE twijfelzinnen
+        waaraan Kevin een eigen label gaf ("label_kevin", niet leeg en
+        niet "skip"). Ruwe, ongelabelde logregels tellen niet meer mee
+        voor de hertraining-trigger -- die worden niet meer als
+        trainingsdata gebruikt, dus hertrainen op basis daarvan zou
+        enkel dezelfde schone data opnieuw trainen.
+        """
         if not os.path.exists(self._uncertain_path):
             return 0
+
+        unieke_teksten = set()
         with open(self._uncertain_path, "r", encoding="utf-8") as f:
-            return sum(1 for regel in f if regel.strip())
+            for regel in f:
+                regel = regel.strip()
+                if not regel:
+                    continue
+                try:
+                    item = json.loads(regel)
+                except json.JSONDecodeError:
+                    continue
+                # Fase B: Kevins label wint (ook "skip"); anders telt
+                # een automatisch label mee.
+                label = item.get("label_kevin") or item.get("label_auto")
+                tekst = item.get("text", "").strip().lower()
+                if label and label != "skip" and tekst:
+                    unieke_teksten.add(tekst)
+        return len(unieke_teksten)
 
     def _laad_hertraining_status(self):
         """
@@ -239,18 +330,28 @@ class MicroLearning:
         NIEUWE twijfelgevallen er sindsdien zijn bijgekomen, zonder
         steeds dezelfde oude regels opnieuw te tellen.
         """
+        leeg = {"gelabeld_bij_laatste_training": 0, "laatste_training": None}
         if not os.path.exists(self._hertraining_status_pad):
-            return {"aantal_bij_laatste_training": 0, "laatste_training": None}
+            return leeg
 
         try:
             with open(self._hertraining_status_pad, "r", encoding="utf-8") as f:
-                return json.load(f)
+                status = json.load(f)
         except Exception:
-            return {"aantal_bij_laatste_training": 0, "laatste_training": None}
+            return leeg
 
-    def _save_hertraining_status(self, aantal_regels):
+        # Fase A (2 oktober 2026): een oud statusbestand bevat enkel de
+        # vroegere sleutel "aantal_bij_laatste_training" (ruwe
+        # logregels). Die telling is niet vergelijkbaar met het nieuwe
+        # aantal gelabelde zinnen -- dus bewust genegeerd, we starten
+        # vanaf 0 gelabelde.
+        status.setdefault("gelabeld_bij_laatste_training", 0)
+        status.setdefault("laatste_training", None)
+        return status
+
+    def _save_hertraining_status(self, aantal_gelabeld):
         status = {
-            "aantal_bij_laatste_training": aantal_regels,
+            "gelabeld_bij_laatste_training": aantal_gelabeld,
             "laatste_training": datetime.now().isoformat(),
         }
         with open(self._hertraining_status_pad, "w", encoding="utf-8") as f:
@@ -275,9 +376,9 @@ class MicroLearning:
         model gebruiken tot de volgende herstart, wat dezelfde
         "dode koppeling"-fout zou zijn als bij onderdeel 5 hierboven.
         """
-        huidig_aantal = self._tel_huidige_uncertain_regels()
+        huidig_aantal = self._tel_gelabelde_twijfelzinnen()
         status = self._laad_hertraining_status()
-        nieuwe_sinds_laatste = huidig_aantal - status["aantal_bij_laatste_training"]
+        nieuwe_sinds_laatste = huidig_aantal - status["gelabeld_bij_laatste_training"]
 
         moet_hertrainen = (
             nieuwe_sinds_laatste >= self.HERTRAINING_DREMPEL
@@ -294,7 +395,7 @@ class MicroLearning:
             from identity.personality import train_classifier
 
             print(
-                f"[MICROLEARNING] {nieuwe_sinds_laatste} nieuwe twijfelgevallen "
+                f"[MICROLEARNING] {nieuwe_sinds_laatste} nieuwe door Kevin gelabelde twijfelzinnen "
                 f"sinds de laatste hertraining — automatische hertraining wordt gestart."
             )
             resultaat = train_classifier.train_model()

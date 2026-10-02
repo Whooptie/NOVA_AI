@@ -1380,3 +1380,87 @@ date_calendar_roadmap.md Onderdeel 5 + het vervolgontwerp uit nova_state.md punt
 **Live bevestigd op battleserver (26 september 2026):** "wat is er gebeurd vandaag" → genummerde lijst 1-3, netjes onder elkaar; "meer" → 4-6 als "(vervolg)"; "6" → samenvatting "MV Le Joola: ..." + open-vraag; "ja" → pagina geopend in Chrome op de laptop.
 
 **Klein, cosmetisch, niet opgelost:** de toon-pipeline zet een "!" achter de laatste zin, ook achter een vraag ("(ja/nee)!"). Eigenschap van de pipeline, niet van deze module.
+
+
+---
+
+## 🐛 Nova sprak tegen een lege terminal — zichtbaarheid, pauzetimer, emergence, webcam (30 september 2026)
+
+**Aanleiding (live gezien, 29 september 2026):** terwijl de laptop niet verbonden was, gaf Nova om de 30 min een pauzemelding en om de 20 min een blok van 3 emergence-insights, telkens dezelfde. Daarnaast verscheen `STYLE KEY: ...` als debugregel in het chatvenster.
+
+**Oorzaken, geverifieerd in de broncode:**
+1. `session_watcher.check_pauze()` telde vanaf Nova's opstart (`self.start_time`), niet vanaf Kevins activiteit. Sinds de 24/7-verhuizing dus elke 30 min, dag en nacht.
+2. `context_manager.can_interrupt()` zei "ja" bij een lege kamer: zonder laptop is de webcamdata `None` ("geen info"), de stopregel "niemand aanwezig" reageert enkel op een echte 0, en de score bleef +2 (gebruikelijk moment).
+3. `emergence_engine.reflect()` sprak elk insight uit dat zijn drempel haalde, en de 15-min-cooldown is korter dan 2 rondes van 10 min: hetzelfde blok elke 20 min.
+4. `tone_engine.py` printte `STYLE KEY` altijd.
+5. Tijdens het live testen gevonden: `client_bridge.py` liet webcamdata na 180 s vervallen, terwijl die maar elke 300 s binnenkomt (2 van elke 5 min "onbekend"). En één gemist webcambeeld ("0 gezichten") blokkeerde alles, ook terwijl Kevin zat te typen.
+
+**Fixes:**
+- `context_manager.py`: nieuwe harde stopregel "Kevin kan het niet zien" (typte laatste 10 min, of actief in Nova's eigen venster/project), velden `kevin_kan_zien`/`minuten_sinds_laatste_bericht`, getoond in `context`. Webcam-stopregel vervalt bij recente input (focus `actief`).
+- `client_bridge.py`: `PRESENCE_VERVAL_SECONDEN = 420`, `_is_vers()` met parameter `max_leeftijd`, ongebruikte `leeftijd`-regel weg.
+- `session_watcher.py`: `check_pauze()` herschreven rond focusdata (`_sessie_start`/`_laatst_actief`, reset na `PAUZE_RESET_SECONDEN` = 10 min), nieuwe helper `_haal_focus_niveau()`.
+- `emergence_engine.py`: periodiek pad max 1 insight per ronde (grootste marge), enkel nieuwe inhoud (+25%-regel voor getallen), cooldown per type willekeurig 18-30 uur, opgeslagen onder `"_periodiek"`. Reactief pad ongewijzigd, registreert wel mee.
+- `tone_engine.py`: `TOON_STYLE_DEBUG = False`.
+- `main.py`: tijdstempels `[HH:MM]` bij `Nova:` en `Jij:` (`TOON_TIJDSTEMPELS`).
+
+**Bewust niet meegenomen:** `weather.py`'s proactieve waarschuwing en `contradiction_checker.py` gebruiken `can_interrupt()` niet en kunnen dus nog tegen een lege terminal spreken. Dat hoort bij Fase B (berichten op de laptop + postvak), zie `nova_state.md`.
+
+**Getest:** nieuw `test_proactief_zichtbaarheid.py`, 52 tests. 34 van de eerste 44 falen aantoonbaar op de oude code. Volledige suite: 979 groen, 1 overgeslagen.
+
+**Live bevestigd op battleserver (30 september 2026):** tijdstempels tonen de juiste Belgische tijd (container-TZ in orde), `STYLE KEY` verdwenen. `context` toont "Kevin kan het zien: True". Om 20:16 blokkeerde één gemist webcambeeld ("Gezichten: 0" terwijl Kevin typte) alles, wat de webcam-fixes opleverde. Vier keer `emergence` na elkaar: expressiviteit (grootste marge) → "weer" → "oké/top" → stil, zoals voorspeld. Webcam-vervaltijd: om 20:30 nog "Gezichten: 1" op een meting van rond 20:26-20:27 (met de oude 3 min was dat "onbekend" geweest).
+
+---
+
+## 🐛 Zelfbevestigend leren in de signaal- en sentiment-classifier (2 oktober 2026)
+
+**Aanleiding:** een data-oogst (1 oktober 2026) van `uncertain_signals.jsonl`, `sentiment_uncertain.jsonl` en de trainingsbestanden. Opvallend: bijna elk commando werd als "kilte" gezien (`pion naar e4`, `open vlc`, `help`, `3+3`), en de sentiment-classifier zag `/reboot` en `dank je!` als negatief, `wat is python` als positief.
+
+**Oorzaken, geverifieerd in de broncode:**
+1. **Zelfbevestigend leren.** `train_classifier.py` en `train_sentiment_classifier.py` gebruikten elk twijfelgeval als trainingsvoorbeeld, met als label de onzekere gok van het model zelf (of de woordenlijst). Bij de eerste hertraining na het aanvullen van de data: 586 van 654 signaal-voorbeelden en 43 van 120 sentiment-voorbeelden waren zulke gokken. Handgeschreven voorbeelden verdronken erin (één `"pion naar e4" → neutraal` tegenover tientallen `→ kilte`). De docstring zei "DOOR KEVIN bepaald", maar Kevin kwam er nergens aan te pas.
+2. **Twijfel telde toch als signaal.** In `microlearning.py`'s `_detecteer_signaal()` viel een twijfelgeval zonder woordenlijst-match door naar `return [top_klasse]`. Elke schaakzet (marge 0.0957, net onder 0.10) telde dus als kilte en liet de kilte-tellers in `growth_metrics.json` oplopen. Daarbovenop: de woordenlijst-regel "max. 3 tekens = kilte" ("hey", "pi", "3").
+3. **Benchmark niet onafhankelijk.** De 7 focus-zinnen en "reboot jezelf even" stonden letterlijk in zowel `training_data.json` als `benchmark_data.json`.
+4. **Sentiment-classifier buiten zijn domein.** Getraind op enkel voorkeurzinnen, maar ook gebruikt door `variant_feedback_logger.py` om Kevins reactie op een antwoord te beoordelen. Gevolg: een variant vóór een `/reboot` of "dank je!" kreeg een slechtere score.
+5. In `uncertain_signals.jsonl` stonden nog 20 kunstmatige testregels (18 juli 2026), waarvan één aan een echte regel vastgeplakt (2 JSON-objecten op 1 regel).
+
+**Fixes:**
+- **Data:** sentiment-training aangevuld met reacties (positief/negatief) en commando's/vragen als neutraal_gemengd (bewuste noodoplossing, zie nova_state.md); sentiment-benchmark +7 onafhankelijke zinnen. Signaal-training +16 neutrale commando's/zetten/aankondigingen ("ik ben moe" bewust als neutraal: geen van de 7 signalen past, neutraal laat geen trait bewegen). Signaal-benchmark: de 8 dubbele zinnen vervangen door nieuwe, plus 3 neutrale commando's. Testregels verwijderd met `sed -i '/"bron": "test"/d'`.
+- `microlearning.py`: twijfel zonder woordenlijst-bevestiging → `return []`; kilte-regel uit de woordenlijst geschrapt; `_tel_huidige_uncertain_regels()` vervangen door `_tel_gelabelde_twijfelzinnen()` (unieke zinnen met `label_kevin`, niet "skip"); statusbestand met nieuwe sleutel `gelabeld_bij_laatste_training` (oude sleutel bewust genegeerd, anders zou 0 - 600 nooit meer hertrainen); `HERTRAINING_DREMPEL` 20 → 10.
+- `sentiment_classifier.py`: bij twijfel zonder `grof_sentiment` → `"neutraal_gemengd"`; met `grof_sentiment` (voorkeur-flow) blijft de top-klasse leidend. Zelfde tel/status-aanpassing, `HERTRAINING_DREMPEL` 15 → 10.
+- `train_classifier.py` + `train_sentiment_classifier.py`: `_laad_uncertain_voorbeelden(toegestane_labels)` geeft enkel regels met `label_kevin` terug, slaat "skip" en onbekende labels (typfouten) over, en ontdubbelt identieke zinnen.
+
+**Bewust nog niet gebouwd:** het labelcommando om `label_kevin` in te vullen (Fase B, nova_state.md punt 30). Tot dan trainen beide modellen enkel op de handgeschreven voorbeelden.
+
+**Getest:** nieuw `test_twijfelgevallen_labels.py`, 18 tests. Volledige suite: 997 groen, 1 overgeslagen.
+
+**Bijvangst, zelf veroorzaakt en gefixt:** `debug_commands.py`'s `_preferences_debug()` gebruikte nog de oude namen `_tel_huidige_uncertain_regels()` en `"aantal_bij_laatste_training"`, waardoor `preferences debug` crashte na Fase A. Geen enkele test riep dat commando aan. Aangepast naar `_tel_gelabelde_twijfelzinnen()`/`"gelabeld_bij_laatste_training"`, met een regressietest erbij. Een `grep` op de oude namen vindt daarna enkel nog commentaar en tests.
+
+**Handmatige hertraining (2 oktober 2026):** sentiment 77 voorbeelden, score 0.8947 (was 0.7895) → actief. Signaal 68 voorbeelden, score 0.8636 (was 0.7727) → actief. Beide beter op minder data. Ter vergelijking, de poging vóór Fase A (met de twijfelgevallen): signaal 0.7273 → terecht geweigerd door de veiligheidsrem, die pas werkte sinds de benchmark onafhankelijk was.
+
+**Live bevestigd op battleserver (2 oktober 2026):** `md5sum` van `growth_metrics.json` ongewijzigd na `help`, `bord`, `open vlc`, `hey` (voorheen 4x kilte). Sentiment los getest: `/reboot` en `hey` → neutraal_gemengd, "dank je" en "top, dat werkt" → positief, "dit werkt niet" en "nee, dat klopt niet" → negatief.
+
+---
+
+## ✨ Twijfelgevallen labelen: automatisch + labelcommando (Fase B, 2 oktober 2026)
+
+**Aanleiding:** vervolg op Fase A (zie vorige sectie). Twijfelgevallen tellen sindsdien enkel nog als trainingsdata met een label van een bron buiten het model. Er bestond nog geen manier om zo'n label te geven, dus de signaal- en sentiment-classifier hertraindden niet meer automatisch.
+
+**Ontwerpkeuzes (afgewogen met Kevin):**
+- **Signaal: automatisch labelen met een strikte trefwoordenlijst.** De bestaande woordenlijst is te grof (substring-matching: "top" matcht ook "stop"; "hoe werkt" maakt van elke vraag verwarring). Daarom een aparte `STRIKTE_TREFWOORDEN` in `microlearning.py`: hele woorden, enkel ondubbelzinnige trefwoorden, label alleen als precies één categorie matcht, een ontkenning ervoor of erna blokkeert het label. Komt in een apart veld `label_auto` (+ `label_bron`), zodat de herkomst altijd zichtbaar blijft.
+- **Sentiment: enkel handmatig.** De enige onafhankelijke bron (de regex uit de voorkeur-flow) kent alleen positief/negatief en zou de nuance (neutraal_gemengd) stelselmatig fout labelen. Bij reacties voor Variant Learning bestaat er helemaal geen tweede bron.
+- **`label_kevin` wint altijd van `label_auto`**, ook de waarde "skip".
+- **Labelcommando via een argument** in `debug_commands.py`, niet via `pending_question` — `intent_router.py` blijft ongewijzigd.
+
+**Gebouwd:**
+- Nieuw `core/twijfel_labeler.py`: `volgende_ongelabelde()` (vaakst gelogde unieke zin eerst; een eenmaal gelabelde zin komt nooit terug, ook niet als hij nadien opnieuw gelogd wordt), `zet_label()` (alle identieke regels tegelijk, atomisch wegschrijven via tijdelijk bestand + `os.replace()`, kapotte regels blijven bewaard), `status()`, `toegestane_labels()` (uit de handgeschreven trainingsdata, vangt typfouten op). Bewust in `core/`: geen `init_module()`, en de dynamische scan kijkt daar niet.
+- `microlearning.py`: `STRIKTE_TREFWOORDEN` + `_auto_label()`; `_log_uncertain()` schrijft `label_auto` bij een match; `_tel_gelabelde_twijfelzinnen()` telt ook `label_auto`.
+- `sentiment_classifier.py`, `train_classifier.py`, `train_sentiment_classifier.py`: `label = label_kevin or label_auto`.
+- `debug_commands.py`: `label status`, `label signaal [<label>|skip]`, `label sentiment [<label>|skip]`. Na elk label (behalve skip) meteen een hertraining-check.
+- `help debug`: nieuw blok "Twijfelgevallen labelen".
+
+**Eerlijke beperking:** voegt microlearning precies tijdens het herschrijven (milliseconden) een nieuwe regel toe, dan gaat die ene logregel verloren. Aanvaard. De ongeveer 600 bestaande regels krijgen geen automatisch label; dat gebeurt alleen bij nieuwe regels.
+
+**Getest:** nieuw `test_twijfel_labeler.py`, 28 tests. Volledige suite: 1025 groen, 1 overgeslagen.
+
+**Live bevestigd op battleserver (2 oktober 2026):** `label status` → signaal 408 unieke zinnen (593 regels), sentiment 22 (44), alles ongelabeld. Vaakst gelogde twijfelzin: "hey" (9x), door het model telkens als kilte gegokt → `neutraal`, 9 regels in één keer bijgewerkt. Na 10 labels startte de automatische hertraining vanzelf (`[MICROLEARNING] 10 nieuwe door Kevin gelabelde twijfelzinnen...`), de nieuwe versie haalde het ijkpunt en werd live geladen, zonder herstart.
+
+**Labelrichtlijn, ontstaan tijdens het labelen:** signalen gaan over hoe Kevin op Nova reageert, want ze laten haar persoonlijkheid bewegen. Een vraag of commando is neutraal, tenzij er duidelijk een gevoel in zit. Een mening over iets anders ("koffie is oké maar niet top") is neutraal voor de signalen — dat hoort bij de sentiment-classifier en het voorkeurprofiel. Activiteitsaankondigingen ("ik ga coderen") zijn neutraal, zodat focus pas telt bij echte concentratie.

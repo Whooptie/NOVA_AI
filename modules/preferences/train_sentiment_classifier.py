@@ -57,17 +57,26 @@ def _laad_json(pad, fallback=None):
         return json.load(f)
 
 
-def _laad_uncertain_voorbeelden():
+def _laad_uncertain_voorbeelden(toegestane_labels):
     """
-    Leest sentiment_uncertain.jsonl (twijfelgevallen die sentiment_
-    classifier.py tijdens normaal gebruik verzameld heeft). Geeft een
-    lege lijst terug als het bestand nog niet bestaat -- heel normaal
-    bij de allereerste training.
+    Fase A (2 oktober 2026): leest sentiment_uncertain.jsonl, maar
+    geeft ENKEL twijfelgevallen terug waaraan Kevin zelf een label gaf
+    (veld "label_kevin"). Het oude "categorie"-veld is de onzekere gok
+    van het model zelf en wordt bewust NIET als label gebruikt -- dat
+    gaf zelfbevestigend leren (bv. "/reboot" 10x als negatief).
+
+    - "skip" en labels die niet in sentiment_training_data.json
+      voorkomen (bv. een typfout) worden overgeslagen.
+    - Identieke zinnen tellen maar 1 keer; bij een verschillend label
+      voor dezelfde zin wint het laatste.
+
+    Geeft een lijst van {"text": ..., "categorie": <label van Kevin>}
+    terug, in hetzelfde formaat als sentiment_training_data.json.
     """
     if not os.path.exists(UNCERTAIN_PAD):
         return []
 
-    voorbeelden = []
+    per_tekst = {}
     with open(UNCERTAIN_PAD, "r", encoding="utf-8") as f:
         for regel in f:
             regel = regel.strip()
@@ -75,11 +84,18 @@ def _laad_uncertain_voorbeelden():
                 continue
             try:
                 item = json.loads(regel)
-                if "text" in item and "categorie" in item:
-                    voorbeelden.append(item)
             except json.JSONDecodeError:
                 continue
-    return voorbeelden
+            tekst = item.get("text", "").strip()
+            # Fase B (2 oktober 2026): Kevins label wint (ook "skip");
+            # anders een automatisch label van een onafhankelijke bron.
+            label = item.get("label_kevin") or item.get("label_auto")
+            if not tekst or not label or label == "skip":
+                continue
+            if label not in toegestane_labels:
+                continue
+            per_tekst[tekst.lower()] = {"text": tekst, "categorie": label}
+    return list(per_tekst.values())
 
 
 def train_model(gebruik_uncertain=True):
@@ -108,7 +124,8 @@ def train_model(gebruik_uncertain=True):
 
     aantal_extra = 0
     if gebruik_uncertain:
-        extra = _laad_uncertain_voorbeelden()
+        toegestane_labels = {v["categorie"] for v in voorbeelden}
+        extra = _laad_uncertain_voorbeelden(toegestane_labels)
         voorbeelden.extend(extra)
         aantal_extra = len(extra)
 
@@ -212,7 +229,7 @@ if __name__ == "__main__":
     else:
         print(f"✅ Training voltooid.")
         print(f"   Trainingsvoorbeelden: {resultaat['aantal_training_voorbeelden']} "
-              f"(waarvan {resultaat['aantal_extra_uit_uncertain']} uit eerder verzamelde twijfelgevallen)")
+              f"(waarvan {resultaat['aantal_extra_uit_uncertain']} door jou gelabelde twijfelzinnen)")
         print(f"   Score nieuwe versie op ijkpunt: {resultaat['nieuwe_score']}")
         if resultaat["huidige_score"] is not None:
             print(f"   Score huidige actieve versie: {resultaat['huidige_score']}")

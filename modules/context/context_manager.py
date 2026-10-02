@@ -57,6 +57,7 @@ bewaard.
 from datetime import datetime
 from pathlib import Path
 import json
+import time
 
 
 class ContextManager:
@@ -169,6 +170,34 @@ class ContextManager:
     # dit teruggeven — een lege lijst, geen gok.
     GEEN_TOPICS = []
 
+    # ------------------------------------------------------------
+    # Zichtbaarheid (30 sept 2026): KAN Kevin een proactief bericht
+    # van Nova op dit moment ook echt zien?
+    # ------------------------------------------------------------
+    # Sinds Nova 24/7 op battleserver draait, verschijnt alles wat ze
+    # proactief zegt in haar eigen terminal -- en die ziet Kevin enkel
+    # als hij er zelf naar kijkt. Zonder deze regel praatte Nova
+    # 's nachts of terwijl de laptop uit stond gewoon tegen een lege
+    # terminal (pauzemeldingen, emergence-insights, ...).
+    #
+    # Kevin "kan het zien" als MINSTENS een van deze twee klopt:
+    #   1. Hij typte in de laatste ZICHTBAAR_NA_BERICHT_MINUTEN minuten
+    #      zelf iets naar Nova (een gewoon bericht of een debug-
+    #      commando) -- dan zit hij duidelijk in de terminal.
+    #   2. Hij is NU actief (focus "actief") in het Nova-project in
+    #      VS Code, of in een venster dat als "talking_to_nova"
+    #      herkend wordt -- dan staat Nova's terminal binnen handbereik
+    #      (Kevin's eigen bevestiging, 30 sept 2026).
+    #
+    # Puur symbolisch: twee tijdstippen vergelijken en een label
+    # opzoeken. Geen ML.
+    #
+    # Fase B (later): een client die berichten zelf op het scherm kan
+    # tonen (bv. een Windows-melding via nova_client.py) wordt dan een
+    # DERDE manier om "zichtbaar" te zijn.
+    ZICHTBAAR_NA_BERICHT_MINUTEN = 10
+    ZICHTBARE_ACTIVITEITEN = {"talking_to_nova"}
+
     def __init__(self, event_bus, layers=None):
         self.event_bus = event_bus
         # "layers" volgt dezelfde conventie als response_engine.py:
@@ -203,6 +232,66 @@ class ContextManager:
             "faces_detected": None,
             "is_alone": None,
         }
+
+        # Zichtbaarheid (30 sept 2026): wanneer typte Kevin voor het
+        # laatst zelf iets naar Nova? None = nog niet sinds de opstart.
+        # Bewust NIET opgeslagen op schijf: na een herstart weten we
+        # gewoon nog niet of Kevin kijkt, en blijft Nova dus stil tot
+        # hij iets typt -- de veilige kant.
+        self._laatste_bericht_van_kevin = None
+
+        # main.py publiceert elk getypt bericht als "chat_message", en
+        # elk debug-commando als "debug_command" (dat laatste gaat NIET
+        # via chat_message, zie main.py). Beide betekenen: Kevin zit
+        # nu in de terminal. getattr()-check: een test-EventBus zonder
+        # subscribe() mag hier niet op crashen.
+        subscribe = getattr(event_bus, "subscribe", None)
+        if subscribe is not None:
+            subscribe("chat_message", self._on_kevin_typte)
+            subscribe("debug_command", self._on_kevin_typte)
+
+    def _on_kevin_typte(self, data, event_type=None):
+        """
+        Onthoudt het tijdstip van Kevin's laatste eigen bericht. Enkel
+        berichten met sender "Kevin" tellen (of zonder sender-veld, zoals
+        debug_command) -- zodat een eventueel ander chat_message-bericht
+        dat ooit NIET van Kevin komt, dit niet per ongeluk bijwerkt.
+        """
+        if isinstance(data, dict):
+            afzender = data.get("sender")
+            if afzender is not None and afzender != "Kevin":
+                return
+        self._laatste_bericht_van_kevin = time.time()
+
+    def _minuten_sinds_laatste_bericht(self):
+        """None als Kevin sinds de opstart nog niets typte."""
+        if self._laatste_bericht_van_kevin is None:
+            return None
+        return (time.time() - self._laatste_bericht_van_kevin) / 60
+
+    def _bepaal_zichtbaarheid(self, activiteit_label, is_working_on_nova, focus_niveau):
+        """
+        Kan Kevin een proactief bericht van Nova NU zien? Zie de
+        uitleg bij ZICHTBAAR_NA_BERICHT_MINUTEN bovenaan de klasse.
+
+        Geeft een tuple terug: (kan_zien: bool, reden: str).
+        """
+        minuten = self._minuten_sinds_laatste_bericht()
+        if minuten is not None and minuten <= self.ZICHTBAAR_NA_BERICHT_MINUTEN:
+            return True, f"Kevin typte {minuten:.0f} min geleden nog iets"
+
+        in_nova_venster = (
+            is_working_on_nova
+            or activiteit_label in self.ZICHTBARE_ACTIVITEITEN
+        )
+        if in_nova_venster and focus_niveau == "actief":
+            return True, "Kevin is actief bezig in Nova's eigen venster/project"
+
+        if minuten is None:
+            laatst = "nog niets getypt sinds de opstart"
+        else:
+            laatst = f"laatste bericht {minuten:.0f} min geleden"
+        return False, f"Kevin kan het nu niet zien ({laatst}, niet actief in Nova's venster)"
 
     # ------------------------------------------------------------------
     # Kern: context berekenen
@@ -254,6 +343,9 @@ class ContextManager:
         # die ooit "je was lang in VS Code bezig" zou kunnen zeggen) —
         # dit legt enkel de data klaar voor later.
         screen_focus = None
+        # Zichtbaarheid (30 sept 2026): zit Kevin in het Nova-project
+        # in VS Code? activity_detector/nova_client.py berekent dit al.
+        is_working_on_nova = False
 
         if activity_detector is not None:
             try:
@@ -261,6 +353,7 @@ class ContextManager:
                 activiteit_label = activiteit_info.get("activity", "unknown")
                 activiteit_duur_minuten = activiteit_info.get("duration_minutes", 0.0)
                 screen_focus = activiteit_info.get("raw_window_title")
+                is_working_on_nova = bool(activiteit_info.get("is_working_on_nova", False))
             except Exception:
                 # activity_detector.py ontbreekt pygetwindow, of
                 # een ander onverwacht probleem — nooit Layer 5 laten
@@ -268,6 +361,7 @@ class ContextManager:
                 activiteit_label = "unknown"
                 activiteit_duur_minuten = 0.0
                 screen_focus = None
+                is_working_on_nova = False
 
         # --- Fase 3: focus ophalen ---
         focus_niveau = "onbekend"
@@ -315,6 +409,10 @@ class ContextManager:
                 aantal_gezichten = None
                 is_alleen = None
 
+        kevin_kan_zien, zichtbaarheid_reden = self._bepaal_zichtbaarheid(
+            activiteit_label, is_working_on_nova, focus_niveau
+        )
+
         should_interrupt, reden = self._bepaal_interrupt(
             is_gebruikelijk_moment,
             anomalieen_vandaag,
@@ -322,6 +420,8 @@ class ContextManager:
             activiteit_duur_minuten,
             focus_niveau,
             is_alleen,
+            kevin_kan_zien=kevin_kan_zien,
+            zichtbaarheid_reden=zichtbaarheid_reden,
         )
 
         # Fase 5, NIEUW: response_style — zie _bepaal_response_style()
@@ -348,6 +448,8 @@ class ContextManager:
             "seconds_since_input": seconden_sinds_input,
             "faces_detected": aantal_gezichten,
             "is_alone": is_alleen,
+            "kevin_kan_zien": kevin_kan_zien,
+            "minuten_sinds_laatste_bericht": self._minuten_sinds_laatste_bericht(),
             "should_interrupt": should_interrupt,
             "response_style": response_style,
             "reden": reden,
@@ -405,6 +507,8 @@ class ContextManager:
         activiteit_duur_minuten,
         focus_niveau,
         is_alleen,
+        kevin_kan_zien=True,
+        zichtbaarheid_reden="",
     ):
         """
         Fase 5: gewogen score-systeem (vervangt de oude "eerste match
@@ -442,11 +546,43 @@ class ContextManager:
         in tegenstelling tot de "zwarte doos" van geleerde gewichten.
         """
         # --- Harde stopregel: niemand aanwezig (blijft VOOR de score) ---
-        if is_alleen is True:
+        # AANGEPAST (30 sept 2026): de webcam neemt maar 1 beeld per 5
+        # minuten, en kan Kevin missen (even weggekeken, slecht licht,
+        # half in beeld) -- live gezien: "Gezichten: 0" terwijl Kevin op
+        # datzelfde moment zat te typen. Recente toetsenbord/muis-input
+        # (focus "actief" = minder dan 2 minuten geleden) bewijst dat er
+        # WEL iemand fysiek aan de laptop zit, en weegt daarom zwaarder
+        # dan 1 gemist webcambeeld. Eerlijke kanttekening: input bewijst
+        # dat er IEMAND is, niet dat het Kevin is -- maar de webcam
+        # herkent evenmin identiteit, enkel gezichten.
+        # 0 gezichten EN geen recente input -> nog altijd de harde
+        # stopregel, exact zoals vroeger.
+        webcam_zag_niemand_maar_wel_input = (
+            is_alleen is True and focus_niveau == "actief"
+        )
+
+        if is_alleen is True and not webcam_zag_niemand_maar_wel_input:
             return False, "niemand aanwezig volgens webcam (Fase 4) — harde stopregel, geen score"
+
+        # --- Harde stopregel: Kevin kan het niet zien (30 sept 2026) ---
+        # Zelfde soort regel als "niemand aanwezig" hierboven: een
+        # proactief bericht dat niemand leest, heeft nooit zin, ongeacht
+        # de score. kevin_kan_zien heeft standaard True, zodat bestaande
+        # aanroepen/tests die deze parameter niet meegeven, zich exact
+        # zoals vroeger blijven gedragen.
+        if kevin_kan_zien is False:
+            return False, f"{zichtbaarheid_reden} — harde stopregel, geen score"
 
         # --- Score opbouwen: elke regel voegt een (label, punten)-paar toe ---
         score_onderdelen = []
+
+        # Geen punten, enkel zichtbaar in de reden (context-commando /
+        # context_log.jsonl), zodat Kevin kan nagaan WAAROM de webcam-
+        # stopregel hier niet gold.
+        if webcam_zag_niemand_maar_wel_input:
+            score_onderdelen.append(
+                ("webcam zag niemand, maar recente input (focus actief) weegt zwaarder", 0)
+            )
 
         # 1) Anomalieën vandaag — hoe meer, hoe negatiever, met een plafond
         #    (MAX_ANOMALIE_SCORE_AFTREK) zodat 1 extreme dag niet oneindig
@@ -689,6 +825,7 @@ class ContextManager:
             f"Scherm: {ctx.get('screen_focus') or 'onbekend'} — "
             f"Focus: {ctx['focus_level']} (laatste input: {seconden_tekst}) — "
             f"Gezichten: {gezichten_tekst} — "
+            f"Kevin kan het zien: {ctx.get('kevin_kan_zien', '?')} — "
             f"Mag onderbreken: {ctx['should_interrupt']} — "
             f"Response-stijl: {ctx.get('response_style', '?')} "
             f"(reden: {ctx['reden']})"

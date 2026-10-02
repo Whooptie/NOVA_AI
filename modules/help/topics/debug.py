@@ -90,6 +90,18 @@ def get_help():
   preferences debug              (profiel-aantallen, sentiment-classifier-status,
                                    kandidaat-suggesties-status in één oogopslag)
 
+🏷️ TWIJFELGEVALLEN LABELEN (signaal- en sentiment-classifier)
+  label status                   (per soort: hoeveel unieke twijfelzinnen ongelabeld,
+                                   door jou gelabeld, automatisch gelabeld, overgeslagen)
+  label signaal                  (toont de volgende ongelabelde twijfelzin, de
+                                   vaakst gelogde eerst, met de gok van het model)
+  label signaal <label>          (labelt de getoonde zin -- geldt voor ALLE
+                                   identieke regels -- en toont meteen de volgende)
+  label signaal skip             (slaat de zin over: komt niet terug, telt niet mee)
+  label sentiment ...            (idem voor de sentiment-classifier)
+                                  Na elk label checkt Nova of de hertraining-drempel
+                                  (10 nieuwe gelabelde zinnen) gehaald is.
+
 🎯 INTENT CLASSIFIER (ML-fallback, Fase 1-6)
   intent debug                   (aantal voorbeelden, categorieën, laatste training)
   intent test <zin>               (test een zin rechtstreeks tegen de classifier)
