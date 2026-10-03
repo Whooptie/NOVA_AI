@@ -38,6 +38,19 @@ import time
 from pathlib import Path
 from typing import Dict, List
 
+# Lemmatizer-herziening (3 oktober 2026): simplemma is een opzoek-
+# woordenboek (woordvorm -> basisvorm) + enkele regels, MIT-licentie,
+# pure Python, offline. Geen ML-model: bij gebruik is het pure opzoeking.
+# Optioneel: ontbreekt het (bv. na een image-rebuild zonder
+# requirements.txt), dan valt lemmatize_nl() stil terug op de oude,
+# eigen regels -- nooit een crash.
+try:
+    import simplemma
+    _SIMPLEMMA_BESCHIKBAAR = True
+except ImportError:
+    simplemma = None
+    _SIMPLEMMA_BESCHIKBAAR = False
+
 
 class WordAssociationsLearner:
     """
@@ -116,10 +129,27 @@ class WordAssociationsLearner:
         "zochten": "zoeken", "gezocht": "zoeken",
     }
 
+    # Lemmatizer-herziening (3 oktober 2026): woorden die simplemma
+    # aantoonbaar verkeerd zou omzetten en die GEEN concept in
+    # concepts.json zijn (concepten worden al automatisch beschermd,
+    # zie _is_bekend_concept()). Gemeten met scripts/vergelijk_
+    # lemmatizer.py: nova -> novum, data -> datum, beter -> goed.
+    BESCHERMDE_WOORDEN = {"nova", "data", "beter", "slechter"}
+
     def __init__(self, event_bus=None, semantic_module=None, save_path=None):
         self.event_bus = event_bus
         self.semantic = semantic_module
         self.config = {}
+
+        # Lemmatizer-herziening (3 oktober 2026): simplemma gebruiken als
+        # het geïnstalleerd is. Apart attribuut zodat tests het kunnen
+        # uitzetten om de oude regels te testen.
+        self.gebruik_simplemma = _SIMPLEMMA_BESCHIKBAAR
+        print(
+            "[WORD_ASSOCIATIONS] Lemmatizer: "
+            + ("simplemma" if self.gebruik_simplemma
+               else "eigen regels (simplemma niet gevonden -- staat het in requirements.txt?)")
+        )
 
         # ─────────────────────────────────
         # Opslag (Fase 2 — nog enkel in het geheugen, niet op schijf)
@@ -198,6 +228,24 @@ class WordAssociationsLearner:
             "was", "were", "have", "has", "had", "do", "does", "did",
             "would", "could", "should", "will", "shall", "to", "of",
             "in", "on", "at", "for", "with", "as", "by", "this", "that",
+
+            # Lemmatizer-herziening (3 oktober 2026, bug #32): vraag-
+            # en functiewoorden die nog doorglipten (bleken in
+            # get_trending() en als "unknown"-concept op te duiken).
+            "hoeveel", "welk", "eens", "graag", "alweer", "meestal",
+            "vaak", "zeker", "wel",
+
+            # Groeten en tussenwerpsels -- zeggen niets over een
+            # onderwerp.
+            "hey", "hoi", "hallo", "oké", "oke", "okay", "pff", "hmm",
+            "nee", "jawel",
+
+            # Commandowoorden van Nova zelf (bug #32: "teach" verscheen
+            # als trending onderwerp). Debug-commando's komen hier nooit
+            # binnen (main.py vangt die op vóór het publiceren), gewone
+            # commando's zoals teach/wiki/onthoud wel.
+            "teach", "example", "wiki", "onthoud", "vergeet", "weerleg",
+            "verwijder", "definitief", "help", "debug",
         ])
 
         # Config-opties (vaste standaardwaarden, geen config-systeem nodig)
@@ -262,37 +310,70 @@ class WordAssociationsLearner:
 
     def lemmatize_nl(self, word: str) -> str:
         """
-        Eenvoudige, symbolische normalisatie van Nederlandse woorden
-        (BENADERING — geen volledige taalkundige lemmatizer).
+        Zet een woord om naar zijn basisvorm (lemma).
 
-        Wat dit wel afvangt:
-        - Verkleinwoorden: "autootje" -> "auto", "boekje" -> "boek"
-        - Regelmatig meervoud: "auto's" -> "auto" (al gebeurt dit vaak
-          al in tokenize doordat de apostrof wegvalt), "honden" -> "hond"
-        - Bijvoeglijke vorm met -e: "snelle" -> "snel"
+        Lemmatizer-herziening (3 oktober 2026, bug #32): de oude, eigen
+        regels ("haal -en eraf") konden geen onderscheid maken tussen
+        een meervoud ("honden" -> hond) en een woord dat gewoon op -en
+        eindigt ("morgen" -> "morg", "keuken" -> "keuk"). Gemeten met
+        scripts/vergelijk_lemmatizer.py op Kevins eigen zinnen:
+        simplemma doet het op ~60 van de 83 verschillende woorden
+        duidelijk beter, maar op ~15 slechter (o.a. kat -> kater,
+        fiets -> fietsen, nova -> novum). Daarom een combinatie, per
+        woord in deze volgorde:
 
-        Wat dit NIET afvangt (bewuste beperking, zie uitleg in de chat):
-        - Onregelmatig meervoud ("kind" -> "kinderen" andersom)
-        - Homoniemen en context-afhankelijke gevallen
+        1. Onregelmatig werkwoord (IRREGULAR_VERBS)? -> die vorm.
+        2. Beschermd woord of bestaand concept in concepts.json? ->
+           ONGEWIJZIGD. Houdt Layer 1 afgestemd op Layer 3: zowel
+           learn_from() (detect_sense) als response_engine.py
+           (_sterkste_associatie -> find_related) zoeken op de
+           conceptnaam. "kat" moet dus "kat" blijven, geen "kater".
+        3. Anders simplemma (kleine letters, "_" weg: op_bouwen ->
+           opbouwen).
+        4. Is die uitkomst zelf een sleutel in IRREGULAR_VERBS? -> nog
+           eens erdoor. Maakt loop/liep/lopen consistent: simplemma
+           geeft lopen -> "loop", en "loop" -> "lopen".
 
-        Werkpunt 6 (15 augustus 2026): onregelmatige werkwoordsvervoe-
-        gingen ("liep" -> "lopen") worden sinds deze uitbreiding WEL
-        afgevangen, via de vaste IRREGULAR_VERBS-lookup hieronder --
-        eerst gecheckt, vóór de reguliere regels, want deze vormen
-        volgen geen enkel regelmatig patroon.
-
-        Dit blijft 100% regel-gebaseerd Python (geen ML/LLM).
+        Ontbreekt simplemma of faalt het: terugval op de oude regels
+        (_lemmatize_regels()). Puur opzoeking + regels, geen ML.
         """
-        # Werkpunt 6 (15 augustus 2026): onregelmatige werkwoordsvorm
-        # eerst checken, want deze volgen geen regelmatig patroon en
-        # zouden anders onterecht door de -e/-en-regels hieronder
-        # verminkt kunnen worden (bv. "was" zou anders NIET geraakt
-        # worden door onderstaande regels en gewoon "was" blijven --
-        # maar iets als "gaven" zou zonder deze check fout op "gaf"
-        # i.p.v. het correcte lemma "geven" kunnen uitkomen).
         if word in self.IRREGULAR_VERBS:
             return self.IRREGULAR_VERBS[word]
 
+        if word in self.BESCHERMDE_WOORDEN or self._is_bekend_concept(word):
+            return word
+
+        if self.gebruik_simplemma and simplemma is not None:
+            try:
+                lemma = simplemma.lemmatize(word, lang="nl")
+                lemma = (lemma or word).lower().replace("_", "")
+                if lemma:
+                    return self.IRREGULAR_VERBS.get(lemma, lemma)
+            except Exception:
+                pass
+
+        return self._lemmatize_regels(word)
+
+    def _is_bekend_concept(self, word: str) -> bool:
+        """
+        True als het woord al een concept is in concepts.json (via de
+        semantic-module die Layer 1 sowieso al meekrijgt voor
+        detect_sense). Zonder semantic-module: altijd False.
+        """
+        if self.semantic is None:
+            return False
+        try:
+            return word in self.semantic.store.concepts
+        except AttributeError:
+            return False
+
+    def _lemmatize_regels(self, word: str) -> str:
+        """
+        De oorspronkelijke, eigen regels -- enkel nog als terugval
+        wanneer simplemma ontbreekt of faalt. Bekende zwakte: woorden
+        die op -en/-e eindigen zonder meervoud/bijvoeglijke vorm te
+        zijn, worden verminkt ("morgen" -> "morg").
+        """
         # Verkleinwoord op "-tje" (bv. "kopje" -> "kop")
         if word.endswith("tje") and len(word) > 5:
             return word[:-3]
@@ -300,13 +381,8 @@ class WordAssociationsLearner:
         if word.endswith("je") and len(word) > 4:
             return word[:-2]
         # Bijvoeglijke vorm op "-e" (bv. "snelle" -> "snel")
-        # Let op: dit is een benadering en kan soms fout normaliseren
-        # bij korte woorden, vandaar de lengte-check.
         if word.endswith("e") and len(word) > 4 and not word.endswith("ie"):
             stam = word[:-1]
-            # NL-spellingsregel: bij een dubbele medeklinker aan het
-            # einde (ontstaan door de extra lettergreep) valt er één
-            # letter weg, bv. "snelle" -> stam "snell" -> "snel".
             if len(stam) > 2 and stam[-1] == stam[-2] and stam[-1] not in "aeiou":
                 stam = stam[:-1]
             return stam

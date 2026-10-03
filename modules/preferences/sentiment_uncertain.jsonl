@@ -42,3 +42,4 @@
 {"text": "wat is er vandaag gebeurd", "categorie": "neutraal_gemengd", "marge": 0.0182, "grof_sentiment_regex": null, "tijdstip": "2026-09-30T20:23:28.399276", "label_kevin": "neutraal_gemengd"}
 {"text": "/reboot", "categorie": "negatief", "marge": 0.0151, "grof_sentiment_regex": null, "tijdstip": "2026-09-30T20:27:09.950649", "label_kevin": "neutraal_gemengd"}
 {"text": "hey", "categorie": "negatief", "marge": 0.007, "grof_sentiment_regex": null, "tijdstip": "2026-10-02T20:57:46.558237", "label_kevin": "neutraal_gemengd"}
+{"text": "morgen sta ik in de keuken want ik ga koken voor de kinderen", "categorie": "negatief", "marge": 0.0794, "grof_sentiment_regex": null, "tijdstip": "2026-10-03T10:21:53.384265"}

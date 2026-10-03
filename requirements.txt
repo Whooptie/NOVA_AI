@@ -36,6 +36,7 @@ numpy>=1.14.0            # math.py
 websockets
 opencv-python
 mediapipe
+simplemma>=1.2,<2
 
 # --- Standard library (no installation needed) ---
 # sqlite3      — Layer 0 memory (built into Python)

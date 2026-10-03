@@ -1464,3 +1464,32 @@ date_calendar_roadmap.md Onderdeel 5 + het vervolgontwerp uit nova_state.md punt
 **Live bevestigd op battleserver (2 oktober 2026):** `label status` → signaal 408 unieke zinnen (593 regels), sentiment 22 (44), alles ongelabeld. Vaakst gelogde twijfelzin: "hey" (9x), door het model telkens als kilte gegokt → `neutraal`, 9 regels in één keer bijgewerkt. Na 10 labels startte de automatische hertraining vanzelf (`[MICROLEARNING] 10 nieuwe door Kevin gelabelde twijfelzinnen...`), de nieuwe versie haalde het ijkpunt en werd live geladen, zonder herstart.
 
 **Labelrichtlijn, ontstaan tijdens het labelen:** signalen gaan over hoe Kevin op Nova reageert, want ze laten haar persoonlijkheid bewegen. Een vraag of commando is neutraal, tenzij er duidelijk een gevoel in zit. Een mening over iets anders ("koffie is oké maar niet top") is neutraal voor de signalen — dat hoort bij de sentiment-classifier en het voorkeurprofiel. Activiteitsaankondigingen ("ik ga coderen") zijn neutraal, zodat focus pas telt bij echte concentratie.
+
+---
+
+## 🐛 Bug #32 opgelost — Layer 1-lemmatizer vervangen door simplemma + beschermingsregels (3 oktober 2026)
+
+**Aanleiding:** data-oogst van 1 oktober 2026. `get_trending()` toonde fragmenten zoals "morg" en commandowoorden zoals "teach" (bug #32, open sinds 16 augustus 2026).
+
+**Oorzaak, geverifieerd in de broncode:** `lemmatize_nl()` haalde "-en" weg bij elk woord van meer dan 5 letters. Dat kan geen onderscheid maken tussen een meervoud ("honden" → hond, goed) en een woord dat gewoon op -en eindigt ("morgen" → "morg", "keuken" → "keuk", "kinderen" → "kinder"). De "-e"-regel deed hetzelfde ("liefde" → "liefd", "module" → "modul"). Commandowoorden en tussenwerpsels ontbraken in de stopwoordenlijst.
+
+**Keuze van een andere lemmatizer (afgewogen met Kevin):**
+- **simplemma** (gekozen): opzoekwoordenboek + regels, MIT, pure Python, offline. Geen ML-model: bij gebruik pure opzoeking.
+- spaCy (Nederlands): ML (woordsoorttagging + getrainde lemmatizer), zwaarder. Hoort eerder bij Semantic Fase 11.
+- Snowball-stemmer: symbolisch, maar geeft stammen in plaats van woorden ("morg") — precies het probleem.
+
+**Eerst gemeten, dan gebouwd** (`scripts/vergelijk_lemmatizer.py`, wijzigt niets): huidige regels tegenover simplemma op 30 lastige woorden en op 336 echte woorden uit Kevins twijfel- en onherkende zinnen. Resultaat: 83 verschillen, ~60 duidelijk beter met simplemma (fragmenten weg, vervoegingen samen: gebeurd/gebeurde/gebeurt → gebeuren, meervouden juist), ~15 slechter, waarvan enkele gevaarlijk: **kat → kater, nova → novum, data → datum, fiets → fietsen**, beter → goed, opgebouwd → "op_bouwen", en inconsistent lopen → loop terwijl liep → lopen.
+
+**Waarom "kat → kater" ernstig is, geverifieerd:** `learn_from()` roept `detect_sense()` aan met het gelemmatiseerde woord, en `response_engine.py` zoekt associaties op met de conceptnaam (regel 228 `detect_sense(entity, ...)`, regel 249 `find_related(zoeksleutel, ...)`). Een concept dat in Layer 1 onder een andere vorm staat, vindt Layer 4 niet meer terug, en de sense-disambiguatie (bug #10-fix) werkt er niet meer voor.
+
+**Oplossing (`word_associations_learner.py`):** `lemmatize_nl()` werkt nu per woord in deze volgorde: (1) `IRREGULAR_VERBS`; (2) `BESCHERMDE_WOORDEN` ({nova, data, beter, slechter}) of een bestaand concept in `concepts.json` (nieuwe `_is_bekend_concept()`, via de al bestaande semantic-referentie) → ongewijzigd; (3) simplemma, kleine letters, "_" weg; (4) uitkomst nog eens door `IRREGULAR_VERBS` (lopen → loop → lopen). Oude regels verhuisd naar `_lemmatize_regels()`, enkel nog als stille terugval zonder simplemma. Optionele import (`_SIMPLEMMA_BESCHIKBAAR`), attribuut `gebruik_simplemma` voor tests, opstartmelding die zegt welke lemmatizer actief is. Stopwoorden uitgebreid met vraag-/functiewoorden (hoeveel, welk, eens, graag, alweer, meestal, vaak, zeker), groeten/tussenwerpsels (hey, hoi, hallo, oké, oke, okay, pff, hmm, nee, jawel) en commandowoorden (teach, example, wiki, onthoud, vergeet, weerleg, verwijder, definitief, help, debug).
+
+**Bekende restfouten:** blunder → blunderen, katten blijft katten. Bestaande fragmenten in `word_associations.json` ("morg", "keuk") blijven als onschuldige restjes staan en verdwijnen vanzelf uit `get_trending()` (7-dagenvenster).
+
+**Blijvend:** `simplemma>=1.2,<2` in `requirements.txt` + image-rebuild.
+
+**Getest:** nieuw `test_lemmatizer_simplemma.py`, 24 tests. Geen enkele oudere Layer 1-test viel om. Volledige suite: 1049 groen, 1 overgeslagen.
+
+**Live bevestigd op battleserver (3 oktober 2026):** eerste test zonder `/reboot` gaf nog "keuk"/"kinder" (oude code in het geheugen — vandaar de toegevoegde opstartmelding). Na `/reboot`: "morgen sta ik in de keuken want ik ga koken voor de kinderen" → `associaties morgen` = keuken, kind, staan, koken; "morgen" verschijnt als correct woord in `trending 1`.
+
+**Bijvangst, niet opgelost:** een `[CLIENT_BRIDGE]`-print uit een andere thread viel midden in Nova's typewriter-antwoord. Vastgelegd als `nova_state.md` punt 32.
