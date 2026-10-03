@@ -1493,3 +1493,23 @@ date_calendar_roadmap.md Onderdeel 5 + het vervolgontwerp uit nova_state.md punt
 **Live bevestigd op battleserver (3 oktober 2026):** eerste test zonder `/reboot` gaf nog "keuk"/"kinder" (oude code in het geheugen — vandaar de toegevoegde opstartmelding). Na `/reboot`: "morgen sta ik in de keuken want ik ga koken voor de kinderen" → `associaties morgen` = keuken, kind, staan, koken; "morgen" verschijnt als correct woord in `trending 1`.
 
 **Bijvangst, niet opgelost:** een `[CLIENT_BRIDGE]`-print uit een andere thread viel midden in Nova's typewriter-antwoord. Vastgelegd als `nova_state.md` punt 32.
+
+## ✨ Afwezigheid: Nova gebruikt het Windows-vergrendelscherm (3 oktober 2026)
+
+**Aanleiding:** het vergrendelscherm werd al herkend als activiteit `afwezig` (`nova_client.py`'s `ACTIVITEIT_MAPPING`), maar niets deed er iets mee. Erger: tijdens een storingsgevoelige activiteit telde focus `waarschijnlijk_weg` zelfs +1 VOOR onderbreken, en `session_watcher.py` zag `afwezig_gedetecteerd` als een nieuwe activiteit (na 15 min: "mag ik storen?" tegen een lege stoel).
+
+**Nieuw: `modules/context/afwezigheid.py`** (`AfwezigheidModule`, automatisch geladen). Luistert op `"*"` naar `activity_started:*_gedetecteerd`: `afwezig` → vertrokken, elk ander label → terug. Bewaart proactieve berichten tijdens afwezigheid (max 10, max 12 uur oud, zonder dubbels) en zegt bij terugkomst "Welkom terug! Je was X weg", met die berichten erbij (zonder berichten pas vanaf 5 min weg). Publiceert `afwezigheid:terug` met `duur_minuten` en `aantal_berichten`. Typt Kevin iets terwijl de laptop vergrendeld blijft (bv. via een andere weg), dan krijgt hij de bewaarde berichten meteen. Alle publish-aanroepen gebeuren buiten de lock (les uit de client_bridge-deadlock).
+
+**Aanpassingen in bestaande bestanden:**
+- `context_manager.py`: nieuwe `AFWEZIG_LABEL` en `_is_kevin_afwezig()` (label `afwezig` OF `afwezigheid.is_afwezig()`). Bij afwezigheid wordt `kevin_kan_zien = False` gezet VÓÓR `_bepaal_zichtbaarheid()`, zodat de bestaande stopregel in `_bepaal_interrupt()` het afhandelt (die methode zelf bleef ongewijzigd). Gevonden gat: de zichtbaarheidsregel zei nog 10 minuten "kan zien" na Kevins laatste bericht, ook als hij meteen daarna vergrendelde. Nieuw veld `is_afwezig` + "Afwezig: ..." in `get_context_summary()`.
+- `session_watcher.py`: `afwezig_gedetecteerd` is geen nieuwe activiteit; geen storen-vraag tijdens afwezigheid (vlag niet gezet, dus de vraag kan na terugkomst nog komen); geen pauze-melding (check bij stap 3 van `check_pauze()`, want het wachtwoord intypen is ook input). Bij `afwezigheid:terug` vanaf 5 min (`PAUZE_RESET_NA_AFWEZIG_MINUTEN`): reset van `_sessie_start`, `_laatst_actief`, `laatste_melding_time` en `activiteit_start_tijd`.
+- `main.py`: `on_chat_response()` laat `afwezigheid.onderschep_bericht(data, is_hoofdthread)` eerst beslissen. Enkel berichten uit een andere thread dan de hoofdthread (= proactief) kunnen bewaard worden. Bij een fout wordt het bericht gewoon getoond.
+- `client_bridge.py`: `RemoteActivityDetector.detect_activity()` publiceert niets meer zonder (verse) data en laat `_vorig_label` ongemoeid. Anders gaf een laptop die na het vergrendelen in slaapstand gaat een nep-`unknown`, wat afwezigheid.py als "Kevin is terug" las.
+
+**Eerst gemist:** de eerste versie van de zoek/vervang-blokken was geschreven tegen oudere versies van `context_manager.py`, `session_watcher.py` en `main.py`. Die waren intussen in een andere sessie aangepast (zichtbaarheid, nieuwe pauzetimer). Kevin stuurde zijn huidige bestanden vóór het aanpassen, waarna alles daartegen opnieuw gebouwd en getest werd.
+
+**Getest:** nieuw `test_afwezigheid.py`, 52 tests (14 falen op de oude code). `test_remote_activity_detector_bugfix.py` aangepast (geen data = geen event). Volledige suite: 1101 groen, 1 overgeslagen.
+
+**Live bevestigd op battleserver (3 oktober 2026):** twee keer ±5 min vergrendeld → gemeten "4.0 min", dus terecht geen welkom (grens 5 min). Daarna 9.7 min → "Hé, daar ben je weer! Je was 9 minuten weg." + `[SESSION_WATCHER] Pauze-teller gereset`. De meting is per minuut afgerond omdat `detect_activity()` maar elke 60 s loopt; typt Kevin binnen die minuut, dan merkt zijn bericht de wissel eerder op.
+
+**Open, vastgelegd in `nova_state.md`:** punt 36 (sneller merken dat Kevin terug is) en punt 37 (dubbele begroeting "welkom terug" + "Hey Kevin").

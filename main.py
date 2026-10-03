@@ -135,6 +135,13 @@ def maak_invoer_veilig(tekst):
 # zijn — niet wanneer Nova toch al een normaal antwoord aan het geven is).
 wachten_op_input = False
 
+# Afwezigheid (3 oktober 2026): referentie naar
+# modules/context/afwezigheid.py, ingevuld in main() na het laden van
+# de modules. on_chat_response() hieronder vraagt deze module of een
+# proactief bericht bewaard moet worden omdat Kevin's laptop
+# vergrendeld is. None = module niet geladen -> alles gewoon tonen.
+_afwezigheid_module = None
+
 def on_chat_response(data, event_type=None):
     """
     Rechtstreekse subscriber op 'chat_response' — print onmiddellijk,
@@ -146,6 +153,20 @@ def on_chat_response(data, event_type=None):
     thread zou anders onzichtbaar in de memory-buffer blijven liggen
     tot de volgende keer dat Kevin toevallig iets intypt.
     """
+
+    # Afwezigheid (3 oktober 2026): is Kevin weg (laptop vergrendeld)
+    # en komt dit bericht NIET van de hoofdthread (= het is proactief,
+    # geen antwoord op iets wat Kevin net typte)? Dan bewaart
+    # afwezigheid.py het tot hij terug is, in plaats van het tegen een
+    # lege stoel te zeggen. Bij een fout: gewoon tonen, nooit een
+    # bericht kwijtraken.
+    if _afwezigheid_module is not None:
+        try:
+            is_hoofdthread = threading.current_thread() is threading.main_thread()
+            if _afwezigheid_module.onderschep_bericht(data, is_hoofdthread):
+                return
+        except Exception as e:
+            print(f"[AFWEZIGHEID] Fout bij onderscheppen, bericht wordt gewoon getoond: {e}")
 
     msg = data.get("text") or data.get("msg") or ""
 
@@ -384,12 +405,15 @@ def achtergrond_loop(loader):
                     print(f"[Achtergrondthread] Fout in topic_suggestions.check_suggesties(): {e}")
 
 def main():
-    global wachten_op_input
+    global wachten_op_input, _afwezigheid_module
     bus = EventBus()
 
     # Modules laden
     loader = ModuleLoader(bus)
     loader.discover_and_load()
+
+    # Afwezigheid (3 oktober 2026): zie on_chat_response().
+    _afwezigheid_module = loader.loaded_modules.get("afwezigheid")
 
     # Rechtstreeks abonneren op chat_response, zodat berichten
     # ONMIDDELLIJK geprint worden, ook als ze van de achtergrondthread

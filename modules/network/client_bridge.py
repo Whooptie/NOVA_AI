@@ -540,7 +540,17 @@ class RemoteActivityDetector:
         if data is None:
             # Zelfde eerlijke fallback als het origineel gaf wanneer
             # pygetwindow ontbrak: "unknown", geen crash.
-            resultaat = {
+            #
+            # AANGEPAST (3 oktober 2026, afwezigheid.py): GEEN data
+            # betekent "de laptop meldt niets" (uit, slaapstand, client
+            # gestopt), NIET "Kevin opende een onbekend venster". Daarom
+            # hier GEEN activity_started-event publiceren en _vorig_label
+            # ongemoeid laten. Zonder dit zou een laptop die na het
+            # vergrendelen in slaapstand gaat een nep-"unknown" geven,
+            # wat afwezigheid.py ten onrechte als "Kevin is terug" zou
+            # lezen. Na het ontwaken vergelijkt de eerstvolgende echte
+            # meting zich dan gewoon met het laatste ECHTE label.
+            return {
                 "activity": "unknown",
                 "duration_minutes": 0.0,
                 "raw_window_title": None,

@@ -42,6 +42,14 @@ class SessionWatcher:
     # tijdelijk lager om te testen"-opmerking had.
     INTERRUPTION_VRAAG_DREMPEL_MINUTEN = 15
 
+    # Afwezigheid (3 oktober 2026): na hoeveel minuten weg (laptop
+    # vergrendeld) telt het als een ECHTE pauze? Dan beginnen de
+    # pauze-teller en de "mag ik storen?"-teller opnieuw. Bewust korter
+    # dan PAUZE_RESET_SECONDEN (10 min): zelf je laptop vergrendelen is
+    # een veel duidelijker "ik neem pauze"-signaal dan gewoon even geen
+    # input geven.
+    PAUZE_RESET_NA_AFWEZIG_MINUTEN = 5
+
     def __init__(self, event_bus, context_manager=None, kevin_profile=None):
         self.event_bus = event_bus
         self.start_time = time.time()
@@ -129,6 +137,11 @@ class SessionWatcher:
         # komt van intent_router.py's _verwerk_pending_antwoord(), dus
         # GEEN wildcard nodig -- een exacte event-naam volstaat hier.
         event_bus.subscribe("pending_question:answered", self._on_pending_answered)
+
+        # Afwezigheid (3 oktober 2026): Kevin komt terug na een
+        # vergrendelde laptop -> pauze-teller resetten (zie
+        # _on_terug_van_afwezigheid hieronder).
+        event_bus.subscribe("afwezigheid:terug", self._on_terug_van_afwezigheid)
 
         # Sjablonen voor de pauze-melding (check_pauze()). Zelfde
         # opening/midden/afsluiting-patroon als emergence_engine.py --
@@ -228,6 +241,15 @@ class SessionWatcher:
         naam = data.get("naam") or event_type.split(":", 1)[1]
 
         if naam.endswith("_gedetecteerd"):
+            if naam == "afwezig_gedetecteerd":
+                # Afwezigheid (3 oktober 2026): het vergrendelscherm is
+                # geen activiteit die Kevin DOET, maar het einde van
+                # zijn activiteit. Niet als nieuwe actieve activiteit
+                # bijhouden -- anders zou Nova na 15 minuten vergrendeld
+                # vragen of ze mag storen tijdens "afwezig".
+                # afwezigheid.py handelt dit event zelf af.
+                return
+
             if naam == "unknown_gedetecteerd":
                 # "unknown" betekent letterlijk "geen match gevonden
                 # in ACTIVITEIT_MAPPING" -- dit zegt NIETS zinvols over
@@ -397,6 +419,46 @@ class SessionWatcher:
         afsluiting = random.choice(sjabloon["afsluitingen"])
         return f"{opening} over '{activiteit}' -- {afsluiting}"
 
+    def _is_kevin_afwezig(self):
+        """
+        Afwezigheid (3 oktober 2026): vraagt afwezigheid.py of Kevin
+        weg is van zijn laptop. Ontbreekt die module, dan "niet
+        afwezig" (oud gedrag blijft dan gewoon werken).
+        """
+        modules = getattr(self.event_bus, "modules", None) or {}
+        afwezigheid = modules.get("afwezigheid")
+        if afwezigheid is None:
+            return False
+        try:
+            return bool(afwezigheid.is_afwezig())
+        except Exception:
+            return False
+
+    def _on_terug_van_afwezigheid(self, data, event_type=None):
+        """
+        Kevin is terug na een vergrendelde laptop. Was hij lang genoeg
+        weg (PAUZE_RESET_NA_AFWEZIG_MINUTEN), dan had hij een echte
+        pauze: de pauze-teller en de "mag ik storen?"-teller van de
+        lopende activiteit beginnen opnieuw te tellen.
+
+        Zelfde reset als stap 2 in check_pauze() (10 min geen input),
+        maar meteen bij terugkomst en al na 5 minuten.
+        """
+        duur = (data or {}).get("duur_minuten") or 0
+        if duur < self.PAUZE_RESET_NA_AFWEZIG_MINUTEN:
+            return
+
+        self._sessie_start = None
+        self._laatst_actief = None
+        self.laatste_melding_time = None
+        if self.activiteit_start_tijd is not None:
+            self.activiteit_start_tijd = time.time()
+
+        print(
+            f"[SESSION_WATCHER] Pauze-teller gereset na {duur:.0f} min "
+            "afwezigheid (laptop was vergrendeld)."
+        )
+
     def check_activity_interruption(self):
         """
         Wordt periodiek aangeroepen door de achtergrondthread in
@@ -413,6 +475,15 @@ class SessionWatcher:
         WAT er gezegd wordt (dat komt nu uit Layer 4).
         """
         if self.actieve_activiteit is None or self.activiteit_start_tijd is None:
+            return
+
+        # Afwezigheid (3 oktober 2026): laptop vergrendeld -> niets
+        # vragen. De "al gevraagd"-vlag wordt bewust NIET gezet, zodat
+        # de vraag na terugkomst gewoon nog kan komen. Zonder deze
+        # check zou de vraag tegen een lege stoel gesteld worden en
+        # zou de pending_question (120 s) al verlopen zijn tegen dat
+        # Kevin terug is.
+        if self._is_kevin_afwezig():
             return
 
         if self._al_gevraagd_voor_activiteit == self.actieve_activiteit:
@@ -601,6 +672,14 @@ class SessionWatcher:
 
         # --- Stap 3: melden? ---
         if self._sessie_start is None:
+            return
+
+        # Afwezigheid (3 oktober 2026): laptop vergrendeld -> geen
+        # pauze-melding (Kevin heeft op dit moment letterlijk pauze).
+        # Nodig omdat het wachtwoord intypen op het vergrendelscherm OOK
+        # input is (focus "actief"), en omdat can_interrupt() hieronder
+        # overgeslagen wordt als context_manager ontbreekt.
+        if self._is_kevin_afwezig():
             return
 
         if focus_niveau != "actief":

@@ -96,6 +96,11 @@ class ContextManager:
     # activity_detector.py's ACTIVITEIT_MAPPING.
     STORINGSGEVOELIGE_ACTIVITEITEN = {"coding"}
 
+    # Activiteit-label voor "laptop vergrendeld" (zie nova_client.py's
+    # ACTIVITEIT_MAPPING: "vergrendelingsscherm": "afwezig"). Harde
+    # stopregel in get_current(), net als "niemand aanwezig".
+    AFWEZIG_LABEL = "afwezig"
+
     # Fase 3: welke focus-niveaus tellen als "Kevin is er echt niet
     # meer actief mee bezig"? Bij deze niveaus mag Nova gewoon weer
     # onderbreken, ZELFS tijdens een storingsgevoelige activiteit —
@@ -409,9 +414,22 @@ class ContextManager:
                 aantal_gezichten = None
                 is_alleen = None
 
-        kevin_kan_zien, zichtbaarheid_reden = self._bepaal_zichtbaarheid(
-            activiteit_label, is_working_on_nova, focus_niveau
-        )
+        # Afwezigheid (3 oktober 2026): laptop vergrendeld = Kevin kan
+        # het zeker NIET zien. Dit gaat VOOR _bepaal_zichtbaarheid(),
+        # want die zegt "kan zien" zolang Kevin minder dan
+        # ZICHTBAAR_NA_BERICHT_MINUTEN geleden iets typte -- ook als hij
+        # net daarna zijn laptop vergrendelde en wegliep. Daarna gaat
+        # alles via de bestaande harde stopregel in _bepaal_interrupt()
+        # (kevin_kan_zien is False), zodat die methode ongewijzigd blijft.
+        is_afwezig = self._is_kevin_afwezig(activiteit_label)
+
+        if is_afwezig:
+            kevin_kan_zien = False
+            zichtbaarheid_reden = "Kevin is weg van zijn laptop (vergrendeld)"
+        else:
+            kevin_kan_zien, zichtbaarheid_reden = self._bepaal_zichtbaarheid(
+                activiteit_label, is_working_on_nova, focus_niveau
+            )
 
         should_interrupt, reden = self._bepaal_interrupt(
             is_gebruikelijk_moment,
@@ -449,6 +467,7 @@ class ContextManager:
             "faces_detected": aantal_gezichten,
             "is_alone": is_alleen,
             "kevin_kan_zien": kevin_kan_zien,
+            "is_afwezig": is_afwezig,
             "minuten_sinds_laatste_bericht": self._minuten_sinds_laatste_bericht(),
             "should_interrupt": should_interrupt,
             "response_style": response_style,
@@ -804,6 +823,33 @@ class ContextManager:
         ctx = self.get_current()
         return ctx.get("should_interrupt", True)
 
+    def _is_kevin_afwezig(self, activiteit_label):
+        """
+        Afwezigheid (3 oktober 2026): is Kevin weg van zijn laptop?
+
+        Twee bronnen, elk op zich voldoende:
+        1. Het huidige activiteit-label is "afwezig" (vergrendelscherm
+           staat NU op de voorgrond).
+        2. afwezigheid.py zegt dat hij weg is. Die onthoudt de
+           afwezigheid ook als de laptop daarna in slaapstand gaat en
+           er dus geen verse data meer binnenkomt.
+
+        Ontbreekt afwezigheid.py (bv. in een test), dan geldt enkel
+        bron 1. Nooit een crash.
+        """
+        if activiteit_label == self.AFWEZIG_LABEL:
+            return True
+
+        modules = getattr(self.event_bus, "modules", None) or {}
+        afwezigheid = modules.get("afwezigheid")
+        if afwezigheid is None:
+            return False
+
+        try:
+            return bool(afwezigheid.is_afwezig())
+        except Exception:
+            return False
+
     def get_context_summary(self):
         """
         Leesbare samenvatting voor debug-doeleinden (bv. een
@@ -825,6 +871,7 @@ class ContextManager:
             f"Scherm: {ctx.get('screen_focus') or 'onbekend'} — "
             f"Focus: {ctx['focus_level']} (laatste input: {seconden_tekst}) — "
             f"Gezichten: {gezichten_tekst} — "
+            f"Afwezig: {ctx.get('is_afwezig', False)} — "
             f"Kevin kan het zien: {ctx.get('kevin_kan_zien', '?')} — "
             f"Mag onderbreken: {ctx['should_interrupt']} — "
             f"Response-stijl: {ctx.get('response_style', '?')} "

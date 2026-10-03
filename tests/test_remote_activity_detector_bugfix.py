@@ -111,7 +111,8 @@ def test_geen_data_publiceert_unknown():
     resultaat = detector.detect_activity()
 
     assert resultaat["activity"] == "unknown"
-    assert ("activity_started:unknown_gedetecteerd", resultaat) in event_bus.gepubliceerde_events
+    # Sinds afwezigheid.py (3 okt 2026): geen data = niets publiceren.
+    assert event_bus.gepubliceerde_events == []
 
 
 # ------------------------------------------------------------------

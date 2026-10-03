@@ -113,3 +113,5 @@
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "variant_tekst": "Dat ken ik nog niet, maar ik sta open om het te leren.", "entity": null, "response_style": "normaal", "moment": "2026-10-03T10:21:53.417735", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1791015713.4178975, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Ik weet nog niet goed hoe ik daarop moet antwoorden, maar ik leer graag bij.", "entity": null, "response_style": "normaal", "moment": "2026-10-03T10:23:01.900993", "reactie_sentiment": null}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 2, "variant_tekst": "Stoor ik als ik nu iets zeg?", "entity": null, "response_style": null, "moment": "2026-10-03T15:41:45.587437", "reactie_sentiment": null}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1791034905.5879834, "type": "sentiment_koppeling"}
