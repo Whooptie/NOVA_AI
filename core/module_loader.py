@@ -181,6 +181,19 @@ class ModuleLoader:
             if mod == "client_bridge":
                 continue
 
+            # BUGFIX (3 oktober 2026): de OUDE server-detectors niet meer
+            # laden. Sinds de Windows-companion-client (13 sept 2026)
+            # draait de echte meting op de laptop; de Remote*-versies uit
+            # client_bridge.py (stap 3C) nemen hun plaats in. De oude
+            # versies werden tot nu toe toch nog geladen door deze scan,
+            # en main.py/session_watcher.py/intent_router.py gebruikten
+            # die oude (altijd lege) versies in plaats van de Remote-
+            # versies. Gevolg o.a.: elke minuut, 24/7, een
+            # "unknown_gedetecteerd" in Layer 2, en focus altijd
+            # "onbekend" voor session_watcher.py.
+            if mod in ("activity_detector", "focus_detector", "presence_detector"):
+                continue
+
             # variant_feedback_logger wordt hierna handmatig geladen (stap
             # 3B-2, met sentiment_classifier i.p.v. "sem"). Zelfde
             # uitsluitingsreden als topic_suggestions/emergence_engine
@@ -311,6 +324,24 @@ class ModuleLoader:
         self.loaded_modules["client_bridge"] = bridge
         self.event_bus.register_module("client_bridge", bridge)
 
+        # BUGFIX (3 oktober 2026): de ECHTE laptop-detector (Remote)
+        # ook als "activity_detector" registreren, zodat main.py's
+        # achtergrond_loop() hem gebruikt. Voorheen stond hier nog de
+        # OUDE ActivityDetector (dynamische scan), die op de server
+        # geen venster kan zien en daardoor elke minuut, 24/7,
+        # "activity_started:unknown_gedetecteerd" publiceerde
+        # (63.542 keer in patterns_layer2.json).
+        remote_activity = client_bridge.RemoteActivityDetector(bridge, event_bus=self.event_bus)
+        remote_focus = client_bridge.RemoteFocusDetector(bridge)
+        remote_presence = client_bridge.RemotePresenceDetector(bridge)
+
+        self.loaded_modules["activity_detector"] = remote_activity
+        self.event_bus.register_module("activity_detector", remote_activity)
+        self.loaded_modules["focus_detector"] = remote_focus
+        self.event_bus.register_module("focus_detector", remote_focus)
+        self.loaded_modules["presence_detector"] = remote_presence
+        self.event_bus.register_module("presence_detector", remote_presence)
+
         start = time.time()
         context_layers = {
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
@@ -325,9 +356,9 @@ class ModuleLoader:
             # publiceerden dit soort event ook nooit (enkel
             # activity_detector.py deed dat), dus er is voor hen niets
             # "verloren gegaan" bij de overstap naar Remote.
-            "activity_detector": client_bridge.RemoteActivityDetector(bridge, event_bus=self.event_bus),
-            "focus_detector": client_bridge.RemoteFocusDetector(bridge),
-            "presence_detector": client_bridge.RemotePresenceDetector(bridge),
+            "activity_detector": remote_activity,
+            "focus_detector": remote_focus,
+            "presence_detector": remote_presence,
         }
         ctx_mgr = context_manager.init_module(self.event_bus, layers=context_layers)
         ctx_mgr.__load_time_ms__ = int((time.time() - start) * 1000)

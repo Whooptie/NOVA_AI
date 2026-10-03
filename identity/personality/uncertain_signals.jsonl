@@ -595,3 +595,4 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-03T10:22:52.711654"}
 {"text": "morgen sta ik in de keuken want ik ga koken voor de kinderen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0195, "bron": "model_fallback", "tijdstip": "2026-10-03T10:23:01.878496"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-03T10:33:38.752446"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-03T15:08:19.389472"}

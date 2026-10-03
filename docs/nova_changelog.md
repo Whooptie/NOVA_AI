@@ -1486,7 +1486,7 @@ date_calendar_roadmap.md Onderdeel 5 + het vervolgontwerp uit nova_state.md punt
 
 **Bekende restfouten:** blunder → blunderen, katten blijft katten. Bestaande fragmenten in `word_associations.json` ("morg", "keuk") blijven als onschuldige restjes staan en verdwijnen vanzelf uit `get_trending()` (7-dagenvenster).
 
-**Blijvend:** `simplemma>=1.2,<2` in `requirements.txt` + image-rebuild.
+**Blijvend:** `simplemma==2.0.0` in `requirements.txt` + image-rebuild. **Les uit een misser (zelfde dag):** eerst stond er `simplemma>=1.2,<2`, gebaseerd op een verouderde PyPI-pagina die 1.2.0 als nieuwste toonde. De tijdelijke `pip install simplemma` in de draaiende container had echter 2.0.0 binnengehaald, en alle meting en tests gebeurden daarmee. De herbouwde image kreeg door het bereik 1.2.0, met merkbaar slechtere uitkomsten (liefde → "lieven", snelle → "snellen", lekker → "lek", huizen bleef "huizen"). Vier tests (2 in `test_fase1.py`, 2 in `test_lemmatizer_simplemma.py`) vingen dat meteen op. Daarom nu een **exacte versie** (`==`): de uitkomsten van de lemmatizer bepalen hoe Layer 1 leert, en een herbouw mag nooit stilletjes ander gedrag binnenhalen. Bij elke toekomstige upgrade van simplemma: eerst de tests draaien.
 
 **Getest:** nieuw `test_lemmatizer_simplemma.py`, 24 tests. Geen enkele oudere Layer 1-test viel om. Volledige suite: 1049 groen, 1 overgeslagen.
 
