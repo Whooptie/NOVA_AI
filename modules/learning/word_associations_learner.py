@@ -51,6 +51,9 @@ except ImportError:
     simplemma = None
     _SIMPLEMMA_BESCHIKBAAR = False
 
+# Gedeelde stopwoordenlijst (5 oktober 2026), zie core/nl_stopwoorden.py.
+from core.nl_stopwoorden import STOPWOORDEN
+
 
 class WordAssociationsLearner:
     """
@@ -172,81 +175,13 @@ class WordAssociationsLearner:
         # We houden ook een kleine set Engelse stopwoorden, omdat Kevin
         # soms Engelse termen door het Nederlands mengt (bv. "Python is
         # cool").
-        self.stopwords = set([
-            # Lidwoorden
-            "de", "het", "een",
-
-            # Voorzetsels
-            "in", "op", "van", "voor", "naar", "over", "onder", "boven",
-            "tussen", "bij", "met", "zonder", "door", "tegen", "tot",
-            "uit", "aan", "om", "sinds", "binnen", "buiten", "langs",
-            "rond", "per", "via", "richting", "vanaf", "tijdens",
-
-            # Voegwoorden
-            "en", "of", "maar", "want", "dus", "als", "toen", "omdat",
-            "doordat", "hoewel", "terwijl", "zodat", "tenzij", "mits",
-            "noch", "dan", "nadat", "voordat",
-
-            # Persoonlijke voornaamwoorden
-            "ik", "jij", "je", "u", "hij", "zij", "ze", "wij", "we",
-            "jullie", "hen", "hun", "mij", "me", "jou", "haar", "hem",
-
-            # Bezittelijke voornaamwoorden
-            "mijn", "jouw", "zijn", "haar", "ons", "onze", "hun", "uw",
-
-            # Aanwijzende / betrekkelijke voornaamwoorden
-            "deze", "dit", "die", "dat", "zulke", "zo'n", "welke", "wat",
-            "wie", "wiens",
-
-            # Vragende voornaamwoorden (let op: "wat"/"wie" hierboven ook)
-            "waar", "wanneer", "waarom", "hoe",
-
-            # Onbepaalde voornaamwoorden
-            "iets", "niets", "iemand", "niemand", "alles", "alle",
-            "sommige", "elke", "elk", "ieder", "iedere", "geen", "veel",
-            "weinig", "meer", "meest", "andere", "ander",
-
-            # Hulpwerkwoorden / koppelwerkwoorden (courante vervoegingen)
-            "is", "ben", "bent", "zijn", "was", "waren", "wordt",
-            "worden", "werd", "werden", "heeft", "heb", "hebt", "hebben",
-            "had", "hadden", "kan", "kan", "kunt", "kunnen", "kon",
-            "konden", "zal", "zult", "zullen", "zou", "zouden", "moet",
-            "moeten", "moest", "moesten", "mag", "mogen", "mocht",
-            "mochten", "wil", "wilt", "willen", "wilde", "wilden",
-
-            # Ontkenning en versterkers
-            "niet", "geen", "wel", "toch", "juist", "erg", "heel",
-            "zeer", "best", "nogal", "vrij", "tamelijk", "echt",
-
-            # Overige zeer frequente functiewoorden
-            "er", "hier", "daar", "ook", "nog", "al", "nu", "dan",
-            "even", "gewoon", "eigenlijk", "misschien", "waarschijnlijk",
-            "natuurlijk", "trouwens", "namelijk", "bijvoorbeeld", "zo",
-
-            # Engelse stopwoorden (Kevin mengt soms Engelse termen)
-            "the", "a", "an", "and", "or", "but", "be", "is", "are",
-            "was", "were", "have", "has", "had", "do", "does", "did",
-            "would", "could", "should", "will", "shall", "to", "of",
-            "in", "on", "at", "for", "with", "as", "by", "this", "that",
-
-            # Lemmatizer-herziening (3 oktober 2026, bug #32): vraag-
-            # en functiewoorden die nog doorglipten (bleken in
-            # get_trending() en als "unknown"-concept op te duiken).
-            "hoeveel", "welk", "eens", "graag", "alweer", "meestal",
-            "vaak", "zeker", "wel",
-
-            # Groeten en tussenwerpsels -- zeggen niets over een
-            # onderwerp.
-            "hey", "hoi", "hallo", "oké", "oke", "okay", "pff", "hmm",
-            "nee", "jawel",
-
-            # Commandowoorden van Nova zelf (bug #32: "teach" verscheen
-            # als trending onderwerp). Debug-commando's komen hier nooit
-            # binnen (main.py vangt die op vóór het publiceren), gewone
-            # commando's zoals teach/wiki/onthoud wel.
-            "teach", "example", "wiki", "onthoud", "vergeet", "weerleg",
-            "verwijder", "definitief", "help", "debug",
-        ])
+        # Gedeelde stopwoordenlijst (5 oktober 2026): voorheen een eigen
+        # set hier, nu één lijst in core/nl_stopwoorden.py die ook het
+        # auto-learn-filter in response_pipeline.py gebruikt -- zo
+        # groeien de twee nooit meer uit elkaar. Een kopie (set(...)),
+        # zodat Layer 1 er desgewenst lokaal iets aan kan toevoegen
+        # zonder de gedeelde lijst te wijzigen.
+        self.stopwords = set(STOPWOORDEN)
 
         # Config-opties (vaste standaardwaarden, geen config-systeem nodig)
         self.min_word_length = 3

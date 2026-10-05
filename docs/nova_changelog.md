@@ -1513,3 +1513,21 @@ date_calendar_roadmap.md Onderdeel 5 + het vervolgontwerp uit nova_state.md punt
 **Live bevestigd op battleserver (3 oktober 2026):** twee keer ±5 min vergrendeld → gemeten "4.0 min", dus terecht geen welkom (grens 5 min). Daarna 9.7 min → "Hé, daar ben je weer! Je was 9 minuten weg." + `[SESSION_WATCHER] Pauze-teller gereset`. De meting is per minuut afgerond omdat `detect_activity()` maar elke 60 s loopt; typt Kevin binnen die minuut, dan merkt zijn bericht de wissel eerder op.
 
 **Open, vastgelegd in `nova_state.md`:** punt 36 (sneller merken dat Kevin terug is) en punt 37 (dubbele begroeting "welkom terug" + "Hey Kevin").
+
+---
+
+## 🐛 Bug #47 opgelost — rode "flush error"-regels bij stoppen van de container (5 oktober 2026)
+
+**Symptoom:** na een stroomuitval/afsluiten van battleserver toonde de containerlog 5x `Memory SQLite flush error: 'NoneType' object has no attribute 'executemany'`, direct na `Memory: netjes afgesloten.`. Nooit bij `/reboot`.
+
+**Oorzaak:** Docker stopt een container met SIGTERM. `memory.py`'s `_on_signal()` sloot daarop de databank (`self.conn = None`), maar stopte het programma niet: een eigen SIGTERM-handler vervangt het standaardgedrag "programma beëindigen". Nova draaide dus ~10 s verder met een gesloten databank, tot Docker haar hard afschoot (SIGKILL). Bij `/reboot` sluit de databank pas helemaal op het einde (atexit), vandaar daar geen fout. Geen dataverlies: elk event staat ook in `interactions.jsonl`.
+
+**Fix (`core/memory.py`):** `_on_signal()` roept na `_on_shutdown()` nu `sys.exit(0)` aan; `_on_shutdown()` is idempotent via `self._afgesloten` (signal + atexit lopen zo maar één keer echt); `_flush_buffer()` slaat stil over als `self.conn is None`.
+
+**Vervolg, dezelfde dag — alle modules netjes afsluiten bij een stop van buitenaf (`main.py`):** nieuwe `sluit_modules_netjes_af(loaded_modules)` roept automatisch `shutdown()` aan op ELKE geladen module die er een heeft (ook toekomstige, zonder aanpassing; zelfde aanpak als `reboot_manager.py`), elk in een eigen try/except, en `memory._on_shutdown()` als allerlaatste. Nieuwe `installeer_stopsignaal(loader)`, aangeroepen in `main()` direct NA `discover_and_load()`, registreert daarvoor een eigen SIGTERM-afhandeling, die die van `memory.py` vervangt (de laatste registratie wint). `exit` bewust ongewijzigd.
+
+**Bug #47b — gevonden tijdens het testen van het vervolg: zeldzame harde crash bij afsluiten.** Bij 25 herhaalde testruns faalden de procestests af en toe met exitcode -11 (segmentatiefout). `memory._on_shutdown()` sloot de databank ZONDER `self.lock`, terwijl elke andere databankfunctie dat slot wel neemt. Was de achtergrondthread op dat moment nog aan het wegschrijven, dan crashte SQLite. Bestond al langer (ook bij `exit`/`/reboot`), maar was afhankelijk van de timing en dus zelden zichtbaar. Fix: `_on_shutdown()` neemt nu het slot (met tijdslimiet `LOCK_TIMEOUT_AFSLUITEN = 3` s, zodat Nova nooit blijft hangen). Gemeten: zonder slot 22 van de 60 runs gecrasht, met slot 0 van de 60.
+
+**Getest:** `test_memory_sigterm.py` (8 tests) + `test_main_stopsignaal.py` (8 tests, waarvan één echte procestest: apart proces met de echte `main.py` en `memory.py`, op `input()` wachtend terwijl een achtergrondthread events stuurt, krijgt een echte SIGTERM; een nep-module moet een bestand wegschrijven bij `shutdown()`, en memory moet precies één keer "netjes afgesloten" melden). Volledige suite 1117 groen, 1 overgeslagen, 5x na elkaar.
+
+**Live bevestigd op battleserver (5 oktober 2026):** Stop/Start van de `nova-ai`-container in Unraid → `[Afsluiten] Stopsignaal ontvangen...` → `[PATTERN_MATCHER] Netjes afgesloten, laatste stand opgeslagen.` → `Memory: netjes afgesloten.`, geen flush-fouten, container stopt meteen. Let op bij het testen: het afsluiten gebeurt door het proces dat al draaide, dus een wijziging hierin is pas zichtbaar bij de tweede Stop/Start.

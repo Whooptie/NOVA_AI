@@ -5,6 +5,9 @@ import os
 from datetime import datetime
 from typing import List, Dict, Optional, Any
 
+# Gedeelde stopwoordenlijst (5 oktober 2026), zie core/nl_stopwoorden.py.
+from core.nl_stopwoorden import STOPWOORDEN
+
 BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
 LOGS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logs")
 CONCEPTS_FILE = os.path.join(BASE, "concepts.json")
@@ -719,7 +722,14 @@ class SenseEngine:
             "overmorgen", "straks", "zojuist", "onlangs", "vroeger",
             "later", "nu", "meteen", "weldra", "binnenkort",
         }
-        if w in FUNCTIEWOORDEN:
+        # 5 oktober 2026: ook elk woord uit de gedeelde stopwoordenlijst
+        # (core/nl_stopwoorden.py) is een functiewoord. Zo weigert
+        # TeachEngine.auto_learn() stopwoorden voor ELKE aanroeper, niet
+        # enkel voor response_pipeline.py's eigen filter -- voorheen viel
+        # bv. "wat"/"hoe"/"over" hier door naar de "noun"-default.
+        # Bestaande concepten met een echte pos worden hierdoor niet
+        # geraakt: die worden helemaal bovenaan al teruggegeven.
+        if w in FUNCTIEWOORDEN or w in STOPWOORDEN:
             return "function"
 
         return "noun"
@@ -1847,7 +1857,10 @@ class RelationParser:
         is -- bestaande concepten (ook al staan ze toevallig in deze
         lijst) worden hier nooit door geraakt.
         """
-        return woord.strip().lower() in self.STOPWOORDEN
+        # 5 oktober 2026: naast de eigen lijst ook de gedeelde
+        # stopwoordenlijst (core/nl_stopwoorden.py).
+        w = woord.strip().lower()
+        return w in self.STOPWOORDEN or w in STOPWOORDEN
 
     def parse_relation(self, sentence: str, pattern: str) -> Optional[Dict[str, str]]:
         text = sentence.strip()

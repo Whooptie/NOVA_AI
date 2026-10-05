@@ -18135,5 +18135,341 @@
         "timestamp": "2026-10-03T08:21:53.393762"
       }
     ]
+  },
+  "herstart": {
+    "senses": [
+      {
+        "sense_id": "herstart#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-05T17:34:35.129104",
+      "updated_at": "2026-10-05T17:34:35.130687",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-05T17:34:35.130687",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-05T17:34:35.130687",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "herstart"
+        },
+        "timestamp": "2026-10-05T17:34:35.129109"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "herstart#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-05T17:34:35.130685"
+      }
+    ]
+  },
+  "jezelf": {
+    "senses": [
+      {
+        "sense_id": "jezelf#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-05T17:34:35.144439",
+      "updated_at": "2026-10-05T17:34:35.144697",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-05T17:34:35.144697",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-05T17:34:35.144697",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "jezelf"
+        },
+        "timestamp": "2026-10-05T17:34:35.144445"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "jezelf#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-05T17:34:35.144695"
+      }
+    ]
+  },
+  "nieuwe": {
+    "senses": [
+      {
+        "sense_id": "nieuwe#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-05T18:17:19.327633",
+      "updated_at": "2026-10-05T18:17:19.329204",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-05T18:17:19.329204",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-05T18:17:19.329204",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "nieuwe"
+        },
+        "timestamp": "2026-10-05T18:17:19.327638"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "nieuwe#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-05T18:17:19.329201"
+      }
+    ]
+  },
+  "kapstok": {
+    "senses": [
+      {
+        "sense_id": "kapstok#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-05T18:17:19.345939",
+      "updated_at": "2026-10-05T18:17:19.346261",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-05T18:17:19.346261",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-05T18:17:19.346261",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kapstok"
+        },
+        "timestamp": "2026-10-05T18:17:19.345952"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kapstok#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-05T18:17:19.346258"
+      }
+    ]
+  },
+  "vergiet": {
+    "senses": [
+      {
+        "sense_id": "vergiet#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-05T18:17:19.362618",
+      "updated_at": "2026-10-05T18:17:19.362882",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-05T18:17:19.362882",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-05T18:17:19.362882",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vergiet"
+        },
+        "timestamp": "2026-10-05T18:17:19.362627"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vergiet#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-05T18:17:19.362879"
+      }
+    ]
+  },
+  "lamp": {
+    "senses": [
+      {
+        "sense_id": "lamp#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-05T18:26:18.356653",
+      "updated_at": "2026-10-05T18:26:18.358170",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-05T18:26:18.358170",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-05T18:26:18.358170",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "lamp"
+        },
+        "timestamp": "2026-10-05T18:26:18.356666"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "lamp#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-05T18:26:18.358167"
+      }
+    ]
+  },
+  "kast": {
+    "senses": [
+      {
+        "sense_id": "kast#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-05T18:26:18.372082",
+      "updated_at": "2026-10-05T18:26:18.373138",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-05T18:26:18.373138",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-05T18:26:18.373138",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kast"
+        },
+        "timestamp": "2026-10-05T18:26:18.372087"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kast#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-05T18:26:18.373134"
+      }
+    ]
   }
 }

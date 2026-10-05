@@ -3,6 +3,7 @@
 import time
 import json
 import os
+import sys
 from pathlib import Path
 from datetime import datetime
 import sqlite3
@@ -12,6 +13,10 @@ import threading
 from difflib import SequenceMatcher
 
 class MemoryModule:
+    # Bug #47b (5 okt 2026): hoelang _on_shutdown() maximaal wacht op het
+    # slot voor het de databank sluit (zie daar).
+    LOCK_TIMEOUT_AFSLUITEN = 3
+
     def __init__(self, event_bus, max_events=200,
                  save_path=None):
         self.event_bus = event_bus
@@ -72,6 +77,12 @@ class MemoryModule:
 
         # Persistente SQLite-connectie (wordt aangemaakt in _init_db)
         self.conn = None
+
+        # Bug #47 (5 okt 2026): is _on_shutdown() al eens gelopen? Bij een
+        # SIGTERM loopt het eerst via _on_signal(), en daarna nog eens via
+        # atexit wanneer Python echt stopt -- de tweede keer moet niets meer
+        # doen.
+        self._afgesloten = False
 
         # --- Fase 5: caching voor get_stats() ---
         self._stats_cache = None
@@ -267,6 +278,13 @@ class MemoryModule:
         with self.lock:
             if not self.write_buffer:
                 return
+            # Bug #47 (5 okt 2026): databank al gesloten (Nova is aan het
+            # afsluiten)? Dan niets proberen -- anders volgt een
+            # "'NoneType' object has no attribute 'executemany'"-fout.
+            # Niets gaat verloren: elk event staat sowieso al in
+            # interactions.jsonl (append_to_disk() in on_event()).
+            if self.conn is None:
+                return
             try:
                 rijen = []
                 for e in self.write_buffer:
@@ -295,31 +313,76 @@ class MemoryModule:
     # Graceful shutdown
     # -------------------------
     def _on_shutdown(self):
-        """Wordt aangeroepen bij normaal afsluiten (exit, Ctrl+C)"""
+        """
+        Wordt aangeroepen bij normaal afsluiten (exit, Ctrl+C, via atexit)
+        en bij SIGTERM (via _on_signal()). Mag veilig meerdere keren
+        aangeroepen worden: enkel de eerste keer doet iets (Bug #47).
+        """
+        if self._afgesloten:
+            return
+        self._afgesloten = True
+
         self.stop_maintenance()
         self._flush_buffer()
-        if self.conn:
-            self.conn.commit()
 
-            # Expliciete WAL-checkpoint: zet alle wijzigingen uit het
-            # -wal logboekbestand definitief over naar interactions.db,
-            # en maakt -wal/-shm weer leeg (0 bytes). Zonder dit kunnen
-            # die twee bestanden na het afsluiten blijven bestaan —
-            # onschuldig voor je data (die zit er nog steeds veilig in),
-            # maar minder netjes op schijf. TRUNCATE is de grondigste
-            # variant: forceert het -wal bestand helemaal leeg te maken.
-            try:
-                self.conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
-            except Exception as e:
-                print(f"Memory: WAL-checkpoint bij afsluiten mislukt: {e}")
+        # Bug #47b (5 okt 2026): de databank sluiten MET het slot
+        # (self.lock), net zoals _flush_buffer()/search()/... het slot
+        # nemen wanneer ze de databank gebruiken. Zonder slot kon de
+        # achtergrondthread op exact hetzelfde moment nog iets
+        # wegschrijven terwijl de databank onder hem gesloten werd -- dan
+        # crashte Python hard (segmentatiefout, exitcode -11). Zeldzaam,
+        # want het hangt van de timing af, maar wel echt.
+        #
+        # Met een tijdslimiet: houdt een andere thread het slot langer dan
+        # LOCK_TIMEOUT_AFSLUITEN seconden vast (zou niet mogen gebeuren),
+        # dan sluiten we liever NIET dan Nova eindeloos te laten hangen.
+        # Geen dataverlies: alles staat ook in interactions.jsonl, en
+        # SQLite (WAL) herstelt zichzelf bij de volgende start.
+        if not self.lock.acquire(timeout=self.LOCK_TIMEOUT_AFSLUITEN):
+            print("Memory: kon het slot niet krijgen bij afsluiten -- databank wordt niet expliciet gesloten.")
+            return
+        try:
+            if self.conn:
+                self.conn.commit()
 
-            self.conn.close()
-            self.conn = None
+                # Expliciete WAL-checkpoint: zet alle wijzigingen uit het
+                # -wal logboekbestand definitief over naar interactions.db,
+                # en maakt -wal/-shm weer leeg (0 bytes). Zonder dit kunnen
+                # die twee bestanden na het afsluiten blijven bestaan —
+                # onschuldig voor je data (die zit er nog steeds veilig in),
+                # maar minder netjes op schijf. TRUNCATE is de grondigste
+                # variant: forceert het -wal bestand helemaal leeg te maken.
+                try:
+                    self.conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+                except Exception as e:
+                    print(f"Memory: WAL-checkpoint bij afsluiten mislukt: {e}")
+
+                self.conn.close()
+                self.conn = None
+        finally:
+            self.lock.release()
         print("Memory: netjes afgesloten.")
 
     def _on_signal(self, signum, frame):
-        """Wordt aangeroepen bij SIGTERM (kill, reboot)"""
+        """
+        Wordt aangeroepen bij SIGTERM -- bv. wanneer Docker/Unraid de
+        container stopt (server afsluiten, "Stop" in Unraid).
+
+        Bug #47 (5 okt 2026): deze functie sloot vroeger enkel de databank,
+        maar liet Nova daarna gewoon VERDER DRAAIEN. Een eigen SIGTERM-
+        handler vervangt namelijk het standaardgedrag ("stop het
+        programma"). Nova bleef dus nog ~10 seconden events verwerken met
+        een gesloten databank (de rode "flush error"-regels), tot Docker
+        haar na zijn wachttijd hard afschoot (SIGKILL).
+
+        Nu: eerst netjes afsluiten, daarna het programma echt stoppen via
+        sys.exit(0). Dat gooit een SystemExit in de hoofdthread (waar
+        Python signal-handlers altijd uitvoert), ook als die op input()
+        staat te wachten. De atexit-aanroep van _on_shutdown() die daarna
+        nog volgt, doet niets meer (zie self._afgesloten).
+        """
         self._on_shutdown()
+        sys.exit(0)
 
     # -------------------------
     # Fase 3: Query API

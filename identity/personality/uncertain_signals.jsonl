@@ -601,3 +601,13 @@
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-03T21:13:11.960960"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-03T21:25:30.781081"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-03T21:36:55.826829"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-05T19:18:18.540096"}
+{"text": "herstart jezelf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-05T19:34:35.119507"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-05T19:35:00.772441"}
+{"text": "ik voel me moe", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0116, "bron": "model_fallback", "tijdstip": "2026-10-05T19:43:36.566686"}
+{"text": "te veel werken", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.018, "bron": "model_fallback", "tijdstip": "2026-10-05T19:43:47.084571"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-05T20:13:45.563312"}
+{"text": "hey wat hoeveel hyey over mijn paraplu", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0854, "bron": "model_fallback", "tijdstip": "2026-10-05T20:13:59.610703"}
+{"text": "ik heb gisteren een nieuwe kapstok en een vergiet gekocht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0723, "bron": "model_fallback", "tijdstip": "2026-10-05T20:17:19.322945"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-05T20:26:06.447835"}
+{"text": "ik heb een mooie lamp en een oude kast gekocht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0361, "bron": "model_fallback", "tijdstip": "2026-10-05T20:26:18.173401"}

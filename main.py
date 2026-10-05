@@ -2,6 +2,7 @@
 
 import os
 import sys
+import signal
 import ctypes
 import time
 import threading
@@ -248,6 +249,82 @@ CONTRADICTION_CHECK_INTERVAL_MINUTEN = 15
 TOPIC_SUGGESTIONS_CHECK_INTERVAL_MINUTEN = 10
 
 
+def sluit_modules_netjes_af(loaded_modules):
+    """
+    Bug #47-vervolg (5 okt 2026): sluit ELKE geladen module met een
+    shutdown()-methode netjes af, en memory als allerlaatste.
+
+    Automatisch voor elke module: wie een shutdown()-methode heeft, wordt
+    meegenomen -- ook toekomstige modules, zonder dat deze functie
+    aangepast hoeft te worden. Zelfde aanpak als reboot_manager.py bij
+    /reboot (sinds 5 juli 2026 bewezen veilig).
+
+    Eén module die faalt, houdt de rest NIET tegen (elke aanroep zit in
+    een eigen try/except) -- bij afsluiten is "zoveel mogelijk opslaan"
+    belangrijker dan stoppen bij de eerste fout.
+
+    Memory komt bewust als LAATSTE: zo kan elke andere module tijdens
+    zijn eigen afsluiten nog events sturen die memory opvangt.
+    """
+    for naam, module in list(loaded_modules.items()):
+        if naam == "memory" or module is None:
+            continue
+        shutdown = getattr(module, "shutdown", None)
+        if not callable(shutdown):
+            continue
+        try:
+            shutdown()
+        except Exception as e:
+            print(f"[Afsluiten] Fout bij {naam}.shutdown(): {e}")
+
+    memory = loaded_modules.get("memory")
+    afsluiten_memory = getattr(memory, "_on_shutdown", None)
+    if callable(afsluiten_memory):
+        try:
+            afsluiten_memory()
+        except Exception as e:
+            print(f"[Afsluiten] Fout bij memory._on_shutdown(): {e}")
+
+
+def installeer_stopsignaal(loader):
+    """
+    Bug #47-vervolg (5 okt 2026): wat doet Nova als Docker/Unraid de
+    container stopt (server afsluiten, "Stop" in Unraid)?
+
+    Docker stuurt dan een SIGTERM. Tot nu toe ving enkel memory.py dat op
+    (en sinds bug #47 stopt die Nova daarna ook echt) -- maar de andere
+    modules (pattern_matcher, chess_engine, interruption_tracker, ...)
+    kregen geen kans om hun laatste stand op te slaan, in tegenstelling
+    tot bij "exit" of "/reboot".
+
+    Deze functie registreert een eigen SIGTERM-afhandeling die eerst
+    sluit_modules_netjes_af() doet en daarna Nova stopt. Ze VERVANGT de
+    afhandeling van memory.py (een programma kan per signaal maar één
+    afhandeling hebben) -- memory wordt in sluit_modules_netjes_af() wel
+    nog steeds netjes afgesloten, als laatste.
+
+    MOET aangeroepen worden NA loader.discover_and_load(): memory.py
+    registreert zijn eigen afhandeling tijdens het laden, en de laatste
+    registratie wint.
+
+    Python voert een signaal-afhandeling altijd uit in de HOOFDTHREAD,
+    ook als die op input() staat te wachten -- sys.exit(0) stopt Nova
+    daardoor meteen.
+    """
+    def _bij_stopsignaal(signum, frame):
+        print(f"{YELLOW}[Afsluiten] Stopsignaal ontvangen (bv. container gestopt) — modules worden netjes afgesloten...{RESET}")
+        sluit_modules_netjes_af(loader.loaded_modules)
+        sys.exit(0)
+
+    try:
+        signal.signal(signal.SIGTERM, _bij_stopsignaal)
+    except (ValueError, OSError, AttributeError) as e:
+        # ValueError: niet vanuit de hoofdthread aangeroepen;
+        # AttributeError/OSError: platform zonder SIGTERM. Dan blijft
+        # memory.py's eigen afhandeling gewoon actief.
+        print(f"[Afsluiten] Kon geen stopsignaal-afhandeling registreren: {e}")
+
+
 def achtergrond_loop(loader):
     """
     Draait continu op de achtergrond, los van de input()-lus in main().
@@ -414,6 +491,11 @@ def main():
 
     # Afwezigheid (3 oktober 2026): zie on_chat_response().
     _afwezigheid_module = loader.loaded_modules.get("afwezigheid")
+
+    # Bug #47-vervolg (5 okt 2026): bij een stop van buitenaf (Docker/
+    # Unraid) alle modules netjes laten afsluiten. Bewust NA
+    # discover_and_load(), zie installeer_stopsignaal().
+    installeer_stopsignaal(loader)
 
     # Rechtstreeks abonneren op chat_response, zodat berichten
     # ONMIDDELLIJK geprint worden, ook als ze van de achtergrondthread

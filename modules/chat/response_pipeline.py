@@ -1,11 +1,30 @@
 # modules/chat/response_pipeline.py
 
 import random
+import re
 
+from core.nl_stopwoorden import STOPWOORDEN
 from identity.personality.personality_engine import PersonalityEngine
 from identity.emotion.emotion_engine import EmotionEngine
 from identity.expression.tone_engine import ToneEngine
 from modules.response_learning.variant_kiezer import kies_variant
+
+# Auto-learn-filter (5 oktober 2026): simplemma's woordenboek als
+# controle "is dit een echt Nederlands woord?" -- houdt typfouten
+# (hyey, emercence) uit concepts.json. Pure opzoeking, geen ML.
+# Optioneel: zonder simplemma valt enkel deze controle weg.
+try:
+    import simplemma
+except ImportError:
+    simplemma = None
+
+# Woorden die in Layer 1 WEL mogen meetellen (staan dus niet in de
+# gedeelde lijst), maar als concept enkel rommel zijn. "beter" is in
+# Layer 1 bv. een beschermd woord.
+AUTO_LEARN_EXTRA_STOPWOORDEN = frozenset({
+    "hou", "houd", "houden", "gebruik", "gebruikt", "gebruiken",
+    "beter", "anders", "laat", "daarnet", "normaal", "nova", "kevin",
+})
 
 
 class ResponsePipeline:
@@ -222,50 +241,81 @@ class ResponsePipeline:
         """
         Haalt zelfstandige naamwoorden uit een fallback-zin en slaat
         onbekende woorden op als 'unknown' via semantic.auto_learn().
-        Bewust beperkt tot zelfstandige naamwoorden — anders leert Nova
-        ook lidwoorden, voorzetsels en werkwoorden aan als "concept",
-        wat concepts.json zou vervuilen met ruis.
+        Puur passief geheugensteuntje -- GEEN betekenis-gok.
+
+        Herzien (5 oktober 2026, data-oogst 1 oktober): het oude filter
+        liet veel rommel door in concepts.json (wat, hoe, over, omdat,
+        hey, debug, hyey, emercence, data\\layer0_gebruikt.jsonl,
+        21-jarige). Oorzaken: een eigen korte stopwoordenlijst,
+        splitsen op spaties, en semantic.detect_pos() die voor elk
+        onbekend woord standaard "noun" teruggeeft. Nu, per woord:
+
+        1. Tokeniseren zoals Layer 1: enkel reeksen letters.
+        2. Minstens 3 letters.
+        3. Niet in de gedeelde stopwoordenlijst (core/nl_stopwoorden.py)
+           of AUTO_LEARN_EXTRA_STOPWOORDEN.
+        4. Een echt Nederlands woord volgens simplemma's woordenboek
+           (houdt typfouten buiten). Zonder simplemma: deze stap valt
+           stil weg.
+        4b. Geen vervoegde vorm op -e (nieuwe, grote, werkte): eindigt
+           het woord op -e, en is simplemma's grondvorm anders en
+           eindigt die zelf niet op -e, dan wordt het overgeslagen.
+           Toegevoegd 5 oktober 2026 na live test ("nieuwe" glipte
+           door). Grenzen: dubbelzinnige woorden als "ronde" mogen door.
+        5. detect_pos() moet "noun" zeggen (filtert bekende werkwoorden).
+        6. Nog geen concept.
+
+        Bewust GEEN lemmatisering: dat zou onbekende naamwoorden soms in
+        werkwoorden veranderen (fiets -> fietsen). Een iets te letterlijk
+        opgeslagen concept ("betekenissen") is minder erg dan een fout.
+
+        Bekende beperking: echte werkwoordsvormen die detect_pos() niet
+        kent (bespreken, nadenken, bereikt) glippen nog door.
         """
         if not self.semantic or not text:
             return
 
-        # Simpele stopwoordenlijst — woorden die nooit een zelfstandig
-        # naamwoord zijn, ook al zou detect_pos ze verkeerd gokken.
-        stopwoorden = {
-            "ik", "jij", "je", "hij", "zij", "ze", "we", "wij", "jullie",
-            "hun", "hem", "haar", "mij", "me", "ons", "onze", "u",
-            "mijn", "jouw", "zijn", "uw",
-            "de", "het", "een", "en", "of", "maar", "want", "dus",
-            "van", "voor", "naar", "met", "bij", "op", "in", "uit",
-            "is", "ben", "bent", "was", "waren", "wordt", "worden",
-            "heb", "hebt", "heeft", "hebben", "had", "hadden",
-            "niet", "wel", "ook", "nog", "al", "dat", "die", "dit", "deze",
-            "hou", "houd", "houden", "gebruik", "gebruikt", "gebruiken"
-        }
-
-        woorden = text.lower().split()
-
-        for woord in woorden:
-            schoon = woord.strip(".,!?;:")
-            if not schoon or len(schoon) <= 2:
+        gezien = set()
+        for woord in re.findall(r"[a-zà-ÿ]+", text.lower()):
+            if woord in gezien:
                 continue
-            if schoon in stopwoorden:
+            gezien.add(woord)
+
+            if len(woord) < 3:
                 continue
+            if woord in STOPWOORDEN or woord in AUTO_LEARN_EXTRA_STOPWOORDEN:
+                continue
+
+            if simplemma is not None:
+                try:
+                    if not simplemma.is_known(woord, lang="nl"):
+                        continue
+                    # Vervoegde vorm op -e (nieuwe, grote, werkte)?
+                    # De grondvorm wordt enkel gebruikt om te beoordelen,
+                    # nooit om op te slaan (vergiet -> vergieten!).
+                    grondvorm = simplemma.lemmatize(woord, lang="nl")
+                    if (woord.endswith("e")
+                            and grondvorm != woord
+                            and not grondvorm.endswith("e")):
+                        continue
+                except Exception:
+                    pass
 
             try:
-                pos_guess = self.semantic.sense_engine.detect_pos(schoon)
+                pos_guess = self.semantic.sense_engine.detect_pos(woord)
             except Exception:
                 continue
-
             if pos_guess != "noun":
                 continue
 
-            # Al gekend? Dan niets doen.
-            if self.semantic.store.has_concept(schoon):
+            try:
+                if self.semantic.store.has_concept(woord):
+                    continue
+            except Exception:
                 continue
 
             try:
-                self.semantic.auto_learn(schoon)
+                self.semantic.auto_learn(woord)
             except Exception:
                 pass
 
