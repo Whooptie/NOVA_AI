@@ -20,3 +20,26 @@
 # voegen aan sys.path. Dit bestand hoeft verder niets te bevatten --
 # leeg is voldoende. Latere gedeelde fixtures (bv. een fixture die
 # meerdere testbestanden herbruiken) kunnen hier later ook in.
+
+
+
+# --- Herkenningsreactie SessionWatcher (7 oktober 2026) ---
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def _session_watcher_state_in_tmp(tmp_path, monkeypatch):
+    """
+    SessionWatcher bewaart sinds 7 oktober 2026 op welke dag Nova
+    "je werkt aan mijn eigen broncode" al zei
+    (data/session_watcher_state.json). Zonder deze fixture zouden tests
+    het ECHTE bestand lezen -- en dan hangt het resultaat af van wat Nova
+    vandaag toevallig al gezegd heeft. Elke test krijgt hier zijn eigen,
+    lege tijdelijke state-bestand.
+    """
+    from modules.activity.session_watcher import SessionWatcher
+    monkeypatch.setattr(
+        SessionWatcher,
+        "HERKENNING_STATE_BESTAND",
+        str(tmp_path / "session_watcher_state.json"),
+    )

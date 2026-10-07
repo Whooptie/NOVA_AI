@@ -280,3 +280,5 @@
 {"timestamp": "2026-10-05T18:17:19.362631", "event_type": "concept_created", "word": "vergiet", "source": "system", "new_value": {"word": "vergiet"}}
 {"timestamp": "2026-10-05T18:26:18.356671", "event_type": "concept_created", "word": "lamp", "source": "system", "new_value": {"word": "lamp"}}
 {"timestamp": "2026-10-05T18:26:18.372090", "event_type": "concept_created", "word": "kast", "source": "system", "new_value": {"word": "kast"}}
+{"timestamp": "2026-10-07T18:12:29.883698", "event_type": "concept_created", "word": "egel", "source": "system", "new_value": {"word": "egel"}}
+{"timestamp": "2026-10-07T18:12:29.897528", "event_type": "concept_created", "word": "tuin", "source": "system", "new_value": {"word": "tuin"}}

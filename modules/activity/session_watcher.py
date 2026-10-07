@@ -1,6 +1,14 @@
 # modules/activity/session_watcher.py
+import json
 import time
 import random
+from datetime import date
+from pathlib import Path
+
+# Projectmap (twee niveaus boven modules/activity/), zodat
+# "data/..." altijd naar de echte data-map wijst, ongeacht van
+# waaruit Nova gestart wordt.
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 class SessionWatcher:
@@ -49,6 +57,21 @@ class SessionWatcher:
     # een veel duidelijker "ik neem pauze"-signaal dan gewoon even geen
     # input geven.
     PAUZE_RESET_NA_AFWEZIG_MINUTEN = 5
+
+    # Herkenningsreactie "je werkt aan mijn broncode" (7 oktober 2026):
+    # was "eenmalig" volgens de commentaar, maar kwam in de praktijk
+    # 38 keer in een paar dagen -- telkens wanneer Kevin even naar een
+    # ander HERKEND venster ging (talking_to_nova, bestanden_beheren,
+    # ...) en terugkeerde naar VS Code. Nu echt 1x per dag, en die
+    # datum wordt bewaard zodat ook een herstart ze niet opnieuw
+    # oproept. Zelfde bewaarmanier als topic_suggestions.py.
+    HERKENNING_STATE_BESTAND = "data/session_watcher_state.json"
+
+    # Heeft Kevin minder dan zoveel seconden geleden iets tegen Nova
+    # gezegd, dan GEEN herkenningsreactie -- anders lijkt ze een
+    # antwoord op zijn bericht (de paraplu-zin van 5 oktober kreeg zo
+    # 1 seconde later "je werkt aan mijn eigen broncode").
+    HERKENNING_STIL_NA_BERICHT_SECONDEN = 90
 
     def __init__(self, event_bus, context_manager=None, kevin_profile=None):
         self.event_bus = event_bus
@@ -131,6 +154,14 @@ class SessionWatcher:
         # dezelfde doorlopende activiteit).
         self._al_gevraagd_voor_activiteit = None
 
+        # Herkenningsreactie (7 oktober 2026): op welke dag (JJJJ-MM-DD)
+        # kwam ze het laatst, en wanneer stuurde Kevin zijn laatste
+        # bericht? Een absoluut pad in HERKENNING_STATE_BESTAND (bv. in
+        # tests) blijft absoluut -- Path / "/abs/pad" geeft "/abs/pad".
+        self._herkenning_state_pad = _PROJECT_ROOT / self.HERKENNING_STATE_BESTAND
+        self._herkenning_laatste_dag = self._laad_herkenning_state()
+        self._laatste_bericht_kevin = None
+
         event_bus.subscribe("*", self._on_any_event)
 
         # Antwoord op de "mag ik storen?"-vraag opvangen. Dit event
@@ -204,6 +235,49 @@ class SessionWatcher:
         ],
     }
 
+    def _laad_herkenning_state(self):
+        """
+        Leest de dag van de laatste herkenningsreactie uit het
+        state-bestand. Ontbreekt het bestand of is het kapot, dan
+        None (= vandaag nog niet gegeven).
+        """
+        try:
+            if self._herkenning_state_pad.exists():
+                with open(self._herkenning_state_pad, "r", encoding="utf-8") as f:
+                    return json.load(f).get("herkenning_laatste_dag")
+        except (json.JSONDecodeError, OSError, AttributeError):
+            pass
+        return None
+
+    def _sla_herkenning_state_op(self):
+        """Bewaart de dag van de laatste herkenningsreactie."""
+        try:
+            self._herkenning_state_pad.parent.mkdir(parents=True, exist_ok=True)
+            with open(self._herkenning_state_pad, "w", encoding="utf-8") as f:
+                json.dump(
+                    {"herkenning_laatste_dag": self._herkenning_laatste_dag},
+                    f, ensure_ascii=False, indent=2
+                )
+        except OSError as e:
+            print(f"[SESSION_WATCHER] Kon herkenning-state niet bewaren: {e}")
+
+    def _mag_herkenning_geven(self):
+        """
+        Twee vaste regels, puur tijd/datum vergelijken:
+        1. Vandaag al gegeven? -> nee.
+        2. Kevin zei net iets tegen Nova (< HERKENNING_STIL_NA_BERICHT_
+           SECONDEN)? -> nee, maar de dag wordt dan ook NIET als
+           "gegeven" gemarkeerd, zodat ze later nog kan komen.
+        """
+        if self._herkenning_laatste_dag == date.today().isoformat():
+            return False
+        if (
+            self._laatste_bericht_kevin is not None
+            and time.time() - self._laatste_bericht_kevin < self.HERKENNING_STIL_NA_BERICHT_SECONDEN
+        ):
+            return False
+        return True
+
     def _formuleer_werken_aan_nova_reactie(self):
         """
         Combineert opening + midden + afsluiting tot 1 natuurlijke
@@ -235,6 +309,18 @@ class SessionWatcher:
           zijn bureau -- exact het probleem dat focus_detector.py's
           eigen docstring beschrijft.
         """
+        # Herkenningsreactie (7 oktober 2026): onthoud wanneer Kevin
+        # het laatst iets tegen Nova zei (zie _mag_herkenning_geven()).
+        if event_type == "raw_user_message":
+            self._laatste_bericht_kevin = time.time()
+            return
+
+        # Herkenningsreactie (7 oktober 2026): onthoud wanneer Kevin
+        # het laatst iets tegen Nova zei (zie _mag_herkenning_geven()).
+        if event_type == "raw_user_message":
+            self._laatste_bericht_kevin = time.time()
+            return
+
         if not event_type or not event_type.startswith("activity_started:"):
             return
 
@@ -290,8 +376,17 @@ class SessionWatcher:
         # hieronder, en losstaand van het latere interruption-circuit
         # (check_activity_interruption(), pas na de tijdsdrempel) --
         # dit is puur een direct, herkennend moment.
-        if naam == "werken_aan_nova_gedetecteerd" and self.actieve_activiteit != naam:
+        #
+        # Sinds 7 oktober 2026 ECHT eenmalig: max 1x per dag (bewaard
+        # over herstarts heen) en nooit vlak na een bericht van Kevin.
+        if (
+            naam == "werken_aan_nova_gedetecteerd"
+            and self.actieve_activiteit != naam
+            and self._mag_herkenning_geven()
+        ):
             tekst = self._formuleer_werken_aan_nova_reactie()
+            self._herkenning_laatste_dag = date.today().isoformat()
+            self._sla_herkenning_state_op()
             self.event_bus.publish("chat_response", {"text": tekst})
 
         # Nieuwe activiteit gestart (of dezelfde opnieuw benoemd) --

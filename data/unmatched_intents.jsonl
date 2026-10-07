@@ -127,3 +127,4 @@
 {"tekst": "hey wat hoeveel hyey over mijn paraplu", "hoogste_gok": "memory_query", "confidence": 0.145, "tijdstip": "2026-10-05T20:13:59.619437"}
 {"tekst": "ik heb gisteren een nieuwe kapstok en een vergiet gekocht", "hoogste_gok": "preference", "confidence": 0.189, "tijdstip": "2026-10-05T20:17:19.327182"}
 {"tekst": "ik heb een mooie lamp en een oude kast gekocht", "hoogste_gok": "preference", "confidence": 0.2324, "tijdstip": "2026-10-05T20:26:18.181892"}
+{"tekst": "ik zag een egel in de tuin", "hoogste_gok": "preference", "confidence": 0.1304, "tijdstip": "2026-10-07T20:12:29.702240"}

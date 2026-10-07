@@ -611,3 +611,7 @@
 {"text": "ik heb gisteren een nieuwe kapstok en een vergiet gekocht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0723, "bron": "model_fallback", "tijdstip": "2026-10-05T20:17:19.322945"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-05T20:26:06.447835"}
 {"text": "ik heb een mooie lamp en een oude kast gekocht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0361, "bron": "model_fallback", "tijdstip": "2026-10-05T20:26:18.173401"}
+{"text": "ik zag een egel in de tuin", "signaal": "focus", "model_signaal": "focus", "marge": 0.006, "bron": "model_fallback", "tijdstip": "2026-10-07T20:12:29.692543"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-07T20:18:03.524017"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-07T20:36:36.673464"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-07T20:37:20.664335"}

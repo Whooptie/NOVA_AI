@@ -1072,7 +1072,7 @@
     }
   ],
   "metadata": {
-    "laatst_getraind": "2026-10-05",
+    "laatst_getraind": "2026-10-07",
     "aantal_voorbeelden": 214,
     "categorieën": [
       "activity",
@@ -1087,6 +1087,6 @@
       "time",
       "weather"
     ],
-    "laatste_layer0_scan": 1791214571.4405603
+    "laatste_layer0_scan": 1791385423.8246956
   }
 }
