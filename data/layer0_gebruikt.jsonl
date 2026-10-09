@@ -19,3 +19,6 @@
 {"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-03T19:19:34.833657"}
 {"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-04T01:14:41.911013"}
 {"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-04T01:14:41.911013"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}
+{"tekst": "wat wordt het weer morgen", "label": "weather", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}
+{"tekst": "wat is het weer vandaag", "label": "weather", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}

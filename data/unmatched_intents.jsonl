@@ -128,3 +128,5 @@
 {"tekst": "ik heb gisteren een nieuwe kapstok en een vergiet gekocht", "hoogste_gok": "preference", "confidence": 0.189, "tijdstip": "2026-10-05T20:17:19.327182"}
 {"tekst": "ik heb een mooie lamp en een oude kast gekocht", "hoogste_gok": "preference", "confidence": 0.2324, "tijdstip": "2026-10-05T20:26:18.181892"}
 {"tekst": "ik zag een egel in de tuin", "hoogste_gok": "preference", "confidence": 0.1304, "tijdstip": "2026-10-07T20:12:29.702240"}
+{"tekst": "wat hoort bij regen", "hoogste_gok": "identity", "confidence": 0.1227, "tijdstip": "2026-10-09T20:53:29.258645"}
+{"tekst": "is wandelen een activiteit", "hoogste_gok": "weather", "confidence": 0.1357, "tijdstip": "2026-10-09T21:13:45.372804"}

@@ -44,3 +44,5 @@
 {"text": "hey", "categorie": "negatief", "marge": 0.007, "grof_sentiment_regex": null, "tijdstip": "2026-10-02T20:57:46.558237", "label_kevin": "neutraal_gemengd"}
 {"text": "morgen sta ik in de keuken want ik ga koken voor de kinderen", "categorie": "negatief", "marge": 0.0794, "grof_sentiment_regex": null, "tijdstip": "2026-10-03T10:21:53.384265"}
 {"text": "ik heb gisteren een nieuwe kapstok en een vergiet gekocht", "categorie": "negatief", "marge": 0.0606, "grof_sentiment_regex": null, "tijdstip": "2026-10-05T20:17:19.321092"}
+{"text": "waarop lijkt regen", "categorie": "negatief", "marge": 0.0446, "grof_sentiment_regex": null, "tijdstip": "2026-10-09T20:55:49.951694"}
+{"text": "waarop lijkt tijd", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-09T21:14:03.678594"}

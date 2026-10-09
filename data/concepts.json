@@ -713,6 +713,22 @@
             "source": "wikipedia",
             "created_at": "2026-06-29T17:55:24.949953",
             "status": "unverified"
+          },
+          {
+            "type": "related_to",
+            "target": "peer",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "appelsap",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
@@ -1841,6 +1857,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "bos",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -1984,6 +2008,14 @@
             "confidence": 1.0,
             "source": "user",
             "created_at": "2026-07-12T20:21:25.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "has_part",
+            "target": "tuin",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
             "status": "confirmed"
           }
         ],
@@ -2353,7 +2385,24 @@
           "De tijd vloog voorbij tijdens het gesprek.",
           "Hij keek op de klok om te zien hoe laat het was."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "moment",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "leeftijd",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
+            "status": "confirmed"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -3007,6 +3056,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "part_of",
+            "target": "trein",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -3547,6 +3604,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "kunst",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -3606,6 +3671,14 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "synonym",
+            "target": "meubel",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
             "status": "confirmed"
           }
         ],
@@ -4807,6 +4880,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "paraplu",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -5746,6 +5827,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "is_a",
+            "target": "activiteit",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -6256,6 +6345,14 @@
             "confidence": 0.5,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "is_a",
+            "target": "activiteit",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
             "status": "confirmed"
           }
         ],
@@ -6854,6 +6951,14 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "kracht",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
             "status": "confirmed"
           }
         ],
@@ -7646,6 +7751,14 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "lamp",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
             "status": "confirmed"
           }
         ],
@@ -8654,6 +8767,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "december",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -9563,6 +9684,14 @@
             "confidence": 0.7,
             "source": "user",
             "created_at": "2026-07-11T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "has_part",
+            "target": "uur",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
             "status": "confirmed"
           }
         ],
@@ -12546,28 +12675,45 @@
     "senses": [
       {
         "sense_id": "banaan#1",
-        "definition": "unknown",
+        "definition": "Een banaan is een langwerpige, gebogen vrucht met een gele schil en zacht, zoet vruchtvlees.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": [],
-        "status": "unverified"
+        "examples": [
+          "Ze pelde een banaan als tussendoortje.",
+          "De bananen in de fruitschaal werden al bruin."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vrucht",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T10:17:38.524098",
-      "updated_at": "2026-07-28T10:17:38.525098",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-28T10:17:38.525098",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T10:17:38.525098",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -12587,6 +12733,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-28T10:17:38.525098"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "banaan#1",
+        "old_value": "unknown",
+        "new_value": "Een banaan is een langwerpige, gebogen vrucht met een gele schil en zacht, zoet vruchtvlees.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -12594,28 +12748,53 @@
     "senses": [
       {
         "sense_id": "appelsap#1",
-        "definition": "unknown",
+        "definition": "Appelsap is een drank gemaakt van uitgeperste appels.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": [],
-        "status": "unverified"
+        "examples": [
+          "Bij het ontbijt dronk hij een glas appelsap.",
+          "Ze kocht een fles appelsap in de winkel."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "drank",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "appel",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T10:17:38.538110",
-      "updated_at": "2026-07-28T10:17:38.538110",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-28T10:17:38.538110",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T10:17:38.538110",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -12635,6 +12814,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-28T10:17:38.538110"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "appelsap#1",
+        "old_value": "unknown",
+        "new_value": "Appelsap is een drank gemaakt van uitgeperste appels.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -12642,28 +12829,53 @@
     "senses": [
       {
         "sense_id": "trein#1",
-        "definition": "unknown",
+        "definition": "Een trein is een voertuig dat over rails rijdt en bestaat uit een of meer aan elkaar gekoppelde wagons.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": [],
-        "status": "unverified"
+        "examples": [
+          "De trein naar Brussel had tien minuten vertraging.",
+          "Ze las een boek tijdens de treinrit."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "voertuig",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "has_part",
+            "target": "wiel",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T10:17:38.549102",
-      "updated_at": "2026-07-28T10:17:38.550100",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-28T10:17:38.550100",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T10:17:38.550100",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -12683,6 +12895,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-28T10:17:38.550100"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "trein#1",
+        "old_value": "unknown",
+        "new_value": "Een trein is een voertuig dat over rails rijdt en bestaat uit een of meer aan elkaar gekoppelde wagons.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -12690,28 +12910,82 @@
     "senses": [
       {
         "sense_id": "fluit#1",
-        "definition": "unknown",
+        "definition": "Een fluit is een blaasinstrument waarbij geluid ontstaat door lucht langs of door een opening te blazen.",
+        "signaalwoorden": [
+          "muziek",
+          "instrument",
+          "melodie",
+          "orkest",
+          "spelen"
+        ],
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": [],
-        "status": "unverified"
+        "examples": [
+          "Ze speelde een rustige melodie op haar fluit.",
+          "In het orkest zitten twee fluiten."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "instrument",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      },
+      {
+        "sense_id": "fluit#2",
+        "definition": "Een fluit is een klein voorwerp waarmee je door erin te blazen een schel signaal geeft, bijvoorbeeld door een scheidsrechter.",
+        "signaalwoorden": [
+          "scheidsrechter",
+          "voetbal",
+          "signaal",
+          "wedstrijd",
+          "overtreding"
+        ],
+        "pos": "noun",
+        "examples": [
+          "De scheidsrechter blies op zijn fluit voor een overtreding.",
+          "Na het laatste fluitsignaal was de wedstrijd voorbij."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "voetbal",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T10:18:15.498957",
-      "updated_at": "2026-07-28T10:18:15.500353",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-28T10:18:15.500353",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T10:18:15.500353",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -12731,6 +13005,22 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-28T10:18:15.500353"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "fluit#1",
+        "old_value": "unknown",
+        "new_value": "Een fluit is een blaasinstrument waarbij geluid ontstaat door lucht langs of door een opening te blazen.",
+        "timestamp": "2026-10-09T18:35:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "fluit#2",
+        "old_value": null,
+        "new_value": "Een fluit is een klein voorwerp waarmee je door erin te blazen een schel signaal geeft, bijvoorbeeld door een scheidsrechter.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -12738,28 +13028,53 @@
     "senses": [
       {
         "sense_id": "peer#1",
-        "definition": "unknown",
+        "definition": "Een peer is een zoete vrucht met een groene of gele schil, die naar onder toe breder wordt.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": [],
-        "status": "unverified"
+        "examples": [
+          "Hij at een sappige peer uit de tuin.",
+          "Peren en appels groeien allebei aan bomen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vrucht",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "appel",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T10:18:27.726435",
-      "updated_at": "2026-07-28T10:18:27.727416",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-28T10:18:27.727416",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T10:18:27.727416",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -12779,6 +13094,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-28T10:18:27.727416"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "peer#1",
+        "old_value": "unknown",
+        "new_value": "Een peer is een zoete vrucht met een groene of gele schil, die naar onder toe breder wordt.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -12786,28 +13109,45 @@
     "senses": [
       {
         "sense_id": "cadeau#1",
-        "definition": "unknown",
+        "definition": "Een cadeau is iets dat je aan iemand geeft om die persoon een plezier te doen, bijvoorbeeld voor een verjaardag of feest.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": [],
-        "status": "unverified"
+        "examples": [
+          "Ze pakte haar cadeau voorzichtig uit.",
+          "Voor zijn verjaardag kreeg hij een boek als cadeau."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "kerst",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T10:21:25.278614",
-      "updated_at": "2026-07-28T10:21:25.278614",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-28T10:21:25.278614",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T10:21:25.278614",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -12827,6 +13167,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-28T10:21:25.278614"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "cadeau#1",
+        "old_value": "unknown",
+        "new_value": "Een cadeau is iets dat je aan iemand geeft om die persoon een plezier te doen, bijvoorbeeld voor een verjaardag of feest.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -12951,28 +13299,36 @@
     "senses": [
       {
         "sense_id": "activiteit#1",
-        "definition": "unknown",
+        "definition": "Een activiteit is iets wat iemand doet of onderneemt, zoals werken, sporten, wandelen of een spel spelen.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Wandelen is een rustige activiteit voor het weekend.",
+          "De school organiseerde verschillende activiteiten voor de kinderen."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-07-30T16:54:39.744408",
-      "updated_at": "2026-07-30T16:54:39.745436",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-30T16:54:39.745436",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-30T16:54:39.745436",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -12992,6 +13348,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-30T16:54:39.745436"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "activiteit#1",
+        "old_value": "unknown",
+        "new_value": "Een activiteit is iets wat iemand doet of onderneemt, zoals werken, sporten, wandelen of een spel spelen.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -13059,28 +13423,45 @@
     "senses": [
       {
         "sense_id": "paraplu#1",
-        "definition": "unknown",
+        "definition": "Een paraplu is een opvouwbaar scherm aan een stok dat je boven je hoofd houdt om je te beschermen tegen regen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": [],
-        "status": "unverified"
+        "examples": [
+          "Ze nam een paraplu mee omdat het ging regenen.",
+          "Zijn paraplu klapte om door de harde wind."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "regen",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-31T04:49:50.843632",
-      "updated_at": "2026-07-31T04:49:50.844632",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-31T04:49:50.844632",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-31T04:49:50.844632",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13100,6 +13481,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-31T04:49:50.844632"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "paraplu#1",
+        "old_value": "unknown",
+        "new_value": "Een paraplu is een opvouwbaar scherm aan een stok dat je boven je hoofd houdt om je te beschermen tegen regen.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -13107,28 +13496,45 @@
     "senses": [
       {
         "sense_id": "uur#1",
-        "definition": "unknown",
+        "definition": "Een uur is een tijdseenheid van zestig minuten; een dag telt vierentwintig uur.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "audit_log": [],
-        "status": "unverified"
+        "examples": [
+          "De film duurde bijna twee uur.",
+          "Over een uur vertrekt de trein."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "dag",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-31T04:50:23.378061",
-      "updated_at": "2026-07-31T04:50:23.378061",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-31T04:50:23.378061",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-31T04:50:23.378061",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13148,6 +13554,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-31T04:50:23.378061"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "uur#1",
+        "old_value": "unknown",
+        "new_value": "Een uur is een tijdseenheid van zestig minuten; een dag telt vierentwintig uur.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -13155,28 +13569,45 @@
     "senses": [
       {
         "sense_id": "moment#1",
-        "definition": "unknown",
+        "definition": "Een moment is een heel kort tijdstip of een korte periode.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Wacht even een moment, ik kom zo.",
+          "Op dat moment ging de deurbel."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "tijd",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-07-31T04:54:03.636877",
-      "updated_at": "2026-07-31T04:54:03.637879",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-31T04:54:03.637879",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-31T04:54:03.637879",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13196,6 +13627,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-31T04:54:03.637879"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "moment#1",
+        "old_value": "unknown",
+        "new_value": "Een moment is een heel kort tijdstip of een korte periode.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -13577,28 +14016,36 @@
     "senses": [
       {
         "sense_id": "limiet#1",
-        "definition": "unknown",
+        "definition": "Een limiet is een grens of maximum die niet overschreden mag of kan worden.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Op deze weg geldt een limiet van negentig kilometer per uur.",
+          "Hij had de limiet van zijn bankkaart bereikt."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-08-02T15:56:54.041592",
-      "updated_at": "2026-08-02T15:56:54.041592",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-02T15:56:54.041592",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-02T15:56:54.041592",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13618,6 +14065,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-02T15:56:54.041592"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "limiet#1",
+        "old_value": "unknown",
+        "new_value": "Een limiet is een grens of maximum die niet overschreden mag of kan worden.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -13625,28 +14080,45 @@
     "senses": [
       {
         "sense_id": "geduld#1",
-        "definition": "unknown",
+        "definition": "Geduld is het vermogen om rustig te wachten of iets te verdragen zonder boos of onrustig te worden.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Met wat geduld lukte het hem uiteindelijk wel.",
+          "Ze verloor haar geduld na een uur wachten."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "eigenschap",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-08-02T15:56:54.072110",
-      "updated_at": "2026-08-02T15:56:54.073115",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-02T15:56:54.073115",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-02T15:56:54.073115",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13666,6 +14138,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-02T15:56:54.073115"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "geduld#1",
+        "old_value": "unknown",
+        "new_value": "Geduld is het vermogen om rustig te wachten of iets te verdragen zonder boos of onrustig te worden.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -13673,28 +14153,45 @@
     "senses": [
       {
         "sense_id": "kracht#1",
-        "definition": "unknown",
+        "definition": "Kracht is het vermogen of de inspanning om iets te bewegen, te duwen, te trekken of te tillen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Hij had veel kracht nodig om de kast te verschuiven.",
+          "De wind blies met grote kracht tegen het raam."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "druk",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-08-05T09:39:56.773257",
-      "updated_at": "2026-08-05T09:39:56.774243",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-05T09:39:56.774243",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-05T09:39:56.774243",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13714,6 +14211,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-05T09:39:56.774243"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kracht#1",
+        "old_value": "unknown",
+        "new_value": "Kracht is het vermogen of de inspanning om iets te bewegen, te duwen, te trekken of te tillen.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -13780,28 +14285,45 @@
     "senses": [
       {
         "sense_id": "meubel#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Een meubel is een verplaatsbaar voorwerp om een ruimte in te richten, zoals een tafel, stoel of kast; een ander woord voor meubelstuk.",
+        "pos": "noun",
+        "examples": [
+          "Ze kochten nieuwe meubels voor de woonkamer.",
+          "Dat oude meubel komt nog van haar grootmoeder."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "meubelstuk",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-08-06T14:54:40.165468",
-      "updated_at": "2026-08-06T14:54:40.166470",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-06T14:54:40.166470",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-06T14:54:40.166470",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13821,6 +14343,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-06T14:54:40.166470"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "meubel#1",
+        "old_value": "unknown",
+        "new_value": "Een meubel is een verplaatsbaar voorwerp om een ruimte in te richten, zoals een tafel, stoel of kast; een ander woord voor meubelstuk.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -13828,28 +14358,45 @@
     "senses": [
       {
         "sense_id": "leeftijd#1",
-        "definition": "unknown",
+        "definition": "Je leeftijd is het aantal jaren dat je al leeft, gerekend vanaf je geboorte.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "Op jonge leeftijd leerde ze al fietsen.",
+          "Hij vroeg naar de leeftijd van de hond."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "tijd",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-10-09T19:15:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-08-06T17:53:52.389236",
-      "updated_at": "2026-08-06T17:53:52.390241",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-06T17:53:52.390241",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-06T17:53:52.390241",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13869,6 +14416,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-06T17:53:52.390241"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "leeftijd#1",
+        "old_value": "unknown",
+        "new_value": "Je leeftijd is het aantal jaren dat je al leeft, gerekend vanaf je geboorte.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -14059,28 +14614,36 @@
     "senses": [
       {
         "sense_id": "onderdeel#1",
-        "definition": "unknown",
+        "definition": "Een onderdeel is een deel van een groter geheel, zoals een stuk van een machine, fiets of programma.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Het stuur is een belangrijk onderdeel van de fiets.",
+          "Hij bestelde een nieuw onderdeel voor de wasmachine."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-08-09T16:29:50.942149",
-      "updated_at": "2026-08-09T16:29:50.943149",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-09T16:29:50.943149",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-09T16:29:50.943149",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14100,6 +14663,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-09T16:29:50.943149"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "onderdeel#1",
+        "old_value": "unknown",
+        "new_value": "Een onderdeel is een deel van een groter geheel, zoals een stuk van een machine, fiets of programma.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -14107,28 +14678,45 @@
     "senses": [
       {
         "sense_id": "kunst#1",
-        "definition": "unknown",
+        "definition": "Kunst is het geheel van creatieve werken, zoals schilderijen, beelden, muziek en literatuur, waarmee mensen iets uitdrukken.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "In het museum hing kunst uit verschillende eeuwen.",
+          "Ze maakt kunst van gerecycleerde materialen."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "kunstvorm",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-08-09T19:45:58.469058",
-      "updated_at": "2026-08-09T19:45:58.471056",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-09T19:45:58.471056",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-09T19:45:58.471056",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14148,6 +14736,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-09T19:45:58.471056"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kunst#1",
+        "old_value": "unknown",
+        "new_value": "Kunst is het geheel van creatieve werken, zoals schilderijen, beelden, muziek en literatuur, waarmee mensen iets uitdrukken.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -14166,6 +14762,14 @@
             "source": "auto_extract",
             "status": "unverified",
             "created_at": "2026-08-15T18:23:40.384660"
+          },
+          {
+            "type": "related_to",
+            "target": "fluit",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -14269,28 +14873,45 @@
     "senses": [
       {
         "sense_id": "winkel#1",
-        "definition": "unknown",
+        "definition": "Een winkel is een zaak of gebouw waar je goederen kunt kopen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "Ze ging naar de winkel om brood en melk te kopen.",
+          "De winkel op de hoek sluit om zes uur."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gebouw",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-08-15T18:25:32.895615",
-      "updated_at": "2026-08-15T18:25:32.896618",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-15T18:25:32.896618",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-15T18:25:32.896618",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14310,6 +14931,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-15T18:25:32.896618"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "winkel#1",
+        "old_value": "unknown",
+        "new_value": "Een winkel is een zaak of gebouw waar je goederen kunt kopen.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -14317,28 +14946,81 @@
     "senses": [
       {
         "sense_id": "bos#1",
-        "definition": "unknown",
+        "definition": "Een bos is een groot gebied dat dicht begroeid is met bomen.",
+        "signaalwoorden": [
+          "bomen",
+          "wandelen",
+          "natuur",
+          "dieren",
+          "paddenstoelen"
+        ],
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Op zondag gingen ze wandelen in het bos.",
+          "Diep in het bos leefden herten en vossen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gebied",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "boom",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      },
+      {
+        "sense_id": "bos#2",
+        "definition": "Een bos is een bundel van samengebonden dingen, zoals bloemen of sleutels.",
+        "signaalwoorden": [
+          "bloemen",
+          "sleutels",
+          "bundel",
+          "boeket",
+          "vaas"
+        ],
+        "pos": "noun",
+        "examples": [
+          "Hij gaf haar een bos rozen voor haar verjaardag.",
+          "Ze zocht de juiste sleutel aan de bos."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-08-15T18:26:09.474336",
-      "updated_at": "2026-08-15T18:26:09.475670",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-15T18:26:09.475670",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-15T18:26:09.475670",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14358,6 +15040,22 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-15T18:26:09.475670"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "bos#1",
+        "old_value": "unknown",
+        "new_value": "Een bos is een groot gebied dat dicht begroeid is met bomen.",
+        "timestamp": "2026-10-09T19:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bos#2",
+        "old_value": null,
+        "new_value": "Een bos is een bundel van samengebonden dingen, zoals bloemen of sleutels.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -14413,28 +15111,36 @@
     "senses": [
       {
         "sense_id": "onzin#1",
-        "definition": "unknown",
+        "definition": "Onzin is iets wat nergens op slaat, niet waar is of geen betekenis heeft.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Wat hij vertelde was complete onzin.",
+          "Ze lachten om de onzin die op het internet stond."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-08-20T19:10:08.036050",
-      "updated_at": "2026-08-20T19:10:08.037053",
+      "updated_at": "2026-10-09T19:15:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-20T19:10:08.037053",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:15:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-20T19:10:08.037053",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:15:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14454,6 +15160,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-20T19:10:08.037053"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "onzin#1",
+        "old_value": "unknown",
+        "new_value": "Onzin is iets wat nergens op slaat, niet waar is of geen betekenis heeft.",
+        "timestamp": "2026-10-09T19:15:00.000000"
       }
     ]
   },
@@ -14461,28 +15175,53 @@
     "senses": [
       {
         "sense_id": "kerst#1",
-        "definition": "unknown",
+        "definition": "Kerst is het feest op 25 december waarop christenen de geboorte van Jezus vieren; veel mensen vieren het met familie, een kerstboom en cadeaus.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "Met kerst kwam de hele familie samen.",
+          "Onder de kerstboom lagen de cadeaus klaar."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "december",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "cadeau",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-09-18T16:42:03.176515",
-      "updated_at": "2026-09-18T16:42:03.176728",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-09-18T16:42:03.176728",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-09-18T16:42:03.176728",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14502,6 +15241,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-09-18T16:42:03.176726"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kerst#1",
+        "old_value": "unknown",
+        "new_value": "Kerst is het feest op 25 december waarop christenen de geboorte van Jezus vieren; veel mensen vieren het met familie, een kerstboom en cadeaus.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -14509,28 +15256,53 @@
     "senses": [
       {
         "sense_id": "december#1",
-        "definition": "unknown",
+        "definition": "December is de twaalfde en laatste maand van het jaar, met 31 dagen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "In december worden de dagen het kortst.",
+          "Ze vierden oudejaarsavond op 31 december."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "winter",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "kerst",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-09-19T08:50:44.264854",
-      "updated_at": "2026-09-19T08:50:44.265046",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-09-19T08:50:44.265046",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-09-19T08:50:44.265046",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14550,6 +15322,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-09-19T08:50:44.265043"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "december#1",
+        "old_value": "unknown",
+        "new_value": "December is de twaalfde en laatste maand van het jaar, met 31 dagen.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -14557,28 +15337,45 @@
     "senses": [
       {
         "sense_id": "kind#1",
-        "definition": "unknown",
+        "definition": "Een kind is een jong mens dat nog niet volwassen is.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "De kinderen speelden samen op het plein.",
+          "Als kind wilde hij altijd astronaut worden."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "mens",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-10-03T08:21:53.393407",
-      "updated_at": "2026-10-03T08:21:53.393764",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-10-03T08:21:53.393764",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-03T08:21:53.393764",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14598,6 +15395,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-03T08:21:53.393762"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kind#1",
+        "old_value": "unknown",
+        "new_value": "Een kind is een jong mens dat nog niet volwassen is.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -14605,28 +15410,45 @@
     "senses": [
       {
         "sense_id": "kapstok#1",
-        "definition": "unknown",
+        "definition": "Een kapstok is een rek of haak waaraan je jassen, sjaals en tassen ophangt.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "Hij hing zijn jas aan de kapstok in de gang.",
+          "De kapstok hing vol natte regenjassen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "meubelstuk",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-10-05T18:17:19.345939",
-      "updated_at": "2026-10-05T18:17:19.346261",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-10-05T18:17:19.346261",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-05T18:17:19.346261",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14646,6 +15468,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-05T18:17:19.346258"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kapstok#1",
+        "old_value": "unknown",
+        "new_value": "Een kapstok is een rek of haak waaraan je jassen, sjaals en tassen ophangt.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -14653,28 +15483,53 @@
     "senses": [
       {
         "sense_id": "vergiet#1",
-        "definition": "unknown",
+        "definition": "Een vergiet is een kom met gaatjes waarmee je water laat weglopen van bijvoorbeeld pasta of gewassen groenten.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "Ze goot de pasta af in het vergiet.",
+          "Hij spoelde de aardbeien in een vergiet."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "keukengerei",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "used_for",
+            "target": "koken",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-10-05T18:17:19.362618",
-      "updated_at": "2026-10-05T18:17:19.362882",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-10-05T18:17:19.362882",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-05T18:17:19.362882",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14694,6 +15549,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-05T18:17:19.362879"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "vergiet#1",
+        "old_value": "unknown",
+        "new_value": "Een vergiet is een kom met gaatjes waarmee je water laat weglopen van bijvoorbeeld pasta of gewassen groenten.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -14701,28 +15564,53 @@
     "senses": [
       {
         "sense_id": "lamp#1",
-        "definition": "unknown",
+        "definition": "Een lamp is een apparaat dat licht geeft, meestal met behulp van elektriciteit.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "Ze deed de lamp aan toen het donker werd.",
+          "Op het bureau stond een kleine lamp."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "apparaat",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "licht",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-10-05T18:26:18.356653",
-      "updated_at": "2026-10-05T18:26:18.358170",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-10-05T18:26:18.358170",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-05T18:26:18.358170",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14742,6 +15630,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-05T18:26:18.358167"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "lamp#1",
+        "old_value": "unknown",
+        "new_value": "Een lamp is een apparaat dat licht geeft, meestal met behulp van elektriciteit.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -14749,28 +15645,45 @@
     "senses": [
       {
         "sense_id": "kast#1",
-        "definition": "unknown",
+        "definition": "Een kast is een meubelstuk met deuren, planken of laden om spullen in op te bergen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "De borden staan in de kast boven het aanrecht.",
+          "Hij hing zijn kleren in de kast."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "meubelstuk",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-10-05T18:26:18.372082",
-      "updated_at": "2026-10-05T18:26:18.373138",
+      "updated_at": "2026-10-09T18:35:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-10-05T18:26:18.373138",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T18:35:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-05T18:26:18.373138",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14790,6 +15703,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-05T18:26:18.373134"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kast#1",
+        "old_value": "unknown",
+        "new_value": "Een kast is een meubelstuk met deuren, planken of laden om spullen in op te bergen.",
+        "timestamp": "2026-10-09T18:35:00.000000"
       }
     ]
   },
@@ -14797,28 +15718,45 @@
     "senses": [
       {
         "sense_id": "egel#1",
-        "definition": "unknown",
+        "definition": "Een egel is een klein zoogdier met een rug vol stekels, dat 's nachts actief is en zich bij gevaar oprolt tot een bal.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "'s Avonds scharrelde er een egel door de tuin.",
+          "De egel rolde zich op tot een stekelige bal."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zoogdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-10-07T18:12:29.883681",
-      "updated_at": "2026-10-07T18:12:29.885430",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-10-07T18:12:29.885430",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-07T18:12:29.885430",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14838,6 +15776,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-07T18:12:29.885427"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "egel#1",
+        "old_value": "unknown",
+        "new_value": "Een egel is een klein zoogdier met een rug vol stekels, dat 's nachts actief is en zich bij gevaar oprolt tot een bal.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   },
@@ -14845,28 +15791,45 @@
     "senses": [
       {
         "sense_id": "tuin#1",
-        "definition": "unknown",
+        "definition": "Een tuin is een stuk grond bij een huis waar planten, bloemen, gras of groenten groeien.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "In de zomer zaten ze graag buiten in de tuin.",
+          "Hij plantte tomaten achteraan in de tuin."
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "huis",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-10-07T18:12:29.897518",
-      "updated_at": "2026-10-07T18:12:29.897927",
+      "updated_at": "2026-10-09T19:00:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-10-07T18:12:29.897927",
-      "usage_count": 1,
+      "last_used_at": "2026-10-09T19:00:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-07T18:12:29.897927",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-09T19:00:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14886,6 +15849,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-07T18:12:29.897925"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "tuin#1",
+        "old_value": "unknown",
+        "new_value": "Een tuin is een stuk grond bij een huis waar planten, bloemen, gras of groenten groeien.",
+        "timestamp": "2026-10-09T19:00:00.000000"
       }
     ]
   }

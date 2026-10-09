@@ -615,3 +615,25 @@
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-07T20:18:03.524017"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-07T20:36:36.673464"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-07T20:37:20.664335"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-08T20:35:01.233198"}
+{"text": "wat wordt het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0679, "bron": "model_fallback", "tijdstip": "2026-10-08T20:35:11.742137"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-09T20:31:42.946575"}
+{"text": "wat wordt het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0679, "bron": "model_fallback", "tijdstip": "2026-10-09T20:31:51.692253"}
+{"text": "wat is een banaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-09T20:52:50.265600"}
+{"text": "is een peer een vrucht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-09T20:53:10.661843"}
+{"text": "waarvoor dient een vergiet", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-10-09T20:53:19.528821"}
+{"text": "wat hoort bij regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0417, "bron": "model_fallback", "tijdstip": "2026-10-09T20:53:29.249517"}
+{"text": "wat is een fluit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-09T20:53:48.566064"}
+{"text": "waarop lijkt regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-09T20:55:49.953529"}
+{"text": "heeft regen iets te maken met paraplu", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0052, "bron": "model_fallback", "tijdstip": "2026-10-09T20:55:57.936693"}
+{"text": "is lamp gerelateerd aan licht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0001, "bron": "model_fallback", "tijdstip": "2026-10-09T20:56:05.418270"}
+{"text": "wat is een egel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-09T21:06:03.259254"}
+{"text": "is een kind een mens", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-09T21:06:14.968709"}
+{"text": "waarop lijkt kerst", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0577, "bron": "model_fallback", "tijdstip": "2026-10-09T21:06:22.619047"}
+{"text": "waarop lijkt december", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0548, "bron": "model_fallback", "tijdstip": "2026-10-09T21:06:32.760683"}
+{"text": "heeft boom iets te maken met bos", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0052, "bron": "model_fallback", "tijdstip": "2026-10-09T21:06:40.003959"}
+{"text": "wat is een bos", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-09T21:06:49.488689"}
+{"text": "is wandelen een activiteit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-09T21:13:45.361934"}
+{"text": "wat is een meubel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-09T21:13:53.905707"}
+{"text": "waarop lijkt tijd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-09T21:14:03.680430"}
+{"text": "heeft kracht iets te maken met druk", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0052, "bron": "model_fallback", "tijdstip": "2026-10-09T21:14:11.048612"}
