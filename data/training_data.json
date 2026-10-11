@@ -371,11 +371,6 @@
       "bron": "handmatig"
     },
     {
-      "tekst": "zin om te gaan schaken",
-      "label": "chess",
-      "bron": "gecorrigeerd"
-    },
-    {
       "tekst": "speel je een potje mee",
       "label": "chess",
       "bron": "gecorrigeerd"
@@ -1069,11 +1064,131 @@
       "tekst": "wat komt telkens terug in onze gesprekken",
       "label": "memory_query",
       "bron": "gecorrigeerd"
+    },
+    {
+      "tekst": "hey",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hallo nova",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoi nova",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dag nova",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "goeiedag",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "goedemiddag",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "goedendag",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hello",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hi nova",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hallo daar",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hey hoe gaat het",
+      "label": "greeting",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoeveel is het nu",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe laat is het nu",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe laat is het al",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe laat is het eigenlijk",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat is het nu voor tijd",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "welk moment van de dag is het",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik moet zo weg, hoe laat is het nu",
+      "label": "time",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik vind koffie wel oké maar niet top",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik vind thee eigenlijk lekkerder dan koffie",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ben niet zo gek op pizza",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "pasta vind ik minder lekker",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik hou van wandelen in het bos",
+      "label": "preference",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ben fan van sciencefiction",
+      "label": "preference",
+      "bron": "handmatig"
     }
   ],
   "metadata": {
     "laatst_getraind": "2026-10-11",
-    "aantal_voorbeelden": 214,
+    "aantal_voorbeelden": 237,
     "categorieën": [
       "activity",
       "chess",
@@ -1087,6 +1202,6 @@
       "time",
       "weather"
     ],
-    "laatste_layer0_scan": 1791704054.6013122
+    "laatste_layer0_scan": 1791727466.2810934
   }
 }

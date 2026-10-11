@@ -25,6 +25,8 @@ class ChatModule:
         event_bus.subscribe("intent_antonym", self.on_antonym)
         event_bus.subscribe("intent_used_for", self.on_used_for)
         event_bus.subscribe("intent_causes", self.on_causes)
+        event_bus.subscribe("intent_effects", self.on_effects)
+        event_bus.subscribe("intent_causes_check", self.on_causes_check)
         event_bus.subscribe("intent_properties", self.on_properties)
         event_bus.subscribe("intent_meaning", self.on_meaning)
         event_bus.subscribe("concept_learned", self.on_concept_learned)
@@ -623,15 +625,92 @@ class ChatModule:
         if not word:
             self.event_bus.publish("layer4_response", {"text": "Welk woord bedoel je?"})
             return
-        results = self.semantic.get_causes(word) if self.semantic else []
-        if results:
+        # Fase 8.1 (11 oktober 2026): "wat veroorzaakt X" vraagt naar de
+        # OORZAKEN van X. Voorheen werd get_causes(word) gebruikt, dat de
+        # GEVOLGEN van X teruggeeft (verkeerde richting).
+        oorzaken = []
+        if self.semantic and hasattr(self.semantic, "get_all_causes"):
+            try:
+                oorzaken = self.semantic.get_all_causes(word)
+            except Exception:
+                oorzaken = []
+
+        if oorzaken:
             self.event_bus.publish("layer4_response", {
-                "text": f"'{word}' veroorzaakt: {', '.join(results)}."
+                "text": f"Oorzaken van '{word}': {self._formatteer_causale_lijst(oorzaken)}."
             })
         else:
             self.event_bus.publish("layer4_response", {
-                "text": f"Ik weet niet wat '{word}' veroorzaakt."
+                "text": f"Ik ken geen oorzaken van '{word}'."
             })
+
+    # -------------------------
+    # Gevolgen (Fase 8.1, 11 oktober 2026)
+    # -------------------------
+    def on_effects(self, data, event_type=None):
+        word = (data.get("word") or "").strip()
+
+        if not word:
+            self.event_bus.publish("layer4_response", {"text": "Welk woord bedoel je?"})
+            return
+
+        gevolgen = []
+        if self.semantic and hasattr(self.semantic, "get_all_effects"):
+            try:
+                gevolgen = self.semantic.get_all_effects(word)
+            except Exception:
+                gevolgen = []
+
+        if gevolgen:
+            self.event_bus.publish("layer4_response", {
+                "text": f"Gevolgen van '{word}': {self._formatteer_causale_lijst(gevolgen)}."
+            })
+        else:
+            self.event_bus.publish("layer4_response", {
+                "text": f"Ik ken geen gevolgen van '{word}'."
+            })
+
+    # -------------------------
+    # Causale check (Fase 8.2, 11 oktober 2026) -- analoog aan
+    # on_part_of_check()/on_related_to_check()
+    # -------------------------
+    def on_causes_check(self, data, event_type=None):
+        source = data.get("source")
+        target = data.get("target")
+
+        if not source or not target:
+            self.event_bus.publish("layer4_response", {
+                "text": "Ik begrijp de oorzaak-vraag niet helemaal."
+            })
+            return
+
+        if self.semantic and hasattr(self.semantic, "explain_causes"):
+            try:
+                msg = self.semantic.explain_causes(source, target)
+            except Exception:
+                msg = f"Ik kan nu niet controleren of '{source}' leidt tot '{target}'."
+        else:
+            msg = f"Ik kan nog niet controleren of '{source}' leidt tot '{target}'."
+
+        self.event_bus.publish("layer4_response", {"text": msg})
+
+    @staticmethod
+    def _formatteer_causale_lijst(items):
+        """
+        Directe oorzaken/gevolgen (diepte 1) eerst, de rest kort
+        erachter -- zelfde "niet alles even zwaar opsommen"-principe
+        als on_bridge_query(). Geeft bv.:
+        "modder (verder weg: regen, wolk)"
+        """
+        direct = [i["woord"] for i in items if i["diepte"] == 1]
+        verder = [i["woord"] for i in items if i["diepte"] > 1]
+
+        delen = []
+        if direct:
+            delen.append(", ".join(direct))
+        if verder:
+            delen.append(f"(verder weg: {', '.join(verder)})")
+        return " ".join(delen)
 
     # -------------------------
     # Eigenschappen

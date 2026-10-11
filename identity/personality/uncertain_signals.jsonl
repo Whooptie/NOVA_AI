@@ -666,3 +666,67 @@
 {"text": "schaken is een bordspel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-10T17:28:35.370677"}
 {"text": "is een gitaar een muziekinstrument", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0626, "bron": "model_fallback", "tijdstip": "2026-10-10T17:29:44.708140"}
 {"text": "is voetbal een activiteit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-10T17:29:51.804036"}
+{"text": "hey nova", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-11T11:16:34.990118"}
+{"text": "goeiedag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:16:45.662010"}
+{"text": "hoe is het met jou", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0615, "bron": "model_fallback", "tijdstip": "2026-10-11T11:16:51.673699"}
+{"text": "hoeveel is het nu", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0739, "bron": "model_fallback", "tijdstip": "2026-10-11T11:16:57.379638"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "neutraal", "marge": 0.0282, "bron": "woordenlijst", "tijdstip": "2026-10-11T11:17:08.814345"}
+{"text": "hoe voel je je vandaag", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0172, "bron": "model_fallback", "tijdstip": "2026-10-11T11:17:16.228773"}
+{"text": "wat is tijd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-11T11:17:21.616810"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T11:21:21.438611"}
+{"text": "goeiedag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:21:37.527355"}
+{"text": "hoe is het met jou", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0615, "bron": "model_fallback", "tijdstip": "2026-10-11T11:21:55.419411"}
+{"text": "goeiedag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:27:18.774736"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-11T11:27:24.610760"}
+{"text": "hey nova", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-11T11:27:29.636461"}
+{"text": "hoe is het met je", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0219, "bron": "model_fallback", "tijdstip": "2026-10-11T11:27:36.389487"}
+{"text": "hay", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:27:44.545248"}
+{"text": "hyey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:27:48.359033"}
+{"text": "hoeveel is het nu", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0739, "bron": "model_fallback", "tijdstip": "2026-10-11T11:27:55.621218"}
+{"text": "tijd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:28:07.687107"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "neutraal", "marge": 0.0282, "bron": "woordenlijst", "tijdstip": "2026-10-11T11:28:33.801565"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:29:25.586730"}
+{"text": "ik vind koffie eigenlijk wel oké maar niet top", "signaal": "waardering", "model_signaal": "neutraal", "marge": 0.0282, "bron": "woordenlijst", "tijdstip": "2026-10-11T11:29:31.780765"}
+{"text": "hoeveel is het nu", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0739, "bron": "model_fallback", "tijdstip": "2026-10-11T11:29:41.715079"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T11:32:43.991552"}
+{"text": "dankje", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:40:31.520357"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T11:46:05.913809"}
+{"text": "dankje", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:46:10.266524"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T11:52:08.338043"}
+{"text": "dankje", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:52:12.738098"}
+{"text": "wat gebeurt er als ik iets tegen je zeg", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0244, "bron": "model_fallback", "tijdstip": "2026-10-11T11:57:07.937526"}
+{"text": "zijn er nog betekenissen van gitaar", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0695, "bron": "model_fallback", "tijdstip": "2026-10-11T11:57:52.870083"}
+{"text": "annuleren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T11:58:19.559195"}
+{"text": "wat weet je over mij", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-10-11T11:59:22.658348"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T12:02:19.597824"}
+{"text": "hoelang nog tot kerst", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0617, "bron": "model_fallback", "tijdstip": "2026-10-11T12:02:31.345225"}
+{"text": "hoelang nog tot de vakantie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0418, "bron": "model_fallback", "tijdstip": "2026-10-11T12:02:39.376181"}
+{"text": "wat gebeurde er op 9 december", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0563, "bron": "model_fallback", "tijdstip": "2026-10-11T12:02:48.071774"}
+{"text": "wat gebeurde er op 9 december", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0563, "bron": "model_fallback", "tijdstip": "2026-10-11T12:02:58.208286"}
+{"text": "wat weet je van fysica", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0045, "bron": "model_fallback", "tijdstip": "2026-10-11T12:03:10.012333"}
+{"text": "wat weet je over mij", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-10-11T12:03:25.180065"}
+{"text": "wat hoort bij regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0417, "bron": "model_fallback", "tijdstip": "2026-10-11T12:03:37.420505"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T13:17:02.277524"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-11T13:17:14.326725"}
+{"text": "vergeet: e4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0618, "bron": "model_fallback", "tijdstip": "2026-10-11T13:18:19.763221"}
+{"text": "vergeet: café", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T13:18:26.747960"}
+{"text": "wat weet je over mij", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-10-11T13:18:44.735204"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T17:10:55.751646"}
+{"text": "regen veroorzaakt modder", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T17:11:14.385922"}
+{"text": "modder veroorzaakt uitglijden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T17:11:36.144754"}
+{"text": "wat veroorzaakt uitglijden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0417, "bron": "model_fallback", "tijdstip": "2026-10-11T17:12:00.835163"}
+{"text": "wat zijn de gevolgen van regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0575, "bron": "model_fallback", "tijdstip": "2026-10-11T17:12:12.319389"}
+{"text": "wat zijn de gevolgen van tijd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0575, "bron": "model_fallback", "tijdstip": "2026-10-11T17:12:21.094781"}
+{"text": "wat is modder", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-11T17:13:31.770448"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T17:17:40.417578"}
+{"text": "leidt regen tot uitglijden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0577, "bron": "model_fallback", "tijdstip": "2026-10-11T17:17:49.340443"}
+{"text": "veroorzaakt regen modder", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T17:17:59.512974"}
+{"text": "zorgt modder voor uitglijden?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-11T17:18:06.449536"}
+{"text": "kan regen uitglijden veroorzaken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0447, "bron": "model_fallback", "tijdstip": "2026-10-11T17:18:19.651797"}
+{"text": "leidt regen tot zonneschijn", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0577, "bron": "model_fallback", "tijdstip": "2026-10-11T17:18:28.170036"}
+{"text": "leidt regen tot tijd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0577, "bron": "model_fallback", "tijdstip": "2026-10-11T17:18:37.282536"}
+{"text": "modder leidt tot slecht humeur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0577, "bron": "model_fallback", "tijdstip": "2026-10-11T17:19:04.960158"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T17:19:08.361293"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T17:24:23.665154"}
+{"text": "leidt regen tot uitglijden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0577, "bron": "model_fallback", "tijdstip": "2026-10-11T17:24:33.934202"}
+{"text": "veroorzaakt regen modder", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T17:24:40.710773"}

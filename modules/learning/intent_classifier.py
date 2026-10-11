@@ -159,7 +159,14 @@ class IntentClassifier:
         teksten = [v["tekst"] for v in self.voorbeelden]
         labels = [v["label"] for v in self.voorbeelden]
 
-        self.vectorizer = TfidfVectorizer(lowercase=True, ngram_range=(1, 2))
+        # char_wb = letterdeeltjes (2 tot 4 letters) binnen woorden i.p.v.
+        # hele woorden. Daardoor delen "goeiedag" en "goedendag" deeltjes
+        # ("goe", "dag") en herkent het model kleine variaties/typfouten.
+        self.vectorizer = TfidfVectorizer(
+            lowercase=True,
+            analyzer="char_wb",
+            ngram_range=(2, 4)
+        )
         X = self.vectorizer.fit_transform(teksten)
 
         self.model = LogisticRegression(max_iter=1000)
@@ -384,6 +391,11 @@ class IntentClassifier:
             key=lambda r: r["timestamp"]
         )
 
+        # Alleen labels die al in de basisset (training_data.json) staan.
+        # Per-woord-topics zoals "definitie_tijd" of "open_app_chrome"
+        # zijn GEEN intent-categorieën en mogen geen eigen klasse worden.
+        bekende_labels = set(self._categorieen())
+
         nieuwe_voorbeelden = []
         for i, row in enumerate(tijdlijn):
             if row["event_type"] != "raw_user_message":
@@ -428,6 +440,9 @@ class IntentClassifier:
                 continue
 
             label = volgende["event_type"].split(":", 1)[1]
+
+            if label not in bekende_labels:
+                continue
 
             try:
                 msg_data = json.loads(row["data"])

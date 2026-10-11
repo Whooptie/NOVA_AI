@@ -130,3 +130,9 @@
 {"tekst": "ik zag een egel in de tuin", "hoogste_gok": "preference", "confidence": 0.1304, "tijdstip": "2026-10-07T20:12:29.702240"}
 {"tekst": "wat hoort bij regen", "hoogste_gok": "identity", "confidence": 0.1227, "tijdstip": "2026-10-09T20:53:29.258645"}
 {"tekst": "is wandelen een activiteit", "hoogste_gok": "weather", "confidence": 0.1357, "tijdstip": "2026-10-09T21:13:45.372804"}
+{"tekst": "goeiedag", "hoogste_gok": "greeting", "confidence": 0.2351, "tijdstip": "2026-10-11T11:16:45.667229"}
+{"tekst": "hoe is het met jou", "hoogste_gok": "greeting", "confidence": 0.2493, "tijdstip": "2026-10-11T11:16:51.677156"}
+{"tekst": "hoe is het met jou", "hoogste_gok": "time", "confidence": 0.2378, "tijdstip": "2026-10-11T11:21:55.427535"}
+{"tekst": "hay", "hoogste_gok": "greeting", "confidence": 0.2567, "tijdstip": "2026-10-11T11:27:44.553791"}
+{"tekst": "dankje", "hoogste_gok": "identity", "confidence": 0.1241, "tijdstip": "2026-10-11T11:40:31.528433"}
+{"tekst": "annuleren", "hoogste_gok": "activity", "confidence": 0.1674, "tijdstip": "2026-10-11T11:58:19.564320"}

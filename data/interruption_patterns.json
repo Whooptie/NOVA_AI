@@ -29,6 +29,24 @@
       "aantal_toegestaan": 3,
       "confidence": 0.6,
       "laatst_bijgewerkt": "2026-07-22T21:22:55.395954"
+    },
+    "bestanden_beheren_gedetecteerd": {
+      "totaal_pogingen": 1,
+      "aantal_toegestaan": 1,
+      "confidence": 1.0,
+      "laatst_bijgewerkt": "2026-10-11T11:12:34.932554",
+      "vensters": {
+        "vroeg": {
+          "totaal_pogingen": 1,
+          "aantal_toegestaan": 1,
+          "confidence": 1.0
+        },
+        "laat": {
+          "totaal_pogingen": 0,
+          "aantal_toegestaan": 0,
+          "confidence": null
+        }
+      }
     }
   }
 }

@@ -995,6 +995,12 @@ class ReasoningEngine:
         # reasoning_engine_ideeen_roadmap.md, gekozen na test op de
         # echte concepts.json (8 augustus 2026).
         self.MAX_DEPTH_RELATED = 4
+        # Fase 8.1 (11 oktober 2026): eigen, lagere diepte voor de
+        # volledige gevolgen-/oorzakenlijst. Causale ketens worden na
+        # enkele schakels snel speculatief (zie nova_state.md punt 33),
+        # dus bewust korter dan MAX_DEPTH (6). causes_chained() zelf
+        # blijft ongewijzigd MAX_DEPTH gebruiken.
+        self.MAX_DEPTH_CAUSAL = 4
 
     # ---------------------------------------------------------
     # 7.1 Chaining — is A via tussenstappen een B?
@@ -1291,6 +1297,8 @@ class ReasoningEngine:
                 return f"Ik kan niet bewijzen dat '{source}' een '{target}' is."
             elif relation_type == "part_of":
                 return f"Ik kan niet bewijzen dat '{source}' onderdeel is van '{target}'."
+            elif relation_type == "causes":
+                return f"Ik kan niet bewijzen dat '{source}' leidt tot '{target}'."
             else:
                 return f"Ik zie geen verband tussen '{source}' en '{target}'."
 
@@ -1301,15 +1309,122 @@ class ReasoningEngine:
         """
         Geeft een leesbare uitleg van een oorzaak-keten.
         """
-        found, pad = self.causes_chained(source, target)
-        if not found:
-            return f"Ik kan niet bewijzen dat '{source}' leidt tot '{target}'."
+        # Fase 8.2 (11 oktober 2026): gebruikt get_all_effects() i.p.v.
+        # causes_chained(), zodat (1) het pad altijd het KORTSTE is en
+        # (2) de check exact dezelfde diepte (MAX_DEPTH_CAUSAL) heeft als
+        # de gevolgenlijst -- wat in "gevolgen van X" staat, bewijst
+        # "leidt X tot Y" dus ook, en omgekeerd.
+        source = source.lower().strip()
+        target = target.lower().strip()
+
+        pad = None
+        for gevolg in self.get_all_effects(source):
+            if gevolg["woord"] == target:
+                pad = gevolg["pad"]
+                break
+
+        if pad is None:
+            return self._geen_bewijs_met_alternatief(
+                source, target, relation_type="causes",
+                sjabloon="Ik kan niet bewijzen dat '{source}' leidt tot '{target}', "
+                         "maar ik weet wel dat {source} {alt} veroorzaakt."
+            )
 
         if len(pad) == 2:
             return f"Ja, {source} veroorzaakt {target}."
 
+        # Fase 8.3 (11 oktober 2026, nova_state.md punt 33): een keten van
+        # meerdere causale schakels is minder zeker dan een directe oorzaak
+        # (anders dan bij is_a-ketens), dus "waarschijnlijk" i.p.v. "want".
         stappen = " → ".join(pad)
-        return f"Ja, {source} leidt uiteindelijk tot {target}, via: {stappen}."
+        return f"Waarschijnlijk wel: {source} leidt tot {target}, via: {stappen}."
+
+    # ---------------------------------------------------------
+    # 7.2c Alle gevolgen / alle oorzaken (Fase 8.1)
+    # ---------------------------------------------------------
+    def get_all_effects(self, source: str, max_depth: int = None) -> list:
+        """
+        Geeft ALLE gevolgen van 'source' terug (direct en via een
+        keten van 'causes'-relaties), als een lijst van dicts:
+            {"woord": "modder", "diepte": 1, "pad": ["regen", "modder"]}
+        Breadth-first, dus 'pad' is altijd het KORTSTE pad en de lijst
+        staat geordend van dichtbij naar ver weg. Een gevolg komt maar
+        1x voor, en een cirkel (a veroorzaakt b veroorzaakt a) kan
+        nooit een oneindige lus geven.
+        """
+        source = source.lower().strip()
+        if max_depth is None:
+            max_depth = self.MAX_DEPTH_CAUSAL
+
+        resultaat = []
+        bezocht = {source}
+        wachtrij = [(source, [source])]
+
+        while wachtrij:
+            huidig, pad = wachtrij.pop(0)
+
+            if len(pad) - 1 >= max_depth:
+                continue
+
+            gevolgen = self.relation_engine.get_relations(huidig, relation_type="causes")
+            for gevolg in gevolgen:
+                if gevolg in bezocht:
+                    continue
+                bezocht.add(gevolg)
+                nieuw_pad = pad + [gevolg]
+                resultaat.append({
+                    "woord": gevolg,
+                    "diepte": len(nieuw_pad) - 1,
+                    "pad": nieuw_pad,
+                })
+                wachtrij.append((gevolg, nieuw_pad))
+
+        return resultaat
+
+    def get_all_causes(self, target: str, max_depth: int = None) -> list:
+        """
+        Spiegelbeeld van get_all_effects(): alle OORZAKEN van 'target'.
+        'pad' loopt van de oorzaak naar 'target':
+            {"woord": "regen", "diepte": 2, "pad": ["regen", "modder", "uitglijden"]}
+
+        causes-relaties staan opgeslagen vanaf de oorzaak (regen
+        causes modder). Om "wat veroorzaakt modder" te beantwoorden
+        bouwen we daarom eerst EENMALIG een omgekeerde tabel
+        (gevolg -> lijst oorzaken) over alle concepten, en lopen dan
+        breadth-first achterwaarts. Zelfde idee als get_all_subtypes().
+        """
+        target = target.lower().strip()
+        if max_depth is None:
+            max_depth = self.MAX_DEPTH_CAUSAL
+
+        omgekeerd = {}
+        for woord in self.store.concepts.keys():
+            for gevolg in self.relation_engine.get_relations(woord, relation_type="causes"):
+                omgekeerd.setdefault(gevolg, []).append(woord)
+
+        resultaat = []
+        bezocht = {target}
+        wachtrij = [(target, [target])]
+
+        while wachtrij:
+            huidig, pad = wachtrij.pop(0)
+
+            if len(pad) - 1 >= max_depth:
+                continue
+
+            for oorzaak in omgekeerd.get(huidig, []):
+                if oorzaak in bezocht:
+                    continue
+                bezocht.add(oorzaak)
+                nieuw_pad = [oorzaak] + pad
+                resultaat.append({
+                    "woord": oorzaak,
+                    "diepte": len(nieuw_pad) - 1,
+                    "pad": nieuw_pad,
+                })
+                wachtrij.append((oorzaak, nieuw_pad))
+
+        return resultaat
 
     def explain_part_of(self, source: str, target: str) -> str:
         """
@@ -1841,6 +1956,7 @@ class RelationParser:
             " gebruik je voor ": "used_for",
             " veroorzaakt ": "causes",
             " zorgt voor ": "causes",
+            " leidt tot ": "causes",
             " is een eigenschap van ": "property_of",
             " is een kenmerk van ": "property_of",
             " is een voorbeeld van ": "instance_of",
@@ -2086,7 +2202,7 @@ class RelationFlowEngine:
                 obj,
                 sense_id=self.pending_relation["subject_sense_id"]
             )
-            self._send_chat(f"Oké, ik onthoud nu dat '{subject}' {rel_type} '{obj}' is.")
+            self._send_chat(f"Oké, ik onthoud: '{subject}' {self._rel_tekst(rel_type)} '{obj}'.")
             self.pending_relation = None
             return
 
@@ -2097,18 +2213,31 @@ class RelationFlowEngine:
 
         self._send_chat("Kun je dat beantwoorden met 'ja' of 'nee'?")
 
+    # Nederlandse zinsdelen per relatietype (Fase 8.2, 11 oktober 2026).
+    # Voorheen stond dit lokaal in _ask_confirm() en ontbrak "causes",
+    # waardoor Nova "'regen' causes 'modder'" zei.
+    _REL_TEKSTEN = {
+        "is_a": "is een soort van",
+        "part_of": "is onderdeel van",
+        "has_part": "heeft als onderdeel",
+        "synonym": "is synoniem van",
+        "antonym": "is het tegenovergestelde van",
+        "related_to": "lijkt op",
+        "causes": "veroorzaakt",
+        "used_for": "wordt gebruikt voor",
+        "instance_of": "is een voorbeeld van",
+        "property_of": "is een eigenschap van",
+    }
+
+    def _rel_tekst(self, rel_type):
+        return self._REL_TEKSTEN.get(rel_type, rel_type)
+
     def _ask_confirm(self):
         subject = self.pending_relation["subject"]
         obj = self.pending_relation["object"]
         rel_type = self.pending_relation["relation_type"]
 
-        rel_text = {
-            "is_a": "is een soort van",
-            "part_of": "is onderdeel van",
-            "synonym": "is synoniem van",
-            "antonym": "is het tegenovergestelde van",
-            "related_to": "lijkt op"
-        }.get(rel_type, rel_type)
+        rel_text = self._rel_tekst(rel_type)
 
         self._send_chat(f"Mag ik onthouden dat '{subject}' {rel_text} '{obj}'?")
 
@@ -2345,6 +2474,12 @@ class SemanticConceptsModule:
 
     def explain_causes(self, source, target):
         return self.reasoning_engine.explain_causes(source, target)
+
+    def get_all_effects(self, source):
+        return self.reasoning_engine.get_all_effects(source)
+
+    def get_all_causes(self, target):
+        return self.reasoning_engine.get_all_causes(target)
 
     def find_contradictions(self, word):
         return self.reasoning_engine.find_contradictions(word)

@@ -321,9 +321,11 @@ class EmergenceEngine:
             "open_app": "een programma openen",
             "parts": "onderdeel-vragen",
             "related_to_check": "of concepten verwant zijn",
+            "causes_check": "oorzaak-en-gevolg-vragen",
             "trending_query": "wat recent populair is",
             "uitleg": "uitleg vragen",
             "vakantie": "vakantie",
+            "thanks": "bedankjes",
         }
 
         # Vertaalt het stuk na "activity_started:" naar een Nederlands
@@ -701,6 +703,14 @@ class EmergenceEngine:
                 return f"{topic_naam[len('open_app_'):]} openen"
             if topic_naam.startswith("close_app_"):
                 return f"{topic_naam[len('close_app_'):]} sluiten"
+
+            # Fase 8 Causal Reasoning (11 oktober 2026): dynamisch
+            # samengestelde namen "oorzaken_<woord>" en
+            # "gevolgen_<woord>", zelfde aanpak als open_app_ hierboven.
+            if topic_naam.startswith("oorzaken_"):
+                return f"oorzaken van {topic_naam[len('oorzaken_'):]}"
+            if topic_naam.startswith("gevolgen_"):
+                return f"gevolgen van {topic_naam[len('gevolgen_'):]}"
 
             return self._topic_naam_labels.get(topic_naam, topic_naam)
 

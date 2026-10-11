@@ -129,6 +129,19 @@ Live getest, volledige cyclus in Nova zelf, door Kevin bevestigd: `hond is een m
 
 ## ✅ Afgeronde werkpunten (voorheen "Volgende stappen")
 
+**Semantic Fase 8 — Causal Reasoning (11 oktober 2026).** Gebouwd in drie onderdelen, elk eerst met pytest groen en daarna live bevestigd. Zie `nova_state.md`, sectie "Reasoning Engine — Fase 8", voor de werking en ontwerpkeuzes.
+
+**Bouwverslag:**
+- **8.1:** `get_all_effects()`/`get_all_causes()` (BFS, `MAX_DEPTH_CAUSAL = 4`), doorverwijzingen in `SemanticConceptsModule`, intents "wat zijn de gevolgen van X" en "wat veroorzaakt X", handlers `on_effects()`/`on_causes()` in `chat.py`. 38 tests. Live: regen → modder → uitglijden geleerd; "wat veroorzaakt uitglijden" gaf "modder (verder weg: regen)", "wat zijn de gevolgen van regen" gaf "modder (verder weg: uitglijden)".
+- **8.2:** `detect_causes_check()` als vroege stap 2F, `explain_causes()` herbouwd, " leidt tot " in de parser, Nederlandse bevestigingszinnen. 49 tests. Live: alle 4 zinsvormen, "waarom niet" met alternatief, geen klokantwoord bij "leidt regen tot tijd", leerzin met "nee" liet alles ongewijzigd.
+- **8.3:** "Waarschijnlijk wel" bij ketens (punt 33); 7 nieuwe tests en 3 aangepaste verwachtingen. Live bevestigd.
+
+**Ontdekt tijdens de bespreking, bewust als gedragswijziging opgenomen:** `on_causes()` gebruikte `get_causes(word)`, wat de GEVOLGEN van een woord teruggeeft, terwijl "wat veroorzaakt X" naar de OORZAKEN vraagt. Het antwoord stond dus in de verkeerde richting. Wie de oude uitkomst wilde zien, typt nu "wat zijn de gevolgen van X".
+
+**Bewust niet gebouwd:** cirkeldetectie voor `causes` (een causale kringloop is niet logisch onmogelijk; vastgelegd met een test) en een zekerheidsberekening over de keten (vrijwel alle confidences staan nu op 1.0).
+
+**Bijvangst:** `RelationFlowEngine._ask_confirm()` kende `causes`, `has_part` en `used_for` niet en toonde het Engelse relatietype ("'regen' causes 'modder'"); opgelost met `_REL_TEKSTEN`.
+
 **`behavior_modifiers.py`-koppeling — documentatie-correctie (18 juli 2026, geen nieuwe code-wijziging).** Werkpunt 6 in de "Volgende stappen"-lijst beweerde dat `BehaviorModifiers` (`apply_energy_modulation()`, `apply_impulsivity()`, `apply_dramatic_flair()`) nog steeds ongebruikt was. Bij nazicht van de echte code (18 juli 2026) bleek dit niet te kloppen: alle 3 methodes worden wel degelijk aangeroepen in `personality_engine.py`'s `update_state()` (`self.modifiers.apply_energy_modulation()` / `apply_impulsivity()` / `apply_dramatic_flair()`), vermoedelijk stilzwijgend gekoppeld tijdens de karakterherziening-sessie van 17 juli 2026 (dezelfde sessie waarin de twee gewichten-bugs #12/#13 ontdekt en opgelost werden), maar nooit teruggemeld in de "Volgende stappen"-lijst zelf. Live bevestigd via `identity_state.json`: `impulsivity_modulation: 0.3` en `dramatic_flair_state: 0.15` komen exact overeen met `traits.json`'s `impulsivity`/`dramatic_flair`-waarden, wat enkel kan als `apply_impulsivity()`/`apply_dramatic_flair()` daadwerkelijk draaien. Werkpunt 6 is dus verwijderd uit de open "Volgende stappen"-lijst.
 
 **Personality pipeline (deel 1)** — uitgebreid naar weer/tijd/math (11 juli 2026, zie bug #5 en `layer4_response`-sectie in `nova_state.md`). Nu door de tone-pipeline: greeting, fallback, Layer 4-definities, weer, tijd, math.
@@ -1596,3 +1609,44 @@ date_calendar_roadmap.md Onderdeel 5 + het vervolgontwerp uit nova_state.md punt
 **Live bevestigd op Kevins laptop (10 oktober 2026):** model laadt, hologramstijl werkt (Kevins favoriet), Nova spreekt met kloppende lipbewegingen.
 
 **Gevonden, nog open:** de enige lokale Nederlandse Windows-stem is mannelijk; de mond begon te bewegen vóór het geluid (Windows-opstarttijd — fix aangereikt: tijdlijn start pas bij `onstart`, nog te bevestigen). Vervolg: zie `nova_state.md`, punten 40 (`avatar_bridge`) en 42 (verbeteringen).
+
+## ✅ Intent-trainingsdata + char_wb-vectorizer + greeting-lijst (11 oktober 2026)
+
+Punt 30 (b) en (e). "hey nova" scoorde 0.27, "goeiedag"/"hoeveel is het nu" vielen in fallback of weather.
+
+- `training_data.json`: +27 voorbeelden (greeting/time/preference). Drie greeting-voorbeelden ("hoe is het met jou", "hoe gaat het met je", "hoe gaat het ermee") bleken nutteloos: `detect_identity_question()` vangt ze eerst af; daarom daar aangevuld ("hoe is het met jou", "hoe is het ermee", "hoe gaat het ermee") en de regels uit de trainingsdata gehaald.
+- `intent_classifier.py`: `TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 4))`. Typfouten delen nu letterdeeltjes met de goede vorm.
+- `intent_classifier.py`, `_haal_layer0_voorbeelden_op()`: enkel labels die al in de basisset staan. Daarvoor kreeg de classifier door per-woord-topics ("definitie_tijd", `open_app_<naam>`, `uitleg_<naam>`) een twaalfde klasse.
+- `intent_router.py`: `_GROETEN` (gesloten lijst, hoofdletterongevoelig, "... nova" erachter toegestaan, incl. "hay").
+- `tests/test_intent_classifier.py`: 24 testvoorbeelden (6 per categorie), want de nieuwe vectorizer maakte `math_variant_1` en `time_variant_2` wankel.
+
+Live: hey nova/goeiedag/hey → groet zonder vraag; hoeveel is het nu → time 0.54; hyey → groet-vraag 0.3751; ik vind koffie ... → neutraal_gemengd. Suite: 1200 groen, 1 overgeslagen.
+
+Open: "ik ben moe"/"ik voel me gestrest" en bedankjes hebben geen eigen label; aparte beslissing (feeling/thanks, handler of enkel classificatie). Test "hay" live na herstart.
+
+## ✅ Bedankjes: detect_thanks() (11 oktober 2026)
+
+Vervolg op punt 30 (b). Bedankjes ("dankje", "ok bedankt") hadden geen eigen afhandeling: de classifier kon ze naar een verkeerd label sturen, en de fallback-reflectie ving ze enkel op als fallback.
+
+- `intent_router.py`: `detect_thanks()` + `_is_bedankje()` (gesloten lijst, max 6 woorden, aanloopwoorden als "ok"/"top" overgeslagen, zinnen met niet/geen/maar/nooit/helaas/alleen geblokkeerd). Antwoord via `variant_kiezer.kies_variant()` (sjabloon_naam "thanks"), zodat Response Variant Learning meeleert. Intent-tabel: `("thanks", ...)` direct na greeting.
+- Besluit na overleg: geen `feeling`/`thanks`-label in de intent classifier. Gevoelszinnen horen bij de emotional statement classifier (nova_state.md punt 26); de sentiment_classifier beoordeelt enkel de toon, niet welke module antwoordt.
+- `fallback_reflectie.py` ongewijzigd, blijft vangnet voor bedankjes buiten de lijst.
+- Test: `test_intent_router_thanks.py` (26). Suite: 1226 groen, 1 overgeslagen. Live: "dankje" → "Met plezier!".
+
+## ✅ Detector-restgaten punt 30 (c) (11 oktober 2026)
+
+Vijf zinnen uit unmatched_intents.jsonl die geen detector haalden. Alles in intent_router.py: detect_calendar/detect_vakantie ("hoelang nog tot"), detect_on_this_day ("wat gebeurde er"), detect_definition (overview-prefix "wat weet je van", persoonlijke woorden mij/me/kevin/jezelf/jou/ons uitgesloten, "wat hoort bij" bij related_to). "zijn er nog betekenissen van X" bleek al werkend. Test: test_intent_router_restgaten.py (18). Suite: 1244 groen, 1 overgeslagen. Live bevestigd, alle zes zinnen correct.
+
+## ✅ Punt 30 — afgeronde onderdelen, verhuisd uit nova_state.md (11 oktober 2026)
+
+(a) Auto-learn filter (5 oktober 2026): `_auto_learn_from_sentence()` in `modules/chat/response_pipeline.py`. Tokeniseren met `re.findall(r"[a-zà-ÿ]+")`; minstens 3 letters; niet in gedeelde `STOPWOORDEN` (`core/nl_stopwoorden.py`) of `AUTO_LEARN_EXTRA_STOPWOORDEN`; `simplemma.is_known()` houdt typfouten buiten; vervoegde vorm op -e tegenhouden (grondvorm enkel om te BEOORDELEN, nooit om op te slaan: vergiet blijft vergiet); `detect_pos()` moet "noun" zeggen. Tests: `test_auto_learn_filter.py` (14), `test_auto_learn_vervoegd.py` (3). Bekende grenzen: dubbelzinnige woorden ("ronde") mogen door; werkwoordsvormen die detect_pos() niet kent en niet op -e eindigen kunnen nog doorglippen.
+
+(d) concepts.json handmatig opgeruimd (7 oktober 2026): door Kevin per woord beslist. Weg: functiewoorden, groeten, typfouten, commando's, werkwoordsvormen, testconcepten, `werk#3`, `iets`/`hoeveel`/`ergens`/`laten`. Behouden: echte naamwoorden en door Kevin gedefinieerde woorden. Les: Nova moet uit staan (`docker stop`) of meteen herstarten na een handmatige bewerking, anders schrijft ze haar oude geheugenkopie terug.
+
+(f) Herkenningsreactie "Je werkt aan mijn eigen broncode" (7 oktober 2026): geen fallback-bug maar de proactieve reactie van `session_watcher.py`, 38 keer in enkele dagen getriggerd doordat "eenmalig" enkel `actieve_activiteit != naam` was. Fix: max 1x per dag (bewaard in `data/session_watcher_state.json`), en niet binnen `HERKENNING_STIL_NA_BERICHT_SECONDEN` (90 s) na een bericht. Tests: `test_session_watcher_herkenning.py` (6); autouse-fixture in root `conftest.py` leidt `HERKENNING_STATE_BESTAND` naar `tmp_path`.
+
+(g) concepts.json uitbreiding reeks 1-4 (9-10 oktober 2026): 29 `unknown`-concepten met de hand ingevuld via `sense_upgrade`; meerduidig gemaakt: fluit, bos, zin, klok, morgen, potje; verwijderd: nova, hoort; `betekenissen` vervangen door `betekenis`. Geen `unknown`-concepten meer. Validatie op battleserver enkel in de container (`docker exec nova-ai python -m json.tool ...`), de host heeft geen python3.
+
+(h) Geen lege ketens meer in concepts.json (10 oktober 2026): 240 concepten; toegevoegd muziekinstrument, snaarinstrument, sport, plaats; vier foute extractie-relaties weerlegd (narwal→arctische, schaken→aanduiding, fotosynthese→vorm, fysica#2), twee vervangen (narwal→zoogdier, schaken→bordspel). Controlecommando na elke nieuwe reeks (verwacht `[]`):
+docker exec nova-ai python -c "import json;d=json.load(open('/app/data/concepts.json'));print(sorted({r['target'] for c in d.values() for s in c['senses'] if s.get('status')!='rejected' for r in s['relations'] if r.get('status')!='rejected' and r['target'] not in d}))"
+Bekend gat: Wikipedia/auto-extract pakt soms een bijvoeglijk naamwoord (arctische, wetenschappelijk) of vaag woord (aanduiding, vorm) als is_a-doel.

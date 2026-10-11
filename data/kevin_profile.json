@@ -1,12 +1,5 @@
 {
   "voorkeuren": {
-    "e4": {
-      "automatisch": {
-        "sentiment": "positief",
-        "datum": "2026-07-25",
-        "aantal_keer_genoemd": 1
-      }
-    },
     "kou": {
       "expliciet": {
         "sentiment": "positief",
@@ -41,20 +34,13 @@
     "koffie": {
       "automatisch": {
         "sentiment": "neutraal_gemengd",
-        "datum": "2026-09-21",
-        "aantal_keer_genoemd": 6
+        "datum": "2026-10-11",
+        "aantal_keer_genoemd": 8
       },
       "expliciet": {
         "sentiment": "neutraal_gemengd",
         "datum": "2026-07-26",
         "aantal_keer_genoemd": 2
-      }
-    },
-    "café": {
-      "automatisch": {
-        "sentiment": "positief",
-        "datum": "2026-09-24",
-        "aantal_keer_genoemd": 1
       }
     }
   },

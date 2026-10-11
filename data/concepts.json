@@ -4896,6 +4896,14 @@
             "source": "user",
             "created_at": "2026-10-09T18:35:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "causes",
+            "target": "modder",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-11T15:11:17.064145"
           }
         ],
         "source": "user",
@@ -4906,15 +4914,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-10-11T15:11:17.064163",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-10-11T15:11:17.064163",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-11T15:11:17.064163",
           "confidence": 1.0
         }
       ]
@@ -4935,6 +4947,17 @@
         "old_value": null,
         "new_value": "Regen is neerslag in de vorm van waterdruppels die uit wolken vallen wanneer waterdamp condenseert.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "regen#1",
+        "relation": {
+          "type": "causes",
+          "target": "modder",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-10-11T15:11:17.064158"
       }
     ]
   },
@@ -16659,6 +16682,237 @@
         "old_value": "unknown",
         "new_value": "Een tuin is een stuk grond bij een huis waar planten, bloemen, gras of groenten groeien.",
         "timestamp": "2026-10-09T19:00:00.000000"
+      }
+    ]
+  },
+  "annuleren": {
+    "senses": [
+      {
+        "sense_id": "annuleren#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-11T09:58:19.564800",
+      "updated_at": "2026-10-11T09:58:19.565051",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-11T09:58:19.565051",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-11T09:58:19.565051",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "annuleren"
+        },
+        "timestamp": "2026-10-11T09:58:19.564805"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "annuleren#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-11T09:58:19.565049"
+      }
+    ]
+  },
+  "modder": {
+    "senses": [
+      {
+        "sense_id": "modder#1",
+        "definition": "Modder, slijk, bagger of blubber is een vloeibaar of semi-vloeibaar mengsel van klei, silt en water, een suspensie. Modder kan een leefomgeving zijn voor een aantal dieren, zoals wormen, kikkers, schelpdieren en kreeftachtigen.",
+        "pos": null,
+        "examples": [
+          "Andere dieren zoals varkens en olifanten houden ervan in de modder te baden.",
+          "In sommige gevallen schuilen dieren maandenlang in de modder in een winterslaap om de winter door te komen, zoals kikkers en salamanders."
+        ],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "uitglijden",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-11T15:11:42.333193"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-11T15:11:14.393855",
+      "updated_at": "2026-10-11T15:13:33.608035",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-11T15:13:33.608035",
+      "usage_count": 3,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-11T15:11:14.394184",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-11T15:11:42.333209",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-11T15:13:33.608035",
+          "confidence": 0.8
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "modder"
+        },
+        "timestamp": "2026-10-11T15:11:14.393862"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "modder#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-11T15:11:14.394182"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "modder#1",
+        "relation": {
+          "type": "causes",
+          "target": "uitglijden",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-10-11T15:11:42.333205"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "wikipedia",
+        "sense_id": "modder#1",
+        "old_value": "unknown",
+        "new_value": "Modder, slijk, bagger of blubber is een vloeibaar of semi-vloeibaar mengsel van klei, silt en water, een suspensie. Modder kan een leefomgeving zijn voor een aantal dieren, zoals wormen, kikkers, schelpdieren en kreeftachtigen.",
+        "timestamp": "2026-10-11T15:13:33.608033"
+      }
+    ]
+  },
+  "uitglijden": {
+    "senses": [
+      {
+        "sense_id": "uitglijden#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-11T15:11:36.151448",
+      "updated_at": "2026-10-11T15:11:36.151821",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-11T15:11:36.151821",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-11T15:11:36.151821",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "uitglijden"
+        },
+        "timestamp": "2026-10-11T15:11:36.151459"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "uitglijden#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-11T15:11:36.151817"
+      }
+    ]
+  },
+  "slecht humeur": {
+    "senses": [
+      {
+        "sense_id": "slecht humeur#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-11T15:19:04.969322",
+      "updated_at": "2026-10-11T15:19:04.969676",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-11T15:19:04.969676",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-11T15:19:04.969676",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "slecht humeur"
+        },
+        "timestamp": "2026-10-11T15:19:04.969329"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "slecht humeur#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-11T15:19:04.969674"
       }
     ]
   }

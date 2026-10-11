@@ -283,3 +283,7 @@
 {"timestamp": "2026-10-07T18:12:29.883698", "event_type": "concept_created", "word": "egel", "source": "system", "new_value": {"word": "egel"}}
 {"timestamp": "2026-10-07T18:12:29.897528", "event_type": "concept_created", "word": "tuin", "source": "system", "new_value": {"word": "tuin"}}
 {"timestamp": "2026-10-09T18:53:29.259740", "event_type": "concept_created", "word": "hoort", "source": "system", "new_value": {"word": "hoort"}}
+{"timestamp": "2026-10-11T09:58:19.564810", "event_type": "concept_created", "word": "annuleren", "source": "system", "new_value": {"word": "annuleren"}}
+{"timestamp": "2026-10-11T15:11:14.393866", "event_type": "concept_created", "word": "modder", "source": "system", "new_value": {"word": "modder"}}
+{"timestamp": "2026-10-11T15:11:36.151466", "event_type": "concept_created", "word": "uitglijden", "source": "system", "new_value": {"word": "uitglijden"}}
+{"timestamp": "2026-10-11T15:19:04.969333", "event_type": "concept_created", "word": "slecht humeur", "source": "system", "new_value": {"word": "slecht humeur"}}

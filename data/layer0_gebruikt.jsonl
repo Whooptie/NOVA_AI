@@ -29,3 +29,9 @@
 {"tekst": "hoe laat is he", "label": "time", "gebruikt_bij_hertraining": "2026-10-10T15:18:50.560409"}
 {"tekst": "is het al tijd om te gaan", "label": "time", "gebruikt_bij_hertraining": "2026-10-10T15:18:50.560409"}
 {"tekst": "is voetbal een activiteit", "label": "relatie", "gebruikt_bij_hertraining": "2026-10-10T21:28:32.062618"}
+{"tekst": "ik vind koffie eigenlijk wel oké maar niet top", "label": "preference", "gebruikt_bij_hertraining": "2026-10-11T11:21:30.059489"}
+{"tekst": "hoe voel je je vandaag", "label": "identity", "gebruikt_bij_hertraining": "2026-10-11T11:21:30.059489"}
+{"tekst": "wat is tijd", "label": "definitie_tijd", "gebruikt_bij_hertraining": "2026-10-11T11:21:30.059489"}
+{"tekst": "hoe is het met je", "label": "identity", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
+{"tekst": "wat is het weer", "label": "weather", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
+{"tekst": "wat gebeurt er als ik iets tegen je zeg", "label": "self_architecture", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}

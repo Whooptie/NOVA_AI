@@ -985,12 +985,40 @@ class IntentRouter:
                 self.event_bus.publish("intent_used_for", {"word": word})
                 return True
 
-        # Wat veroorzaakt X
-        for p in ["wat veroorzaakt ", "wat zorgt voor "]:
+        # Wat veroorzaakt X / wat zorgt voor X / wat leidt tot X
+        # -> de OORZAKEN van X (Fase 8.1, 11 oktober 2026). Vroeger gaf
+        # dit de GEVOLGEN van X terug (verkeerde richting), zie
+        # on_causes() in chat.py. Layer 2-topic per woord, zelfde
+        # patroon als "definitie_<woord>" -- de vlag voorkomt dat
+        # route() hierna ook nog het verouderde definitie-topic emit.
+        for p in ["wat veroorzaakt ", "wat zorgt voor ", "wat leidt tot "]:
             if t.startswith(p):
                 word = t[len(p):].strip().rstrip("?.")
-                dbg(f"{C_BLUE}→ definition (causes): '{word}'{C_RESET}")
+                for art in ["de ", "het ", "een "]:
+                    if word.startswith(art):
+                        word = word[len(art):].strip()
+                        break
+                dbg(f"{C_BLUE}→ definition (causes = oorzaken van): '{word}'{C_RESET}")
+                self._emit_topic(f"oorzaken_{word}" if word else "oorzaken", bron="detect", concept=word or None)
+                self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_causes", {"word": word})
+                return True
+
+        # Wat zijn de gevolgen van X -> de GEVOLGEN van X (Fase 8.1)
+        for p in [
+            "wat zijn de gevolgen van ", "wat zijn gevolgen van ",
+            "wat is het gevolg van ", "waartoe leidt ", "waartoe leiden ",
+        ]:
+            if t.startswith(p):
+                word = t[len(p):].strip().rstrip("?.")
+                for art in ["de ", "het ", "een "]:
+                    if word.startswith(art):
+                        word = word[len(art):].strip()
+                        break
+                dbg(f"{C_BLUE}→ definition (effects = gevolgen van): '{word}'{C_RESET}")
+                self._emit_topic(f"gevolgen_{word}" if word else "gevolgen", bron="detect", concept=word or None)
+                self._topic_al_ge_emit = True
+                self.event_bus.publish("intent_effects", {"word": word})
                 return True
 
         # Wat zijn eigenschappen van X
@@ -1002,7 +1030,7 @@ class IntentRouter:
                 return True
             
         # Waarop lijkt X (related_to)
-        for p in ["waarop lijkt ", "waar lijkt ", "wat lijkt op "]:
+        for p in ["waarop lijkt ", "waar lijkt ", "wat lijkt op ", "wat hoort bij "]:
             if t.startswith(p):
                 word = t[len(p):].strip().rstrip("?.")
                 for art in ["de ", "het ", "een "]:
@@ -1111,9 +1139,13 @@ class IntentRouter:
         overview_prefixes = [
             "wat weet je allemaal over ",
             "wat weet je over ",
+            "wat weet je van ",
             "vertel me alles over ",
             "vertel alles over ",
         ]
+        # Vragen over Kevin of Nova zelf zijn geen woord-opzoeking:
+        # "wat weet je over mij" hoort bij detect_preference_query().
+        persoonlijke_woorden = {"mij", "me", "kevin", "jezelf", "jou", "jouzelf", "ons"}
         for p in overview_prefixes:
             if t.startswith(p):
                 woord = t[len(p):].strip().rstrip("?.")
@@ -1121,6 +1153,8 @@ class IntentRouter:
                     if woord.startswith(art):
                         woord = woord[len(art):].strip()
                         break
+                if woord in persoonlijke_woorden:
+                    continue
                 # Eigen Layer 2-topic (1 augustus 2026), zelfde redenering
                 # als bij de andere-betekenis-tak hierboven -- "wat weet
                 # je allemaal over X" is een apart, herkenbaar
@@ -1267,13 +1301,85 @@ class IntentRouter:
     # ---------------------------------------------------------
     # Greeting
     # ---------------------------------------------------------
+    _GROETEN = {
+        "hallo", "hoi", "hey", "hay", "hello", "hi", "dag", "yo", "dagg", "hallo daar",
+        "hey daar", "hoi hoi", "goeiemorgen", "goedemorgen", "goeiedag",
+        "goedendag", "goedemiddag", "goeiemiddag", "goedenavond", "goeienavond",
+    }
+
     def detect_greeting(self, text):
-        greetings = {"hallo", "hoi", "hey", "hello", "dag", "yo"}
-        if text in greetings:
+        greetings = self._GROETEN
+        t = text.lower().strip().rstrip("!.?, ")
+        # "hey nova", "hoi nova" -> dezelfde groet zonder de naam erachter
+        if t.endswith(" nova"):
+            t = t[:-len(" nova")].strip()
+        if t in greetings:
             dbg(f"{C_BLUE}→ greeting{C_RESET}")
             self.event_bus.publish("intent_greeting", {"sender": self._get_sender_name()})
             return True
         return False
+
+    # ---------------------------------------------------------
+    # Thanks (11 oktober 2026) -- gesloten lijst bedankjes, geen ML.
+    # ---------------------------------------------------------
+    # Woorden die vóór het bedankje mogen staan ("ok dankje", "top bedankt").
+    _THANKS_VOORAF = {"ok", "oke", "oké", "okay", "ja", "top", "super", "tof", "hey", "hoi"}
+    # Woorden die op zichzelf al een bedankje zijn.
+    _THANKS_WOORDEN = {
+        "dankje", "dankjewel", "dankuwel", "dankjulliewel",
+        "bedankt", "merci", "thanks", "thx", "thank",
+    }
+    # Na "dank" mag "je", "u", "jullie" of "wel" volgen ("dank je wel").
+    _THANKS_NA_DANK = {"je", "jewel", "u", "uwel", "jullie", "wel"}
+    # Een zin met een van deze woorden is geen puur bedankje
+    # ("bedankt maar het werkt niet").
+    _THANKS_BLOKKEERT = {"niet", "geen", "maar", "nooit", "helaas", "alleen"}
+    _THANKS_MAX_WOORDEN = 6
+
+    _THANKS_ANTWOORDEN = [
+        "Graag gedaan!",
+        "Geen probleem.",
+        "Altijd, Kevin.",
+        "Graag gedaan, zeg het maar als je nog iets nodig hebt.",
+        "Met plezier!",
+    ]
+
+    def _is_bedankje(self, text):
+        t = re.sub(r"[^\w\s]", " ", text.lower())
+        tokens = t.split()
+        if not tokens or len(tokens) > self._THANKS_MAX_WOORDEN:
+            return False
+        if any(w in self._THANKS_BLOKKEERT for w in tokens):
+            return False
+
+        # Losse aanloopwoorden ("ok", "top", ...) overslaan.
+        while tokens and tokens[0] in self._THANKS_VOORAF:
+            tokens = tokens[1:]
+        if not tokens:
+            return False
+
+        eerste = tokens[0]
+        if eerste in self._THANKS_WOORDEN:
+            return True
+        if eerste == "dank":
+            return len(tokens) == 1 or tokens[1] in self._THANKS_NA_DANK
+        if eerste == "hartelijk" and len(tokens) > 1 and tokens[1] == "dank":
+            return True
+        return False
+
+    def detect_thanks(self, text):
+        if not self._is_bedankje(text):
+            return False
+        from modules.response_learning.variant_kiezer import kies_variant
+        dbg(f"{C_BLUE}→ thanks{C_RESET}")
+        tekst = kies_variant(
+            varianten=self._THANKS_ANTWOORDEN,
+            sjabloon_naam="thanks",
+            event_bus=self.event_bus,
+            variant_feedback_logger=self.event_bus.modules.get("variant_feedback_logger"),
+        )
+        self.event_bus.publish("layer4_response", {"text": tekst})
+        return True
 
     def _get_sender_name(self):
         """
@@ -1458,7 +1564,9 @@ class IntentRouter:
             )
             return True
 
-        if re.search(r"\bwat is er\b.*\bgebeur(d|t)\b", t) or "op deze dag" in t:
+        if (re.search(r"\bwat is er\b.*\bgebeur(d|t)\b", t)
+                or re.search(r"\bwat gebeurde er\b", t)
+                or "op deze dag" in t):
             dbg(f"{C_BLUE}→ on_this_day (events){C_RESET}")
             self.event_bus.publish(
                 "intent_on_this_day_query", {"text": text, "type": "events"}
@@ -1478,7 +1586,7 @@ class IntentRouter:
         # gecontroleerd worden (calendar staat sowieso al later in
         # de tabel, maar dit blok zelf moet ook intern de juiste
         # volgorde aanhouden).
-        if re.search(r"\bhoeveel dagen\b.*\btot\b.*\bvakantie\b", t):
+        if re.search(r"\b(?:hoeveel dagen|hoe\s?lang)\b.*\btot\b.*\bvakantie\b", t):
             dbg(f"{C_BLUE}→ vakantie (dagen_tot_vakantie){C_RESET}")
             self.event_bus.publish(
                 "intent_vakantie_query", {"text": text, "type": "dagen_tot_vakantie"}
@@ -1571,7 +1679,7 @@ class IntentRouter:
             )
             return True
 
-        if re.search(r"\bhoeveel dagen\b.*\btot\b", t):
+        if re.search(r"\b(?:hoeveel dagen|hoe\s?lang)\b.*\btot\b", t):
             dbg(f"{C_BLUE}→ calendar (dagen_tot){C_RESET}")
             self.event_bus.publish(
                 "intent_calendar_query", {"text": text, "type": "dagen_tot"}
@@ -1660,7 +1768,7 @@ class IntentRouter:
         "wat zijn synoniemen van ", "wat is een synoniem van ", "synoniemen van ",
         "wat is het tegenovergestelde van ", "wat zijn antoniemen van ", "tegendeel van ",
         "waarvoor gebruik je ", "waarvoor is ", "waarvoor dient ",
-        "wat veroorzaakt ", "wat zorgt voor ",
+        "wat veroorzaakt ", "wat zorgt voor ", "wat leidt tot ", "waartoe leidt ", "waartoe leiden ",
         "wat weet je ", "vertel me alles over ", "vertel alles over ",
         "wiki ", "leer wikipedia ", "zoek op ",
         "vergelijk ", "welke soorten ", "noem soorten ", "welke onderdelen ",
@@ -2331,6 +2439,54 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Causale check ("leidt X tot Y", "veroorzaakt X Y", "zorgt X voor Y",
+    # "kan X Y veroorzaken") — Semantic Fase 8.2, 11 oktober 2026.
+    #
+    # Wordt in route() VROEG aangeroepen (stap 2F, vóór de tabel met
+    # tijd/kalender/weer): de zinnen beginnen met een eigen, duidelijk
+    # werkwoord, en zo kan "leidt regen tot tijd" niet door een los
+    # klokwoord als tijdsvraag opgevangen worden. X moet 1 woord zijn
+    # (zelfde grens als relation_check/part_of_check): "leidt zware
+    # regen tot modder" leest 'zware' als X -- bekende, aanvaarde grens.
+    # ---------------------------------------------------------
+    _ART = r"(?:(?:een|de|het)\s+)?"
+    _CAUSALE_CHECK_PATRONEN = [
+        ("leidt X tot Y", re.compile(r"^leidt\s+" + _ART + r"(\w+)\s+tot\s+" + _ART + r"([\w\s]+)$")),
+        ("veroorzaakt X Y", re.compile(r"^veroorzaakt\s+" + _ART + r"(\w+)\s+" + _ART + r"([\w\s]+)$")),
+        ("zorgt X voor Y", re.compile(r"^zorgt\s+" + _ART + r"(\w+)\s+voor\s+" + _ART + r"([\w\s]+)$")),
+        ("kan X Y veroorzaken", re.compile(r"^kan\s+" + _ART + r"(\w+)\s+" + _ART + r"([\w\s]+?)\s+veroorzaken$")),
+    ]
+
+    def detect_causes_check(self, text):
+        t = text.lower().strip().rstrip("?.! ")
+
+        for naam, patroon in self._CAUSALE_CHECK_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+
+            source = m.group(1).strip()
+            target = m.group(2).strip()
+
+            # "zorgt hij voor het eten" / "leidt dat tot problemen" zijn
+            # geen kennisvragen: voornaamwoorden/stopwoorden zijn nooit X.
+            if not source or not target or source in self._GEEN_RELATIE_ONDERWERP:
+                continue
+
+            dbg(f"{C_BLUE}→ causes_check (patroon '{naam}'): '{source}' -> '{target}'{C_RESET}")
+            self.event_bus.publish("intent_causes_check", {
+                "source": source,
+                "target": target
+            })
+            # Eigen Layer 2-topic, en X als concept voor last_context
+            # (zelfde vaste "eerst genoemde term"-regel als de andere
+            # source/target-detects).
+            self._emit_topic("causes_check", bron="detect", concept=source)
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Vergelijking tussen 2 concepten ("vergelijk X met Y") — idee #6
     # uit reasoning_engine_ideeen_roadmap.md.
     #
@@ -2501,7 +2657,8 @@ class IntentRouter:
             ],
             "current_mood": [
                 "hoe voel je je", "hoe voel jij je", "hoe gaat het met je",
-                "hoe gaat het met jou", "hoe is het met je", "wat is je stemming"
+                "hoe gaat het met jou", "hoe is het met je", "wat is je stemming",
+                "hoe is het met jou", "hoe is het ermee", "hoe gaat het ermee"
             ],
             "excitement": [
                 "wat maakt je enthousiast", "waar word je blij van", "waar word jij blij van"
@@ -3225,6 +3382,7 @@ class IntentRouter:
         """
         return [
             ("greeting",         self.detect_greeting),
+            ("thanks",           self.detect_thanks),
             ("on_this_day",      self.detect_on_this_day),
             ("vakantie",         self.detect_vakantie),
             ("holiday",          self.detect_holiday),
@@ -4435,6 +4593,12 @@ class IntentRouter:
         # tegenvraag gepubliceerd, route() moet meteen stoppen).
         text = self._verwerk_referentie(text)
         if text is None:
+            return
+
+        # 2F Causale check (Semantic Fase 8.2, 11 oktober 2026) -- MOET
+        # vóór de intent-tabel hieronder staan, zie de uitleg bij
+        # detect_causes_check(). Emit zelf al zijn eigen topic.
+        if self.detect_causes_check(text):
             return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).
