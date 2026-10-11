@@ -147,12 +147,19 @@ class ChatModule:
             })
             return
 
+        # 10 oktober 2026: "lidwoord" komt van intent_router.py -- False
+        # als Kevin zelf geen "een" vóór X typte ("is wandelen een
+        # activiteit"). Ontbreekt het veld (oudere patronen), dan True:
+        # exact het gedrag van vóór deze wijziging.
+        lidwoord = data.get("lidwoord", True)
+        een = "een " if lidwoord else ""
+
         if self.semantic and hasattr(self.semantic, "explain_is_a"):
-            msg = self.semantic.explain_is_a(source, target)
+            msg = self.semantic.explain_is_a(source, target, lidwoord=lidwoord)
         elif self.semantic and hasattr(self.semantic, "is_a") and self.semantic.is_a(source, target):
-            msg = f"Ja, een {source} is een {target}."
+            msg = f"Ja, {een}{source} is een {target}."
         else:
-            msg = f"Nee, een {source} is geen {target}."
+            msg = f"Nee, {een}{source} is geen {target}."
 
         self.event_bus.publish("layer4_response", {"text": msg})
 

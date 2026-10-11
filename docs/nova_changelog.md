@@ -1531,3 +1531,68 @@ date_calendar_roadmap.md Onderdeel 5 + het vervolgontwerp uit nova_state.md punt
 **Getest:** `test_memory_sigterm.py` (8 tests) + `test_main_stopsignaal.py` (8 tests, waarvan één echte procestest: apart proces met de echte `main.py` en `memory.py`, op `input()` wachtend terwijl een achtergrondthread events stuurt, krijgt een echte SIGTERM; een nep-module moet een bestand wegschrijven bij `shutdown()`, en memory moet precies één keer "netjes afgesloten" melden). Volledige suite 1117 groen, 1 overgeslagen, 5x na elkaar.
 
 **Live bevestigd op battleserver (5 oktober 2026):** Stop/Start van de `nova-ai`-container in Unraid → `[Afsluiten] Stopsignaal ontvangen...` → `[PATTERN_MATCHER] Netjes afgesloten, laatste stand opgeslagen.` → `Memory: netjes afgesloten.`, geen flush-fouten, container stopt meteen. Let op bij het testen: het afsluiten gebeurt door het proces dat al draaide, dus een wijziging hierin is pas zichtbaar bij de tweede Stop/Start.
+
+---
+
+## 🐛 Drie intent_router-gaten uit de concepts.json-livetests + antwoordvorm (9-10 oktober 2026)
+
+**Aanleiding:** livetests van concepts.json reeks 3 (nova_state.md punt 30(g)). "is wandelen een activiteit" viel in de fallback, en "waarop lijkt tijd" gaf het uur in plaats van verwante concepten.
+
+**Oorzaken, geverifieerd in `intent_router.py`:**
+1. `detect_relation_check()` kende enkel "is een X een Y" en "X is een Y". Werkwoorden en stofnamen zonder lidwoord ("is wandelen een ...") vielen erbuiten.
+2. `detect_time()` staat in `_build_intent_tabel_deel1()`, dus in `route()` vóór `detect_definition()` (stap 8, waar "waarop lijkt" zit). De losse-woordcheck reageerde op elk voorkomen van "tijd"/"klok". Daardoor gaven ook "wat is tijd", "wat is een klok" en "wat betekent tijd" het uur.
+3. Bij de eerste fix bleek het antwoordsjabloon altijd "een" vóór de source te plakken: "Ja, een wandelen is een activiteit".
+
+**Fixes:**
+- `intent_router.py`: patroon 1b "is X een Y" tussen de twee bestaande patronen. X wordt getoetst aan `_GEEN_RELATIE_ONDERWERP` (gedeelde `STOPWOORDEN` uit `core/nl_stopwoorden.py`, defensief geïmporteerd, plus een lokale aanvulling met o.a. het/er/dit/dat/hij/nova), zodat "is het een goed idee" of "is nova een ai" niet als kennisvraag tellen. Het patroon geeft `"lidwoord": False` mee; de oude patronen geven geen veld.
+- `intent_router.py`: `_SEMANTISCHE_VRAAG_PREFIXEN` (waarop lijkt/wat is/wat betekent/synoniemen van/wiki/...). `detect_time()` slaat bij zo'n zinsbegin enkel de losse-woordcheck over. De vaste tijdzinnen ("wat is de tijd", "hoe laat is het") worden eerder gecontroleerd en blijven altijd werken.
+- `chat.py`'s `on_relation_check()` leest `lidwoord` (standaard True = oud gedrag) en geeft het door. `SemanticConceptsModule.explain_is_a()` en `ReasoningEngine.explain_is_a()` kregen `lidwoord=True`; zonder lidwoord valt "een" weg in het directe antwoord, het keten-antwoord en het "maar ik weet wel dat ..."-sjabloon. Puur de vraagvorm spiegelen, geen woordsoort-gok.
+
+**Bewuste grenzen:** "heeft tijd iets te maken met X" en "is tijd een Y" gaan nog naar time_query ("is"/"heeft" niet in de prefixlijst, om "is het al tijd om te gaan" niet te breken). part_of ongewijzigd: alle part_of-patronen vereisen "een".
+
+**Getest:** `test_intent_router_tijd_en_relatie.py`, 38 tests (29 op 9 oktober, 9 op 10 oktober), tegen de echte `IntentRouter`, `ReasoningEngine` en `ChatModule` (klassen dynamisch opgezocht, `__init__` overgeslagen waar die bestanden leest). Volledige suite: 1178 groen, 1 overgeslagen.
+
+**Live bevestigd op battleserver (9-10 oktober 2026):** "waarop lijkt tijd" → moment, leeftijd; "hoe laat is het" → het uur; "wat is een klok" → definitieroute; "is wandelen een activiteit" → "Ja, wandelen is een activiteit"; "is een kind een mens" → ongewijzigd "Ja, een kind is een mens"; "is wandelen een dier" → "...maar ik weet wel dat wandelen een activiteit is".
+
+**Bijvangst, niet opgelost:** "wat is een klok" vindt op Wikipedia geen bruikbare definitie (doorverwijspagina). Kandidaat voor een volgende handmatige concepts.json-reeks.
+
+### Vervolg: ja/nee-kennisvragen niet meer als tijdsvraag (10 oktober 2026)
+
+**Aanleiding:** livetest van concepts.json reeks 4. "is een klok een apparaat" gaf het uur. Zelfde volgordeprobleem als "waarop lijkt tijd": `detect_time()` (intent-tabel deel 1) ving het losse woord "klok" op vóór `detect_relation_check()` (deel 2) aan bod kwam. De prefixcheck van 9 oktober dekte enkel "wat is"/"waarop lijkt"-vragen; zinnen die met "is"/"heeft" beginnen waren bewust uitgesloten, om "is het al tijd om te gaan" niet te breken.
+
+**Fix (`core/intent_router.py`):** nieuwe `_lijkt_relatievraag(t)` met drie vooraf gecompileerde regexen: "is een X een Y" / "is een X onderdeel van Y"; "is X een Y"; "is/heeft (een) X (iets) te maken met / gerelateerd aan Y". Voor de laatste twee wordt X getoetst aan het bestaande `_GEEN_RELATIE_ONDERWERP`, zodat "is het een goede tijd" en "heeft het iets te maken met tijd" tijdvragen blijven. `detect_time()` geeft False bij zo'n zinsvorm, vóór de losse-woordcheck. Puur een zinsvorm herkennen, geen ML. Hiermee is de bewuste grens van 9 oktober ("is tijd een Y", "heeft tijd iets te maken met X") opgelost.
+
+**Getest:** `test_intent_router_tijd_relatievraag.py`, 22 tests. Volledige suite: 1200 groen, 1 overgeslagen.
+
+**Live bevestigd op battleserver (10 oktober 2026):** "is een klok een apparaat" → "Ja, een klok is een apparaat"; "is tijd een begrip" → relation_check ("Ik kan niet bewijzen ..."); "hoe laat is he" en "is het al tijd om te gaan" → het uur.
+
+---
+
+## ✨ Nova Avatar — eerste versie van Nova's 3D-gezicht (8-10 oktober 2026)
+
+**Aanleiding:** Kevin wilde dat Nova een gezicht krijgt (Gideon-achtig), dat later op laptop, gsm en tv kan verschijnen. Voorwaarden: professioneel ogend, gratis, lokaal, en het gedrag symbolisch gestuurd.
+
+**Zoektocht naar een model (wat afviel en waarom):**
+- VRoid: te anime-achtig (Kevins keuze).
+- Grok Build, versie 1 ("Liora"): één 2D-foto die vervormd wordt via MediaPipe-gezichtspunten — Kevin vond het vervormen lelijk.
+- Grok Build, versie 2: degelijke three.js-motor met blendshapes, maar met het mannelijke `facecap.glb`-testhoofd. Versie 3 plakte Kevins foto op dat testhoofd: van voren oké, van opzij onbruikbaar (vlak gezicht, haar als schil).
+- Meshy / Hi3D: mooie modellen, maar zonder blendshapes of skelet; Hi3D-buste had ~2 miljoen vlakken (te zwaar). Gratis plannen publiceren onder CC BY 4.0.
+- Hunyuan3D: licentie sluit de EU, het VK en Zuid-Korea uit.
+- **Gekozen: Avaturn** — echte 3D (ook van opzij), 52 ARKit-blendshapes, 15 Oculus-visemes, tanden en tong, skelet, ~34.000 driehoeken. Nadeel: de gelijkenis met de oorspronkelijke AI-foto is beperkt (Avaturn valt terug op eigen basisvormen). Kevin koos `nova_3.glb` (blond haar).
+
+**Hoofd losgemaakt (10 oktober 2026):** met gltf-transform het lichaam, de jurk, de schoenen en de T-pose-animatie verwijderd; hoofd, ogen, wimpers, tanden, tong en haar behouden, blendshapes en skelet intact. Texturen verkleind tot max. 2048 px. Resultaat `nova_hoofd.glb`: ~23.000 driehoeken, 12,7 MB (het meeste daarvan zijn de blendshape-gegevens).
+
+**Motor gebouwd (`nova_avatar/`, 10 oktober 2026):** eigen, zelfstandige versie (geen Grok-ballast: geen inloggen, database of Vercel). Bestanden: `start_avatar.py`, `nova_avatar.js`, `expressies.json`, `config.js`, `index.html`, `test_zender.py`, `LEESMIJ.md`, three.js 0.169 lokaal meegeleverd (MIT). Ideeën van Grok's motor overgenomen (blendshape-mix per uitdrukking, letter→mondvorm), maar mondbewegingen nu via de echte visemes van het model, en alle tabellen in `expressies.json` (data i.p.v. code).
+
+**Details die ertoe doen:**
+- Elke blendshape staat op meerdere onderdelen (hoofd, wimpers, ogen, tanden, tong). De motor zoekt ze allemaal op naam op en zet ze samen, anders knippert bv. enkel de huid en niet de wimpers.
+- Lagen per beeld: uitdrukking (vloeiend) + knipperen + blik + mondvorm, opgeteld en begrensd tot 0-1. Hoofdhouding: uitdrukking + ademen + wiegen + blik volgen, verdeeld over nek (35%) en hoofd (65%).
+- `start_avatar.py` zet de MIME-types zelf vast: Windows kent `.js` soms als `text/plain` via het register, en dan weigert de browser het script. Eigen browserprofiel + `--autoplay-policy=no-user-gesture-required`, zodat de stem mag spreken zonder klik; lukt dat toch niet, dan verschijnt "Klik hier om Nova's stem aan te zetten".
+- Hologramstijl via een kleine shaderaanpassing op de bestaande materialen (randgloed + scanlijnen), live wisselbaar.
+- Zachte vervaging onderaan verbergt de ruwe halsrand.
+
+**Getest:** headless in Chromium (alle 9 uitdrukkingen, 4 momenten tijdens het spreken, hologramstijl, testpaneel) en de WebSocket in beide richtingen tegen `test_zender.py` (`avatar_hallo` en `spreek_klaar` komen aan). Bijgestuurd na de eerste test: belichting (te donker/oranje), camera-afstand (halsrand zichtbaar), sterkere glimlach (`mouthSmile` toegevoegd), kijkrichting die na een `kijk`-opdracht niet terugkeerde naar het midden.
+
+**Live bevestigd op Kevins laptop (10 oktober 2026):** model laadt, hologramstijl werkt (Kevins favoriet), Nova spreekt met kloppende lipbewegingen.
+
+**Gevonden, nog open:** de enige lokale Nederlandse Windows-stem is mannelijk; de mond begon te bewegen vóór het geluid (Windows-opstarttijd — fix aangereikt: tijdlijn start pas bij `onstart`, nog te bevestigen). Vervolg: zie `nova_state.md`, punten 40 (`avatar_bridge`) en 42 (verbeteringen).

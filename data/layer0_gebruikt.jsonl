@@ -22,3 +22,10 @@
 {"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}
 {"tekst": "wat wordt het weer morgen", "label": "weather", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}
 {"tekst": "wat is het weer vandaag", "label": "weather", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}
+{"tekst": "waarop lijkt tijd", "label": "definitie", "gebruikt_bij_hertraining": "2026-10-10T01:26:23.522739"}
+{"tekst": "is wandelen een activiteit", "label": "relatie", "gebruikt_bij_hertraining": "2026-10-10T01:26:23.522739"}
+{"tekst": "hoe laat is het", "label": "time", "gebruikt_bij_hertraining": "2026-10-10T01:26:23.522739"}
+{"tekst": "wat is een klok", "label": "definitie_klok", "gebruikt_bij_hertraining": "2026-10-10T01:26:23.522739"}
+{"tekst": "hoe laat is he", "label": "time", "gebruikt_bij_hertraining": "2026-10-10T15:18:50.560409"}
+{"tekst": "is het al tijd om te gaan", "label": "time", "gebruikt_bij_hertraining": "2026-10-10T15:18:50.560409"}
+{"tekst": "is voetbal een activiteit", "label": "relatie", "gebruikt_bij_hertraining": "2026-10-10T21:28:32.062618"}

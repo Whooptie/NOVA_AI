@@ -637,3 +637,32 @@
 {"text": "wat is een meubel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-09T21:13:53.905707"}
 {"text": "waarop lijkt tijd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-09T21:14:03.680430"}
 {"text": "heeft kracht iets te maken met druk", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0052, "bron": "model_fallback", "tijdstip": "2026-10-09T21:14:11.048612"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-09T21:24:45.247820"}
+{"text": "waarop lijkt tijd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-09T21:24:57.040923"}
+{"text": "is wandelen een activiteit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-09T21:25:05.938602"}
+{"text": "hoe laat is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-10-09T21:25:13.362182"}
+{"text": "wat is een klok", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-09T21:25:35.356862"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-10T10:26:29.368754"}
+{"text": "is wandelen een activiteit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-10T10:27:10.096405"}
+{"text": "is een kind een mens", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-10T10:27:19.329274"}
+{"text": "is wandelen een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-10T10:27:25.759359"}
+{"text": "wat is een klok", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-10T10:50:58.880973"}
+{"text": "waarop lijkt tijd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-10T10:51:07.504106"}
+{"text": "is een klok een apparaat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-10T10:51:15.376673"}
+{"text": "wat weet je over potje", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0016, "bron": "model_fallback", "tijdstip": "2026-10-10T10:51:21.949750"}
+{"text": "wat is een betekenis", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-10T10:51:36.492540"}
+{"text": "wat is morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0845, "bron": "model_fallback", "tijdstip": "2026-10-10T10:51:48.823376"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-10T11:16:47.823191"}
+{"text": "is een klok een apparaat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-10T11:16:56.085102"}
+{"text": "is tijd een begrip", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-10T11:17:01.565691"}
+{"text": "hoe laat is he", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0452, "bron": "model_fallback", "tijdstip": "2026-10-10T11:17:09.128883"}
+{"text": "is het al tijd om te gaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0198, "bron": "model_fallback", "tijdstip": "2026-10-10T11:17:15.421847"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-10T17:24:09.632793"}
+{"text": "weerleg: narwal is_a arctische", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-10T17:26:58.256832"}
+{"text": "weerleg: schaken is_a aanduiding", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-10T17:27:06.648205"}
+{"text": "weerleg: fotosynthese is_a vorm", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-10T17:27:13.173244"}
+{"text": "weerleg betekenis: fysica 2", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-10T17:27:25.972988"}
+{"text": "een narwal is een zoogdier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-10T17:28:18.529698"}
+{"text": "schaken is een bordspel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-10T17:28:35.370677"}
+{"text": "is een gitaar een muziekinstrument", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0626, "bron": "model_fallback", "tijdstip": "2026-10-10T17:29:44.708140"}
+{"text": "is voetbal een activiteit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-10T17:29:51.804036"}

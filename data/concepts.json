@@ -2401,6 +2401,14 @@
             "source": "user",
             "created_at": "2026-10-09T19:15:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "klok",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -5767,6 +5775,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "partijtje",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "user",
@@ -6090,6 +6106,14 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "potje",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
             "status": "confirmed"
           }
         ],
@@ -6575,6 +6599,14 @@
             "confidence": 0.6,
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "zin",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
             "status": "confirmed"
           }
         ],
@@ -9266,7 +9298,16 @@
           "Het verkeersbord toont een teken voor voorrang.",
           "In de muzieknotatie staat een rustteken voor stilte."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "betekenis",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -9692,6 +9733,14 @@
             "confidence": 0.8,
             "source": "user",
             "created_at": "2026-10-09T19:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "morgen",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
             "status": "confirmed"
           }
         ],
@@ -13182,28 +13231,85 @@
     "senses": [
       {
         "sense_id": "zin#1",
-        "definition": "unknown",
+        "definition": "Een zin is een reeks woorden die samen een afgeronde gedachte uitdrukt, meestal beginnend met een hoofdletter en eindigend met een punt.",
+        "signaalwoorden": [
+          "woord",
+          "woorden",
+          "taal",
+          "schrijven",
+          "grammatica",
+          "lezen",
+          "punt"
+        ],
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Deze zin bestaat uit zes woorden.",
+          "De juf vroeg om een zin te maken met het woord fiets."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "taal",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
+      },
+      {
+        "sense_id": "zin#2",
+        "definition": "Zin is het verlangen of de goesting om iets te doen.",
+        "signaalwoorden": [
+          "goesting",
+          "verlangen",
+          "heb",
+          "hebt",
+          "hebben",
+          "geen"
+        ],
+        "pos": "noun",
+        "examples": [
+          "Heb je zin om straks een potje te schaken?",
+          "Ze had geen zin om vroeg op te staan."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "gevoel",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T18:21:48.345996",
-      "updated_at": "2026-07-28T18:21:48.347996",
+      "updated_at": "2026-10-10T10:45:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-28T18:21:48.347996",
-      "usage_count": 1,
+      "last_used_at": "2026-10-10T10:45:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T18:21:48.347996",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-10T10:45:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13223,6 +13329,144 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-28T18:21:48.347996"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "zin#1",
+        "old_value": "unknown",
+        "new_value": "Een zin is een reeks woorden die samen een afgeronde gedachte uitdrukt, meestal beginnend met een hoofdletter en eindigend met een punt.",
+        "timestamp": "2026-10-10T10:45:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zin#2",
+        "old_value": null,
+        "new_value": "Zin is het verlangen of de goesting om iets te doen.",
+        "timestamp": "2026-10-10T10:45:00.000000"
+      }
+    ]
+  },
+  "klok": {
+    "senses": [
+      {
+        "sense_id": "klok#1",
+        "definition": "Een klok is een apparaat dat de tijd aangeeft, met wijzers of cijfers.",
+        "signaalwoorden": [
+          "tijd",
+          "wijzers",
+          "uur",
+          "laat",
+          "wekker",
+          "minuten"
+        ],
+        "pos": "noun",
+        "examples": [
+          "Hij keek op de klok om te zien hoe laat het was.",
+          "De klok in de keuken loopt vijf minuten voor."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "apparaat",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "tijd",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "uur",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      },
+      {
+        "sense_id": "klok#2",
+        "definition": "Een klok is een grote metalen bel, bijvoorbeeld in een kerktoren, die je laat luiden om een signaal te geven.",
+        "signaalwoorden": [
+          "kerk",
+          "toren",
+          "luiden",
+          "bel",
+          "beieren"
+        ],
+        "pos": "noun",
+        "examples": [
+          "Om twaalf uur luidde de klok van de kerk.",
+          "De klokken beierden voor het huwelijk."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "geluid",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-10T10:45:00.000000",
+      "updated_at": "2026-10-10T10:45:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-10-10T10:45:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-10T10:45:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "klok"
+        },
+        "timestamp": "2026-10-10T10:45:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "klok#1",
+        "old_value": null,
+        "new_value": "Een klok is een apparaat dat de tijd aangeeft, met wijzers of cijfers.",
+        "timestamp": "2026-10-10T10:45:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "klok#2",
+        "old_value": null,
+        "new_value": "Een klok is een grote metalen bel, bijvoorbeeld in een kerktoren, die je laat luiden om een signaal te geven.",
+        "timestamp": "2026-10-10T10:45:00.000000"
       }
     ]
   },
@@ -13239,8 +13483,16 @@
             "target": "aanduiding",
             "confidence": 0.8,
             "source": "wikipedia",
-            "status": "unverified",
+            "status": "rejected",
             "created_at": "2026-08-20T18:49:38.747169"
+          },
+          {
+            "type": "is_a",
+            "target": "bordspel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-10T15:28:37.379783"
           }
         ],
         "source": "wikipedia",
@@ -13251,12 +13503,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-28T18:21:48.370870",
-      "updated_at": "2026-08-20T18:49:38.747169",
+      "updated_at": "2026-10-10T15:28:37.379799",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-08-20T18:49:38.747169",
-      "usage_count": 2,
+      "last_used_at": "2026-10-10T15:28:37.379799",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-07-28T18:21:48.370870",
@@ -13264,6 +13516,10 @@
         },
         {
           "timestamp": "2026-08-20T18:49:38.747169",
+          "confidence": 0.8
+        },
+        {
+          "timestamp": "2026-10-10T15:28:37.379799",
           "confidence": 0.8
         }
       ]
@@ -13292,6 +13548,29 @@
         "old_value": "unknown",
         "new_value": "Schaken is een aanduiding voor een groep verwante bordspellen. Dit artikel beschrijft het westers schaakspel, een strategisch bordspel voor twee spelers.",
         "timestamp": "2026-08-20T18:49:38.747169"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "schaken#1",
+        "relation": {
+          "type": "is_a",
+          "target": "aanduiding"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-10-10T15:27:06.654069"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "schaken#1",
+        "relation": {
+          "type": "is_a",
+          "target": "bordspel",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-10-10T15:28:37.379794"
       }
     ]
   },
@@ -13642,28 +13921,53 @@
     "senses": [
       {
         "sense_id": "partijtje#1",
-        "definition": "unknown",
+        "definition": "Een partijtje is een korte, meestal ontspannen wedstrijd of spel, zoals een partijtje schaak, dammen of voetbal.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Na het eten speelden ze een partijtje dammen.",
+          "Zin in een partijtje voetbal in het park?"
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "bordspel",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "synonym",
+            "target": "potje",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-07-31T05:07:59.947422",
-      "updated_at": "2026-07-31T05:07:59.948407",
+      "updated_at": "2026-10-10T10:45:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-31T05:07:59.948407",
-      "usage_count": 1,
+      "last_used_at": "2026-10-10T10:45:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-31T05:07:59.948407",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-10T10:45:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13683,6 +13987,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-31T05:07:59.948407"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "partijtje#1",
+        "old_value": "unknown",
+        "new_value": "Een partijtje is een korte, meestal ontspannen wedstrijd of spel, zoals een partijtje schaak, dammen of voetbal.",
+        "timestamp": "2026-10-10T10:45:00.000000"
       }
     ]
   },
@@ -13690,28 +14002,83 @@
     "senses": [
       {
         "sense_id": "potje#1",
-        "definition": "unknown",
+        "definition": "Een potje is een spelletje of wedstrijd, zoals een potje schaken of kaarten.",
+        "signaalwoorden": [
+          "schaken",
+          "kaarten",
+          "dammen",
+          "spelen",
+          "spel",
+          "winnen"
+        ],
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "examples": [
+          "Zullen we een potje schaken?",
+          "Hij won het potje kaarten met gemak."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "partijtje",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "schaak",
+            "confidence": 0.5,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
+      },
+      {
+        "sense_id": "potje#2",
+        "definition": "Een potje is een kleine pot, bijvoorbeeld van glas, om iets in te bewaren zoals jam of kruiden.",
+        "signaalwoorden": [
+          "jam",
+          "honing",
+          "glas",
+          "deksel",
+          "kruiden",
+          "bewaren"
+        ],
+        "pos": "noun",
+        "examples": [
+          "Ze opende een potje aardbeienjam.",
+          "Op de plank stonden potjes met kruiden."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-07-31T05:08:09.220373",
-      "updated_at": "2026-07-31T05:08:09.221374",
+      "updated_at": "2026-10-10T10:45:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-07-31T05:08:09.221374",
-      "usage_count": 1,
+      "last_used_at": "2026-10-10T10:45:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-31T05:08:09.221374",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-10T10:45:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -13731,6 +14098,22 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-31T05:08:09.221374"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "potje#1",
+        "old_value": "unknown",
+        "new_value": "Een potje is een spelletje of wedstrijd, zoals een potje schaken of kaarten.",
+        "timestamp": "2026-10-10T10:45:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "potje#2",
+        "old_value": null,
+        "new_value": "Een potje is een kleine pot, bijvoorbeeld van glas, om iets in te bewaren zoals jam of kruiden.",
+        "timestamp": "2026-10-10T10:45:00.000000"
       }
     ]
   },
@@ -13765,12 +14148,12 @@
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": [],
-        "status": "unverified"
+        "status": "rejected"
       }
     ],
     "metadata": {
       "created_at": "2026-07-31T20:06:57.974311",
-      "updated_at": "2026-08-01T09:01:09.003682",
+      "updated_at": "2026-10-10T15:27:25.978160",
       "sources": [
         "user",
         "wikipedia"
@@ -13812,6 +14195,14 @@
         "old_value": null,
         "new_value": "Een natuurkundige of fysicus/fysica is een wetenschappelijk onderzoeker die de natuurkunde beoefent. Het natuur in natuurkunde heeft betrekking op de niet-levende natuur.",
         "timestamp": "2026-08-01T09:01:09.003682"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "fysica#2",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-10-10T15:27:25.978168"
       }
     ]
   },
@@ -13968,28 +14359,84 @@
     "senses": [
       {
         "sense_id": "morgen#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
+        "definition": "Morgen is de dag na vandaag.",
+        "signaalwoorden": [
+          "vandaag",
+          "gisteren",
+          "overmorgen",
+          "straks",
+          "dag",
+          "plannen"
+        ],
+        "pos": "adv",
+        "examples": [
+          "Morgen gaan we naar zee.",
+          "Ik bel je morgen terug."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "dag",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
         "audit_log": [],
-        "status": "unverified"
+        "status": "confirmed"
+      },
+      {
+        "sense_id": "morgen#2",
+        "definition": "De morgen is het eerste deel van de dag, van het opstaan tot de middag; een ander woord voor ochtend.",
+        "signaalwoorden": [
+          "ochtend",
+          "vroeg",
+          "ontbijt",
+          "opstaan",
+          "goedemorgen",
+          "middag"
+        ],
+        "pos": "noun",
+        "examples": [
+          "Ze werkt graag in de vroege morgen.",
+          "Goede morgen, heb je goed geslapen?"
+        ],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "dag",
+            "confidence": 0.7,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
       "created_at": "2026-08-01T17:29:22.339936",
-      "updated_at": "2026-08-01T17:29:22.340964",
+      "updated_at": "2026-10-10T10:45:00.000000",
       "sources": [
-        "auto"
+        "auto",
+        "user"
       ],
-      "last_used_at": "2026-08-01T17:29:22.340964",
-      "usage_count": 1,
+      "last_used_at": "2026-10-10T10:45:00.000000",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-01T17:29:22.340964",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-10T10:45:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14009,6 +14456,22 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-08-01T17:29:22.340964"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "morgen#1",
+        "old_value": "unknown",
+        "new_value": "Morgen is de dag na vandaag.",
+        "timestamp": "2026-10-10T10:45:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "morgen#2",
+        "old_value": null,
+        "new_value": "De morgen is het eerste deel van de dag, van het opstaan tot de middag; een ander woord voor ochtend.",
+        "timestamp": "2026-10-10T10:45:00.000000"
       }
     ]
   },
@@ -14237,8 +14700,16 @@
             "target": "arctische",
             "confidence": 0.8,
             "source": "wikipedia",
-            "status": "unverified",
+            "status": "rejected",
             "created_at": "2026-08-06T14:15:10.401940"
+          },
+          {
+            "type": "is_a",
+            "target": "zoogdier",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-10T15:28:21.117732"
           }
         ],
         "source": "wikipedia",
@@ -14249,16 +14720,20 @@
     ],
     "metadata": {
       "created_at": "2026-08-06T14:15:10.402950",
-      "updated_at": "2026-08-06T14:15:10.403952",
+      "updated_at": "2026-10-10T15:28:21.117750",
       "sources": [
         "wikipedia"
       ],
-      "last_used_at": "2026-08-06T14:15:10.403952",
-      "usage_count": 1,
+      "last_used_at": "2026-10-10T15:28:21.117750",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-08-06T14:15:10.403952",
           "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-10T15:28:21.117750",
+          "confidence": 0.8
         }
       ]
     },
@@ -14278,6 +14753,29 @@
         "old_value": null,
         "new_value": "De narwal is een arctische tandwalvis die behoort tot de familie van de grondeldolfijnen (Monodontidae). De wetenschappelijke naam van de soort werd in 1758 gepubliceerd door Carl Linnaeus in de tiende editie van Systema naturae.",
         "timestamp": "2026-08-06T14:15:10.403952"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "narwal#1",
+        "relation": {
+          "type": "is_a",
+          "target": "arctische"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-10-10T15:26:58.263015"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "narwal#1",
+        "relation": {
+          "type": "is_a",
+          "target": "zoogdier",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-10-10T15:28:21.117746"
       }
     ]
   },
@@ -14440,7 +14938,7 @@
             "target": "vorm",
             "confidence": 0.9,
             "source": "auto_extract",
-            "status": "unverified",
+            "status": "rejected",
             "created_at": "2026-08-06T18:24:39.211725"
           }
         ],
@@ -14452,7 +14950,7 @@
     ],
     "metadata": {
       "created_at": "2026-08-06T18:24:39.156965",
-      "updated_at": "2026-08-06T18:24:39.158968",
+      "updated_at": "2026-10-10T15:27:13.178474",
       "sources": [
         "wikipedia"
       ],
@@ -14481,6 +14979,18 @@
         "old_value": null,
         "new_value": "Fotosynthese is het vermogen licht-energie om te zetten in chemische energie. Het is een vorm van biosynthese, waarbij energie uit zonlicht wordt gebruikt om gasvormig koolstofdioxide om te zetten in de vaste stof glucose.",
         "timestamp": "2026-08-06T18:24:39.158968"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "fotosynthese#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vorm"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-10-10T15:27:13.178479"
       }
     ]
   },
@@ -14562,32 +15072,52 @@
       }
     ]
   },
-  "betekenissen": {
+  "betekenis": {
     "senses": [
       {
-        "sense_id": "betekenissen#1",
-        "definition": "unknown",
+        "sense_id": "betekenis#1",
+        "definition": "De betekenis van een woord, teken of gebeurtenis is wat het wil zeggen of wat ermee bedoeld wordt.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
-        "audit_log": []
+        "examples": [
+          "Ze zocht de betekenis van het woord op in het woordenboek.",
+          "Veel woorden hebben meer dan één betekenis."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "taal",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "teken",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T10:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
       }
     ],
     "metadata": {
-      "created_at": "2026-08-08T18:30:45.215956",
-      "updated_at": "2026-08-08T18:30:45.216959",
+      "created_at": "2026-10-10T10:45:00.000000",
+      "updated_at": "2026-10-10T10:45:00.000000",
       "sources": [
-        "auto"
+        "user"
       ],
-      "last_used_at": "2026-08-08T18:30:45.216959",
+      "last_used_at": "2026-10-10T10:45:00.000000",
       "usage_count": 1,
       "confidence_history": [
         {
-          "timestamp": "2026-08-08T18:30:45.216959",
-          "confidence": 0.1
+          "timestamp": "2026-10-10T10:45:00.000000",
+          "confidence": 1.0
         }
       ]
     },
@@ -14596,17 +15126,17 @@
         "event_type": "concept_created",
         "source": "system",
         "new_value": {
-          "word": "betekenissen"
+          "word": "betekenis"
         },
-        "timestamp": "2026-08-08T18:30:45.215956"
+        "timestamp": "2026-10-10T10:45:00.000000"
       },
       {
         "event_type": "sense_created",
-        "source": "auto",
-        "sense_id": "betekenissen#1",
+        "source": "user",
+        "sense_id": "betekenis#1",
         "old_value": null,
-        "new_value": "unknown",
-        "timestamp": "2026-08-08T18:30:45.216959"
+        "new_value": "De betekenis van een woord, teken of gebeurtenis is wat het wil zeggen of wat ermee bedoeld wordt.",
+        "timestamp": "2026-10-10T10:45:00.000000"
       }
     ]
   },
@@ -15711,6 +16241,278 @@
         "old_value": "unknown",
         "new_value": "Een kast is een meubelstuk met deuren, planken of laden om spullen in op te bergen.",
         "timestamp": "2026-10-09T18:35:00.000000"
+      }
+    ]
+  },
+  "muziekinstrument": {
+    "senses": [
+      {
+        "sense_id": "muziekinstrument#1",
+        "definition": "Een muziekinstrument is een voorwerp dat speciaal gemaakt is om muziek mee te spelen, zoals een piano, gitaar of fluit.",
+        "pos": "noun",
+        "examples": [
+          "De piano is een populair muziekinstrument.",
+          "Hij leerde als kind al een muziekinstrument bespelen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "instrument",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-10T17:30:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "muziek",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-10T17:30:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-10T17:30:00.000000",
+      "updated_at": "2026-10-10T17:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-10-10T17:30:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-10T17:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "muziekinstrument"
+        },
+        "timestamp": "2026-10-10T17:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "muziekinstrument#1",
+        "old_value": null,
+        "new_value": "Een muziekinstrument is een voorwerp dat speciaal gemaakt is om muziek mee te spelen, zoals een piano, gitaar of fluit.",
+        "timestamp": "2026-10-10T17:30:00.000000"
+      }
+    ]
+  },
+  "snaarinstrument": {
+    "senses": [
+      {
+        "sense_id": "snaarinstrument#1",
+        "definition": "Een snaarinstrument is een muziekinstrument waarbij het geluid ontstaat door gespannen snaren te laten trillen, door ze aan te slaan, te tokkelen of er met een strijkstok over te gaan.",
+        "pos": "noun",
+        "examples": [
+          "De gitaar en de viool zijn allebei een snaarinstrument.",
+          "Bij een snaarinstrument moet je de snaren regelmatig stemmen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "muziekinstrument",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-10T17:30:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "has_part",
+            "target": "snaar",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-10T17:30:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-10T17:30:00.000000",
+      "updated_at": "2026-10-10T17:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-10-10T17:30:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-10T17:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "snaarinstrument"
+        },
+        "timestamp": "2026-10-10T17:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "snaarinstrument#1",
+        "old_value": null,
+        "new_value": "Een snaarinstrument is een muziekinstrument waarbij het geluid ontstaat door gespannen snaren te laten trillen, door ze aan te slaan, te tokkelen of er met een strijkstok over te gaan.",
+        "timestamp": "2026-10-10T17:30:00.000000"
+      }
+    ]
+  },
+  "sport": {
+    "senses": [
+      {
+        "sense_id": "sport#1",
+        "definition": "Sport is een lichamelijke activiteit die je volgens vaste regels beoefent, voor ontspanning, gezondheid of in wedstrijdverband.",
+        "pos": "noun",
+        "examples": [
+          "Voetbal is de populairste sport in België.",
+          "Ze doet elke week aan sport om fit te blijven."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "activiteit",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-10-10T17:30:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "lichaam",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T17:30:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-10T17:30:00.000000",
+      "updated_at": "2026-10-10T17:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-10-10T17:30:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-10T17:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "sport"
+        },
+        "timestamp": "2026-10-10T17:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "sport#1",
+        "old_value": null,
+        "new_value": "Sport is een lichamelijke activiteit die je volgens vaste regels beoefent, voor ontspanning, gezondheid of in wedstrijdverband.",
+        "timestamp": "2026-10-10T17:30:00.000000"
+      }
+    ]
+  },
+  "plaats": {
+    "senses": [
+      {
+        "sense_id": "plaats#1",
+        "definition": "Een plaats is een bewoonde plek zoals een dorp, gemeente of stad.",
+        "pos": "noun",
+        "examples": [
+          "Aartrijke is een kleine plaats in West-Vlaanderen.",
+          "In welke plaats ben je geboren?"
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "plek",
+            "confidence": 0.8,
+            "source": "user",
+            "created_at": "2026-10-10T17:30:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "gebied",
+            "confidence": 0.6,
+            "source": "user",
+            "created_at": "2026-10-10T17:30:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-10T17:30:00.000000",
+      "updated_at": "2026-10-10T17:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-10-10T17:30:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-10T17:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "plaats"
+        },
+        "timestamp": "2026-10-10T17:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "plaats#1",
+        "old_value": null,
+        "new_value": "Een plaats is een bewoonde plek zoals een dorp, gemeente of stad.",
+        "timestamp": "2026-10-10T17:30:00.000000"
       }
     ]
   },

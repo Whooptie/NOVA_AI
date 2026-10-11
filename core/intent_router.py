@@ -1,6 +1,16 @@
 # core/intent_router.py
 import re
 
+# Gedeelde stopwoordenlijst (5 oktober 2026, zie nova_state.md punt
+# 30a). Hier gebruikt door detect_relation_check()'s patroon
+# "is X een Y" om zinnen als "is het een goed idee" niet als
+# kennisvraag op te vangen. Defensief geïmporteerd: ontbreekt het
+# bestand, dan valt de check terug op de kleine lokale lijst daar.
+try:
+    from core.nl_stopwoorden import STOPWOORDEN as _GEDEELDE_STOPWOORDEN
+except Exception:
+    _GEDEELDE_STOPWOORDEN = frozenset()
+
 C_RESET = "\033[0m"
 C_GREEN = "\033[92m"
 C_BLUE = "\033[94m"
@@ -1635,6 +1645,49 @@ class IntentRouter:
     # ---------------------------------------------------------
     # Time
     # ---------------------------------------------------------
+    # Zinsbeginnen die een KENNISVRAAG over een woord inleiden (9
+    # oktober 2026, nova_state.md punt 30c). detect_time() staat in
+    # _build_intent_tabel_deel1(), dus vóór detect_definition() in
+    # route() -- zonder deze lijst ving de losse-woordcheck hieronder
+    # ook "waarop lijkt tijd", "wat is tijd" en "wat is een klok" op
+    # als tijdsvraag. Geldt ENKEL voor die losse-woordcheck: de vaste
+    # zinnen ("wat is de tijd", "hoe laat is het") worden eerder
+    # gecontroleerd en blijven dus altijd werken.
+    _SEMANTISCHE_VRAAG_PREFIXEN = (
+        "waarop lijkt ", "waar lijkt ", "wat lijkt op ",
+        "wat is ", "wat zijn ", "wat betekent ", "wat betekend ",
+        "betekent ", "betekend ", "definieer", "definitie van ",
+        "wat zijn synoniemen van ", "wat is een synoniem van ", "synoniemen van ",
+        "wat is het tegenovergestelde van ", "wat zijn antoniemen van ", "tegendeel van ",
+        "waarvoor gebruik je ", "waarvoor is ", "waarvoor dient ",
+        "wat veroorzaakt ", "wat zorgt voor ",
+        "wat weet je ", "vertel me alles over ", "vertel alles over ",
+        "wiki ", "leer wikipedia ", "zoek op ",
+        "vergelijk ", "welke soorten ", "noem soorten ", "welke onderdelen ",
+    )
+
+    _RELATIEVRAAG_LIDWOORD_RE = re.compile(r"^is\s+een\s+\w+\s+(?:een|onderdeel\s+van)\s+")
+    _RELATIEVRAAG_KAAL_RE = re.compile(r"^is\s+(\w+)\s+een\s+")
+    _RELATIEVRAAG_VERBAND_RE = re.compile(
+        r"^(?:is|heeft)\s+(?:een\s+)?(\w+)\s+(?:gerelateerd\s+aan|(?:iets\s+)?te\s+maken\s+met)\s+"
+    )
+
+    def _lijkt_relatievraag(self, t):
+        """
+        True als de zin de VORM heeft van een kennisvraag over twee
+        begrippen ("is een klok een apparaat", "is tijd een begrip",
+        "heeft tijd iets te maken met geld"). detect_time() gebruikt dit
+        om zo'n vraag niet als tijdsvraag op te vangen. Puur een
+        zinsvorm herkennen; geen woordbetekenis, geen ML.
+        """
+        if self._RELATIEVRAAG_LIDWOORD_RE.match(t):
+            return True
+        for patroon in (self._RELATIEVRAAG_KAAL_RE, self._RELATIEVRAAG_VERBAND_RE):
+            m = patroon.match(t)
+            if m and m.group(1) not in self._GEEN_RELATIE_ONDERWERP:
+                return True
+        return False
+
     def detect_time(self, text):
         t = text.lower().strip()
         
@@ -1651,7 +1704,14 @@ class IntentRouter:
             self.event_bus.publish("intent_time_query", {"text": text})
             return True
 
-        # Losse woorden — alleen als heel woord, niet als deel van een ander woord
+        # Losse woorden — alleen als heel woord, niet als deel van een ander woord.
+        # NIET bij een kennisvraag over het woord zelf (zie
+        # _SEMANTISCHE_VRAAG_PREFIXEN hierboven): "waarop lijkt tijd" en
+        # "wat is een klok" moeten naar detect_definition(), niet naar de klok.
+        if t.startswith(self._SEMANTISCHE_VRAAG_PREFIXEN):
+            return False
+        if self._lijkt_relatievraag(t):
+            return False
         time_words = ["tijd", "klok"]
         words_in_text = t.split()
         if any(w in words_in_text for w in time_words):
@@ -2053,6 +2113,19 @@ class IntentRouter:
     # ---------------------------------------------------------
     # Relation-check ("is een hond een dier")
     # ---------------------------------------------------------
+    # Woorden die nooit het onderwerp X zijn in "is X een Y" (patroon
+    # 1b hieronder). De gedeelde stopwoordenlijst plus een kleine lokale
+    # aanvulling, voor het geval het gedeelde bestand ontbreekt of deze
+    # woorden er niet in staan. "nova" erbij: "is nova een ai" is een
+    # identiteitsvraag, geen vraag aan concepts.json.
+    _GEEN_RELATIE_ONDERWERP = frozenset(_GEDEELDE_STOPWOORDEN) | frozenset({
+        "het", "dit", "dat", "die", "deze", "er", "hier", "daar",
+        "je", "jij", "u", "hij", "zij", "ze", "we", "wij", "jullie",
+        "alles", "iets", "niets", "niks", "wat", "wie",
+        "dan", "nu", "ook", "nog", "wel", "niet", "toch", "zo",
+        "nova",
+    })
+
     def detect_relation_check(self, text):
         t = text.lower().strip().rstrip("?.")
 
@@ -2069,6 +2142,28 @@ class IntentRouter:
             # (source) als concept-kandidaat, voor consistentie/
             # voorspelbaarheid i.p.v. een per-geval-verschillende
             # inschatting van "welke term is interessanter".
+            self._laatste_concept_kandidaat = m.group(1).strip()
+            return True
+
+        # 1b. "is X een Y" -- zonder lidwoord vóór X (9 oktober 2026,
+        # nova_state.md punt 30c). Nodig voor werkwoorden en woorden die
+        # je zonder "een" gebruikt: "is wandelen een activiteit". Na
+        # patroon 1 (dat "is een X een Y" al opving) en vóór patroon 2.
+        # Breed patroon, dus X mag geen stopwoord zijn: anders zou
+        # "is het een goed idee" / "is er een probleem" / "is dit een
+        # test" als kennisvraag gelezen worden.
+        m = re.match(r"is\s+(\w+)\s+een\s+([\w\s]+)", t)
+        if m and m.group(1) not in self._GEEN_RELATIE_ONDERWERP:
+            dbg(f"{C_BLUE}→ relation_check (patroon 'is X een Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
+            self.event_bus.publish("intent_relation_check", {
+                "source": m.group(1).strip(),
+                "target": m.group(2).strip(),
+                # Kevin typte GEEN "een" vóór X -- het antwoord spiegelt
+                # dat ("Ja, wandelen is een activiteit" i.p.v. "Ja, een
+                # wandelen ..."). De andere patronen geven dit veld niet
+                # mee; chat.py gebruikt dan True als standaard.
+                "lidwoord": False,
+            })
             self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 

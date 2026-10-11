@@ -1227,7 +1227,7 @@ class ReasoningEngine:
     # ---------------------------------------------------------
     # 7.4 Hulpfuncties voor uitleg
     # ---------------------------------------------------------
-    def explain_is_a(self, source: str, target: str) -> str:
+    def explain_is_a(self, source: str, target: str, lidwoord: bool = True) -> str:
         """
         Geeft een leesbare uitleg van het redeneerpad.
         Voorbeeld: "hond is een dier, want: hond → dier → levend wezen"
@@ -1240,18 +1240,26 @@ class ReasoningEngine:
         kale antwoord, want dan is er niets zinvols om bij te tonen.
         """
         found, pad = self.is_a_chained(source, target)
+
+        # 10 oktober 2026: "een" vóór source enkel als Kevin het zelf
+        # typte (lidwoord=True, de standaard). Bij "is wandelen een
+        # activiteit" (lidwoord=False) spiegelt het antwoord die vorm:
+        # "Ja, wandelen is een activiteit". Puur de vraagvorm volgen,
+        # geen woordsoort-gok.
+        een = "een " if lidwoord else ""
+
         if not found:
             return self._geen_bewijs_met_alternatief(
                 source, target, relation_type="is_a",
                 sjabloon="Ik kan niet bewijzen dat '{source}' een '{target}' is, "
-                         "maar ik weet wel dat een {source} een {alt} is."
+                         "maar ik weet wel dat " + een + "{source} een {alt} is."
             )
 
         if len(pad) == 2:
-            return f"Ja, een {source} is een {target}."
+            return f"Ja, {een}{source} is een {target}."
 
         stappen = " → ".join(pad)
-        return f"Ja, een {source} is een {target}, want: {stappen}."
+        return f"Ja, {een}{source} is een {target}, want: {stappen}."
 
     # ---------------------------------------------------------
     # 7.4b Hulpfunctie voor "waarom niet"-uitleg (idee #5)
@@ -2306,8 +2314,8 @@ class SemanticConceptsModule:
         found, _ = self.reasoning_engine.is_a_chained(source, target)
         return found
 
-    def explain_is_a(self, source, target):
-        return self.reasoning_engine.explain_is_a(source, target)
+    def explain_is_a(self, source, target, lidwoord=True):
+        return self.reasoning_engine.explain_is_a(source, target, lidwoord=lidwoord)
 
     def part_of(self, source, target):
         # Analoog aan is_a hierboven: eerst directe check, dan chaining.
