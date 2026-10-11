@@ -730,3 +730,22 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T17:24:23.665154"}
 {"text": "leidt regen tot uitglijden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0577, "bron": "model_fallback", "tijdstip": "2026-10-11T17:24:33.934202"}
 {"text": "veroorzaakt regen modder", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T17:24:40.710773"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T18:41:55.063600"}
+{"text": "python bestaat sinds 1991", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T18:42:02.350228"}
+{"text": "wanneer ontstond python", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T18:42:18.587857"}
+{"text": "hoe lang bestaat python al", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0023, "bron": "model_fallback", "tijdstip": "2026-10-11T18:42:27.116622"}
+{"text": "sinds wanneer bestaat python", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T18:42:35.890183"}
+{"text": "het internet ontstond in 1983", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0213, "bron": "model_fallback", "tijdstip": "2026-10-11T18:42:43.482394"}
+{"text": "wanneer is internet ontstaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.035, "bron": "model_fallback", "tijdstip": "2026-10-11T18:42:53.364074"}
+{"text": "machine learning is ontstaan in 1959", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-10-11T18:43:00.729155"}
+{"text": "hoe lang bestaat machine learning al", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0023, "bron": "model_fallback", "tijdstip": "2026-10-11T18:43:09.079283"}
+{"text": "python bestaat sinds 1990", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T18:43:16.834621"}
+{"text": "python bestaat sinds 1991", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T18:43:23.795208"}
+{"text": "wanneer ontstond xyzwoord", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T18:43:31.226145"}
+{"text": "wanneer is kerst", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-10-11T18:43:42.532236"}
+{"text": "hoeveel dagen tot kerst", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-11T18:43:49.607534"}
+{"text": "wanneer is de paasvakantie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0432, "bron": "model_fallback", "tijdstip": "2026-10-11T18:43:55.650026"}
+{"text": "ik bestaat sinds 1991", "signaal": "focus", "model_signaal": "focus", "marge": 0.0363, "bron": "model_fallback", "tijdstip": "2026-10-11T18:44:03.342783"}
+{"text": "python bestaat sinds 3000", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T18:44:13.560835"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-11T18:44:34.921063"}
+{"text": "wanneer ontstond python", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T18:44:43.132104"}

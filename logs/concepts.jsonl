@@ -287,3 +287,5 @@
 {"timestamp": "2026-10-11T15:11:14.393866", "event_type": "concept_created", "word": "modder", "source": "system", "new_value": {"word": "modder"}}
 {"timestamp": "2026-10-11T15:11:36.151466", "event_type": "concept_created", "word": "uitglijden", "source": "system", "new_value": {"word": "uitglijden"}}
 {"timestamp": "2026-10-11T15:19:04.969333", "event_type": "concept_created", "word": "slecht humeur", "source": "system", "new_value": {"word": "slecht humeur"}}
+{"timestamp": "2026-10-11T16:42:43.488707", "event_type": "concept_created", "word": "internet", "source": "system", "new_value": {"word": "internet"}}
+{"timestamp": "2026-10-11T16:44:03.354383", "event_type": "concept_created", "word": "bestaat", "source": "system", "new_value": {"word": "bestaat"}}

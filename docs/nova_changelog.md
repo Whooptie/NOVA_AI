@@ -1650,3 +1650,25 @@ Vijf zinnen uit unmatched_intents.jsonl die geen detector haalden. Alles in inte
 (h) Geen lege ketens meer in concepts.json (10 oktober 2026): 240 concepten; toegevoegd muziekinstrument, snaarinstrument, sport, plaats; vier foute extractie-relaties weerlegd (narwal→arctische, schaken→aanduiding, fotosynthese→vorm, fysica#2), twee vervangen (narwal→zoogdier, schaken→bordspel). Controlecommando na elke nieuwe reeks (verwacht `[]`):
 docker exec nova-ai python -c "import json;d=json.load(open('/app/data/concepts.json'));print(sorted({r['target'] for c in d.values() for s in c['senses'] if s.get('status')!='rejected' for r in s['relations'] if r.get('status')!='rejected' and r['target'] not in d}))"
 Bekend gat: Wikipedia/auto-extract pakt soms een bijvoeglijk naamwoord (arctische, wetenschappelijk) of vaag woord (aanduiding, vorm) als is_a-doel.
+
+---
+
+## ✅ Semantic Fase 9.1 — Temporal Semantics: ontstaansjaar (11 oktober 2026)
+
+Eerste onderdeel van Fase 9, gebouwd na een ontwerpgesprek: eerst pytest groen (31 nieuwe tests, totaal 1368), daarna live bevestigd. Werking en ontwerp: zie `nova_state.md`, modules-tabel (`temporal_semantics.py`).
+
+**Ontwerpkeuzes:**
+- Het jaar zit als veld `ontstaan` OP de sense (zelfde principe als Fase 8: bestaande structuur hergebruiken, geen aparte opslag), zodat tombstone, trust-state en audit blijven werken.
+- Uit de oorspronkelijke roadmap is `predict_future_concepts()` geschrapt (voorspellen is niet symbolisch) en `get_current_trends()` vervalt voorlopig.
+- Alleen hele jaartallen; onderwerp max. 3 woorden; stopwoord als onderwerp wordt geweigerd; toekomstjaren en jaar 0 worden niet opgeslagen.
+- Routing: eigen stap 2G in `route()`, direct na 2F. Zonder die voorrang vangen `detect_holiday`/`detect_calendar` de vragen op en `_detect_relation()` (stap 9) de leerzinnen.
+
+**Bouwverslag:**
+- `semantic.py`: `SenseEngine.set_ontstaan()`/`get_ontstaan()` + doorverwijzingen in `SemanticConceptsModule`. Audit-event `ontstaan_set` met oude en nieuwe waarde.
+- `intent_router.py`: `detect_temporal()` + stap 2G.
+- Nieuwe module `modules/knowledge/temporal_semantics.py` (auto-discovery, antwoordt via `layer4_response`).
+- `tests/test_temporal_ontstaan.py`: 31 tests.
+
+**Live bevestigd (battleserver):** python 1991 leren en terugvragen in alle vier de vraagvormen ("35 jaar"), internet 1983, machine learning 1959, aanpassen 1991→1990→1991 met melding van de oude waarde, onbekend woord met leeruitleg, "wanneer is kerst" / "hoeveel dagen tot kerst" / "wanneer is de paasvakantie" ongewijzigd, "ik bestaat sinds 1991" en "python bestaat sinds 3000" niet opgeslagen, jaar bleef bewaard na `/reboot`. `concepts.json` bevat het veld en het audit-log.
+
+**Nog open:** label voor topic `ontstaan` in `emergence_engine.py`; Fase 9.2 en 9.3.

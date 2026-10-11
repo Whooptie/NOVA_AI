@@ -453,6 +453,58 @@ class SenseEngine:
             return []
         return concept.get("senses", [])
 
+    # ---------------------------------------------------------
+    # Temporal Semantics, Fase 9.1 (ontstaansjaar per woord)
+    #
+    # Het jaar wordt opgeslagen als optioneel veld "ontstaan" OP DE SENSE
+    # zelf (geen aparte opslag), zodat tombstone/hard-delete, trust-state
+    # en het audit-log automatisch blijven werken.
+    # ---------------------------------------------------------
+    def set_ontstaan(self, word: str, jaar: int, source: str = "user") -> dict:
+        """
+        Slaat het ontstaansjaar op bij de eerste niet-afgewezen sense van
+        het woord (bestaat die niet, dan wordt een 'unknown'-sense gemaakt).
+        Geeft {"jaar": nieuw, "oud": vorig_jaar_of_None} terug.
+        Een nieuwe waarde overschrijft een oude; de oude blijft in het audit-log.
+        """
+        word = word.lower().strip()
+        concept = self.store.ensure_concept(word)
+
+        sense = None
+        for s in concept["senses"]:
+            if s.get("status") != "rejected":
+                sense = s
+                break
+        if sense is None:
+            sense = self.add_sense(word, "unknown", source=source, confidence=1.0)
+            if sense.get("blocked"):
+                sense = None
+        if sense is None:
+            return {"jaar": None, "oud": None, "blocked": True}
+
+        oud_dict = sense.get("ontstaan")
+        oud = oud_dict.get("jaar") if oud_dict else None
+        sense["ontstaan"] = {
+            "jaar": int(jaar),
+            "bron": source,
+            "status": "confirmed" if source == "user" else "unverified",
+        }
+        self._audit_sense(concept, sense, "ontstaan_set", source,
+                          old_value=oud, new_value=int(jaar))
+        concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+        self.store.save()
+        return {"jaar": int(jaar), "oud": oud}
+
+    def get_ontstaan(self, word: str) -> dict | None:
+        """Geeft {"jaar", "bron", "status"} van de eerste niet-afgewezen sense die er een heeft, anders None."""
+        for s in self.get_senses(word):
+            if s.get("status") == "rejected":
+                continue
+            o = s.get("ontstaan")
+            if o and o.get("jaar") is not None:
+                return dict(o)
+        return None
+
     def get_best_definition(self, word: str, context_words: list[str] | None = None) -> str | None:
         senses = self.get_senses(word)
         # Verwijderpad (punt 1/2, 6 augustus 2026): een afgewezen sense
@@ -2385,6 +2437,13 @@ class SemanticConceptsModule:
 
     def get_senses(self, word):
         return self.sense_engine.get_senses(word)
+
+    # Temporal Semantics, Fase 9.1
+    def set_ontstaan(self, word, jaar, source="user"):
+        return self.sense_engine.set_ontstaan(word, jaar, source=source)
+
+    def get_ontstaan(self, word):
+        return self.sense_engine.get_ontstaan(word)
 
     def get_meaning(self, word, context_words=None):
         # 1. normaliseer meervoud → enkelvoud

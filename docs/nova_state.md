@@ -30,7 +30,7 @@ Gespecialiseerde externe modellen (vision, audio, ML-classificatie) mogen later 
 
 ## 📁 Projectstructuur
 
-```NOVA_AI/
+```
 NOVA_AI/
 ├── core/
 │   ├── event_bus.py
@@ -75,6 +75,8 @@ NOVA_AI/
 │   │   └── chess_engine.py
 │   ├── debug/
 │   │   └── debug_commands.py
+│   ├── experimental/
+│   │   └── emergence_engine.py       # Layer 7
 │   ├── help/
 │   │   ├── help.py
 │   │   └── topics/
@@ -85,6 +87,7 @@ NOVA_AI/
 │   ├── knowledge/
 │   │   ├── concept_overview.py
 │   │   ├── contradiction_checker.py
+│   │   ├── temporal_semantics.py
 │   │   ├── topic_suggestions.py
 │   │   └── wikipedia_teacher.py
 │   ├── learning/
@@ -107,8 +110,7 @@ NOVA_AI/
 │   │   ├── sentiment_uncertain.jsonl
 │   │   ├── sentiment_hertraining_status.json
 │   │   ├── sentiment_training_log.jsonl
-│   │   ├── kandidaat_suggesties.py
-│   │   └── kandidaat_suggesties_gedaan.json
+│   │   └── kandidaat_suggesties.py
 │   └── response_learning/
 │       ├── variant_feedback_logger.py
 │       └── variant_kiezer.py
@@ -145,6 +147,7 @@ NOVA_AI/
 │       ├── style_profiles.json
 │       └── gesture_profiles.json
 ├── data/
+│   ├── backups/                      # periodieke kopieën van interactions.db/.jsonl
 │   ├── chess_game.json
 │   ├── chess_settings.json
 │   ├── chess_stats.json
@@ -152,6 +155,7 @@ NOVA_AI/
 │   ├── context_log.jsonl
 │   ├── contradiction_state.json
 │   ├── conversation_state.json
+│   ├── emergence_topic_cooldown_state.json
 │   ├── fallback_reflectie_patronen.json
 │   ├── gecorrigeerde_voorbeelden.jsonl
 │   ├── insight_feedback.json
@@ -159,21 +163,47 @@ NOVA_AI/
 │   ├── intent_classifier_vectorizer.pkl
 │   ├── interactions.db
 │   ├── interactions.jsonl
+│   ├── interactions_<datum>.jsonl    # gearchiveerde delen
 │   ├── interruption_patterns.json
 │   ├── kevin_profile.json
 │   ├── layer0_gebruikt.jsonl
 │   ├── onbekende_correcties.jsonl
 │   ├── patterns_layer2.json
+│   ├── session_watcher_state.json
 │   ├── training_data.json
 │   ├── unmatched_intents.jsonl
 │   ├── variant_feedback.jsonl
 │   ├── weather_history.json
 │   ├── word_associations.json
 │   └── models/
-│       └── blaze_face_short_range.tflite
+│       ├── blaze_face_short_range.tflite
+│       ├── blobs/                    # Ollama-modelbestanden
+│       └── manifests/                # Ollama: gemma3 4b, phi3.5, qwen2.5 3b
 ├── logs/
 │   ├── nova.log
 │   └── concepts.jsonl
+├── scripts/
+│   ├── cleanup_test_events.py
+│   ├── migrate_trust_state.py
+│   ├── test_atomic_save.py
+│   └── vergelijk_lemmatizer.py
+├── tests/                            # pytest, 1368 tests
+├── docs/
+│   ├── nova_state.md
+│   ├── nova_changelog.md
+│   ├── Andere/                       # Nova Roadmap, masterpage, modules-overzicht
+│   └── roadmaps/                     # alle roadmaps (Klaar/, memory/, semantic/)
+├── engines/
+│   └── stockfish/                    # Stockfish-broncode + Windows-exe
+├── config.yaml
+├── conftest.py
+├── Dockerfile
+├── requirements.txt
+├── fallback_extract.jsonl
+├── .env
+├── .gitignore
+├── README.md
+├── LICENSE.txt
 └── main.py
 ```
 
@@ -218,6 +248,7 @@ NOVA_AI/
 | chat.py | ✅ Klaar | Automatische Wikipedia fallback bij onbekend woord. Dode code aanwezig. Nieuw (16 aug 2026, punt 14): `on_memory_query()` — afhandeling van `intent_memory_query` (zie intent_router.py's `detect_memory_query()`), publiceert naar `layer4_response` (niet `chat_response`) zodat het antwoord door de tone-pipeline gaat, zelfde patroon als `on_bridge_query()`/`on_trending_query()`. |
 | response_pipeline.py | ✅ Klaar | **Alleen greeting + fallback gaan door personality/tone pipeline — rest nog niet.** Nieuw (8 juli 2026): `on_fallback()` roept nu ook `_auto_learn_from_sentence()` aan — filtert zelfstandige naamwoorden uit de fallback-zin (via `detect_pos`) en slaat onbekende woorden automatisch op als `unknown`-concept via `semantic.auto_learn()`. **Filter herzien (5 oktober 2026):** gedeelde stopwoordenlijst (`core/nl_stopwoorden.py`) + `AUTO_LEARN_EXTRA_STOPWOORDEN`, tokeniseren op enkel letters, simplemma-woordenboekcontrole tegen typfouten, en vervoegde vormen op -e tegenhouden (nieuwe/grote/werkte). Zie Volgende stappen punt 30(a). Nieuw (28 juli 2026): `PersonalityEngine` wordt hier aangemaakt maar stond nergens in `event_bus.modules` — één regel `event_bus.register_module("personality", self.personality)` toegevoegd, nodig voor `conversation_engine.py`'s `probeer_mood_observatie()`. `on_fallback()` probeert nu eerst `conversation_engine.probeer_mood_observatie()`, dan `probeer_activiteit_observatie()`, voor het op de kale sjabloon-fallback terugvalt. **Nieuw (20 augustus 2026):** de kale sjabloon-fallback (`_sjablonen_fallback`, 5 varianten) gebruikt nu `variant_kiezer.kies_variant()` i.p.v. rechtstreeks `random.choice()` — sjabloon_naam `fallback_algemeen`, zie sectie "Response Variant Learning". |
 | conversation_engine.py | ✅ Klaar (Fase 1, 28 juli 2026) | Contextuele fallback-conversatie i.p.v. kale "ik snap dat niet"-zin. Geen event-subscriber (zou een tweede, dubbel antwoord naast response_pipeline.py's on_fallback() opleveren) — publieke methodes die door on_fallback() rechtstreeks aangeroepen worden, elk`None` teruggevend als er niets bruikbaars is. `probeer_mood_observatie()` (Layer 6, via `event_bus.modules.get("personality")`): energiek/rustig/overprikkeld o.b.v. current_energy/overstimulation_level-drempels. `probeer_activiteit_observatie()` (Layer 5, via `context_manager`): activiteit + duur. Beide delen één tijdvenster (`HERHALING_DREMPEL_MINUTEN`, 10) i.p.v. een hard "nooit 2x na elkaar"-slot — anders viel Nova tijdens een lange sessie na 1 observatie voorgoed stil. State (`laatste_praatvorm`/`laatste_observatie_tijdstip`) meteen weggeschreven naar `data/conversation_state.json`, blijft dus ook over een `/reboot` heen bestaan. Bewust NIET gebouwd: topic-/kennisdichtheid-terugkoppeling (Layer 7 doet dit al zelf, zie emergence_engine.py) en een "bodemzin" voor meningsvragen (vereist een nog te bouwen patroonherkenner, geen huidige prioriteit). Live getest: activiteit-observatie bevestigd incl. tijdvenster en reboot-persistentie; alle 3 mood-observatie-takken (energiek/rustig/overprikkeld) bevestigd (1 augustus 2026 — overprikkeld-tak vereiste eerst een sync-bugfix, zie `nova_changelog.md` #28). **Nieuw (20 augustus 2026):** alle `random.choice()`-aanroepen (activiteit-opening/-afsluiting, 3× mood-opening + mood-afsluiting) vervangen door `variant_kiezer.kies_variant()` — elk met een eigen sjabloon_naam (de 3 mood-openingen bewust NOOIT onderling vergeleken, want nooit in dezelfde situatie gekozen). Activiteit-opening gebruikt `uitsluiten_indices` om de `{duur}`-variant te vermijden zonder de variant-lijst zelf te verkleinen. Zie sectie "Response Variant Learning". |
+| temporal_semantics.py | ✅ Klaar en live bevestigd (nieuw, 11 oktober 2026) | Semantic Fase 9.1: ontstaansjaar per woord. Leren: "X bestaat (al) sinds 1991" / "X ontstond in 1991" / "X is ontstaan in 1991". Vragen: "wanneer ontstond X" / "wanneer is X ontstaan" / "sinds wanneer bestaat X" / "hoe lang bestaat X al". Jaar staat als optioneel veld `ontstaan` op de eerste niet-afgewezen sense (`SenseEngine.set_ontstaan()`/`get_ontstaan()`, geen aparte opslag, dus tombstone/trust-state/audit blijven werken; geen sense aanwezig → `unknown`-sense). Overschrijven mag; het oude jaar blijft in het audit-log en Nova meldt het. `detect_temporal()` is vroege route()-stap 2G (na 2F, vóór de intent-tabel, anders pakken holiday/calendar/stap 9 deze zinnen). Onderwerp max. 3 woorden en geen stopwoord (`_GEEN_RELATIE_ONDERWERP`); jaar 1 t/m huidig jaar. Antwoordt via `layer4_response`. Events `intent_temporal_leer`/`intent_temporal_query`, topic `ontstaan`. 100% symbolisch. |
 | fallback_reflectie.py | ✅ Klaar (nieuw, 21 september 2026) | Patroon-gebaseerde zin-reflectie bij fallback (ELIZA-achtig: decompositie + reassemblage + voornaamwoord-omkering, 100% symbolisch, geen LLM). Derde probeer-stap in `on_fallback()`'s keten, NA `conversation_engine.py`'s mood/activiteit-observatie en VOOR de kale sjabloon-fallback — zelfde "geef tekst terug of `None`"-patroon, geen eigen event-subscriber. Twee gelaagde vangnetten: decompositie (vaste zinsvormen als "ik ben *"/"ik voel me *"/"ik heb *"/"ik wil *"/"ik denk dat *", eerst geprobeerd, specifieker) en keyword-reflectie (losse trefwoorden als "moe"/"druk"/"blij"/"boos", breder vangnet erna). Patronen zitten volledig in `data/fallback_reflectie_patronen.json` (data, geen code) — nieuwe patronen/keywords toevoegen vereist geen wijziging aan dit bestand. Defensief laden: ontbrekend/corrupt bestand of één ongeldig patroon (bv. kapotte regex) crasht nooit, valt terug op lege patronenlijsten (dan geeft `reflecteer()` altijd `None` terug, `on_fallback()` valt gewoon door). Reassemblage-varianten lopen via `variant_kiezer.kies_variant()`, eigen `sjabloon_naam` per patroon/keyword-groep (bv. `reflectie_ben`, `reflectie_kw_druk`), dus meteen meegenomen in Response Variant Learning. Auto-discovery via `modules/chat/` — geen `module_loader.py`-wijziging nodig. **Bug gevonden en gefixt tijdens bouwen:** `sjabloon.format(**{"1": ...})` gaf `IndexError` — `{1}` is een POSITIONEEL argument, geen keyword; gefixt naar `sjabloon.format("", opgevangen_omgekeerd)`. Getest: 23 pytest-tests (`test_fallback_reflectie.py`) — laden (geldig/ontbrekend/corrupt/deels-ongeldig bestand), beide reflectielagen + hun voorrangsregel (decompositie altijd vóór keyword), voornaamwoord-omkering, randgevallen (lege/`None`/witruimte-input), integratie met `variant_feedback_logger` (aanwezig/afwezig/kapot). Volledige suite (842 tests) groen. Live bevestigd: "ik ben moe vandaag" → "Sinds wanneer ben je moe vandaag?"; "ik voel me nogal gestrest" → "Wat maakt dat je je nogal gestrest voelt?"; "pff, wat een dag, veel te druk geweest" (geen decompositie-match) → keyword-vangnet "Klinkt behoorlijk druk allemaal — wat speelt er?". **Bewust nog niet aangepakt:** decompositie plakt letterlijk op de opgevangen tekst zonder vervoeging/infinitief-correctie (bv. "ik wil stoppen" → "Wat houdt je tegen om stoppen?" i.p.v. "te stoppen") — eerlijke grens van de aanpak, geen bug; apart te bespreken als taalkundige verfijning, geen huidige prioriteit. |
 | chat_response_engine.py | ✅ Klaar | Doorsturen van pipeline_response naar expression_inject |
 | expression_injector.py | ✅ Klaar EN AANGESLOTEN (17 juli 2026) | Emoji, gesture, puberal flair injectie. Reageert nu ook echt op`response_style` (kort/normaal/uitgebreid) en `personality` (dramatic/interrupts) i.p.v. die enkel door te geven — zie Layer 6-sectie. |
@@ -1053,7 +1084,7 @@ Architectuurbeslissingen vastgelegd in overleg vóór het bouwen (zie `layer7_st
 | Fase | Omschrijving | Type | Status |
 | --- | --- | --- | --- |
 | 8 | Causal Reasoning | Pure symbolisch | ✅ Klaar (11 oktober 2026, onderdelen 8.1-8.3, zie sectie "Reasoning Engine — Fase 8") |
-| 9 | Temporal Semantics | Pure symbolisch | ❌ Toekomst |
+| 9 | Temporal Semantics | Pure symbolisch | 🟡 9.1 klaar (11 oktober 2026, ontstaansjaar per woord); 9.2 (periodes, "wat was X in jaar Y") en 9.3 (omgekeerd: "wat bestond er in 1990") nog open |
 | 10 | Uncertainty Tracking | Pure symbolisch | ❌ Toekomst |
 | 11 | Knowledge Extraction (spaCy) | ML | ❌ Toekomst |
 | 12 | Semantic Similarity (embeddings) | ML | ❌ Toekomst |
@@ -1278,8 +1309,8 @@ Los programma op Kevins laptop (map `nova_avatar/`, naast `nova_client.py`), GEE
 1. 🏠🟢 **Contextuele suggesties tussen activiteiten** (Activity-Aware Interaction, Deel 4) — nog niet gestart. Puur co-occurrence-tellen zoals Activity Awareness Deel C (bv. Plex → lichten dimmen), maar vereist voor "alledaagse" acties (zoals lichten dimmen via schakelaar) een aparte sensor/integratie-laag (bv. Home Assistant/Hue) om dat moment uberhaupt als Nova-event zichtbaar te maken. **🏠 blijft hier terecht** (los van de Unraid-verhuizing zelf) — de ontbrekende sensor/integratie is Home Assistant/Hue, niet de servermachine. Volledig uitgewerkt in: **interruption_learning_roadmap.md, Deel 4**.
 2. 🟢 **Fijner tijdsraster in Layer 2** — concept, nog niet ingepland (zie eigen sectie "💡 Idee (nog niet ingepland): fijner tijdsraster in Layer 2" verderop voor het volledige voorstel en de reden om nu nog niet te bouwen). **Let op (13 augustus 2026):** `topic_suggestions.py` (punt 7) zou hier NIET automatisch van meeprofiteren — zie de kanttekening in die sectie zelf voor waarom, en wat er apart nog zou moeten gebeuren om dat wél te koppelen.
 3. 🏠🟢 "Mag tegenspreken, moet feitelijk kloppen" — omzetten van afspraak naar werkende code. (raakt intent_router.py/response_engine.py/semantic.py) **BEWUST UITGESTELD tot na Semantic Fase 8+ (punt 4).** Bij uitwerking (15 augustus 2026) bleek dit drie deelgevallen te hebben, niet één: (a) Kevin beweert iets dat een bestaande `confirmed`-relatie tegenspreekt → Nova mag tegenspreken, onderbouwd vanuit `concepts.json`; (b) Kevin beweert iets waar Nova nog niets over weet → mag NIET zomaar als waar aangenomen/opgeslagen worden (huidige auto-extract-pad zou dit nu wél stilzwijgend doen, confidence 0.9) — vereist eerst een check (bv. Wikipedia-lookup via het bestaande `wikipedia_teacher.py`-pad) vóór opslag; (c) een bewering die niet objectief/symbolisch checkbaar is (subjectief, geen encyclopedisch feit) → Nova kan hooguit aangeven het niet te kunnen verifiëren, nooit blind aannemen of blind tegenspreken. Bewust gekoppeld aan Fase 8+ i.p.v. nu al bouwen: de geplande embedder/ML-uitbreidingen uit Fase 8+ kunnen deelgeval (c) beter afhandelen (gelijkenis/context-afweging bij niet-triviale beweringen) dan wat er vandaag staat — nu al bouwen zou dat stuk later moeten herbouwen (zelfde principe als de embedder-vuistregel: geen tussenstap bouwen als de definitieve aanpak al gepland staat). Let op: een embedder levert ook dan geen hard waarheidsoordeel — dat blijft beperkt tot symbolisch checkbare feiten; de embedder maakt enkel het onderscheid tussen "checkbaar" en "niet-checkbaar" preciezer.
-4. 🏠🟡 Semantic Fase 9+ (semantic_extension_roadmap.md blijft leidend) — **Fase 8 (Causal Reasoning) is AFGEROND (11 oktober 2026, zie sectie "Reasoning Engine — Fase 8" en nova_changelog.md).** Volgende: Fase 9 (Temporal Semantics) en Fase 10 (Uncertainty Tracking), beide pure symbolisch; Fase 11-13 zijn ML. Fase 10 sluit aan op het bestaande `confidence`-veld en op de nog niet gebouwde zekerheidsberekening langs een causale keten (zie Fase 8.3).
-   4b. 🏠🟢 **Idee #4 generiek maken: multi-hop query-combinatiemachine** — `get_all_parts_with_property()` (8 augustus 2026) dekt bewust enkel het specifieke patroon "onderdelen × eigenschap". Vervolgstap, nog niet gepland: een generieke combinatielaag die willekeurige query-paren kan schakelen (bv. subtypes × related_to, "welke soorten dier zijn gerelateerd aan water"), i.p.v. voor elke nieuwe combinatie een aparte, specifieke methode + intent te bouwen. Vereist nadenken over hoe zo'n generieke vraag natuurlijke-taal-herkenbaar te maken is (een vaste triggerzin per combinatie werkt niet meer bij een generieke opzet). Puur symbolisch, geen ML nodig — enkel groter combinatiewerk dan idee #4 zelf. **Sinds 11 oktober 2026 zijn er meer bouwstenen om te schakelen:** naast `get_all_subtypes()`/`get_all_parts()`/`get_properties()` nu ook `get_all_effects()`/`get_all_causes()`, allemaal met dezelfde uitvoervorm. Een generieke combinatielaag kan dus voor meer combinaties dan vandaag bij elkaar komen (bv. "welke gevolgen van regen zijn gevaarlijk").
+4. 🏠🟡 Semantic Fase 9+ (semantic_extension_roadmap.md blijft leidend) — **Fase 8 (Causal Reasoning) is AFGEROND (11 oktober 2026, zie sectie "Reasoning Engine — Fase 8" en nova_changelog.md).** **Fase 9.1 (Temporal Semantics, ontstaansjaar) is AFGEROND (11 oktober 2026, zie nova_changelog.md).** Volgende: Fase 9.2 (periodes per woord, "wat was X in jaar Y", tijdlijn) en 9.3 (omgekeerd), daarna Fase 10 (Uncertainty Tracking), beide pure symbolisch; Fase 11-13 zijn ML. Open bij 9.1: label voor het topic `ontstaan` toevoegen aan `_topic_naam_labels` in `emergence_engine.py`. `predict_future_concepts()` uit de oorspronkelijke roadmap is bewust geschrapt (voorspellen is niet symbolisch).Fase 10 sluit aan op het bestaande `confidence`-veld en op de nog niet gebouwde zekerheidsberekening langs een causale keten (zie Fase 8.3).
+   4b. 🏠🟢 **Idee #4 generiek maken: multi-hop query-combinatiemachine** — `get_all_parts_with_property()` (8 augustus 2026) dekt bewust enkel het specifieke patroon "onderdelen × eigenschap". Vervolgstap, nog niet gepland: een generieke combinatielaag die willekeurige query-paren kan schakelen (bv. subtypes × related_to, "welke soorten dier zijn gerelateerd aan water"), i.p.v. voor elke nieuwe combinatie een aparte, specifieke methode + intent te bouwen. Vereist nadenken over hoe zo'n generieke vraag natuurlijke-taal-herkenbaar te maken is (een vaste triggerzin per combinatie werkt niet meer bij een generieke opzet). Puur symbolisch, geen ML nodig — enkel groter combinatiewerk dan idee #4 zelf. **Sinds 11 oktober 2026 zijn er meer bouwstenen om te schakelen:** naast `get_all_subtypes()`/`get_all_parts()`/`get_properties()` nu ook `get_all_effects()`/`get_all_causes()`, let op: get_all_effects()/get_all_causes() geven een lijst van dicts ({"woord","diepte","pad"}), de andere drie een lijst van losse woorden, dus een kleine omzetter is nodig. Een get_all_related() bestaat nog niet (enkel related_to_chained() als ja/nee-check). Een generieke combinatielaag kan dus voor meer combinaties dan vandaag bij elkaar komen (bv. "welke gevolgen van regen zijn gevaarlijk").
 5. 🏠🟢 **Layer 5 — 3-4 nooit-gebouwde stukken uit memory_layer5_roadmap.md** — bij de fase-controle (29 juli 2026) gevonden als enige overgebleven gaten in een verder volledig afgeronde Layer 5 (alle 5 fases zelf zijn af en zelfs uitgebreider dan gepland). Heroverwogen (15 augustus 2026): bewust NIET als drie losse, gelijkwaardige taken behandelen — zie per stuk hieronder. **`device_mode` hieronder is inhoudelijk hetzelfde patroon als de intussen afgeronde Windows-companion-client (13 sept 2026, zie changelog)** — zou dus vermoedelijk ook via `nova_client.py` (Bluetooth/wifi/batterij zijn immers ook Windows-gebonden) moeten lopen, niet via battleserver zelf.
    ├── `device_mode` — Bluetooth/headphones-detectie, WiFi-netwerk, batterijniveau, PRIVATE/publieke modus. Geen enkel spoor in de huidige code. **Hoort inhoudelijk bij de toekomstvisie "PRIVATE/PUBLIC-gedragsswitch + dual voice" (zie toekomstvisie-sectie) — pas zinvol te bouwen samen met die switch, niet als losstaande sensor zonder aanroeper.** Puur symbolisch haalbaar (OS-API's uitlezen, geen ML), vergelijkbaar met `activity_detector.py`/`focus_detector.py`, maar bewust NIET vooruitbouwen zonder de bijbehorende switch-logica.
    ├── ✅ `screen_focus` — AFGEROND (14 september 2026, zie nova_changelog.md). Rauwe venstertitel wordt nu doorgegeven in Layer 5's context (`ctx["screen_focus"]`), live bevestigd via de Windows-companion-client. Koppeling naar Layer 7 (`emergence_engine.py`, nieuw insight-type `scherm_focus`) AFGEROND en live bevestigd (15 september 2026, zie nova_changelog.md).
@@ -1482,7 +1513,7 @@ Ondanks de naam is `layer4_response` intussen **niet meer exclusief voor Layer 4
 
 ## 🧪 tests/ — pytest-testsuite (sinds 8 augustus 2026)
 
-`/app/tests/` in de `nova-ai`-container op battleserver (bewerken via VSCode over SSH, geen lokale kopie meer). Draaien vanuit de project-root in de container: `pytest tests/ -v`. Stand 11 oktober 2026: **1337 tests: 1336 groen, 1 bewust overgeslagen** (~6.5s). De overgeslagen test is `test_kopie_is_gelijk_aan_nova_client` in `test_nova_client_open_url.py`: `nova_client.py` staat op de laptop, niet op battleserver.
+`/app/tests/` in de `nova-ai`-container op battleserver (bewerken via VSCode over SSH, geen lokale kopie meer). Draaien vanuit de project-root in de container: `pytest tests/ -v`. Stand 11 oktober 2026: **1368 tests: 1367 groen, 1 bewust overgeslagen** (~6.5s). De overgeslagen test is `test_kopie_is_gelijk_aan_nova_client` in `test_nova_client_open_url.py`: `nova_client.py` staat op de laptop, niet op battleserver.
 
 Startpunt was een externe review (5 assertions in 21 print-gebaseerde scripts, plus een `SystemExit` die `pytest tests/` liet crashen bij collectie) — sindsdien in meerdere rondes opgebouwd, telkens risico-gebaseerd geprioriteerd (kans op stille regressie, niet moduleomvang):
 
@@ -1495,6 +1526,7 @@ Startpunt was een externe review (5 assertions in 21 print-gebaseerde scripts, p
 - **`semantic.py`** (`test_tombstone.py`, `test_reasoning.py`, `test_hard_delete_en_atomic_save.py`, 35 tests) — tombstone-mechanisme, reasoning-ketens (`is_a_chained`/`part_of_chained`/`causes_chained`), `find_contradictions()` zelf, hard-delete-guards, en `ConceptStore.save()`'s atomaire schrijflogica.
 - **`semantic.py`, reasoning_engine_ideeen_roadmap.md's 6 ideeën** (`test_reasoning_engine_ideeen.py`, 33 tests) — `get_all_parts`, `related_to_chained` (incl. BFS-kortste-pad-regressietest), "waarom niet"-uitleg, part_of-cirkeldetectie + de bijbehorende `contradiction_checker.py`-meldingtekst, `compare_concepts`, `get_all_parts_with_property`.
 - **`semantic.py`/`intent_router.py`/`chat.py`, Fase 8 Causal Reasoning** (`test_causal_reasoning.py`, 38 tests + `test_causal_check.py`, 49 tests, 11 oktober 2026) — `get_all_effects()`/`get_all_causes()` (diepte, cirkels, tombstone), `explain_causes()` (kortste pad, "waarschijnlijk" bij ketens, "waarom niet"), `detect_definition()`'s oorzaken/gevolgen-zinnen, `detect_causes_check()` incl. de vroege `route()`-stap, de Nederlandse bevestigingszinnen en de handlers `on_causes()`/`on_effects()`/`on_causes_check()`, plus een test die vastlegt dat een causale cirkel GEEN contradictie is.
+- **`semantic.py`/`intent_router.py`/`temporal_semantics.py`, Fase 9.1 Temporal Semantics** (`test_temporal_ontstaan.py`, 31 tests, 11 oktober 2026) — `set_ontstaan()`/`get_ontstaan()` (overschrijven, audit, afgewezen sense, persistentie), `detect_temporal()` (4 leerzinnen, 5 vragen, 9 afwijzingen incl. "ik bestaat sinds 1991" en toekomstjaren), route-stap 2G en de antwoorden van de module.
 - **`contradiction_checker.py`** (`test_contradiction_checker.py`, 10 tests) — spam-preventielogica van de tegenstrijdigheid-melder.
 - **`intent_classifier.py`** (`test_intent_classifier.py`, 15 tests) — categorie-voorspelling (niet exacte confidence-scores), persistentie. Sinds 11 oktober 2026 6 voorbeelden per categorie (24 totaal) i.v.m. de char_wb-vectorizer.
 - **`intent_router.py`, reactivatie + woordherkenning** (`test_intent_router_reactivatie_en_woordmatch.py`, 9 tests) — de `-1F`-routingstap (`pending_reactivation` krijgt voorrang op de gewone ja/nee-confirm) en Bug #37 (woordherkenning bij "andere betekenissen van X").

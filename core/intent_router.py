@@ -2487,6 +2487,74 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Temporal Semantics, Fase 9.1 -- ontstaansjaar van een woord.
+    #
+    # Leerzinnen: "X bestaat (al) sinds 1991", "X ontstond in 1991",
+    #             "X is ontstaan in 1991"
+    # Vragen:     "wanneer ontstond X", "wanneer is X ontstaan",
+    #             "sinds wanneer bestaat X", "hoe lang bestaat X al"
+    # Enkel hele jaartallen. Onderwerp: max. 3 woorden en geen
+    # voornaamwoord/stopwoord ("ik bestaat sinds 1991" is geen kennis).
+    # ---------------------------------------------------------
+    _TEMP_ART = r"(?:(?:een|de|het)\s+)?"
+    _TEMPORAL_LEER_PATRONEN = [
+        re.compile(r"^" + _TEMP_ART + r"([\w\s]+?)\s+bestaat\s+(?:al\s+)?sinds\s+(\d{1,4})$"),
+        re.compile(r"^" + _TEMP_ART + r"([\w\s]+?)\s+ontstond\s+in\s+(\d{1,4})$"),
+        re.compile(r"^" + _TEMP_ART + r"([\w\s]+?)\s+is\s+ontstaan\s+in\s+(\d{1,4})$"),
+    ]
+    _TEMPORAL_VRAAG_PATRONEN = [
+        ("wanneer", re.compile(r"^wanneer\s+ontstond\s+" + _TEMP_ART + r"([\w\s]+)$")),
+        ("wanneer", re.compile(r"^wanneer\s+is\s+" + _TEMP_ART + r"([\w\s]+?)\s+ontstaan$")),
+        ("wanneer", re.compile(r"^sinds\s+wanneer\s+bestaat\s+" + _TEMP_ART + r"([\w\s]+)$")),
+        ("hoelang", re.compile(r"^hoe\s?lang\s+bestaat\s+" + _TEMP_ART + r"([\w\s]+?)\s+al$")),
+    ]
+
+    def _temporal_onderwerp_ok(self, onderwerp):
+        woorden = onderwerp.split()
+        if not woorden or len(woorden) > 3:
+            return False
+        return not any(w in self._GEEN_RELATIE_ONDERWERP for w in woorden)
+
+    def detect_temporal(self, text):
+        t = text.lower().strip().rstrip("?.! ")
+
+        for patroon in self._TEMPORAL_LEER_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            onderwerp = m.group(1).strip()
+            jaar = int(m.group(2))
+            if not self._temporal_onderwerp_ok(onderwerp):
+                continue
+            from datetime import datetime
+            if jaar < 1 or jaar > datetime.now().year:
+                continue
+            dbg(f"{C_BLUE}→ temporal_leer: '{onderwerp}' sinds {jaar}{C_RESET}")
+            self.event_bus.publish("intent_temporal_leer", {
+                "word": onderwerp,
+                "jaar": jaar
+            })
+            self._emit_topic("ontstaan", bron="detect", concept=onderwerp)
+            return True
+
+        for vorm, patroon in self._TEMPORAL_VRAAG_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            onderwerp = m.group(1).strip()
+            if not self._temporal_onderwerp_ok(onderwerp):
+                continue
+            dbg(f"{C_BLUE}→ temporal_query ({vorm}): '{onderwerp}'{C_RESET}")
+            self.event_bus.publish("intent_temporal_query", {
+                "word": onderwerp,
+                "vorm": vorm
+            })
+            self._emit_topic("ontstaan", bron="detect", concept=onderwerp)
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Vergelijking tussen 2 concepten ("vergelijk X met Y") — idee #6
     # uit reasoning_engine_ideeen_roadmap.md.
     #
@@ -4599,6 +4667,13 @@ class IntentRouter:
         # vóór de intent-tabel hieronder staan, zie de uitleg bij
         # detect_causes_check(). Emit zelf al zijn eigen topic.
         if self.detect_causes_check(text):
+            return
+
+        # 2G Temporal Semantics (Fase 9.1) -- ook vóór de intent-tabel:
+        # "wanneer ontstond python" mag niet door detect_holiday/
+        # detect_calendar opgevangen worden, en "python bestaat sinds
+        # 1991" niet door semantic._detect_relation() (stap 9).
+        if self.detect_temporal(text):
             return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).

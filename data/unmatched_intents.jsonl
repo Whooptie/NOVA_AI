@@ -136,3 +136,5 @@
 {"tekst": "hay", "hoogste_gok": "greeting", "confidence": 0.2567, "tijdstip": "2026-10-11T11:27:44.553791"}
 {"tekst": "dankje", "hoogste_gok": "identity", "confidence": 0.1241, "tijdstip": "2026-10-11T11:40:31.528433"}
 {"tekst": "annuleren", "hoogste_gok": "activity", "confidence": 0.1674, "tijdstip": "2026-10-11T11:58:19.564320"}
+{"tekst": "ik bestaat sinds 1991", "hoogste_gok": "preference", "confidence": 0.1655, "tijdstip": "2026-10-11T18:44:03.353322"}
+{"tekst": "python bestaat sinds 3000", "hoogste_gok": "math", "confidence": 0.1675, "tijdstip": "2026-10-11T18:44:13.566244"}
