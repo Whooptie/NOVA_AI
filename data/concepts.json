@@ -149,12 +149,17 @@
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": [],
-        "status": "unverified"
+        "status": "unverified",
+        "ontstaan": {
+          "jaar": 1817,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-06-27T18:58:32.285272",
-      "updated_at": "2026-09-24T17:55:49.115288",
+      "updated_at": "2026-10-11T17:58:21.405741",
       "sources": [
         "user"
       ],
@@ -195,6 +200,14 @@
         "old_value": 0.8,
         "new_value": 1.0,
         "timestamp": "2026-07-19T11:02:09.764642"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "fiets#1",
+        "old_value": null,
+        "new_value": 1817,
+        "timestamp": "2026-10-11T17:58:21.405736"
       }
     ]
   },
@@ -915,12 +928,17 @@
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": [],
-        "status": "unverified"
+        "status": "unverified",
+        "ontstaan": {
+          "jaar": 1903,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-06-29T18:21:37.185926",
-      "updated_at": "2026-06-29T18:21:37.185926",
+      "updated_at": "2026-10-11T17:57:14.639884",
       "sources": [
         "user"
       ],
@@ -949,6 +967,14 @@
         "old_value": null,
         "new_value": "Een vliegtuig is een luchtvaartuig dat een hogere dichtheid heeft dan lucht en in staat is een gecontroleerde vlucht te maken.",
         "timestamp": "2026-06-29T18:21:37.185926"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "vliegtuig#1",
+        "old_value": null,
+        "new_value": 1903,
+        "timestamp": "2026-10-11T17:57:14.639880"
       }
     ]
   },
@@ -1151,12 +1177,17 @@
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": [],
-        "status": "unverified"
+        "status": "unverified",
+        "ontstaan": {
+          "jaar": 1905,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-06-30T19:48:00.880990",
-      "updated_at": "2026-06-30T19:48:00.882980",
+      "updated_at": "2026-10-11T17:57:43.517485",
       "sources": [
         "user"
       ],
@@ -1185,6 +1216,14 @@
         "old_value": null,
         "new_value": "Met relativiteitstheorie worden in de natuurkunde twee theorieën van Albert Einstein aangeduid, namelijk de speciale relativiteitstheorie en de algemene relativiteitstheorie.",
         "timestamp": "2026-06-30T19:48:00.882980"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "relativiteitstheorie#1",
+        "old_value": null,
+        "new_value": 1905,
+        "timestamp": "2026-10-11T17:57:43.517478"
       }
     ]
   },
@@ -1223,7 +1262,8 @@
           "jaar": 1991,
           "bron": "user",
           "status": "confirmed"
-        }
+        },
+        "periodes": []
       },
       {
         "sense_id": "python#2",
@@ -1259,7 +1299,7 @@
     ],
     "metadata": {
       "created_at": "2026-07-02T11:50:21.398848",
-      "updated_at": "2026-10-11T16:43:23.800338",
+      "updated_at": "2026-10-11T17:44:31.216944",
       "sources": [
         "user"
       ],
@@ -1312,6 +1352,106 @@
         "old_value": 1990,
         "new_value": 1991,
         "timestamp": "2026-10-11T16:43:23.800332"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "python#1",
+        "old_value": 1991,
+        "new_value": 1991,
+        "timestamp": "2026-10-11T17:43:00.409249"
+      },
+      {
+        "event_type": "periode_added",
+        "source": "user",
+        "sense_id": "python#1",
+        "old_value": null,
+        "new_value": {
+          "van": 1991,
+          "tot": 2005,
+          "label": "een niche",
+          "bron": "user",
+          "status": "confirmed"
+        },
+        "timestamp": "2026-10-11T17:43:17.547570"
+      },
+      {
+        "event_type": "periode_added",
+        "source": "user",
+        "sense_id": "python#1",
+        "old_value": null,
+        "new_value": {
+          "van": 2010,
+          "tot": null,
+          "label": "dominant",
+          "bron": "user",
+          "status": "confirmed"
+        },
+        "timestamp": "2026-10-11T17:43:27.286734"
+      },
+      {
+        "event_type": "periode_added",
+        "source": "user",
+        "sense_id": "python#1",
+        "old_value": null,
+        "new_value": {
+          "van": 2006,
+          "tot": 2009,
+          "label": "groeiend",
+          "bron": "user",
+          "status": "confirmed"
+        },
+        "timestamp": "2026-10-11T17:43:34.579481"
+      },
+      {
+        "event_type": "periode_closed",
+        "source": "user",
+        "sense_id": "python#1",
+        "old_value": {
+          "van": 2010,
+          "tot": null,
+          "label": "dominant",
+          "bron": "user",
+          "status": "confirmed"
+        },
+        "new_value": {
+          "van": 2010,
+          "tot": 2024,
+          "label": "dominant",
+          "bron": "user",
+          "status": "confirmed"
+        },
+        "timestamp": "2026-10-11T17:44:22.834925"
+      },
+      {
+        "event_type": "periodes_cleared",
+        "source": "user",
+        "sense_id": "python#1",
+        "old_value": [
+          {
+            "van": 1991,
+            "tot": 2005,
+            "label": "een niche",
+            "bron": "user",
+            "status": "confirmed"
+          },
+          {
+            "van": 2006,
+            "tot": 2009,
+            "label": "groeiend",
+            "bron": "user",
+            "status": "confirmed"
+          },
+          {
+            "van": 2010,
+            "tot": 2024,
+            "label": "dominant",
+            "bron": "user",
+            "status": "confirmed"
+          }
+        ],
+        "new_value": [],
+        "timestamp": "2026-10-11T17:44:31.216939"
       }
     ]
   },
@@ -3599,12 +3739,17 @@
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
-        "status": "confirmed"
+        "status": "confirmed",
+        "ontstaan": {
+          "jaar": 1956,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-10-11T17:57:20.546443",
       "sources": [
         "user"
       ],
@@ -3633,6 +3778,14 @@
         "old_value": null,
         "new_value": "Kunstmatige intelligentie is het vakgebied dat zich bezighoudt met het nabootsen of simuleren van menselijke intelligentie door computersystemen.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "kunstmatige intelligentie#1",
+        "old_value": null,
+        "new_value": 1956,
+        "timestamp": "2026-10-11T17:57:20.546438"
       }
     ]
   },
@@ -4387,12 +4540,17 @@
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
-        "status": "confirmed"
+        "status": "confirmed",
+        "ontstaan": {
+          "jaar": 1943,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-10-11T17:57:35.683582",
       "sources": [
         "user"
       ],
@@ -4421,6 +4579,14 @@
         "old_value": null,
         "new_value": "Een neuraal netwerk is een ML-model opgebouwd uit lagen van verbonden knopen, dat patronen leert herkennen uit grote hoeveelheden data in plaats van expliciete regels te volgen.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "neuraal netwerk#1",
+        "old_value": null,
+        "new_value": 1943,
+        "timestamp": "2026-10-11T17:57:35.683578"
       }
     ]
   },
@@ -9616,12 +9782,17 @@
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
-        "status": "confirmed"
+        "status": "confirmed",
+        "ontstaan": {
+          "jaar": 1997,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-07-11T00:00:00.000000",
-      "updated_at": "2026-07-11T00:00:00.000000",
+      "updated_at": "2026-10-11T17:58:01.073884",
       "sources": [
         "user"
       ],
@@ -9650,6 +9821,14 @@
         "old_value": null,
         "new_value": "Wifi is een draadloze technologie waarmee apparaten via radiogolven verbinding kunnen maken met een netwerk of het internet.",
         "timestamp": "2026-07-11T00:00:00.000000"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "wifi#1",
+        "old_value": null,
+        "new_value": 1997,
+        "timestamp": "2026-10-11T17:58:01.073879"
       }
     ]
   },
@@ -12612,12 +12791,17 @@
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
-        "status": "confirmed"
+        "status": "confirmed",
+        "ontstaan": {
+          "jaar": 1700,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-07-27T21:00:00.000000",
-      "updated_at": "2026-07-27T21:00:00.000000",
+      "updated_at": "2026-10-11T17:58:12.453451",
       "sources": [
         "user"
       ],
@@ -12646,6 +12830,14 @@
         "old_value": null,
         "new_value": "Een piano is een muziekinstrument met toetsen die, wanneer ingedrukt, hamertjes tegen snaren laten slaan om toon te produceren.",
         "timestamp": "2026-07-27T21:00:00.000000"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "piano#1",
+        "old_value": null,
+        "new_value": 1700,
+        "timestamp": "2026-10-11T17:58:12.453447"
       }
     ]
   },
@@ -12970,12 +13162,17 @@
         "source": "user",
         "confidence": 1.0,
         "status": "confirmed",
-        "audit_log": []
+        "audit_log": [],
+        "ontstaan": {
+          "jaar": 1804,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-07-28T10:17:38.549102",
-      "updated_at": "2026-10-09T18:35:00.000000",
+      "updated_at": "2026-10-11T17:58:29.638668",
       "sources": [
         "auto",
         "user"
@@ -13017,6 +13214,14 @@
         "old_value": "unknown",
         "new_value": "Een trein is een voertuig dat over rails rijdt en bestaat uit een of meer aan elkaar gekoppelde wagons.",
         "timestamp": "2026-10-09T18:35:00.000000"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "trein#1",
+        "old_value": null,
+        "new_value": 1804,
+        "timestamp": "2026-10-11T17:58:29.638663"
       }
     ]
   },
@@ -15370,12 +15575,17 @@
         "source": "user",
         "confidence": 1.0,
         "status": "confirmed",
-        "audit_log": []
+        "audit_log": [],
+        "ontstaan": {
+          "jaar": 1863,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-08-15T18:23:40.362454",
-      "updated_at": "2026-08-15T18:23:40.362454",
+      "updated_at": "2026-10-11T17:57:53.088489",
       "sources": [
         "user"
       ],
@@ -15404,6 +15614,14 @@
         "old_value": null,
         "new_value": "een sport waar je een bal moet trappen",
         "timestamp": "2026-08-15T18:23:40.362454"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "voetbal#1",
+        "old_value": null,
+        "new_value": 1863,
+        "timestamp": "2026-10-11T17:57:53.088485"
       }
     ]
   },
@@ -15797,12 +16015,17 @@
         "source": "user",
         "confidence": 1.0,
         "status": "confirmed",
-        "audit_log": []
+        "audit_log": [],
+        "ontstaan": {
+          "jaar": 336,
+          "bron": "user",
+          "status": "confirmed"
+        }
       }
     ],
     "metadata": {
       "created_at": "2026-09-18T16:42:03.176515",
-      "updated_at": "2026-10-09T19:00:00.000000",
+      "updated_at": "2026-10-11T17:58:35.802821",
       "sources": [
         "auto",
         "user"
@@ -15844,6 +16067,14 @@
         "old_value": "unknown",
         "new_value": "Kerst is het feest op 25 december waarop christenen de geboorte van Jezus vieren; veel mensen vieren het met familie, een kerstboom en cadeaus.",
         "timestamp": "2026-10-09T19:00:00.000000"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "kerst#1",
+        "old_value": null,
+        "new_value": 336,
+        "timestamp": "2026-10-11T17:58:35.802815"
       }
     ]
   },
@@ -17064,6 +17295,67 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-11T16:44:03.354648"
+      }
+    ]
+  },
+  "symbolische ai": {
+    "senses": [
+      {
+        "sense_id": "symbolische ai#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": [],
+        "ontstaan": {
+          "jaar": 1956,
+          "bron": "user",
+          "status": "confirmed"
+        }
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-11T17:57:28.865684",
+      "updated_at": "2026-10-11T17:57:28.880082",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-10-11T17:57:28.867227",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-11T17:57:28.867227",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "symbolische ai"
+        },
+        "timestamp": "2026-10-11T17:57:28.865689"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "symbolische ai#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-11T17:57:28.867224"
+      },
+      {
+        "event_type": "ontstaan_set",
+        "source": "user",
+        "sense_id": "symbolische ai#1",
+        "old_value": null,
+        "new_value": 1956,
+        "timestamp": "2026-10-11T17:57:28.880077"
       }
     ]
   }

@@ -2509,6 +2509,133 @@ class IntentRouter:
         ("hoelang", re.compile(r"^hoe\s?lang\s+bestaat\s+" + _TEMP_ART + r"([\w\s]+?)\s+al$")),
     ]
 
+    # ---- Fase 9.2: periodes ----
+    # Leren:  "X was van 1991 tot 2005 (een) niche", "X was tussen 1991 en 2005 niche",
+    #         "X is van 2010 tot nu dominant", "X is sinds 2010 dominant"
+    # Vragen: "wat was X in 2003", "tijdlijn van X"
+    # Wissen: "wis de periodes van X" (NIET "vergeet": dat is het bestaande geheugencommando)
+    _TEMPORAL_PERIODE_LEER_PATRONEN = [
+        re.compile(r"^" + _TEMP_ART + r"([\w\s]+?)\s+(?:was|is)\s+van\s+(\d{1,4})\s+tot\s+(\d{1,4})\s+([\w\s]+)$"),
+        re.compile(r"^" + _TEMP_ART + r"([\w\s]+?)\s+(?:was|is)\s+tussen\s+(\d{1,4})\s+en\s+(\d{1,4})\s+([\w\s]+)$"),
+        re.compile(r"^" + _TEMP_ART + r"([\w\s]+?)\s+(?:is|was)\s+van\s+(\d{1,4})\s+tot\s+(nu)\s+([\w\s]+)$"),
+        re.compile(r"^" + _TEMP_ART + r"([\w\s]+?)\s+is\s+sinds\s+(\d{1,4})()\s+([\w\s]+)$"),
+    ]
+    _TEMPORAL_PERIODE_VRAAG = re.compile(r"^wat\s+was\s+" + _TEMP_ART + r"([\w\s]+?)\s+in\s+(\d{1,4})$")
+    _TEMPORAL_TIJDLIJN = re.compile(r"^(?:geef\s+(?:me\s+)?)?(?:de\s+)?tijdlijn\s+(?:van\s+)?" + _TEMP_ART + r"([\w\s]+)$")
+    _TEMPORAL_PERIODES_WIS = re.compile(r"^(?:wis|verwijder)\s+(?:de\s+)?(?:periodes|tijdlijn)\s+(?:van\s+)?" + _TEMP_ART + r"([\w\s]+)$")
+
+    def _temporal_label_ok(self, label):
+        woorden = label.split()
+        if not woorden or len(woorden) > 3:
+            return False
+        if woorden[0].isdigit() or woorden[0] in ("nu", "tot", "en", "van", "sinds"):
+            return False
+        return True
+
+    def detect_temporal_periode(self, text):
+        from datetime import datetime
+        huidig = datetime.now().year
+        t = text.lower().strip().rstrip("?.! ")
+
+        for patroon in self._TEMPORAL_PERIODE_LEER_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            onderwerp = m.group(1).strip()
+            van = int(m.group(2))
+            tot_tekst = m.group(3)
+            label = m.group(4).strip()
+            tot = None if tot_tekst in ("", "nu") else int(tot_tekst)
+            if not self._temporal_onderwerp_ok(onderwerp) or not self._temporal_label_ok(label):
+                continue
+            if van < 1 or van > huidig or (tot is not None and (tot < van or tot > huidig)):
+                continue
+            dbg(f"{C_BLUE}→ temporal_periode_leer: '{onderwerp}' {van}-{tot} '{label}'{C_RESET}")
+            self.event_bus.publish("intent_temporal_periode_leer", {
+                "word": onderwerp, "van": van, "tot": tot, "label": label
+            })
+            self._emit_topic("tijdlijn", bron="detect", concept=onderwerp)
+            return True
+
+        m = self._TEMPORAL_PERIODE_VRAAG.match(t)
+        if m:
+            onderwerp = m.group(1).strip()
+            jaar = int(m.group(2))
+            if self._temporal_onderwerp_ok(onderwerp) and 1 <= jaar <= huidig:
+                dbg(f"{C_BLUE}→ temporal_periode_query: '{onderwerp}' in {jaar}{C_RESET}")
+                self.event_bus.publish("intent_temporal_periode_query", {
+                    "word": onderwerp, "jaar": jaar
+                })
+                self._emit_topic("tijdlijn", bron="detect", concept=onderwerp)
+                return True
+
+        m = self._TEMPORAL_TIJDLIJN.match(t)
+        if m:
+            onderwerp = m.group(1).strip()
+            if self._temporal_onderwerp_ok(onderwerp):
+                dbg(f"{C_BLUE}→ temporal_tijdlijn: '{onderwerp}'{C_RESET}")
+                self.event_bus.publish("intent_temporal_tijdlijn", {"word": onderwerp})
+                self._emit_topic("tijdlijn", bron="detect", concept=onderwerp)
+                return True
+
+        m = self._TEMPORAL_PERIODES_WIS.match(t)
+        if m:
+            onderwerp = m.group(1).strip()
+            if self._temporal_onderwerp_ok(onderwerp):
+                dbg(f"{C_BLUE}→ temporal_periodes_wis: '{onderwerp}'{C_RESET}")
+                self.event_bus.publish("intent_temporal_periodes_wis", {"word": onderwerp})
+                self._emit_topic("tijdlijn", bron="detect", concept=onderwerp)
+                return True
+
+        return False
+
+    # ---- Fase 9.3: omgekeerd (welke woorden ontstonden wanneer) ----
+    # "wat bestond er in 1990", "wat ontstond er in 1991",
+    # "wat ontstond er tussen 1950 en 1960", "wat ontstond er voor 1900",
+    # "wat ontstond er na 1990"
+    _TEMPORAL_OMGEKEERD_PATRONEN = [
+        ("bestond", re.compile(r"^wat\s+bestond\s+er\s+(?:al\s+)?in\s+(\d{1,4})$")),
+        ("exact", re.compile(r"^wat\s+ontstond\s+er\s+in\s+(\d{1,4})$")),
+        ("tussen", re.compile(r"^wat\s+ontstond\s+er\s+tussen\s+(\d{1,4})\s+en\s+(\d{1,4})$")),
+        ("voor", re.compile(r"^wat\s+ontstond\s+er\s+voor\s+(\d{1,4})$")),
+        ("na", re.compile(r"^wat\s+ontstond\s+er\s+na\s+(\d{1,4})$")),
+    ]
+
+    def detect_temporal_omgekeerd(self, text):
+        from datetime import datetime
+        huidig = datetime.now().year
+        t = text.lower().strip().rstrip("?.! ")
+
+        for vorm, patroon in self._TEMPORAL_OMGEKEERD_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            jaren = [int(g) for g in m.groups()]
+            if any(j < 1 or j > huidig for j in jaren):
+                continue
+
+            if vorm == "bestond":
+                van, tot = None, jaren[0]
+            elif vorm == "exact":
+                van, tot = jaren[0], jaren[0]
+            elif vorm == "tussen":
+                van, tot = jaren[0], jaren[1]
+                if van > tot:
+                    continue
+            elif vorm == "voor":
+                van, tot = None, jaren[0] - 1
+            else:  # "na"
+                van, tot = jaren[0] + 1, None
+
+            dbg(f"{C_BLUE}→ temporal_omgekeerd ({vorm}): {van}..{tot}{C_RESET}")
+            self.event_bus.publish("intent_temporal_omgekeerd", {
+                "vorm": vorm, "van": van, "tot": tot, "jaar": jaren[0]
+            })
+            self._emit_topic("tijdlijn", bron="detect")
+            return True
+
+        return False
+
     def _temporal_onderwerp_ok(self, onderwerp):
         woorden = onderwerp.split()
         if not woorden or len(woorden) > 3:
@@ -2517,6 +2644,14 @@ class IntentRouter:
 
     def detect_temporal(self, text):
         t = text.lower().strip().rstrip("?.! ")
+
+        # Fase 9.2: periodes/tijdlijn eerst (specifieker dan het ontstaansjaar).
+        if self.detect_temporal_periode(text):
+            return True
+
+        # Fase 9.3: omgekeerde vragen ("wat ontstond er in 1991").
+        if self.detect_temporal_omgekeerd(text):
+            return True
 
         for patroon in self._TEMPORAL_LEER_PATRONEN:
             m = patroon.match(t)

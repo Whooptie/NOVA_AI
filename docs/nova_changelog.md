@@ -1671,4 +1671,44 @@ Eerste onderdeel van Fase 9, gebouwd na een ontwerpgesprek: eerst pytest groen (
 
 **Live bevestigd (battleserver):** python 1991 leren en terugvragen in alle vier de vraagvormen ("35 jaar"), internet 1983, machine learning 1959, aanpassen 1991→1990→1991 met melding van de oude waarde, onbekend woord met leeruitleg, "wanneer is kerst" / "hoeveel dagen tot kerst" / "wanneer is de paasvakantie" ongewijzigd, "ik bestaat sinds 1991" en "python bestaat sinds 3000" niet opgeslagen, jaar bleef bewaard na `/reboot`. `concepts.json` bevat het veld en het audit-log.
 
-**Nog open:** label voor topic `ontstaan` in `emergence_engine.py`; Fase 9.2 en 9.3.
+**Nog open (na 9.1):** label voor topic `ontstaan` in `emergence_engine.py`; Fase 9.2 en 9.3. → 9.2 is hieronder afgerond.
+
+---
+
+## ✅ Semantic Fase 9.2 — Temporal Semantics: periodes en tijdlijn (11 oktober 2026)
+
+Tweede onderdeel van Fase 9: eerst pytest groen (49 nieuwe tests, totaal 1417), daarna live bevestigd. Werking: zie `nova_state.md`, modules-tabel (`temporal_semantics.py`).
+
+**Ontwerpkeuzes (Kevin liet de keuze aan Claude, beide volgens de aanbeveling):**
+- Overlap met een bestaande periode wordt GEWEIGERD i.p.v. overschreven: zo ontstaan er nooit tegenstrijdige tijdlijnen. Daarom bestaan er twee uitwegen: een open periode afsluiten door dezelfde periode mét eindjaar te leren, en "wis de periodes van X".
+- Label is vrije tekst (max. 3 woorden), geen vaste woordenlijst: Nova begrijpt het label niet, ze onthoudt het.
+- Periodes staan op dezelfde sense als het ontstaansjaar (zelfde principe als 9.1); een periode vóór het ontstaansjaar wordt geweigerd.
+- Alleen hele jaartallen, geen voorspellingen.
+
+**Bijvangst:** het werkwoord "vergeet" was geen optie voor het wis-commando: `vergeet <woord>` is het bestaande geheugencommando in `intent_router.py` en zou "de periodes van python" als zoekwoord hebben opgevat. Dit werd ontdekt door de testsuite (eerste versie van `test_route_wissen`). Nu "wis"/"verwijder".
+
+**Bouwverslag:** `semantic.py` (`add_periode`, `get_periodes`, `get_periode_in`, `clear_periodes`, `_tijd_sense`), `intent_router.py` (`detect_temporal_periode()`, aangeroepen vanuit `detect_temporal()`), `temporal_semantics.py` uitgebreid met 4 handlers, `tests/test_temporal_periodes.py`.
+
+**Live bevestigd (battleserver):** leren van 3 periodes (gesloten, tussen/en, open "sinds"), tijdlijn met 4 regels in de juiste volgorde, "wat was python in 2003" en "…in 1980" (bestond nog niet), conflict geweigerd met uitleg, open periode afgesloten, "wis de periodes van python" ("Gewist: 3 periodes", ontstaansjaar blijft), tijdlijn na wissen en na `/reboot`. Regressie: kerst, weer, "wat is python", dagen-tot en tijd ongewijzigd.
+
+**Layer 7 (11 oktober 2026):** labels `ontstaan` ("wanneer dingen ontstonden") en `tijdlijn` ("tijdlijnen van dingen") toegevoegd aan `_topic_naam_labels` in `modules/experimental/emergence_engine.py` (+3 tests in `test_emergence_temporal_labels.py`, totaal 1420).
+
+**Nog open:** Fase 9.3. → afgerond, zie hieronder.
+
+---
+
+## ✅ Semantic Fase 9.3 — Temporal Semantics: omgekeerde vragen (11 oktober 2026)
+
+Derde en laatste onderdeel van Fase 9: eerst pytest groen (24 nieuwe tests, totaal 1444), daarna live bevestigd. Werking: zie `nova_state.md`, modules-tabel (`temporal_semantics.py`).
+
+**Ontwerpkeuzes:**
+- Vragen over alle woorden met een ontstaansjaar, niet per woord: "wat bestond er in 1960", "wat ontstond er in/tussen/voor/na …".
+- Eerlijkheid boven volledigheid: elk antwoord zegt "voor zover ik weet", en een leeg antwoord noemt hoeveel jaartallen Nova kent, zodat "ik ken niets" nooit klinkt als "er bestond niets".
+- "Wat bestond er in X" = alle woorden met ontstaansjaar ≤ X. Nova kent geen einde van bestaan, dus verdwenen dingen blijven in de lijst staan (bekende, bewuste beperking).
+- Niet gebouwd: "wat was <label> in <jaar>" (botst met 9.2 "wat was python in 2003").
+
+**Data voor de live-test (door Kevin ingevoerd, uit Claudes geheugen, niet bronverwijzend gecontroleerd):** vliegtuig 1903, kunstmatige intelligentie 1956, symbolische AI 1956, neuraal netwerk 1943, relativiteitstheorie 1905, voetbal 1863, wifi 1997, piano 1700, fiets 1817, trein 1804, kerst 336 (plus python 1991, machine learning 1959, internet 1983). Dit zijn oefenwaarden; de "middel"-jaartallen zijn omstreden of afhankelijk van definitie.
+
+**Live bevestigd (battleserver):** "wat bestond er in 1960" (11 woorden, gesorteerd), "in 1991", "tussen 1900 en 1950" (3 woorden), "voor 1900" (5), "na 1990" (python, wifi), "in 1800" (eerlijke lege uitkomst met "14 woorden"). Regressie: "wanneer ontstond python", "tijdlijn van python", weer en "wanneer is kerst" ongewijzigd.
+
+**Fase 9 is hiermee af.** Uit de oorspronkelijke roadmap bewust geschrapt: `predict_future_concepts()` en `get_current_trends()` (voorspellen is niet symbolisch). Open voor later: einde van bestaan modelleren (verdwenen woorden), jaartallen vóór het jaar 1.

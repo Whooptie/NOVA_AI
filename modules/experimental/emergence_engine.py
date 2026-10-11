@@ -322,6 +322,8 @@ class EmergenceEngine:
             "parts": "onderdeel-vragen",
             "related_to_check": "of concepten verwant zijn",
             "causes_check": "oorzaak-en-gevolg-vragen",
+            "ontstaan": "wanneer dingen ontstonden",
+            "tijdlijn": "tijdlijnen van dingen",
             "trending_query": "wat recent populair is",
             "uitleg": "uitleg vragen",
             "vakantie": "vakantie",

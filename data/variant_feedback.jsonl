@@ -211,3 +211,7 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1791737043.3738387, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Ik weet nog niet goed hoe ik daarop moet antwoorden, maar ik leer graag bij.", "entity": null, "response_style": "normaal", "moment": "2026-10-11T18:44:13.577474", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1791737053.577652, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 3, "variant_tekst": "Even een momentje?", "entity": null, "response_style": null, "moment": "2026-10-11T19:22:52.739887", "reactie_sentiment": null}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1791739372.742982, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "variant_tekst": "Met '{entity}' bedoel je waarschijnlijk: {definition} Ik zie dat woord bij jou trouwens vaak in de buurt van '{associatie}'.", "entity": "python", "response_style": "normaal", "moment": "2026-10-11T19:45:01.355704", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1791740701.3558972, "type": "sentiment_koppeling"}

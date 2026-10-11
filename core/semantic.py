@@ -505,6 +505,148 @@ class SenseEngine:
                 return dict(o)
         return None
 
+    # ---------------------------------------------------------
+    # Temporal Semantics, Fase 9.2 (periodes per woord)
+    #
+    # Een periode is {"van": int, "tot": int | None, "label": str,
+    # "bron": str, "status": str}. tot == None betekent "tot nu" (open).
+    # Ze staan in sense["periodes"], op dezelfde sense als "ontstaan".
+    # Periodes van hetzelfde woord mogen elkaar NIET overlappen.
+    # ---------------------------------------------------------
+    _OPEN_EINDE = 9999
+
+    def _tijd_sense(self, word: str, maak: bool = False):
+        """De sense die de tijdsdata draagt: eerste niet-afgewezen sense met 'ontstaan' of 'periodes', anders de eerste niet-afgewezen sense."""
+        word = word.lower().strip()
+        concept = self.store.ensure_concept(word) if maak else self.store.get_concept(word)
+        if not concept:
+            return None, None
+        echte = [s for s in concept["senses"] if s.get("status") != "rejected"]
+        for s in echte:
+            if s.get("ontstaan") or s.get("periodes"):
+                return concept, s
+        if echte:
+            return concept, echte[0]
+        if maak:
+            sense = self.add_sense(word, "unknown", source="user", confidence=1.0)
+            if sense.get("blocked"):
+                return concept, None
+            return concept, sense
+        return concept, None
+
+    def _einde(self, periode: dict) -> int:
+        return periode["tot"] if periode.get("tot") is not None else self._OPEN_EINDE
+
+    def add_periode(self, word: str, van: int, tot, label: str, source: str = "user") -> dict:
+        """
+        Voegt een periode toe. Mogelijke uitkomsten (altijd een dict):
+          {"ok": True, "periode": {...}}               nieuw opgeslagen
+          {"bestaat": True, "periode": {...}}          exact dezelfde periode stond er al
+          {"gesloten": True, "periode": {...}}         open periode kreeg een eindjaar
+          {"conflict": {...}}                          overlapt met een bestaande periode
+          {"voor_ontstaan": jaar}                      begint vóór het ontstaansjaar
+          {"fout": "tekst"}                            ongeldige invoer
+        """
+        van = int(van)
+        tot = None if tot is None else int(tot)
+        label = label.strip()
+        if not label:
+            return {"fout": "geen label"}
+        if tot is not None and tot < van:
+            return {"fout": "einde voor begin"}
+
+        concept, sense = self._tijd_sense(word, maak=True)
+        if sense is None:
+            return {"fout": "geen bruikbare betekenis"}
+
+        ontstaan = sense.get("ontstaan")
+        if ontstaan and van < ontstaan["jaar"]:
+            return {"voor_ontstaan": ontstaan["jaar"]}
+
+        periodes = sense.setdefault("periodes", [])
+        nieuw_einde = tot if tot is not None else self._OPEN_EINDE
+
+        for p in periodes:
+            zelfde_label = p["label"].lower() == label.lower()
+            if p["van"] == van and p.get("tot") == tot and zelfde_label:
+                return {"bestaat": True, "periode": dict(p)}
+            # Een open periode afsluiten: zelfde begin + zelfde label, nu mét eindjaar.
+            if p["van"] == van and p.get("tot") is None and tot is not None and zelfde_label:
+                oud = dict(p)
+                p["tot"] = tot
+                self._audit_sense(concept, sense, "periode_closed", source,
+                                  old_value=oud, new_value=dict(p))
+                concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+                self.store.save()
+                return {"gesloten": True, "periode": dict(p)}
+
+        for p in periodes:
+            if van <= self._einde(p) and p["van"] <= nieuw_einde:
+                return {"conflict": dict(p)}
+
+        periode = {
+            "van": van,
+            "tot": tot,
+            "label": label,
+            "bron": source,
+            "status": "confirmed" if source == "user" else "unverified",
+        }
+        periodes.append(periode)
+        periodes.sort(key=lambda x: x["van"])
+        self._audit_sense(concept, sense, "periode_added", source,
+                          old_value=None, new_value=dict(periode))
+        concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+        self.store.save()
+        return {"ok": True, "periode": dict(periode)}
+
+    def get_periodes(self, word: str) -> list:
+        """Alle periodes van het woord, gesorteerd op beginjaar (lege lijst als er geen zijn)."""
+        concept, sense = self._tijd_sense(word)
+        if not sense:
+            return []
+        return [dict(p) for p in sorted(sense.get("periodes", []), key=lambda x: x["van"])]
+
+    def get_periode_in(self, word: str, jaar: int):
+        """De periode die het gegeven jaar omvat, of None."""
+        for p in self.get_periodes(word):
+            if p["van"] <= jaar <= self._einde(p):
+                return p
+        return None
+
+    def clear_periodes(self, word: str, source: str = "user") -> int:
+        """Wist alle periodes van het woord (ontstaansjaar blijft). Geeft het aantal gewiste periodes terug; oude waarden blijven in het audit-log."""
+        concept, sense = self._tijd_sense(word)
+        if not sense or not sense.get("periodes"):
+            return 0
+        oud = [dict(p) for p in sense["periodes"]]
+        sense["periodes"] = []
+        self._audit_sense(concept, sense, "periodes_cleared", source,
+                          old_value=oud, new_value=[])
+        concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+        self.store.save()
+        return len(oud)
+
+    # ---------------------------------------------------------
+    # Temporal Semantics, Fase 9.3 (omgekeerd: welke woorden ontstonden wanneer)
+    # ---------------------------------------------------------
+    def get_all_ontstaan(self) -> list:
+        """
+        Alle woorden met een ontstaansjaar, als [{"word", "jaar"}], gesorteerd op
+        jaar en dan op woord. Per woord telt de eerste niet-afgewezen sense met
+        een jaar. (Hard-verwijderde concepten staan niet meer in de store.)
+        """
+        resultaat = []
+        for word, concept in self.store.concepts.items():
+            for s in concept.get("senses", []):
+                if s.get("status") == "rejected":
+                    continue
+                o = s.get("ontstaan")
+                if o and o.get("jaar") is not None:
+                    resultaat.append({"word": word, "jaar": o["jaar"]})
+                    break
+        resultaat.sort(key=lambda r: (r["jaar"], r["word"]))
+        return resultaat
+
     def get_best_definition(self, word: str, context_words: list[str] | None = None) -> str | None:
         senses = self.get_senses(word)
         # Verwijderpad (punt 1/2, 6 augustus 2026): een afgewezen sense
@@ -2444,6 +2586,23 @@ class SemanticConceptsModule:
 
     def get_ontstaan(self, word):
         return self.sense_engine.get_ontstaan(word)
+
+    # Temporal Semantics, Fase 9.2
+    def add_periode(self, word, van, tot, label, source="user"):
+        return self.sense_engine.add_periode(word, van, tot, label, source=source)
+
+    def get_periodes(self, word):
+        return self.sense_engine.get_periodes(word)
+
+    def get_periode_in(self, word, jaar):
+        return self.sense_engine.get_periode_in(word, jaar)
+
+    def clear_periodes(self, word, source="user"):
+        return self.sense_engine.clear_periodes(word, source=source)
+
+    # Temporal Semantics, Fase 9.3
+    def get_all_ontstaan(self):
+        return self.sense_engine.get_all_ontstaan()
 
     def get_meaning(self, word, context_words=None):
         # 1. normaliseer meervoud → enkelvoud
