@@ -789,3 +789,6 @@
 {"text": "wanneer ontstond python", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-11T20:04:23.355247"}
 {"text": "tijdlijn van python", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0038, "bron": "model_fallback", "tijdstip": "2026-10-11T20:04:30.277891"}
 {"text": "wanneer is kerst", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-10-11T20:04:45.275473"}
+{"text": "hzy", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-13T15:21:46.856708"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-13T19:40:04.716690"}
+{"text": "welk weer wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0319, "bron": "model_fallback", "tijdstip": "2026-10-13T19:40:27.950778"}

@@ -138,3 +138,4 @@
 {"tekst": "annuleren", "hoogste_gok": "activity", "confidence": 0.1674, "tijdstip": "2026-10-11T11:58:19.564320"}
 {"tekst": "ik bestaat sinds 1991", "hoogste_gok": "preference", "confidence": 0.1655, "tijdstip": "2026-10-11T18:44:03.353322"}
 {"tekst": "python bestaat sinds 3000", "hoogste_gok": "math", "confidence": 0.1675, "tijdstip": "2026-10-11T18:44:13.566244"}
+{"tekst": "hzy", "hoogste_gok": "greeting", "confidence": 0.2674, "tijdstip": "2026-10-13T15:21:46.870453"}

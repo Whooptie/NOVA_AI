@@ -35,3 +35,4 @@
 {"tekst": "hoe is het met je", "label": "identity", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
 {"tekst": "wat is het weer", "label": "weather", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
 {"tekst": "wat gebeurt er als ik iets tegen je zeg", "label": "self_architecture", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
+{"tekst": "wat is het weer", "label": "weather", "gebruikt_bij_hertraining": "2026-10-12T00:04:59.253131"}

@@ -1,13 +1,13 @@
 {
   "current_mood": "positief_speels",
-  "current_energy": 0.4903332470513712,
+  "current_energy": 0.4941299922346234,
   "current_focus": "interaction",
   "emotional_tone": "warm_en_enthousiast",
   "emotional_history": [],
   "mood_shift_tendency": "snel_met_herstel",
   "overstimulation_level": 0.06,
   "puberaal_traits_active": true,
-  "expressive_intensity": 0.04000000000000001,
+  "expressive_intensity": 0.0,
   "impulsivity_modulation": 0.18,
   "dramatic_flair_state": 0.21,
   "context_flags": {
