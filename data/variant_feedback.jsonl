@@ -222,3 +222,9 @@
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "variant_tekst": "Hier heb ik nog geen goed antwoord op, maar vertel gerust meer.", "entity": null, "response_style": "normaal", "moment": "2026-10-13T15:21:47.066250", "reactie_sentiment": null}
 {"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 7, "variant_tekst": "Zeg het maar als het niet uitkomt, maar heb je even?", "entity": null, "response_style": null, "moment": "2026-10-13T15:58:15.388243", "reactie_sentiment": null}
 {"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 0, "variant_tekst": "Mag ik storen?", "entity": null, "response_style": null, "moment": "2026-10-13T17:52:16.002166", "reactie_sentiment": null}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 4, "variant_tekst": "'{entity}' zegt me nog niets, sorry.", "entity": "symbolische ai", "response_style": "normaal", "moment": "2026-10-13T19:41:59.906498", "reactie_sentiment": null}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1791913319.9066935, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 2, "variant_tekst": "Dat woord, '{entity}', is nieuw voor mij.", "entity": "internet", "response_style": "normaal", "moment": "2026-10-13T19:42:38.892382", "reactie_sentiment": null}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1791913358.892542, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 1, "variant_tekst": "Hmm, '{entity}' ken ik nog niet.", "entity": "auto", "response_style": "normaal", "moment": "2026-10-13T20:08:38.562886", "reactie_sentiment": null}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1791914918.5630722, "type": "sentiment_koppeling"}

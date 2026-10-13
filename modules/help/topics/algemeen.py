@@ -6,63 +6,35 @@ def get_help():
 
 🕐 TIJD & DATUM
   hoe laat is het
-  wat is de datum
+  wat is het vandaag                  (dag + datum + maand + jaar + week in één zin)
+  welke dag is het   wat is de datum   welke maand is het   welk jaar is het   welke week is het
+  over 10 dagen   15 augustus   25/12  (datum berekenen; jaar springt automatisch door als die dit jaar al voorbij is)
+  hoeveel dagen tot kerst   welke dag van de week is pasen   hoeveel dagen geleden was 1 januari
+
+🎉 FEESTDAGEN
+  wanneer is kerst   wanneer valt pasen   is het vandaag een feestdag
+  wat is de volgende feestdag
+
+🏖️ SCHOOLVAKANTIES (Vlaanderen)
+  wanneer is de paasvakantie   wanneer is de krokusvakantie
+  zijn we nu in vakantie   wat is de volgende vakantie   hoeveel dagen tot de vakantie
+
+📅 OP DEZE DAG IN DE GESCHIEDENIS (Wikipedia)
+  wat is er vandaag gebeurd   wat is er gebeurd op 25 december
+  wie is er vandaag geboren   wie is er overleden op 9 december
 
 🌤️ WEER
   hoe is het weer
 
-🔢 WISKUNDE
-  2 + 2 / 10 * 5 / sqrt(16)
-  25°C  (temperatuurconversie)
-  help wiskunde  (voor het volledige overzicht: algebra, calculus,
-                  statistiek, fysica, complexe getallen, en meer)
-
-📚 KENNISBANK
+📚 KENNIS & REDENEREN  (alles hierover: help semantic)
   wat is een zwart gat
-  wat betekent fotosynthese
   wiki zwart gat
-  zijn er nog andere betekenissen        (na een "wat is X"-vraag: toont eventuele
-                                          andere Wikipedia-betekenissen van datzelfde woord)
-  wat weet je allemaal over fysica       (kort overzicht van ALLES wat Nova al weet
-                                          over een woord — alle betekenissen, relaties
-                                          en voorbeelden; typ 'ja' of een nummer voor
-                                          het volledige detail)
   teach fotosynthese een proces waarbij planten licht omzetten
-  example appel Ik eet elke dag een appel.
-  synoniemen van blij
-  antoniemen van groot
-  waarvoor gebruik je een hamer
-  wat veroorzaakt regen
-  wat zijn eigenschappen van vuur
-
-🧠 REDENEREN
   is een hond een dier
-  hond is een dier                    (leert Nova de relatie, met bevestiging)
-  is een snaar onderdeel van een gitaar
-  snaar is onderdeel van een gitaar   (leert Nova de part_of-relatie, met bevestiging)
-  welke soorten dier ken je
-  noem soorten van dier
-  welke onderdelen heeft fiets         (alle onderdelen, ook via een keten)
-  waar bestaat lichaam uit
-  wat zit er in huis
-  is snaar gerelateerd aan muziek      (associatief verband, ook via een keten)
-  heeft ei te maken met kip
-  is een hond een meubel               (bij "nee": toont het alternatief dat Nova wél weet)
-  vergelijk hond met huiskat           (gedeelde en verschillende kennis naast elkaar)
-  wat is het verschil tussen gitaar en schaak
-  welke onderdelen van keuken zijn scherp  (combineert onderdelen + eigenschap)
-
-🗑️ KENNIS WEERLEGGEN/VERWIJDEREN (verwijderpad, punt 1)
-  weerleg: hond is_a meubel                    (wijst 1 relatie af, blijft zichtbaar in geschiedenis)
-  weerleg betekenis: python 2                  (wijst 1 betekenis af, blijft zichtbaar)
-  weerleg concept: verzonnenwoord               (wijst ALLE betekenissen van een woord af)
-  verwijder definitief: hond is_a meubel        (verwijdert een AFGEWEZEN relatie echt,
-                                                  moet eerst geweerlegd zijn)
-  verwijder definitief betekenis: python 2      (idem, voor een betekenis)
-  verwijder definitief concept: verzonnenwoord  (idem, voor een heel woord)
-
-♟️ SCHAKEN
-  help schaken  (voor alle schaakcommando's)
+  hoe zeker ben je dat een hond een dier is
+  wat weet je niet zeker
+  weerleg: hond is_a meubel
+  help semantic  (leren, redeneren, oorzaak/gevolg, tijd, zekerheid, weerleggen)
 
 💛 VOORKEUREN
   onthoud: ik hou van koffie          (voorkeur vastleggen)
@@ -80,6 +52,8 @@ def get_help():
   memory stats                    (hoeveel events opgeslagen, hoe groot de database)
   memory search <woord>           (zoek een woord terug in het geheugen)
   memory similar <woord>          (vind events die lijken op een woord, ook bij typfouten)
+  wat heb ik je al gevraagd over koffie   (gewone taal, idem als memory search maar zonder commando-vorm)
+  waar praten we vaak over                 (idem, algemeen: geen specifiek onderwerp)
 
 📊 PATRONEN (Layer 2, tijdelijk testcommando)
   patronen                        (algemene stats: hoeveel event_types en observaties)
@@ -109,9 +83,15 @@ def get_help():
       patronen topic_detected:related_to_check        (idee #2: is X gerelateerd aan Y)
       patronen topic_detected:compare_concepts         (idee #6: vergelijk X met Y)
       patronen topic_detected:parts_with_property      (idee #4: welke onderdelen van X zijn Y)
+      patronen topic_detected:causes_check             (leidt X tot Y)
+      patronen topic_detected:ontstaan                 (wanneer ontstond X)
+      patronen topic_detected:tijdlijn                 (tijdlijn van X)
+      patronen topic_detected:zekerheid                (hoe zeker ben je dat ...)
     
 ❓ HELP
   help               (dit overzicht)
+  help semantic      (alles over Nova's kennis: leren, redeneren, tijd, zekerheid)
   help schaken       (schaakcommando's)
+  help wiskunde      (wiskunde-overzicht)
   help debug         (debug-/testcommando's voor development)
 """.strip()

@@ -1054,6 +1054,50 @@ class RelationEngine:
                 return rel
         return None
 
+    def confirm_relation(self, word: str, sense_id: str, relation_type: str,
+                         target: str) -> dict | None:
+        """
+        Zet een bestaande relatie op "confirmed" (Semantic Fase 10.1).
+        Tegenhanger van reject_relation(): de gebruiker bevestigt zelf.
+        Geeft het relatie-object terug bij succes, None als woord, sense
+        of relatie niet bestaat of al afgewezen is.
+        """
+        word = word.lower().strip()
+        target = target.lower().strip()
+        concept = self.store.get_concept(word)
+        if not concept:
+            return None
+
+        sense = next((s for s in concept.get("senses", []) if s.get("sense_id") == sense_id), None)
+        if not sense or sense.get("status") == "rejected":
+            return None
+
+        for rel in sense.get("relations", []):
+            if rel.get("type") == relation_type and rel.get("target") == target:
+                if rel.get("status") == "rejected":
+                    return None
+                old_status = rel.get("status")
+                old_conf = rel.get("confidence")
+                old_src = rel.get("source")
+                rel["status"] = "confirmed"
+                rel["confidence"] = 1.0
+                rel.setdefault("oorspronkelijke_bron", old_src)
+                rel["source"] = "user"
+                concept.setdefault("metadata", {})["updated_at"] = datetime.utcnow().isoformat()
+                concept.setdefault("audit_log", []).append({
+                    "event_type": "relation_confirmed",
+                    "source": "user",
+                    "sense_id": sense_id,
+                    "relation": {"type": relation_type, "target": target},
+                    "old_value": old_status,
+                    "new_value": "confirmed",
+                    "old_confidence": old_conf,
+                    "timestamp": datetime.utcnow().isoformat(),
+                })
+                self.store.save()
+                return rel
+        return None
+
     def hard_delete_relation(self, word: str, sense_id: str, relation_type: str,
                              target: str) -> bool:
         """
@@ -2719,6 +2763,9 @@ class SemanticConceptsModule:
 
     def reject_relation(self, word, sense_id, relation_type, target, reason=""):
         return self.relation_engine.reject_relation(word, sense_id, relation_type, target, reason)
+
+    def confirm_relation(self, word, sense_id, relation_type, target):
+        return self.relation_engine.confirm_relation(word, sense_id, relation_type, target)
 
     def hard_delete_relation(self, word, sense_id, relation_type, target):
         return self.relation_engine.hard_delete_relation(word, sense_id, relation_type, target)

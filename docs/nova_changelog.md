@@ -1712,3 +1712,66 @@ Derde en laatste onderdeel van Fase 9: eerst pytest groen (24 nieuwe tests, tota
 **Live bevestigd (battleserver):** "wat bestond er in 1960" (11 woorden, gesorteerd), "in 1991", "tussen 1900 en 1950" (3 woorden), "voor 1900" (5), "na 1990" (python, wifi), "in 1800" (eerlijke lege uitkomst met "14 woorden"). Regressie: "wanneer ontstond python", "tijdlijn van python", weer en "wanneer is kerst" ongewijzigd.
 
 **Fase 9 is hiermee af.** Uit de oorspronkelijke roadmap bewust geschrapt: `predict_future_concepts()` en `get_current_trends()` (voorspellen is niet symbolisch). Open voor later: einde van bestaan modelleren (verdwenen woorden), jaartallen vóór het jaar 1.
+
+---
+
+## ✅ Semantic Fase 10.1 — Uncertainty Tracking: "hoe zeker ben je dat…" + bevestigingsvraag (13 oktober 2026)
+
+Eerste onderdeel van Fase 10: eerst pytest groen (9 nieuwe tests, totaal 1453 waarvan 1 skipped), daarna live bevestigd. Werking: zie `nova_state.md`, modules-tabel (`uncertainty.py`). Puur symbolisch: Nova leest alleen `status`, `source` en `confidence` die al bij de relatie staan.
+
+**Ontwerpkeuzes:**
+- Een niet-bevestigde relatie wordt NOOIT "zeker" genoemd, ook niet bij confidence 0.9 (auto_extract): het hoogste woord is dan "waarschijnlijk". Drempels: ≥ 0.9 én `confirmed` = "zeker", ≥ 0.5 = "waarschijnlijk", daaronder "twijfelachtig".
+- Confidence is een vertrouwenslabel (komt van regels of van Kevin), geen gemeten kans. Nova zegt dit ook zo.
+- Bij een onbevestigde relatie noemt Nova de bron (Wikipedia / automatische afleiding / automatische gok) en vraagt "Wil je dit bevestigen? Typ 'ja'…". "ja" zet de relatie op `confirmed`, confidence 1.0, bron `user`; de oude bron blijft bewaard in `oorspronkelijke_bron`. "nee" laat alles staan en noemt `weerleg: <woord> <type> <target>`.
+- Hergebruik van het bestaande pending-question-mechanisme (`vraag_type` `bevestig_relatie`, verval 90 s). De payload van `pending_question:answered` bevat geen context, dus de module houdt zelf `_pending` bij (zelfde patroon als `_on_uitleg_oplossen_answered`).
+- Ketens (bv. puppy → hond → dier) worden herkend, maar de zekerheid van de keten rekent Nova bewust nog niet uit (komt in 10.3).
+
+**Bouwverslag:** `semantic.py` (`RelationEngine.confirm_relation()` + doorgeefmethode in `SemanticConceptsModule`, audit-event `relation_confirmed`), `intent_router.py` (`_ZEKERHEID_PATRONEN` + `detect_uncertainty()`, aangeroepen in stap 2H van `route()` direct na 2G), nieuw `modules/knowledge/uncertainty.py`, `tests/test_uncertainty.py`.
+
+**Live bevestigd (battleserver):** "hoe zeker ben je dat een hond een dier is" (al `confirmed` → "zeker"); "een fiets een voertuig is" (Wikipedia 0.8 → "waarschijnlijk" + vraag → "ja" → "Bevestigd" → daarna "zeker (1.00)"); "een hond een wolf is" (Wikipedia 0.8 → "nee" → blijft staan, `weerleg`-hint).
+
+**Bijvangst:** een foutief afgebroken zoek/vervang-blok gaf bij reboot een `SyntaxError` in `uncertainty.py` (regel 120) en liet de loader crashen. Hersteld door de volledige regel te plakken. Les: bij zoek/vervang altijd hele regels geven, en `pytest tests/test_uncertainty.py` draaien vóór de reboot.
+
+**Nog open (na 10.1):**
+- ~~Label voor topic `zekerheid`~~ → gedaan (13 oktober 2026): `"zekerheid": "hoe zeker dingen zijn"` toegevoegd aan `_topic_naam_labels` in `modules/experimental/emergence_engine.py` (+2 tests in `test_emergence_uncertainty_labels.py`, totaal 1455).
+- ~~Meervoud en lidwoorden~~ → gedaan (13 oktober 2026): meervoud via de bestaande `_normalize_plural_if_noun` (eerst letterlijk, dan enkelvoud); `part_of`/`causes` met aanhalingstekens i.p.v. de/het, omdat Nova geen lidwoordenlijst heeft (+4 tests, totaal 1459).
+- ~~Alleen directe relaties / ketenzekerheid~~ → gedaan in 10.3 (zekerheid van een keten = zwakste schakel).
+---
+
+## ✅ Semantic Fase 10.2 — Uncertainty Tracking: onzekerheidslijst, uitleg en keuzes (13 oktober 2026)
+
+Tweede onderdeel van Fase 10: eerst pytest groen (34 nieuwe tests in `test_uncertainty_lijst.py`, totaal 1493 waarvan 1 skipped), daarna live bevestigd. Werking: zie `nova_state.md`, modules-tabel (`uncertainty.py`). Puur symbolisch (filteren, sorteren, tellen).
+
+**Ontwerpkeuzes:**
+- Alleen wat echt in `concepts.json` staat: geen `evidence_count` of `value`-velden uit de oorspronkelijke roadmap, want die bewaart Nova niet (verzinnen zou oneerlijk zijn).
+- Lijst = onbevestigde, niet-afgewezen relaties van de types `is_a`, `part_of` en `causes` (geen `related_to`), onzekerste eerst, maximaal 10 regels.
+- Nummers verschuiven niet na bevestigen/afwijzen en blijven 10 minuten geldig (geheugen, niet bewaard bij reboot).
+- Commando's `bevestig N` en `wijs af N` (niet `weerleg N`: dat botst met `handle_weerleg`, dat alles met "weerleg" opvangt).
+- "Waarom"-uitleg noemt bron en vertrouwen en zegt dat het getal een label is en geen gemeten kans.
+
+**Bouwverslag:** `intent_router.py` (`detect_uncertainty_lijst()`, `detect_uncertainty_keuze()`, `_ZEKER_PREFIX` uitgebreid met "waarom ben je …", event `intent_uncertainty_why`), `uncertainty.py` uitgebreid (`on_why`, `on_lijst`, `on_keuze`).
+
+**Nog open (na 10.2):** ~~Fase 10.3~~ → gedaan (zie hieronder); lijst blijft alleen in geheugen.
+
+---
+
+## ✅ Semantic Fase 10.3 — Uncertainty Tracking: zekerheid van een keten (13 oktober 2026)
+
+Derde en laatste onderdeel van Fase 10: eerst pytest groen (18 nieuwe tests in `test_uncertainty_keten.py`, totaal 1511 waarvan 1 skipped), daarna live bevestigd. Werking: zie `nova_state.md`, modules-tabel (`uncertainty.py`). Puur symbolisch (zoeken + min-regel). Geen wijzigingen in `semantic.py` of `intent_router.py`.
+
+**Ontwerpkeuzes (Kevin koos "zwakste schakel"):**
+- Een keten is zo zeker als zijn zwakste schakel (laagste confidence). Bewust NIET vermenigvuldigen: confidence is een vertrouwenslabel, geen kans, en vermenigvuldigen suggereert precisie die Nova niet kan onderbouwen.
+- "Zeker" alleen als alle schakels `confirmed` zijn én de laagste confidence ≥ 0.9; anders "waarschijnlijk" of "twijfelachtig".
+- Nova zoekt zelf de ZEKERSTE keten (bij gelijkspel de kortste), want `is_a_chained` e.d. geven de eerst gevonden keten. Eigen zoekactie in `uncertainty.py`, diepte volgt `ReasoningEngine.MAX_DEPTH`, cirkels veilig, afgewezen relaties genegeerd.
+- Een direct door Kevin afgewezen relatie gaat voor elke keten ("Dat heb jij afgewezen").
+- Nova biedt aan precies de zwakste onbevestigde schakel te bevestigen (zelfde `bevestig_relatie`-vraag); na "ja" volgt een update van de keten en de volgende zwakste schakel.
+
+**Live bevestigd (battleserver):** "hoe zeker ben je dat een appel een vrucht is" → keten appel -> pitvrucht -> vrucht, "waarschijnlijk" (0.80), zwakste schakel `appel is een pitvrucht` (Wikipedia); "ja" → "Bevestigd", zekerheid van de keten 0.90, volgende zwakste schakel `pitvrucht is een vrucht`.
+
+**Nog open (Fase 10 is hiermee af):** de lijst van 10.2 blijft alleen in geheugen; Wikipedia-extractiekwaliteit (bv. `internet is een wereldwijd`, bijvoeglijke naamwoorden als doel); een keten met gemengde relatietypes wordt niet gezocht.
+
+---
+
+## ✅ Help: eigen overzicht voor Semantic — `help semantic` (13 oktober 2026)
+
+Aanleiding: de algemene `help` werd te lang door alle kennis-/redeneer-/weerleg-commando's en de nieuwe Fase 8-10-commando's. Nieuw: `modules/help/topics/semantic.py` met zes blokken (leren en opvragen, redeneren, oorzaak en gevolg, tijd en geschiedenis, zekerheid, weerleggen), bereikbaar via `help semantic` (aliassen `semantiek`, `kennis`, `kennisbank`). De algemene `help` (`topics/algemeen.py`) heeft nu één compact kennisblok met verwijzing; patronen-lijst aangevuld met `causes_check`, `ontstaan`, `tijdlijn`, `zekerheid`; `help wiskunde` stond nog niet in het HELP-blok. `help.py`: import + één `elif`. Tests: `test_help_semantic.py`, 27 tests (totaal 1538).

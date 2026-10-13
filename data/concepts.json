@@ -13,10 +13,11 @@
           {
             "type": "is_a",
             "target": "wolf",
-            "confidence": 0.8,
-            "source": "wikipedia",
+            "confidence": 1.0,
+            "source": "user",
             "created_at": "2026-06-27T18:58:08.343041",
-            "status": "unverified"
+            "status": "confirmed",
+            "oorspronkelijke_bron": "wikipedia"
           },
           {
             "type": "is_a",
@@ -59,7 +60,7 @@
     ],
     "metadata": {
       "created_at": "2026-06-27T18:58:08.343041",
-      "updated_at": "2026-08-06T14:55:20.980192",
+      "updated_at": "2026-10-13T18:16:09.429457",
       "sources": [
         "user"
       ],
@@ -123,6 +124,19 @@
         "old_value": "confirmed",
         "new_value": "rejected",
         "timestamp": "2026-08-06T14:55:20.980192"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "hond#1",
+        "relation": {
+          "type": "is_a",
+          "target": "wolf"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-13T18:16:09.429464"
       }
     ]
   },
@@ -140,10 +154,11 @@
           {
             "type": "is_a",
             "target": "voertuig",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "status": "unverified",
-            "created_at": "2026-09-24T17:55:49.115266"
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-09-24T17:55:49.115266",
+            "oorspronkelijke_bron": "wikipedia"
           }
         ],
         "source": "wikipedia",
@@ -159,7 +174,7 @@
     ],
     "metadata": {
       "created_at": "2026-06-27T18:58:32.285272",
-      "updated_at": "2026-10-11T17:58:21.405741",
+      "updated_at": "2026-10-13T17:51:53.501806",
       "sources": [
         "user"
       ],
@@ -208,6 +223,19 @@
         "old_value": null,
         "new_value": 1817,
         "timestamp": "2026-10-11T17:58:21.405736"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "fiets#1",
+        "relation": {
+          "type": "is_a",
+          "target": "voertuig"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-13T17:51:53.501811"
       }
     ]
   },
@@ -722,10 +750,11 @@
           {
             "type": "is_a",
             "target": "pitvrucht",
-            "confidence": 0.8,
-            "source": "wikipedia",
+            "confidence": 1.0,
+            "source": "user",
             "created_at": "2026-06-29T17:55:24.949953",
-            "status": "unverified"
+            "status": "confirmed",
+            "oorspronkelijke_bron": "wikipedia"
           },
           {
             "type": "related_to",
@@ -752,7 +781,7 @@
     ],
     "metadata": {
       "created_at": "2026-06-29T17:55:24.949953",
-      "updated_at": "2026-07-03T17:54:14.026608",
+      "updated_at": "2026-10-13T18:36:03.704270",
       "sources": [
         "user"
       ],
@@ -781,6 +810,19 @@
         "old_value": null,
         "new_value": "De appel is de pitvrucht van de plant Malus domestica uit de rozenfamilie (Rosaceae).",
         "timestamp": "2026-06-29T17:55:24.950964"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "appel#1",
+        "relation": {
+          "type": "is_a",
+          "target": "pitvrucht"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-13T18:36:03.704277"
       }
     ]
   },
@@ -797,10 +839,11 @@
           {
             "type": "is_a",
             "target": "vrucht",
-            "confidence": 0.9,
-            "source": "auto_extract",
+            "confidence": 1.0,
+            "source": "user",
             "created_at": "2026-06-29T18:01:54.304096",
-            "status": "unverified"
+            "status": "confirmed",
+            "oorspronkelijke_bron": "auto_extract"
           }
         ],
         "source": "user",
@@ -811,7 +854,7 @@
     ],
     "metadata": {
       "created_at": "2026-06-29T17:56:52.828563",
-      "updated_at": "2026-06-29T18:01:54.300113",
+      "updated_at": "2026-10-13T18:42:46.904004",
       "sources": [
         "user"
       ],
@@ -844,6 +887,19 @@
         "old_value": null,
         "new_value": "een vrucht met een harde pit binnenin",
         "timestamp": "2026-06-29T17:56:52.830575"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "pitvrucht#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vrucht"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.9,
+        "timestamp": "2026-10-13T18:42:46.904010"
       }
     ]
   },
@@ -3254,6 +3310,14 @@
             "source": "user",
             "created_at": "2026-10-09T18:35:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "part_of",
+            "target": "auto",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-13T18:05:48.227155"
           }
         ],
         "source": "user",
@@ -3264,15 +3328,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-10-13T18:05:48.227166",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-10-13T18:05:48.227166",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-13T18:05:48.227166",
           "confidence": 1.0
         }
       ]
@@ -3293,6 +3361,17 @@
         "old_value": null,
         "new_value": "Een wiel is een rond, draaibaar onderdeel dat gebruikt wordt om voertuigen te laten rollen en bewegen.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "wiel#1",
+        "relation": {
+          "type": "part_of",
+          "target": "auto",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-10-13T18:05:48.227163"
       }
     ]
   },
@@ -17193,13 +17272,24 @@
     "senses": [
       {
         "sense_id": "internet#1",
-        "definition": "unknown",
+        "definition": "Het internet is een wereldwijd openbaar decentraal netwerk van computernetwerken, waarvan de afspraken worden beschreven in de Request for Comments die worden beheerd door de Internet Engineering Task Force. Om het internet goed te laten werken, zijn afspraken gemaakt over protocollen voor gegevensuitwisseling tussen computers.",
         "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "user",
-        "confidence": 1.0,
-        "status": "confirmed",
+        "examples": [
+          "Een van die protocollen is het Internetprotocol (IP)."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "wereldwijd",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "rejected",
+            "created_at": "2026-10-13T17:42:40.137278"
+          }
+        ],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "status": "unverified",
         "audit_log": [],
         "ontstaan": {
           "jaar": 1983,
@@ -17210,16 +17300,20 @@
     ],
     "metadata": {
       "created_at": "2026-10-11T16:42:43.488696",
-      "updated_at": "2026-10-11T16:42:43.503794",
+      "updated_at": "2026-10-13T18:18:00.178102",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-11T16:42:43.489500",
-      "usage_count": 1,
+      "last_used_at": "2026-10-13T17:42:40.137305",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-11T16:42:43.489500",
           "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-13T17:42:40.137305",
+          "confidence": 0.8
         }
       ]
     },
@@ -17247,6 +17341,27 @@
         "old_value": null,
         "new_value": 1983,
         "timestamp": "2026-10-11T16:42:43.503786"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "wikipedia",
+        "sense_id": "internet#1",
+        "old_value": "unknown",
+        "new_value": "Het internet is een wereldwijd openbaar decentraal netwerk van computernetwerken, waarvan de afspraken worden beschreven in de Request for Comments die worden beheerd door de Internet Engineering Task Force. Om het internet goed te laten werken, zijn afspraken gemaakt over protocollen voor gegevensuitwisseling tussen computers.",
+        "timestamp": "2026-10-13T17:42:40.137303"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "internet#1",
+        "relation": {
+          "type": "is_a",
+          "target": "wereldwijd"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "afgewezen via onzekerheidslijst",
+        "timestamp": "2026-10-13T18:18:00.178108"
       }
     ]
   },
@@ -17356,6 +17471,66 @@
         "old_value": null,
         "new_value": 1956,
         "timestamp": "2026-10-11T17:57:28.880077"
+      }
+    ]
+  },
+  "auto": {
+    "senses": [
+      {
+        "sense_id": "auto#1",
+        "definition": "Een auto of automobiel is een zelfstandig voortbewegend, rijdend vervoermiddel.",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-13T18:05:44.014157",
+      "updated_at": "2026-10-13T18:08:39.552065",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-13T18:08:39.552065",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-13T18:05:44.015803",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-13T18:08:39.552065",
+          "confidence": 0.8
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "auto"
+        },
+        "timestamp": "2026-10-13T18:05:44.014163"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "auto#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-13T18:05:44.015801"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "wikipedia",
+        "sense_id": "auto#1",
+        "old_value": "unknown",
+        "new_value": "Een auto of automobiel is een zelfstandig voortbewegend, rijdend vervoermiddel.",
+        "timestamp": "2026-10-13T18:08:39.552063"
       }
     ]
   }

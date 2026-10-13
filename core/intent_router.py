@@ -2636,6 +2636,88 @@ class IntentRouter:
 
         return False
 
+    # ---------------------------------------------------------
+    # Zekerheidsvragen (Semantic Fase 10.1)
+    # "hoe zeker ben je dat een hond een dier is"
+    # "hoe zeker ben je dat wiel onderdeel is van auto"
+    # "hoe zeker ben je dat roken kanker veroorzaakt"
+    # De uitleg zelf doet modules/knowledge/uncertainty.py.
+    # ---------------------------------------------------------
+    _ZEKER_PREFIX = r"^(?:hoe zeker ben je (?:ervan )?dat|ben je zeker dat|weet je zeker dat|hoe zeker weet je dat|waarom ben je (?:er )?(?:niet )?zeker (?:van )?dat)\s+"
+    _ZEKER_ART = r"(?:(?:een|de|het)\s+)?"
+    _ZEKERHEID_PATRONEN = [
+        ("is_a", re.compile(_ZEKER_PREFIX + _ZEKER_ART + r"(\w+) een ([\w\s]+?) is$")),
+        ("part_of", re.compile(_ZEKER_PREFIX + _ZEKER_ART + r"(\w+) onderdeel is van " + _ZEKER_ART + r"([\w\s]+)$")),
+        ("part_of", re.compile(_ZEKER_PREFIX + _ZEKER_ART + r"(\w+) een onderdeel van " + _ZEKER_ART + r"([\w\s]+?) is$")),
+        ("causes", re.compile(_ZEKER_PREFIX + _ZEKER_ART + r"(\w+) " + _ZEKER_ART + r"([\w\s]+?) veroorzaakt$")),
+        ("causes", re.compile(_ZEKER_PREFIX + _ZEKER_ART + r"(\w+) tot " + _ZEKER_ART + r"([\w\s]+?) leidt$")),
+        # meervoud: "honden dieren zijn", "wielen onderdelen zijn van auto", "... veroorzaken", "... leiden"
+        ("is_a", re.compile(_ZEKER_PREFIX + r"(\w+) ([\w\s]+?) zijn$")),
+        ("part_of", re.compile(_ZEKER_PREFIX + r"(\w+) (?:onderdeel|onderdelen) zijn van " + _ZEKER_ART + r"([\w\s]+)$")),
+        ("causes", re.compile(_ZEKER_PREFIX + r"(\w+) " + _ZEKER_ART + r"([\w\s]+?) veroorzaken$")),
+        ("causes", re.compile(_ZEKER_PREFIX + r"(\w+) tot " + _ZEKER_ART + r"([\w\s]+?) leiden$")),
+    ]
+
+    def detect_uncertainty(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        for rel_type, patroon in self._ZEKERHEID_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            bron = m.group(1).strip()
+            doel = m.group(2).strip()
+            if not bron or not doel or bron in self._GEEN_RELATIE_ONDERWERP:
+                continue
+            if doel in self._GEEN_RELATIE_ONDERWERP:
+                continue
+            if len(doel.split()) > 3:
+                continue
+            dbg(f"[uncertainty] {bron} {rel_type} {doel}")
+            event = "intent_uncertainty_why" if t.startswith("waarom") else "intent_uncertainty_query"
+            self.event_bus.publish(event, {
+                "relation_type": rel_type, "source": bron, "target": doel})
+            self._emit_topic("zekerheid", bron="detect", concept=bron)
+            return True
+        return False
+
+    # ---------------------------------------------------------
+    # Onzekerheidslijst en keuzes (Semantic Fase 10.2)
+    # "wat weet je niet zeker?" / "wat weet je niet zeker over hond?"
+    # "bevestig 3" / "wijs af 3" (nummers uit de laatst getoonde lijst)
+    # ---------------------------------------------------------
+    _ONZEKER_LIJST_PATRONEN = [
+        re.compile(r"^(?:wat|welke \w+) weet je (?:niet zeker|nog niet zeker)(?: (?:over|van) (?:een |de |het )?([\w\s]+))?$"),
+        re.compile(r"^(?:wat|welke \w+) is er onzeker(?: (?:over|van) (?:een |de |het )?([\w\s]+))?$"),
+        re.compile(r"^(?:toon|geef|laat) (?:me |mij )?(?:je )?onzekere (?:kennis|relaties|dingen)(?: (?:over|van) (?:een |de |het )?([\w\s]+))?$"),
+    ]
+    _ONZEKER_KEUZE = re.compile(r"^(bevestig|wijs af)\s+(?:nummer |nr\.? )?(\d{1,2})$")
+
+    def detect_uncertainty_lijst(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        for patroon in self._ONZEKER_LIJST_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            woord = (m.group(1) or "").strip() or None
+            if woord and (woord in self._GEEN_RELATIE_ONDERWERP or len(woord.split()) > 3):
+                continue
+            dbg(f"[uncertainty-lijst] {woord}")
+            self.event_bus.publish("intent_uncertainty_list", {"word": woord})
+            self._emit_topic("zekerheid", bron="detect", concept=woord)
+            return True
+        return False
+
+    def detect_uncertainty_keuze(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        m = self._ONZEKER_KEUZE.match(t)
+        if not m:
+            return False
+        actie = "bevestig" if m.group(1) == "bevestig" else "wijs_af"
+        dbg(f"[uncertainty-keuze] {actie} {m.group(2)}")
+        self.event_bus.publish("intent_uncertainty_keuze", {
+            "actie": actie, "nummer": int(m.group(2))})
+        return True
+
     def _temporal_onderwerp_ok(self, onderwerp):
         woorden = onderwerp.split()
         if not woorden or len(woorden) > 3:
@@ -4809,6 +4891,11 @@ class IntentRouter:
         # detect_calendar opgevangen worden, en "python bestaat sinds
         # 1991" niet door semantic._detect_relation() (stap 9).
         if self.detect_temporal(text):
+            return
+
+        # 2H Zekerheidsvraag (Fase 10.1) -- "hoe zeker ben je dat ..."
+        if (self.detect_uncertainty(text) or self.detect_uncertainty_lijst(text)
+                or self.detect_uncertainty_keuze(text)):
             return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).

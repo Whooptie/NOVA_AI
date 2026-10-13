@@ -792,3 +792,39 @@
 {"text": "hzy", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-13T15:21:46.856708"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-13T19:40:04.716690"}
 {"text": "welk weer wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0319, "bron": "model_fallback", "tijdstip": "2026-10-13T19:40:27.950778"}
+{"text": "wat is symbolische ai", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-13T19:41:59.893642"}
+{"text": "wiki symbolische ai", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-13T19:42:12.982585"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-13T19:46:24.147428"}
+{"text": "hoe zeker ben je dat een hond een dier is?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0004, "bron": "model_fallback", "tijdstip": "2026-10-13T19:46:36.181043"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-13T19:49:46.629269"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-13T19:51:07.126765"}
+{"text": "hoe zeker ben je dat een fiets een voertuig is?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0158, "bron": "model_fallback", "tijdstip": "2026-10-13T19:51:39.663274"}
+{"text": "hoe zeker ben je dat een fiets een voertuig is?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0158, "bron": "model_fallback", "tijdstip": "2026-10-13T19:52:00.720326"}
+{"text": "hoe zeker ben je dat een hond een wolf is", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0004, "bron": "model_fallback", "tijdstip": "2026-10-13T19:52:31.804816"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-13T19:52:39.453951"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-13T19:59:15.608263"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-13T20:02:21.560429"}
+{"text": "hoe zeker ben je dat honden dieren zijn?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0153, "bron": "model_fallback", "tijdstip": "2026-10-13T20:02:31.456519"}
+{"text": "hoe zeker ben je dat wielen onderdelen zijn van auto?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0126, "bron": "model_fallback", "tijdstip": "2026-10-13T20:02:38.988943"}
+{"text": "wiel is een onderdeel van een auto", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-13T20:03:59.085459"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-13T20:04:04.019603"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-13T20:05:16.200463"}
+{"text": "hoe zeker ben je dat wiel onderdeel is van auto", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0082, "bron": "model_fallback", "tijdstip": "2026-10-13T20:05:24.440060"}
+{"text": "hoe zeker ben je dat wielen onderdelen zijn van auto", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0126, "bron": "model_fallback", "tijdstip": "2026-10-13T20:05:34.149060"}
+{"text": "wiel is onderdeel van auto", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0323, "bron": "model_fallback", "tijdstip": "2026-10-13T20:05:44.003894"}
+{"text": "hoe zeker ben je dat wiel onderdeel is van auto", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0082, "bron": "model_fallback", "tijdstip": "2026-10-13T20:08:05.800340"}
+{"text": "hoe zeker ben je dat wielen onderdelen zijn van auto", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0126, "bron": "model_fallback", "tijdstip": "2026-10-13T20:08:14.373559"}
+{"text": "wat is een auto", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-13T20:08:38.544614"}
+{"text": "2+2", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-13T20:10:46.516669"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-13T20:15:25.748128"}
+{"text": "wat weet je niet zeker over hond?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0736, "bron": "model_fallback", "tijdstip": "2026-10-13T20:15:59.914566"}
+{"text": "bevestig 1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-13T20:16:09.423189"}
+{"text": "waarom ben je er niet zeker van dat een computer een apparaat is?", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.029, "bron": "model_fallback", "tijdstip": "2026-10-13T20:16:45.993238"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-13T20:16:59.910895"}
+{"text": "wijs af 6", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-13T20:18:00.174285"}
+{"text": "hoe wordt het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.054, "bron": "model_fallback", "tijdstip": "2026-10-13T20:32:45.458931"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-13T20:34:49.304314"}
+{"text": "hoe zeker ben je dat een appel een vrucht is?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0004, "bron": "model_fallback", "tijdstip": "2026-10-13T20:35:48.202858"}
+{"text": "hoe zeker ben je dat een appel een vrucht is?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0004, "bron": "model_fallback", "tijdstip": "2026-10-13T20:42:31.091754"}
+{"text": "wat weet je over mijn geheugen", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0016, "bron": "model_fallback", "tijdstip": "2026-10-13T20:59:07.362254"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-13T21:00:42.322412"}

@@ -290,3 +290,5 @@
 {"timestamp": "2026-10-11T16:42:43.488707", "event_type": "concept_created", "word": "internet", "source": "system", "new_value": {"word": "internet"}}
 {"timestamp": "2026-10-11T16:44:03.354383", "event_type": "concept_created", "word": "bestaat", "source": "system", "new_value": {"word": "bestaat"}}
 {"timestamp": "2026-10-11T17:57:28.865693", "event_type": "concept_created", "word": "symbolische ai", "source": "system", "new_value": {"word": "symbolische ai"}}
+{"timestamp": "2026-10-13T18:03:59.095135", "event_type": "concept_created", "word": "onderdeel van een auto", "source": "system", "new_value": {"word": "onderdeel van een auto"}}
+{"timestamp": "2026-10-13T18:05:44.014167", "event_type": "concept_created", "word": "auto", "source": "system", "new_value": {"word": "auto"}}

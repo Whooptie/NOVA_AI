@@ -1,6 +1,6 @@
 # modules/help/help.py
 
-from modules.help.topics import algemeen, schaken, debug, math
+from modules.help.topics import algemeen, schaken, debug, math, semantic
 
 C_RESET = "\033[0m"
 C_GREEN = "\033[92m"
@@ -30,6 +30,11 @@ class HelpModule:
             # "help rekenen") zodat je niet perse de Engelse modulenaam
             # hoeft te onthouden.
             tekst = math.get_help()
+        elif topic in ("semantic", "semantiek", "kennis", "kennisbank"):
+            # Alles rond Nova's kennis (leren, redeneren, oorzaak/gevolg,
+            # tijd, zekerheid, weerleggen) staat in een eigen overzicht,
+            # zodat "help" zelf kort blijft.
+            tekst = semantic.get_help()
         else:
             tekst = algemeen.get_help()
 
