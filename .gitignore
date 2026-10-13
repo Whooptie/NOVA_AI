@@ -13,3 +13,5 @@ data/models/blobs
 data/models/manifests
 data/backups/
 data/interactions.jsonl
+
+interactions_*.jsonl
