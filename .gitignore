@@ -11,4 +11,5 @@ data/*.db-wal
 data/interactions.db
 data/models/blobs
 data/models/manifests
-data/backups
+data/backups/
+data/interactions.jsonl
