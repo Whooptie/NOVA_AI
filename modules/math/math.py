@@ -1445,7 +1445,7 @@ class MathModule:
         # Voor de numerieke variant (helling op één specifiek punt): afgeleide()
         self._check_sympy("differentiate")
         x = sp.symbols("x")
-        expr = self._sympy_parse(expr_str, x)
+        expr = self._sympy_parse(expr_str, {"x": x})
         resultaat = sp.diff(expr, x)
         resultaat = sp.simplify(resultaat)
         return self._sympy_str(resultaat)
@@ -2551,6 +2551,11 @@ class MathModule:
             if fname in EXPR_FUNCS_SYMBOLISCH:
                 if len(node.args) < 1:
                     raise ValueError(f"{fname}: eerste argument moet een expressie met x zijn, bv. \"x^2 - 4\"")
+
+                if len(node.args) > 1:
+                    tweede = node.args[1]
+                    if not (isinstance(tweede, ast.Name) and tweede.id == "x"):
+                        raise ValueError(f"{fname}: enkel de variabele x wordt ondersteund")
 
                 expr_str = ast.unparse(node.args[0])
                 return self.funcs[fname](expr_str)

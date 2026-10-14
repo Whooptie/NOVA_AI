@@ -1,6 +1,6 @@
 # 🧠 Nova — State of the Project
 
-> Laatste update: 11 oktober 2026
+> Laatste update: 14 oktober 2026
 > Doel van dit bestand: altijd als eerste uploaden in een nieuw Claude-gesprek zodat context volledig is.
 
 ---
@@ -1515,7 +1515,7 @@ Ondanks de naam is `layer4_response` intussen **niet meer exclusief voor Layer 4
 
 ## 🧪 tests/ — pytest-testsuite (sinds 8 augustus 2026)
 
-`/app/tests/` in de `nova-ai`-container op battleserver (bewerken via VSCode over SSH, geen lokale kopie meer). Draaien vanuit de project-root in de container: `pytest tests/ -v`. Stand 13 oktober 2026: **1511 tests: 1510 groen, 1 bewust overgeslagen** (~6.5s). De overgeslagen test is `test_kopie_is_gelijk_aan_nova_client` in `test_nova_client_open_url.py`: `nova_client.py` staat op de laptop, niet op battleserver.
+`/app/tests/` in de `nova-ai`-container op battleserver (bewerken via VSCode over SSH, geen lokale kopie meer). Draaien vanuit de project-root in de container: `pytest tests/ -v`. Stand 14 oktober 2026: **1552 tests: 1551 groen, 1 bewust overgeslagen** (~8s). De overgeslagen test is `test_kopie_is_gelijk_aan_nova_client` in `test_nova_client_open_url.py`: `nova_client.py` staat op de laptop, niet op battleserver.
 
 Startpunt was een externe review (5 assertions in 21 print-gebaseerde scripts, plus een `SystemExit` die `pytest tests/` liet crashen bij collectie) — sindsdien in meerdere rondes opgebouwd, telkens risico-gebaseerd geprioriteerd (kans op stille regressie, niet moduleomvang):
 

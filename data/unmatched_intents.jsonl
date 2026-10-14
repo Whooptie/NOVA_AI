@@ -139,3 +139,6 @@
 {"tekst": "ik bestaat sinds 1991", "hoogste_gok": "preference", "confidence": 0.1655, "tijdstip": "2026-10-11T18:44:03.353322"}
 {"tekst": "python bestaat sinds 3000", "hoogste_gok": "math", "confidence": 0.1675, "tijdstip": "2026-10-11T18:44:13.566244"}
 {"tekst": "hzy", "hoogste_gok": "greeting", "confidence": 0.2674, "tijdstip": "2026-10-13T15:21:46.870453"}
+{"tekst": "binary_search([1,3,5,7,9], 7", "hoogste_gok": "math", "confidence": 0.1534, "tijdstip": "2026-10-14T18:04:00.616449"}
+{"tekst": "binary_search([1,3,5,7,9], 7)", "hoogste_gok": "math", "confidence": 0.1339, "tijdstip": "2026-10-14T18:04:12.701179"}
+{"tekst": "binary_search([1,3,5,7,9], 7)", "hoogste_gok": "math", "confidence": 0.1339, "tijdstip": "2026-10-14T18:04:27.435532"}

@@ -1775,3 +1775,17 @@ Derde en laatste onderdeel van Fase 10: eerst pytest groen (18 nieuwe tests in `
 ## ✅ Help: eigen overzicht voor Semantic — `help semantic` (13 oktober 2026)
 
 Aanleiding: de algemene `help` werd te lang door alle kennis-/redeneer-/weerleg-commando's en de nieuwe Fase 8-10-commando's. Nieuw: `modules/help/topics/semantic.py` met zes blokken (leren en opvragen, redeneren, oorzaak en gevolg, tijd en geschiedenis, zekerheid, weerleggen), bereikbaar via `help semantic` (aliassen `semantiek`, `kennis`, `kennisbank`). De algemene `help` (`topics/algemeen.py`) heeft nu één compact kennisblok met verwijzing; patronen-lijst aangevuld met `causes_check`, `ontstaan`, `tijdlijn`, `zekerheid`; `help wiskunde` stond nog niet in het HELP-blok. `help.py`: import + één `elif`. Tests: `test_help_semantic.py`, 27 tests (totaal 1538).
+
+---
+
+## ✅ Math: differentiate-crash + dubbel antwoord bij functienaam-keyword (14 oktober 2026)
+
+Aanleiding: nadat sympy 1.14.0 in de container was geïnstalleerd, werkten 6 van de 7 symbolische commando's. Eerst pytest groen (14 nieuwe tests in `test_math_symbolisch_en_router.py`, totaal 1552 waarvan 1 skipped), daarna live bevestigd op battleserver. Puur symbolisch, geen ML.
+
+**Bug 1 — `differentiate(...)` gaf "argument of type 'Symbol' is not iterable".** Oorzaak: sinds de solve_stelsel-refactor van 2 augustus verwacht `_sympy_parse()` een dict met variabelen (`{"x": x}`), maar `_differentiate()` gaf nog het kale `Symbol` `x` mee. Er was geen test voor differentiate, dus het viel niet op. Fix: `_sympy_parse(expr_str, {"x": x})`. Extra: in `_eval()` (Groep 3, symbolische functies) wordt een tweede argument dat niet `x` is nu geweigerd met "enkel de variabele x wordt ondersteund". Voorheen werd het stil genegeerd (`differentiate(x^3, y)` gaf onterecht `3x^2`).
+
+**Bug 2 — dubbel antwoord bij `→ math (functienaam-keyword)`** (bv. `binary_search([1,3,5,7,9], 7)`: eerst het goede antwoord, daarna `→ fallback` en "Dat ken ik nog niet"). Oorzaak: die tak in `detect_math()` publiceerde `intent_math` maar had geen `return True`, waardoor de router doorliep naar `fallback()`. Fix: `return True` toegevoegd, én de regex eist nu een `(` direct na het keyword (`rf"\b{k}\s*\("`). Zonder die eis zou het `return True` gewone zinnen met woorden als "log", "unit" of "round" als rekenvraag opvangen. Gevolg: een kaal keyword zonder haakjes gaat niet meer naar math.
+
+**Bestanden:** `modules/math/math.py` (`_differentiate`, Groep 3-blok in `_eval`), `core/intent_router.py` (`detect_math()`).
+
+**Nog open:** de eerdere dubbele fallback-antwoorden kunnen rare concepten of associaties in `concepts.json` hebben achtergelaten. Eenmalig controleren.

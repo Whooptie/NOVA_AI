@@ -151,15 +151,19 @@
           "Zijn fiets stond geparkeerd voor de deur."
         ],
         "relations": [
-          {
-            "type": "is_a",
-            "target": "voertuig",
-            "confidence": 1.0,
-            "source": "user",
-            "status": "confirmed",
-            "created_at": "2026-09-24T17:55:49.115266",
-            "oorspronkelijke_bron": "wikipedia"
-          }
+          {"type": "is_a", "target": "voertuig", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-09-24T17:55:49.115266", "oorspronkelijke_bron": "wikipedia"},
+          { "type": "has_part", "target": "wiel", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "stuur", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "zadel", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "trap", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "rem", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "ketting", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "versnelling", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "bel", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "frame", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "licht", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "reflector", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" },
+          { "type": "has_part", "target": "spatbord", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:20:00.000000" }
         ],
         "source": "wikipedia",
         "confidence": 0.8,
@@ -430,6 +434,7 @@
           "In de tuin staat een grote trampoline."
         ],
         "relations": [
+          { "type": "has_part", "target": "vel", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "is_a",
             "target": "vel",
@@ -747,6 +752,7 @@
           "Ik eet elke dag een appel."
         ],
         "relations": [
+          { "type": "part_of", "target": "appelboom", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "is_a",
             "target": "pitvrucht",
@@ -1780,6 +1786,8 @@
           "Iemand klopte op de deur."
         ],
         "relations": [
+          { "type": "part_of", "target": "huis", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "part_of", "target": "gebouw", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "is_a",
             "target": "bouwelement",
@@ -1840,6 +1848,8 @@
           "Het raam stond open voor frisse lucht."
         ],
         "relations": [
+          { "type": "part_of", "target": "huis", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "part_of", "target": "gebouw", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "is_a",
             "target": "bouwelement",
@@ -2216,6 +2226,7 @@
           "Het huis had een grote tuin met een tafel en stoelen."
         ],
         "relations": [
+          { "type": "has_part", "target": "trap", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "is_a",
             "target": "gebouw",
@@ -2888,6 +2899,7 @@
           "Het gebouw had meerdere verdiepingen."
         ],
         "relations": [
+          { "type": "has_part", "target": "bouwelement", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "has_part",
             "target": "deur",
@@ -3295,6 +3307,7 @@
           "Het wiel van de auto was lek."
         ],
         "relations": [
+          { "type": "part_of", "target": "voertuig", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "part_of",
             "target": "fiets",
@@ -5454,7 +5467,8 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
-          }
+          },
+          { "type": "has_part", "target": "oog", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" }
         ],
         "source": "user",
         "confidence": 1.0,
@@ -5958,14 +5972,13 @@
           "Het hoofd, de armen en de benen zijn allemaal delen van het lichaam."
         ],
         "relations": [
-          {
-            "type": "related_to",
-            "target": "mens",
-            "confidence": 0.8,
-            "source": "user",
-            "created_at": "2026-07-05T00:00:00.000000",
-            "status": "confirmed"
-          }
+          { "type": "related_to", "target": "mens", "confidence": 0.8, "source": "user", "created_at": "2026-07-05T00:00:00.000000", "status": "confirmed"},
+          { "type": "has_part", "target": "hoofd", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "has_part", "target": "hand", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "has_part", "target": "hart", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "has_part", "target": "been", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "has_part", "target": "bot", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "has_part", "target": "spier", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" }
         ],
         "source": "user",
         "confidence": 1.0,
@@ -7853,7 +7866,7 @@
             "confidence": 1.0,
             "source": "user",
             "created_at": "2026-07-12T20:21:25.000000",
-            "status": "confirmed"
+            "status": "rejected"
           }
         ],
         "source": "user",
@@ -8711,6 +8724,7 @@
           "Ze stemde elke snaar zorgvuldig voor het concert."
         ],
         "relations": [
+          { "type": "part_of", "target": "snaarinstrument", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "related_to",
             "target": "trilling",
@@ -9230,6 +9244,7 @@
           "De laptop moest even opladen voor hij weer aankon."
         ],
         "relations": [
+          { "type": "has_part", "target": "scherm", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "is_a",
             "target": "computer",
@@ -9446,7 +9461,9 @@
           "Dat was een goed idee.",
           "Ze voelde zich goed na de wandeling."
         ],
-        "relations": [],
+        "relations": [
+          { "type": "antonym", "target": "slecht", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:35:00.000000" }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -9497,7 +9514,9 @@
           "Ze bereikten de top van de berg bij zonsopgang.",
           "Dit nummer stond wekenlang aan de top van de hitlijst."
         ],
-        "relations": [],
+        "relations": [
+          { "type": "part_of", "target": "berg", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:35:00.000000" }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -10042,6 +10061,7 @@
           "Een week bestaat uit zeven dagen."
         ],
         "relations": [
+          { "type": "has_part", "target": "morgen", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "related_to",
             "target": "tijd",
@@ -10590,7 +10610,9 @@
           "De kat zat boven op de kast.",
           "Ze woonde boven in het huis."
         ],
-        "relations": [],
+        "relations": [
+          { "type": "antonym", "target": "onder", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:35:00.000000" }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -10943,7 +10965,17 @@
           "Ze beklommen de berg bij zonsopgang.",
           "Sneeuw bedekte de top van de berg."
         ],
-        "relations": [],
+        "relations": [
+          { "type": "has_part", "target": "top", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:35:00.000000" },
+          {
+            "type": "is_a",
+            "target": "landvorm",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T18:30:00.000000",
+            "status": "confirmed"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -11429,6 +11461,14 @@
             "confidence": 1.0,
             "source": "user",
             "created_at": "2026-07-11T21:28:56.033821",
+            "status": "rejected"
+          },
+          {
+            "type": "is_a",
+            "target": "ijs",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T19:15:00.000000",
             "status": "confirmed"
           }
         ],
@@ -12052,6 +12092,10 @@
           "De keuken heeft een fornuis en een koelkast."
         ],
         "relations": [
+          { "type": "has_part", "target": "tafel", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "has_part", "target": "mes", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "has_part", "target": "pan", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          { "type": "has_part", "target": "fornuis", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "part_of",
             "target": "huis",
@@ -12736,8 +12780,12 @@
         "sense_id": "zeilboot#1",
         "definition": "Een zeilboot is een vaartuig dat wordt voortgestuwd door de wind.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "De zeilboot gleed over het meer.",
+          "We huurden een zeilboot voor het weekend."
+        ],
         "relations": [
+          { "type": "part_of", "target": "vaartuig", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
           {
             "type": "is_a",
             "target": "vaartuig",
@@ -13825,7 +13873,10 @@
         "sense_id": "schaken#1",
         "definition": "Schaken is een aanduiding voor een groep verwante bordspellen. Dit artikel beschrijft het westers schaakspel, een strategisch bordspel voor twee spelers.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Mijn opa leerde mij schaken.",
+          "Zij wint bijna elk potje schaken."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -13993,8 +14044,20 @@
         "sense_id": "koi#1",
         "definition": "een siervis, een gedomesticeerde vorm van de karper, gekweekt om zijn kleurpatroon",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "In de vijver zwemmen drie koi.",
+          "Een koi kan heel oud worden."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vis",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T19:05:00.000000",
+            "status": "confirmed"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -14472,8 +14535,20 @@
         "sense_id": "fysica#1",
         "definition": "Natuurkunde of fysica is de wetenschap die zich bezighoudt met de algemene eigenschappen van materie, straling en energie, evenals het gedrag ervan in de ruimte en de tijd. Fysici onderzoeken fenomenen zoals kracht, beweging en evenwicht, warmte, licht, geluid, magnetisme en elektriciteit.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "Fysica onderzoekt hoe materie en energie zich gedragen.",
+          "Ze studeert fysica aan de universiteit."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "wetenschap",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": [],
@@ -14561,8 +14636,20 @@
         "sense_id": "chemie#1",
         "definition": "Scheikunde of chemie is de natuurwetenschap die zich bezighoudt met de samenstelling, structuur, eigenschappen en veranderingen van stoffen (materie). Scheikundigen onderzoeken op moleculair en atomair niveau hoe deeltjes op elkaar inwerken en hoe deze interacties leiden tot waarneembare fenomenen.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
+        "examples": [
+          "Bij chemie leer je over stoffen en reacties.",
+          "Hij heeft een hekel aan chemie."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "wetenschap",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T18:35:00.000000",
+            "status": "confirmed"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": [],
@@ -14663,7 +14750,9 @@
           "Mercurius is een Aardse planeet met een vast oppervlak dat lijkt op de Maan.",
           "Mercurius heeft geen manen."
         ],
-        "relations": [],
+        "relations": [
+          { "type": "is_a", "target": "planeet", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:35:00.000000" }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "audit_log": [],
@@ -15280,7 +15369,10 @@
         "sense_id": "fotosynthese#1",
         "definition": "Fotosynthese is het vermogen licht-energie om te zetten in chemische energie. Het is een vorm van biosynthese, waarbij energie uit zonlicht wordt gebruikt om gasvormig koolstofdioxide om te zetten in de vaste stof glucose.",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Planten gebruiken fotosynthese om suiker te maken.",
+          "Zonder licht stopt de fotosynthese."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -15289,6 +15381,22 @@
             "source": "auto_extract",
             "status": "rejected",
             "created_at": "2026-08-06T18:24:39.211725"
+          },
+          {
+            "type": "related_to",
+            "target": "plant",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T19:10:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "zon",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T19:10:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
@@ -15348,9 +15456,13 @@
       {
         "sense_id": "gitaar#1",
         "definition": "Een gitaar is een snaarinstrument dat wordt bespeeld met de vingers of met een plectrum. Het woord gitaar stamt af van het Perzische \"tar\" dat \"snaar\" betekent.",
-        "pos": null,
-        "examples": [],
+        "pos": "noun",
+        "examples": [
+          "Hij speelt gitaar in een band.",
+          "De gitaar had zes snaren."
+        ],
         "relations": [
+          { "type": "has_part", "target": "snaar", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },          
           {
             "type": "is_a",
             "target": "snaarinstrument",
@@ -15632,7 +15744,10 @@
         "sense_id": "voetbal#1",
         "definition": "een sport waar je een bal moet trappen",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Ze kijken elke zaterdag voetbal.",
+          "De kinderen spelen voetbal op het plein."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -15710,7 +15825,10 @@
         "sense_id": "stad#1",
         "definition": "een plaats waar veel mensen wonen",
         "pos": "noun",
-        "examples": [],
+        "examples": [
+          "Amsterdam is een grote stad.",
+          "Ze woont liever in de stad dan op het platteland."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -15956,9 +16074,21 @@
       {
         "sense_id": "gisteren#1",
         "definition": "Gisteren, in Nederland ook gister, is vanuit het actuele tijdstip de dag die eerder om 12 uur 's nachts eindigde en 24 uren eerder begon. In de 24-uurstijdsindeling begint een nieuwe dag om 00:00:00 en eindigt deze om 23:59:59.",
-        "pos": null,
-        "examples": [],
-        "relations": [],
+        "pos": "adv",
+        "examples": [
+          "Gisteren regende het de hele dag.",
+          "Ik heb hem gisteren nog gezien."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "dag",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T19:15:00.000000",
+            "status": "confirmed"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "status": "unverified",
@@ -17041,13 +17171,16 @@
     "senses": [
       {
         "sense_id": "annuleren#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Annuleren is iets wat gepland of afgesproken was ongedaan maken, zodat het niet doorgaat.",
+        "pos": "verb",
+        "examples": [
+          "We moeten de afspraak annuleren.",
+          "Hij annuleerde zijn reservering."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -17090,7 +17223,7 @@
       {
         "sense_id": "modder#1",
         "definition": "Modder, slijk, bagger of blubber is een vloeibaar of semi-vloeibaar mengsel van klei, silt en water, een suspensie. Modder kan een leefomgeving zijn voor een aantal dieren, zoals wormen, kikkers, schelpdieren en kreeftachtigen.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Andere dieren zoals varkens en olifanten houden ervan in de modder te baden.",
           "In sommige gevallen schuilen dieren maandenlang in de modder in een winterslaap om de winter door te komen, zoals kikkers en salamanders."
@@ -17176,13 +17309,16 @@
     "senses": [
       {
         "sense_id": "uitglijden#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Uitglijden is onbedoeld wegglijden over een gladde ondergrond, waardoor je je evenwicht verliest.",
+        "pos": "verb",
+        "examples": [
+          "Ze gleed uit over het natte zeil.",
+          "Pas op, anders glijd je uit op het ijs."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -17224,13 +17360,33 @@
     "senses": [
       {
         "sense_id": "slecht humeur#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Een slecht humeur is een gemoedstoestand waarin iemand prikkelbaar, chagrijnig of onaangenaam gestemd is.",
+        "pos": "noun",
+        "examples": [
+          "Hij had vanochtend een slecht humeur.",
+          "Door de drukte kreeg ze een slecht humeur."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gevoel",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T18:45:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "boos",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T18:45:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -17273,7 +17429,7 @@
       {
         "sense_id": "internet#1",
         "definition": "Het internet is een wereldwijd openbaar decentraal netwerk van computernetwerken, waarvan de afspraken worden beschreven in de Request for Comments die worden beheerd door de Internet Engineering Task Force. Om het internet goed te laten werken, zijn afspraken gemaakt over protocollen voor gegevensuitwisseling tussen computers.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Een van die protocollen is het Internetprotocol (IP)."
         ],
@@ -17285,6 +17441,14 @@
             "source": "wikipedia",
             "status": "rejected",
             "created_at": "2026-10-13T17:42:40.137278"
+          },
+          {
+            "type": "is_a",
+            "target": "netwerk",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T18:55:00.000000",
+            "status": "confirmed"
           }
         ],
         "source": "wikipedia",
@@ -17369,13 +17533,16 @@
     "senses": [
       {
         "sense_id": "bestaat#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Bestaat is een vorm van het werkwoord bestaan: werkelijk aanwezig zijn of echt bestaand zijn.",
+        "pos": "verb",
+        "examples": [
+          "Dat woord bestaat niet.",
+          "Deze winkel bestaat al dertig jaar."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -17417,9 +17584,12 @@
     "senses": [
       {
         "sense_id": "symbolische ai#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Symbolische AI is een vorm van kunstmatige intelligentie die redeneert met expliciete regels, concepten en logica, in plaats van met statistische patroonherkenning.",
+        "pos": "noun",
+        "examples": [
+          "Nova is volledig gebouwd op symbolische AI, zonder een taalmodel als kern.",
+          "Bij symbolische AI is elke beslissing te herleiden tot een duidelijke regel."
+        ],
         "relations": [],
         "source": "user",
         "confidence": 1.0,
@@ -17479,9 +17649,22 @@
       {
         "sense_id": "auto#1",
         "definition": "Een auto of automobiel is een zelfstandig voortbewegend, rijdend vervoermiddel.",
-        "pos": null,
-        "examples": [],
-        "relations": [],
+        "pos": "noun",
+        "examples": [
+          "Papa parkeert de auto voor de deur.",
+          "De auto reed over de snelweg."
+        ],
+        "relations": [
+          { "type": "has_part", "target": "wiel", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:25:00.000000" },
+          {
+            "type": "is_a",
+            "target": "voertuig",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T18:50:00.000000",
+            "status": "confirmed"
+          }
+        ],
         "source": "wikipedia",
         "confidence": 0.8,
         "status": "unverified",
@@ -17532,6 +17715,220 @@
         "new_value": "Een auto of automobiel is een zelfstandig voortbewegend, rijdend vervoermiddel.",
         "timestamp": "2026-10-13T18:08:39.552063"
       }
+    ]
+  },
+    "wetenschap": {
+    "senses": [
+      {
+        "sense_id": "wetenschap#1",
+        "definition": "Wetenschap is het systematisch onderzoeken van de wereld om betrouwbare kennis te verkrijgen.",
+        "pos": "noun",
+        "examples": [
+          "Wetenschap helpt ons de natuur te begrijpen.",
+          "Zij werkt in de wetenschap."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-14T18:30:00.000000",
+      "updated_at": "2026-10-14T18:30:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-10-14T18:30:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        { "timestamp": "2026-10-14T18:30:00.000000", "confidence": 1.0 }
+      ]
+    },
+    "audit_log": [
+      { "event_type": "concept_created", "source": "system", "new_value": { "word": "wetenschap" }, "timestamp": "2026-10-14T18:30:00.000000" },
+      { "event_type": "sense_created", "source": "user", "sense_id": "wetenschap#1", "old_value": null, "new_value": "Wetenschap is het systematisch onderzoeken van de wereld om betrouwbare kennis te verkrijgen.", "timestamp": "2026-10-14T18:30:00.000000" }
+    ]
+  },
+  "landvorm": {
+    "senses": [
+      {
+        "sense_id": "landvorm#1",
+        "definition": "Een landvorm is een natuurlijke vorm van het aardoppervlak, zoals een berg, vallei of eiland.",
+        "pos": "noun",
+        "examples": [
+          "Een berg is een landvorm.",
+          "Rivieren veranderen de landvormen in een gebied."
+        ],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-14T18:30:00.000000",
+      "updated_at": "2026-10-14T18:30:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-10-14T18:30:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        { "timestamp": "2026-10-14T18:30:00.000000", "confidence": 1.0 }
+      ]
+    },
+    "audit_log": [
+      { "event_type": "concept_created", "source": "system", "new_value": { "word": "landvorm" }, "timestamp": "2026-10-14T18:30:00.000000" },
+      { "event_type": "sense_created", "source": "user", "sense_id": "landvorm#1", "old_value": null, "new_value": "Een landvorm is een natuurlijke vorm van het aardoppervlak, zoals een berg, vallei of eiland.", "timestamp": "2026-10-14T18:30:00.000000" }
+    ]
+  },
+  "spel": {
+    "senses": [
+      {
+        "sense_id": "spel#1",
+        "definition": "Een spel is een activiteit met regels die je voor plezier of competitie speelt.",
+        "pos": "noun",
+        "examples": [
+          "We speelden een spel na het eten.",
+          "Schaken is een spel voor twee spelers."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "activiteit",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T18:30:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-14T18:30:00.000000",
+      "updated_at": "2026-10-14T18:30:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-10-14T18:30:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        { "timestamp": "2026-10-14T18:30:00.000000", "confidence": 1.0 }
+      ]
+    },
+    "audit_log": [
+      { "event_type": "concept_created", "source": "system", "new_value": { "word": "spel" }, "timestamp": "2026-10-14T18:30:00.000000" },
+      { "event_type": "sense_created", "source": "user", "sense_id": "spel#1", "old_value": null, "new_value": "Een spel is een activiteit met regels die je voor plezier of competitie speelt.", "timestamp": "2026-10-14T18:30:00.000000" }
+    ]
+  },
+    "vis": {
+    "senses": [
+      {
+        "sense_id": "vis#1",
+        "definition": "Een vis is een in water levend dier met kieuwen en vinnen.",
+        "pos": "noun",
+        "examples": [
+          "De vis zwom door de vijver.",
+          "Hij ving een grote vis."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-10-14T19:00:00.000000",
+            "status": "confirmed"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-14T19:00:00.000000",
+      "updated_at": "2026-10-14T19:00:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-10-14T19:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        { "timestamp": "2026-10-14T19:00:00.000000", "confidence": 1.0 }
+      ]
+    },
+    "audit_log": [
+      { "event_type": "concept_created", "source": "system", "new_value": { "word": "vis" }, "timestamp": "2026-10-14T19:00:00.000000" },
+      { "event_type": "sense_created", "source": "user", "sense_id": "vis#1", "old_value": null, "new_value": "Een vis is een in water levend dier met kieuwen en vinnen.", "timestamp": "2026-10-14T19:00:00.000000" }
+    ]
+  },
+    "slecht": {
+    "senses": [
+      {
+        "sense_id": "slecht#1",
+        "definition": "Slecht betekent van lage kwaliteit, niet goed, of moreel negatief.",
+        "pos": "adj",
+        "examples": [
+          "Het weer was vandaag slecht.",
+          "Dat was een slecht idee."
+        ],
+        "relations": [
+          { "type": "antonym", "target": "goed", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:35:00.000000" }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-14T19:35:00.000000",
+      "updated_at": "2026-10-14T19:35:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-10-14T19:35:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        { "timestamp": "2026-10-14T19:35:00.000000", "confidence": 1.0 }
+      ]
+    },
+    "audit_log": [
+      { "event_type": "concept_created", "source": "system", "new_value": { "word": "slecht" }, "timestamp": "2026-10-14T19:35:00.000000" },
+      { "event_type": "sense_created", "source": "user", "sense_id": "slecht#1", "old_value": null, "new_value": "Slecht betekent van lage kwaliteit, niet goed, of moreel negatief.", "timestamp": "2026-10-14T19:35:00.000000" }
+    ]
+  },
+  "onder": {
+    "senses": [
+      {
+        "sense_id": "onder#1",
+        "definition": "Onder duidt een positie of richting aan die lager ligt dan een referentiepunt.",
+        "pos": "adv",
+        "examples": [
+          "De kat zit onder de tafel.",
+          "Onder in de kast liggen de borden."
+        ],
+        "relations": [
+          { "type": "antonym", "target": "boven", "confidence": 1.0, "source": "user", "status": "confirmed", "created_at": "2026-10-14T19:35:00.000000" }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-14T19:35:00.000000",
+      "updated_at": "2026-10-14T19:35:00.000000",
+      "sources": ["user"],
+      "last_used_at": "2026-10-14T19:35:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        { "timestamp": "2026-10-14T19:35:00.000000", "confidence": 1.0 }
+      ]
+    },
+    "audit_log": [
+      { "event_type": "concept_created", "source": "system", "new_value": { "word": "onder" }, "timestamp": "2026-10-14T19:35:00.000000" },
+      { "event_type": "sense_created", "source": "user", "sense_id": "onder#1", "old_value": null, "new_value": "Onder duidt een positie of richting aan die lager ligt dan een referentiepunt.", "timestamp": "2026-10-14T19:35:00.000000" }
     ]
   }
 }

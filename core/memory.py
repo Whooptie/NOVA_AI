@@ -792,7 +792,14 @@ class MemoryModule:
             with self.lock:
                 if self.db_path.exists():
                     doel_db = self.backup_dir / f"interactions_{timestamp_str}.db"
-                    shutil.copy2(self.db_path, doel_db)
+                    import sqlite3
+                    bron_conn = sqlite3.connect(str(self.db_path))
+                    doel_conn = sqlite3.connect(str(doel_db))
+                    try:
+                        bron_conn.backup(doel_conn)
+                    finally:
+                        doel_conn.close()
+                        bron_conn.close()
 
                 if self.save_path.exists():
                     doel_jsonl = self.backup_dir / f"interactions_{timestamp_str}.jsonl"

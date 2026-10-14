@@ -2169,9 +2169,10 @@ class IntentRouter:
             # staan daarom bij de haakje-vereiste check verderop.
             "som_reeks", "meetkundige_reeks", "kans_dobbelsteen", "kans_kaart",
         ]
-        if any(re.search(rf"\b{k}\b", t) for k in math_keywords):
+        if any(re.search(rf"\b{k}\s*\(", t) for k in math_keywords):
             dbg(f"{C_BLUE}→ math (functienaam-keyword){C_RESET}")
             self.event_bus.publish("intent_math", {"expr": text})
+            return True
 
         # "wortel", "bereken", "afgeleide", "integraal", "limiet", "dv",
         # "gemiddelde", "modus", "regressie", "correlatie", "binomiaal",
