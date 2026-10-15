@@ -1,5 +1,5 @@
 {
-  "kennisdichtheid": 1790189086.437669,
+  "kennisdichtheid": 1792088050.865194,
   "personality_drift": 1790792458.600563,
   "trending_topic:weer": 1790792465.983727,
   "scherm_focus": 1789498308.476603,
@@ -24,6 +24,12 @@
       "getal": null,
       "gezegd_op": 1791917095.277254,
       "volgende_toegestaan": 1791998529.4917402
+    },
+    "kennisdichtheid": {
+      "label": "lichaam",
+      "getal": 39,
+      "gezegd_op": 1792088050.865496,
+      "volgende_toegestaan": 1792191672.8689609
     }
   },
   "trending_topic:regen": 1791915931.473499,

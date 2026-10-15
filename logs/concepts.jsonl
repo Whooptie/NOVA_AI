@@ -292,3 +292,5 @@
 {"timestamp": "2026-10-11T17:57:28.865693", "event_type": "concept_created", "word": "symbolische ai", "source": "system", "new_value": {"word": "symbolische ai"}}
 {"timestamp": "2026-10-13T18:03:59.095135", "event_type": "concept_created", "word": "onderdeel van een auto", "source": "system", "new_value": {"word": "onderdeel van een auto"}}
 {"timestamp": "2026-10-13T18:05:44.014167", "event_type": "concept_created", "word": "auto", "source": "system", "new_value": {"word": "auto"}}
+{"timestamp": "2026-10-15T17:19:28.884897", "event_type": "concept_created", "word": "gerelateerd", "source": "system", "new_value": {"word": "gerelateerd"}}
+{"timestamp": "2026-10-15T18:04:38.307048", "event_type": "concept_created", "word": "ken", "source": "system", "new_value": {"word": "ken"}}

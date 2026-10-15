@@ -848,3 +848,38 @@
 {"text": "binary_search([1,3,5,7,9], 7)", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-14T18:19:34.158520"}
 {"text": "det([[1,2],[3,4]])", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-14T18:19:41.898867"}
 {"text": "is woestijn een plek", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-14T19:12:05.785827"}
+{"text": "hoe warm wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0507, "bron": "model_fallback", "tijdstip": "2026-10-14T19:14:05.988637"}
+{"text": "solve_sym(x^2 - 5x + 6 = 0)", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-14T19:29:03.760777"}
+{"text": "contextcontext", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-14T19:31:30.497806"}
+{"text": "is zus een persoon", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-15T15:31:13.165051"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-15T16:42:27.026954"}
+{"text": "wat is een koi?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-15T16:42:38.676421"}
+{"text": "is een koi een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-15T16:42:50.946701"}
+{"text": "welke onderdelen heeft een fiets?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0654, "bron": "model_fallback", "tijdstip": "2026-10-15T16:42:57.958825"}
+{"text": "is een puppy een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-15T16:44:34.387213"}
+{"text": "welke onderdelen heeft onweer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-15T16:44:40.964505"}
+{"text": "welke soorten kamer ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-15T16:44:46.757988"}
+{"text": "is een tomaat een groente", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-15T16:44:57.629181"}
+{"text": "is een aardappel een voedingsmiddel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-15T16:45:04.391912"}
+{"text": "is angst een gevoel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-15T16:45:12.136210"}
+{"text": "weerleg: hond is_a wolf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-15T16:46:26.956377"}
+{"text": "is een hond een wolf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-15T16:46:41.800663"}
+{"text": "wat is een eventbus", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-15T19:19:16.000987"}
+{"text": "is een algoritme gerelateerd aan symbolische ai", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0344, "bron": "model_fallback", "tijdstip": "2026-10-15T19:19:28.697203"}
+{"text": "is algoritme gerelateerd aan symbolische ai", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0001, "bron": "model_fallback", "tijdstip": "2026-10-15T19:20:29.835094"}
+{"text": "wat weet je allemaal over eventbus", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0113, "bron": "model_fallback", "tijdstip": "2026-10-15T19:20:54.712890"}
+{"text": "welke onderdelen heeft een arm", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-10-15T19:38:53.805689"}
+{"text": "is een baarmoeder een orgaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-15T19:39:03.412943"}
+{"text": "welke soorten kleur ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-15T19:39:12.268885"}
+{"text": "is dinsdag een dag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-15T19:39:21.824009"}
+{"text": "is een taxi een voertuig", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-15T19:39:31.979918"}
+{"text": "welke onderdelen heeft het hart", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0487, "bron": "model_fallback", "tijdstip": "2026-10-15T20:04:11.634504"}
+{"text": "welke onderdelen heeft hart", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-15T20:04:21.199022"}
+{"text": "is een placenta een orgaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-15T20:04:30.243392"}
+{"text": "welke zintuigen ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-15T20:04:38.264715"}
+{"text": "welke soorten zintuig ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-15T20:04:44.116305"}
+{"text": "wat veroorzaakt zwangerschap", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0417, "bron": "model_fallback", "tijdstip": "2026-10-15T20:04:51.383990"}
+{"text": "wat zijn de gevolgen van zwangerschap", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0575, "bron": "model_fallback", "tijdstip": "2026-10-15T20:04:57.725138"}
+{"text": "waar bestaat het zenuwstelsel uit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0505, "bron": "model_fallback", "tijdstip": "2026-10-15T20:05:06.450761"}
+{"text": "waar bestaat zenuwstelsel uit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.021, "bron": "model_fallback", "tijdstip": "2026-10-15T20:07:10.811134"}
+{"text": "welke onderdelen heeft zenuwstelsel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-15T20:07:21.836481"}

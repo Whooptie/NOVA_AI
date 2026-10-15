@@ -142,3 +142,7 @@
 {"tekst": "binary_search([1,3,5,7,9], 7", "hoogste_gok": "math", "confidence": 0.1534, "tijdstip": "2026-10-14T18:04:00.616449"}
 {"tekst": "binary_search([1,3,5,7,9], 7)", "hoogste_gok": "math", "confidence": 0.1339, "tijdstip": "2026-10-14T18:04:12.701179"}
 {"tekst": "binary_search([1,3,5,7,9], 7)", "hoogste_gok": "math", "confidence": 0.1339, "tijdstip": "2026-10-14T18:04:27.435532"}
+{"tekst": "contextcontext", "hoogste_gok": "math", "confidence": 0.1378, "tijdstip": "2026-10-14T19:31:30.505848"}
+{"tekst": "is een algoritme gerelateerd aan symbolische ai", "hoogste_gok": "chess", "confidence": 0.1432, "tijdstip": "2026-10-15T19:19:28.707433"}
+{"tekst": "welke zintuigen ken je", "hoogste_gok": "identity", "confidence": 0.193, "tijdstip": "2026-10-15T20:04:38.272205"}
+{"tekst": "waar bestaat het zenuwstelsel uit", "hoogste_gok": "chess_evaluation", "confidence": 0.1423, "tijdstip": "2026-10-15T20:05:06.455230"}

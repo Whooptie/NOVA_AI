@@ -32,8 +32,9 @@ pytest>=8.2.0              # Unit tests
 
 # --- Math ---
 numpy>=1.14.0            # math.py
+sympy==1.14.0            # math.py — symbolische algebra (solve_sym, factor_sym, integrate_sym, ...)
 
-websockets
+websockets==17.1
 opencv-python
 mediapipe
 simplemma==2.0.0
