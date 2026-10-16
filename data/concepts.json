@@ -50380,5 +50380,101 @@
         "timestamp": "2026-10-16T11:22:36.107752"
       }
     ]
+  },
+  "voel": {
+    "senses": [
+      {
+        "sense_id": "voel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-16T19:41:04.642353",
+      "updated_at": "2026-10-16T19:41:04.644096",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-16T19:41:04.644096",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-16T19:41:04.644096",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "voel"
+        },
+        "timestamp": "2026-10-16T19:41:04.642365"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "voel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-16T19:41:04.644094"
+      }
+    ]
+  },
+  "teveel": {
+    "senses": [
+      {
+        "sense_id": "teveel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-16T19:41:15.627156",
+      "updated_at": "2026-10-16T19:41:15.627360",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-16T19:41:15.627360",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-16T19:41:15.627360",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "teveel"
+        },
+        "timestamp": "2026-10-16T19:41:15.627161"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "teveel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-16T19:41:15.627358"
+      }
+    ]
   }
 }

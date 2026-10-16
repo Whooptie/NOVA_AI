@@ -1,0 +1,18 @@
+{
+  "voorbehoud": [
+    "niet", "geen", "nooit", "soms", "meestal", "vaak", "bijna", "vrijwel",
+    "kan", "kunnen", "mogelijk", "waarschijnlijk", "doorgaans", "hoofdzakelijk",
+    "grotendeels", "voornamelijk", "gewoonlijk", "veelal"
+  ],
+  "vage_woorden": [
+    "voorbeeld", "voorbeelden", "uitzondering", "kenmerk", "nadeel", "voordeel",
+    "resultaat", "herkomst", "aanduiding", "bijnaam", "sprake", "gedrag",
+    "reden", "oorzaak", "gevolg", "onderdeel", "deel", "soort", "type",
+    "vorm", "manier", "deze", "dit", "dat", "die"
+  ],
+  "doorverwijs_signalen": [
+    "kan verwijzen naar",
+    "kunnen verwijzen naar",
+    "verwijst naar"
+  ]
+}

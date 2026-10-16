@@ -149,3 +149,5 @@
 {"tekst": "beschrijf jezejf", "hoogste_gok": "identity", "confidence": 0.257, "tijdstip": "2026-10-16T13:22:36.106363"}
 {"tekst": "vrijf over tepel", "hoogste_gok": "memory_query", "confidence": 0.1784, "tijdstip": "2026-10-16T16:01:04.975334"}
 {"tekst": "ik vrijf over je tepel", "hoogste_gok": "identity", "confidence": 0.1851, "tijdstip": "2026-10-16T16:02:26.200610"}
+{"tekst": "ik voel me moe", "hoogste_gok": "preference", "confidence": 0.1455, "tijdstip": "2026-10-16T21:41:04.465360"}
+{"tekst": "ik werk teveel", "hoogste_gok": "preference", "confidence": 0.1532, "tijdstip": "2026-10-16T21:41:15.626829"}

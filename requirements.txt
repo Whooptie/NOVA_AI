@@ -39,6 +39,13 @@ opencv-python
 mediapipe
 simplemma==2.0.0
 
+# --- Semantic Fase 11: Knowledge Extraction ---
+# spaCy = bounded ML-specialist (zinsontleding), NIET de kern van Nova; alle beslissingen zijn symbolisch.
+# VAST gepind (net als simplemma/scikit-learn): een andere versie kan de parse veranderen en de extractor-tests breken.
+spacy==3.8.16
+# Nederlands model nl_core_news_sm 3.8.0 (licentie CC BY-SA 4.0, zie README). Direct via URL, zodat de Dockerfile niet hoeft te veranderen.
+nl_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/nl_core_news_sm-3.8.0/nl_core_news_sm-3.8.0-py3-none-any.whl
+
 # --- Standard library (no installation needed) ---
 # sqlite3      — Layer 0 memory (built into Python)
 # threading    — background timers, daemon threads

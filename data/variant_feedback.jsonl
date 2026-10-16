@@ -323,3 +323,25 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1792159346.207217, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 2, "variant_tekst": "Ik ken '{entity}' als: {definition} Grappig genoeg komt dat bij jou vaak samen voor met '{associatie}'.", "entity": "tepel", "response_style": "normaal", "moment": "2026-10-16T16:03:30.018321", "reactie_sentiment": null}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792159410.0185125, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_onbekend", "gekozen_variant_index": 0, "variant_tekst": "Daar heb ik niets over te vertellen.", "entity": null, "response_style": null, "moment": "2026-10-16T16:34:17.723724", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_onbekend", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792161257.7240922, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_opening", "gekozen_variant_index": 4, "variant_tekst": "Dat is…", "entity": null, "response_style": null, "moment": "2026-10-16T16:34:32.758713", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_midden", "gekozen_variant_index": 0, "variant_tekst": "lang donkerblond haar, helderblauwe ogen en een tenger postuur.", "entity": null, "response_style": null, "moment": "2026-10-16T16:34:32.759144", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_slot", "gekozen_variant_index": 2, "variant_tekst": "…dat is het ongeveer.", "entity": null, "response_style": null, "moment": "2026-10-16T16:34:32.759505", "reactie_sentiment": null}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 0, "variant_tekst": "Mag ik storen?", "entity": null, "response_style": null, "moment": "2026-10-16T19:31:50.472333", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_opening", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1792161272.758888, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_midden", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792161272.7592912, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_slot", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792161272.7596188, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792171910.474008, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "reflectie_voel_me", "gekozen_variant_index": 1, "variant_tekst": "Wacht… wat maakt dat je je {1} voelt?", "entity": null, "response_style": null, "moment": "2026-10-16T21:41:04.683028", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_voel_me", "gekozen_variant_index": 1, "reactie_sentiment": "negatief", "moment": 1792179664.6832495, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "variant_tekst": "Je bent nu al {duur} met {activiteit} bezig.", "entity": "coding", "response_style": null, "moment": "2026-10-16T21:41:15.668039", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles nog onder controle?", "entity": "coding", "response_style": null, "moment": "2026-10-16T21:41:15.668441", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1792179675.6682026, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1792179675.6685622, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 1, "variant_tekst": "Die…", "entity": null, "response_style": null, "moment": "2026-10-16T21:46:19.182661", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 4, "variant_tekst": "rond, licht.", "entity": null, "response_style": null, "moment": "2026-10-16T21:46:19.183018", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 2, "variant_tekst": "…", "entity": null, "response_style": null, "moment": "2026-10-16T21:46:19.183296", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792179979.182817, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1792179979.18312, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792179979.1833982, "type": "sentiment_koppeling"}

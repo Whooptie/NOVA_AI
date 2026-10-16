@@ -946,3 +946,11 @@
 {"text": "wrijf over anus", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-10-16T16:08:02.423458"}
 {"text": "ik stop mijn penis in je anus", "signaal": "waardering", "model_signaal": "verwarring", "marge": 0.0186, "bron": "woordenlijst", "tijdstip": "2026-10-16T16:08:09.775677"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-16T16:09:23.344559"}
+{"text": "hoe zie je er uit", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0168, "bron": "model_fallback", "tijdstip": "2026-10-16T16:34:17.715567"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-16T16:34:26.097081"}
+{"text": "hoe zie je eruit", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-10-16T16:34:32.751160"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-16T21:38:42.071328"}
+{"text": "ik voel me moe", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0116, "bron": "model_fallback", "tijdstip": "2026-10-16T21:41:04.453218"}
+{"text": "ik werk teveel", "signaal": "focus", "model_signaal": "focus", "marge": 0.0385, "bron": "model_fallback", "tijdstip": "2026-10-16T21:41:15.619415"}
+{"text": "hoe ziet je poep eruit", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-10-16T21:46:19.178115"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-16T22:00:26.116558"}
