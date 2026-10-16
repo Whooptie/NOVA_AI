@@ -308,6 +308,7 @@ class EmergenceEngine:
             "preference": "je voorkeuren",
             "relatie": "relaties tussen concepten",
             "self_architecture": "hoe ik werk",
+            "uiterlijk": "hoe ik eruitzie",
             "subtypes": "soorten van iets",
             "time": "de tijd",
             "weather": "het weer",

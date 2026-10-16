@@ -113,6 +113,27 @@ class IntentRouter:
         event_bus.subscribe("pending_question:answered", self._on_uitleg_oplossen_answered)
         dbg(f"{C_GREEN}IntentRouter geladen{C_RESET}")
 
+    def detect_body(self, text):
+        t = text.lower()
+        aanraking = any(w in t for w in ["raak", "aai", "wrijf", "vrijf", "streel", "aanraken"])
+        penetratie = any(w in t for w in ["erin", "dieper", "stop mijn", "schuif in"])
+
+        if not (aanraking or penetratie):
+            return False
+
+        diepte = 0.8 if any(w in t for w in ["dieper", "harder", "diep"]) else 0.4
+        rek = 0.7 if "harder" in t else 0.4
+
+        self.event_bus.publish("intent_body", {
+            "type": "penetratie" if penetratie else "aanraking",
+            "sterkte": 0.8 if "harder" in t else 0.5,
+            "diepte": diepte,
+            "rek": rek,
+            "text": text,
+        })
+        self._emit_topic("body", bron="detect")
+        return True
+
     # ---------------------------------------------------------
     # Reboot-commando
     # ---------------------------------------------------------
@@ -3055,6 +3076,28 @@ class IntentRouter:
         return False
     
     # ---------------------------------------------------------
+    # Uiterlijk-vragen (nieuw, 16 oktober 2026) -- "hoe ziet je haar
+    # eruit", "welke kleur hebben je ogen", "hoe zie je eruit". De
+    # herkenning zit in identity/self_uiterlijk.py (herken_vraag) en
+    # gebruikt de 'namen' uit data/uiterlijk.json: een nieuw lichaamsdeel
+    # toevoegen vraagt dus GEEN wijziging hier. _emit_topic("uiterlijk")
+    # gebeurt door de intent-tabel in route(), niet hier.
+    # ---------------------------------------------------------
+    def detect_uiterlijk(self, text):
+        try:
+            from identity import self_uiterlijk
+            gevonden, deel = self_uiterlijk.herken_vraag(text)
+        except Exception:
+            return False
+
+        if not gevonden:
+            return False
+
+        dbg(f"{C_BLUE}→ uiterlijk (deel='{deel}'){C_RESET}")
+        self.event_bus.publish("intent_uiterlijk", {"deel": deel})
+        return True
+
+    # ---------------------------------------------------------
     # Memory-vragen in natuurlijke taal (punt 14, nova_state.md) --
     # reactieve toegang tot memory.py's Query API vanuit een gewoon
     # gesprek. Bewust GEEN nieuwe topic-naam in de tabel (zie
@@ -3667,6 +3710,7 @@ class IntentRouter:
         vóór memory/self_architecture/identity/conversie/math).
         """
         return [
+            ("body", self.detect_body),
             ("greeting",         self.detect_greeting),
             ("thanks",           self.detect_thanks),
             ("on_this_day",      self.detect_on_this_day),
@@ -3685,6 +3729,10 @@ class IntentRouter:
             # architectuur, niet over persoonlijkheid, en moet niet
             # per ongeluk door de identity-patronen opgepikt worden
             ("self_architecture", self.detect_self_architecture),
+            # uiterlijk vóór identity: "hoe ziet je haar eruit" gaat over
+            # uiterlijk (data/uiterlijk.json), niet over persoonlijkheid.
+            # De tabel emit zelf topic_detected:uiterlijk.
+            ("uiterlijk",        self.detect_uiterlijk),
             ("identity",         self.detect_identity_question),
             # conversie vóór math: een conversiezin ("hoeveel ml is
             # 250 cl?") moet eerst als conversie herkend en vertaald

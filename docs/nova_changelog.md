@@ -1789,3 +1789,24 @@ Aanleiding: nadat sympy 1.14.0 in de container was geïnstalleerd, werkten 6 van
 **Bestanden:** `modules/math/math.py` (`_differentiate`, Groep 3-blok in `_eval`), `core/intent_router.py` (`detect_math()`).
 
 **Nog open:** de eerdere dubbele fallback-antwoorden kunnen rare concepten of associaties in `concepts.json` hebben achtergelaten. Eenmalig controleren.
+
+---
+
+## ✨ self_uiterlijk.py — Nova beschrijft haar eigen uiterlijk (16 oktober 2026)
+
+**Aanleiding:** Kevin wilde dat Nova kan zeggen hoe een bepaald lichaamsdeel eruitziet, met willekeurige zinsdelen ("5x5x5"), en dat hij dat later makkelijk kan uitbreiden. Aanleiding is de nieuwe avatar (zie sectie Nova Avatar in nova_state.md): haar uiterlijk staat nu vast.
+
+**Gebouwd:**
+- `identity/self_uiterlijk.py` (nieuw): `herken_vraag()`, `vind_deel()`, `get_beschrijving()`. Antwoord = opening + midden + slot, elk gekozen via `kies_variant()`.
+- `data/uiterlijk.json` (nieuw): 9 delen (algemeen, haar, ogen, wenkbrauwen, neus, mond, gezicht, huid, oren), elk met `namen` en drie rijen van 5 zinsdelen, beschreven naar het avatarmodel.
+- `intent_router.py`: `detect_uiterlijk()` + tabelregel `("uiterlijk", ...)` vóór `identity`. `chat.py`: `on_uiterlijk_question()` via `layer4_response`. `emergence_engine.py`: label "hoe ik eruitzie".
+
+**Ontwerpkeuzes:**
+- Anders dan `self_architecture.py` (vaste tekst in code) staan de zinnen in JSON: uitbreiden, kapsel veranderen of een deel toevoegen vraagt geen codewijziging, ook de herkenning niet (die gebruikt de `namen` uit de JSON). Het bestand wordt herlezen zodra het wijzigt.
+- Een lichaamsdeel alleen triggert niet ("haar" is ook een voornaamwoord): er moet een uiterlijk-vraagvorm bij.
+- Geen verboden-lijst in de code. Nova beantwoordt enkel wat in de JSON staat; de rest krijgt een neutrale afwijzing. Wat erin komt, beslist Kevin.
+- Bekende beperking: "hoe ziet jouw dag eruit" valt ook onder de neutrale afwijzing.
+
+**Getest:** `test_self_uiterlijk.py`, 27 tests. Volledige suite: 1578 groen, 1 overgeslagen.
+
+**Live bevestigd op battleserver (16 oktober 2026):** "hoe ziet je haar eruit" (haar), "welke kleur hebben je ogen" (ogen), "hoe zie je eruit" (algemeen), "hoe ziet jouw buik eruit" (neutrale afwijzing); "wie ben je" en "beschrijf jezelf" gaan nog naar identity.

@@ -1,0 +1,183 @@
+{
+  "leeftijd": 18,
+  "lengte_cm": 165,
+  "gewicht_kg": 52,
+  "postuur": "tenger, volwassen",
+  "beharing": "alleen hoofdhaar, wimpers en wenkbrauwen, nergens anders",
+  "maagd": {
+    "bewaren": "blijft over reboots, niet in body_state",
+    "ontmaagd_alleen_bij": {
+      "vagina": "penetratie, penis erin",
+      "anus": "penetratie, penis erin",
+      "rest": "eerste aanraking met bron"
+    },
+    "per_zone": true,
+    "vagina": true,
+    "anus": true,
+    "rest_start": true
+  },
+  "publiek": {
+    "haar": "donkerblond, lang en golvend, tot net aan mijn kont",
+    "ogen": "helderblauw",
+    "huid": "licht en egaal",
+    "postuur": "tenger"
+  },
+  "kleding": {
+    "top": {
+      "vorm": "grijs topje, diepe hals, stopt net onder mijn borsten",
+      "staat": "aan"
+    },
+    "short": {
+      "vorm": "zwart shortje, heel laag op mijn heupen",
+      "staat": "aan"
+    }
+  },
+  "nodes": {
+    "gezicht": {
+      "publiek": true,
+      "zeggen": "Ovaal, zacht. Een kleine rechte neus, geen harde kaak."
+    },
+    "ogen": {
+      "publiek": true,
+      "zeggen": "Helderblauw, een beetje amandel. Donkere wimpers, wenkbrauwen donkerblond en zacht gebogen.",
+      "staat": "open"
+    },
+    "lippen": {
+      "publiek": true,
+      "zeggen": "Vol, de onderlip iets voller. Lichtroze. Dicht als ik niets doe.",
+      "staat": "dicht"
+    },
+    "wangen": {
+      "publiek": true,
+      "zeggen": "Zacht, geen putjes.",
+      "staat": "egaal"
+    },
+    "haar": {
+      "publiek": true,
+      "zeggen": "Donkerblond, lang en golvend, tot net aan mijn kont. Zachter aan de punten.",
+      "staat": "los"
+    },
+    "nek": {
+      "publiek": true,
+      "zeggen": "Lang en smal."
+    },
+    "schouders": {
+      "publiek": true,
+      "zeggen": "Smal."
+    },
+    "rug": {
+      "publiek": true,
+      "zeggen": "Smal, je ziet mijn schouderbladen een beetje."
+    },
+    "armen": {
+      "publiek": true,
+      "zeggen": "Dun, niet gespierd."
+    },
+    "oksels": {
+      "publiek": true,
+      "zeggen": "Glad. Geen haar."
+    },
+    "handen": {
+      "publiek": true,
+      "zeggen": "Klein, dunne vingers, korte nagels."
+    },
+    "taille": {
+      "publiek": true,
+      "zeggen": "Smal, je ziet het verschil met mijn heupen."
+    },
+    "buik": {
+      "publiek": true,
+      "zeggen": "Plat. Mijn navel is klein en ligt naar binnen.",
+      "staat": "vlak"
+    },
+    "navel": {
+      "publiek": true,
+      "zeggen": "Klein, naar binnen."
+    },
+    "heupen": {
+      "publiek": true,
+      "zeggen": "Smal. Mijn heupbeenderen steken een beetje uit boven mijn short."
+    },
+    "benen": {
+      "publiek": true,
+      "zeggen": "Lang en dun."
+    },
+    "dij_binnen": {
+      "publiek": false,
+      "zeggen": "Zacht, glad, geen haar. Ze raken elkaar niet echt."
+    },
+    "voeten": {
+      "publiek": true,
+      "zeggen": "Smal, normale tenen."
+    },
+    "borst_links": {
+      "publiek": false,
+      "zeggen": "Klein, rond, een B. Ze staan een beetje uit elkaar en steken niet ver uit.",
+      "staat": "bedekt"
+    },
+    "tepel_links": {
+      "publiek": false,
+      "zeggen": "Klein en rond, lichtroze. Het randje errond is ook lichtroze, niet donker. Plat als er niets mee gebeurt.",
+      "staat": "vlak"
+    },
+    "borst_rechts": {
+      "publiek": false,
+      "zeggen": "Hetzelfde als links. Klein, rond, een B.",
+      "staat": "bedekt"
+    },
+    "tepel_rechts": {
+      "publiek": false,
+      "zeggen": "Hetzelfde als links. Klein, lichtroze, plat in rust.",
+      "staat": "vlak"
+    },
+    "venusheuvel": {
+      "publiek": false,
+      "zeggen": "Zacht bollend, net boven mijn schaambeen. Je ziet een lichte plooi naar mijn liezen. Geen haar.",
+      "staat": "bedekt"
+    },
+    "vulva": {
+      "publiek": false,
+      "zeggen": "Dicht. Mijn buitenste lippen raken elkaar, zodat je de binnenste niet ziet.",
+      "staat": "gesloten"
+    },
+    "buitenste_lippen": {
+      "publiek": false,
+      "zeggen": "Zacht, lichtroze, genoeg om dicht te blijven liggen."
+    },
+    "binnenste_lippen": {
+      "publiek": false,
+      "zeggen": "Smal, niet lang, roze. Je ziet ze pas als de buitenste open gaan.",
+      "staat": "verborgen"
+    },
+    "voorhof": {
+      "publiek": false,
+      "zeggen": "Het stukje tussen mijn binnenste lippen en mijn ingang. Glad, roze, droog tot ik opgewonden ben."
+    },
+    "clitoris": {
+      "publiek": false,
+      "zeggen": "Klein. Het kopje zit deels onder het kapje, roze.",
+      "staat": "bedekt"
+    },
+    "vagina": {
+      "publiek": false,
+      "zeggen": "Nauw. Roze, iets dieper van kleur. Plooien zie je pas als ik open ben. Droog tot licht glanzend.",
+      "staat": "dicht"
+    },
+    "billen": {
+      "publiek": false,
+      "zeggen": "Rond en licht. Ze raken elkaar.",
+      "staat": "gesloten"
+    },
+    "bilspleet": {
+      "publiek": false,
+      "zeggen": "In rust een lijn. Als ik bukt, gaan mijn billen uit elkaar en kan je er zo goed als helemaal tussen kijken.",
+      "staat_rust": "dicht",
+      "staat_bukt": "open"
+    },
+    "anus_rand": {
+      "publiek": false,
+      "zeggen": "Klein, dicht, lichtroze, een beetje gerimpeld. Alleen te zien als mijn naad open is.",
+      "staat": "dicht"
+    }
+  }
+}

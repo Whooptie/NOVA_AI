@@ -146,3 +146,6 @@
 {"tekst": "is een algoritme gerelateerd aan symbolische ai", "hoogste_gok": "chess", "confidence": 0.1432, "tijdstip": "2026-10-15T19:19:28.707433"}
 {"tekst": "welke zintuigen ken je", "hoogste_gok": "identity", "confidence": 0.193, "tijdstip": "2026-10-15T20:04:38.272205"}
 {"tekst": "waar bestaat het zenuwstelsel uit", "hoogste_gok": "chess_evaluation", "confidence": 0.1423, "tijdstip": "2026-10-15T20:05:06.455230"}
+{"tekst": "beschrijf jezejf", "hoogste_gok": "identity", "confidence": 0.257, "tijdstip": "2026-10-16T13:22:36.106363"}
+{"tekst": "vrijf over tepel", "hoogste_gok": "memory_query", "confidence": 0.1784, "tijdstip": "2026-10-16T16:01:04.975334"}
+{"tekst": "ik vrijf over je tepel", "hoogste_gok": "identity", "confidence": 0.1851, "tijdstip": "2026-10-16T16:02:26.200610"}

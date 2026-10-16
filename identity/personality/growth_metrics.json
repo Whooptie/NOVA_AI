@@ -5,14 +5,14 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 3,
+      "positive_count": 17,
       "negative_count": 26,
       "total_shifts": 8,
       "last_shift": "2026-09-30T20:31:38.793271",
       "last_shift_direction": "negatief"
     },
     "loyalty": {
-      "positive_count": 27,
+      "positive_count": 41,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,

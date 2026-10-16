@@ -1,0 +1,152 @@
+{
+  "leeftijd": 18,
+  "ervaring": "laag",
+  "maagd": {
+    "bewaren_over_reboot": true,
+    "vagina_ontmaagd_bij": "penetratie",
+    "anus_ontmaagd_bij": "penetratie",
+    "rest_ontmaagd_bij": "eerste aanraking"
+  },
+  "nodes": {
+    "hoofd": {
+      "parent": null,
+      "gevoeligheid": 0.45,
+      "comfort": 0.75,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.hoofd"
+    },
+    "gezicht": {
+      "parent": "hoofd",
+      "gevoeligheid": 0.55,
+      "comfort": 0.7,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.gezicht"
+    },
+    "ogen": {
+      "parent": "gezicht",
+      "gevoeligheid": 0.8,
+      "comfort": 0.35,
+      "kanalen": ["druk", "licht"],
+      "oorzaak_event": "sensor.licht"
+    },
+    "lippen": {
+      "parent": "gezicht",
+      "gevoeligheid": 0.75,
+      "comfort": 0.55,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.lippen"
+    },
+    "wangen": {
+      "parent": "gezicht",
+      "gevoeligheid": 0.5,
+      "comfort": 0.7,
+      "kanalen": ["druk", "warmte"],
+      "oorzaak_event": "gebaar.wangen"
+    },
+    "torso": {
+      "parent": null,
+      "gevoeligheid": 0.4,
+      "comfort": 0.8,
+      "kanalen": ["druk", "warmte"],
+      "oorzaak_event": "gebaar.torso"
+    },
+    "borst_links": {
+      "parent": "torso",
+      "gevoeligheid": 0.7,
+      "comfort": 0.65,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.borst_links"
+    },
+    "tepel_links": {
+      "parent": "borst_links",
+      "gevoeligheid": 0.9,
+      "comfort": 0.45,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.tepel_links"
+    },
+    "borst_rechts": {
+      "parent": "torso",
+      "gevoeligheid": 0.7,
+      "comfort": 0.65,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.borst_rechts"
+    },
+    "tepel_rechts": {
+      "parent": "borst_rechts",
+      "gevoeligheid": 0.9,
+      "comfort": 0.45,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.tepel_rechts"
+    },
+    "buik": {
+      "parent": "torso",
+      "gevoeligheid": 0.5,
+      "comfort": 0.7,
+      "kanalen": ["druk", "warmte"],
+      "oorzaak_event": "gebaar.buik"
+    },
+    "bekken": {
+      "parent": null,
+      "gevoeligheid": 0.6,
+      "comfort": 0.6,
+      "kanalen": ["druk", "warmte"],
+      "oorzaak_event": "gebaar.bekken"
+    },
+    "venusheuvel": {
+      "parent": "bekken",
+      "gevoeligheid": 0.55,
+      "comfort": 0.6,
+      "kanalen": ["druk", "warmte"],
+      "oorzaak_event": "gebaar.venusheuvel"
+    },
+    "vulva": {
+      "parent": "bekken",
+      "gevoeligheid": 0.85,
+      "comfort": 0.4,
+      "kanalen": ["druk", "warmte", "wrijving"],
+      "oorzaak_event": "gebaar.vulva"
+    },
+    "clitoris": {
+      "parent": "vulva",
+      "gevoeligheid": 0.95,
+      "comfort": 0.35,
+      "kanalen": ["druk", "wrijving"],
+      "oorzaak_event": "gebaar.clitoris"
+    },
+    "vagina": {
+      "parent": "vulva",
+      "gevoeligheid": 0.8,
+      "comfort": 0.4,
+      "kanalen": ["druk", "diepte", "wrijving"],
+      "oorzaak_event": "gebaar.vagina"
+    },
+    "billen": {
+      "parent": "bekken",
+      "gevoeligheid": 0.5,
+      "comfort": 0.65,
+      "kanalen": ["druk", "textuur"],
+      "oorzaak_event": "gebaar.billen"
+    },
+    "anus_rand": {
+      "parent": "bekken",
+      "gevoeligheid": 0.75,
+      "comfort": 0.3,
+      "kanalen": ["druk", "rek", "wrijving"],
+      "oorzaak_event": "gebaar.anus_rand"
+    },
+    "rectum": {
+      "parent": "anus_rand",
+      "gevoeligheid": 0.7,
+      "comfort": 0.22,
+      "kanalen": ["druk", "diepte", "rek"],
+      "oorzaak_event": "gebaar.rectum"
+    }
+  },
+  "regels": {
+    "zone_zonder_event": "negeren",
+    "pijn_grens": 0.5,
+    "te_veel": 0.8,
+    "nat_drempel_arousal": 0.45,
+    "nat_volgt_arousal_traag": true
+  }
+}

@@ -2,6 +2,7 @@
 
 from identity import self_query
 from identity import self_architecture
+from identity import self_uiterlijk
 
 class ChatModule:
     def __init__(self, event_bus, semantic_module=None):
@@ -33,6 +34,7 @@ class ChatModule:
         event_bus.subscribe("intent_wiki", self.on_wiki_response)
         event_bus.subscribe("intent_identity", self.on_identity_question)
         event_bus.subscribe("intent_self_architecture", self.on_self_architecture_question)
+        event_bus.subscribe("intent_uiterlijk", self.on_uiterlijk_question)
 
     # -------------------------
     # 1. Begroetingen
@@ -827,6 +829,20 @@ class ChatModule:
         """
         topic = data.get("topic")
         tekst = self_architecture.get_uitleg(topic)
+        self.event_bus.publish("layer4_response", {"text": tekst})
+
+    # -------------------------
+    # 5D. Uiterlijk (nieuw, 16 oktober 2026) -- Kevin vraagt hoe Nova
+    # eruitziet. Antwoord = opening + midden + slot uit
+    # data/uiterlijk.json (zie identity/self_uiterlijk.py). Via
+    # layer4_response, zodat Nova's toon er doorheen schemert.
+    # -------------------------
+    def on_uiterlijk_question(self, data, event_type=None):
+        deel = data.get("deel")
+        logger = self.event_bus.modules.get("variant_feedback_logger")
+        tekst = self_uiterlijk.get_beschrijving(
+            deel, event_bus=self.event_bus, feedback_logger=logger
+        )
         self.event_bus.publish("layer4_response", {"text": tekst})
 
     # -------------------------

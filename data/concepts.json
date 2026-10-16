@@ -50332,5 +50332,53 @@
         "timestamp": "2026-10-15T18:04:38.307498"
       }
     ]
+  },
+  "beschrijf": {
+    "senses": [
+      {
+        "sense_id": "beschrijf#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-16T11:22:36.107392",
+      "updated_at": "2026-10-16T11:22:36.107754",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-16T11:22:36.107754",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-16T11:22:36.107754",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "beschrijf"
+        },
+        "timestamp": "2026-10-16T11:22:36.107398"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "beschrijf#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-16T11:22:36.107752"
+      }
+    ]
   }
 }
