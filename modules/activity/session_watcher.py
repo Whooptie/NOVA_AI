@@ -45,6 +45,13 @@ class SessionWatcher:
     # met Kevin (22 juli 2026): 15 minuten.
     INTERRUPTION_VRAAG_DREMPEL_MINUTEN = 15
 
+    # Activiteiten waarover Nova NOOIT "mag ik storen?" vraagt (17 oktober
+    # 2026). talking_to_nova: Kevin praat dan al met Nova zelf, een
+    # onderbrekingsvraag na 15 minuten gesprek slaat nergens op (live
+    # gezien in de logs: "Heb je een minuutje?" tijdens een gesprek).
+    # Gesloten lijst, makkelijk uit te breiden.
+    ACTIVITEITEN_ZONDER_ONDERBREKING = {"talking_to_nova_gedetecteerd"}
+
     # Afwezigheid (3 oktober 2026): na hoeveel minuten weg (laptop
     # vergrendeld) telt het als een ECHTE pauze? Dan beginnen de
     # pauze-teller en de "mag ik storen?"-teller opnieuw. Bewust korter
@@ -148,6 +155,18 @@ class SessionWatcher:
         # dit voorkomt dat we het na verval blijven herhalen voor
         # dezelfde doorlopende activiteit).
         self._al_gevraagd_voor_activiteit = None
+
+        # (17 oktober 2026) Sinds wanneer is Kevin niet meer "actief" op
+        # zijn laptop (muis/toetsenbord)? None = hij is actief. Nodig om
+        # na een echte pauze (laptop dicht, weggelopen) de teller van de
+        # lopende activiteit opnieuw te laten beginnen, zelfde grens als
+        # check_pauze() (PAUZE_RESET_SECONDEN).
+        self._activiteit_inactief_sinds = None
+
+        # (17 oktober 2026) Voor welke activiteit-instantie (herkend aan
+        # activiteit_start_tijd) is al gemeld dat de vraag uitgesteld is?
+        # Voorkomt dat dezelfde regel elke minuut in de log komt.
+        self._uitstel_gemeld_voor = None
 
         # Herkenningsreactie (7 oktober 2026): op welke dag (JJJJ-MM-DD)
         # kwam ze het laatst, en wanneer stuurde Kevin zijn laatste
@@ -385,6 +404,7 @@ class SessionWatcher:
         self.activiteit_start_tijd = time.time()
         self._al_gevraagd_voor_activiteit = None
         self._al_gereageerd_op_profiel_voor = None
+        self._activiteit_inactief_sinds = None
 
         self._reageer_op_profiel_match(naam)
 
@@ -561,6 +581,36 @@ class SessionWatcher:
         if self.actieve_activiteit is None or self.activiteit_start_tijd is None:
             return
 
+        # (17 oktober 2026) Sommige activiteiten krijgen nooit een
+        # onderbrekingsvraag (zie ACTIVITEITEN_ZONDER_ONDERBREKING).
+        if self.actieve_activiteit in self.ACTIVITEITEN_ZONDER_ONDERBREKING:
+            return
+
+        # (17 oktober 2026) Echte pauze op de laptop (dichtgeklapt,
+        # weggelopen, PAUZE_RESET_SECONDEN geen input -- zelfde grens als
+        # check_pauze())? Dan telt de tijd dat Kevin weg was NIET mee voor
+        # de 15 minuten: de teller begint opnieuw zodra hij terug actief
+        # is. Zonder dit kwam de vraag meteen na het weer openklappen, of
+        # zelfs terwijl de laptop dicht was (de verbinding valt dan weg
+        # zonder vergrendelscherm, dus _is_kevin_afwezig() ziet niets).
+        # De "al gevraagd"-vlag blijft bewust staan, zoals bij
+        # _on_terug_van_afwezigheid().
+        nu = time.time()
+        if self._haal_focus_niveau() == "actief":
+            if (
+                self._activiteit_inactief_sinds is not None
+                and nu - self._activiteit_inactief_sinds >= self.PAUZE_RESET_SECONDEN
+            ):
+                minuten_weg = (nu - self._activiteit_inactief_sinds) / 60
+                self.activiteit_start_tijd = nu
+                print(
+                    f"[SESSION_WATCHER] Activiteit-teller herstart voor "
+                    f"'{self.actieve_activiteit}' na {minuten_weg:.0f} min zonder input."
+                )
+            self._activiteit_inactief_sinds = None
+        elif self._activiteit_inactief_sinds is None:
+            self._activiteit_inactief_sinds = nu
+
         # Afwezigheid (3 oktober 2026): laptop vergrendeld -> niets
         # vragen. De "al gevraagd"-vlag wordt bewust NIET gezet, zodat
         # de vraag na terugkomst gewoon nog kan komen. Zonder deze
@@ -577,6 +627,39 @@ class SessionWatcher:
 
         verstreken_minuten = (time.time() - self.activiteit_start_tijd) / 60
         if verstreken_minuten < self.INTERRUPTION_VRAAG_DREMPEL_MINUTEN:
+            return
+
+        # (17 oktober 2026) Layer 5 vragen of dit een goed moment is --
+        # zelfde vraag als check_pauze(), inclusief de regel "Kevin kan
+        # het zien". Zonder deze check kon Nova "mag ik storen?" vragen
+        # terwijl Kevin in een ander venster zat of zijn laptop net had
+        # dichtgeklapt: de vraag verscheen dan in een terminal waar
+        # niemand naar keek en verliep na 120 seconden.
+        #
+        # BEWUST VÓÓR beslis_interruption_gedrag(): die methode kiest een
+        # zin via kies_variant(), en dat publiceert altijd een
+        # "variant_gekozen"-event. variant_feedback_logger zou Kevins
+        # volgende bericht dan koppelen aan een zin die hij nooit heeft
+        # gezien. De "al gevraagd"-vlag wordt NIET gezet bij uitstel,
+        # zodat de vraag over een minuut opnieuw kan komen.
+        # Ontbreekt context_manager of geeft hij een fout, dan gaan we
+        # gewoon door (zelfde keuze als check_pauze()).
+        if self.context_manager is not None:
+            try:
+                mag_onderbreken = self.context_manager.can_interrupt()
+            except Exception:
+                mag_onderbreken = True
+        else:
+            mag_onderbreken = True
+
+        if not mag_onderbreken:
+            if self._uitstel_gemeld_voor != self.activiteit_start_tijd:
+                self._uitstel_gemeld_voor = self.activiteit_start_tijd
+                print(
+                    f"[SESSION_WATCHER] Onderbrekingsvraag voor "
+                    f"'{self.actieve_activiteit}' uitgesteld door Layer 5 "
+                    f"(context_manager.can_interrupt() == False)."
+                )
             return
 
         resp_engine = self.event_bus.modules.get("response_engine")

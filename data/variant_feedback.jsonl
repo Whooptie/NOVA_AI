@@ -356,3 +356,6 @@
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "variant_tekst": "Wacht… nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-10-17T09:44:21.085511", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles oké?", "entity": "coding", "response_style": null, "moment": "2026-10-17T09:44:21.086505", "reactie_sentiment": null}
 {"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 5, "variant_tekst": "Heb je een minuutje?", "entity": null, "response_style": null, "moment": "2026-10-17T10:00:56.409986", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792223061.086123, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792223061.0866761, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 5, "reactie_sentiment": "neutraal_gemengd", "moment": 1792224056.4113948, "type": "sentiment_koppeling"}
