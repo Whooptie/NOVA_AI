@@ -345,3 +345,14 @@
 {"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792179979.182817, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1792179979.18312, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792179979.1833982, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_borsten_opening", "gekozen_variant_index": 1, "variant_tekst": "Die…", "entity": null, "response_style": null, "moment": "2026-10-16T22:31:15.298492", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_borsten_midden", "gekozen_variant_index": 4, "variant_tekst": "ze zijn klein en rond.", "entity": null, "response_style": null, "moment": "2026-10-16T22:31:15.298957", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_borsten_slot", "gekozen_variant_index": 0, "variant_tekst": "…denk ik.", "entity": null, "response_style": null, "moment": "2026-10-16T22:31:15.299287", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_borsten_opening", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792182675.29871, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_borsten_midden", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1792182675.2990873, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_borsten_slot", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792182675.299418, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 0, "variant_tekst": "Mag ik storen?", "entity": null, "response_style": null, "moment": "2026-10-16T22:41:46.057914", "reactie_sentiment": null}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792183306.0586796, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "variant_tekst": "Wacht… nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-10-17T09:44:21.085511", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles oké?", "entity": "coding", "response_style": null, "moment": "2026-10-17T09:44:21.086505", "reactie_sentiment": null}
+{"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 5, "variant_tekst": "Heb je een minuutje?", "entity": null, "response_style": null, "moment": "2026-10-17T10:00:56.409986", "reactie_sentiment": null}

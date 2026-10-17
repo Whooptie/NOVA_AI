@@ -266,6 +266,17 @@ class ModuleLoader:
             # bij intent_router hieronder.
             "kevin_profile": self.loaded_modules.get("kevin_profile"),
         }
+        # Waarschuwing bij stille uitval: response_engine gebruikt
+        # layers.get(...) en crasht dus niet als een laag ontbreekt, de
+        # bijbehorende functie doet dan gewoon niets (zo bleef de
+        # "met_associatie"-variant tot 27 juli 2026 ongebruikt).
+        for laag_naam, laag in response_layers.items():
+            if laag is None:
+                print(
+                    f"[MODULE_LOADER] WAARSCHUWING: response_engine mist "
+                    f"laag '{laag_naam}' (None) -- die functie doet niets."
+                )
+
         resp_engine = response_engine.init_module(self.event_bus, layers=response_layers)
         resp_engine.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["response_engine"] = resp_engine

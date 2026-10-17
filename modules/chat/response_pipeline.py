@@ -73,11 +73,11 @@ class ResponsePipeline:
         # chess_engine.py. De "je zei: '...'"-toevoeging blijft apart
         # bestaan (zie on_fallback()), dit varieert enkel de kernzin.
         self._sjablonen_fallback = [
-            "Ik weet nog niet goed hoe ik daarop moet antwoorden, maar ik leer graag bij.",
-            "Dat ken ik nog niet, maar ik sta open om het te leren.",
-            "Hier heb ik nog geen goed antwoord op, maar vertel gerust meer.",
-            "Dat snap ik nog niet helemaal, maar ik onthoud het wel.",
-            "Daar kom ik nog niet uit, maar ik leer er graag bij.",
+            "Oh… daar weet ik niets over.",
+            "Hmm… dat ken ik niet.",
+            "Wacht… daar heb ik geen antwoord op.",
+            "Oh… dat snap ik niet.",
+            "Hmm… daar kom ik niet uit.",
         ]
 
     def _apply_emotion_trigger(self, trigger: str):

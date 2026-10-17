@@ -42,12 +42,7 @@ class SessionWatcher:
 
     # Na hoeveel MINUTEN sinds het starten van een activiteit vraagt
     # Nova voor het eerst "mag ik storen?" -- vaste waarde, besproken
-    # met Kevin (22 juli 2026): uiteindelijk 15 minuten.
-    #
-    # TIJDELIJK VERLAAGD NAAR 1 OM TE TESTEN (22 juli 2026) -- zet dit
-    # terug naar 15 zodra het testen achter de rug is. Zelfde aanpak
-    # als PAUZE_DREMPEL_SECONDEN hierboven, dat ook al een "zet dit
-    # tijdelijk lager om te testen"-opmerking had.
+    # met Kevin (22 juli 2026): 15 minuten.
     INTERRUPTION_VRAAG_DREMPEL_MINUTEN = 15
 
     # Afwezigheid (3 oktober 2026): na hoeveel minuten weg (laptop
@@ -309,12 +304,6 @@ class SessionWatcher:
           zijn bureau -- exact het probleem dat focus_detector.py's
           eigen docstring beschrijft.
         """
-        # Herkenningsreactie (7 oktober 2026): onthoud wanneer Kevin
-        # het laatst iets tegen Nova zei (zie _mag_herkenning_geven()).
-        if event_type == "raw_user_message":
-            self._laatste_bericht_kevin = time.time()
-            return
-
         # Herkenningsreactie (7 oktober 2026): onthoud wanneer Kevin
         # het laatst iets tegen Nova zei (zie _mag_herkenning_geven()).
         if event_type == "raw_user_message":

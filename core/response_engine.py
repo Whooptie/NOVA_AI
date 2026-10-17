@@ -53,14 +53,16 @@ FASE 5 (dit bestand, huidige versie):
 - Doel: minder "woordenboek-gevoel", meer klinken als gesprekspartner
   — zonder de architectuur te verraden (nog steeds geen LLM).
 
-Nog GEEN koppeling met de EventBus/intent_router — dat is stap 4.
-Voor nu is dit een losstaande klasse die je apart kan testen (zie
-test_response_engine.py).
+STAND VAN ZAKEN (oktober 2026): alle fases (1 t/m 7) zijn klaar en
+live getest. Layer 4 is volledig gekoppeld: module_loader.py laadt dit
+bestand in stap 3B met een "layers"-dictionary, intent_router.py roept
+generate() aan voor definitievragen, en session_watcher.py roept
+beslis_interruption_gedrag() aan. Zie nova_state.md voor details.
 
-Volgende stappen (samen met Kevin, niet in dit bestand):
-- FASE 6: bug #10 aanpakken (senses matchen aan associaties).
-- FASE 7: tone_engine.py/personality_engine.py laten meespelen in
-          welke variant gekozen wordt.
+Sleutels in de "layers"-dictionary: semantic, word_associations,
+pattern_matcher, interruption_tracker, kevin_profile (alle vijf gezet
+in module_loader.py, stap 3B) en variant_feedback_logger (daarna
+ingeprikt in stap 3B-2).
 """
 
 from typing import Dict, Optional
@@ -124,11 +126,11 @@ class ResponseEngine:
                 "Ik ken '{entity}' vooral als een soort {parent}.",
             ],
             "onbekend": [
-                "Ik weet nog niet wat '{entity}' betekent.",
-                "Hmm, '{entity}' ken ik nog niet.",
-                "Dat woord, '{entity}', is nieuw voor mij.",
-                "Ik heb nog geen idee wat '{entity}' betekent.",
-                "'{entity}' zegt me nog niets, sorry.",
+                "Oh… '{entity}' ken ik niet.",
+                "Hmm… dat zegt me niets.",
+                "Wacht… '{entity}' is nieuw.",
+                "Oh… ik weet niet wat '{entity}' is.",
+                "'{entity}'… ken ik niet.",
             ],
             "timing_hint": [
                 "Trouwens, je vraagt hier meestal rond {uur}u naar.",
@@ -529,7 +531,8 @@ class ResponseEngine:
                 text = self._kies_variant(
                     "is_a_fallback", response_style=response_style, entity=entity, parent=parents[0]
                 )
-                text = self._voeg_timing_hint_toe(text, entity=entity)
+                if not is_kort:
+                    text = self._voeg_timing_hint_toe(text, entity=entity)
                 return {
                     "text": text,
                     "confidence": 0.6,

@@ -37,3 +37,11 @@
 {"tekst": "wat gebeurt er als ik iets tegen je zeg", "label": "self_architecture", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
 {"tekst": "wat is het weer", "label": "weather", "gebruikt_bij_hertraining": "2026-10-12T00:04:59.253131"}
 {"tekst": "solve_sym(x^2 - 5x + 6 = 0)", "label": "math", "gebruikt_bij_hertraining": "2026-10-14T23:29:11.216138"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "hoe oud ben je", "label": "identity", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "bord", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "pion  naar e4", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "pion naar b4", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "pion naar d3", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "pion naar e5", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "nieuwe partij", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}

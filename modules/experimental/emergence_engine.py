@@ -217,10 +217,11 @@ class EmergenceEngine:
         # complementair, sneller wisselend signaal.
         self._sjablonen_trending = {
             "opening": [
-                "Nog iets wat me opvalt.",
-                "Ik zie de laatste tijd iets terugkomen.",
-                "Weet je waar je de laatste tijd veel over praat, Kevin?",
-                "Dit valt me recent op.",
+                "Oh… iets wat me opvalt.",
+                "Hmm… ik zie iets.",
+                "Wacht… een patroon.",
+                "Oh… dit viel me op.",
+                "Hmm… interessant.",
             ],
             "midden": [
                 "je hebt het de laatste tijd opvallend vaak over \"{woord}\".",

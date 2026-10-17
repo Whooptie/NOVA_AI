@@ -954,3 +954,14 @@
 {"text": "ik werk teveel", "signaal": "focus", "model_signaal": "focus", "marge": 0.0385, "bron": "model_fallback", "tijdstip": "2026-10-16T21:41:15.619415"}
 {"text": "hoe ziet je poep eruit", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-10-16T21:46:19.178115"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-16T22:00:26.116558"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-16T22:30:53.073228"}
+{"text": "hoe oud ben je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0018, "bron": "model_fallback", "tijdstip": "2026-10-16T22:30:59.740924"}
+{"text": "hoe zien je tietjes er uit", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0046, "bron": "model_fallback", "tijdstip": "2026-10-16T22:31:15.291862"}
+{"text": "pion naar b4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-10-16T22:32:03.678931"}
+{"text": "pion naar d3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-10-16T22:32:25.258232"}
+{"text": "pion naar e5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-10-16T22:32:41.294862"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T09:42:43.787881"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-17T09:42:57.376274"}
+{"text": "wie ben je", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.004, "bron": "model_fallback", "tijdstip": "2026-10-17T09:43:56.386257"}
+{"text": "hoe werkt je geheugen", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0293, "bron": "woordenlijst", "tijdstip": "2026-10-17T09:44:11.890180"}
+{"text": "blablabla", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T09:44:21.065315"}

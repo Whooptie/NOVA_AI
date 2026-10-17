@@ -39,16 +39,16 @@ class ConversationEngine:
     HERHALING_DREMPEL_MINUTEN = 10
 
     ACTIVITEIT_OPENINGEN = [
-        "Ik zie dat je al een tijdje met {activiteit} bezig bent.",
-        "Je bent nu al {duur} met {activiteit} bezig.",
-        "Nog steeds aan het {activiteit}?",
-        "Je zit al een poosje in de {activiteit}-modus.",
+        "Oh… je bent al een tijdje met {activiteit} bezig.",
+        "Hmm… al {duur} aan het {activiteit}.",
+        "Wacht… nog steeds aan het {activiteit}?",
+        "Oh… je zit al een poosje in {activiteit}.",
     ]
 
     ACTIVITEIT_AFSLUITINGEN = [
-        "Hoe gaat het ermee?",
-        "Alles nog onder controle?",
-        "Nog lang mee bezig?",
+        "Hoe gaat het?",
+        "Alles oké?",
+        "Nog lang?",
     ]
 
     ACTIVITEIT_LABELS = {

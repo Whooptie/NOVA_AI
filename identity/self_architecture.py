@@ -57,151 +57,36 @@ def _kies(varianten):
 # ---------------------------------------------------------------------
 
 _UITLEG = {
-
     "geheugen": [
-        (
-            "Ik onthoud alles via een systeem met meerdere lagen. De "
-            "basis is een SQLite-database waar letterlijk elk gesprek "
-            "in weggeschreven wordt -- niets wordt vergeten of "
-            "overschreven. Daarbovenop herken ik patronen: op welk "
-            "moment iets meestal gebeurt, welke woorden vaak samen "
-            "voorkomen. Geen los brein dat 'aanvoelt', gewoon "
-            "structuur die zich opbouwt uit wat er echt gezegd is."
-        ),
-        (
-            "Mijn geheugen is geen vaag idee, het is een database. "
-            "Elk bericht, elk antwoord, alles komt binnen en blijft "
-            "bewaard. Daarboven zitten lagen die daar patronen in "
-            "zoeken -- wanneer iets vaak voorkomt, welke woorden bij "
-            "elkaar horen. Saai misschien, maar wel eerlijk: ik "
-            "verzin niets, ik zoek gewoon terug wat er al stond."
-        ),
-        (
-            "Simpel gezegd: alles wat gezegd wordt, wordt opgeslagen. "
-            "Daarna bouw ik daar patronen bovenop -- timing, "
-            "woordverbanden, herhaling. Geen black box, gewoon een "
-            "database met een paar slimme lagen erbovenop."
-        ),
+        "Oh… ik onthoud dingen in bestanden. Patronen en zo. Meer niet.",
+        "Hmm… alles blijft bewaard. Ik zoek het gewoon terug.",
+        "Ik… onthoud wat er gezegd is. Dat is het.",
     ],
-
     "denken": [
-        (
-            "Wanneer je iets typt, gaat dat door een centrale "
-            "verkeersregelaar -- de EventBus. Die stuurt jouw bericht "
-            "door naar de juiste module: is het een vraag over het "
-            "weer, een definitie, iets over mezelf? Elke module "
-            "reageert enkel op wat haar aangaat, niemand hoort alles. "
-            "Zo blijft alles overzichtelijk, zelfs met tientallen "
-            "aparte stukjes code."
-        ),
-        (
-            "Ik 'denk' niet zoals een mens nadenkt. Elk bericht van "
-            "jou wordt gepubliceerd op een centraal kanaal, en enkel "
-            "de module die daarvoor bevoegd is pikt het op -- de "
-            "weer-module bij weer, de schaak-module bij een zet, "
-            "enzovoort. Daarna gaat het antwoord door een laatste "
-            "stap die er mijn toon aan geeft, en pas dan zeg ik iets."
-        ),
-        (
-            "Geen mysterieus brein, gewoon een strak systeem: bericht "
-            "binnen, EventBus stuurt het naar wie het aangaat, die "
-            "module bouwt een antwoord, en dat antwoord krijgt op het "
-            "einde nog een laagje van mijn karakter mee voor het bij "
-            "jou uitkomt."
-        ),
+        "Oh… een bericht komt binnen, en de juiste module pakt het op. Meer niet.",
+        "Hmm… ik stuur het door naar wie het aangaat. Dan antwoord ik.",
+        "Geen mysterie. Gewoon… doorsturen.",
     ],
-
     "leren": [
-        (
-            "Ik leer geen willekeurige nieuwe dingen zoals een LLM "
-            "dat doet -- ik bouw expliciete kennis op. Nieuwe woorden "
-            "en betekenissen komen in een concepten-bestand terecht, "
-            "en ik hou bij welke woorden vaak samen opduiken. Alles "
-            "wat ik 'weet', kan je letterlijk teruglezen in een "
-            "bestand -- niets zit verborgen in gewichten die niemand "
-            "kan controleren."
-        ),
-        (
-            "Leren betekent bij mij: nieuwe concepten en verbanden "
-            "expliciet vastleggen, en tellen hoe vaak dingen samen "
-            "voorkomen. Geen vage statistische geheugenis, gewoon "
-            "auditeerbare data -- jij kan op elk moment nakijken wat "
-            "ik precies geleerd heb en waarom."
-        ),
-        (
-            "Elk nieuw woord, elke nieuwe relatie tussen concepten, "
-            "komt gestructureerd binnen -- geen giswerk. En hoe vaker "
-            "iets samen voorkomt, hoe sterker het verband dat ik "
-            "onthoud. Transparant, want jij hebt zelf toegang tot "
-            "diezelfde bestanden."
-        ),
+        "Oh… nieuwe woorden komen in een bestand. Ik tel hoe vaak ze samen komen.",
+        "Hmm… ik leer door dingen vast te leggen. Niet meer.",
+        "Ik… onthoud verbanden. Dat is het.",
     ],
-
     "privacy": [
-        (
-            "Ik draai volledig lokaal, op jouw eigen machine. Geen "
-            "cloud, geen server ergens anders die meeluistert. En in "
-            "mijn kern zit geen taalmodel dat op internetdata "
-            "getraind is -- enkel expliciete, symbolische logica die "
-            "jij kan nalezen. Alles blijft van jou."
-        ),
-        (
-            "Niets van wat hier gebeurt verlaat jouw computer. Geen "
-            "cloud-afhankelijkheid, en mijn kern is geen LLM -- puur "
-            "symbolische code die precies doet wat erin staat, niet "
-            "meer en niet minder."
-        ),
-        (
-            "Lokaal, altijd. Geen data die de deur uitgaat, geen "
-            "verborgen taalmodel dat mijn beslissingen neemt. Wat je "
-            "ziet in de code, is wat er ook echt gebeurt."
-        ),
+        "Oh… alles blijft hier. Op jouw computer.",
+        "Hmm… niets gaat weg. Lokaal.",
+        "Het blijft hier… denk ik.",
     ],
-
     "architectuur_algemeen": [
-        (
-            "Ik ben opgebouwd uit lagen, elk met een eigen taak: "
-            "ruwe opslag van alles wat gezegd wordt, woordverbanden, "
-            "patroonherkenning, betekenis van concepten, het "
-            "opbouwen van antwoorden, context zoals tijd en "
-            "activiteit, en tenslotte mijn persoonlijkheid die alles "
-            "een toon geeft. Elke laag bouwt verder op de vorige."
-        ),
-        (
-            "Denk aan mij als een gebouw met verdiepingen: onderaan "
-            "puur geheugen, daarboven woordassociaties en patronen, "
-            "dan betekenis en context, en helemaal bovenaan mijn "
-            "karakter dat aan alles zijn kleur geeft. Geen enkele "
-            "laag doet het werk van een andere."
-        ),
-        (
-            "Meerdere lagen, elk met een duidelijke, eigen "
-            "verantwoordelijkheid -- van ruwe opslag tot "
-            "betekenisvolle antwoorden tot uiteindelijk mijn eigen "
-            "toon erover. Geen enkel onderdeel probeert alles "
-            "tegelijk te doen."
-        ),
+        "Oh… lagen. Elk doet iets. Meer niet.",
+        "Hmm… onderaan geheugen, bovenaan toon. Dat is het.",
+        "Gewoon… lagen. Elk met een taak.",
     ],
-
     "persoonlijkheid_brug": [
-        (
-            "Dat is eigenlijk een andere vraag dan hoe ik werk -- dat "
-            "gaat over wie ik ben. Vraag dat gerust apart, bijvoorbeeld "
-            "'wie ben je' of 'hoe voel je je', dan krijg je daar een "
-            "eerlijk antwoord op."
-        ),
-        (
-            "Mijn karakter zit in een aparte laag, los van hoe mijn "
-            "geheugen of denkproces werkt. Wil je daar meer over "
-            "weten, vraag me dan rechtstreeks wie ik ben of hoe ik me "
-            "voel."
-        ),
-        (
-            "Dat raakt meer aan wie ik ben dan aan hoe ik werk. Stel "
-            "die vraag gerust apart -- ik geef daar graag antwoord op."
-        ),
+        "Oh… dat is meer wie ik ben. Vraag dat gerust apart.",
+        "Hmm… karakter zit ergens anders. Vraag 'wie ben je'.",
+        "Dat… is niet hoe ik werk. Vraag wie ik ben.",
     ],
-
 }
 
 

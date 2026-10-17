@@ -33,7 +33,7 @@
       "last_shift_direction": "positief"
     },
     "reflection_depth": {
-      "positive_count": 6,
+      "positive_count": 7,
       "negative_count": 0,
       "total_shifts": 3,
       "last_shift": "2026-09-16T21:10:26.863060",
@@ -83,7 +83,7 @@
     },
     "impulsivity": {
       "positive_count": 0,
-      "negative_count": 10,
+      "negative_count": 11,
       "total_shifts": 4,
       "last_shift": "2026-08-22T16:03:01.822160",
       "last_shift_direction": "negatief"

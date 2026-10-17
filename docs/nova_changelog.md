@@ -1810,3 +1810,17 @@ Aanleiding: nadat sympy 1.14.0 in de container was geïnstalleerd, werkten 6 van
 **Getest:** `test_self_uiterlijk.py`, 27 tests. Volledige suite: 1578 groen, 1 overgeslagen.
 
 **Live bevestigd op battleserver (16 oktober 2026):** "hoe ziet je haar eruit" (haar), "welke kleur hebben je ogen" (ogen), "hoe zie je eruit" (algemeen), "hoe ziet jouw buik eruit" (neutrale afwijzing); "wie ben je" en "beschrijf jezelf" gaan nog naar identity.
+
+## ✅ Layer 4 (response_engine.py): controle van de koppelingen + timing-hint bij `kort` (17 oktober 2026)
+
+Aanleiding: een opmerking in de kop van `response_engine.py` ("Nog GEEN koppeling met de EventBus/intent_router") deed twijfelen of Layer 4 volledig gekoppeld was. Gecontroleerd tegen de echte code (`module_loader.py`, `intent_router.py`, `session_watcher.py`, `interruption_tracker.py`, `variant_kiezer.py`) en met `grep` op de methodenamen.
+
+**Resultaat: volledig gekoppeld, de kop was verouderd.** `module_loader.py` stap 3B zet vijf lagen in de `layers`-dictionary (`semantic`, `word_associations`, `pattern_matcher`, `interruption_tracker`, `kevin_profile`), stap 3B-2 prikt `variant_feedback_logger` er daarna bij. `intent_router.py` roept `generate(word, context_words, response_style=...)` aan met een val terug naar de oude route (Wikipedia) bij zekerheid ≤ 0.2. `session_watcher.py` roept `beslis_interruption_gedrag(..., tijd_sinds_start=...)` goed aan. Alle aangeroepen methoden bestaan onder de verwachte naam.
+
+**Echte fout gevonden en opgelost:** in `generate()` kreeg het `is_a_fallback`-antwoord altijd een timing-hint, ook bij `response_style == "kort"`. De uitleg van de methode (en de `definitie`-tak) zeggen dat `kort` de hint overslaat. Fix: `if not is_kort:` rond `_voeg_timing_hint_toe()` in die tak.
+
+**Opruiming:** verouderde kop van `response_engine.py` vervangen door de huidige stand; dubbel `raw_user_message`-blok in `session_watcher._on_any_event()` verwijderd; verouderde opmerking "TIJDELIJK VERLAAGD NAAR 1" bij `INTERRUPTION_VRAAG_DREMPEL_MINUTEN` (staat al op 15) weggehaald; waarschuwing in `module_loader.py` voor elke laag die `None` is in `response_layers` (de `.get(...)`-aanpak laat een ontbrekende laag stil uitvallen).
+
+**Test:** `tests/test_response_engine_kort.py` (12 tests): timing-hint bij `normaal` en `kort` voor zowel de definitie- als de `is_a_fallback`-tak, geen hint bij `onbekend`, nooit een crash zonder lagen, lege entity, en de vier onderbrekingsbeslissingen (geen tracker, te weinig data, hoge confidence, lage confidence, middenzone). Suite: 1615 groen, 1 overgeslagen.
+
+**Opgemerkt, niet aangepast:** `session_watcher.py` geeft sinds Fase 6 altijd `tijd_sinds_start` mee, waardoor de tracker alleen nog naar het tijdsvenster kijkt. Oude activiteiten zonder `vensters` (`gamen`, `lezen`) tellen niet meer mee in `has_enough_data()`, en het venster `laat` heeft overal 0 observaties, omdat de eerste vraag na 15 minuten komt. Of dat zo gewenst is, staat open.
