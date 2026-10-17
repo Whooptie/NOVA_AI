@@ -1847,6 +1847,14 @@ Eerste twee onderdelen van Fase 11: eerst pytest groen (25 + 18 nieuwe tests, to
 - Oude regex `_extract_relations` ongewijzigd als vangnet.
 - Tests: 25 nieuw, totaal 1707 (1706 groen, 1 skipped).
 
+### Semantic Fase 11.3 — fix: wiki X wiste bestaande kennis (17 oktober 2026)
+- Gevonden tijdens de live-test van 11.3: bij een herhaalde "wiki X" op een woord met een bestaande Wikipedia-sense verving `_teach_word` (wikipedia_teacher.py) ALLE relaties en voorbeeldzinnen van die sense, en zette een door Kevin bevestigde sense terug naar unverified/0.8.
+- Gevolg bij hond: bevestigde is_a-relaties (zoogdier, huisdier, dier), afgewezen markeringen (wolf, meubel) en eigen voorbeeldzinnen verdwenen; bij gitaar verdween has_part snaar en de bevestigde status. De bug zat er al vóór Fase 11.
+- Fix: bestaande relaties blijven staan en nieuwe komen erbij (type + doel, hoofdletterongevoelig); voorbeeldzinnen idem; een bevestigde Wikipedia-sense wordt niet aangepast ("heb je zelf bevestigd").
+- Ook: "ondersoort" en "variant" toegevoegd aan de vage woorden (extractie_regels.json); test_hond_de_eerste_zin aangepast.
+- Tests: 5 nieuw (test_wikipedia_relaties_behouden.py), totaal 1712.
+- Les: elke code die een lijst uit een bestaand record "ververst", moet samenvoegen i.p.v. vervangen. Een live-test met git-diff zichtbaar was nodig om dit te zien.
+
 ## ✅ Layer 4 (response_engine.py): controle van de koppelingen + timing-hint bij `kort` (17 oktober 2026)
 
 Aanleiding: een opmerking in de kop van `response_engine.py` ("Nog GEEN koppeling met de EventBus/intent_router") deed twijfelen of Layer 4 volledig gekoppeld was. Gecontroleerd tegen de echte code (`module_loader.py`, `intent_router.py`, `session_watcher.py`, `interruption_tracker.py`, `variant_kiezer.py`) en met `grep` op de methodenamen.

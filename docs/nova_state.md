@@ -1546,6 +1546,7 @@ Ondanks de naam is `layer4_response` intussen **niet meer exclusief voor Layer 4
 
 Startpunt was een externe review (5 assertions in 21 print-gebaseerde scripts, plus een `SystemExit` die `pytest tests/` liet crashen bij collectie) — sindsdien in meerdere rondes opgebouwd, telkens risico-gebaseerd geprioriteerd (kans op stille regressie, niet moduleomvang):
 
+- **`wikipedia_teacher.py`, fix relaties/voorbeelden/bevestigde sense bij herhaalde `wiki X`** (`test_wikipedia_relaties_behouden.py`, 5 tests, 17 oktober 2026) — bestaande relaties en voorbeeldzinnen blijven staan, geen duplicaten, bevestigde Wikipedia-sense blijft onaangeroerd. Totaal: 1712 tests (1711 groen + 1 skipped).
 - **Layer 1** (`test_fase1.py`–`test_fase5.py`, 20 tests) — preprocessing, co-occurrence, PMI, queries, persistentie van `word_associations_learner.py`.
 - **Layer 1, `find_bridge()`** (`test_find_bridge.py`, 8 tests) — brugwoorden tussen twee concepten (doorsnede van associaties, sortering, `top_k`, `min_confidence`, symmetrie). Zie ook de twee bullets hieronder voor de intent-koppeling erbovenop.
 - **Layer 0** (`test_memory_fase4_archief.py` + `test_memory_archivering.py`, 9 tests) — `archive_old_events()`/`compress_ancient_events()` van `memory.py`, inclusief de volledige levenscyclus.

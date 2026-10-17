@@ -3,11 +3,13 @@
     "senses": [
       {
         "sense_id": "hond#1",
-        "definition": "De hond is de gedomesticeerde ondersoort van de wolf.",
+        "definition": "De hond is de gedomesticeerde ondersoort van de wolf. De hond was het eerste dier dat door de mens werd gedomesticeerd: naar schatting ruim 14.000 jaar geleden, nog vóór de ontwikkeling van landbouw.",
         "pos": "noun",
         "examples": [
           "De hond blafte naar de postbode.",
-          "Mijn hond wil elke dag wandelen."
+          "Mijn hond wil elke dag wandelen.",
+          "Door hun langdurige samenleving met mensen hebben honden zich zowel lichamelijk als gedragsmatig aangepast aan een door mensen gedomineerde omgeving.",
+          "Zo zijn zij beter dan andere hondachtigen in staat om een koolhydraatrijk dieet te verteren."
         ],
         "relations": [
           {
@@ -50,6 +52,14 @@
             "source": "user",
             "status": "rejected",
             "created_at": "2026-08-06T14:54:43.252116"
+          },
+          {
+            "type": "is_a",
+            "target": "gedomesticeerde",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "rejected",
+            "created_at": "2026-10-17T14:53:09.762098"
           }
         ],
         "source": "wikipedia",
@@ -60,7 +70,7 @@
     ],
     "metadata": {
       "created_at": "2026-06-27T18:58:08.343041",
-      "updated_at": "2026-10-15T14:46:26.960171",
+      "updated_at": "2026-10-17T14:55:36.500531",
       "sources": [
         "user"
       ],
@@ -149,6 +159,18 @@
         "old_value": "confirmed",
         "new_value": "rejected",
         "timestamp": "2026-10-15T14:46:26.960177"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "hond#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gedomesticeerde"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-10-17T14:55:29.046023"
       }
     ]
   },

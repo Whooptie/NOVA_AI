@@ -328,6 +328,13 @@ class WikipediaTeacher:
 
                 for sense in existing.get("senses", []):
                     if sense.get("source") == "wikipedia":
+                        # Fase 11.3-fix (17 oktober 2026): een Wikipedia-sense die
+                        # Kevin zelf bevestigde (bv. na "sense_reactivated") wordt
+                        # niet stilzwijgend teruggezet naar unverified/0.8 of
+                        # van tekst veranderd.
+                        if sense.get("status") == "confirmed":
+                            return (f"'{word}' heb je zelf bevestigd — Wikipedia past "
+                                    f"die definitie niet aan.")
                         concept = self.semantic.store.get_concept(word)
                         for s in concept["senses"]:
                             if s.get("sense_id") == sense.get("sense_id"):
@@ -339,8 +346,21 @@ class WikipediaTeacher:
                                 # gewijzigd zijn, maar Kevin heeft ze nog
                                 # steeds niet zelf bevestigd.
                                 s["status"] = "unverified"
-                                s["relations"] = relations if relations else s.get("relations", [])
-                                s["examples"] = examples if examples else s.get("examples", [])
+                                # Fase 11.3-fix (17 oktober 2026): bestaande relaties
+                                # BLIJVEN staan (ook die Kevin bevestigde of via
+                                # "neem N over" opsloeg); nieuwe regex-relaties
+                                # komen er enkel bij als (type, doel) nog niet bestaat.
+                                bestaand = s.get("relations", [])
+                                bekend = {(r.get("type"), str(r.get("target", "")).lower())
+                                          for r in bestaand}
+                                nieuw = [r for r in (relations or [])
+                                         if (r.get("type"), str(r.get("target", "")).lower())
+                                         not in bekend]
+                                s["relations"] = bestaand + nieuw
+                                # Voorbeeldzinnen: bestaande blijven staan, nieuwe komen erbij.
+                                oude_vb = s.get("examples", [])
+                                s["examples"] = oude_vb + [e for e in (examples or [])
+                                                           if e not in oude_vb]
                                 concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
                         self.semantic.store.save()
                         return f"Wikipedia-definitie van '{word}' bijgewerkt → {definition}"

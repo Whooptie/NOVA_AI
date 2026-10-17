@@ -990,3 +990,13 @@
 {"text": ":REBOOT", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T16:03:53.354451"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T16:03:57.709688"}
 {"text": "wiki hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T16:04:37.538539"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T16:22:50.075965"}
+{"text": "weerleg: hond is_a gedomesticeerde", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T16:23:16.854904"}
+{"text": "een hond is een zoogdier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-17T16:40:50.532276"}
+{"text": "een hond is een huisdier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-17T16:41:00.605211"}
+{"text": "een hond is een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-17T16:41:08.449274"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-17T16:51:52.485676"}
+{"text": "is een hond een zoogdier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-17T16:52:24.437407"}
+{"text": "wiki hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T16:53:08.876988"}
+{"text": "weerleg hond is_a gedomesticeerde", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T16:55:29.039919"}
+{"text": "wiki hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T16:55:35.622482"}

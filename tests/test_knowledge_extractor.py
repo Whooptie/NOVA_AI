@@ -53,8 +53,12 @@ def test_water_zuurstofatoom_niet(ex):
 
 
 def test_hond_de_eerste_zin(ex):
+    # "ondersoort" staat sinds 17 oktober 2026 bij de vage woorden
+    # (data/extractie_regels.json): "hond is een ondersoort" is geen
+    # bruikbaar voorstel. Het echte doel is "wolf", maar dat vraagt een
+    # eigen regel ("ondersoort van X") -- gepland voor Fase 11, deel 2B.
     t = "De hond is de gedomesticeerde ondersoort van de wolf."
-    assert ("hond", "is_a", "ondersoort") in feiten(ex, t, "hond")
+    assert ("hond", "is_a", "ondersoort") not in feiten(ex, t, "hond")
 
 
 def test_de_niet_in_tweede_zin(ex):
