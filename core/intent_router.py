@@ -2747,8 +2747,8 @@ class IntentRouter:
     # Bewust NIET "bevestig N"/"wijs af N": die zijn van Fase 10.2.
     # ---------------------------------------------------------
     _KENNIS_EXTRACT_PATRONEN = [
-        re.compile(r"^extraheer(?: kennis)?(?: uit wikipedia)?(?: (?:over|van))? (?:(?:de|het|een) )?(\w[\w\- ]*)$"),
-        re.compile(r"^haal kennis (?:uit wikipedia )?(?:over|van) (?:(?:de|het|een) )?(\w[\w\- ]*)$"),
+        re.compile(r"^extraheer(?: kennis)?(?: uit wikipedia)?(?: (?:over|van))? (?:(?:de|het|een) )?(\w[\w\- ]*(?: \([\w\- ]+\))?)$"),
+        re.compile(r"^haal kennis (?:uit wikipedia )?(?:over|van) (?:(?:de|het|een) )?(\w[\w\- ]*(?: \([\w\- ]+\))?)$"),
     ]
     _KENNIS_KEUZE = re.compile(
         r"^(?:neem (?:(\d{1,2})|(alles)) over|laat (\d{1,2}) vallen|laat (alles) vallen)$")

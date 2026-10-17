@@ -536,6 +536,15 @@ class WikipediaTeacher:
                 # toelichting op datzelfde alternatief.
                 eerste_deel = regel.split(",")[0].strip()
 
+                # Fase 11.4: staat er al een volledige paginatitel met
+                # kwalificatie ("Regen (neerslag)") voor HETZELFDE woord, neem
+                # die dan zoals hij is. De woordenlogica hieronder maakte er
+                # "Regen" van: de doorverwijspagina zelf.
+                m_titel = re.match(r"^(\w[\w\- ]*?) \(([^()]+)\)$", eerste_deel)
+                if (m_titel and m_titel.group(1).strip().lower()
+                        == original_word.strip().lower()):
+                    return eerste_deel
+
                 woorden = [w.strip("().,;:'") for w in eerste_deel.split()]
                 woorden = [w for w in woorden if w and w.lower() not in stopwoorden]
 
@@ -550,6 +559,11 @@ class WikipediaTeacher:
                     kandidaat = woorden[0]
                 else:
                     kandidaat = woorden[-1]
+
+                # Fase 11.4: het woord zelf is geen alternatief (dat is de
+                # doorverwijspagina waar we net vandaan komen).
+                if kandidaat.lower() == original_word.strip().lower():
+                    continue
 
                 if len(kandidaat) > 1:
                     return kandidaat
@@ -944,10 +958,18 @@ class WikipediaTeacher:
             "text": resultaat
         })
 
+        # Fase 11.4: ook na een keuze uit het menu de voorstellen aanbieden,
+        # maar alleen als de gekozen titel echt over hetzelfde woord gaat
+        # ("Regen (neerslag)" voor "regen"). Bij een ander woord ("Neerslag"
+        # voor "regen") zouden de feiten bij het verkeerde woord belanden.
+        basis = gekozen_titel.split(" (")[0].strip().lower()
+        if basis == oorspronkelijk_woord.strip().lower() and resultaat.startswith("Wikipedia"):
+            self._bied_voorstellen_aan(oorspronkelijk_woord, titel=gekozen_titel)
+
     # ---------------------------------------------------------
     # Semantic Fase 11.3: aanbod "wil je de voorstellen zien?"
     # ---------------------------------------------------------
-    def _bied_voorstellen_aan(self, word: str) -> None:
+    def _bied_voorstellen_aan(self, word: str, titel: str = None) -> None:
         """
         Vraagt (kort) of Kevin de voorstellen uit de Wikipedia-inleiding wil
         zien. Doet niets als de extractor of de voorstellen-module ontbreekt
@@ -966,10 +988,14 @@ class WikipediaTeacher:
             return
 
         import time
-        self._pending_voorstel = {"woord": word, "tijd": time.time()}
+        # Fase 11.4: na een keuze uit het wiki-menu is de echte pagina bv.
+        # "Regen (neerslag)"; "ja" moet dan die titel ophalen, niet "regen"
+        # (dat is een doorverwijspagina).
+        weergave = titel or word
+        self._pending_voorstel = {"woord": word, "titel": titel, "tijd": time.time()}
         self.event_bus.publish("chat_response", {
             "text": f"Wil je ook zien wat ik uit de Wikipedia-inleiding van "
-                    f"'{word}' kan voorstellen? Typ 'ja'."
+                    f"'{weergave}' kan voorstellen? Typ 'ja'."
         })
 
     def verwerk_voorstel_antwoord(self, tekst: str) -> bool:
@@ -999,7 +1025,8 @@ class WikipediaTeacher:
         if not is_ja:
             return False
 
-        self.event_bus.publish("intent_kennis_extract", {"word": pending["woord"]})
+        self.event_bus.publish("intent_kennis_extract",
+                               {"word": pending.get("titel") or pending["woord"]})
         return True
 
     def on_wiki(self, data, event_type=None):

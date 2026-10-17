@@ -40,6 +40,7 @@
 #   "extraheer" hem eruit filtert.
 
 import json
+import re
 import time
 import urllib.error
 import urllib.parse
@@ -51,14 +52,30 @@ MAX_VOORSTELLEN = 10
 LIJST_GELDIG_SECONDEN = 600  # nummers blijven 10 minuten geldig (zoals 10.2)
 MAX_WOORD_LENGTE = 40
 TIMEOUT_SECONDEN = 8
+MAX_KANDIDATEN = 5
+
+# Doorverwijspagina's (Fase 11.4). De tekst-signalen staan ook in
+# data/extractie_regels.json; hier staan ze nog eens zodat deze module ook
+# werkt als de extractor uit staat. DOORVERWIJS_MARKER zet haal_wikipedia_intro
+# zelf voor de tekst als MediaWiki de pagina als doorverwijspagina markeert
+# (pageprops), ook als de inleiding leeg is.
+DOORVERWIJS_SIGNALEN = ("kan verwijzen naar", "kunnen verwijzen naar", "verwijst naar")
+DOORVERWIJS_MARKER = "[doorverwijspagina]"
+
+# Titels die de router-regex van "extraheer ..." kan doorgeven:
+# woorden, eventueel met een kwalificatie tussen haakjes ("regen (neerslag)").
+_BRUIKBARE_TITEL = re.compile(r"^\w[\w\-]*(?: [\w\-]+)*(?: \([\w\- ]+\))?$")
+_HAAKJES = re.compile(r"^(.*?)\s*\(([^()]+)\)\s*$")
 
 
 def haal_wikipedia_intro(woord, timeout=TIMEOUT_SECONDEN):
     """Haalt de inleiding van een Nederlandse Wikipedia-pagina op
-    (1 request). Geeft '' bij elke fout."""
+    (1 request). Geeft '' bij elke fout. Is de pagina een doorverwijspagina
+    (MediaWiki pageprops), dan staat DOORVERWIJS_MARKER vooraan de tekst."""
     try:
         params = urllib.parse.urlencode({
-            "action": "query", "prop": "extracts", "exintro": 1,
+            "action": "query", "prop": "extracts|pageprops",
+            "ppprop": "disambiguation", "exintro": 1,
             "explaintext": 1, "redirects": 1, "format": "json",
             "titles": woord,
         })
@@ -68,17 +85,63 @@ def haal_wikipedia_intro(woord, timeout=TIMEOUT_SECONDEN):
         with urllib.request.urlopen(req, timeout=timeout) as r:
             data = json.loads(r.read().decode("utf-8"))
         pagina = next(iter(data["query"]["pages"].values()))
-        return pagina.get("extract", "") or ""
+        tekst = pagina.get("extract", "") or ""
+        if "disambiguation" in (pagina.get("pageprops") or {}):
+            tekst = DOORVERWIJS_MARKER + "\n" + tekst
+        return tekst
     except Exception:
         return ""
 
 
+def haal_doorverwijs_kandidaten(woord, timeout=TIMEOUT_SECONDEN):
+    """Titels waar een doorverwijspagina naar linkt (1 request, MediaWiki
+    prop=links). Geeft [] bij elke fout."""
+    try:
+        params = urllib.parse.urlencode({
+            "action": "query", "prop": "links", "pllimit": 30,
+            "plnamespace": 0, "redirects": 1, "format": "json",
+            "titles": woord,
+        })
+        url = "https://nl.wikipedia.org/w/api.php?" + params
+        req = urllib.request.Request(
+            url, headers={"User-Agent": "Nova-AI/1.0 (educational project)"})
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            data = json.loads(r.read().decode("utf-8"))
+        titels = []
+        for pagina in data["query"]["pages"].values():
+            for link in pagina.get("links", []):
+                t = (link.get("title") or "").strip()
+                if t and t.lower() != woord.lower() and t not in titels:
+                    titels.append(t)
+        return titels
+    except Exception:
+        return []
+
+
+def splits_titel(tekst):
+    """'regen (neerslag)' -> ('regen (neerslag)', 'regen').
+    'fiets' -> ('fiets', 'fiets'). De titel gaat naar Wikipedia, het
+    zoekwoord naar de extractor (die zoekt 'Regen is ...' in de tekst)."""
+    tekst = (tekst or "").strip()
+    m = _HAAKJES.match(tekst)
+    if m and m.group(1).strip():
+        return tekst, m.group(1).strip().lower()
+    return tekst, tekst.lower()
+
+
+def is_doorverwijzing(tekst):
+    laag = (tekst or "").lower()
+    return DOORVERWIJS_MARKER in laag or any(s in laag for s in DOORVERWIJS_SIGNALEN)
+
+
 class KnowledgeProposals:
-    def __init__(self, event_bus, sem=None, extractor=None, fetch=None):
+    def __init__(self, event_bus, sem=None, extractor=None, fetch=None,
+                 fetch_kandidaten=None):
         self.event_bus = event_bus
         self.sem = sem
         self._extractor = extractor      # mag van buitenaf komen (tests)
         self._fetch = fetch or haal_wikipedia_intro
+        self._fetch_kandidaten = fetch_kandidaten or haal_doorverwijs_kandidaten
         self._lijst = []                 # voorstellen; None = al behandeld
         self._lijst_tijd = 0.0
         self._lijst_woord = None
@@ -178,9 +241,32 @@ class KnowledgeProposals:
                 "zin": feit.get("zin", "")}
 
     # ---------- "extraheer X" ----------
+    def _toon_doorverwijzing(self, woord, titel):
+        """Fase 11.4: de pagina is een doorverwijspagina, geen definitie."""
+        kandidaten = []
+        for k in self._fetch_kandidaten(titel) or []:
+            # Alleen titels die "extraheer ..." ook echt kan doorgeven
+            if _BRUIKBARE_TITEL.match(k) and len(k.split()) <= 3:
+                kandidaten.append(k)
+        # Titels met haakjes ("Regen (neerslag)") zijn de echte betekenissen
+        kandidaten.sort(key=lambda k: "(" not in k)
+        kandidaten = kandidaten[:MAX_KANDIDATEN]
+
+        kop = (f"'{woord}' is op Wikipedia een doorverwijspagina: het kan "
+               f"meerdere dingen betekenen, dus ik weet niet welke je bedoelt.")
+        if not kandidaten:
+            self._toon(kop + f" Probeer een preciezere titel, of typ 'wiki {woord}' "
+                             f"voor een keuzemenu.")
+            return
+        regels = [f"  extraheer {k.lower()}" for k in kandidaten]
+        self._toon(kop + " Typ er één van deze:\n" + "\n".join(regels))
+
     def on_extract(self, data, event_type=None):
-        woord = (data.get("word") or "").strip().lower().strip(".,!?;:")
-        if not woord or len(woord) > MAX_WOORD_LENGTE:
+        # "regen (neerslag)": de titel gaat naar Wikipedia (hoofdletters
+        # blijven staan), het zoekwoord ("regen") naar de extractor.
+        ruw = (data.get("word") or "").strip().strip(".,!?;:")
+        titel, woord = splits_titel(ruw)
+        if not woord or len(titel) > MAX_WOORD_LENGTE + 20:
             self._toon("Van welk woord wil je de Wikipedia-kennis bekijken? "
                        "Bv. 'extraheer fiets'.")
             return
@@ -194,9 +280,17 @@ class KnowledgeProposals:
             self._toon(f"De extractor staat uit ({reden}), dus ik kan geen voorstellen maken.")
             return
 
-        tekst = self._fetch(woord)
+        tekst = self._fetch(titel)
+        if not tekst and "(" in titel and titel != titel.title():
+            # De router maakt alles klein: "vulkaan (italië)" bestaat niet,
+            # "Vulkaan (Italië)" wel.
+            tekst = self._fetch(titel.title())
         if not tekst:
-            self._toon(f"Ik kon de Wikipedia-inleiding van '{woord}' niet ophalen.")
+            self._toon(f"Ik kon de Wikipedia-inleiding van '{titel.lower()}' niet ophalen.")
+            return
+
+        if is_doorverwijzing(tekst):
+            self._toon_doorverwijzing(woord, titel)
             return
 
         feiten = ex.extract_from_text(tekst, zoekwoord=woord)

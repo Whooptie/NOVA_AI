@@ -286,3 +286,44 @@ def test_causes_bijzin_met_voorzetsel_geeft_geen_extra_gevolg(ex):
 
 def test_causes_zoekwoord_moet_voorkomen(ex):
     assert feiten(ex, "Een orkaan veroorzaakt veel schade.", "fiets") == set()
+    
+
+# ---- Echte Wikipedia-zinnen (inleidingen opgehaald op 17 oktober 2026) ----
+def test_echt_overstroming_gebeurtenis(ex):
+    t = ("Een overstroming is een gebeurtenis waarbij een aanzienlijke hoeveelheid "
+         "water uit een meer, rivier of zee plaatsen bereikt die normaal gesproken "
+         "niet onder water staan. Overstromingen kunnen voor de natuur en de "
+         "landbouw ook positieve effecten hebben.")
+    assert ("overstroming", "is_a", "gebeurtenis") in feiten(ex, t, "overstroming")
+
+
+def test_echt_droogte_periode(ex):
+    t = "Droogte is een langere periode waarin geen neerslag valt."
+    assert ("droogte", "is_a", "periode") in feiten(ex, t, "droogte")
+
+
+def test_echt_stuur_middel_is_te_vaag(ex):
+    t = "Een stuur is een middel om een voertuig te navigeren over de weg."
+    assert ("stuur", "is_a", "middel") not in feiten(ex, t, "stuur")
+
+
+def test_echt_aardbeving_voorbehoud_blokkeert_causes(ex):
+    t = ("Een zeebeving kan een vloedgolf of tsunami veroorzaken, maar dat is niet "
+         "altijd het geval. Zware aardbevingen en tsunami's veroorzaken vaak veel "
+         "slachtoffers en grote schade.")
+    assert feiten(ex, t, "aardbeving") == set()
+
+
+def test_echt_wiskundetekens_in_tekst_geven_geen_rommel(ex):
+    t = ("De zwaarste aardbeving ooit gemeten was de aardbeving van Valdivia in "
+         "Chili in 1960 (9,5\n  \n    M\n      w\n    {\\displaystyle M_{\\mathrm {w} }}\n  \n).")
+    assert feiten(ex, t, "aardbeving") == set()
+
+# ---- Fase 11.4: "X is een vorm van Y" ----
+def test_vorm_van_geeft_is_a(ex):
+    t = "Regen is een vorm van neerslag die ontstaat wanneer waterdamp condenseert."
+    assert ("regen", "is_a", "neerslag") in feiten(ex, t, "regen")
+
+
+def test_vorm_zonder_van_is_geen_feit(ex):
+    assert feiten(ex, "Een cirkel is een vorm.", "cirkel") == set()

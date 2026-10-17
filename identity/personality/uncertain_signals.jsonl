@@ -1018,3 +1018,25 @@
 {"text": "extraheer vulkaanuitbarsting", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:09:30.407756"}
 {"text": "extraheer stuur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:09:36.356196"}
 {"text": "laat 1 vallen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0545, "bron": "model_fallback", "tijdstip": "2026-10-17T21:10:59.277198"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T21:14:12.016462"}
+{"text": "extraheer stuur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:14:25.739859"}
+{"text": "wiki stuur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T21:20:14.444123"}
+{"text": "zijn er nog andere betekenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0876, "bron": "model_fallback", "tijdstip": "2026-10-17T21:20:28.915289"}
+{"text": "wat is stuur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-17T21:20:36.591598"}
+{"text": "zijn er nog andere betekenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0876, "bron": "model_fallback", "tijdstip": "2026-10-17T21:20:53.227086"}
+{"text": "1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:21:06.444714"}
+{"text": "wat weet je over stuur", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0016, "bron": "model_fallback", "tijdstip": "2026-10-17T21:24:16.577392"}
+{"text": "1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:24:45.333308"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T21:32:49.936999"}
+{"text": "extraheer regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:32:56.689568"}
+{"text": "extraheer regen (neerslag)", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:33:14.055088"}
+{"text": "wiki regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T21:33:27.644032"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T21:39:27.301322"}
+{"text": "wiki regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T21:39:36.789644"}
+{"text": "extraheer regen (neerslag)", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:40:11.792372"}
+{"text": "neem 1 over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-10-17T21:40:30.017496"}
+{"text": "wiki regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T21:40:44.883434"}
+{"text": "zijn er nog andere betekenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0876, "bron": "model_fallback", "tijdstip": "2026-10-17T21:40:54.358210"}
+{"text": "wat is regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-17T21:41:00.299607"}
+{"text": "zijn er nog andere betekenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0876, "bron": "model_fallback", "tijdstip": "2026-10-17T21:41:11.282521"}
+{"text": "welk weer wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0319, "bron": "model_fallback", "tijdstip": "2026-10-17T21:42:37.168497"}

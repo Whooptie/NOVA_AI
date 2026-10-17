@@ -367,3 +367,7 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792245833.5565915, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "onbekend", "gekozen_variant_index": 2, "variant_tekst": "Wacht… '{entity}' is nieuw.", "entity": "onderdelen van een fiets", "response_style": "normaal", "moment": "2026-10-17T19:10:58.359745", "reactie_sentiment": null}
 {"sjabloon_naam": "onbekend", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792257058.3599358, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "variant_tekst": "Met '{entity}' bedoel je waarschijnlijk: {definition} Ik zie dat woord bij jou trouwens vaak in de buurt van '{associatie}'.", "entity": "stuur", "response_style": "normaal", "moment": "2026-10-17T21:20:36.603268", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792264836.6034658, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 0, "variant_tekst": "{entity} betekent: {definition} Trouwens, dat woord duikt bij jou vaak op samen met '{associatie}'.", "entity": "regen", "response_style": "normaal", "moment": "2026-10-17T21:41:00.310947", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792266060.3111825, "type": "sentiment_koppeling"}

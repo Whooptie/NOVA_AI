@@ -43,6 +43,10 @@ def events(r):
     ("extraheer uit wikipedia over machine learning", "machine learning"),
     ("haal kennis uit wikipedia over hond", "hond"),
     ("haal kennis van het water", "water"),
+    ("extraheer regen (neerslag)", "regen (neerslag)"),
+    ("Extraheer Regen (Neerslag)!", "regen (neerslag)"),
+    ("extraheer de bank (meubel)", "bank (meubel)"),
+    ("haal kennis over wiel (voertuig)", "wiel (voertuig)"),
 ])
 def test_extractie_positief(router, zin, woord):
     assert router.detect_kennis_extractie(zin) is True
@@ -57,6 +61,9 @@ def test_extractie_positief(router, zin, woord):
     "kun je fiets extraheren",
     "extraheer een twee drie vier vijf",
     "extraheer jij",
+    "extraheer regen (neerslag",
+    "extraheer regen ()",
+    "extraheer (neerslag)",
     "haal kennis",
     "wat weet je over fiets",
 ])

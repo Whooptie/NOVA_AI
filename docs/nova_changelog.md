@@ -1857,6 +1857,22 @@ Eerste twee onderdelen van Fase 11: eerst pytest groen (25 + 18 nieuwe tests, to
 
 - Semantic Fase 11, optie B (17 oktober 2026): samenstellingen als "basisfiets" worden bij het zoekwoord "fiets" samengevoegd tot "fiets", maar alleen met een voorvoegsel uit data/extractie_regels.json (`samenstelling_voorvoegsels`: basis, standaard). Bewust streng: "tandwiel" bij "wiel" en "racefiets" bij "fiets" blijven ongemoeid. 7 nieuwe tests; voettekst van de voorstellenlijst noemt geen nummer dat niet bestaat (2 tests). Totaal 1721.
 
+### Semantic Fase 11, deel 2B — ondersoort van, onderdeel van, veroorzaakt (17 oktober 2026)
+- Drie nieuwe relaties in `knowledge_extractor.py`: "X is een ondersoort/soort/variant van Y" → `is_a`; "X is een onderdeel van Y" / "X maakt deel uit van Y" → `part_of` (deel → geheel, zoals Nova het bewaart); "X veroorzaakt Y" / "X leidt tot Y" → `causes` (precies één oorzaak, gevolgen als lijst). Vage woorden aangevuld (middel, vorm, manier, ondersoort, variant, deze, dit, dat, die).
+- `knowledge_proposals.py` toont ze als "'s' is onderdeel van 't'" en "'s' veroorzaakt 't'", en slaat ze op met dezelfde trust-regels (unverified → confirmed bij "neem N over", tombstone bij "laat N vallen").
+- Getest op echte Wikipedia-inleidingen (aardbeving, overstroming, droogte, vulkaanuitbarsting, stuur): echte teksten leveren weinig op omdat ze vol voorbehoud staan; dat is veilig. Bij "stuur" leverde "middel" eerst een fout `is_a`, nu niet meer.
+- Modelkeuze besproken: `sm` blijft (zie nova_state.md). `md` getest in een sandbox: wint 1 zin, verliest 2 `causes`-tests. Geen wijziging.
+
+### Semantic Fase 11.4 — doorverwijspagina's (17 oktober 2026)
+- `extraheer regen` zei "geen betrouwbare feiten", terwijl 'regen' een doorverwijspagina is. Nu: melding dat het een doorverwijspagina is plus maximaal 5 commando's (`extraheer regen (neerslag)`), titels met haakjes eerst, alleen titels die de router kan doorgeven.
+- `extraheer woord (kwalificatie)`: de titel gaat naar Wikipedia, het woord zonder haakjes naar de extractor. Router-regex laat een kwalificatie tussen haakjes toe. Terugval op hoofdletters ("vulkaan (italië)" → "Vulkaan (Italië)").
+- Na een keuze uit het `wiki`-menu volgt het aanbod "wil je de voorstellen zien?" met de gekozen titel, alleen als die over hetzelfde woord gaat.
+- **Bug gevonden via `wiki debug regen`:** de doorverwijstekst begint met "Regen kan verwijzen naar:Regen (neerslag)" (geen regeleinde). `_extract_first_disambiguation_target` gaf daardoor "Regen" terug, de doorverwijspagina zelf, en `wiki regen` zei "geen bruikbare definitie". Fix: een volledige titel voor hetzelfde woord wordt overgenomen, het woord zelf is nooit een alternatief. De bug zat er al voor Fase 11.
+- `extraheer regen (neerslag)` vond niets omdat "vorm" een vaag woord is: "Regen is een vorm van neerslag". "vorm" is nu ook een soort-woord (`regen is_a neerslag`), als doel blijft het vaag.
+- Live bevestigd: `extraheer regen (neerslag)` → "regen is een neerslag" → `neem 1 over` werkt.
+- Tests: 22 + 6 nieuw. Totaal 1772 (1771 groen, 1 skipped).
+- Les: een live `wiki debug`-uitvoer toonde in één keer wat uren gokken niet had gevonden.
+
 ## ✅ Layer 4 (response_engine.py): controle van de koppelingen + timing-hint bij `kort` (17 oktober 2026)
 
 Aanleiding: een opmerking in de kop van `response_engine.py` ("Nog GEEN koppeling met de EventBus/intent_router") deed twijfelen of Layer 4 volledig gekoppeld was. Gecontroleerd tegen de echte code (`module_loader.py`, `intent_router.py`, `session_watcher.py`, `interruption_tracker.py`, `variant_kiezer.py`) en met `grep` op de methodenamen.

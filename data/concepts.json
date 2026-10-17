@@ -5454,6 +5454,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-11T15:11:17.064145"
+          },
+          {
+            "type": "is_a",
+            "target": "neerslag",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-17T19:40:30.023018",
+            "oorspronkelijke_bron": "wikipedia"
           }
         ],
         "source": "user",
@@ -5464,12 +5473,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-10-11T15:11:17.064163",
+      "updated_at": "2026-10-17T19:40:30.057170",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-11T15:11:17.064163",
-      "usage_count": 2,
+      "last_used_at": "2026-10-17T19:40:30.023028",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
@@ -5477,6 +5486,10 @@
         },
         {
           "timestamp": "2026-10-11T15:11:17.064163",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-17T19:40:30.023028",
           "confidence": 1.0
         }
       ]
@@ -5508,6 +5521,30 @@
           "confidence": 1.0
         },
         "timestamp": "2026-10-11T15:11:17.064158"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "regen#1",
+        "relation": {
+          "type": "is_a",
+          "target": "neerslag",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-10-17T19:40:30.023025"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "regen#1",
+        "relation": {
+          "type": "is_a",
+          "target": "neerslag"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-17T19:40:30.057179"
       }
     ]
   },
@@ -8419,16 +8456,28 @@
         "confidence": 1.0,
         "audit_log": [],
         "status": "confirmed"
+      },
+      {
+        "sense_id": "stuur#2",
+        "definition": "Een fietsstuur wordt gebruikt om een fiets met de handen te sturen. Het is met het zitgedeelte en pedalen, een van de drie raakpunten van de bestuurder met de fiets.",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "wikipedia",
+        "confidence": 0.8,
+        "status": "unverified",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-10-17T19:10:59.317135",
+      "updated_at": "2026-10-17T19:21:06.657180",
       "sources": [
-        "user"
+        "user",
+        "wikipedia"
       ],
-      "last_used_at": "2026-10-17T19:10:59.283117",
-      "usage_count": 2,
+      "last_used_at": "2026-10-17T19:21:06.657180",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
@@ -8437,6 +8486,10 @@
         {
           "timestamp": "2026-10-17T19:10:59.283117",
           "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-17T19:21:06.657180",
+          "confidence": 0.8
         }
       ]
     },
@@ -8480,6 +8533,14 @@
         "new_value": "rejected",
         "reason": "voorstel uit Wikipedia afgewezen",
         "timestamp": "2026-10-17T19:10:59.317141"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "wikipedia",
+        "sense_id": "stuur#2",
+        "old_value": null,
+        "new_value": "Een fietsstuur wordt gebruikt om een fiets met de handen te sturen. Het is met het zitgedeelte en pedalen, een van de drie raakpunten van de bestuurder met de fiets.",
+        "timestamp": "2026-10-17T19:21:06.657177"
       }
     ]
   },

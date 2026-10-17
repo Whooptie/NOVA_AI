@@ -164,3 +164,46 @@ def test_oude_regex_extractie_blijft_werken():
     bus, t = maak()
     rel = t._extract_relations("fiets", "Een fiets is een voertuig dat men trapt.")
     assert rel and rel[0]["target"] == "voertuig"
+
+
+# ---------- Fase 11.4: aanbod ook na een keuze uit het wiki-menu ----------
+def maak_keuze(resultaat="Wikipedia: 'regen' → Regen is neerslag."):
+    bus = FakeBus()
+    t = WikipediaTeacher(bus, None)
+    t._fetch_summary = lambda w: {"type": "standard", "extract": "Regen is neerslag."}
+    t._teach_word = lambda *a, **k: resultaat
+    return bus, t
+
+
+def test_aanbod_na_menukeuze_noemt_de_gekozen_titel():
+    bus, t = maak_keuze()
+    t._verwerk_gekozen_pagina("regen", "Regen (neerslag)")
+    assert "'Regen (neerslag)'" in bus.teksten()[-1]
+    assert t._pending_voorstel["titel"] == "Regen (neerslag)"
+
+
+def test_ja_na_menukeuze_vraagt_de_gekozen_titel_op():
+    bus, t = maak_keuze()
+    t._verwerk_gekozen_pagina("regen", "Regen (neerslag)")
+    assert t.verwerk_voorstel_antwoord("ja") is True
+    assert bus.events("intent_kennis_extract") == [{"word": "Regen (neerslag)"}]
+
+
+def test_geen_aanbod_na_menukeuze_van_een_ander_woord():
+    # "Neerslag" gekozen bij "regen": de feiten zouden bij het verkeerde woord landen
+    bus, t = maak_keuze()
+    t._verwerk_gekozen_pagina("regen", "Neerslag")
+    assert t._pending_voorstel is None
+
+
+def test_geen_aanbod_na_mislukte_opslag_via_menu():
+    bus, t = maak_keuze(resultaat="Semantic module niet beschikbaar.")
+    t._verwerk_gekozen_pagina("regen", "Regen (neerslag)")
+    assert t._pending_voorstel is None
+
+
+def test_gewone_ja_zonder_titel_blijft_het_woord_gebruiken():
+    bus, t = maak()
+    wiki(bus)
+    t.verwerk_voorstel_antwoord("ja")
+    assert bus.events("intent_kennis_extract") == [{"word": "fiets"}]

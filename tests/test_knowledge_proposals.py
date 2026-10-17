@@ -102,11 +102,13 @@ FEITEN = [
 ]
 
 
-def maak(feiten=FEITEN, beschikbaar=True, tekst="Een fiets is een voertuig."):
+def maak(feiten=FEITEN, beschikbaar=True, tekst="Een fiets is een voertuig.",
+         kandidaten=None):
     bus = FakeBus()
     sem = FakeSem()
     kp = KnowledgeProposals(bus, sem, extractor=FakeExtractor(feiten, beschikbaar),
-                            fetch=lambda w: tekst)
+                            fetch=lambda w: tekst,
+                            fetch_kandidaten=lambda w: list(kandidaten or []))
     return bus, sem, kp
 
 
@@ -306,3 +308,99 @@ def test_causes_voorstel_afwijzen_geeft_tombstone():
     keuze(bus, "laat_vallen", 1)
     vraag(bus)
     assert "eerder afgewezen" in bus.teksten()[-1] or "niets nieuws" in bus.teksten()[-1]
+
+    
+# ---------- Fase 11.4: doorverwijspagina's en titels met haakjes ----------
+DOORVERWIJS_TEKST = "Regen kan verwijzen naar:\nneerslag\nde band Regen"
+
+
+def test_doorverwijspagina_geeft_duidelijke_melding_met_kandidaten():
+    bus, sem, kp = maak(tekst=DOORVERWIJS_TEKST,
+                        kandidaten=["Regen (neerslag)", "Neerslag", "Regen (band)"])
+    vraag(bus, "regen")
+    t = bus.teksten()[-1]
+    assert "doorverwijspagina" in t
+    assert "extraheer regen (neerslag)" in t
+    assert "extraheer regen (band)" in t
+    assert "extraheer neerslag" in t
+    assert kp._lijst == []
+
+
+def test_kandidaten_met_haakjes_staan_voorop():
+    bus, sem, kp = maak(tekst=DOORVERWIJS_TEKST,
+                        kandidaten=["Neerslag", "Regen (neerslag)"])
+    vraag(bus, "regen")
+    t = bus.teksten()[-1]
+    assert t.index("regen (neerslag)") < t.index("extraheer neerslag")
+
+
+def test_kandidaten_die_de_router_niet_kan_doorgeven_worden_overgeslagen():
+    bus, sem, kp = maak(tekst=DOORVERWIJS_TEKST,
+                        kandidaten=["Regen, een film", "Regen (neerslag)"])
+    vraag(bus, "regen")
+    t = bus.teksten()[-1]
+    assert "film" not in t
+    assert "extraheer regen (neerslag)" in t
+
+
+def test_hoogstens_vijf_kandidaten():
+    bus, sem, kp = maak(tekst=DOORVERWIJS_TEKST,
+                        kandidaten=[f"Regen (soort{n})" for n in range(9)])
+    vraag(bus, "regen")
+    assert bus.teksten()[-1].count("extraheer ") == 5
+
+
+def test_doorverwijspagina_zonder_kandidaten():
+    bus, sem, kp = maak(tekst=DOORVERWIJS_TEKST, kandidaten=[])
+    vraag(bus, "regen")
+    t = bus.teksten()[-1]
+    assert "doorverwijspagina" in t and "wiki regen" in t
+
+
+def test_doorverwijs_marker_van_de_api_wordt_herkend():
+    bus, sem, kp = maak(tekst="[doorverwijspagina]\n", kandidaten=["Bank (meubel)"])
+    vraag(bus, "bank")
+    assert "extraheer bank (meubel)" in bus.teksten()[-1]
+
+
+def test_extractor_wordt_niet_aangeroepen_bij_doorverwijspagina():
+    bus, sem, kp = maak(tekst=DOORVERWIJS_TEKST)
+    kp._extractor.extract_from_text = lambda *a, **k: pytest.fail("mocht niet")
+    vraag(bus, "regen")
+
+
+def test_titel_met_haakjes_gaat_naar_wikipedia_en_zoekwoord_naar_extractor():
+    gezien = {}
+    bus = FakeBus()
+    ex = FakeExtractor([{"onderwerp": "regen", "relatie": "is_a",
+                         "doel": "neerslag", "zin": "z"}])
+    orig = ex.extract_from_text
+    ex.extract_from_text = lambda t, zoekwoord=None: (
+        gezien.update(zoek=zoekwoord) or orig(t, zoekwoord))
+    kp = KnowledgeProposals(bus, FakeSem(), extractor=ex,
+                            fetch=lambda w: gezien.update(titel=w) or "Regen is neerslag.",
+                            fetch_kandidaten=lambda w: [])
+    bus.publish("intent_kennis_extract", {"word": "regen (neerslag)"})
+    assert gezien["titel"] == "regen (neerslag)"
+    assert gezien["zoek"] == "regen"
+    assert "regen is een neerslag" in bus.teksten()[-1]
+
+
+def test_titel_met_haakjes_valt_terug_op_hoofdletters():
+    opgevraagd = []
+
+    def fetch(w):
+        opgevraagd.append(w)
+        return "Vulkaan is een berg." if w == "Vulkaan (Italië)" else ""
+    bus = FakeBus()
+    kp = KnowledgeProposals(bus, FakeSem(), extractor=FakeExtractor([]),
+                            fetch=fetch, fetch_kandidaten=lambda w: [])
+    bus.publish("intent_kennis_extract", {"word": "vulkaan (italië)"})
+    assert opgevraagd == ["vulkaan (italië)", "Vulkaan (Italië)"]
+    assert "niet ophalen" not in bus.teksten()[-1]
+
+
+def test_gewone_woorden_blijven_werken_als_voorheen():
+    bus, sem, kp = maak()
+    vraag(bus, "Fiets.")
+    assert "1. fiets is een voertuig" in bus.teksten()[-1]

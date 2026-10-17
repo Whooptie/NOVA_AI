@@ -60,7 +60,7 @@ def verwijder_haakjes(tekst):
 VOORVOEGSELS_STANDAARD = ("basis", "standaard")
 
 # Woorden waarmee "X is een <woord> van Y" een is_a-relatie uitdrukt (Fase 11, 2B)
-SOORT_WOORDEN = ("ondersoort", "soort", "variant")
+SOORT_WOORDEN = ("ondersoort", "soort", "variant", "vorm")
 # "X is een <woord> van Y" / "X maakt deel uit van Y" -> X part_of Y (Fase 11, 2B)
 DEEL_WOORDEN = ("onderdeel", "deel")
 
