@@ -3,20 +3,53 @@
     "senses": [
       {
         "sense_id": "hond#1",
-        "definition": "De hond is de gedomesticeerde ondersoort van de wolf. De hond was het eerste dier dat door de mens werd gedomesticeerd: naar schatting ruim 14.000 jaar geleden, nog vóór de ontwikkeling van landbouw.",
+        "definition": "De hond is de gedomesticeerde ondersoort van de wolf.",
         "pos": "noun",
         "examples": [
-          "Door hun langdurige samenleving met mensen hebben honden zich zowel lichamelijk als gedragsmatig aangepast aan een door mensen gedomineerde omgeving.",
-          "Zo zijn zij beter dan andere hondachtigen in staat om een koolhydraatrijk dieet te verteren."
+          "De hond blafte naar de postbode.",
+          "Mijn hond wil elke dag wandelen."
         ],
         "relations": [
           {
             "type": "is_a",
-            "target": "gedomesticeerde",
-            "confidence": 0.8,
-            "source": "wikipedia",
-            "status": "unverified",
-            "created_at": "2026-10-17T14:04:38.447104"
+            "target": "wolf",
+            "confidence": 1.0,
+            "source": "user",
+            "created_at": "2026-06-27T18:58:08.343041",
+            "status": "rejected",
+            "oorspronkelijke_bron": "wikipedia"
+          },
+          {
+            "type": "is_a",
+            "target": "zoogdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "is_a",
+            "target": "huisdier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "is_a",
+            "target": "dier",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-07-05T00:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "is_a",
+            "target": "meubel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "rejected",
+            "created_at": "2026-08-06T14:54:43.252116"
           }
         ],
         "source": "wikipedia",
@@ -27,7 +60,7 @@
     ],
     "metadata": {
       "created_at": "2026-06-27T18:58:08.343041",
-      "updated_at": "2026-10-17T14:04:38.447128",
+      "updated_at": "2026-10-15T14:46:26.960171",
       "sources": [
         "user"
       ],
@@ -16595,23 +16628,31 @@
         ],
         "relations": [
           {
+            "type": "has_part",
+            "target": "snaar",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-14T19:25:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "snaarinstrument",
             "confidence": 0.8,
             "source": "wikipedia",
             "status": "unverified",
-            "created_at": "2026-10-17T13:57:21.065469"
+            "created_at": "2026-08-08T18:14:27.166906"
           }
         ],
         "source": "wikipedia",
-        "confidence": 0.8,
-        "status": "unverified",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-08-08T18:14:27.166906",
-      "updated_at": "2026-10-17T13:57:21.065492",
+      "updated_at": "2026-08-08T18:32:59.862935",
       "sources": [
         "wikipedia"
       ],
