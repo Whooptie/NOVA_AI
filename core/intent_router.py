@@ -4820,6 +4820,13 @@ class IntentRouter:
         if wiki_teacher is not None and wiki_teacher.verwerk_wiki_keuze(text):
             return
 
+        # -1C3 Aanbod "wil je de voorstellen uit de inleiding zien?" (Semantic
+        # Fase 11.3) -- na een geslaagde "wiki X". Alleen een "ja" wordt hier
+        # afgevangen; elk ander bericht laat het aanbod vervallen en loopt
+        # gewoon door de routing (daarom bewust geen pending_question).
+        if wiki_teacher is not None and wiki_teacher.verwerk_voorstel_antwoord(text):
+            return
+
         # -1C2 On This Day-vervolgvraag (Onderdeel 5, 26 september
         # 2026) -- zelfde voorrang-redenering als -1C hierboven: als
         # Nova net een genummerde lijst historische feiten toonde, mag

@@ -983,3 +983,10 @@
 {"text": "weerleg: wiel part_of basisfiets", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T13:45:01.964339"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T13:54:58.002416"}
 {"text": "extraheer de fiets", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-10-17T13:55:13.089392"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T15:57:11.255595"}
+{"text": "wiki hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T15:57:46.226581"}
+{"text": "wat is een kat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-17T15:58:09.531648"}
+{"text": "wiki bank", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T15:58:19.011742"}
+{"text": ":REBOOT", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T16:03:53.354451"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T16:03:57.709688"}
+{"text": "wiki hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T16:04:37.538539"}

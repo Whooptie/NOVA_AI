@@ -359,3 +359,9 @@
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792223061.086123, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792223061.0866761, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "interruption_vraag", "gekozen_variant_index": 5, "reactie_sentiment": "neutraal_gemengd", "moment": 1792224056.4113948, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 3, "variant_tekst": "{entity}, dat is: {definition} Dat associeer je hier trouwens opvallend vaak met '{associatie}'.", "entity": "kat", "response_style": "normaal", "moment": "2026-10-17T15:58:09.542852", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1792245489.5435717, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "variant_tekst": "Oh… je bent al een tijdje met {activiteit} bezig.", "entity": "coding", "response_style": null, "moment": "2026-10-17T16:03:53.555948", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles oké?", "entity": "coding", "response_style": null, "moment": "2026-10-17T16:03:53.556432", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792245833.5561419, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792245833.5565915, "type": "sentiment_koppeling"}

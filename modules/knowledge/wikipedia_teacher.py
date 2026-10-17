@@ -25,6 +25,10 @@ from datetime import datetime
 WIKI_API = "https://nl.wikipedia.org/api/rest_v1/page/summary/"
 WIKI_CONFIDENCE = 0.8  # Wikipedia is betrouwbaar maar niet perfect
 
+# Semantic Fase 11.3: hoe lang het aanbod "wil je de voorstellen zien?" openstaat
+VOORSTEL_VERVAL_SECONDEN = 120
+VOORSTEL_JA_WOORDEN = ("ja", "jawel", "graag", "doe maar", "oke", "oké", "ok", "yes")
+
 
 class WikipediaTeacher:
     def __init__(self, event_bus, semantic_module=None):
@@ -44,6 +48,14 @@ class WikipediaTeacher:
         # bedoeld voor ja/nee-achtige reacties (zie
         # pending_question_roadmap.md), niet voor een open meerkeuze.
         self._pending_wiki_choice = None
+
+        # Semantic Fase 11.3: na een geslaagde "wiki X" biedt Nova aan de
+        # voorstellen uit de inleiding te tonen ("ja"). Eigen, lichte state
+        # (zelfde keuze als _pending_wiki_choice hierboven): een ander
+        # bericht dan "ja" laat het aanbod gewoon vervallen en loopt
+        # normaal door de routing -- pending_question.py zou in dat geval
+        # het volgende bericht opslokken.
+        self._pending_voorstel = None   # {"woord": str, "tijd": float}
 
         # Luister naar wikipedia intents
         event_bus.subscribe("intent_wiki", self.on_wiki)
@@ -912,6 +924,64 @@ class WikipediaTeacher:
             "text": resultaat
         })
 
+    # ---------------------------------------------------------
+    # Semantic Fase 11.3: aanbod "wil je de voorstellen zien?"
+    # ---------------------------------------------------------
+    def _bied_voorstellen_aan(self, word: str) -> None:
+        """
+        Vraagt (kort) of Kevin de voorstellen uit de Wikipedia-inleiding wil
+        zien. Doet niets als de extractor of de voorstellen-module ontbreekt
+        of uit staat -- dan blijft het gedrag exact zoals voor Fase 11.
+        De oude regex-extractie (_extract_relations) blijft ongewijzigd
+        draaien als vangnet.
+        """
+        try:
+            extractor = self.event_bus.modules.get("knowledge_extractor")
+            voorstellen = self.event_bus.modules.get("knowledge_proposals")
+            if extractor is None or voorstellen is None:
+                return
+            if not extractor.is_beschikbaar():
+                return
+        except Exception:
+            return
+
+        import time
+        self._pending_voorstel = {"woord": word, "tijd": time.time()}
+        self.event_bus.publish("chat_response", {
+            "text": f"Wil je ook zien wat ik uit de Wikipedia-inleiding van "
+                    f"'{word}' kan voorstellen? Typ 'ja'."
+        })
+
+    def verwerk_voorstel_antwoord(self, tekst: str) -> bool:
+        """
+        Checkt of er een openstaand aanbod is en of 'tekst' een "ja" is.
+        True = dit bericht is verwerkt (de aanroeper stopt de routing).
+        False = niets open, verlopen of een ander bericht: het aanbod
+        vervalt dan en het bericht loopt normaal door de routing.
+
+        Moet door intent_router.py's route() VOOR de generieke checks
+        aangeroepen worden (stap -1C3, direct na verwerk_wiki_keuze).
+        """
+        if not self._pending_voorstel:
+            return False
+
+        import time
+        pending = self._pending_voorstel
+        self._pending_voorstel = None   # bij elk volgend bericht vervalt het aanbod
+
+        if time.time() - pending["tijd"] > VOORSTEL_VERVAL_SECONDEN:
+            return False
+
+        t = (tekst or "").lower().strip().rstrip("?.!, ")
+        is_ja = t in VOORSTEL_JA_WOORDEN or (
+            len(t.split()) <= 3 and any(t.startswith(w + " ") for w in VOORSTEL_JA_WOORDEN)
+        )
+        if not is_ja:
+            return False
+
+        self.event_bus.publish("intent_kennis_extract", {"word": pending["woord"]})
+        return True
+
     def on_wiki(self, data, event_type=None):
         # Bugfix #6 (18 juli 2026): defensief vangnet. chat.py stript
         # nu zelf al leestekens vóór dit event gepubliceerd wordt (zie
@@ -948,6 +1018,10 @@ class WikipediaTeacher:
             return
 
         # 2. Doorverwijspagina afhandelen
+        # Fase 11.3: bij een doorverwijspagina is de uiteindelijke pagina een
+        # ander artikel dan het opgezochte woord; dan bieden we geen
+        # voorstellen aan (die zouden op de verkeerde titel zoeken).
+        via_doorverwijzing = summary.get("type") == "disambiguation"
         if summary.get("type") == "disambiguation":
             extract = summary.get("extract", "")
 
@@ -1025,6 +1099,14 @@ class WikipediaTeacher:
         self.event_bus.publish("chat_response", {
             "text": resultaat
         })
+
+        # 7. Fase 11.3: aanbod om de voorstellen te tonen. Alleen na een
+        # echte, directe Wikipedia-treffer (niet via een doorverwijspagina,
+        # niet bij een automatische opzoeking) en alleen als er daadwerkelijk
+        # iets is opgeslagen/bijgewerkt (de meldingen beginnen dan met
+        # "Wikipedia").
+        if not auto and not via_doorverwijzing and resultaat.startswith("Wikipedia"):
+            self._bied_voorstellen_aan(word)
 
 
 def init_module(event_bus, semantic_module=None):

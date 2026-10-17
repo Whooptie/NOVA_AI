@@ -1839,6 +1839,14 @@ Eerste twee onderdelen van Fase 11: eerst pytest groen (25 + 18 nieuwe tests, to
 
 **Nog open:** meervoud → enkelvoud werkt alleen als het enkelvoud al bestaat; samengestelde onderwerpen ("basisfiets") maken een los begrip aan; `help semantic` mist een blok voor de nieuwe commando's; test voor het Layer 7-label `kennis_extractie`; 11.3 (koppeling met `wikipedia_teacher.py`) en 2B.
 
+### Semantic Fase 11.3 — aanbod na "wiki X" (17 oktober 2026)
+- Na een geslaagde `wiki X` vraagt Nova kort of Kevin de voorstellen uit de inleiding wil zien ("Typ 'ja'"). Nova toont niets uit zichzelf (besluit 1A blijft).
+- Eigen lichte state (`_pending_voorstel`, 120 s) in plaats van `pending_question.py`: dat slokt het volgende bericht op als het geen ja/nee is, en dat zou na elke `wiki` gebeuren. Nu loopt elk ander bericht gewoon door de routing.
+- Route-stap -1C3 direct na `verwerk_wiki_keuze`.
+- Geen aanbod bij: doorverwijspagina, auto-opzoeking, mislukte opslag, extractor of voorstellen-module afwezig of uit.
+- Oude regex `_extract_relations` ongewijzigd als vangnet.
+- Tests: 25 nieuw, totaal 1707 (1706 groen, 1 skipped).
+
 ## ✅ Layer 4 (response_engine.py): controle van de koppelingen + timing-hint bij `kort` (17 oktober 2026)
 
 Aanleiding: een opmerking in de kop van `response_engine.py` ("Nog GEEN koppeling met de EventBus/intent_router") deed twijfelen of Layer 4 volledig gekoppeld was. Gecontroleerd tegen de echte code (`module_loader.py`, `intent_router.py`, `session_watcher.py`, `interruption_tracker.py`, `variant_kiezer.py`) en met `grep` op de methodenamen.
