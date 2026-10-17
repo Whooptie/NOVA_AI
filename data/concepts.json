@@ -8405,6 +8405,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "is_a",
+            "target": "middel",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "rejected",
+            "created_at": "2026-10-17T19:10:59.283107"
           }
         ],
         "source": "user",
@@ -8415,15 +8423,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-10-17T19:10:59.317135",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-10-17T19:10:59.283117",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-17T19:10:59.283117",
           "confidence": 1.0
         }
       ]
@@ -8444,6 +8456,30 @@
         "old_value": null,
         "new_value": "Het stuur is het onderdeel van een fiets of voertuig waarmee de bestuurder de richting bepaalt.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "stuur#1",
+        "relation": {
+          "type": "is_a",
+          "target": "middel",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-10-17T19:10:59.283114"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "stuur#1",
+        "relation": {
+          "type": "is_a",
+          "target": "middel"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "voorstel uit Wikipedia afgewezen",
+        "timestamp": "2026-10-17T19:10:59.317141"
       }
     ]
   },
@@ -50581,6 +50617,92 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-16T19:41:15.627358"
+      }
+    ]
+  },
+  "trapas": {
+    "senses": [
+      {
+        "sense_id": "trapas#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "fiets",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-17T17:05:17.961285",
+            "oorspronkelijke_bron": "wikipedia"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-17T17:05:17.924357",
+      "updated_at": "2026-10-17T17:05:17.995355",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-17T17:05:17.961306",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-17T17:05:17.924767",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-17T17:05:17.961306",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "trapas"
+        },
+        "timestamp": "2026-10-17T17:05:17.924371"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "trapas#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-17T17:05:17.924762"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "trapas#1",
+        "relation": {
+          "type": "part_of",
+          "target": "fiets",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-10-17T17:05:17.961300"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "trapas#1",
+        "relation": {
+          "type": "part_of",
+          "target": "fiets"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-17T17:05:17.995366"
       }
     ]
   }

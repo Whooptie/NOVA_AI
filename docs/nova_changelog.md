@@ -1855,6 +1855,8 @@ Eerste twee onderdelen van Fase 11: eerst pytest groen (25 + 18 nieuwe tests, to
 - Tests: 5 nieuw (test_wikipedia_relaties_behouden.py), totaal 1712.
 - Les: elke code die een lijst uit een bestaand record "ververst", moet samenvoegen i.p.v. vervangen. Een live-test met git-diff zichtbaar was nodig om dit te zien.
 
+- Semantic Fase 11, optie B (17 oktober 2026): samenstellingen als "basisfiets" worden bij het zoekwoord "fiets" samengevoegd tot "fiets", maar alleen met een voorvoegsel uit data/extractie_regels.json (`samenstelling_voorvoegsels`: basis, standaard). Bewust streng: "tandwiel" bij "wiel" en "racefiets" bij "fiets" blijven ongemoeid. 7 nieuwe tests; voettekst van de voorstellenlijst noemt geen nummer dat niet bestaat (2 tests). Totaal 1721.
+
 ## ✅ Layer 4 (response_engine.py): controle van de koppelingen + timing-hint bij `kort` (17 oktober 2026)
 
 Aanleiding: een opmerking in de kop van `response_engine.py` ("Nog GEEN koppeling met de EventBus/intent_router") deed twijfelen of Layer 4 volledig gekoppeld was. Gecontroleerd tegen de echte code (`module_loader.py`, `intent_router.py`, `session_watcher.py`, `interruption_tracker.py`, `variant_kiezer.py`) en met `grep` op de methodenamen.

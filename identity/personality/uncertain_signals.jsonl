@@ -1000,3 +1000,21 @@
 {"text": "wiki hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T16:53:08.876988"}
 {"text": "weerleg hond is_a gedomesticeerde", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T16:55:29.039919"}
 {"text": "wiki hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T16:55:35.622482"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T19:01:17.607894"}
+{"text": "extraheer fiets", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0696, "bron": "model_fallback", "tijdstip": "2026-10-17T19:02:00.732096"}
+{"text": "neem 1 over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-10-17T19:05:17.917831"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T19:10:51.742194"}
+{"text": "wat zijn de onderdelen van een fiets", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0673, "bron": "model_fallback", "tijdstip": "2026-10-17T19:10:58.343535"}
+{"text": "welke onderdelen heeft fiets", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0696, "bron": "model_fallback", "tijdstip": "2026-10-17T19:11:43.067466"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-17T21:04:56.797244"}
+{"text": "extraheer hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:05:09.266783"}
+{"text": "extraheer regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:05:21.923015"}
+{"text": "extraheer vulkaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:05:34.823079"}
+{"text": "extraheer koffie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0523, "bron": "model_fallback", "tijdstip": "2026-10-17T21:05:44.181875"}
+{"text": "extraheer wiel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:05:53.362195"}
+{"text": "extraheer aardbeving", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:09:04.640696"}
+{"text": "extraheer overstroming", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:09:12.898220"}
+{"text": "extraheer droogte", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:09:22.243004"}
+{"text": "extraheer vulkaanuitbarsting", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:09:30.407756"}
+{"text": "extraheer stuur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T21:09:36.356196"}
+{"text": "laat 1 vallen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0545, "bron": "model_fallback", "tijdstip": "2026-10-17T21:10:59.277198"}

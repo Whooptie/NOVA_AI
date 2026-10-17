@@ -365,3 +365,5 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles oké?", "entity": "coding", "response_style": null, "moment": "2026-10-17T16:03:53.556432", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792245833.5561419, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792245833.5565915, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 2, "variant_tekst": "Wacht… '{entity}' is nieuw.", "entity": "onderdelen van een fiets", "response_style": "normaal", "moment": "2026-10-17T19:10:58.359745", "reactie_sentiment": null}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792257058.3599358, "type": "sentiment_koppeling"}

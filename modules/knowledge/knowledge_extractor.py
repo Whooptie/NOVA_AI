@@ -57,6 +57,14 @@ def verwijder_haakjes(tekst):
     return tekst
 
 
+VOORVOEGSELS_STANDAARD = ("basis", "standaard")
+
+# Woorden waarmee "X is een <woord> van Y" een is_a-relatie uitdrukt (Fase 11, 2B)
+SOORT_WOORDEN = ("ondersoort", "soort", "variant")
+# "X is een <woord> van Y" / "X maakt deel uit van Y" -> X part_of Y (Fase 11, 2B)
+DEEL_WOORDEN = ("onderdeel", "deel")
+
+
 class KnowledgeExtractor:
     """Zoekt is_a- en has_part-voorstellen in Nederlandse tekst."""
 
@@ -71,6 +79,9 @@ class KnowledgeExtractor:
         self.voorbehoud = set()
         self.vage_woorden = set()
         self.doorverwijs_signalen = []
+        # Voorvoegsels waarmee een samenstelling nog steeds "het woord zelf"
+        # is ("basisfiets" = de gewone fiets). Optioneel in het regelbestand.
+        self.samenstelling_voorvoegsels = set(VOORVOEGSELS_STANDAARD)
 
         self._laad_regels()
         if self.reden_uit is None and self.nlp is None:
@@ -95,6 +106,9 @@ class KnowledgeExtractor:
             self.voorbehoud = {w.lower() for w in data["voorbehoud"]}
             self.vage_woorden = {w.lower() for w in data["vage_woorden"]}
             self.doorverwijs_signalen = [s.lower() for s in data["doorverwijs_signalen"]]
+            if "samenstelling_voorvoegsels" in data:
+                self.samenstelling_voorvoegsels = {
+                    w.lower() for w in data["samenstelling_voorvoegsels"]}
         except FileNotFoundError:
             self.reden_uit = f"regelbestand ontbreekt ({self.regels_pad})"
         except (json.JSONDecodeError, KeyError, TypeError, AttributeError) as e:
@@ -150,9 +164,15 @@ class KnowledgeExtractor:
             de_toegestaan = (nr == 0)
             feiten = (
                 self._zoek_is_a(sent, zoek, de_toegestaan)
+                + self._zoek_ondersoort(sent, zoek, de_toegestaan)
                 + self._zoek_has_part(sent, zoek)
+                + self._zoek_part_of(sent, zoek)
+                + self._zoek_causes(sent, zoek)
             )
             for onderwerp, relatie, doel, regel in feiten:
+                onderwerp = self._normaliseer_onderwerp(onderwerp, zoek)
+                if doel == onderwerp:
+                    continue   # "fiets is_a fiets" na het samenvoegen
                 sleutel = (onderwerp, relatie, doel)
                 if sleutel in gezien:
                     continue
@@ -199,6 +219,22 @@ class KnowledgeExtractor:
         ]
         links.sort(key=lambda c: c.i)
         return " ".join([c.text for c in links] + [subj.text]).lower()
+
+    def _normaliseer_onderwerp(self, onderwerp, zoek):
+        """'basisfiets' -> 'fiets' als we over 'fiets' lezen (Fase 11, optie B).
+
+        Bewust STRENG: alleen een enkel woord dat precies uit een bekend
+        voorvoegsel (data/extractie_regels.json, 'samenstelling_voorvoegsels',
+        standaard basis/standaard) plus het zoekwoord bestaat. Zo blijft
+        'tandwiel' bij 'wiel' of 'racefiets' bij 'fiets' ongemoeid: dat zijn
+        eigen, specifiekere dingen en geen andere naam voor het zoekwoord."""
+        if not zoek or onderwerp == zoek or " " in onderwerp:
+            return onderwerp
+        if onderwerp.endswith(zoek):
+            voorvoegsel = onderwerp[:-len(zoek)]
+            if voorvoegsel in self.samenstelling_voorvoegsels:
+                return zoek
+        return onderwerp
 
     def _is_vaag(self, frase):
         return any(w in self.vage_woorden for w in frase.split())
@@ -277,6 +313,178 @@ class KnowledgeExtractor:
                 if doel == frase or doel == subjs[0].text.lower():
                     continue
                 out.append((frase, "is_a", doel, "is_a_koppelwerkwoord"))
+        return out
+
+    # ------------------------------------------------------------------
+    # Fase 11, deel 2B: ondersoort van, part_of, causes
+    # ------------------------------------------------------------------
+
+    def _is_hoofdwerkwoord_nu(self, tok):
+        """Staat dit werkwoord in de tegenwoordige tijd als hoofdwerkwoord?
+        spaCy's kleine model labelt 'Regen veroorzaakt overstromingen' soms
+        als voltooid deelwoord (VerbForm=Part, geen Tense). Zo'n werkwoord
+        accepteren we alleen als het de kern van de zin is EN er geen
+        hulpwerkwoord bij staat ('wordt/is/heeft veroorzaakt' = passief of
+        voltooid, dus niet bedoeld)."""
+        if self._is_tegenwoordig(tok):
+            return True
+        if tok.dep_ != "ROOT" or "Part" not in tok.morph.get("VerbForm"):
+            return False
+        return not any(c.dep_.startswith("aux") or c.dep_ == "cop"
+                       for c in tok.children)
+
+    @staticmethod
+    def _heeft_van(tok):
+        """Heeft dit woord een voorzetsel 'van' bij zich ('van de wolf')?"""
+        return any(g.dep_ == "case" and g.text.lower() == "van"
+                   for g in tok.children)
+
+    def _koppel_en_onderwerp(self, tok):
+        """Voor 'X is een Y ...': geeft het onderwerp (X) terug als de zin een
+        tegenwoordig koppelwerkwoord 'zijn' en een naamwoord als onderwerp
+        heeft, anders None."""
+        cops = [c for c in tok.children
+                if c.dep_ == "cop" and c.lemma_ == "zijn"
+                and self._is_tegenwoordig(c)]
+        subjs = [c for c in tok.children
+                 if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
+        if not cops or not subjs:
+            return None
+        return subjs[0]
+
+    def _zoek_ondersoort(self, sent, zoek, de_toegestaan):
+        """'X is een ondersoort/soort/variant van Y' -> (X, is_a, Y)."""
+        out = []
+        for tok in sent:
+            if (tok.dep_ != "ROOT" or tok.pos_ != "NOUN"
+                    or tok.lemma_ not in SOORT_WOORDEN):
+                continue
+            if any(c.dep_ == "case" for c in tok.children):
+                continue
+            subj = self._koppel_en_onderwerp(tok)
+            if subj is None:
+                continue
+            frase = self._onderwerp_frase(subj)
+            if zoek and zoek not in frase:
+                continue
+            if self._is_vaag(frase):
+                continue
+            if de_toegestaan and zoek and frase == zoek:
+                toegestaan = {"een", "de", "het"}
+            else:
+                toegestaan = {"een"}
+            if not self._heeft_lidwoord(tok, toegestaan):
+                continue
+            doelen = [c for c in tok.children
+                      if c.dep_ in ("nmod", "obl") and c.pos_ in ("NOUN", "PROPN")
+                      and self._heeft_van(c)]
+            for d in list(doelen):
+                doelen += [c for c in d.children
+                           if c.dep_ == "conj" and c.pos_ in ("NOUN", "PROPN")
+                           and not self._voorzetsel_ertussen(sent, d, c)]
+            for d in doelen:
+                doel = self._onderwerp_frase(d)
+                if self._is_vaag(doel) or doel == frase:
+                    continue
+                out.append((frase, "is_a", doel, "is_a_ondersoort_van"))
+        return out
+
+    def _zoek_part_of(self, sent, zoek):
+        """'X is een onderdeel/deel van Y' en 'X maakt deel uit van Y'
+        -> (X, part_of, Y). X is het deel, Y het geheel (zoals Nova het bewaart).
+        Het opgezochte woord moet in X of in Y staan."""
+        out = []
+        for tok in sent:
+            if tok.dep_ != "ROOT":
+                continue
+            subj = None
+            doelen = []
+            if tok.pos_ == "NOUN" and tok.lemma_ in DEEL_WOORDEN:
+                # "Het stuur is een onderdeel van de fiets."
+                if any(c.dep_ == "case" for c in tok.children):
+                    continue
+                subj = self._koppel_en_onderwerp(tok)
+                if subj is None or not self._heeft_lidwoord(tok, {"een"}):
+                    continue
+                doelen = [c for c in tok.children
+                          if c.dep_ in ("nmod", "obl")
+                          and c.pos_ in ("NOUN", "PROPN") and self._heeft_van(c)]
+            elif (tok.pos_ == "VERB" and tok.lemma_ == "uitmaken"
+                  and self._is_tegenwoordig(tok)):
+                # "De trapas maakt deel uit van de aandrijving."
+                if not any(c.dep_ == "obj" and c.text.lower() == "deel"
+                           for c in tok.children):
+                    continue
+                subjs = [c for c in tok.children
+                         if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
+                if not subjs:
+                    continue
+                subj = subjs[0]
+                doelen = [c for c in tok.children
+                          if c.dep_ in ("obl", "nmod")
+                          and c.pos_ in ("NOUN", "PROPN") and self._heeft_van(c)]
+            if subj is None:
+                continue
+            frase = self._onderwerp_frase(subj)
+            if self._is_vaag(frase):
+                continue
+            for d in doelen:
+                geheel = self._onderwerp_frase(d)
+                if self._is_vaag(geheel) or geheel == frase:
+                    continue
+                if zoek and zoek not in frase and zoek not in geheel:
+                    continue
+                out.append((frase, "part_of", geheel, "part_of_onderdeel_van"))
+        return out
+
+    def _zoek_causes(self, sent, zoek):
+        """'X veroorzaakt Y' en 'X leidt tot Y' -> (X, causes, Y).
+        Alleen tegenwoordige tijd, alleen naamwoorden aan beide kanten.
+        Het opgezochte woord moet in X of in Y staan."""
+        out = []
+        for tok in sent:
+            if tok.pos_ != "VERB" or not self._is_hoofdwerkwoord_nu(tok):
+                continue
+            if tok.lemma_ == "veroorzaken":
+                # spaCy labelt het onderwerp soms als 'obj' ("Een vulkaan
+                # veroorzaakt ..."), daarom kijken we naar de POSITIE:
+                # links van het werkwoord = oorzaak, rechts = gevolg.
+                oorzaken = [c for c in tok.children
+                            if c.dep_ in ("nsubj", "obj") and c.i < tok.i
+                            and c.pos_ in ("NOUN", "PROPN")]
+                # Alleen het lijdend voorwerp: een bijzin als "schade AAN
+                # gebouwen" mag 'gebouwen' niet tot zelfstandig gevolg maken.
+                gevolgen = [c for c in tok.children
+                            if c.dep_ == "obj" and c.i > tok.i
+                            and c.pos_ in ("NOUN", "PROPN")]
+                regel = "causes_veroorzaakt"
+            elif tok.lemma_ == "leiden":
+                oorzaken = [c for c in tok.children
+                            if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
+                gevolgen = [c for c in tok.children
+                            if c.dep_ == "obl" and c.pos_ in ("NOUN", "PROPN")
+                            and any(g.dep_ == "case" and g.text.lower() == "tot"
+                                    for g in c.children)]
+                regel = "causes_leidt_tot"
+            else:
+                continue
+            if len(oorzaken) != 1 or not gevolgen:
+                continue
+            oorzaak = self._onderwerp_frase(oorzaken[0])
+            if self._is_vaag(oorzaak):
+                continue
+            alle_gevolgen = list(gevolgen)
+            for g in gevolgen:
+                alle_gevolgen += [c for c in g.children
+                                  if c.dep_ == "conj" and c.pos_ in ("NOUN", "PROPN")
+                                  and not self._voorzetsel_ertussen(sent, g, c)]
+            for g in alle_gevolgen:
+                gevolg = self._onderwerp_frase(g)
+                if self._is_vaag(gevolg) or gevolg == oorzaak:
+                    continue
+                if zoek and zoek not in oorzaak and zoek not in gevolg:
+                    continue
+                out.append((oorzaak, "causes", gevolg, regel))
         return out
 
     def _zoek_has_part(self, sent, zoek):

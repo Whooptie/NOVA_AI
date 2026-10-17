@@ -157,3 +157,132 @@ def test_init_module():
     bus = Bus()
     inst = init_module(bus)
     assert bus.geregistreerd["knowledge_extractor"] is inst
+
+    
+# ---- Fase 11, optie B: samenstellingen als "basisfiets" ----
+def test_basisfiets_wordt_fiets(ex):
+    t = "Een basisfiets bestaat uit een frame, twee wielen en een stuur."
+    f = feiten(ex, t, "fiets")
+    assert ("fiets", "has_part", "frame") in f
+    assert not any(o == "basisfiets" for o, _, _ in f)
+
+
+def test_basisfiets_is_a(ex):
+    f = feiten(ex, "Een basisfiets is een voertuig.", "fiets")
+    assert ("fiets", "is_a", "voertuig") in f
+
+
+def test_tandwiel_blijft_tandwiel(ex):
+    # geen bekend voorvoegsel: dit is iets anders dan 'wiel'
+    f = feiten(ex, "Een tandwiel is een mechanisch onderdeel.", "wiel")
+    assert not any(o == "wiel" for o, _, _ in f)
+
+
+def test_racefiets_blijft_racefiets(ex):
+    f = feiten(ex, "Een racefiets is een voertuig.", "fiets")
+    assert ("racefiets", "is_a", "voertuig") in f
+    assert not any(o == "fiets" for o, _, _ in f)
+
+
+def test_basisfiets_is_een_fiets_wordt_niet_zichzelf(ex):
+    f = feiten(ex, "Een basisfiets is een fiets zonder extra's.", "fiets")
+    assert ("fiets", "is_a", "fiets") not in f
+
+
+def test_voorvoegsels_zijn_aanpasbaar(tmp_path):
+    p = tmp_path / "regels.json"
+    d = json.loads(REGELS.read_text(encoding="utf-8"))
+    d["samenstelling_voorvoegsels"] = ["race"]
+    p.write_text(json.dumps(d), encoding="utf-8")
+    e2 = KnowledgeExtractor(regels_pad=p)
+    f = {(x["onderwerp"], x["relatie"], x["doel"])
+         for x in e2.extract_from_text("Een racefiets is een voertuig.", "fiets")}
+    assert ("fiets", "is_a", "voertuig") in f
+
+
+def test_regelbestand_zonder_voorvoegsels_werkt_nog(tmp_path):
+    p = tmp_path / "regels.json"
+    d = json.loads(REGELS.read_text(encoding="utf-8"))
+    d.pop("samenstelling_voorvoegsels", None)
+    p.write_text(json.dumps(d), encoding="utf-8")
+    e2 = KnowledgeExtractor(regels_pad=p)
+    assert e2.is_beschikbaar()
+    assert "basis" in e2.samenstelling_voorvoegsels
+    
+
+# ---- Fase 11, deel 2B: ondersoort van / part_of / causes ----
+def test_ondersoort_van_geeft_is_a(ex):
+    t = "De hond is de gedomesticeerde ondersoort van de wolf."
+    assert ("hond", "is_a", "wolf") in feiten(ex, t, "hond")
+
+
+def test_ondersoort_vraagt_een_in_latere_zin(ex):
+    t = "Een hond is een dier. De bengaal is de ondersoort van de tijger."
+    assert ("bengaal", "is_a", "tijger") not in feiten(ex, t, "bengaal")
+
+
+def test_soort_van(ex):
+    f = feiten(ex, "Een zeilboot is een soort van vaartuig.", "zeilboot")
+    assert ("zeilboot", "is_a", "vaartuig") in f
+
+
+def test_part_of_onderdeel_van(ex):
+    f = feiten(ex, "Het stuur is een onderdeel van de fiets.", "fiets")
+    assert ("stuur", "part_of", "fiets") in f
+
+
+def test_part_of_deel_van_met_zoekwoord_als_deel(ex):
+    f = feiten(ex, "Een wiel is een onderdeel van een fiets.", "wiel")
+    assert ("wiel", "part_of", "fiets") in f
+
+
+def test_part_of_maakt_deel_uit_van(ex):
+    f = feiten(ex, "De trapas maakt deel uit van de aandrijving van een fiets.", "trapas")
+    assert ("trapas", "part_of", "aandrijving") in f
+
+
+def test_part_of_zonder_zoekwoord_in_zin_niet(ex):
+    f = feiten(ex, "Het stuur is een onderdeel van de fiets.", "gitaar")
+    assert f == set()
+
+
+def test_part_of_zonder_een_niet(ex):
+    f = feiten(ex, "De wielen zijn onderdelen van de fiets.", "fiets")
+    assert not any(r == "part_of" for _, r, _ in f)
+
+
+def test_causes_veroorzaakt(ex):
+    f = feiten(ex, "Regen veroorzaakt overstromingen.", "regen")
+    assert ("regen", "causes", "overstromingen") in f
+
+
+def test_causes_meerdere_gevolgen(ex):
+    f = feiten(ex, "Een vulkaanuitbarsting veroorzaakt aswolken en lavastromen.",
+               "vulkaanuitbarsting")
+    assert ("vulkaanuitbarsting", "causes", "aswolken") in f
+    assert ("vulkaanuitbarsting", "causes", "lavastromen") in f
+
+
+def test_causes_leidt_tot(ex):
+    f = feiten(ex, "Droogte leidt tot misoogsten.", "droogte")
+    assert ("droogte", "causes", "misoogsten") in f
+
+
+def test_causes_passief_en_voltooid_niet(ex):
+    assert feiten(ex, "Overstromingen worden veroorzaakt door regen.", "regen") == set()
+    assert feiten(ex, "Regen heeft overstromingen veroorzaakt.", "regen") == set()
+
+
+def test_causes_voorbehoud_niet(ex):
+    assert feiten(ex, "Een aardbeving kan een tsunami veroorzaken.", "aardbeving") == set()
+    assert feiten(ex, "Regen veroorzaakt soms overstromingen.", "regen") == set()
+
+
+def test_causes_bijzin_met_voorzetsel_geeft_geen_extra_gevolg(ex):
+    f = feiten(ex, "Een zware storm veroorzaakt schade aan gebouwen.", "storm")
+    assert ("storm", "causes", "schade") in f
+    assert ("storm", "causes", "gebouwen") not in f
+
+
+def test_causes_zoekwoord_moet_voorkomen(ex):
+    assert feiten(ex, "Een orkaan veroorzaakt veel schade.", "fiets") == set()

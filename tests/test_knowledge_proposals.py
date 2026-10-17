@@ -238,7 +238,7 @@ def test_leeg_woord():
 
 
 def test_onbruikbare_feiten_worden_overgeslagen():
-    feiten = [{"onderwerp": "x", "relatie": "causes", "doel": "y", "zin": ""},
+    feiten = [{"onderwerp": "x", "relatie": "used_for", "doel": "y", "zin": ""},
               {"onderwerp": "hond", "relatie": "is_a", "doel": "hond", "zin": ""}]
     bus, sem, kp = maak(feiten=feiten)
     vraag(bus)
@@ -260,3 +260,49 @@ def test_maximaal_tien_voorstellen():
     vraag(bus, "x")
     t = bus.teksten()[-1]
     assert "10. x is een d9" in t and "11." not in t and "nog 3 meer" in t
+    
+
+def test_voettekst_noemt_geen_nummer_dat_niet_bestaat_bij_een_voorstel():
+    bus, sem, kp = maak(feiten=FEITEN[:1])
+    vraag(bus)
+    t = bus.teksten()[-1]
+    assert "neem 1 over" in t and "laat 1 vallen" in t
+    assert "neem 2 over" not in t and "laat 2 vallen" not in t
+
+
+def test_voettekst_bij_meerdere_voorstellen():
+    bus, sem, kp = maak()
+    vraag(bus)
+    t = bus.teksten()[-1]
+    assert "neem 1 over" in t and "neem alles over" in t
+    
+
+def test_part_of_voorstel_wordt_deel_naar_geheel_opgeslagen():
+    feiten = [{"onderwerp": "stuur", "relatie": "part_of", "doel": "fiets",
+               "zin": "Het stuur is een onderdeel van de fiets."}]
+    bus, sem, kp = maak(feiten=feiten)
+    vraag(bus)
+    assert "1. 'stuur' is onderdeel van 'fiets'" in bus.teksten()[-1]
+    keuze(bus, "neem", 1)
+    rel = sem.store.concepts["stuur"]["senses"][0]["relations"][0]
+    assert (rel["type"], rel["target"], rel["status"]) == ("part_of", "fiets", "confirmed")
+
+
+def test_causes_voorstel_wordt_oorzaak_naar_gevolg_opgeslagen():
+    feiten = [{"onderwerp": "regen", "relatie": "causes", "doel": "overstromingen",
+               "zin": "Regen veroorzaakt overstromingen."}]
+    bus, sem, kp = maak(feiten=feiten)
+    vraag(bus)
+    assert "1. 'regen' veroorzaakt 'overstromingen'" in bus.teksten()[-1]
+    keuze(bus, "neem", 1)
+    rel = sem.store.concepts["regen"]["senses"][0]["relations"][0]
+    assert (rel["type"], rel["target"]) == ("causes", "overstromingen")
+
+
+def test_causes_voorstel_afwijzen_geeft_tombstone():
+    feiten = [{"onderwerp": "regen", "relatie": "causes", "doel": "overstromingen", "zin": ""}]
+    bus, sem, kp = maak(feiten=feiten)
+    vraag(bus)
+    keuze(bus, "laat_vallen", 1)
+    vraag(bus)
+    assert "eerder afgewezen" in bus.teksten()[-1] or "niets nieuws" in bus.teksten()[-1]

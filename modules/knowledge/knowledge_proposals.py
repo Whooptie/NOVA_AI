@@ -31,6 +31,8 @@
 #   is_a      onderwerp is_a doel                (zoals het er staat)
 #   has_part  "fiets bestaat uit wiel" wordt opgeslagen als de bestaande
 #             conventie van Nova: wiel part_of fiets (deel -> geheel).
+#   part_of   "X is een onderdeel van Y" wordt X part_of Y (Fase 11, 2B).
+#   causes    "X veroorzaakt Y" / "X leidt tot Y" wordt X causes Y (Fase 11, 2B).
 #   Bron "wikipedia", confidence 0.8. Bij overnemen daarna confirm_relation()
 #   (status confirmed, confidence 1.0, oorspronkelijke_bron blijft "wikipedia").
 #   Bij vallen laten: add_relation() + reject_relation() = tombstone, zodat
@@ -121,6 +123,8 @@ class KnowledgeProposals:
         s, t = s.replace("_", " "), t.replace("_", " ")
         if rel_type == "part_of":
             return f"'{s}' is onderdeel van '{t}'"
+        if rel_type == "causes":
+            return f"'{s}' veroorzaakt '{t}'"
         return f"{s} is een {t}"
 
     def _relatie_status(self, woord, rel_type, doel):
@@ -157,6 +161,14 @@ class KnowledgeProposals:
             # "geheel heeft deel" -> deel part_of geheel
             woord, rel_type = self._enkelvoud(feit["doel"]), "part_of"
             doel = feit["onderwerp"]
+        elif feit["relatie"] == "part_of":
+            # "X is een onderdeel van Y" -> X part_of Y (deel -> geheel)
+            woord, rel_type = self._enkelvoud(feit["onderwerp"]), "part_of"
+            doel = self._enkelvoud(feit["doel"])
+        elif feit["relatie"] == "causes":
+            # "X veroorzaakt Y" -> X causes Y (gevolg in enkelvoud)
+            woord, rel_type = feit["onderwerp"], "causes"
+            doel = self._enkelvoud(feit["doel"])
         else:
             return None
         woord, doel = woord.lower().strip(), doel.lower().strip()
@@ -237,8 +249,12 @@ class KnowledgeProposals:
             regels.append(f"... en nog {meer} meer (vraag later opnieuw)")
         kop = (f"Uit Wikipedia over '{woord}' kan ik dit voorstellen "
                f"(nog niets opgeslagen){toelichting}:")
-        voet = ("Typ 'neem 2 over' om er één op te slaan, 'neem alles over', "
-                "of 'laat 2 vallen' om er één af te wijzen.")
+        if len(getoond) == 1:
+            voet = ("Typ 'neem 1 over' om het op te slaan, "
+                    "of 'laat 1 vallen' om het af te wijzen.")
+        else:
+            voet = ("Typ 'neem 1 over' om er één op te slaan, 'neem alles over', "
+                    "of 'laat 1 vallen' om er één af te wijzen.")
         self._toon(kop + "\n" + "\n".join(regels) + "\n" + voet)
 
     # ---------- "neem N over" / "laat N vallen" ----------
