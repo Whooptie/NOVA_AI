@@ -82,6 +82,15 @@ def get_help():
   bevestig 3                            (nummer uit de laatste lijst, 10 minuten geldig)
   wijs af 3                             (wijst die relatie af)
 
+📖 KENNIS UIT WIKIPEDIA (voorstellen)
+  extraheer fiets                       (Nova zoekt feiten in de Wikipedia-inleiding en toont ze
+                                         als genummerde lijst; er wordt NIETS opgeslagen)
+  neem 2 over                           (slaat voorstel 2 op en bevestigt het meteen)
+  neem alles over
+  laat 2 vallen                         (wijst voorstel 2 af; het komt niet meer terug)
+                                        (voorstellen zijn "X is een Y" en "X bestaat uit ...";
+                                         de nummers blijven 10 minuten geldig)
+
 🗑️ WEERLEGGEN EN VERWIJDEREN
   weerleg: hond is_a meubel                    (wijst 1 relatie af, blijft zichtbaar in geschiedenis)
   weerleg betekenis: python 2                  (wijst 1 betekenis af)

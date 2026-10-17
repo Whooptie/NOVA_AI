@@ -2740,6 +2740,48 @@ class IntentRouter:
             "actie": actie, "nummer": int(m.group(2))})
         return True
 
+    # ---------------------------------------------------------
+    # Kennis uit Wikipedia voorstellen (Semantic Fase 11.2)
+    # "extraheer fiets" / "haal kennis uit wikipedia over fiets"
+    # "neem 2 over" / "neem alles over" / "laat 2 vallen"
+    # Bewust NIET "bevestig N"/"wijs af N": die zijn van Fase 10.2.
+    # ---------------------------------------------------------
+    _KENNIS_EXTRACT_PATRONEN = [
+        re.compile(r"^extraheer(?: kennis)?(?: uit wikipedia)?(?: (?:over|van))? (?:(?:de|het|een) )?(\w[\w\- ]*)$"),
+        re.compile(r"^haal kennis (?:uit wikipedia )?(?:over|van) (?:(?:de|het|een) )?(\w[\w\- ]*)$"),
+    ]
+    _KENNIS_KEUZE = re.compile(
+        r"^(?:neem (?:(\d{1,2})|(alles)) over|laat (\d{1,2}) vallen|laat (alles) vallen)$")
+
+    def detect_kennis_extractie(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        for patroon in self._KENNIS_EXTRACT_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            woord = m.group(1).strip()
+            if not woord or len(woord.split()) > 3 or woord in self._GEEN_RELATIE_ONDERWERP:
+                continue
+            dbg(f"[kennis-extractie] {woord}")
+            self.event_bus.publish("intent_kennis_extract", {"word": woord})
+            self._emit_topic("kennis_extractie", bron="detect", concept=woord)
+            return True
+        return False
+
+    def detect_kennis_keuze(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        m = self._KENNIS_KEUZE.match(t)
+        if not m:
+            return False
+        neem_nr, neem_alles, vallen_nr, vallen_alles = m.groups()
+        actie = "neem" if (neem_nr or neem_alles) else "laat_vallen"
+        nummer = int(neem_nr or vallen_nr) if (neem_nr or vallen_nr) else None
+        alles = bool(neem_alles or vallen_alles)
+        dbg(f"[kennis-keuze] {actie} {nummer or 'alles'}")
+        self.event_bus.publish("intent_kennis_keuze", {
+            "actie": actie, "nummer": nummer, "alles": alles})
+        return True
+
     def _temporal_onderwerp_ok(self, onderwerp):
         woorden = onderwerp.split()
         if not woorden or len(woorden) > 3:
@@ -4945,6 +4987,13 @@ class IntentRouter:
         # 2H Zekerheidsvraag (Fase 10.1) -- "hoe zeker ben je dat ..."
         if (self.detect_uncertainty(text) or self.detect_uncertainty_lijst(text)
                 or self.detect_uncertainty_keuze(text)):
+            return
+
+        # 2I Kennis uit Wikipedia voorstellen (Semantic Fase 11.2) --
+        # "extraheer fiets" / "neem 2 over" / "laat 2 vallen". Voor de
+        # intent-tabel, zodat "neem ... over" niet door een andere intent
+        # opgevangen wordt.
+        if self.detect_kennis_extractie(text) or self.detect_kennis_keuze(text):
             return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).

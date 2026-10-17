@@ -3570,6 +3570,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-13T18:05:48.227155"
+          },
+          {
+            "type": "part_of",
+            "target": "basisfiets",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "rejected",
+            "created_at": "2026-10-17T11:41:59.715997",
+            "oorspronkelijke_bron": "wikipedia"
           }
         ],
         "source": "user",
@@ -3580,12 +3589,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-10-13T18:05:48.227166",
+      "updated_at": "2026-10-17T11:45:01.971494",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-13T18:05:48.227166",
-      "usage_count": 2,
+      "last_used_at": "2026-10-17T11:41:59.716007",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
@@ -3593,6 +3602,10 @@
         },
         {
           "timestamp": "2026-10-13T18:05:48.227166",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-17T11:41:59.716007",
           "confidence": 1.0
         }
       ]
@@ -3624,6 +3637,42 @@
           "confidence": 1.0
         },
         "timestamp": "2026-10-13T18:05:48.227163"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "wiel#1",
+        "relation": {
+          "type": "part_of",
+          "target": "basisfiets",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-10-17T11:41:59.716004"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "wiel#1",
+        "relation": {
+          "type": "part_of",
+          "target": "basisfiets"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-17T11:41:59.750264"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "wiel#1",
+        "relation": {
+          "type": "part_of",
+          "target": "basisfiets"
+        },
+        "old_value": "confirmed",
+        "new_value": "rejected",
+        "timestamp": "2026-10-17T11:45:01.971500"
       }
     ]
   },
@@ -8834,6 +8883,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "part_of",
+            "target": "basisfiets",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "rejected",
+            "created_at": "2026-10-17T11:42:08.970247"
           }
         ],
         "source": "user",
@@ -8844,15 +8901,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-10-17T11:42:09.004371",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-10-17T11:42:08.970257",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-17T11:42:08.970257",
           "confidence": 1.0
         }
       ]
@@ -8873,6 +8934,30 @@
         "old_value": null,
         "new_value": "Het frame is het dragende geraamte van een fiets, waaraan alle andere onderdelen bevestigd zijn.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "frame#1",
+        "relation": {
+          "type": "part_of",
+          "target": "basisfiets",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-10-17T11:42:08.970254"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "frame#1",
+        "relation": {
+          "type": "part_of",
+          "target": "basisfiets"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "voorstel uit Wikipedia afgewezen",
+        "timestamp": "2026-10-17T11:42:09.004377"
       }
     ]
   },

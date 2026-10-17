@@ -327,6 +327,7 @@ class EmergenceEngine:
             "ontstaan": "wanneer dingen ontstonden",
             "tijdlijn": "tijdlijnen van dingen",
             "zekerheid": "hoe zeker dingen zijn",
+            "kennis_extractie": "kennis uit Wikipedia halen",
             "trending_query": "wat recent populair is",
             "uitleg": "uitleg vragen",
             "vakantie": "vakantie",

@@ -1811,6 +1811,34 @@ Aanleiding: nadat sympy 1.14.0 in de container was geïnstalleerd, werkten 6 van
 
 **Live bevestigd op battleserver (16 oktober 2026):** "hoe ziet je haar eruit" (haar), "welke kleur hebben je ogen" (ogen), "hoe zie je eruit" (algemeen), "hoe ziet jouw buik eruit" (neutrale afwijzing); "wie ben je" en "beschrijf jezelf" gaan nog naar identity.
 
+## ✅ Semantic Fase 11.1 + 11.2 — Knowledge Extraction met spaCy: extractor en voorstellen (17 oktober 2026)
+
+Eerste twee onderdelen van Fase 11: eerst pytest groen (25 + 18 nieuwe tests, totaal 1651 waarvan 1 skipped), daarna live bevestigd op battleserver.
+
+**Wat het doet:** `extraheer fiets` haalt de Wikipedia-inleiding op en toont `is_a`- en `has_part`-voorstellen als genummerde lijst, zonder iets op te slaan. `neem N over` slaat op en bevestigt (bron wikipedia, `oorspronkelijke_bron` blijft zichtbaar), `laat N vallen` maakt een tombstone, zodat het voorstel nooit terugkomt.
+
+**Eerlijkheid over ML:** `spacy==3.8.16` met `nl_core_news_sm` 3.8.0 (licentie CC BY-SA 4.0) is een extern, getraind model dat alleen de zinsbouw ontleedt. NER staat uit, want de verkenning toonde dat die onbetrouwbaar is. Alle beslissingen (wat telt als feit, welke woorden vaag zijn, voorbehoud, wat voorgesteld wordt) zijn symbolische regels in `knowledge_extractor.py` en `data/extractie_regels.json`.
+
+**Besluiten uit het ontwerpgesprek (Kevin):** 1A alleen voorstellen, niets automatisch; 2A eerst `is_a`/`has_part`, 2B daarna `part_of`/`causes`/`used_for`; 3A bron enkel Wikipedia-inleiding; "de/het" alleen in zin 1 als onderwerp = opgezocht woord, anders alleen "een"; samengestelde onderwerpen niet herschrijven; meervoud → enkelvoud later (11.2).
+
+**Verkenning vooraf (drie scripts, alleen op battleserver):** de roadmap ging uit van Engelse labels en bruikbare NER. Het Nederlandse model gebruikt eigen dependency-labels (`nsubj`, `cop`, `obl`, `acl:relcl`, `nmod:poss`…) en NER bleek onbetrouwbaar. De eerste, losse regels gaven rommel in volledige artikelen (voorbeelden, uitzonderingen, verleden tijd, `hond is_a hond`). Streng gemaakt: onderwerp bevat het opgezochte woord, doel heeft "een", tegenwoordige tijd, vage-woordenlijst, doel ≠ onderwerp, alleen de inleiding. Uitkomst: 15 van 16 voorstellen goed.
+
+**Bugs gevonden en gefixt tijdens het bouwen:**
+- Fiets werd overgeslagen door "doorgaans" in een bijzin → voorbehoud telt alleen in de hoofdzin.
+- Auto's lange haakjeszin gaf niets → haakjes worden weggehaald vóór het ontleden.
+- `water is_a zuurstofatoom` (fout) → een tweede doel is alleen geldig als er geen voorzetsel tussen kern en doel staat.
+- Wikipedia gaf HTTP 429 bij vlak na elkaar opgevraagde woorden → één request per woord, met pauze en 1x opnieuw in het proefscript.
+
+**Botsing voorkomen:** `bevestig N`/`wijs af N` zijn al van `uncertainty.py` (Fase 10.2). Daarom gebruikt 11.2 `neem N over`/`laat N vallen`, en een eigen lijst, zodat de nummers van beide lijsten niet door elkaar lopen.
+
+**Bestanden:** nieuw `knowledge_extractor.py`, `knowledge_proposals.py`, `data/extractie_regels.json`, `scripts/extractor_proef.py`, `tests/test_knowledge_extractor.py`, `tests/test_knowledge_proposals.py`. Gewijzigd: `intent_router.py` (`detect_kennis_extractie()`, `detect_kennis_keuze()`, route-stap 2I, topic `kennis_extractie`), `emergence_engine.py` (label), `requirements.txt` (spaCy + model, vast gepind). Dockerfile ongewijzigd.
+
+**Getest:** pytest groen, plus live bevestigd (17 oktober 2026): `extraheer fiets` → lijst met "1 stond er al" (eerder bevestigd), `wat weet je niet zeker?` toont geen enkel voorstel (dus echt niets opgeslagen), `neem 1 over` → `wiel part_of basisfiets` staat als `confirmed` met `oorspronkelijke_bron: wikipedia`, `laat 2 vallen` → daarna "1 had je eerder afgewezen" en het voorstel is weg, `neem 99 over` en `extraheer qwxz` geven een nette melding, `extraheer gitaar` → "niets nieuws".
+
+**Bijvangst / les:** bij het toepassen van twee zoek/vervang-blokken in `intent_router.py` ontbrak het eerste (de definities van de `detect_*`-functies) terwijl het tweede (de aanroep in `route()`) er wel stond: 18 bestaande tests faalden met `AttributeError: 'IntentRouter' object has no attribute 'detect_kennis_extractie'`. Les: na een router-wijziging altijd eerst `grep` op de nieuwe functienamen en dan de hele suite draaien vóór de herstart.
+
+**Nog open:** meervoud → enkelvoud werkt alleen als het enkelvoud al bestaat; samengestelde onderwerpen ("basisfiets") maken een los begrip aan; `help semantic` mist een blok voor de nieuwe commando's; test voor het Layer 7-label `kennis_extractie`; 11.3 (koppeling met `wikipedia_teacher.py`) en 2B.
+
 ## ✅ Layer 4 (response_engine.py): controle van de koppelingen + timing-hint bij `kort` (17 oktober 2026)
 
 Aanleiding: een opmerking in de kop van `response_engine.py` ("Nog GEEN koppeling met de EventBus/intent_router") deed twijfelen of Layer 4 volledig gekoppeld was. Gecontroleerd tegen de echte code (`module_loader.py`, `intent_router.py`, `session_watcher.py`, `interruption_tracker.py`, `variant_kiezer.py`) en met `grep` op de methodenamen.
@@ -1838,6 +1866,6 @@ Aanleiding: Nova vroeg soms "mag ik storen?" nadat Kevin zijn laptop al had dich
 
 **Test:** `test_session_watcher_onderbreking.py` (17 tests): uitstel bij `can_interrupt() == False` zonder aanroep van `beslis_interruption_gedrag()`, vlag blijft leeg en de vraag komt later alsnog, fail-open zonder of met een kapotte `context_manager`, uitstelmelding slechts eenmaal, `blijf_stil`, `talking_to_nova` nooit een vraag, pauze-reset (lang/kort/niet actief/nieuwe activiteit) en het scenario "laptop dicht en een uur later weer open". Suite: 1632 groen, 1 overgeslagen.
 
-**Live bevestigd (17 oktober 2026):** na `/reboot` met de drempel tijdelijk op 1 minuut verscheen `Onderbrekingsvraag voor 'werken_aan_nova_gedetecteerd' uitgesteld door Layer 5` terwijl `context` `Mag onderbreken: False` toonde (score -5: 2 anomalieën vandaag en een ongebruikelijk moment volgens Layer 2). Nog niet live gezien: een doorgekomen vraag na `can_interrupt() == True`, de pauze-reset na een dichtgeklapte laptop, en het wegblijven van `talking_to_nova`-vragen; dat controleren we in de dagelijkse log.
+**Live bevestigd (17 oktober 2026):** na `/reboot` met de drempel tijdelijk op 1 minuut verscheen `Onderbrekingsvraag voor 'werken_aan_nova_gedetecteerd' uitgesteld door Layer 5` terwijl `context` `Mag onderbreken: False` toonde (score -5: 2 anomalieën vandaag en een ongebruikelijk moment volgens Layer 2). Later die dag, met de drempel weer op 15, in het echte scenario: laptop dichtgeklapt (`Verbinding met laptop-client verbroken: no close frame received or sent`), geen vraag tegen een lege stoel (opnieuw `uitgesteld door Layer 5`), en na het openklappen `Activiteit-teller herstart voor 'werken_aan_nova_gedetecteerd' na 127 min zonder input` zonder directe vraag. Nog niet live gezien: een doorgekomen vraag na `can_interrupt() == True` en het wegblijven van `talking_to_nova`-vragen; dat controleren we in de dagelijkse log.
 
 **Bewust niet gedaan:** onbeantwoorde vragen apart tellen en activiteitsnamen samenvoegen (`coding_gedetecteerd`, `werken_aan_nova_gedetecteerd`, `coderen`). Eerst een paar weken kijken hoeveel antwoorden er nu binnenkomen. De tellingen onder de oude namen (`coderen`, `gamen`, `lezen`) tellen niet meer mee, omdat de tracker sinds Fase 6 alleen naar het tijdsvenster kijkt.
