@@ -16,7 +16,7 @@
 
 ## 🤖 What is Nova?
 
-Nova is a **personal AI companion** that runs entirely locally on my own hardware — a home server, with a small companion client on my laptop. She doesn't use an LLM (like ChatGPT) and doesn't rely on cloud AI or external AI inference — everything she does is decided locally, under my own rules. A handful of modules (Wikipedia lookups, weather, location) do use ordinary, non-AI network calls; the "no LLM in the core" promise is about the AI itself, not about the machine having zero network access.
+Nova is a **personal AI companion** that runs entirely locally on my own hardware — a home server, with a small companion client on my laptop. She doesn't use an LLM (like ChatGPT) and doesn't rely on cloud AI or external AI inference — everything she does is decided locally, under my own rules. A handful of modules (Wikipedia lookups, weather and rain radar, location) do use ordinary, non-AI network calls; the "no LLM in the core" promise is about the AI itself, not about the machine having zero network access.
 
 Nova is built on **symbolic AI** (GOFAI-style, event-driven): she learns through explicit concepts, relationships and behavioral patterns — not through a statistical language model. She runs **24/7 as a background process** and can proactively decide, on her own initiative, when it's actually an appropriate moment to speak up — not just whether she *has* something to say, but whether now is a good time to say it.
 
@@ -74,6 +74,17 @@ Nova is built on **symbolic AI** (GOFAI-style, event-driven): she learns through
          Want me to open the full page on your laptop? (yes/no)
 [Kevin]  yes
 [Nova]   The page about MV Le Joola is open on your laptop! 🙂
+
+[Nova]   (unprompted, from the rain radar)
+         Heads up: it starts raining in about 15 minutes (light rain). 🌧️
+
+[Kevin]  extract bicycle
+[Nova]   From the Wikipedia introduction I found these possible facts:
+           1. wheel is part of bicycle
+           2. bicycle is a vehicle
+         Nothing is stored yet. Say 'take 1' to accept or 'drop 2' to discard.
+[Kevin]  take 1
+[Nova]   Saved as confirmed (source: Wikipedia).
 ```
 
 ---
@@ -84,9 +95,11 @@ Nova is built on **symbolic AI** (GOFAI-style, event-driven): she learns through
 |---|---|
 | 💬 Natural language conversation | ✅ |
 | ♟️ Playing chess against Stockfish (with stats, colored board & move evaluation) | ✅ |
-| 🌤️ Weather forecasts (multiple days, proactive severe-weather alerts) | ✅ |
+| 🌤️ Weather up to 15 days ahead, a rain radar for the next two hours, a morning summary, and proactive alerts (rain, snow, thunderstorm chance, slippery roads, strong wind) | ✅ |
 | 📚 Consulting Wikipedia & auto-learning | ✅ |
-| 🧠 Understanding semantic concepts (258+ concepts) with chained reasoning & contradiction detection | ✅ |
+| 🧠 Understanding semantic concepts (hundreds of them) with chained reasoning & contradiction detection | ✅ |
+| 🔀 Causal reasoning ("does rain lead to slipping?"), time ("when did X appear?", timelines) and honest uncertainty ("how sure are you?") | ✅ |
+| 📥 Proposing facts from Wikipedia text (a local parser reads the sentence structure, rules decide) — nothing is stored until I confirm | ✅ |
 | 🔗 Learning word associations through use (PMI scoring), incl. bridging & trending topics | ✅ |
 | 📊 Recognizing behavioral patterns by time & frequency | ✅ |
 | 💡 Template-based responses with tone variation | ✅ |
@@ -94,9 +107,11 @@ Nova is built on **symbolic AI** (GOFAI-style, event-driven): she learns through
 | 🗣️ Speaking up on her own initiative — break reminders, "mind if I interrupt?" | ✅ |
 | 🎲 Proactively suggesting a shared activity when it's the usual time for it (e.g. "want to play a game of chess?") | ✅ |
 | 🪟 Awareness of what I'm doing (active window, focus, presence) | ✅ |
+| 🔒 Staying quiet when my laptop is locked, and welcoming me back with what she held back | ✅ |
 | 🤔 Generating her own insights from patterns she's noticed, gated by confidence *and* timing | ✅ |
 | 🪞 Answering questions about her own architecture and how she works | ✅ |
-| 🎯 Classifying unclear/ambiguous input to route it correctly (trained local model) | ✅ |
+| 🎯 Classifying unclear/ambiguous input to route it correctly (trained local model that learns from my corrections) | ✅ |
+| 🧑‍🎤 A 3D face with expressions and lip-sync (runs on my laptop; not yet wired to her own events) | 🟡 |
 | 💛 Remembering my preferences — what I like/dislike, how I want to be spoken to | ✅ |
 | 🔄 Restarting itself without data loss (`/reboot`) | ✅ |
 | 🕐 Time awareness (clock, date, timezone) | ✅ |
@@ -105,7 +120,7 @@ Nova is built on **symbolic AI** (GOFAI-style, event-driven): she learns through
 | 💻 Acting on my laptop from the server — opening/closing whitelisted apps, opening Wikipedia pages | ✅ |
 | 🧩 Understanding short follow-ups and references ("what is that?", "and a cat?") | ✅ |
 | 🪞 Reflecting a sentence back when she doesn't understand it, instead of a bare "I don't get it" | ✅ |
-| ➗ Mathematical calculations, with worked-out explanations | ✅ |
+| ➗ Mathematical calculations, with worked-out explanations (symbolic algebra via the SymPy library) | ✅ |
 
 ---
 
@@ -140,13 +155,13 @@ User → IntentRouter → EventBus → Modules
 | Layer 0 | SQLite storage (WAL, write buffering, crash recovery, archiving/compression) | ✅ Done |
 | Layer 1 | Word associations learner (PMI scoring, bridging, trending topics) | ✅ Done |
 | Layer 2 | Behavioral patterns (timing, frequency, anomaly detection) | ✅ Done |
-| Layer 3 | Semantic reasoning (concepts, relations, chained inference, contradiction detection, trust state) | ✅ Done |
-| Layer 4 | Response generator (templates, tone variation, routing) | ✅ Done |
-| Layer 5 | Context management (time, activity, focus, presence, weighted interruption logic — activity/focus/presence sensed via a companion client on Windows, streamed to the core over WebSocket) | ✅ Done |
+| Layer 3 | Semantic reasoning (concepts, relations, chained inference, contradiction detection, trust state, causal reasoning, time, uncertainty tracking) | ✅ Done |
+| Layer 4 | Response generator (templates, tone variation that learns which wordings land, routing) | ✅ Done |
+| Layer 5 | Context management (time, activity, focus, presence, weighted interruption logic, absence handling — activity/focus/presence sensed via a companion client on Windows, streamed to the core over WebSocket) | ✅ Done |
 | Layer 6 | Personality & emotion engine (incl. adaptive learning from feedback) | ✅ Done |
 | Layer 7 | Emergent behavior (self-generated insights, confidence + timing gated) | ✅ Done |
 
-All 7 layers are complete and running live in the daemon. The project is now in an extension/refinement phase: recent additions build *on top of* the finished architecture — proactive topic suggestions (Layer 2 + Layer 5), contradiction detection with a real background checker, deeper reasoning over the concept graph, calendar/history modules, and the server acting on my laptop through the companion client.
+All 7 layers are complete and running live in the daemon. The project is now in an extension/refinement phase: recent additions build *on top of* the finished architecture — proactive topic suggestions (Layer 2 + Layer 5), contradiction detection with a real background checker, deeper reasoning over the concept graph (causal, temporal, uncertainty), proposing facts from Wikipedia text that I confirm, calendar/history modules, a rain radar, a first 3D face, and the server acting on my laptop through the companion client.
 
 ## 💻 How it works — an example
 
@@ -193,16 +208,16 @@ Nova_AI/
 ├── modules/
 │   ├── chat/                 # Conversation handling, tone pipeline, fallback reflection
 │   ├── activity/             # Session watcher (break reminders)
-│   ├── context/              # Activity/focus/presence, interruption logic
+│   ├── context/              # Activity/focus/presence, absence, interruption logic
 │   ├── network/              # WebSocket bridge to the Windows companion client
 │   ├── knowledge/            # Wikipedia AutoTeacher, contradiction detection,
-│   │                         #   concept overview, proactive topic suggestions
+│   │                         # concept overview, topic suggestions, fact extraction
 │   ├── learning/             # Word associations, behavioral patterns, intent classifier
 │   ├── preferences/          # What Nova learns about what I like and dislike
 │   ├── response_learning/    # Learning which response variants land well
 │   ├── time/                 # Clock, timezone, calendar arithmetic, holidays,
-│   │                         #   school holidays, "on this day" history (Wikipedia)
-│   ├── weather/              # Weather module (multi-day forecast, proactive alerts)
+│   │                         # school holidays, "on this day" history (Wikipedia)
+│   ├── weather/              # Weather, rain radar, forecasts up to 15 days, proactive alerts
 │   ├── math/                 # Calculations + worked-out explanations
 │   ├── chess/                # Chess engine (Stockfish) + move evaluation
 │   ├── help/                 # In-chat help topics
@@ -213,7 +228,7 @@ Nova_AI/
 │   ├── emotion/              # Emotion engine
 │   └── expression/           # Tone & style
 ├── data/                     # Nova's real, growing memory (see below)
-├── tests/                    # pytest suite (900+ tests)
+├── tests/                    # pytest suite (2300+ tests)
 └── main.py
 ```
 
@@ -226,7 +241,8 @@ Nova_AI/
 - **Never acts without consent** — Nova always suggests first, even when speaking up proactively
 - **Fully transparent** — everything is logged and inspectable, every concept carries an audit trail
 - **Open architecture** — every concept is readable in `concepts.json`
-- **ML only as a sensor** — external models may help perceive (e.g. presence detection, short-reply classification, intent classification), Nova decides what to do with it
+- **ML only as a sensor** — external models may help perceive (e.g. presence detection, short-reply classification, intent classification, sentence parsing), Nova decides what to do with it
+- **Proposals, not assumptions** — when Nova reads facts from Wikipedia text she only proposes them; nothing is stored until I confirm
 - **Whitelists, not free commands** — when the server asks the laptop to do something, the laptop only accepts known apps and https links to Wikipedia; anything else is refused
 
 ---
@@ -242,13 +258,13 @@ This repository serves primarily as a **personal backup**, and has been made pub
 ## 🚀 On the roadmap
 
 - 🟡 Enforcing "may push back, but only if factually grounded" as actual behavior (currently a stated principle, not yet fully wired up in code)
-- 🟢 Semantic reasoning, next phase (causal reasoning — "why did X happen")
+- 🟢 Semantic similarity (embeddings) and graph visualisation — the last phases of the semantic roadmap; causal, temporal and uncertainty reasoning and fact extraction are done
 - 🟢 Expanding proactive topic suggestions beyond chess (Plex, other board games — each needs its own `topic_detected:` event first)
 - 🟢 Word embeddings for Layer 1 (pre-trained Dutch model, as a complement to the existing PMI-based associations)
-- 🔮 Avatar / desktop companion (animated avatar, lipsync)
+- 🟡 Avatar — a 3D face with expressions, lip-sync and a hologram look runs on my laptop; next: connect it to Nova's own events, a local female voice, phone and TV versions
 - 🔮 More board games (checkers, Go)
 - 🔮 Smart home integration (lights, sensors, TV)
-- 🟢 Client-server architecture — a lightweight Windows companion client streams activity/focus/presence to the core over WebSocket (Tailscale-reachable, auto-reconnecting), and already carries out whitelisted commands sent back from the core (opening/closing apps, opening Wikipedia pages). Next: window control, file access, and a phone-side client.
+- 🟢 Client-server architecture — a lightweight Windows companion client streams activity/focus/presence to the core over WebSocket (Tailscale-reachable, auto-reconnecting), and already carries out whitelisted commands sent back from the core (opening/closing apps, opening Wikipedia pages). Next: a shared-secret check on the connection, window control, file access, and a phone-side client.
 - 🟢 Personal dates — remembering things like "exam next Monday" and reminding me on the day itself (building on the finished calendar modules)
 - 🔮 Robotics integration (far future)
 
@@ -258,8 +274,9 @@ This repository serves primarily as a **personal backup**, and has been made pub
 
 - Python 3.10+
 - Linux (core daemon, tested in Docker on Unraid) — a Windows companion client is required for activity/focus/presence awareness (see `client_server_control_roadmap.md`)
-- Stockfish engine (for chess — download it yourself at stockfishchess.org)
+- Stockfish engine (for chess) — not included: on Windows download it yourself at stockfishchess.org, in the Docker image it is installed through the Debian package (`apt`) and pointed to with the `STOCKFISH_PATH` environment variable
 - OpenWeatherMap API key (free to create at openweathermap.org)
+- A spaCy Dutch model (`nl_core_news_sm`) for the fact-extraction feature — installed through `requirements.txt`
 
 ```bash
 pip install -r requirements.txt
@@ -269,6 +286,13 @@ python main.py
 > Note: this project is not meant to be simply cloned and run — it's tightly coupled to my own paths, settings and personal data files.
 
 ---
+
+## 📎 Third-party components
+
+- spaCy Dutch model `nl_core_news_sm` — CC BY-SA 4.0
+- simplemma (lemmatizer) — MIT
+- SymPy (symbolic algebra) — BSD
+- Stockfish (chess engine) — GPL, downloaded separately
 
 ## 👤 About this project
 
