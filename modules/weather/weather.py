@@ -1,11 +1,16 @@
 # modules/weather/weather.py
 import os
+import re
 import json
 import random
 import requests
 from pathlib import Path
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+
+# forecast.py = dagvoorspelling + ochtendsamenvatting (pure hulpfuncties),
+# rain.py = regenradar en gladheid/wind voor de komende uren.
+from modules.weather import forecast, rain
 
 # Laadt de variabelen uit het .env bestand in het project
 load_dotenv()
@@ -93,18 +98,9 @@ class WeatherModule:
     # Tekst → stad
     # -----------------------------------------------------
     def extract_city(self, text):
-        text = text.lower()
-        if " in " not in text:
-            return self.default_city
-
-        # Neem enkel het eerste woord na "in"
-        city = text.split(" in ", 1)[1].strip()
-        city = city.split()[0]  # verwijder "vandaag", "morgen", etc.
-
-        # Verwijder leestekens die per ongeluk meegepakt worden
-        city = city.strip(".,!?;:")
-
-        return city
+        # Zelfde logica als rain.py: "in de stad" / "in het weekend" is
+        # geen stad, dan blijft het de standaardstad.
+        return rain.vind_stad(text, self.default_city)
 
     # -----------------------------------------------------
     # Tekst → dag-offset (0 = vandaag, 1 = morgen, ...)
@@ -118,6 +114,11 @@ class WeatherModule:
             return 1
         if "vandaag" in t:
             return 0
+
+        # Verder weg: "over 10 dagen", "over een week", "volgende week woensdag"
+        relatief = self._relatieve_dagen(t)
+        if relatief is not None:
+            return relatief
 
         # Specifieke weekdag, bv. "weer op maandag". Een expliciet genoemde
         # dagnaam betekent ALTIJD de eerstvolgende gelegenheid — ook als
@@ -263,6 +264,12 @@ class WeatherModule:
         if waarschuwing:
             zin += f" {waarschuwing}"
 
+        # Regenradar + gladheid/wind voor de komende uren (rain.py), bv.
+        # "Over ongeveer 20 minuten begint het te regenen (lichte regen)."
+        vooruit = self._vooruit_zin(data)
+        if vooruit:
+            zin += f" {vooruit}"
+
         # Vergelijk met de vorige gemeten waarde (meestal gisteren) en
         # bewaar meteen de temperatuur van vandaag voor de volgende keer.
         temp_vorige_keer = self._bewaar_temperatuur(city, temp)
@@ -276,14 +283,13 @@ class WeatherModule:
     # Voorspelling (morgen / overmorgen / specifieke dag)
     # -----------------------------------------------------
     def get_forecast(self, city, offset_dagen):
+        # Verder dan 4 dagen kan OpenWeatherMap (gratis) niet. Daarvoor
+        # gebruiken we Open-Meteo, dat tot 16 dagen vooruit kijkt.
+        if offset_dagen > 4:
+            return self.get_forecast_lang(city, offset_dagen)
+
         if not self.api_key:
             return "Geen API-sleutel ingesteld voor weerinformatie."
-
-        if offset_dagen > 4:
-            return (
-                "Ik kan maximaal 5 dagen vooruit voorspellen "
-                "(dat is de grens van de gratis weerdienst)."
-            )
 
         url = (
             f"https://api.openweathermap.org/data/2.5/forecast?"
@@ -348,6 +354,237 @@ class WeatherModule:
             zin += f" {waarschuwing}"
 
         return zin
+
+    # -----------------------------------------------------
+    # Verder vooruit: tot 16 dagen (Open-Meteo)
+    # -----------------------------------------------------
+    def _relatieve_dagen(self, t):
+        """Zet 'over 10 dagen', 'over een week', 'over twee weken' en
+        'volgende week woensdag' om in een aantal dagen vanaf vandaag.
+        'volgende week woensdag' = de woensdag van de volgende kalenderweek
+        (de week begint op maandag). Geeft None als er niets van dien aard
+        in de tekst staat."""
+        if "volgende week" in t:
+            for naam, weekday_nr in WEEKDAGEN.items():
+                if naam in t:
+                    return (7 - datetime.now().weekday()) + weekday_nr
+            return 7  # "volgende week" zonder dag: over een week
+
+        m = re.search(r"\bover (\d+|[a-z]+) (dagen|dag|weken|week)\b", t)
+        if m:
+            aantal_txt, eenheid = m.groups()
+            if aantal_txt.isdigit():
+                aantal = int(aantal_txt)
+            else:
+                aantal = forecast.GETALWOORDEN.get(aantal_txt)
+            if aantal is not None:
+                return aantal * (7 if eenheid in ("week", "weken") else 1)
+
+        return None
+
+    def _coords(self, city):
+        """(lat, lon) voor een stad, of None. Bekende plaatsen (Aartrijke)
+        hebben geen internet of API-sleutel nodig."""
+        bekend = rain.BEKENDE_LOCATIES.get(city.lower())
+        if bekend:
+            return bekend
+        if not self.api_key:
+            return None
+        lat, lon = self._get_stad_coordinaten(city)
+        if lat is None or lon is None:
+            return None
+        return lat, lon
+
+    def _haal_json(self, url):
+        """Haalt een URL op en geeft de JSON terug, of None bij elke fout."""
+        try:
+            r = requests.get(url, timeout=6)
+            if r.status_code != 200:
+                return None
+            return r.json()
+        except Exception:
+            return None
+
+    def get_forecast_lang(self, city, offset_dagen):
+        """Voorspelling voor 5 tot 15 dagen vooruit (Open-Meteo, per dag).
+        Zegt er eerlijk bij dat het verder weg onzekerder wordt."""
+        if offset_dagen > forecast.MAX_DAGEN_VOORUIT:
+            return (
+                f"Verder dan {forecast.MAX_DAGEN_VOORUIT} dagen vooruit kan ik "
+                f"niet kijken: dat is de grens van de weerdienst."
+            )
+
+        coords = self._coords(city)
+        if coords is None:
+            return None
+
+        data = self._haal_json(
+            forecast.OPEN_METEO_DAG_URL.format(lat=coords[0], lon=coords[1])
+        )
+        if data is None:
+            return None
+
+        vandaag = forecast.vandaag_lokaal()
+        doel = vandaag + timedelta(days=offset_dagen)
+        dag = next((d for d in forecast.parse_dagen(data) if d.datum == doel), None)
+        if dag is None:
+            return f"Ik heb geen voorspelling gevonden voor {city.title()} op die dag."
+
+        zin = forecast.formuleer_dag(
+            dag, city.title(), forecast.dag_label(dag.datum, vandaag)
+        )
+        if zin is None:
+            return f"Ik heb geen voorspelling gevonden voor {city.title()} op die dag."
+
+        temp = forecast.kleding_temperatuur(dag, [])
+        if temp is not None:
+            kleding = self.kledingadvies(temp)
+            if kleding:
+                zin += f" {kleding}"
+
+        waarschuwing = forecast.dag_waarschuwing(dag)
+        if waarschuwing:
+            zin += f" {waarschuwing}"
+
+        onzeker = forecast.onzekerheid_tekst(offset_dagen)
+        if onzeker:
+            zin += f" {onzeker}"
+
+        return zin
+
+    def _vooruit_zin(self, owm_data):
+        """Radarzin + gladheid/wind-straks voor 'wat is het weer'. De
+        coordinaten halen we uit het OpenWeatherMap-antwoord dat get_weather()
+        net kreeg. Ontbreken ze, of gaat er iets mis, dan None: het gewone
+        weerbericht blijft altijd werken."""
+        try:
+            coord = owm_data.get("coord") or {}
+            lat, lon = coord.get("lat"), coord.get("lon")
+            if lat is None or lon is None:
+                return None
+            return rain.weer_vooruit_zin(lat, lon)
+        except Exception:
+            return None
+
+    # -----------------------------------------------------
+    # Ochtendsamenvatting (proactief, hoogstens 1x per dag)
+    # -----------------------------------------------------
+    # Klasse-attributen als beginwaarde; check_ochtend_samenvatting() zet ze
+    # per object. Zo hoeft __init__ niet te veranderen.
+    _ochtend_gedaan_op = None       # "2026-10-19" zodra vandaag gelukt is
+    _ochtend_laatste_poging = None  # datetime van de laatste echte poging
+
+    def _ochtend_pad(self):
+        return self.history_path.parent / "weather_ochtend.json"
+
+    def _laatste_ochtend_datum(self):
+        """De datum waarop de samenvatting voor het laatst gemeld is, of None.
+        Staat in een bestandje, zodat een herstart om 08:00 niet nog eens meldt."""
+        try:
+            with open(self._ochtend_pad(), "r", encoding="utf-8") as f:
+                return json.load(f).get("laatste_datum")
+        except Exception:
+            return None
+
+    def _bewaar_ochtend_datum(self, datum_txt):
+        try:
+            pad = self._ochtend_pad()
+            pad.parent.mkdir(parents=True, exist_ok=True)
+            with open(pad, "w", encoding="utf-8") as f:
+                json.dump({"laatste_datum": datum_txt}, f)
+        except Exception:
+            # Kon niet opslaan: geen ramp. _ochtend_gedaan_op onthoudt het
+            # nog tot de volgende herstart.
+            pass
+
+    def maak_ochtend_samenvatting(self, city, lat, lon, nu):
+        """Bouwt de tekst van de ochtendsamenvatting, of None als de
+        gegevens niet op te halen zijn."""
+        data = self._haal_json(
+            forecast.OPEN_METEO_OCHTEND_URL.format(lat=lat, lon=lon)
+        )
+        if data is None:
+            return None
+
+        dagen = forecast.parse_dagen(data)
+        if not dagen:
+            return None
+        dag = dagen[0]  # forecast_days=1: dit is vandaag
+        uren = forecast.parse_uren(data)
+
+        opening = random.choice(forecast.OCHTEND_OPENINGEN)
+        hoofd = forecast.formuleer_ochtend(dag, uren, city.title(), opening, nu)
+        if hoofd is None:
+            return None
+        delen = [hoofd]
+
+        temp = forecast.kleding_temperatuur(dag, uren)
+        if temp is not None:
+            kleding = self.kledingadvies(temp)
+            if kleding:
+                delen.append(kleding)
+
+        waarschuwing = forecast.dag_waarschuwing(dag)
+        if waarschuwing:
+            delen.append(waarschuwing)
+
+        # Komt er binnenkort regen (of gladheid/wind)? Dat staat er als
+        # laatste bij: "Over ongeveer 40 minuten begint het te regenen."
+        # Hier met inclusief_nu=True: de samenvatting haalt het huidige weer
+        # niet apart op, dus ook gladheid die er nu al is hoort erin.
+        vooruit = rain.weer_vooruit_zin(lat, lon, nu, inclusief_nu=True)
+        if vooruit:
+            delen.append(vooruit)
+
+        return " ".join(delen)
+
+    def check_ochtend_samenvatting(self, mag_spreken=None, nu=None):
+        """Wordt periodiek aangeroepen vanuit achtergrond_loop() in main.py.
+        Doet iets als ALLE punten kloppen:
+          - het is ochtend (forecast.OCHTEND_VAN_UUR tot OCHTEND_TOT_UUR),
+          - vandaag is er nog geen samenvatting geweest,
+          - de laatste mislukte poging is minstens 15 minuten geleden,
+          - mag_spreken() zegt ja. Dat is een functie uit main.py die aan
+            Layer 5 vraagt of Kevin er is en het kan zien. Zo komt de
+            samenvatting bij de EERSTE keer dat Kevin er 's ochtends is,
+            niet tegen een lege terminal.
+        Geeft de gepubliceerde tekst terug, of None. Crasht nooit."""
+        try:
+            nu = nu or rain.nu_lokaal()
+            vandaag = nu.strftime("%Y-%m-%d")
+
+            if not forecast.is_ochtend(nu):
+                return None
+            if self._ochtend_gedaan_op == vandaag:
+                return None
+            if self._laatste_ochtend_datum() == vandaag:
+                self._ochtend_gedaan_op = vandaag
+                return None
+
+            poging = self._ochtend_laatste_poging
+            if poging is not None and (nu - poging) < timedelta(minutes=forecast.OCHTEND_MIN_TUSSENPOGING_MIN):
+                return None
+
+            if mag_spreken is not None and not mag_spreken():
+                return None  # Kevin is er (nog) niet: volgende keer opnieuw
+
+            self._ochtend_laatste_poging = nu
+
+            coords = self._coords(self.default_city)
+            if coords is None:
+                return None
+
+            tekst = self.maak_ochtend_samenvatting(self.default_city, coords[0], coords[1], nu)
+            if not tekst:
+                return None
+
+            self._ochtend_gedaan_op = vandaag
+            self._bewaar_ochtend_datum(vandaag)
+            self.event_bus.publish("layer4_response", {"text": tekst})
+            return tekst
+        except Exception as e:
+            print(f"[weather] ochtendsamenvatting mislukt: {e}")
+            return None
 
     # -----------------------------------------------------
     # Hulpfuncties

@@ -1873,6 +1873,15 @@ Eerste twee onderdelen van Fase 11: eerst pytest groen (25 + 18 nieuwe tests, to
 - Tests: 22 + 6 nieuw. Totaal 1772 (1771 groen, 1 skipped).
 - Les: een live `wiki debug`-uitvoer toonde in één keer wat uren gokken niet had gevonden.
 
+### Semantic Fase 11, `used_for` (18 oktober 2026)
+- Nieuwe regel in `knowledge_extractor.py`: "X wordt gebruikt voor/om …", "X is een middel/hulpmiddel/gereedschap/instrument/apparaat/werktuig/toestel om te …" en "X dient voor/om …" geven `X used_for doel`. Ook in een die/dat-bijzin ("een gereedschap dat gebruikt wordt om …"). Het doel is vrije tekst, hoogstens 4 woorden: voorwerp + werkwoord of een zelfstandig naamwoord; "het doorsnijden van hout" blijft heel.
+- Bewust niet: "gebruikt als" (rol), "gebruikt in/bij" (plek), "is gebruikt" en "werd gebruikt" (voltooid/verleden), voorbehoud (kan/meestal), zinnen zonder lidwoord, en "Hij gebruikt een hamer om …" (het onderwerp is dan het voorwerp).
+- `knowledge_proposals.py` toont het als "'X' wordt gebruikt voor 'Y'" en slaat het doel ongewijzigd op (geen meervoud → enkelvoud, het is vrije tekst).
+- Echte tekst: de stuur-intro leverde eerst niets en geeft nu `stuur used_for voertuig navigeren`. Live bevestigd, inclusief Nova's antwoord op "waarvoor gebruik je een stuur".
+- Ook: kandidaten bij een doorverwijspagina met haakjes die bij een ander woord horen verdwijnen uit de lijst ("Hamar (volk)" bij "hamer").
+- Tests: 24 nieuw (19 extractor, 5 voorstellen). Totaal 2379 (2378 groen, 1 skipped).
+- Opgemerkt: `scripts/test_regen_bronnen.py` werd door pytest opgepakt (parameters `lat`, `lon`). Opgelost met een nieuwe `scripts/conftest.py` (`collect_ignore_glob`).
+
 ## ✅ Layer 4 (response_engine.py): controle van de koppelingen + timing-hint bij `kort` (17 oktober 2026)
 
 Aanleiding: een opmerking in de kop van `response_engine.py` ("Nog GEEN koppeling met de EventBus/intent_router") deed twijfelen of Layer 4 volledig gekoppeld was. Gecontroleerd tegen de echte code (`module_loader.py`, `intent_router.py`, `session_watcher.py`, `interruption_tracker.py`, `variant_kiezer.py`) en met `grep` op de methodenamen.
@@ -1964,3 +1973,33 @@ Aanleiding: Nova vroeg soms "mag ik storen?" nadat Kevin zijn laptop al had dich
 
 **Proactieve melding (18 oktober 2026, Kevin akkoord):** `beslis_proactief()` + `RainModule.check_proactief()` in `rain.py`, en `RAIN_CHECK_INTERVAL_MINUTEN = 5` met een aanroep in `main.py`'s `achtergrond_loop()`. Nova meldt zelf "het begint over ongeveer 15 minuten te regenen" als het nu droog is en de regen binnen 20 minuten begint (minstens 0,5 mm/u), één keer per bui, max. 1 per uur en niet tussen 23:00 en 07:00. De nachtstilte heeft Claude zelf toegevoegd (niet gevraagd), als eenvoudig instelbare constante. 16 nieuwe tests (`test_rain.py` nu 104). Live bevestigd met een nepradar in de container: 1e check meldt, 2e check (5 min later) zwijgt. De echte aanroep vanuit de achtergrondthread nog niet bij een echte bui gezien.
 **Gevonden bij `main.py`:** `WEATHER_CHECK_INTERVAL_MINUTEN` stond nog op 1 (testwaarde) in plaats van 30.
+
+**Sneeuw en onweer (18 oktober 2026, Kevin akkoord):** vooraf met een testscript in de container gecontroleerd dat Open-Meteo `rain`, `snowfall`, `weather_code`, `lightning_potential` en `cape` per kwartier geeft (mijn eigen aanvraag werd geblokkeerd en is niet omzeild). Nieuw in `rain.py`: `OPEN_METEO_TYPE_URL` (aparte aanvraag, zodat een fout de gewone regencheck niet breekt), `parse_typeinfo()`, `bepaal_soort()`, `pas_soort_toe()`, `analyseer_onweer()`, `formuleer_onweer()`, `beslis_onweer()`, `haal_typeinfo()`, parameter `woord` in `maak_antwoord()`, en `check_proactief()` doet nu regen/sneeuw én onweer. `intent_router.py`: sneeuw- en onweerwoorden in `detect_rain()`. `main.py` bleef ongewijzigd. Bewust niet gebruikt: `lightning_potential` (schaal onbekend). Onweer wordt altijd als "kans" geformuleerd, met de vermelding dat het een weermodel is en geen bliksemradar. Tests: `test_rain.py` 158, `test_intent_router_regen.py` 43; volledige suite 1979 groen, 2 overgeslagen. Live bevestigd (18 oktober 2026, na reboot): "gaat het onweren" gaf "De komende 3 uur zie ik geen onweer in de verwachting" met de vermelding dat het een weermodel is; "gaat het sneeuwen" bij droog weer gaf "Het blijft droog: de komende 2 uur zie ik geen sneeuw aankomen." Een echte sneeuw- of onweersmelding is nog niet gezien (geen sneeuw of onweer in de verwachting). Bijvangst: `WEATHER_CHECK_INTERVAL_MINUTEN` terug op 30 maakt dat een test in `test_main_achtergrond_en_response.py` zichzelf overslaat (geen minuut waarop weather wél en presence niet draait, want 30 is een veelvoud van 5); de weercheck zelf werkt.
+
+### 18 oktober 2026 — Weer: radar in weerbericht, gladheid/wind, tot 15 dagen, ochtendsamenvatting
+- `rain.py`: nieuwe functies voor gevaar (gladheid/harde wind via Open-Meteo kwartierdata) en `weer_vooruit_zin()`; proactieve melding (max. 1x/uur/type, stille uren 23:00–07:00).
+- `forecast.py` (nieuw): pure hulpfuncties voor dag/uur-voorspelling en ochtendzin.
+- `weather.py`: radarzin in "wat is het weer", `get_forecast_lang()` voor 5–15 dagen, `check_ochtend_samenvatting()`; "over twee weken" wordt herkend.
+- `main.py`: `OCHTEND_CHECK_INTERVAL_MINUTEN = 5` en `_layer5_laat_spreken_toe()` (tuple-veilig, fout = niet spreken).
+- Tests: `test_rain_vooruit.py` (97), `test_forecast.py` (115), `test_weather_vooruit.py` (94), `test_main_ochtend.py` (20). Volledige suite: 2310 passed, 1 skipped.
+- Bekende beperkingen: vlagen die nu al bezig zijn staan niet in "wat is het weer"; dagvoorspellingen hebben geen gladheidsmelding.
+
+## ✅ Intent Classifier — 13e categorie `rain` + stad-fix (18 oktober 2026)
+
+**Aanleiding:** Kevin bouwde `detect_rain()`. De regex is bewust streng, dus zinnen als "heb ik een paraplu bij me nodig" of "ga ik nat worden" vielen in fallback. In een proef scoorden regenzinnen zonder `rain`-label allemaal onder 0,30 (nooit een actie).
+
+**Haalbaarheid:** zelfde ML-fallback als de andere categorieën (TF-IDF + Logistic Regression, geen LLM). Kaal en onschuldig: de payload is enkel `{"text": text}`, een verkeerde gok geeft hooguit een regenbericht.
+
+**Code (`intent_router.py`):** `detect_rain()` is opgesplitst. De keuze "dag-woord naar `intent_weather`, anders `intent_rain`" zit nu in `_stuur_regen_vraag()` en wordt gedeeld door de regex-route en de nieuwe `_actie_rain_classifier()`. Plus de twee NL-teksten ("iets over regen wil weten" / "iets over regen weten") en de regel in `_CLASSIFIER_ACTIE_REGISTER`. `rain.py` kiest zelf begin/stop/onweer uit woorden in de tekst en geeft bij een zin zonder regenwoord het standaardantwoord "gaat het regenen". Sneeuw en onweer lopen ook via `intent_rain`, dus één categorie volstaat.
+
+**Trainingsdata:** `voeg_rain_toe.py` (eenmalig script, veilig om opnieuw te draaien): 6 regenzinnen verhuisd van `weather` naar `rain` (anders tegenstrijdig), 36 nieuwe `rain`-voorbeelden en 10 extra `weather`-voorbeelden voor het evenwicht. `training_data.json`: 319 voorbeelden, 13 categorieën. In een proef haalden 11 van 12 nieuwe regenzinnen `rain` en 9 van 12 algemene weerzinnen `weather` (evenveel als zonder `rain`). De missers bleven onder 0,35, dus nooit een directe actie.
+
+**Stad-fix (`rain.py` + `weather.py`):** `extract_city` nam het woord na " in " als stad, dus "moet ik een paraplu meenemen in de stad" gaf stad = "de" ("Ik weet niet waar De ligt"). Nu: `GEEN_STAD_WOORDEN` + `vind_stad()` in `rain.py`; `weather.py` gebruikt dezelfde functie. De tweede " in " in de zin telt ook mee.
+
+**Tests:** `test_intent_router_rain.py` (27) en `test_weather_stad.py` (17). Volledige suite: 2354 groen, 1 overgeslagen.
+
+**Live bevestigd (18 oktober 2026):** `intent retrain` gaf 319 basisvoorbeelden + 27 Layer 0 = 346, 13 categorieën. "heb ik een paraplu bij me nodig" (0,41), "moet ik morgen een regenjas aan" (0,38, ja gaf de weermodule voor morgen) en "moet ik een paraplu meenemen in de stad" (0,32, ja gaf het radarantwoord voor Aartrijke) werkten, telkens na de bevestigingsvraag.
+
+**Les:** `training_data.json` nooit aanpassen terwijl Nova draait. De classifier laadt het bestand bij het opstarten en schrijft haar eigen lijst terug bij `intent retrain`, waardoor de wijziging verdwijnt. Eerst Nova stoppen, dan het script draaien, dan Nova starten, dan `intent retrain`.
+
+**Bewust niet gekoppeld:** gladheid, harde wind, de ochtendsamenvatting en de 16-daagse voorspelling. Het zijn functies van de modules, geen intents.

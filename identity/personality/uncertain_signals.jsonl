@@ -1063,3 +1063,24 @@
 {"text": "gaat het morgen regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0335, "bron": "model_fallback", "tijdstip": "2026-10-18T13:18:01.452689"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T13:30:07.629482"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T13:37:48.677339"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T17:24:19.816853"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T17:36:23.791623"}
+{"text": "gaat het onweren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.016, "bron": "model_fallback", "tijdstip": "2026-10-18T17:41:03.475789"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T19:20:44.252744"}
+{"text": "heb ik een paraplu bij me nodig", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0242, "bron": "model_fallback", "tijdstip": "2026-10-18T19:54:24.566998"}
+{"text": "komt er vanavond nog een bui", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0191, "bron": "model_fallback", "tijdstip": "2026-10-18T19:54:33.886813"}
+{"text": "moet ik morgen een regenjas aan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0083, "bron": "model_fallback", "tijdstip": "2026-10-18T19:54:42.111765"}
+{"text": "moet ik een paraplu meenemen in de stad", "signaal": "focus", "model_signaal": "focus", "marge": 0.0293, "bron": "model_fallback", "tijdstip": "2026-10-18T19:54:52.555524"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T19:55:51.169023"}
+{"text": "heb ik een paraplu bij me nodig", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0242, "bron": "model_fallback", "tijdstip": "2026-10-18T19:59:03.085740"}
+{"text": "komt er vanavond nog een bui", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0191, "bron": "model_fallback", "tijdstip": "2026-10-18T19:59:14.617291"}
+{"text": "moet ik morgen een regenjas aan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0083, "bron": "model_fallback", "tijdstip": "2026-10-18T19:59:30.722303"}
+{"text": "moet ik een paraplu meenemen in de stad", "signaal": "focus", "model_signaal": "focus", "marge": 0.0293, "bron": "model_fallback", "tijdstip": "2026-10-18T19:59:56.762825"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T20:41:20.529672"}
+{"text": "extraheer stuur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T20:41:32.870619"}
+{"text": "neem 1 over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-10-18T20:42:00.469617"}
+{"text": "waarvoor gebruik je een stuur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.008, "bron": "model_fallback", "tijdstip": "2026-10-18T20:42:08.651703"}
+{"text": "extraheer hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T20:42:18.844860"}
+{"text": "extraheer hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T20:42:36.896423"}
+{"text": "extraheer hamer (gereedschap)", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T20:42:51.058044"}
+{"text": "neem alles over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-10-18T20:43:05.476154"}

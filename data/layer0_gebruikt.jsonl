@@ -48,3 +48,5 @@
 {"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-18T01:41:01.518282"}
 {"tekst": "wat wordt het weer vandaag", "label": "weather", "gebruikt_bij_hertraining": "2026-10-18T12:17:12.056812"}
 {"tekst": "wat wordt het weer morgen in beernem", "label": "weather", "gebruikt_bij_hertraining": "2026-10-18T12:17:12.056812"}
+{"tekst": "wat is het weer morgen", "label": "weather", "gebruikt_bij_hertraining": "2026-10-18T19:54:02.441063"}
+{"tekst": "wat is het weer zaterdag", "label": "weather", "gebruikt_bij_hertraining": "2026-10-18T19:54:02.441063"}

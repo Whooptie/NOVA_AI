@@ -33,6 +33,9 @@
 #             conventie van Nova: wiel part_of fiets (deel -> geheel).
 #   part_of   "X is een onderdeel van Y" wordt X part_of Y (Fase 11, 2B).
 #   causes    "X veroorzaakt Y" / "X leidt tot Y" wordt X causes Y (Fase 11, 2B).
+#   used_for  "X wordt gebruikt voor/om ..." / "X is een middel om ..." /
+#             "X dient voor ..." wordt X used_for Y; het doel is vrije tekst
+#             zoals "spijkers slaan" (Fase 11, used_for).
 #   Bron "wikipedia", confidence 0.8. Bij overnemen daarna confirm_relation()
 #   (status confirmed, confidence 1.0, oorspronkelijke_bron blijft "wikipedia").
 #   Bij vallen laten: add_relation() + reject_relation() = tombstone, zodat
@@ -188,6 +191,8 @@ class KnowledgeProposals:
             return f"'{s}' is onderdeel van '{t}'"
         if rel_type == "causes":
             return f"'{s}' veroorzaakt '{t}'"
+        if rel_type == "used_for":
+            return f"'{s}' wordt gebruikt voor '{t}'"
         return f"{s} is een {t}"
 
     def _relatie_status(self, woord, rel_type, doel):
@@ -232,6 +237,11 @@ class KnowledgeProposals:
             # "X veroorzaakt Y" -> X causes Y (gevolg in enkelvoud)
             woord, rel_type = feit["onderwerp"], "causes"
             doel = self._enkelvoud(feit["doel"])
+        elif feit["relatie"] == "used_for":
+            # "X wordt gebruikt voor Y" -> X used_for Y. Het doel is vrije
+            # tekst ("spijkers slaan"), dus NIET naar enkelvoud omzetten.
+            woord, rel_type = feit["onderwerp"], "used_for"
+            doel = feit["doel"]
         else:
             return None
         woord, doel = woord.lower().strip(), doel.lower().strip()
@@ -246,8 +256,14 @@ class KnowledgeProposals:
         kandidaten = []
         for k in self._fetch_kandidaten(titel) or []:
             # Alleen titels die "extraheer ..." ook echt kan doorgeven
-            if _BRUIKBARE_TITEL.match(k) and len(k.split()) <= 3:
-                kandidaten.append(k)
+            if not (_BRUIKBARE_TITEL.match(k) and len(k.split()) <= 3):
+                continue
+            # "Hamar (volk)" bij "hamer" is een ander woord, geen betekenis
+            # van hamer: titels met haakjes moeten bij ditzelfde woord horen.
+            m = _HAAKJES.match(k)
+            if m and m.group(1).strip().lower() != woord:
+                continue
+            kandidaten.append(k)
         # Titels met haakjes ("Regen (neerslag)") zijn de echte betekenissen
         kandidaten.sort(key=lambda k: "(" not in k)
         kandidaten = kandidaten[:MAX_KANDIDATEN]

@@ -63,6 +63,11 @@ VOORVOEGSELS_STANDAARD = ("basis", "standaard")
 SOORT_WOORDEN = ("ondersoort", "soort", "variant", "vorm")
 # "X is een <woord> van Y" / "X maakt deel uit van Y" -> X part_of Y (Fase 11, 2B)
 DEEL_WOORDEN = ("onderdeel", "deel")
+# "X is een <woord> om te ..." -> X used_for ... (Fase 11, used_for)
+GEBRUIKSMIDDEL_WOORDEN = ("middel", "hulpmiddel", "gereedschap", "instrument",
+                          "apparaat", "werktuig", "toestel")
+# Een doel langer dan dit aantal woorden is een omschrijving, geen begrip
+MAX_WOORDEN_GEBRUIKSDOEL = 4
 
 
 class KnowledgeExtractor:
@@ -168,6 +173,7 @@ class KnowledgeExtractor:
                 + self._zoek_has_part(sent, zoek)
                 + self._zoek_part_of(sent, zoek)
                 + self._zoek_causes(sent, zoek)
+                + self._zoek_used_for(sent, zoek, de_toegestaan)
             )
             for onderwerp, relatie, doel, regel in feiten:
                 onderwerp = self._normaliseer_onderwerp(onderwerp, zoek)
@@ -485,6 +491,144 @@ class KnowledgeExtractor:
                 if zoek and zoek not in oorzaak and zoek not in gevolg:
                     continue
                 out.append((oorzaak, "causes", gevolg, regel))
+        return out
+
+    # ------------------------------------------------------------------
+    # Fase 11, used_for: "X wordt gebruikt voor/om ..."
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _heeft_voorzetsel(tok, woord):
+        """Heeft dit woord een voorzetsel/voegwoord (case/mark) met deze tekst?"""
+        return any(c.dep_ in ("case", "mark") and c.text.lower() == woord
+                   for c in tok.children)
+
+    def _werkwoord_frase(self, verb):
+        """'om spijkers te slaan' -> 'spijkers slaan'. Alleen het voorwerp
+        en het werkwoord; bijwoorden en voorzetselgroepen vallen weg zodat
+        een doel een kort begrip blijft."""
+        delen = []
+        voorwerpen = [c for c in verb.children
+                      if c.dep_ == "obj" and c.pos_ in ("NOUN", "PROPN")]
+        if voorwerpen:
+            delen.append(voorwerpen[0].text.lower())
+        scheid = [c for c in verb.children if c.dep_ == "compound:prt"]
+        werkwoord = verb.text.lower()
+        if scheid:   # "aan te sluiten" -> "aansluiten"
+            werkwoord = scheid[0].text.lower() + werkwoord
+        delen.append(werkwoord)
+        return " ".join(delen)
+
+    def _doel_frases_om(self, verb):
+        """Doelen uit een om-te-bijzin, inclusief 'om te zagen en te boren'."""
+        verbs = [verb] + [c for c in verb.children
+                          if c.dep_ == "conj" and c.pos_ == "VERB"]
+        return [self._werkwoord_frase(v) for v in verbs]
+
+    def _doel_frases_voor(self, tok, sent):
+        """Doelen uit 'voor X' (en 'voor X en Y'): een zelfstandig naamwoord,
+        of 'het doorsnijden van hout'."""
+        out = []
+        kernen = [tok] + [c for c in tok.children
+                          if c.dep_ == "conj" and c.pos_ in ("NOUN", "VERB")
+                          and not self._voorzetsel_ertussen(sent, tok, c)]
+        for k in kernen:
+            if k.pos_ == "NOUN":
+                out.append(self._onderwerp_frase(k))
+            elif k.pos_ == "VERB":
+                van = [c for c in k.children
+                       if c.dep_ == "nmod" and c.pos_ in ("NOUN", "PROPN")
+                       and self._heeft_van(c)]
+                tekst = k.text.lower()
+                if van:
+                    tekst += " van " + van[0].text.lower()
+                out.append(tekst)
+        return out
+
+    def _gebruiksdoelen(self, verb, sent):
+        """Alle doelen die aan dit werkwoord hangen: om-bijzinnen en 'voor X'."""
+        doelen = []
+        for c in verb.children:
+            if (c.dep_ in ("advcl", "xcomp", "acl") and c.pos_ == "VERB"
+                    and self._heeft_voorzetsel(c, "om")):
+                doelen += self._doel_frases_om(c)
+            elif (c.dep_ == "obl" and c.pos_ in ("NOUN", "VERB")
+                  and self._heeft_voorzetsel(c, "voor")):
+                doelen += self._doel_frases_voor(c, sent)
+        return doelen
+
+    def _zoek_used_for(self, sent, zoek, de_toegestaan):
+        """'X wordt gebruikt voor/om ...', 'X is een middel om te ...' en
+        'X dient voor/om ...' -> (X, used_for, doel).
+
+        Bewust niet: 'gebruikt als ...' (dat is een rol, geen doel) en
+        'gebruikt bij/in ...' (dat is een plek of situatie)."""
+        out = []
+        for tok in sent:
+            subj = None
+            if (tok.dep_ == "ROOT" and tok.pos_ == "VERB"
+                    and tok.lemma_ == "gebruiken"):
+                # "Een hamer wordt gebruikt om ..."
+                if any(c.dep_ == "aux:pass" and c.lemma_ == "worden"
+                       and self._is_tegenwoordig(c) for c in tok.children):
+                    subjs = [c for c in tok.children
+                             if c.dep_ == "nsubj:pass" and c.pos_ in ("NOUN", "PROPN")]
+                    subj = subjs[0] if subjs else None
+                    doelen = self._gebruiksdoelen(tok, sent)
+                    regel = "used_for_gebruikt"
+            elif (tok.dep_ == "acl:relcl" and tok.pos_ == "VERB"
+                  and tok.lemma_ == "gebruiken"
+                  and tok.head.dep_ == "ROOT" and tok.head.pos_ == "NOUN"):
+                # "Een hamer is een gereedschap dat gebruikt wordt om ..."
+                kern = tok.head
+                if (any(c.dep_ == "aux:pass" and c.lemma_ == "worden"
+                        and self._is_tegenwoordig(c) for c in tok.children)
+                        and any(c.dep_ == "cop" and self._is_tegenwoordig(c)
+                                for c in kern.children)):
+                    subjs = [c for c in kern.children
+                             if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
+                    subj = subjs[0] if subjs else None
+                    doelen = self._gebruiksdoelen(tok, sent)
+                    regel = "used_for_gebruikt"
+            elif (tok.dep_ == "ROOT" and tok.pos_ == "NOUN"
+                  and tok.lemma_ in GEBRUIKSMIDDEL_WOORDEN
+                  and not any(c.dep_ == "case" for c in tok.children)):
+                # "Een stuur is een middel om een voertuig te navigeren."
+                if any(c.dep_ == "cop" and c.lemma_ == "zijn"
+                       and self._is_tegenwoordig(c) for c in tok.children):
+                    subjs = [c for c in tok.children
+                             if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
+                    subj = subjs[0] if subjs else None
+                    doelen = self._gebruiksdoelen(tok, sent)
+                    regel = "used_for_middel_om"
+            elif (tok.dep_ == "ROOT" and tok.pos_ == "VERB"
+                  and tok.lemma_ == "dienen" and self._is_hoofdwerkwoord_nu(tok)):
+                # "Een lamp dient voor verlichting." / "... dient om te ..."
+                subjs = [c for c in tok.children
+                         if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
+                subj = subjs[0] if subjs else None
+                doelen = self._gebruiksdoelen(tok, sent)
+                regel = "used_for_dient"
+            if subj is None or not doelen:
+                continue
+
+            frase = self._onderwerp_frase(subj)
+            if zoek and zoek not in frase:
+                continue
+            if self._is_vaag(frase):
+                continue
+            if de_toegestaan and zoek and frase == zoek:
+                toegestaan = {"een", "de", "het"}
+            else:
+                toegestaan = {"een"}
+            if not self._heeft_lidwoord(subj, toegestaan):
+                continue
+
+            for doel in doelen:
+                if (not doel or doel == frase or self._is_vaag(doel)
+                        or len(doel.split()) > MAX_WOORDEN_GEBRUIKSDOEL):
+                    continue
+                out.append((frase, "used_for", doel, regel))
         return out
 
     def _zoek_has_part(self, sent, zoek):

@@ -1445,13 +1445,15 @@ class IntentRouter:
     _REGEN_WOORDEN = frozenset({
         "regen", "regenen", "regent", "regende", "motregen", "motregent",
         "regenbui", "regenbuien", "bui", "buien", "miezeren",
+        "sneeuw", "sneeuwt", "sneeuwen", "sneeuwbui", "sneeuwbuien",
+        "onweer", "onweert", "onweren",
     })
     _REGEN_ZINNEN = ("weer droog", "klaart het op", "blijft het droog",
                      "wordt het droog")
     # Een regenvraag begint met een vraagwoord of eindigt op een "?".
     # Zonder dit zou ook "regen is water" (kennis!) hier terechtkomen.
     _REGEN_VRAAG_START = (
-        "gaat", "gaan", "regent", "komt", "blijft", "wordt", "wanneer",
+        "gaat", "gaan", "regent", "sneeuwt", "onweert", "komt", "blijft", "wordt", "wanneer",
         "hoe lang", "hoelang", "hoe laat", "is het", "is er", "zal",
         "zou", "houdt", "stopt", "valt", "krijgen", "moet", "kan",
     )
@@ -1489,14 +1491,26 @@ class IntentRouter:
         if not (t.endswith("?") or t.startswith(self._REGEN_VRAAG_START)):
             return False
 
+        self._stuur_regen_vraag(text)
+        return True
+
+    def _stuur_regen_vraag(self, text):
+        """
+        Gedeeld door detect_rain() en _actie_rain_classifier() (18
+        oktober 2026): kiest waar een regenvraag heen gaat. Met een
+        dag-woord ("morgen", "zaterdag") naar de weermodule (voorspelling
+        per dag), anders naar de regenradar (rain.py, ~2 uur vooruit).
+        Eén plek, zodat de regex-route en de classifier-route nooit
+        uit elkaar kunnen lopen.
+        """
+        woorden = [w.strip(".,!?;:\"'()") for w in text.lower().split()]
         if any(w in self._REGEN_DAGWOORDEN for w in woorden):
             dbg(f"{C_BLUE}→ weather (regen met dag-woord){C_RESET}")
             self.event_bus.publish("intent_weather", {"text": text})
-            return True
+            return
 
         dbg(f"{C_BLUE}→ rain{C_RESET}")
         self.event_bus.publish("intent_rain", {"text": text})
-        return True
 
     # ---------------------------------------------------------
     # Weather
@@ -3930,6 +3944,7 @@ class IntentRouter:
         "chess_evaluation": "wil weten wat er mis ging met een zet",
         "memory_query": "iets wil weten over een eerder gesprek",
         "thanks": "me wil bedanken",
+        "rain": "iets over regen wil weten",
     }
 
     _CLASSIFIER_LABEL_NL_BEVESTIGING = {
@@ -3945,6 +3960,7 @@ class IntentRouter:
         "chess_evaluation": "weten wat er mis ging met een zet",
         "memory_query": "iets weten over een eerder gesprek",
         "thanks": "me bedanken",
+        "rain": "iets over regen weten",
     }
 
     # Generieke actie-koppeling per Intent Classifier-categorie (30
@@ -4015,6 +4031,16 @@ class IntentRouter:
         De tekst zelf wordt niet gebruikt.
         """
         self._stuur_bedankt_antwoord()
+
+    def _actie_rain_classifier(self, text):
+        """
+        Rain-via-classifier (18 oktober 2026): kaal, de volledige tekst
+        gaat mee. rain.py kiest zelf begin/stop/onweer uit woorden in de
+        tekst en antwoordt bij een zin zonder regenwoord ("moet ik een
+        paraplu meenemen") met het standaardantwoord "gaat het regenen".
+        Dag-woord-keuze gedeeld met detect_rain() via _stuur_regen_vraag().
+        """
+        self._stuur_regen_vraag(text)
 
     def _actie_preference_classifier(self, text):
         """
@@ -4109,6 +4135,7 @@ class IntentRouter:
         ),
         "memory_query": _actie_memory_query_classifier,
         "thanks": _actie_thanks_classifier,
+        "rain": _actie_rain_classifier,
     }
 
     # Sentiment-nuance-tekst per categorie, voor de bevestiging in

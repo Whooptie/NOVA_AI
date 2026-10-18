@@ -337,43 +337,47 @@ def test_presence_gate_triggert_niet_bij_niet_deelbare_loop_waarde():
     context_manager.update_presence_info.assert_not_called()
 
 
-def test_weather_gate_werkt_onafhankelijk_van_presence_gate():
+def test_weather_gate_triggert_wel_bij_deelbare_loop_waarde():
     """
-    Bewijst dat de gates NIET toevallig aan dezelfde teller vastzitten:
-    bij een aantal_loops-waarde die WEL deelbaar is door WEATHER_
-    CHECK_INTERVAL_MINUTEN maar NIET door PRESENCE_CHECK_INTERVAL_MINUTEN
-    (voor zover die twee verschillend zijn), moet enkel de weather-check
-    triggeren, niet de presence-check.
-
-    Als beide constantes toevallig gelijk staan in main.py, heeft deze
-    specifieke test geen onderscheidend vermogen meer -- dan slaan we
-    'm over in plaats van een vals resultaat te riskeren.
+    Bij aantal_loops == WEATHER_CHECK_INTERVAL_MINUTEN moet weather.
+    check_proactieve_waarschuwing() WEL aangeroepen worden.
     """
-    if main.WEATHER_CHECK_INTERVAL_MINUTEN == main.PRESENCE_CHECK_INTERVAL_MINUTEN:
-        pytest.skip(
-            "WEATHER_CHECK_INTERVAL_MINUTEN == PRESENCE_CHECK_INTERVAL_"
-            "MINUTEN in main.py -- deze test kan de twee gates dan niet "
-            "los van elkaar aantonen."
-        )
+    weather = MagicMock()
+    modules = {"weather": weather}
 
-    # Zoek de kleinste aantal_loops-waarde die WEL deelbaar is door
-    # WEATHER_CHECK_INTERVAL_MINUTEN maar NIET door PRESENCE_CHECK_
-    # INTERVAL_MINUTEN, zodat de twee gates hier gegarandeerd
-    # uiteenlopen.
+    _draai_1_iteratie_en_geef_loader_terug(
+        modules, aantal_loops_start=main.WEATHER_CHECK_INTERVAL_MINUTEN
+    )
+
+    weather.check_proactieve_waarschuwing.assert_called_once()
+
+
+def test_weather_en_presence_gates_zijn_onafhankelijk():
+    """
+    Bewijst dat de gates NIET toevallig aan dezelfde teller vastzitten.
+    Zoekt zelf de kleinste aantal_loops-waarde waarop precies EEN van de
+    twee gates (weather of presence) triggert -- welke dat is hangt af van
+    de intervallen in main.py (bv. 30 en 5: waarde 5 triggert enkel
+    presence). Dan moet precies die ene aangeroepen worden en de andere
+    niet. Zo blijft de test werken, wat de intervallen ook worden.
+
+    Staan beide intervallen op dezelfde waarde, dan is er geen onder-
+    scheidende waarde en slaan we over i.p.v. een vals resultaat te riskeren.
+    """
+    weer = main.WEATHER_CHECK_INTERVAL_MINUTEN
+    pres = main.PRESENCE_CHECK_INTERVAL_MINUTEN
+
     waarde = None
-    for kandidaat in range(
-        main.WEATHER_CHECK_INTERVAL_MINUTEN,
-        main.WEATHER_CHECK_INTERVAL_MINUTEN * (main.PRESENCE_CHECK_INTERVAL_MINUTEN + 1) + 1,
-        main.WEATHER_CHECK_INTERVAL_MINUTEN,
-    ):
-        if kandidaat % main.PRESENCE_CHECK_INTERVAL_MINUTEN != 0:
+    for kandidaat in range(1, weer * pres + 1):
+        if (kandidaat % weer == 0) != (kandidaat % pres == 0):
             waarde = kandidaat
             break
 
     if waarde is None:
         pytest.skip(
-            "Geen aantal_loops-waarde gevonden binnen een redelijk "
-            "bereik die weather wel en presence niet triggert."
+            "De weather- en presence-intervallen zijn gelijk (of altijd "
+            "samen deelbaar) -- geen waarde waarop precies een van de twee "
+            "triggert."
         )
 
     weather = MagicMock()
@@ -382,8 +386,74 @@ def test_weather_gate_werkt_onafhankelijk_van_presence_gate():
 
     _draai_1_iteratie_en_geef_loader_terug(modules, aantal_loops_start=waarde)
 
-    weather.check_proactieve_waarschuwing.assert_called_once()
-    context_manager.update_presence_info.assert_not_called()
+    if waarde % weer == 0:
+        weather.check_proactieve_waarschuwing.assert_called_once()
+        context_manager.update_presence_info.assert_not_called()
+    else:
+        context_manager.update_presence_info.assert_called_once()
+        weather.check_proactieve_waarschuwing.assert_not_called()
+
+
+def test_rain_gate_triggert_wel_bij_deelbare_loop_waarde():
+    """
+    Bij aantal_loops == RAIN_CHECK_INTERVAL_MINUTEN moet rain.
+    check_proactief() WEL aangeroepen worden.
+    """
+    rain = MagicMock()
+    modules = {"rain": rain}
+
+    _draai_1_iteratie_en_geef_loader_terug(
+        modules, aantal_loops_start=main.RAIN_CHECK_INTERVAL_MINUTEN
+    )
+
+    rain.check_proactief.assert_called_once()
+
+
+def test_rain_gate_triggert_niet_bij_niet_deelbare_loop_waarde():
+    """
+    Bij een waarde net onder het interval mag rain.check_proactief() niet
+    draaien (de radar wordt maar om de paar minuten gecheckt).
+    """
+    if main.RAIN_CHECK_INTERVAL_MINUTEN <= 1:
+        pytest.skip("RAIN_CHECK_INTERVAL_MINUTEN is 1 -- elke waarde is deelbaar.")
+
+    rain = MagicMock()
+    modules = {"rain": rain}
+
+    _draai_1_iteratie_en_geef_loader_terug(
+        modules, aantal_loops_start=main.RAIN_CHECK_INTERVAL_MINUTEN - 1
+    )
+
+    rain.check_proactief.assert_not_called()
+
+
+def test_fout_in_rain_stopt_de_rest_niet_en_wordt_geprint():
+    """
+    Een fout in rain.check_proactief() (bv. radar-API stuk) mag de
+    achtergrondthread niet laten crashen: de volgende modules in dezelfde
+    iteratie draaien gewoon door, en de fout wordt zichtbaar geprint.
+    """
+    kapotte_rain = MagicMock()
+    kapotte_rain.check_proactief.side_effect = RuntimeError("kunstmatige testfout")
+    emergence = MagicMock()
+    # Een waarde waarop zowel rain als emergence triggeren
+    waarde = main.RAIN_CHECK_INTERVAL_MINUTEN * main.EMERGENCE_CHECK_INTERVAL_MINUTEN
+
+    oude_stdout = sys.stdout
+    sys.stdout = buffer = io.StringIO()
+    try:
+        _draai_1_iteratie_en_geef_loader_terug(
+            {"rain": kapotte_rain, "emergence_engine": emergence},
+            aantal_loops_start=waarde,
+        )
+    finally:
+        sys.stdout = oude_stdout
+
+    assert "Fout in rain.check_proactief" in buffer.getvalue()
+    # De helper draait `waarde` rondes, dus emergence komt meerdere keren aan de beurt.
+    # Het punt van de test: rain gaf elke 5e ronde een fout, en emergence draaide toch door.
+    assert emergence.reflect.call_count == waarde // main.EMERGENCE_CHECK_INTERVAL_MINUTEN
+    assert kapotte_rain.check_proactief.call_count == waarde // main.RAIN_CHECK_INTERVAL_MINUTEN
 
 
 if __name__ == "__main__":

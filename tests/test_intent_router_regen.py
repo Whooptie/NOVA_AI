@@ -53,6 +53,13 @@ def router(bus):
         "blijft het droog vandaag",
         "komt er een bui aan",
         "gaat het weer regenen",
+        "gaat het sneeuwen",
+        "sneeuwt het",
+        "wanneer stopt het met sneeuwen",
+        "gaat het onweren",
+        "onweert het",
+        "is er onweer op komst",
+        "wanneer houdt het onweer op",
     ],
 )
 def test_regenvraag_gaat_naar_intent_rain(router, bus, tekst):
@@ -62,7 +69,8 @@ def test_regenvraag_gaat_naar_intent_rain(router, bus, tekst):
 
 @pytest.mark.parametrize(
     "tekst",
-    ["gaat het morgen regenen", "regent het overmorgen?", "gaat het zaterdag regenen"],
+    ["gaat het morgen regenen", "regent het overmorgen?", "gaat het zaterdag regenen",
+     "gaat het morgen sneeuwen", "gaat het morgen onweren"],
 )
 def test_regenvraag_met_dagwoord_gaat_naar_de_weermodule(router, bus, tekst):
     # De radar kijkt maar ~2 uur vooruit; een dag-voorspelling is voor weather.py.
@@ -82,6 +90,11 @@ def test_regenvraag_met_dagwoord_gaat_naar_de_weermodule(router, bus, tekst):
         "onthoud regen is nat",
         "hou je van regen?",
         "ik vind regen leuk",
+        "wat is sneeuw",
+        "sneeuw is wit",
+        "hou je van sneeuw?",
+        "leg uit hoe onweer ontstaat",
+        "onweer is gevaarlijk",
         "hallo",
         "",
     ],

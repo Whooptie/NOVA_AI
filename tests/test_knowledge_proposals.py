@@ -240,7 +240,7 @@ def test_leeg_woord():
 
 
 def test_onbruikbare_feiten_worden_overgeslagen():
-    feiten = [{"onderwerp": "x", "relatie": "used_for", "doel": "y", "zin": ""},
+    feiten = [{"onderwerp": "x", "relatie": "property_of", "doel": "y", "zin": ""},
               {"onderwerp": "hond", "relatie": "is_a", "doel": "hond", "zin": ""}]
     bus, sem, kp = maak(feiten=feiten)
     vraag(bus)
@@ -404,3 +404,52 @@ def test_gewone_woorden_blijven_werken_als_voorheen():
     bus, sem, kp = maak()
     vraag(bus, "Fiets.")
     assert "1. fiets is een voertuig" in bus.teksten()[-1]
+
+    # ---------- Fase 11, used_for ----------
+USED_FOR = [{"onderwerp": "hamer", "relatie": "used_for",
+             "doel": "spijkers slaan", "zin": "z"}]
+
+
+def test_used_for_voorstel_wordt_getoond():
+    bus, sem, kp = maak(feiten=USED_FOR)
+    vraag(bus, "hamer")
+    assert "1. 'hamer' wordt gebruikt voor 'spijkers slaan'" in bus.teksten()[-1]
+    assert "hamer" not in sem.store.concepts          # nog niets opgeslagen
+
+
+def test_used_for_neem_over_slaat_het_doel_ongewijzigd_op():
+    # "wielen" zou bij is_a/part_of naar enkelvoud gaan; een doel is vrije tekst
+    feiten = [{"onderwerp": "fiets", "relatie": "used_for",
+               "doel": "wielen", "zin": "z"}]
+    bus, sem, kp = maak(feiten=feiten)
+    vraag(bus)
+    keuze(bus, "neem", 1)
+    rel = sem.store.concepts["fiets"]["senses"][0]["relations"][0]
+    assert (rel["type"], rel["target"]) == ("used_for", "wielen")
+    assert rel["status"] == "confirmed" and rel["source"] == "wikipedia"
+
+
+def test_used_for_afwijzen_geeft_tombstone_en_komt_niet_terug():
+    bus, sem, kp = maak(feiten=USED_FOR)
+    vraag(bus, "hamer")
+    keuze(bus, "laat_vallen", 1)
+    assert sem.store.concepts["hamer"]["senses"][0]["relations"][0]["status"] == "rejected"
+    vraag(bus, "hamer")
+    assert "eerder afgewezen" in bus.teksten()[-1]
+
+def test_kandidaat_met_haakjes_van_een_ander_woord_wordt_overgeslagen():
+    # echte lijst van 'extraheer hamer': "Hamar (volk)" is een ander woord
+    bus, sem, kp = maak(tekst="Hamer kan verwijzen naar:",
+                        kandidaten=["Hamar (volk)", "Hamer (Idaho)",
+                                    "Hamer (gereedschap)", "Hamer"])
+    vraag(bus, "hamer")
+    t = bus.teksten()[-1]
+    assert "hamar" not in t
+    assert "extraheer hamer (gereedschap)" in t and "extraheer hamer (idaho)" in t
+
+
+def test_kandidaat_zonder_haakjes_blijft_staan():
+    bus, sem, kp = maak(tekst=DOORVERWIJS_TEKST, kandidaten=["Neerslag", "Kwik (element)"])
+    vraag(bus, "regen")
+    t = bus.teksten()[-1]
+    assert "extraheer neerslag" in t and "kwik" not in t

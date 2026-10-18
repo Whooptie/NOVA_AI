@@ -60,3 +60,5 @@
 {"text": "beschrijf jezelf", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-16T13:22:44.605018"}
 {"text": "raak tepel", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-16T13:54:31.028201"}
 {"text": "bord", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-16T22:31:28.131429"}
+{"text": "komt er vanavond nog een bui", "categorie": "neutraal_gemengd", "marge": 0.0884, "grof_sentiment_regex": null, "tijdstip": "2026-10-18T19:54:33.883694"}
+{"text": "moet ik een paraplu meenemen in de stad", "categorie": "positief", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-18T19:54:52.553532"}

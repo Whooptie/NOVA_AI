@@ -379,3 +379,11 @@
 {"sjabloon_naam": "thanks", "gekozen_variant_index": 4, "reactie_sentiment": "positief", "moment": 1792318675.7079191, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "thanks", "gekozen_variant_index": 0, "variant_tekst": "Graag gedaan!", "entity": null, "response_style": null, "moment": "2026-10-18T12:18:03.838305", "reactie_sentiment": null}
 {"sjabloon_naam": "thanks", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792318683.8385217, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "variant_tekst": "Wacht… nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-10-18T19:54:24.774841", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe gaat het?", "entity": "coding", "response_style": null, "moment": "2026-10-18T19:54:24.775342", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792346064.7750337, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792346064.7755039, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "reflectie_kw_twijfel", "gekozen_variant_index": 0, "variant_tekst": "Oh… je weet het niet… waarover?", "entity": null, "response_style": null, "moment": "2026-10-18T19:54:42.169284", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_kw_twijfel", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792346082.1694827, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "reflectie_kw_twijfel", "gekozen_variant_index": 1, "variant_tekst": "Wacht… twijfel… wat houdt je tegen?", "entity": null, "response_style": null, "moment": "2026-10-18T19:54:52.600055", "reactie_sentiment": null}
+{"sjabloon_naam": "reflectie_kw_twijfel", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792346092.6002622, "type": "sentiment_koppeling"}

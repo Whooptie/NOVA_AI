@@ -22,16 +22,22 @@ from modules.weather.rain import (
     RainModule,
     Slot,
     analyseer,
+    analyseer_onweer,
+    beslis_onweer,
     beslis_proactief,
+    bepaal_soort,
     bepaal_vraagtype,
     duur_tekst,
     formuleer_begin,
+    formuleer_onweer,
     formuleer_stop,
     horizon_tekst,
     intensiteit_tekst,
     minuten_tekst,
     parse_buienradar,
     parse_open_meteo,
+    parse_typeinfo,
+    pas_soort_toe,
     waarde_naar_mm_u,
 )
 
@@ -644,3 +650,269 @@ def test_check_proactief_crasht_niet_als_radar_weg_is(rm, bus, monkeypatch):
                  open_meteo=ConnectionError("ook weg"))
     assert rm.check_proactief(nu=DAG) is None
     assert bus.gepubliceerd == []
+
+
+# ---------------------------------------------------------------
+# Soort neerslag: sneeuw en natte sneeuw
+# ---------------------------------------------------------------
+
+def maak_typeinfo(eerste_start, rijen):
+    """rijen = lijst van (regen, sneeuw, code) per kwartier -> Open-Meteo-JSON."""
+    return {"minutely_15": {
+        "time": [(eerste_start + timedelta(minutes=15 * i)).strftime("%Y-%m-%dT%H:%M")
+                 for i in range(len(rijen))],
+        "rain": [r[0] for r in rijen],
+        "snowfall": [r[1] for r in rijen],
+        "weather_code": [r[2] for r in rijen],
+    }}
+
+
+DROOG = (0.0, 0.0, 3)
+REGEN = (0.5, 0.0, 61)
+SNEEUW = (0.0, 0.4, 71)
+NAT = (0.3, 0.2, 71)
+ONWEER = (1.0, 0.0, 95)
+
+
+def typeinfo_van(rijen, start=DAG):
+    return parse_typeinfo(maak_typeinfo(start, rijen))
+
+
+def test_parse_typeinfo_leest_kwartieren():
+    kw = typeinfo_van([REGEN, SNEEUW])
+    assert len(kw) == 2
+    assert kw[0].start == DAG and kw[0].einde == DAG + timedelta(minutes=15)
+    assert (kw[0].regen, kw[0].sneeuw, kw[0].code) == (0.5, 0.0, 61)
+    assert kw[1].sneeuw == 0.4
+
+
+@pytest.mark.parametrize("rommel", [{}, None, {"minutely_15": {}}, {"minutely_15": []},
+                                    {"minutely_15": {"time": "kapot"}}])
+def test_parse_typeinfo_rommel_geeft_lege_lijst(rommel):
+    assert parse_typeinfo(rommel) == []
+
+
+def test_parse_typeinfo_ontbrekende_velden_worden_none():
+    # De gewone regen-terugval (alleen 'precipitation') mag dit niet laten crashen.
+    kw = parse_typeinfo(ECHTE_OPEN_METEO)
+    assert len(kw) == 12 and kw[0].regen is None and kw[0].code is None
+
+
+@pytest.mark.parametrize(
+    "rij, verwacht",
+    [
+        (REGEN, "regen"),
+        (SNEEUW, "sneeuw"),
+        (NAT, "natte sneeuw"),
+        ((0.0, 0.0, 73), "sneeuw"),   # alleen de weercode zegt sneeuw
+        ((0.0, 0.0, 86), "sneeuw"),   # sneeuwbui
+        ((0.0, None, None), "regen"),  # geen soort-info: regen
+    ],
+)
+def test_bepaal_soort_nu(rij, verwacht):
+    analyse = analyse_van([R] * 4 + [D] * 20)
+    assert bepaal_soort(typeinfo_van([rij] * 8), DAG, analyse) == verwacht
+
+
+def test_bepaal_soort_kijkt_naar_het_begin_van_de_bui():
+    # Droog nu, over 30 min begint het: het weermodel zegt dan sneeuw.
+    analyse = analyse_van([D] * 6 + [R, R] + [D] * 16)
+    typeinfo = typeinfo_van([DROOG, DROOG, SNEEUW, SNEEUW])
+    assert bepaal_soort(typeinfo, DAG, analyse) == "sneeuw"
+
+
+def test_bepaal_soort_zonder_gegevens_is_regen():
+    analyse = analyse_van([R] * 4 + [D] * 20)
+    assert bepaal_soort([], DAG, analyse) == "regen"
+    assert bepaal_soort(typeinfo_van([SNEEUW]), DAG, None) == "regen"
+
+
+def test_bepaal_soort_droog_is_regen():
+    assert bepaal_soort(typeinfo_van([SNEEUW] * 8), DAG, analyse_van([D] * 24)) == "regen"
+
+
+@pytest.mark.parametrize(
+    "zin, soort, verwacht",
+    [
+        ("Het regent nu al (lichte regen).", "regen", "Het regent nu al (lichte regen)."),
+        ("Het regent nu al (lichte regen).", "sneeuw", "Het sneeuwt nu al (lichte sneeuw)."),
+        ("Het regent nu al (lichte motregen).", "sneeuw", "Het sneeuwt nu al (lichte sneeuw)."),
+        ("Het regent nu al (zware regen).", "natte sneeuw", "Het sneeuwt nu al (natte sneeuw)."),
+        ("Het stopt over ongeveer 15 minuten met regenen.", "sneeuw",
+         "Het stopt over ongeveer 15 minuten met sneeuwen."),
+        ("Maar zo meteen begint het opnieuw te regenen.", "sneeuw",
+         "Maar zo meteen begint het opnieuw te sneeuwen."),
+        ("Daarna zie ik geen regen aankomen.", "sneeuw", "Daarna zie ik geen sneeuw aankomen."),
+    ],
+)
+def test_pas_soort_toe(zin, soort, verwacht):
+    assert pas_soort_toe(zin, soort) == verwacht
+
+
+def test_pas_soort_toe_raakt_andere_woorden_niet():
+    zin = "Ik kon de regenradar niet bereiken, motregen ook niet."
+    assert pas_soort_toe(zin, "sneeuw") == zin
+
+
+def test_proactief_meldt_sneeuw_als_het_weermodel_sneeuw_zegt():
+    analyse = analyse_van([D] * 3 + [R, R] + [D] * 19)
+    zin, _ = beslis_proactief(analyse, DAG, LEEG, "sneeuw")
+    assert zin == "Let op: het begint over ongeveer 15 minuten te sneeuwen (lichte sneeuw)."
+
+
+def test_vraag_over_sneeuw_krijgt_sneeuwwoorden(rm, monkeypatch):
+    monkeypatch.setattr(rm, "haal_typeinfo", lambda lat, lon: typeinfo_van(
+        [SNEEUW] * 8, start=datetime(2026, 10, 18, 12, 45)))
+    nep_requests(monkeypatch,
+                 buienradar=FakeResponse(200, text=ECHTE_BUIENRADAR),
+                 open_meteo=FakeResponse(500))
+    antwoord = rm.maak_antwoord("Aartrijke", "begin", nu=NU_ECHT, woord="sneeuw")
+    assert antwoord.startswith("Het sneeuwt nu al (lichte sneeuw).")
+    assert "regen" not in antwoord
+
+
+def test_droge_sneeuwvraag_gebruikt_het_woord_uit_de_vraag(rm, monkeypatch):
+    nep_requests(monkeypatch,
+                 buienradar=FakeResponse(200, text="".join(
+                     f"000|{13 + (5 * i) // 60:02d}:{(5 * i) % 60:02d}\n" for i in range(24))),
+                 open_meteo=FakeResponse(500))
+    antwoord = rm.maak_antwoord("Aartrijke", "stop", nu=NU, woord="sneeuw")
+    assert antwoord.startswith("Het sneeuwt nu niet")
+
+
+def test_on_rain_herkent_sneeuwvraag(rm, bus, monkeypatch):
+    monkeypatch.setattr(rm, "haal_typeinfo", lambda lat, lon: [])
+    nep_requests(monkeypatch,
+                 buienradar=FakeResponse(200, text="".join(
+                     f"000|{13 + (5 * i) // 60:02d}:{(5 * i) % 60:02d}\n" for i in range(24))),
+                 open_meteo=FakeResponse(500))
+    monkeypatch.setattr(rain, "nu_lokaal", lambda: NU)
+    rm.on_rain({"text": "gaat het sneeuwen"})
+    assert "Het blijft droog" in bus.gepubliceerd[0][1]["text"]
+
+
+def test_haal_typeinfo_geeft_lege_lijst_bij_fout(rm, monkeypatch):
+    nep_requests(monkeypatch, buienradar=FakeResponse(500),
+                 open_meteo=ConnectionError("weg"))
+    assert rm.haal_typeinfo(51.12, 3.09) == []
+    nep_requests(monkeypatch, buienradar=FakeResponse(500),
+                 open_meteo=FakeResponse(400, text="Unknown variable"))
+    assert rm.haal_typeinfo(51.12, 3.09) == []
+
+
+# ---------------------------------------------------------------
+# Onweer
+# ---------------------------------------------------------------
+
+@pytest.mark.parametrize(
+    "tekst", ["gaat het onweren", "is er onweer op komst", "wanneer stopt het onweer",
+              "wanneer houdt het onweer op", "onweert het"],
+)
+def test_bepaal_vraagtype_onweer(tekst):
+    assert bepaal_vraagtype(tekst) == "onweer"
+
+
+def test_analyseer_onweer_later():
+    info = analyseer_onweer(typeinfo_van([DROOG, DROOG, ONWEER, ONWEER, DROOG, DROOG]), DAG)
+    assert info["nu"] is False
+    assert info["begin_min"] == 30
+    assert info["einde_min"] == 60
+    assert info["horizon_min"] == 90
+
+
+def test_analyseer_onweer_nu():
+    info = analyseer_onweer(typeinfo_van([ONWEER, ONWEER, DROOG, DROOG]), DAG)
+    assert info["nu"] is True and info["begin_min"] == 0 and info["einde_min"] == 30
+
+
+def test_analyseer_onweer_tot_het_einde_van_de_data():
+    info = analyseer_onweer(typeinfo_van([DROOG, ONWEER, ONWEER]), DAG)
+    assert info["begin_min"] == 15 and info["einde_min"] is None
+
+
+def test_analyseer_onweer_geen_onweer_en_geen_gegevens():
+    info = analyseer_onweer(typeinfo_van([DROOG] * 6), DAG)
+    assert info["begin_min"] is None and info["nu"] is False
+    assert analyseer_onweer([], DAG) is None
+
+
+def test_analyseer_onweer_negeert_kwartieren_in_het_verleden():
+    verleden = DAG - timedelta(hours=2)
+    assert analyseer_onweer(typeinfo_van([ONWEER, ONWEER], start=verleden), DAG) is None
+
+
+@pytest.mark.parametrize(
+    "rijen, begint",
+    [
+        ([ONWEER, ONWEER, DROOG, DROOG], "Er is nu kans op onweer. Volgens de verwachting is het over ongeveer 30 minuten voorbij."),
+        ([DROOG, ONWEER, DROOG, DROOG], "Er is kans op onweer over ongeveer 15 minuten."),
+        ([DROOG] * 6, "De komende 1 uur en 30 minuten zie ik geen onweer"),
+        ([ONWEER] * 4, "Er is nu kans op onweer, en dat blijft zo tot minstens 1 uur."),
+    ],
+)
+def test_formuleer_onweer(rijen, begint):
+    zin = formuleer_onweer(analyseer_onweer(typeinfo_van(rijen), DAG))
+    assert zin.startswith(begint)
+    assert "geen bliksemradar" in zin  # eerlijk over de bron
+
+
+def test_onweer_antwoord_via_de_module(rm, monkeypatch):
+    nep_requests(monkeypatch, buienradar=FakeResponse(500),
+                 open_meteo=FakeResponse(200, json_data=maak_typeinfo(DAG, [DROOG, ONWEER, DROOG, DROOG])))
+    antwoord = rm.maak_antwoord("Aartrijke", "onweer", nu=DAG)
+    assert antwoord.startswith("Er is kans op onweer over ongeveer 15 minuten.")
+
+
+def test_onweer_antwoord_zonder_gegevens(rm, monkeypatch):
+    nep_requests(monkeypatch, buienradar=FakeResponse(500), open_meteo=ConnectionError("weg"))
+    assert rm.maak_antwoord("Aartrijke", "onweer", nu=DAG) == \
+        "Ik kon de onweersgegevens nu niet bereiken."
+
+
+def test_onweer_proactief_meldt_een_keer():
+    info = analyseer_onweer(typeinfo_van([DROOG, DROOG, ONWEER, DROOG]), DAG)  # over 30 min
+    zin1, staat = beslis_onweer(info, DAG, LEEG)
+    zin2, staat = beslis_onweer(info, DAG + timedelta(minutes=5), staat)
+    assert zin1.startswith("Let op: er is kans op onweer over ongeveer 30 minuten.")
+    assert zin2 is None
+
+
+def test_onweer_proactief_zwijgt_als_het_te_ver_weg_is():
+    typeinfo = typeinfo_van([DROOG] * 4 + [ONWEER, DROOG])  # over 60 min
+    info = analyseer_onweer(typeinfo, DAG)
+    assert beslis_onweer(info, DAG, LEEG)[0] is None
+
+
+def test_onweer_proactief_zwijgt_als_het_al_onweert():
+    # Onweer dat er al is, meldt weather.py (huidig weer).
+    info = analyseer_onweer(typeinfo_van([ONWEER, DROOG]), DAG)
+    assert beslis_onweer(info, DAG, LEEG)[0] is None
+
+
+@pytest.mark.parametrize("uur", [23, 2, 6])
+def test_onweer_proactief_zwijgt_s_nachts(uur):
+    nu = datetime(2026, 10, 18, uur, 0)
+    info = analyseer_onweer(typeinfo_van([DROOG, ONWEER], start=nu), nu)
+    assert beslis_onweer(info, nu, LEEG)[0] is None
+
+
+def test_onweer_proactief_wist_melding_als_het_onweer_verdwijnt():
+    staat = {"gemeld": True, "laatste": DAG}
+    _, staat = beslis_onweer(analyseer_onweer(typeinfo_van([DROOG] * 6), DAG), DAG, staat)
+    assert staat["gemeld"] is False
+
+
+def test_onweer_proactief_maximaal_een_per_uur():
+    staat = {"gemeld": False, "laatste": DAG - timedelta(minutes=30)}
+    info = analyseer_onweer(typeinfo_van([DROOG, ONWEER]), DAG)
+    assert beslis_onweer(info, DAG, staat)[0] is None
+
+
+def test_check_proactief_meldt_onweer_ook_zonder_regenradar(rm, bus, monkeypatch):
+    # Buienradar valt weg en Open-Meteo geeft wel onweerscodes.
+    nep_requests(monkeypatch, buienradar=ConnectionError("weg"),
+                 open_meteo=FakeResponse(200, json_data=maak_typeinfo(DAG, [DROOG, DROOG, ONWEER, DROOG])))
+    zin = rm.check_proactief(nu=DAG)
+    assert "kans op onweer over ongeveer 30 minuten" in zin
+    assert bus.gepubliceerd[0][0] == "layer4_response"
+    assert rm.check_proactief(nu=DAG + timedelta(minutes=5)) is None

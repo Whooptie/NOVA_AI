@@ -8450,6 +8450,15 @@
             "source": "wikipedia",
             "status": "rejected",
             "created_at": "2026-10-17T19:10:59.283107"
+          },
+          {
+            "type": "used_for",
+            "target": "voertuig navigeren",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T18:42:00.475668",
+            "oorspronkelijke_bron": "wikipedia"
           }
         ],
         "source": "user",
@@ -8471,13 +8480,13 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-10-17T19:21:06.657180",
+      "updated_at": "2026-10-18T18:42:00.511599",
       "sources": [
         "user",
         "wikipedia"
       ],
-      "last_used_at": "2026-10-17T19:21:06.657180",
-      "usage_count": 3,
+      "last_used_at": "2026-10-18T18:42:00.475679",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
@@ -8490,6 +8499,10 @@
         {
           "timestamp": "2026-10-17T19:21:06.657180",
           "confidence": 0.8
+        },
+        {
+          "timestamp": "2026-10-18T18:42:00.475679",
+          "confidence": 1.0
         }
       ]
     },
@@ -8541,6 +8554,30 @@
         "old_value": null,
         "new_value": "Een fietsstuur wordt gebruikt om een fiets met de handen te sturen. Het is met het zitgedeelte en pedalen, een van de drie raakpunten van de bestuurder met de fiets.",
         "timestamp": "2026-10-17T19:21:06.657177"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "stuur#1",
+        "relation": {
+          "type": "used_for",
+          "target": "voertuig navigeren",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-10-18T18:42:00.475676"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "stuur#1",
+        "relation": {
+          "type": "used_for",
+          "target": "voertuig navigeren"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-18T18:42:00.511610"
       }
     ]
   },
@@ -50873,6 +50910,274 @@
         "old_value": "unverified",
         "new_value": "rejected",
         "timestamp": "2026-10-17T20:18:54.577130"
+      }
+    ]
+  },
+  "regenjas": {
+    "senses": [
+      {
+        "sense_id": "regenjas#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-18T17:54:42.123815",
+      "updated_at": "2026-10-18T17:54:42.124257",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-18T17:54:42.124257",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-18T17:54:42.124257",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "regenjas"
+        },
+        "timestamp": "2026-10-18T17:54:42.123825"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "regenjas#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-18T17:54:42.124254"
+      }
+    ]
+  },
+  "meenemen": {
+    "senses": [
+      {
+        "sense_id": "meenemen#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-18T17:54:52.560508",
+      "updated_at": "2026-10-18T17:54:52.560710",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-18T17:54:52.560710",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-18T17:54:52.560710",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "meenemen"
+        },
+        "timestamp": "2026-10-18T17:54:52.560513"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "meenemen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-18T17:54:52.560708"
+      }
+    ]
+  },
+  "steel": {
+    "senses": [
+      {
+        "sense_id": "steel#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "hamer",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T18:43:05.515553",
+            "oorspronkelijke_bron": "wikipedia"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-18T18:43:05.480642",
+      "updated_at": "2026-10-18T18:43:05.549410",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-18T18:43:05.515569",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-18T18:43:05.481208",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-18T18:43:05.515569",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "steel"
+        },
+        "timestamp": "2026-10-18T18:43:05.480648"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "steel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-18T18:43:05.481205"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "steel#1",
+        "relation": {
+          "type": "part_of",
+          "target": "hamer",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-10-18T18:43:05.515565"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "steel#1",
+        "relation": {
+          "type": "part_of",
+          "target": "hamer"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-18T18:43:05.549419"
+      }
+    ]
+  },
+  "handvat": {
+    "senses": [
+      {
+        "sense_id": "handvat#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "part_of",
+            "target": "hamer",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T18:43:05.617351",
+            "oorspronkelijke_bron": "wikipedia"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-18T18:43:05.583150",
+      "updated_at": "2026-10-18T18:43:05.651670",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-18T18:43:05.617368",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-18T18:43:05.583348",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-10-18T18:43:05.617368",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "handvat"
+        },
+        "timestamp": "2026-10-18T18:43:05.583159"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "handvat#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-18T18:43:05.583346"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "handvat#1",
+        "relation": {
+          "type": "part_of",
+          "target": "hamer",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-10-18T18:43:05.617364"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "handvat#1",
+        "relation": {
+          "type": "part_of",
+          "target": "hamer"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-10-18T18:43:05.651680"
       }
     ]
   }

@@ -83,12 +83,19 @@ def get_help():
   wijs af 3                             (wijst die relatie af)
 
 📖 KENNIS UIT WIKIPEDIA (voorstellen)
+  wiki fiets                            (haalt de definitie op; daarna vraagt Nova of je ook de
+                                         voorstellen wilt zien: typ 'ja')
   extraheer fiets                       (Nova zoekt feiten in de Wikipedia-inleiding en toont ze
                                          als genummerde lijst; er wordt NIETS opgeslagen)
+                                        (ook: haal kennis uit wikipedia over fiets)
+  extraheer regen (neerslag)            (kan een woord meerdere dingen betekenen, dan toont Nova
+                                         de mogelijkheden en kies je er zelf een)
   neem 2 over                           (slaat voorstel 2 op en bevestigt het meteen)
   neem alles over
   laat 2 vallen                         (wijst voorstel 2 af; het komt niet meer terug)
-                                        (voorstellen zijn "X is een Y" en "X bestaat uit ...";
+                                        (voorstellen zijn "X is een Y", "X bestaat uit ...",
+                                         "X is onderdeel van Y", "X veroorzaakt Y" en
+                                         "X wordt gebruikt voor Y";
                                          de nummers blijven 10 minuten geldig)
 
 🗑️ WEERLEGGEN EN VERWIJDEREN

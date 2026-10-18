@@ -210,6 +210,15 @@ WEATHER_CHECK_INTERVAL_MINUTEN = 30
 # melding per bui, max. 1 per uur, stil van 23:00 tot 07:00).
 RAIN_CHECK_INTERVAL_MINUTEN = 5
 
+# Hoe vaak Nova controleert of de ochtendsamenvatting van het weer aan de
+# beurt is ("Goedemorgen Kevin! Vandaag wordt het ...") — zie weather.py's
+# check_ochtend_samenvatting(). Dat is goedkoop: de module kijkt eerst enkel
+# naar de klok en of het vandaag al gedaan is (geen internet nodig). Alleen
+# als het de ochtend is en het nog niet gebeurd is, vraagt ze via
+# _layer5_laat_spreken_toe() aan Layer 5 of Kevin er is. Zo komt de samenvatting de
+# eerste keer dat Kevin er 's ochtends is, en hoogstens 1x per dag.
+OCHTEND_CHECK_INTERVAL_MINUTEN = 5
+
 # Hoe vaak Layer 7 (emergence_engine.py) reflecteert op verzamelde
 # inzichten (woordverband/tijdspatroon/kennisdichtheid/personality_
 # drift). In tegenstelling tot PRESENCE/WEATHER hierboven is dit GEEN
@@ -332,6 +341,35 @@ def installeer_stopsignaal(loader):
         print(f"[Afsluiten] Kon geen stopsignaal-afhandeling registreren: {e}")
 
 
+def _layer5_laat_spreken_toe(loader):
+    """
+    Mag Nova nu spontaan iets zeggen? Vraagt het aan Layer 5
+    (context_manager.can_interrupt(): is Kevin er, kan hij het zien, is het
+    een geschikt moment) — de vaste regel voor proactieve modules.
+
+    - Ontbreekt context_manager, dan mag het wel: Layer 5 ontbreken mag Nova
+      nooit stiller maken dan voorheen (zelfde regel als bij
+      session_watcher.check_pauze()).
+    - Gaat het vragen zelf mis, dan mag het NIET: liever een melding later
+      dan een melding tegen een lege kamer.
+    """
+    context_manager = loader.loaded_modules.get("context_manager")
+    if context_manager is None:
+        return True
+
+    try:
+        antwoord = context_manager.can_interrupt()
+    except Exception as e:
+        print(f"[Achtergrondthread] Fout in context_manager.can_interrupt(): {e}")
+        return False
+
+    # Voor het geval can_interrupt() ooit (mag, reden) teruggeeft: een
+    # gevulde tuple is altijd "waar", dus pak expliciet het eerste deel.
+    if isinstance(antwoord, tuple):
+        antwoord = antwoord[0] if antwoord else False
+    return bool(antwoord)
+
+
 def achtergrond_loop(loader):
     """
     Draait continu op de achtergrond, los van de input()-lus in main().
@@ -441,6 +479,20 @@ def achtergrond_loop(loader):
                     rain.check_proactief()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in rain.check_proactief(): {e}")
+
+        # Ochtendsamenvatting van het weer — hoogstens 1x per dag, in de
+        # ochtend, en pas als Kevin er is. De lambda wordt door weather.py
+        # alleen aangeroepen als al de rest klopt, zodat Layer 5 niet elke
+        # 5 minuten de hele dag door gevraagd wordt.
+        if aantal_loops % OCHTEND_CHECK_INTERVAL_MINUTEN == 0:
+            weather_ochtend = loader.loaded_modules.get("weather")
+            if weather_ochtend:
+                try:
+                    weather_ochtend.check_ochtend_samenvatting(
+                        mag_spreken=lambda: _layer5_laat_spreken_toe(loader)
+                    )
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in weather.check_ochtend_samenvatting(): {e}")
 
         # Layer 7 — periodiek reflecteren op verzamelde inzichten
         # (woordverband/tijdspatroon/kennisdichtheid/personality_drift).

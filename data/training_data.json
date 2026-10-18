@@ -192,7 +192,7 @@
     },
     {
       "tekst": "gaat het regenen vandaag",
-      "label": "weather",
+      "label": "rain",
       "bron": "handmatig"
     },
     {
@@ -222,17 +222,17 @@
     },
     {
       "tekst": "moet ik een paraplu meenemen",
-      "label": "weather",
+      "label": "rain",
       "bron": "handmatig"
     },
     {
       "tekst": "gaat het vandaag regenen of niet",
-      "label": "weather",
+      "label": "rain",
       "bron": "handmatig"
     },
     {
       "tekst": "is het buiten aan het regenen",
-      "label": "weather",
+      "label": "rain",
       "bron": "handmatig"
     },
     {
@@ -257,7 +257,7 @@
     },
     {
       "tekst": "wordt het nog droog vandaag",
-      "label": "weather",
+      "label": "rain",
       "bron": "handmatig"
     },
     {
@@ -972,7 +972,7 @@
     },
     {
       "tekst": "zou ik een paraplu nodig hebben",
-      "label": "weather",
+      "label": "rain",
       "bron": "gecorrigeerd"
     },
     {
@@ -1364,11 +1364,241 @@
       "tekst": "mijn oprechte dank",
       "label": "thanks",
       "bron": "handmatig"
+    },
+    {
+      "tekst": "gaat het straks regenen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "komt er regen aan",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "gaat het nog regenen vandaag",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "regent het al",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het aan het regenen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "komt er een bui aan",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "krijgen we nog regen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "valt er regen op komst",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is er regen op komst",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "gaat het hard regenen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "zal het regenen vanavond",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "komen er buien aan",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ga ik nat worden onderweg",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "word ik nat als ik nu buiten ga",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "heb ik een paraplu nodig",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "heb ik een regenjas nodig",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "moet ik mijn regenjas aandoen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is een paraplu nodig vandaag",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "kan ik zonder paraplu weg",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wanneer stopt de regen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wanneer houdt het op met regenen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe lang blijft het nog regenen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wanneer is de bui voorbij",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "stopt het snel met regenen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe lang duurt de regen nog",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "klaart het snel op",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wanneer wordt het weer droog",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "blijft het droog vanavond",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "gaat het sneeuwen",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "komt er sneeuw aan",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "sneeuwt het al",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wanneer stopt de sneeuw",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "gaat het onweren",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "komt er onweer aan",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is er onweer op komst",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wanneer stopt het onweer",
+      "label": "rain",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het mooi weer buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe warm is het nu",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoeveel graden is het vandaag",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het zonnig vandaag",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "moet ik een jas aan vandaag",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wordt het warm dit weekend",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hoe koud wordt het vannacht",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het fris buiten",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat voor weer wordt het morgen",
+      "label": "weather",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "is het droog en zonnig",
+      "label": "weather",
+      "bron": "handmatig"
     }
   ],
   "metadata": {
     "laatst_getraind": "2026-10-18",
-    "aantal_voorbeelden": 273,
+    "aantal_voorbeelden": 319,
     "categorieën": [
       "activity",
       "chess",
@@ -1378,11 +1608,12 @@
       "math",
       "memory_query",
       "preference",
+      "rain",
       "self_architecture",
       "thanks",
       "time",
       "weather"
     ],
-    "laatste_layer0_scan": 1792318632.0577664
+    "laatste_layer0_scan": 1792346305.2257886
   }
 }

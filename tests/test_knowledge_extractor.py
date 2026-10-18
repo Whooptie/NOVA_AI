@@ -327,3 +327,85 @@ def test_vorm_van_geeft_is_a(ex):
 
 def test_vorm_zonder_van_is_geen_feit(ex):
     assert feiten(ex, "Een cirkel is een vorm.", "cirkel") == set()
+
+# ---- Fase 11: used_for ----
+def test_used_for_wordt_gebruikt_om(ex):
+    f = feiten(ex, "Een hamer wordt gebruikt om spijkers in hout te slaan.", "hamer")
+    assert ("hamer", "used_for", "spijkers slaan") in f
+
+
+def test_used_for_wordt_gebruikt_voor_zelfstandig_naamwoord(ex):
+    f = feiten(ex, "Een microscoop wordt gebruikt voor onderzoek.", "microscoop")
+    assert ("microscoop", "used_for", "onderzoek") in f
+
+
+def test_used_for_meerdere_doelen_met_voor(ex):
+    f = feiten(ex, "Een kompas wordt gebruikt voor navigatie en oriëntatie.", "kompas")
+    assert ("kompas", "used_for", "navigatie") in f
+    assert ("kompas", "used_for", "oriëntatie") in f
+
+
+def test_used_for_het_doorsnijden_van(ex):
+    f = feiten(ex, "Een zaag wordt gebruikt voor het doorsnijden van hout.", "zaag")
+    assert ("zaag", "used_for", "doorsnijden van hout") in f
+
+
+def test_used_for_meerdere_werkwoorden(ex):
+    f = feiten(ex, "Een zaag wordt gebruikt om hout te zagen en planken te snijden.", "zaag")
+    assert ("zaag", "used_for", "hout zagen") in f
+    assert ("zaag", "used_for", "planken snijden") in f
+
+
+def test_used_for_in_een_die_dat_bijzin(ex):
+    f = feiten(ex, "Een hamer is een gereedschap dat gebruikt wordt om spijkers te slaan.", "hamer")
+    assert ("hamer", "used_for", "spijkers slaan") in f
+    assert ("hamer", "is_a", "gereedschap") in f
+
+
+def test_used_for_middel_om(ex):
+    f = feiten(ex, "Een stuur is een middel om een voertuig te navigeren over de weg.", "stuur")
+    assert ("stuur", "used_for", "voertuig navigeren") in f
+    # "middel" zelf blijft een vaag woord, dus geen is_a
+    assert ("stuur", "is_a", "middel") not in f
+
+
+def test_used_for_dient_voor_en_dient_om(ex):
+    assert ("lamp", "used_for", "verlichting") in feiten(
+        ex, "Een lamp dient voor verlichting.", "lamp")
+    assert ("fiets", "used_for", "mensen vervoeren") in feiten(
+        ex, "Een fiets dient om mensen te vervoeren.", "fiets")
+
+
+def test_used_for_bijwoord_valt_weg(ex):
+    f = feiten(ex, "Een bril wordt gebruikt om beter te zien.", "bril")
+    assert ("bril", "used_for", "zien") in f
+
+
+@pytest.mark.parametrize("zin", [
+    "Een hout wordt gebruikt als brandstof.",              # een rol, geen doel
+    "Een kast wordt gebruikt in huis.",                    # plek, geen doel
+    "Een hamer is gebruikt om spijkers te slaan.",         # voltooid, vaak eenmalig
+    "Een hamer werd gebruikt om spijkers te slaan.",       # verleden tijd
+    "Een hamer kan gebruikt worden om spijkers te slaan.", # voorbehoud
+    "Een hamer wordt meestal gebruikt om spijkers te slaan.",
+    "Hij gebruikt een hamer om spijkers te slaan.",        # hamer is hier het voorwerp
+    "Hamers worden gebruikt voor timmerwerk.",             # geen lidwoord
+])
+def test_used_for_negatief(ex, zin):
+    f = ex.extract_from_text(zin, "hamer") + ex.extract_from_text(zin, "hout") \
+        + ex.extract_from_text(zin, "kast")
+    assert [x for x in f if x["relatie"] == "used_for"] == []
+
+
+def test_used_for_de_hamer_alleen_in_de_eerste_zin(ex):
+    eerste = feiten(ex, "De hamer wordt gebruikt voor timmerwerk.", "hamer")
+    assert ("hamer", "used_for", "timmerwerk") in eerste
+    later = feiten(ex, "Dit is een tekst over gereedschap. De hamer wordt gebruikt voor timmerwerk.", "hamer")
+    assert ("hamer", "used_for", "timmerwerk") not in later
+
+
+def test_used_for_echte_tekst_stuur(ex):
+    t = ("Een stuur is een middel om een voertuig te navigeren over de weg. "
+         "Het stuur is verbonden met de stuurinrichting.\n"
+         "Een auto heeft vaak een cirkelvormig stuur, maar soms is het rechthoekig (yoke-stuur).")
+    assert ("stuur", "used_for", "voertuig navigeren") in feiten(ex, t, "stuur")

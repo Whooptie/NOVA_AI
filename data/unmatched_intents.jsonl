@@ -153,3 +153,6 @@
 {"tekst": "ik werk teveel", "hoogste_gok": "preference", "confidence": 0.1532, "tijdstip": "2026-10-16T21:41:15.626829"}
 {"tekst": "blablabla", "hoogste_gok": "math", "confidence": 0.1338, "tijdstip": "2026-10-17T09:44:21.079372"}
 {"tekst": ":REBOOT", "hoogste_gok": "math", "confidence": 0.1545, "tijdstip": "2026-10-17T16:03:53.361709"}
+{"tekst": "heb ik een paraplu bij me nodig", "hoogste_gok": "weather", "confidence": 0.1598, "tijdstip": "2026-10-18T19:54:24.581846"}
+{"tekst": "moet ik morgen een regenjas aan", "hoogste_gok": "weather", "confidence": 0.2586, "tijdstip": "2026-10-18T19:54:42.122124"}
+{"tekst": "moet ik een paraplu meenemen in de stad", "hoogste_gok": "weather", "confidence": 0.2212, "tijdstip": "2026-10-18T19:54:52.560118"}
