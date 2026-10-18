@@ -8456,7 +8456,7 @@
             "target": "voertuig navigeren",
             "confidence": 1.0,
             "source": "user",
-            "status": "confirmed",
+            "status": "rejected",
             "created_at": "2026-10-18T18:42:00.475668",
             "oorspronkelijke_bron": "wikipedia"
           }
@@ -9995,6 +9995,13 @@
           "De kinderen maakten een sneeuwpop van de verse sneeuw."
         ],
         "relations": [
+          { "type": "is_a", 
+            "target": "neerslag", 
+            "confidence": 1.0, 
+            "source": "user", 
+            "status": "confirmed", 
+            "created_at": "2026-10-18T22:30:00.000000" 
+          },
           {
             "type": "related_to",
             "target": "wolk",
@@ -20317,6 +20324,13 @@
           "Door de hagel zat er een deuk in de auto."
         ],
         "relations": [
+          { "type": "is_a", 
+            "target": "neerslag", 
+            "confidence": 1.0, 
+            "source": "user", 
+            "status": "confirmed", 
+            "created_at": "2026-10-18T22:30:00.000000" 
+          },
           {
             "type": "related_to",
             "target": "regen",
@@ -24482,13 +24496,16 @@
     "senses": [
       {
         "sense_id": "gerelateerd#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Gerelateerd betekent dat twee dingen een verband met elkaar hebben.",
+        "pos": "adj",
+        "examples": [
+          "Regen en wolken zijn aan elkaar gerelateerd.",
+          "Zijn die twee vragen aan elkaar gerelateerd?"
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -46983,7 +47000,7 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "status": "unverified",
+        "status": "rejected",
         "audit_log": []
       }
     ],
@@ -50530,13 +50547,16 @@
     "senses": [
       {
         "sense_id": "ken#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Ken is een vorm van kennen: weten wie of wat iets of iemand is.",
+        "pos": "verb",
+        "examples": [
+          "Ik ken die man al jaren.",
+          "Ken jij het antwoord op deze vraag?"
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -50578,13 +50598,16 @@
     "senses": [
       {
         "sense_id": "beschrijf#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Beschrijven is vertellen of opschrijven hoe iets eruitziet of hoe het werkt.",
+        "pos": "verb",
+        "examples": [
+          "Kun je beschrijven hoe je huis eruitziet?",
+          "Beschrijf in je eigen woorden wat er gebeurde."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -50626,13 +50649,25 @@
     "senses": [
       {
         "sense_id": "voel#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Voelen is iets waarnemen met je huid of je lichaam, of een emotie hebben.",
+        "pos": "verb",
+        "examples": [
+          "Ik voel de koude wind op mijn gezicht.",
+          "Voel je je vandaag al beter?"
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "gevoel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -50674,13 +50709,16 @@
     "senses": [
       {
         "sense_id": "teveel#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Teveel betekent meer dan nodig of gewenst is.",
+        "pos": "adv",
+        "examples": [
+          "Er zit teveel suiker in deze thee.",
+          "Hij heeft teveel gegeten en voelt zich ziek."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -50722,9 +50760,12 @@
     "senses": [
       {
         "sense_id": "trapas#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "De trapas is de as in het midden van een fiets waaraan de trappers vastzitten en die de trapkracht overbrengt naar de ketting.",
+        "pos": "noun",
+        "examples": [
+          "Door de kapotte trapas kon ik niet meer trappen.",
+          "De trapas zit onderaan het frame van de fiets."
+        ],
         "relations": [
           {
             "type": "part_of",
@@ -50736,9 +50777,9 @@
             "oorspronkelijke_bron": "wikipedia"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -50917,13 +50958,33 @@
     "senses": [
       {
         "sense_id": "regenjas#1",
-        "definition": "unknown",
+        "definition": "Een regenjas is een waterdichte jas die je draagt als het regent.",
         "pos": "noun",
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "examples": [
+          "Neem je regenjas mee, want het gaat regenen.",
+          "Mijn regenjas houdt me droog in de bui."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "jas",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "regen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -50965,13 +51026,16 @@
     "senses": [
       {
         "sense_id": "meenemen#1",
-        "definition": "unknown",
-        "pos": "noun",
-        "examples": [],
+        "definition": "Meenemen is iets of iemand met je mee laten gaan naar een andere plaats.",
+        "pos": "verb",
+        "examples": [
+          "Vergeet niet je paraplu mee te nemen.",
+          "Ik neem mijn hond mee naar het park."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -51013,9 +51077,12 @@
     "senses": [
       {
         "sense_id": "steel#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "De steel is het lange deel van een gereedschap waaraan je het vasthoudt, zoals bij een hamer.",
+        "pos": "noun",
+        "examples": [
+          "De steel van de hamer is van hout.",
+          "Hij pakte de hamer bij de steel."
+        ],
         "relations": [
           {
             "type": "part_of",
@@ -51025,11 +51092,19 @@
             "status": "confirmed",
             "created_at": "2026-10-18T18:43:05.515553",
             "oorspronkelijke_bron": "wikipedia"
+          },
+          {
+            "type": "related_to",
+            "target": "handvat",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -51099,9 +51174,12 @@
     "senses": [
       {
         "sense_id": "handvat#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een handvat is het deel van een voorwerp waaraan je het vasthoudt.",
+        "pos": "noun",
+        "examples": [
+          "Het handvat van de koffer is gebroken.",
+          "Pak de pan bij het handvat vast."
+        ],
         "relations": [
           {
             "type": "part_of",
@@ -51111,11 +51189,19 @@
             "status": "confirmed",
             "created_at": "2026-10-18T18:43:05.617351",
             "oorspronkelijke_bron": "wikipedia"
+          },
+          {
+            "type": "related_to",
+            "target": "steel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
@@ -51178,6 +51264,174 @@
         "new_value": "confirmed",
         "old_confidence": 0.8,
         "timestamp": "2026-10-18T18:43:05.651680"
+      }
+    ]
+  },
+    "hamer": {
+    "senses": [
+      {
+        "sense_id": "hamer#1",
+        "definition": "Een hamer is een gereedschap met een zwaar hoofd aan een steel, waarmee je spijkers inslaat of dingen kapotslaat.",
+        "pos": "noun",
+        "examples": [
+          "Hij sloeg de spijker met een hamer in de muur.",
+          "De hamer ligt in de gereedschapskist."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gereedschap",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "steel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          },
+          {
+            "type": "has_part",
+            "target": "handvat",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-18T22:00:00.000000",
+      "updated_at": "2026-10-18T22:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-10-18T22:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-18T22:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "hamer"
+        },
+        "timestamp": "2026-10-18T22:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "hamer#1",
+        "old_value": null,
+        "new_value": "Een hamer is een gereedschap met een zwaar hoofd aan een steel, waarmee je spijkers inslaat of dingen kapotslaat.",
+        "timestamp": "2026-10-18T22:00:00.000000"
+      }
+    ]
+  },
+  "neerslag": {
+    "senses": [
+      {
+        "sense_id": "neerslag#1",
+        "definition": "Neerslag is water dat vanuit de lucht op de aarde valt, zoals regen, sneeuw of hagel.",
+        "pos": "noun",
+        "examples": [
+          "Morgen verwachten we veel neerslag in het noorden.",
+          "Regen en sneeuw zijn vormen van neerslag."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "regen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "sneeuw",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "hagel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "wolk",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "weer",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-18T22:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-18T22:00:00.000000",
+      "updated_at": "2026-10-18T22:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-10-18T22:00:00.000000",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-18T22:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "neerslag"
+        },
+        "timestamp": "2026-10-18T22:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "neerslag#1",
+        "old_value": null,
+        "new_value": "Neerslag is water dat vanuit de lucht op de aarde valt, zoals regen, sneeuw of hagel.",
+        "timestamp": "2026-10-18T22:00:00.000000"
       }
     ]
   }

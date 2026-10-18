@@ -1084,3 +1084,10 @@
 {"text": "extraheer hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T20:42:36.896423"}
 {"text": "extraheer hamer (gereedschap)", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T20:42:51.058044"}
 {"text": "neem alles over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-10-18T20:43:05.476154"}
+{"text": "welke onderdelen heeft hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T21:28:50.630652"}
+{"text": "welke soorten neerslag ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-18T21:28:59.198307"}
+{"text": "welke soorten neerslag ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-18T21:32:05.714992"}
+{"text": "is sneeuw een neerslag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-18T21:32:17.552536"}
+{"text": "is sneeuw neerslag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.035, "bron": "model_fallback", "tijdstip": "2026-10-18T21:32:25.221334"}
+{"text": "nee is sneeuw een neerslag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-10-18T21:32:43.633480"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T21:32:52.838151"}
