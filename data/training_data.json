@@ -1184,11 +1184,191 @@
       "tekst": "ik ben fan van sciencefiction",
       "label": "preference",
       "bron": "handmatig"
+    },
+    {
+      "tekst": "heel erg bedankt",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ontzettend bedankt voor je hulp",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dat was fijn, dankjewel",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "bedankt voor het antwoord",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dank u zeer",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "super bedankt nova",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "veel dank",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "wat lief van je, merci",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik wil je bedanken",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "bedankt voor de hulp",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dankjewel nova",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "oké bedankt",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "thanks a lot",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "duizend maal dank",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dat helpt me enorm, bedankt",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dankjewel, dat was precies wat ik nodig had",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "fijn, bedankt hé",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "hartelijk bedankt",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "bedankt voor alles",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "heel erg bedankt voor je hulp",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dankjewel voor de uitleg",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dank je wel nova",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "ik ben je dankbaar",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "bedankt voor de info",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "super, bedankt voor het antwoord",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "merci voor alles",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dankjewel voor je moeite",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "thanks voor de hulp",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "fantastisch, dankjewel",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "bedankt dat je me hielp",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "dank je voor je tijd",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "veel dank voor de hulp nova",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "echt bedankt",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "top bedankt voor het meedenken",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "tof dat je helpt, bedankt",
+      "label": "thanks",
+      "bron": "handmatig"
+    },
+    {
+      "tekst": "mijn oprechte dank",
+      "label": "thanks",
+      "bron": "handmatig"
     }
   ],
   "metadata": {
-    "laatst_getraind": "2026-10-17",
-    "aantal_voorbeelden": 237,
+    "laatst_getraind": "2026-10-18",
+    "aantal_voorbeelden": 273,
     "categorieën": [
       "activity",
       "chess",
@@ -1199,9 +1379,10 @@
       "memory_query",
       "preference",
       "self_architecture",
+      "thanks",
       "time",
       "weather"
     ],
-    "laatste_layer0_scan": 1792209846.5155902
+    "laatste_layer0_scan": 1792318632.0577664
   }
 }

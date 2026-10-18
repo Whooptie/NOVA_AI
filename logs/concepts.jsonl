@@ -298,3 +298,4 @@
 {"timestamp": "2026-10-16T19:41:04.642369", "event_type": "concept_created", "word": "voel", "source": "system", "new_value": {"word": "voel"}}
 {"timestamp": "2026-10-16T19:41:15.627165", "event_type": "concept_created", "word": "teveel", "source": "system", "new_value": {"word": "teveel"}}
 {"timestamp": "2026-10-17T17:05:17.924378", "event_type": "concept_created", "word": "trapas", "source": "system", "new_value": {"word": "trapas"}}
+{"timestamp": "2026-10-17T20:17:15.277012", "event_type": "concept_created", "word": "tractor", "source": "system", "new_value": {"word": "tractor"}}

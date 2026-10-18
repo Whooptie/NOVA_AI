@@ -6,9 +6,9 @@
     "warmte": 0.6,
     "spanning": 0.3
   },
-  "last_trigger": "kilte",
-  "last_reaction": "neutrale_blik",
-  "last_recovery_hint": "even_afstand_nemen",
+  "last_trigger": "waardering",
+  "last_reaction": "warme_glimlach",
+  "last_recovery_hint": null,
   "stability": 0.6,
   "volatility": 0.7,
   "regulation": {
@@ -21,7 +21,7 @@
     "threshold": 0.75,
     "signs_active": [],
     "last_overflow_behavior": "iets_sneller_pratend",
-    "last_trigger_timestamp": 1792248946.9972377,
+    "last_trigger_timestamp": 1792322263.1196346,
     "decay_per_minute": 0.05
   },
   "sync": {

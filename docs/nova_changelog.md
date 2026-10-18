@@ -1903,3 +1903,64 @@ Aanleiding: Nova vroeg soms "mag ik storen?" nadat Kevin zijn laptop al had dich
 **Live bevestigd (17 oktober 2026):** na `/reboot` met de drempel tijdelijk op 1 minuut verscheen `Onderbrekingsvraag voor 'werken_aan_nova_gedetecteerd' uitgesteld door Layer 5` terwijl `context` `Mag onderbreken: False` toonde (score -5: 2 anomalieën vandaag en een ongebruikelijk moment volgens Layer 2). Later die dag, met de drempel weer op 15, in het echte scenario: laptop dichtgeklapt (`Verbinding met laptop-client verbroken: no close frame received or sent`), geen vraag tegen een lege stoel (opnieuw `uitgesteld door Layer 5`), en na het openklappen `Activiteit-teller herstart voor 'werken_aan_nova_gedetecteerd' na 127 min zonder input` zonder directe vraag. Nog niet live gezien: een doorgekomen vraag na `can_interrupt() == True` en het wegblijven van `talking_to_nova`-vragen; dat controleren we in de dagelijkse log.
 
 **Bewust niet gedaan:** onbeantwoorde vragen apart tellen en activiteitsnamen samenvoegen (`coding_gedetecteerd`, `werken_aan_nova_gedetecteerd`, `coderen`). Eerst een paar weken kijken hoeveel antwoorden er nu binnenkomen. De tellingen onder de oude namen (`coderen`, `gamen`, `lezen`) tellen niet meer mee, omdat de tracker sinds Fase 6 alleen naar het tijdsvenster kijkt.
+
+---
+
+## ✅ Bug #50 — Layer 0-voorbeelden verdwenen bij de volgende hertraining (18 oktober 2026)
+
+**Ontdekt** doordat de hertraining-log afwisselend "1 Layer 0-voorbeeld" en daarna weer "hertrain gewoon op de basisset" (237) toonde. Kevin vroeg of Nova zo wel continu van zijn voorbeelden leert.
+
+**Oorzaak:** `retrain_vanuit_bestanden()` zette `metadata["laatste_layer0_scan"]` bij elke hertraining op het huidige tijdstip, en `_haal_layer0_voorbeelden_op()` leest alleen events NA dat tijdstip. Een gevonden Layer 0-voorbeeld zat daardoor enkel in het model van de hertraining waarin het gevonden werd. Het model wordt elke keer vanaf nul getraind en `training_data.json` blijft bewust schoon, dus bij de volgende hertraining zonder nieuwe gesprekken was het voorbeeld weer weg. Het leereffect van Fase 6 was daardoor tijdelijk.
+
+**Oplossing (`intent_classifier.py`):** nieuw bestand `data/layer0_opgenomen.jsonl` (zelfde idee als `gecorrigeerde_voorbeelden.jsonl`). Nieuwe `_bewaar_layer0_voorbeelden()` voegt elk nieuw gevonden voorbeeld toe (append). Nieuwe `_laad_layer0_opgenomen()` leest bij elke hertraining ALLE bewaarde voorbeelden in. Dubbele zinnen (zelfde tekst en label) tellen maar één keer mee, zodat een vaak getypte zin ("hey") het model niet te zwaar beïnvloedt. Labels die niet in de basisset staan worden overgeslagen. `training_data.json` blijft byte-voor-byte de schone basisset. `layer0_gebruikt.jsonl` blijft een inzage-logbestand dat Nova niet leest.
+
+**Eenmalig hersteld:** `layer0_gebruikt.jsonl` is gekopieerd naar `layer0_opgenomen.jsonl` (zelfde formaat), zodat de al gevonden voorbeelden niet verloren gingen.
+
+**Regressietest:** 4 nieuwe tests in `test_intent_classifier.py` (19 totaal; hele suite 1776: 1775 groen, 1 bewust overgeslagen). De kerntest bevestigt dat een Layer 0-voorbeeld ook na een tweede hertraining zonder nieuwe gesprekken in het model zit. Gecontroleerd dat die test op de oude code faalt (`[26, 24]` i.p.v. `[26, 26]`) en op de nieuwe slaagt.
+
+**Live bevestigd (18 oktober 2026):** twee keer `intent retrain` na elkaar, beide met "geen nieuwe topic_detected-events" en toch `237 basisvoorbeelden + 0 gecorrigeerde + 23 Layer 0-voorbeelden`, getraind op 260 voorbeelden. Vroeger zakte dat bij zo'n lege scan terug naar 237.
+
+---
+
+## ✅ `thanks` toegevoegd aan de Intent Classifier (12e categorie) + nieuwe intents beoordeeld (18 oktober 2026)
+
+**Aanleiding:** Kevin vroeg of er sinds de vorige ronde nieuwe intents zijn die in de classifier mogen. `intent_router.py` doorgelopen en elke `detect_*()` die we nog niet beoordeeld hadden bekeken.
+
+**Beoordeling:**
+
+- `thanks` ✅ gekoppeld. Kaal (geen woord of sub-type nodig) en onschuldig (een verkeerde gok geeft hooguit een overbodig "graag gedaan"). `_is_bedankje()` is een gesloten lijst (max 6 woorden, eerste woord moet een bedankwoord zijn) en mist dus zinnen als "heel erg bedankt" of "dat was fijn, dankjewel".
+- `on_this_day` 🟡 wachtkamer, samen met vakantie, holiday en calendar: het type (`geboren`/`overleden`/`events`) zit in de zinsformulering en is niet uit een classifier-gok te halen.
+- `uiterlijk` ❌ het `deel` (haar, ogen, ...) is niet af te leiden. Zelfde besluit als bij `identity` en `self_architecture`.
+- `body` ❌ de parameters (`type`, `sterkte`, `diepte`) zijn niet af te leiden uit een gok.
+- `uncertainty`, `uncertainty_lijst`, `kennis_extractie`, `temporal`, `temporal_periode`, `causes_check` en de keuze-commando's ("bevestig 3", "neem 2 over") ❌ ze hebben concepten en een relatietype nodig, of een nummer uit een lijst die net getoond werd.
+
+**Code (`intent_router.py`):** `detect_thanks()` opgesplitst, de antwoordkeuze zit nu in `_stuur_bedankt_antwoord()` en wordt gedeeld door de regex-route en de nieuwe `_actie_thanks_classifier()` (zelfde varianten en variant-feedback). `"thanks"` toegevoegd aan `_CLASSIFIER_ACTIE_REGISTER` en aan beide Nederlandse tekst-mappings (`"me wil bedanken"` en `"me bedanken"`).
+
+**Trainingsdata:** 36 voorbeelden voor `thanks` in `training_data.json` (nu 273 totaal, 12 categorieën). Met 18 voorbeelden haalden bedankzinnen buiten de set maar 0,15 tot 0,43, en onder 0,30 wordt een gok enkel gelogd. Met 36 werd dat 0,37 tot 0,70, hetzelfde datatekort-patroon als bij `time`, `greeting` en `memory_query`. Getest op een kopie van Kevins echte `training_data.json`: de andere categorieën bleven op hun eigen label.
+
+**Bewust zo:** de regex weigert zinnen met "maar/niet/geen" ("bedankt maar het werkt niet"). De classifier geeft daar 0,43, dus alleen een bevestigingsvraag en nooit een directe actie. Zegt Kevin "nee", dan leert Nova ervan.
+
+**Tests:** 4 nieuwe tests in `test_intent_router_thanks.py` (30 totaal): de classifier-actie stuurt een bedankt-antwoord, `thanks` staat in `_CLASSIFIER_ACTIE_REGISTER`, de regex-route en de classifier-route delen `_stuur_bedankt_antwoord()`, en een algemene bewaking dat elk label in het register een Nederlandse tekst heeft in beide mappings (slot tegen een herhaling van bug #38). Bevestigd dat drie van de vier op de oude router falen. De vierde slaagt ook op de oude code, want hij bewaakt toekomstige labels.
+
+**Live bevestigd (18 oktober 2026):** `intent retrain` gaf 273 basisvoorbeelden + 25 Layer 0-voorbeelden = 298, 12 categorieën. "ontzettend bedankt" (0,50), "ik wil je graag bedanken voor alles" (0,45) en "echt super bedankt hoor" (0,61) gaven elk "Bedoel je dat je me wil bedanken?" en na "ja" een "Graag gedaan!". `bedankt` liep nog via de regex en `hallo nova` bleef `greeting`.
+
+---
+
+## ✅ Regenradar: `rain.py` + `detect_rain()` (18 oktober 2026)
+
+**Aanleiding:** Kevin vroeg of Nova "gaat het regenen?" en "wanneer stopt het met regenen?" kan beantwoorden, en later ook zelf kan melden "over X minuten gaat het ...".
+
+**Haalbaarheid:** volledig symbolisch (getallen inlezen en vaste zinnen), geen LLM of ML nodig. Voor de nowcast zelf is een externe regenradar nodig. Die is hier een databron, geen onderdeel van Nova's redeneren.
+
+**Bronnen vooraf getest door Kevin zelf** (mijn eigen webaanvraag werd door Buienradar geweigerd en is niet omzeild): Buienradar raintext werkt, Open-Meteo `minutely_15` werkt. Buienradar is primair, Open-Meteo de terugval.
+
+**Nieuw:** `modules/weather/rain.py` (analyse van regenblokken, korte droge stukken, "daarna weer regen", middernacht-overgang, Belgische tijd via `zoneinfo`), `detect_rain()` in `intent_router.py` + `("rain", self.detect_rain)` vóór `weather` in `_build_intent_tabel_deel1()`.
+
+**Gevonden door de pytest:** "wanneer houdt het op met regenen" werd als "begin"-vraag gelezen omdat "houdt" en "op" los van elkaar staan. Opgelost met extra stopwoorden ("gedaan", "klaart") en een houdt+op-regel. Ook: "In gent:" werd "In Gent:" via `.title()`.
+
+**Tests:** `test_rain.py` (88) en `test_intent_router_regen.py` (29). Volledige suite daarna 1896 groen, 1 overgeslagen.
+
+**Live bevestigd (18 oktober 2026):** regenvraag, stopvraag, "wat is het weer" (blijft weather) en "gaat het morgen regenen" (via weather, met regenkans) werkten alle vier.
+
+**Proactieve melding (18 oktober 2026, Kevin akkoord):** `beslis_proactief()` + `RainModule.check_proactief()` in `rain.py`, en `RAIN_CHECK_INTERVAL_MINUTEN = 5` met een aanroep in `main.py`'s `achtergrond_loop()`. Nova meldt zelf "het begint over ongeveer 15 minuten te regenen" als het nu droog is en de regen binnen 20 minuten begint (minstens 0,5 mm/u), één keer per bui, max. 1 per uur en niet tussen 23:00 en 07:00. De nachtstilte heeft Claude zelf toegevoegd (niet gevraagd), als eenvoudig instelbare constante. 16 nieuwe tests (`test_rain.py` nu 104). Live bevestigd met een nepradar in de container: 1e check meldt, 2e check (5 min later) zwijgt. De echte aanroep vanuit de achtergrondthread nog niet bij een echte bui gezien.
+**Gevonden bij `main.py`:** `WEATHER_CHECK_INTERVAL_MINUTEN` stond nog op 1 (testwaarde) in plaats van 30.

@@ -201,7 +201,14 @@ PRESENCE_CHECK_INTERVAL_MINUTEN = 5
 # (onweer/sneeuw/extreem/mist/hagel/harde wind) — zie weather.py's
 # check_proactieve_waarschuwing(). Net als bij PRESENCE hierboven: gewoon
 # 1 getal, hoeveel minuten tussen elke check (30 = elke 30 minuten).
-WEATHER_CHECK_INTERVAL_MINUTEN = 1
+WEATHER_CHECK_INTERVAL_MINUTEN = 30
+
+# Hoe vaak Nova de regenradar checkt voor een proactieve melding
+# ("over 15 minuten begint het te regenen") — zie rain.py's
+# check_proactief(). De radar werkt per 5 minuten, vaker checken heeft
+# dus geen zin. Eigen spam-preventie zit in de module zelf (max. 1
+# melding per bui, max. 1 per uur, stil van 23:00 tot 07:00).
+RAIN_CHECK_INTERVAL_MINUTEN = 5
 
 # Hoe vaak Layer 7 (emergence_engine.py) reflecteert op verzamelde
 # inzichten (woordverband/tijdspatroon/kennisdichtheid/personality_
@@ -421,6 +428,19 @@ def achtergrond_loop(loader):
                     weather.check_proactieve_waarschuwing()
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in check_proactieve_waarschuwing(): {e}")
+
+        # Proactieve regenmelding ("over 15 minuten begint het te
+        # regenen") — elke RAIN_CHECK_INTERVAL_MINUTEN minuten. Zelfde
+        # patroon als de weercheck hierboven. rain.py beslist zelf of er
+        # echt iets gezegd wordt (zie beslis_proactief()), dus deze
+        # aanroep zorgt enkel dat de check OOIT vanzelf gebeurt.
+        if aantal_loops % RAIN_CHECK_INTERVAL_MINUTEN == 0:
+            rain = loader.loaded_modules.get("rain")
+            if rain:
+                try:
+                    rain.check_proactief()
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in rain.check_proactief(): {e}")
 
         # Layer 7 — periodiek reflecteren op verzamelde inzichten
         # (woordverband/tijdspatroon/kennisdichtheid/personality_drift).

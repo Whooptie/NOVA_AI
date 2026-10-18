@@ -1040,3 +1040,26 @@
 {"text": "wat is regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-17T21:41:00.299607"}
 {"text": "zijn er nog andere betekenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0876, "bron": "model_fallback", "tijdstip": "2026-10-17T21:41:11.282521"}
 {"text": "welk weer wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0319, "bron": "model_fallback", "tijdstip": "2026-10-17T21:42:37.168497"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-17T22:16:13.419765"}
+{"text": "wiki paard", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T22:16:18.145625"}
+{"text": "3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T22:16:28.691241"}
+{"text": "wiki maanvis", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T22:16:39.589255"}
+{"text": "wiki tractor", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-10-17T22:17:14.330754"}
+{"text": "neem 1 over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-10-17T22:17:39.156432"}
+{"text": "weerleg tractor is_a algemene", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-17T22:18:54.572202"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T11:54:18.585175"}
+{"text": "wat wordt het weer vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0686, "bron": "model_fallback", "tijdstip": "2026-10-18T12:08:18.558443"}
+{"text": "wat wordt het weer morgen in beernem", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0624, "bron": "model_fallback", "tijdstip": "2026-10-18T12:08:35.994506"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T12:17:03.512398"}
+{"text": "ontzettend bedankt", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0166, "bron": "model_fallback", "tijdstip": "2026-10-18T12:17:34.050396", "label_auto": "waardering", "label_bron": "woordenlijst_strikt"}
+{"text": "ik wil je graag bedanken voor alles", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0112, "bron": "model_fallback", "tijdstip": "2026-10-18T12:17:43.431868"}
+{"text": "echt super bedankt hoor", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0753, "bron": "model_fallback", "tijdstip": "2026-10-18T12:17:53.585713", "label_auto": "waardering", "label_bron": "woordenlijst_strikt"}
+{"text": "bedankt", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0166, "bron": "model_fallback", "tijdstip": "2026-10-18T12:18:03.832354", "label_auto": "waardering", "label_bron": "woordenlijst_strikt"}
+{"text": "hallo nova", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-18T12:18:09.861193"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T12:24:32.976605"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T13:17:19.252343"}
+{"text": "gaat het regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.016, "bron": "model_fallback", "tijdstip": "2026-10-18T13:17:31.192890"}
+{"text": "wanneer stopt het met regenen", "signaal": "waardering", "model_signaal": "neutraal", "marge": 0.0487, "bron": "woordenlijst", "tijdstip": "2026-10-18T13:17:43.107137"}
+{"text": "gaat het morgen regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0335, "bron": "model_fallback", "tijdstip": "2026-10-18T13:18:01.452689"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T13:30:07.629482"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-18T13:37:48.677339"}

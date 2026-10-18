@@ -1,0 +1,50 @@
+{"tekst": "waarom was dat een blunder", "label": "chess_evaluation", "gebruikt_bij_hertraining": "2026-07-29T15:34:09.120774"}
+{"tekst": "wat vind je van mij", "label": "identity", "gebruikt_bij_hertraining": "2026-07-31T07:03:50.289708"}
+{"tekst": "kan je me de tijd geven", "label": "time", "gebruikt_bij_hertraining": "2026-07-31T07:03:50.289708"}
+{"tekst": "hoe laat is het", "label": "time", "gebruikt_bij_hertraining": "2026-09-05T22:25:28.918784"}
+{"tekst": "bord", "label": "chess", "gebruikt_bij_hertraining": "2026-09-05T22:25:28.918784"}
+{"tekst": "pion naar e4", "label": "chess", "gebruikt_bij_hertraining": "2026-09-05T22:25:28.918784"}
+{"tekst": "help", "label": "help", "gebruikt_bij_hertraining": "2026-09-05T22:25:28.918784"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-09-14T16:31:29.277271"}
+{"tekst": "bord", "label": "chess", "gebruikt_bij_hertraining": "2026-09-14T16:31:29.277271"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-09-14T16:31:29.277271"}
+{"tekst": "help debug", "label": "help_debug", "gebruikt_bij_hertraining": "2026-09-14T16:31:29.277271"}
+{"tekst": "wat is er gebeurd op 9 december", "label": "on_this_day", "gebruikt_bij_hertraining": "2026-09-19T14:49:19.777132"}
+{"tekst": "wat is er gebeurd op  9 september", "label": "on_this_day", "gebruikt_bij_hertraining": "2026-09-19T14:49:19.777132"}
+{"tekst": "wat is er gebeurd op 9 september", "label": "on_this_day", "gebruikt_bij_hertraining": "2026-09-19T14:49:19.777132"}
+{"tekst": "wie is er geboren op 26 november", "label": "on_this_day", "gebruikt_bij_hertraining": "2026-09-19T14:49:19.777132"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-01T16:53:02.387462"}
+{"tekst": "wat is er gebeurd op 9 september", "label": "on_this_day", "gebruikt_bij_hertraining": "2026-10-01T20:54:52.958014"}
+{"tekst": "wat wordt het weer morgen", "label": "weather", "gebruikt_bij_hertraining": "2026-10-01T20:54:52.958014"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-03T19:19:34.833657"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-04T01:14:41.911013"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-04T01:14:41.911013"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}
+{"tekst": "wat wordt het weer morgen", "label": "weather", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}
+{"tekst": "wat is het weer vandaag", "label": "weather", "gebruikt_bij_hertraining": "2026-10-08T20:52:50.087607"}
+{"tekst": "waarop lijkt tijd", "label": "definitie", "gebruikt_bij_hertraining": "2026-10-10T01:26:23.522739"}
+{"tekst": "is wandelen een activiteit", "label": "relatie", "gebruikt_bij_hertraining": "2026-10-10T01:26:23.522739"}
+{"tekst": "hoe laat is het", "label": "time", "gebruikt_bij_hertraining": "2026-10-10T01:26:23.522739"}
+{"tekst": "wat is een klok", "label": "definitie_klok", "gebruikt_bij_hertraining": "2026-10-10T01:26:23.522739"}
+{"tekst": "hoe laat is he", "label": "time", "gebruikt_bij_hertraining": "2026-10-10T15:18:50.560409"}
+{"tekst": "is het al tijd om te gaan", "label": "time", "gebruikt_bij_hertraining": "2026-10-10T15:18:50.560409"}
+{"tekst": "is voetbal een activiteit", "label": "relatie", "gebruikt_bij_hertraining": "2026-10-10T21:28:32.062618"}
+{"tekst": "ik vind koffie eigenlijk wel oké maar niet top", "label": "preference", "gebruikt_bij_hertraining": "2026-10-11T11:21:30.059489"}
+{"tekst": "hoe voel je je vandaag", "label": "identity", "gebruikt_bij_hertraining": "2026-10-11T11:21:30.059489"}
+{"tekst": "wat is tijd", "label": "definitie_tijd", "gebruikt_bij_hertraining": "2026-10-11T11:21:30.059489"}
+{"tekst": "hoe is het met je", "label": "identity", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
+{"tekst": "wat is het weer", "label": "weather", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
+{"tekst": "wat gebeurt er als ik iets tegen je zeg", "label": "self_architecture", "gebruikt_bij_hertraining": "2026-10-11T13:19:58.610125"}
+{"tekst": "wat is het weer", "label": "weather", "gebruikt_bij_hertraining": "2026-10-12T00:04:59.253131"}
+{"tekst": "solve_sym(x^2 - 5x + 6 = 0)", "label": "math", "gebruikt_bij_hertraining": "2026-10-14T23:29:11.216138"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "hoe oud ben je", "label": "identity", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "bord", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "pion  naar e4", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "pion naar b4", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "pion naar d3", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "pion naar e5", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "nieuwe partij", "label": "chess", "gebruikt_bij_hertraining": "2026-10-17T02:02:04.739753"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-18T01:41:01.518282"}
+{"tekst": "wat wordt het weer vandaag", "label": "weather"}
+{"tekst": "wat wordt het weer morgen in beernem", "label": "weather"}

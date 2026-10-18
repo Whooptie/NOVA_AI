@@ -193,3 +193,113 @@ def test_model_wordt_herladen_van_schijf_niet_opnieuw_getraind(tmp_path):
         "Het herladen model geeft een andere voorspelling dan verwacht "
         "-- mogelijk werd het model niet correct van schijf geladen."
     )
+
+
+# ---------------------------------------------------------------------
+# Bug #50 (18 oktober 2026): Layer 0-voorbeelden bleven niet bewaard
+# ---------------------------------------------------------------------
+# Vroeger zat een gevonden Layer 0-voorbeeld enkel in het model van de
+# hertraining waarin het gevonden werd, en viel het er bij de volgende
+# hertraining zonder nieuwe gesprekken weer uit. Deze tests bewaken dat
+# het voortaan permanent bewaard blijft in data/layer0_opgenomen.jsonl.
+#
+# Layer 0 zelf (memory.py) wordt hier NIET nagebootst: we vervangen
+# _haal_layer0_voorbeelden_op() door een nepfunctie die een vaste
+# reeks antwoorden teruggeeft. Dat functie logt anders naar het echte
+# "data/"-pad, wat deze tests nooit mogen aanraken.
+
+NIEUWE_LAYER0_VOORBEELDEN = [
+    {"tekst": "zullen we een schaakpartij starten", "label": "chess", "bron": "layer0"},
+    {"tekst": "gaat het vandaag sneeuwen", "label": "weather", "bron": "layer0"},
+]
+
+
+def test_layer0_voorbeelden_blijven_na_tweede_hertraining_in_het_model(classifier, monkeypatch):
+    """
+    DE regressietest voor bug #50. Eerste hertraining vindt 2 Layer 0-
+    voorbeelden, tweede hertraining vindt er niets nieuws. Beide
+    keren hoort het model op basis + dezelfde 2 voorbeelden getraind
+    te worden (vroeger viel de tweede terug op enkel de basisset).
+    """
+    basis = len(classifier.voorbeelden)
+
+    # Nep-Layer 0: eerste scan vindt 2 voorbeelden, tweede scan niets.
+    reeks = [list(NIEUWE_LAYER0_VOORBEELDEN), []]
+    monkeypatch.setattr(classifier, "_haal_layer0_voorbeelden_op", lambda: reeks.pop(0))
+
+    # Spion op retrain(): onthoud met hoeveel voorbeelden er getraind werd.
+    getraind_op = []
+    originele_retrain = classifier.retrain
+
+    def spion():
+        getraind_op.append(len(classifier.voorbeelden))
+        return originele_retrain()
+
+    monkeypatch.setattr(classifier, "retrain", spion)
+
+    assert classifier.retrain_vanuit_bestanden()
+    assert classifier.retrain_vanuit_bestanden()
+
+    assert getraind_op == [basis + 2, basis + 2], (
+        f"Aantal trainingsvoorbeelden per hertraining: {getraind_op}, "
+        f"verwachtte [{basis + 2}, {basis + 2}] -- een eerder gevonden "
+        f"Layer 0-voorbeeld verdwijnt weer uit het model (bug #50)."
+    )
+
+
+def test_retrain_vanuit_bestanden_laat_training_data_json_schoon(classifier, monkeypatch, tmp_path):
+    """training_data.json blijft Kevin's schone basisset: de Layer 0-
+    voorbeelden horen enkel in layer0_opgenomen.jsonl te komen, nooit
+    in training_data.json zelf (en ook niet blijvend in self.voorbeelden)."""
+    import json
+
+    basis = len(classifier.voorbeelden)
+    monkeypatch.setattr(
+        classifier, "_haal_layer0_voorbeelden_op",
+        lambda: list(NIEUWE_LAYER0_VOORBEELDEN)
+    )
+
+    assert classifier.retrain_vanuit_bestanden()
+
+    assert len(classifier.voorbeelden) == basis
+    with open(tmp_path / "training_data.json", encoding="utf-8") as f:
+        opgeslagen = json.load(f)
+    assert len(opgeslagen["voorbeelden"]) == basis
+    assert not any(v.get("bron") == "layer0" for v in opgeslagen["voorbeelden"])
+
+    # En ze staan wél in het eigen Layer 0-bestand.
+    assert (tmp_path / "layer0_opgenomen.jsonl").exists()
+    assert len(classifier._laad_layer0_opgenomen()) == 2
+
+
+def test_layer0_opgenomen_filtert_dubbels_onbekende_labels_en_rommel(classifier, tmp_path):
+    """Bij het inlezen: dubbele zinnen (ook met andere hoofdletters)
+    tellen één keer, onbekende labels, lege teksten en kapotte regels
+    worden overgeslagen."""
+    inhoud = "\n".join([
+        '{"tekst": "zullen we schaken", "label": "chess"}',
+        '{"tekst": "Zullen we schaken", "label": "chess"}',
+        '{"tekst": "iets heel raars", "label": "bestaat_niet"}',
+        'dit is helemaal geen json',
+        '{"tekst": "   ", "label": "weather"}',
+        '',
+        '{"tekst": "gaat het sneeuwen", "label": "weather"}',
+    ]) + "\n"
+    (tmp_path / "layer0_opgenomen.jsonl").write_text(inhoud, encoding="utf-8")
+
+    geladen = classifier._laad_layer0_opgenomen()
+
+    assert [(v["tekst"], v["label"]) for v in geladen] == [
+        ("zullen we schaken", "chess"),
+        ("gaat het sneeuwen", "weather"),
+    ]
+
+
+def test_layer0_opgenomen_zonder_bestand_geeft_lege_lijst_en_lege_bewaring_maakt_geen_bestand(classifier, tmp_path):
+    """Geen bestand = lege lijst (geen crash), en een lege lijst
+    bewaren hoort geen leeg bestand aan te maken."""
+    assert classifier._laad_layer0_opgenomen() == []
+
+    classifier._bewaar_layer0_voorbeelden([])
+
+    assert not (tmp_path / "layer0_opgenomen.jsonl").exists()

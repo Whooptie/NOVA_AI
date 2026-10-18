@@ -69,6 +69,11 @@ class IntentClassifier:
         # door deze module -- enkel gelezen bij
         # retrain_vanuit_bestanden().
         self.gecorrigeerd_path = self.data_dir / "gecorrigeerde_voorbeelden.jsonl"
+        # Layer 0-voorbeelden die ooit gevonden werden, PERMANENT bewaard
+        # zodat elke hertraining ze opnieuw meeneemt (anders zaten ze
+        # enkel in het model van de hertraining waarin ze gevonden
+        # werden en vielen ze bij de volgende weer weg).
+        self.layer0_opgenomen_path = self.data_dir / "layer0_opgenomen.jsonl"
 
         self.model = None
         self.vectorizer = None
@@ -223,6 +228,67 @@ class IntentClassifier:
 
         return voorbeelden
 
+    def _bewaar_layer0_voorbeelden(self, voorbeelden):
+        """
+        Voegt nieuw gevonden Layer 0-voorbeelden toe (append) aan
+        data/layer0_opgenomen.jsonl, zodat ze bij ALLE volgende
+        hertrainingen meegenomen worden. Doet niets bij een lege lijst.
+        """
+        if not voorbeelden:
+            return
+
+        try:
+            with open(self.layer0_opgenomen_path, "a", encoding="utf-8") as f:
+                for v in voorbeelden:
+                    regel = {"tekst": v["tekst"], "label": v["label"]}
+                    f.write(json.dumps(regel, ensure_ascii=False) + "\n")
+        except OSError as e:
+            dbg(f"{C_RED}kon layer0_opgenomen.jsonl niet schrijven: "
+                f"{e}{C_RESET}")
+
+    def _laad_layer0_opgenomen(self):
+        """
+        Leest ALLE ooit bewaarde Layer 0-voorbeelden in. Dubbele zinnen
+        (zelfde tekst + zelfde label) worden maar één keer meegeteld,
+        zodat een zin die je vaak typt (bv. "hey") het model niet te
+        zwaar gaat beïnvloeden. Labels die niet (meer) in de basisset
+        staan worden overgeslagen.
+        """
+        if not self.layer0_opgenomen_path.exists():
+            return []
+
+        bekende_labels = set(self._categorieen())
+        gezien = set()
+        voorbeelden = []
+        try:
+            with open(self.layer0_opgenomen_path, "r", encoding="utf-8") as f:
+                for regel in f:
+                    regel = regel.strip()
+                    if not regel:
+                        continue
+                    try:
+                        item = json.loads(regel)
+                        tekst = item["tekst"].strip()
+                        label = item["label"]
+                    except (json.JSONDecodeError, KeyError, AttributeError):
+                        continue
+                    if not tekst or label not in bekende_labels:
+                        continue
+                    sleutel = (tekst.lower(), label)
+                    if sleutel in gezien:
+                        continue
+                    gezien.add(sleutel)
+                    voorbeelden.append({
+                        "tekst": tekst,
+                        "label": label,
+                        "bron": "layer0"
+                    })
+        except OSError as e:
+            dbg(f"{C_RED}kon layer0_opgenomen.jsonl niet lezen: "
+                f"{e}{C_RESET}")
+
+        return voorbeelden
+
     def retrain_vanuit_bestanden(self):
         """
         Fase 5+6 (periodieke hertraining, 28 juli 2026): wordt
@@ -248,7 +314,15 @@ class IntentClassifier:
         self.voorbeelden zelf uit te breiden).
         """
         gecorrigeerd = self._laad_gecorrigeerde_voorbeelden()
-        layer0 = self._haal_layer0_voorbeelden_op()
+
+        # Eerst de NIEUW gevonden Layer 0-voorbeelden (enkel die sinds
+        # de vorige scan) permanent bewaren, en daarna ALLE ooit
+        # bewaarde inlezen. Zo verdwijnt een eerder gevonden voorbeeld
+        # nooit meer uit het model.
+        nieuw_layer0 = self._haal_layer0_voorbeelden_op()
+        self._bewaar_layer0_voorbeelden(nieuw_layer0)
+        layer0 = self._laad_layer0_opgenomen()
+
         aanvullend = gecorrigeerd + layer0
 
         # Layer 0-scan-tijdstip bijwerken, OOK als er niets nieuws

@@ -1391,8 +1391,19 @@ class IntentRouter:
     def detect_thanks(self, text):
         if not self._is_bedankje(text):
             return False
-        from modules.response_learning.variant_kiezer import kies_variant
         dbg(f"{C_BLUE}→ thanks{C_RESET}")
+        self._stuur_bedankt_antwoord()
+        return True
+
+    def _stuur_bedankt_antwoord(self):
+        """
+        Kiest een variant uit _THANKS_ANTWOORDEN en stuurt die als
+        antwoord. Gedeeld door detect_thanks() (regex-herkenning) en
+        _actie_thanks_classifier() (Intent Classifier-herkenning), zodat
+        beide paden exact dezelfde antwoordkeuze en variant-feedback
+        gebruiken.
+        """
+        from modules.response_learning.variant_kiezer import kies_variant
         tekst = kies_variant(
             varianten=self._THANKS_ANTWOORDEN,
             sjabloon_naam="thanks",
@@ -1400,7 +1411,6 @@ class IntentRouter:
             variant_feedback_logger=self.event_bus.modules.get("variant_feedback_logger"),
         )
         self.event_bus.publish("layer4_response", {"text": tekst})
-        return True
 
     def _get_sender_name(self):
         """
@@ -1425,6 +1435,68 @@ class IntentRouter:
         except Exception:
             pass
         return "Kevin"
+
+    # ---------------------------------------------------------
+    # Regen (modules/weather/rain.py) -- "gaat het regenen?" /
+    # "wanneer stopt het met regenen?". 100% symbolisch: woordenlijsten,
+    # geen ML. MOET vóór detect_weather() staan, want "wanneer is het
+    # weer droog" bevat het woord "weer" en zou anders daar belanden.
+    # ---------------------------------------------------------
+    _REGEN_WOORDEN = frozenset({
+        "regen", "regenen", "regent", "regende", "motregen", "motregent",
+        "regenbui", "regenbuien", "bui", "buien", "miezeren",
+    })
+    _REGEN_ZINNEN = ("weer droog", "klaart het op", "blijft het droog",
+                     "wordt het droog")
+    # Een regenvraag begint met een vraagwoord of eindigt op een "?".
+    # Zonder dit zou ook "regen is water" (kennis!) hier terechtkomen.
+    _REGEN_VRAAG_START = (
+        "gaat", "gaan", "regent", "komt", "blijft", "wordt", "wanneer",
+        "hoe lang", "hoelang", "hoe laat", "is het", "is er", "zal",
+        "zou", "houdt", "stopt", "valt", "krijgen", "moet", "kan",
+    )
+    _REGEN_UITGESLOTEN_START = (
+        "wat is", "wat zijn", "wat betekent", "leg uit", "hoe ontstaat",
+        "waarom", "onthoud", "vergeet",
+    )
+    # Persoonlijke zinnen ("hou je van regen?", "ik vind regen leuk")
+    _REGEN_PERSOONLIJK = frozenset({
+        "je", "jij", "jouw", "ik", "vind", "hou", "houd", "leuk", "mooi",
+        "haat", "lekker",
+    })
+    # Het radar kijkt maar ~2 uur vooruit. Bij een dag-woord laten we
+    # de vraag naar de weermodule gaan (voorspelling per dag).
+    _REGEN_DAGWOORDEN = frozenset({
+        "morgen", "overmorgen", "maandag", "dinsdag", "woensdag",
+        "donderdag", "vrijdag", "zaterdag", "zondag",
+    })
+
+    def detect_rain(self, text):
+        t = text.lower().strip()
+        woorden = [w.strip(".,!?;:\"'()") for w in t.split()]
+        woorden = [w for w in woorden if w]
+        if not woorden:
+            return False
+
+        heeft_regen = (any(w in self._REGEN_WOORDEN for w in woorden)
+                       or any(z in t for z in self._REGEN_ZINNEN))
+        if not heeft_regen:
+            return False
+        if t.startswith(self._REGEN_UITGESLOTEN_START):
+            return False
+        if any(w in self._REGEN_PERSOONLIJK for w in woorden):
+            return False
+        if not (t.endswith("?") or t.startswith(self._REGEN_VRAAG_START)):
+            return False
+
+        if any(w in self._REGEN_DAGWOORDEN for w in woorden):
+            dbg(f"{C_BLUE}→ weather (regen met dag-woord){C_RESET}")
+            self.event_bus.publish("intent_weather", {"text": text})
+            return True
+
+        dbg(f"{C_BLUE}→ rain{C_RESET}")
+        self.event_bus.publish("intent_rain", {"text": text})
+        return True
 
     # ---------------------------------------------------------
     # Weather
@@ -3760,6 +3832,8 @@ class IntentRouter:
             ("holiday",          self.detect_holiday),
             ("calendar",         self.detect_calendar),
             ("time",             self.detect_time),
+            # rain vóór weather: "wanneer is het weer droog" bevat "weer"
+            ("rain",             self.detect_rain),
             ("weather",          self.detect_weather),
             ("open_app",         self.detect_open_app),
             ("close_app",        self.detect_close_app),
@@ -3855,6 +3929,7 @@ class IntentRouter:
         "preference": "een voorkeur wil delen",
         "chess_evaluation": "wil weten wat er mis ging met een zet",
         "memory_query": "iets wil weten over een eerder gesprek",
+        "thanks": "me wil bedanken",
     }
 
     _CLASSIFIER_LABEL_NL_BEVESTIGING = {
@@ -3869,6 +3944,7 @@ class IntentRouter:
         "preference": "een voorkeur delen",
         "chess_evaluation": "weten wat er mis ging met een zet",
         "memory_query": "iets weten over een eerder gesprek",
+        "thanks": "me bedanken",
     }
 
     # Generieke actie-koppeling per Intent Classifier-categorie (30
@@ -3930,6 +4006,15 @@ class IntentRouter:
 
     def _actie_greeting_classifier(self, text):
         self.event_bus.publish("intent_greeting", {"sender": self._get_sender_name()})
+
+    def _actie_thanks_classifier(self, text):
+        """
+        Thanks-via-classifier (18 oktober 2026): kaal, geen woord of
+        sub-type nodig, dus meteen hetzelfde antwoord als detect_thanks()
+        (zelfde varianten en variant-feedback via _stuur_bedankt_antwoord).
+        De tekst zelf wordt niet gebruikt.
+        """
+        self._stuur_bedankt_antwoord()
 
     def _actie_preference_classifier(self, text):
         """
@@ -4023,6 +4108,7 @@ class IntentRouter:
             "intent_math", {"expr": text}
         ),
         "memory_query": _actie_memory_query_classifier,
+        "thanks": _actie_thanks_classifier,
     }
 
     # Sentiment-nuance-tekst per categorie, voor de bevestiging in

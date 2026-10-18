@@ -331,7 +331,9 @@ class ModuleLoader:
         # via WebSocket; de drie Remote*-klassen hieronder geven
         # EXACT dezelfde interface als de oude, lokale detectors, dus
         # context_manager.py hoeft hier zelf niets van te weten.
+        start = time.time()
         bridge = client_bridge.init_module(self.event_bus)
+        bridge.__load_time_ms__ = int((time.time() - start) * 1000)
         self.loaded_modules["client_bridge"] = bridge
         self.event_bus.register_module("client_bridge", bridge)
 
@@ -342,9 +344,17 @@ class ModuleLoader:
         # geen venster kan zien en daardoor elke minuut, 24/7,
         # "activity_started:unknown_gedetecteerd" publiceerde
         # (63.542 keer in patterns_layer2.json).
+        start = time.time()
         remote_activity = client_bridge.RemoteActivityDetector(bridge, event_bus=self.event_bus)
+        remote_activity.__load_time_ms__ = int((time.time() - start) * 1000)
+
+        start = time.time()
         remote_focus = client_bridge.RemoteFocusDetector(bridge)
+        remote_focus.__load_time_ms__ = int((time.time() - start) * 1000)
+
+        start = time.time()
         remote_presence = client_bridge.RemotePresenceDetector(bridge)
+        remote_presence.__load_time_ms__ = int((time.time() - start) * 1000)
 
         self.loaded_modules["activity_detector"] = remote_activity
         self.event_bus.register_module("activity_detector", remote_activity)
