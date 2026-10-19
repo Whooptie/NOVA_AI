@@ -554,6 +554,28 @@ class ChatModule:
             except Exception:
                 rels = []
 
+        # related_to is wederzijds ("verwant aan"): ook relaties die van
+        # een ander woord NAAR dit woord wijzen tellen mee (Fase 12: een
+        # voorstel wordt maar aan een kant opgeslagen).
+        try:
+            store = getattr(self.semantic, "store", None)
+            doel = word.lower().strip()
+            if store is not None:
+                for naam, concept in store.concepts.items():
+                    if naam == doel or naam in rels:
+                        continue
+                    for sense in concept.get("senses", []):
+                        if sense.get("status") == "rejected":
+                            continue
+                        if any(r.get("type") == "related_to"
+                               and r.get("target") == doel
+                               and r.get("status") != "rejected"
+                               for r in sense.get("relations", [])):
+                            rels.append(naam)
+                            break
+        except Exception:
+            pass
+
         if rels:
             msg = f"{word} lijkt op: {', '.join(rels)}"
         else:

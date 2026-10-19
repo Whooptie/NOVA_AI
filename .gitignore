@@ -9,8 +9,7 @@ engines/
 data/*.db-shm
 data/*.db-wal
 data/interactions.db
-data/models/blobs
-data/models/manifests
+data/models
 data/backups/
 data/interactions.jsonl
 

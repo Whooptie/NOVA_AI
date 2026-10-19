@@ -14,16 +14,16 @@
       "volgende_toegestaan": 1790859688.5405424
     },
     "trending_topic": {
-      "label": "stoppen",
+      "label": "extraheren",
       "getal": null,
-      "gezegd_op": 1792176986.354889,
-      "volgende_toegestaan": 1792244065.5469868
+      "gezegd_op": 1792434213.278359,
+      "volgende_toegestaan": 1792516606.1343024
     },
     "woordverband": {
-      "label": "lijken|waarop",
+      "label": "nieuw|partij",
       "getal": null,
-      "gezegd_op": 1791917095.277254,
-      "volgende_toegestaan": 1791998529.4917402
+      "gezegd_op": 1792435804.932567,
+      "volgende_toegestaan": 1792533961.461111
     },
     "kennisdichtheid": {
       "label": "lichaam",
@@ -34,5 +34,7 @@
   },
   "trending_topic:regen": 1791915931.473499,
   "woordverband:waarop:lijken": 1791917095.276982,
-  "trending_topic:stoppen": 1792176986.354568
+  "trending_topic:stoppen": 1792176986.354568,
+  "trending_topic:extraheren": 1792434213.278081,
+  "woordverband:nieuw:partij": 1792435804.932295
 }

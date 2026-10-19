@@ -2868,6 +2868,68 @@ class IntentRouter:
             "actie": actie, "nummer": nummer, "alles": alles})
         return True
 
+    # ---------------------------------------------------------
+    # Gelijkenis-voorstellen via embeddings (Semantic Fase 12, stap 2)
+    # "zoek gelijkenissen voor fiets" / "wat lijkt qua betekenis op fiets"
+    # "koppel 2" / "koppel 2 als onderdeel" / "negeer 2"
+    # Bewust NIET "wat lijkt op X" (is related_to) en niet "neem N over".
+    # ---------------------------------------------------------
+    _GELIJKENIS_ZOEK_PATRONEN = [
+        re.compile(r"^zoek (?:gelijkenissen|gelijkende woorden|verwante woorden)(?: (?:voor|bij|met|van))? (?:(?:de|het|een) )?(\w[\w\- ]*)$"),
+        re.compile(r"^wat lijkt qua betekenis op (?:(?:de|het|een) )?(\w[\w\- ]*)$"),
+    ]
+    _GELIJKENIS_OVERLOOP_START = re.compile(
+        r"^(?:gelijkenissen overlopen|overloop (?:de )?gelijkenissen|loop (?:de )?gelijkenissen door)$")
+    _GELIJKENIS_OVERLOOP_VOLGENDE = re.compile(r"^volgende gelijkenissen$")
+    _GELIJKENIS_KEUZE = re.compile(
+        r"^(?:koppel (\d{1,2}(?: \d{1,2})*)(?: als (soort|onderdeel|bevat|synoniem|verwant)(?: (omgekeerd))?)?"
+        r"|negeer (?:(\d{1,2}(?: \d{1,2})*)|(rest)))$")
+
+    def detect_gelijkenis_zoek(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        for patroon in self._GELIJKENIS_ZOEK_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            woord = m.group(1).strip()
+            if not woord or len(woord.split()) > 3 or woord in self._GEEN_RELATIE_ONDERWERP:
+                continue
+            dbg(f"[gelijkenis-zoek] {woord}")
+            self.event_bus.publish("intent_similarity_search", {"word": woord})
+            self._emit_topic("gelijkenis_zoek", bron="detect", concept=woord)
+            return True
+        return False
+
+    def detect_gelijkenis_overloop(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        if self._GELIJKENIS_OVERLOOP_START.match(t):
+            actie = "start"
+        elif self._GELIJKENIS_OVERLOOP_VOLGENDE.match(t):
+            actie = "volgende"
+        else:
+            return False
+        dbg(f"[gelijkenis-overloop] {actie}")
+        self.event_bus.publish("intent_similarity_review", {"actie": actie})
+        self._emit_topic("gelijkenis_overloop", bron="detect")
+        return True
+
+    def detect_gelijkenis_keuze(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        # "koppel 1, 3 en 4" -> "koppel 1 3 4"
+        t = re.sub(r"\s*(?:,|\ben\b)\s*", " ", t)
+        m = self._GELIJKENIS_KEUZE.match(t)
+        if not m:
+            return False
+        koppel_nrs, type_nl, omgekeerd, negeer_nrs, rest = m.groups()
+        actie = "koppel" if koppel_nrs else "negeer"
+        nummers = [int(n) for n in (koppel_nrs or negeer_nrs or "").split()]
+        dbg(f"[gelijkenis-keuze] {actie} {nummers or 'rest'} {type_nl or ''}"
+            f"{' omgekeerd' if omgekeerd else ''}")
+        self.event_bus.publish("intent_similarity_keuze", {
+            "actie": actie, "nummers": nummers, "rest": bool(rest),
+            "type": type_nl, "omgekeerd": bool(omgekeerd)})
+        return True
+
     def _temporal_onderwerp_ok(self, onderwerp):
         woorden = onderwerp.split()
         if not woorden or len(woorden) > 3:
@@ -5114,6 +5176,12 @@ class IntentRouter:
         # intent-tabel, zodat "neem ... over" niet door een andere intent
         # opgevangen wordt.
         if self.detect_kennis_extractie(text) or self.detect_kennis_keuze(text):
+            return
+
+        # 2J Gelijkenis-voorstellen via embeddings (Semantic Fase 12, stap 2)
+        # -- "zoek gelijkenissen voor fiets" / "koppel 2" / "negeer 2".
+        if (self.detect_gelijkenis_zoek(text) or self.detect_gelijkenis_overloop(text)
+                or self.detect_gelijkenis_keuze(text)):
             return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).

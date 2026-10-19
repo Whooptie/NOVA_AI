@@ -219,6 +219,11 @@ RAIN_CHECK_INTERVAL_MINUTEN = 5
 # eerste keer dat Kevin er 's ochtends is, en hoogstens 1x per dag.
 OCHTEND_CHECK_INTERVAL_MINUTEN = 5
 
+# Voor de ochtendsamenvatting telt "Kevin is er" ook als Layer 5 nee zegt
+# (bv. omdat Layer 2 het een ongebruikelijk moment vindt), zolang Kevin zelf
+# in de laatste X minuten iets aan Nova typte. Zie _layer5_ochtend_mag_spreken().
+OCHTEND_AANWEZIG_MAX_MINUTEN = 10
+
 # Hoe vaak Layer 7 (emergence_engine.py) reflecteert op verzamelde
 # inzichten (woordverband/tijdspatroon/kennisdichtheid/personality_
 # drift). In tegenstelling tot PRESENCE/WEATHER hierboven is dit GEEN
@@ -370,6 +375,46 @@ def _layer5_laat_spreken_toe(loader):
     return bool(antwoord)
 
 
+def _layer5_ochtend_mag_spreken(loader):
+    """
+    Mag de ochtendsamenvatting nu? Eerst de gewone Layer 5-vraag
+    (_layer5_laat_spreken_toe). Zegt die nee, dan alsnog ja wanneer Kevin
+    ZELF duidelijk met Nova bezig is:
+      - hij is niet afwezig,
+      - hij kan het scherm zien,
+      - hij typte zelf in de laatste OCHTEND_AANWEZIG_MAX_MINUTEN minuten.
+    Reden: de totaalscore van can_interrupt() kan nee zeggen puur omdat
+    Layer 2 het uur ongebruikelijk vindt, ook terwijl Kevin tegen Nova praat.
+    Voor een eenmalige korte melding mag Kevins aanwezigheid dan volstaan.
+
+    Elke twijfel of fout betekent NEE (liever later dan tegen een lege kamer).
+    """
+    if _layer5_laat_spreken_toe(loader):
+        return True
+
+    context_manager = loader.loaded_modules.get("context_manager")
+    if context_manager is None:
+        return False
+
+    try:
+        context = context_manager.get_current()
+    except Exception as e:
+        print(f"[Achtergrondthread] Fout in context_manager.get_current(): {e}")
+        return False
+
+    if not isinstance(context, dict):
+        return False
+    if context.get("is_afwezig") is not False:
+        return False
+    if context.get("kevin_kan_zien") is not True:
+        return False
+
+    minuten = context.get("minuten_sinds_laatste_bericht")
+    if isinstance(minuten, bool) or not isinstance(minuten, (int, float)):
+        return False
+    return 0 <= minuten <= OCHTEND_AANWEZIG_MAX_MINUTEN
+
+
 def achtergrond_loop(loader):
     """
     Draait continu op de achtergrond, los van de input()-lus in main().
@@ -489,7 +534,7 @@ def achtergrond_loop(loader):
             if weather_ochtend:
                 try:
                     weather_ochtend.check_ochtend_samenvatting(
-                        mag_spreken=lambda: _layer5_laat_spreken_toe(loader)
+                        mag_spreken=lambda: _layer5_ochtend_mag_spreken(loader)
                     )
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in weather.check_ochtend_samenvatting(): {e}")

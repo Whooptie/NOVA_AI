@@ -1981,7 +1981,8 @@ Aanleiding: Nova vroeg soms "mag ik storen?" nadat Kevin zijn laptop al had dich
 - `forecast.py` (nieuw): pure hulpfuncties voor dag/uur-voorspelling en ochtendzin.
 - `weather.py`: radarzin in "wat is het weer", `get_forecast_lang()` voor 5–15 dagen, `check_ochtend_samenvatting()`; "over twee weken" wordt herkend.
 - `main.py`: `OCHTEND_CHECK_INTERVAL_MINUTEN = 5` en `_layer5_laat_spreken_toe()` (tuple-veilig, fout = niet spreken).
-- Tests: `test_rain_vooruit.py` (97), `test_forecast.py` (115), `test_weather_vooruit.py` (94), `test_main_ochtend.py` (20). Volledige suite: 2310 passed, 1 skipped.
+- Tests: `test_rain_vooruit.py` (97), `test_forecast.py` (115), `test_weather_vooruit.py` (94), `test_main_ochtend.py` (42). Volledige suite: 2400 passed, 1 skipped.
+- 19 oktober 2026: ochtendsamenvatting kwam niet omdat `can_interrupt()` nee zei door "ongebruikelijk moment" (score −1, drempel 0), terwijl Kevin aanwezig was en tegen Nova typte. Opgelost met `_layer5_ochtend_mag_spreken()` in `main.py` (+ `OCHTEND_AANWEZIG_MAX_MINUTEN = 10`): ook ja als Kevin niet afwezig is, het scherm kan zien en de laatste 10 minuten zelf typte; bij twijfel of fout nee. Live bevestigd om 10:14. Alleen voor de ochtendsamenvatting; de andere proactieve meldingen blijven strikt Layer 5.
 - Bekende beperkingen: vlagen die nu al bezig zijn staan niet in "wat is het weer"; dagvoorspellingen hebben geen gladheidsmelding.
 
 ## ✅ Intent Classifier — 13e categorie `rain` + stad-fix (18 oktober 2026)
@@ -2003,3 +2004,53 @@ Aanleiding: Nova vroeg soms "mag ik storen?" nadat Kevin zijn laptop al had dich
 **Les:** `training_data.json` nooit aanpassen terwijl Nova draait. De classifier laadt het bestand bij het opstarten en schrijft haar eigen lijst terug bij `intent retrain`, waardoor de wijziging verdwijnt. Eerst Nova stoppen, dan het script draaien, dan Nova starten, dan `intent retrain`.
 
 **Bewust niet gekoppeld:** gladheid, harde wind, de ochtendsamenvatting en de 16-daagse voorspelling. Het zijn functies van de modules, geen intents.
+
+## ✅ Semantic Fase 12 — Semantic Similarity met embeddings, stap 1 en 2 (19 oktober 2026)
+
+Stap 1 en 2 van Fase 12: eerst een losse embedding-specialist plus meetscript (Nova nog niet aangepast), daarna de voorstellen met bevestiging door Kevin. Stap 3 (aanvulling op de PMI van Layer 1) is bewust nog niet gebouwd.
+
+**Stap 1, `embedding_specialist.py` (nieuw, `modules/knowledge/`):** extern ML-model (sentence-transformers), tekst erin, cosine-score eruit; zelfde categorie als spaCy in Fase 11. Laadt het model pas bij eerste gebruik, zet zichzelf uit met een `reden_uit` als pakket of model ontbreekt, bewaart vectoren in `data/embeddings_cache.npz` (atomisch; alleen nieuwe of gewijzigde definities opnieuw), negeert `rejected` senses en geeft resultaten met `bron: embedding` en `model`. Nieuw: `tools/meet_embeddings.py` (alleen lezen) en `test_embedding_specialist.py` (10 tests, met nepmodel).
+
+**Modelkeuze, deze keer eerst gemeten op Kevins eigen concepten (les uit 11.1, waar het model zonder overleg gekozen werd):** `paraphrase-multilingual-MiniLM-L12-v2` 62,1% (949 van 1528 bevestigde relaties in de top-10 buren, 471 MB, 6,3 s) tegenover `paraphrase-multilingual-mpnet-base-v2` 63,0% (962 van 1528, 1,1 GB, 39,6 s). Verschil 0,9 procentpunt, dus het kleine model. `sentence-transformers==6.1.0` vast gepind in `requirements.txt`; Dockerfile ongewijzigd. De buren zagen er zinnig uit (planeet: hemellichaam, aarde, ster; fiets: stuur, rem, spatbord).
+
+**Stap 2, `similarity_proposals.py` (nieuw, `modules/knowledge/`):** `zoek gelijkenissen voor X` / `wat lijkt qua betekenis op X`, `koppel N [als soort|onderdeel|bevat|synoniem|verwant]`, `negeer N`. Niets wordt opgeslagen tot Kevin kiest; het model geeft geen relatietype, Kevin kiest het. Opslag met bron `embedding`, confidence 0,6, daarna `confirm_relation()` (`oorspronkelijke_bron` blijft `embedding`). `negeer` = `related_to` met status `rejected`. Filter: woorden met een bestaande relatie (elk type, beide richtingen) of een afgewezen paar komen niet in de lijst (bv. `hond is_a wolf`, door Kevin afgewezen, wordt niet opnieuw voorgesteld). Geen "koppel alles". Drempel `MIN_SCORE = 0.45`, aparte schaal dan PMI.
+
+**Code (`intent_router.py`):** twee nieuwe detect-functies (`detect_gelijkenis_zoek`, `detect_gelijkenis_keuze`) naast de Fase 11.2-detectie, in `route()` als stap 2J vóór de intent-tabel. Events `intent_similarity_search` en `intent_similarity_keuze`, topic `gelijkenis_zoek`. Bewust niet `wat lijkt op X` (bestaande `related_to`-vraag), niet `neem N over`, niet `bevestig N`. `module_loader.py` ongewijzigd: beide modules worden door auto-discovery geladen.
+
+**Tekst:** Kevin wilde niet dat Nova "een extern taalmodel" zegt: het model is een onderdeel van Nova geworden. De kop is nu "Ik heb gezocht naar woorden die qua betekenis dicht bij 'fiets' liggen (nog niets opgeslagen)". Het eerlijke label zit in de data (`oorspronkelijke_bron: embedding`).
+
+**Tests:** `test_embedding_specialist.py` (10) en `test_similarity_proposals.py` (16, met een nep-kennisbank die de duplicate-check van `add_relation` nabootst; de echte `semantic.py` is niet geladen omdat hij `core.nl_stopwoorden` importeert). Volledige suite: 2427 tests, 2426 groen, 1 overgeslagen.
+
+**Live bevestigd (19 oktober 2026):** `zoek gelijkenissen voor fiets` gaf motor (0,57), step (0,49), brommer (0,47), bil en bilspier (0,45, ruis). `koppel 1` gaf `fiets related_to motor` (confirmed), `negeer 4` gaf `fiets related_to bil` (rejected); in `concepts.json` klopten status, bron en auditlog. De tweede zoekopdracht liet motor en bil weg ("12 hebben al een relatie, 1 had je eerder afgewezen").
+
+**Lessen:**
+- `data/models/` is gedeeld: naast het embedding-model staan daar ook de Ollama-bestanden (`blobs`, `manifests`, ~7 GB) en `blaze_face_short_range.tflite`. Niet blind opruimen; het grote mpnet-model liet alleen een lege lock-map achter (`.locks/models--...mpnet...`) en `du data/models/*` toont verborgen mappen niet.
+- Het pakket heet `sentence-transformers` (met s); `sentence-transformer` bestaat niet.
+
+**Bekende beperkingen / open:** de drempel 0,45 is gebaseerd op één woord; relatie wordt maar aan één kant opgeslagen (voor `waarop lijkt X` opgelost in `chat.py`, `on_related_to()` leest nu ook binnenkomende `related_to`-relaties, live bevestigd; `explain_related_to` kijkt nog één kant op); stap 3 en de embedder-kandidaten 6-8 (zie `nova_state.md`) staan open.
+
+## ✅ Semantic Fase 12, stap 2b — `waarop lijkt X` leest beide richtingen, meerdere nummers, wachtrij, filters en richting (19 oktober 2026)
+
+Vervolg op stap 1 en 2 van dezelfde dag, nadat Kevin met `zoek gelijkenissen voor fiets/hond` had gewerkt. Aanleiding: per woord werken is bij 699 concepten veel typwerk.
+
+**`waarop lijkt motor` zei "Ik weet niet waarop motor lijkt".** Na `koppel 1` stond `fiets related_to motor` alleen bij fiets, en `get_relations()` kijkt enkel naar uitgaande relaties. Het zat dus niet in de nieuwe module: van de 586 bestaande `related_to`-paren stonden er maar 278 ook omgekeerd. Fix in `chat.py`, `on_related_to()`: ook binnenkomende `related_to`-relaties (niet afgewezen) tellen mee, zonder dubbelen. Live bevestigd: "motor lijkt op: fiets". `test_chat_related_to.py`, 8 tests. Niet aangepast: `explain_related_to()` in `semantic.py` (de vraag "is motor gerelateerd aan fiets") kijkt nog één kant op.
+
+**Meerdere nummers en `negeer rest`:** `koppel 1 3 4` (ook "1, 3 en 4"), `negeer 2 5`, `negeer rest`. Bewust geen `koppel rest`.
+
+**Wachtrij over alle concepten:** `gelijkenissen overlopen` en `volgende gelijkenissen`, acht per keer, hoogste score eerst, vanaf `OVERLOOP_MIN_SCORE = 0.55`. Nieuw in de specialist: `find_all_pairs()`. Nieuw event `intent_similarity_review`, topic `gelijkenis_overloop`.
+
+**Eerste versie was te ruw:** ~2422 paren, bovenaan negen/tien, acht/zeven, kies/snijtand, lederhuid/opperhuid. Allemaal echt verwant, maar de band stond al in de kennisbank (gedeelde `is_a getal`, `is_a tand`, `part_of huid`). Dus twee filters: paren met een gedeelde `is_a`/`part_of`-ouder overslaan (afgewezen relaties tellen niet mee, aantal staat in de melding) en elk woord hooguit één keer (met zijn beste partner). Op Kevins data: 507 paren overgeslagen, 187 in de wachtrij; van de eerste acht uit de oude lijst vielen er zes weg, derde/tweede en wenkbrauw/wimper bleven.
+
+**Richting:** drie van de eerste acht nieuwe paren bleken hiërarchisch (schouder/schouderblad, meubel/zitmeubel, bloedsomloop/slagader). `soort`, `onderdeel` en `bevat` zijn daarom ook in de wachtrij toegestaan: de richting is eerste woord naar tweede woord zoals de lijst het toont, `omgekeerd` erachter draait het om (`koppel 2 als soort omgekeerd` slaat "zitmeubel is een soort meubel" op). Nova toont na elke keuze de opgeslagen zin. Eerst was dit geblokkeerd omdat de richting onbekend is; dat bleek onnodig streng.
+
+**Code (`intent_router.py`):** `detect_gelijkenis_overloop()` toegevoegd, `detect_gelijkenis_keuze()` uitgebreid (meerdere nummers, `rest`, `omgekeerd`), route-stap 2J aangepast. `module_loader.py` ongewijzigd.
+
+**Tests:** `test_similarity_proposals.py` 43 (van 16), `test_embedding_specialist.py` 12 (van 10), `test_chat_related_to.py` 8. Volledige suite: 2464 tests, 2463 groen, 1 overgeslagen.
+
+**Live bevestigd:** `koppel 1 2 5 6` en `negeer 4`; `koppel 1 3 als bevat`; `koppel 2 als soort omgekeerd`; `koppel 4 5 6 8`; `negeer 7`. In totaal 11 koppelingen en 2 afwijzingen, allemaal zoals bedoeld opgeslagen.
+
+**Lessen:**
+- Hoge embedding-scores zijn vooral broertjes uit dezelfde groep of hiërarchische paren, geen "verwant" in de ruime zin. Daarom eerst filteren op wat de kennisbank al weet.
+- Een testfout van mezelf: `"kies" not in tekst` faalde omdat de voettekst "Jij kiest" bevat; test enkel de genummerde regels.
+
+**Open:** er is geen "maak ongedaan" voor een verkeerd opgeslagen relatie; de drempel 0,55 is een eerste keuze; punt 53 in `nova_state.md` (automatisch opslaan als onbevestigd) staat in de Volgende stappen.

@@ -50,3 +50,6 @@
 {"tekst": "wat wordt het weer morgen in beernem", "label": "weather"}
 {"tekst": "wat is het weer morgen", "label": "weather"}
 {"tekst": "wat is het weer zaterdag", "label": "weather"}
+{"tekst": "welk weer wordt het morgen in beernem", "label": "weather"}
+{"tekst": "gaat het morgen regenen", "label": "rain"}
+{"tekst": "gaat het vandaag nog regenen", "label": "rain"}

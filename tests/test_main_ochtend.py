@@ -196,3 +196,118 @@ def test_toelaten_fout_in_layer5_betekent_nee_en_wordt_geprint(capsys):
     cm.can_interrupt.side_effect = RuntimeError("kunstmatige testfout")
     assert main._layer5_laat_spreken_toe(_loader_met({"context_manager": cm})) is False
     assert "Fout in context_manager.can_interrupt" in capsys.readouterr().out
+
+
+# =================================================================
+# _layer5_ochtend_mag_spreken(): ook ja als Kevin aanwezig is en net typte
+# =================================================================
+
+def _cm(can_interrupt=False, context=None, get_current_fout=None):
+    cm = MagicMock()
+    cm.can_interrupt.return_value = can_interrupt
+    if get_current_fout is not None:
+        cm.get_current.side_effect = get_current_fout
+    else:
+        cm.get_current.return_value = context
+    return cm
+
+
+def _ctx(**over):
+    basis = {
+        "should_interrupt": False,
+        "is_afwezig": False,
+        "kevin_kan_zien": True,
+        "minuten_sinds_laatste_bericht": 1.0,
+    }
+    basis.update(over)
+    return basis
+
+
+def _mag(cm):
+    return main._layer5_ochtend_mag_spreken(_loader_met({"context_manager": cm}))
+
+
+def test_ochtend_mag_zonder_context_manager_mag_niet_meer_via_fallback():
+    # Zonder context_manager zegt _layer5_laat_spreken_toe al ja.
+    assert main._layer5_ochtend_mag_spreken(_loader_met({})) is True
+
+
+def test_ochtend_layer5_ja_is_ja_zonder_verder_te_kijken():
+    cm = _cm(can_interrupt=True)
+    assert _mag(cm) is True
+    cm.get_current.assert_not_called()
+
+
+def test_ochtend_layer5_nee_maar_kevin_aanwezig_en_typte_net_is_ja():
+    assert _mag(_cm(context=_ctx())) is True
+
+
+def test_ochtend_gebruikt_het_echte_kenmerk_uit_de_log_van_19_oktober():
+    # Precies de situatie van 19 oktober 09:59: Layer 5 zegt nee door
+    # "ongebruikelijk moment", Kevin praat tegen Nova.
+    assert _mag(_cm(context=_ctx(minuten_sinds_laatste_bericht=0.3))) is True
+
+
+def test_ochtend_kevin_afwezig_blijft_nee():
+    assert _mag(_cm(context=_ctx(is_afwezig=True))) is False
+
+
+def test_ochtend_kevin_kan_het_niet_zien_blijft_nee():
+    assert _mag(_cm(context=_ctx(kevin_kan_zien=False))) is False
+
+
+def test_ochtend_nog_niets_getypt_sinds_opstart_blijft_nee():
+    assert _mag(_cm(context=_ctx(minuten_sinds_laatste_bericht=None))) is False
+
+
+def test_ochtend_te_lang_geleden_getypt_blijft_nee():
+    te_lang = main.OCHTEND_AANWEZIG_MAX_MINUTEN + 0.1
+    assert _mag(_cm(context=_ctx(minuten_sinds_laatste_bericht=te_lang))) is False
+
+
+def test_ochtend_precies_op_de_grens_telt_nog_mee():
+    grens = main.OCHTEND_AANWEZIG_MAX_MINUTEN
+    assert _mag(_cm(context=_ctx(minuten_sinds_laatste_bericht=grens))) is True
+
+
+def test_ochtend_negatieve_minuten_is_onzin_en_dus_nee():
+    assert _mag(_cm(context=_ctx(minuten_sinds_laatste_bericht=-5))) is False
+
+
+@pytest.mark.parametrize("waarde", ["1", True, [], {}])
+def test_ochtend_minuten_van_een_vreemd_type_is_nee(waarde):
+    assert _mag(_cm(context=_ctx(minuten_sinds_laatste_bericht=waarde))) is False
+
+
+@pytest.mark.parametrize("sleutel,waarde", [
+    ("is_afwezig", None),       # ontbrekend/onbekend is geen "aanwezig"
+    ("is_afwezig", 0),          # alleen echt False telt
+    ("kevin_kan_zien", None),
+    ("kevin_kan_zien", 1),
+])
+def test_ochtend_alleen_echte_bools_tellen(sleutel, waarde):
+    assert _mag(_cm(context=_ctx(**{sleutel: waarde}))) is False
+
+
+def test_ochtend_context_geen_dict_is_nee():
+    assert _mag(_cm(context=None)) is False
+    assert _mag(_cm(context="kapot")) is False
+
+
+def test_ochtend_fout_in_get_current_is_nee_en_wordt_geprint(capsys):
+    cm = _cm(get_current_fout=RuntimeError("kunstmatige testfout"))
+    assert _mag(cm) is False
+    assert "Fout in context_manager.get_current" in capsys.readouterr().out
+
+
+def test_ochtend_gate_geeft_de_aanwezigheidsversie_mee():
+    weather = MagicMock()
+    cm = _cm(context=_ctx())
+    _draai_lus({"weather": weather, "context_manager": cm},
+               aantal_rondes=main.OCHTEND_CHECK_INTERVAL_MINUTEN)
+    mag_spreken = weather.check_ochtend_samenvatting.call_args.kwargs["mag_spreken"]
+    assert mag_spreken() is True
+
+
+def test_ochtend_aanwezig_max_minuten_is_een_positief_getal():
+    assert main.OCHTEND_AANWEZIG_MAX_MINUTEN > 0

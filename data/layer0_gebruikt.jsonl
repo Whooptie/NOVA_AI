@@ -50,3 +50,6 @@
 {"tekst": "wat wordt het weer morgen in beernem", "label": "weather", "gebruikt_bij_hertraining": "2026-10-18T12:17:12.056812"}
 {"tekst": "wat is het weer morgen", "label": "weather", "gebruikt_bij_hertraining": "2026-10-18T19:54:02.441063"}
 {"tekst": "wat is het weer zaterdag", "label": "weather", "gebruikt_bij_hertraining": "2026-10-18T19:54:02.441063"}
+{"tekst": "welk weer wordt het morgen in beernem", "label": "weather", "gebruikt_bij_hertraining": "2026-10-19T18:11:45.313703"}
+{"tekst": "gaat het morgen regenen", "label": "rain", "gebruikt_bij_hertraining": "2026-10-19T18:11:45.313703"}
+{"tekst": "gaat het vandaag nog regenen", "label": "rain", "gebruikt_bij_hertraining": "2026-10-19T18:11:45.313703"}
