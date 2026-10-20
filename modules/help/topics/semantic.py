@@ -107,6 +107,23 @@ def get_help():
   verwijder definitief betekenis: python 2     (idem, voor een betekenis)
   verwijder definitief concept: verzonnenwoord (idem, voor een heel woord)
 
+🔎 GELIJKENISSEN (embedding-voorstellen, niets wordt automatisch opgeslagen)
+  zoek gelijkenissen voor fiets         (woorden die qua betekenis dicht bij fiets liggen)
+                                        (ook: wat lijkt qua betekenis op fiets)
+  gelijkenissen overlopen               (alle concepten met elkaar vergeleken: de sterkste paren
+                                         zonder relatie, 8 per keer)
+  volgende gelijkenissen                (de volgende 8 paren; wat je liet staan komt terug)
+  koppel 1                              (nummer uit de lijst, 10 minuten geldig: verwant)
+  koppel 1 3 4                          (meerdere tegelijk)
+  koppel 1 als soort|onderdeel|bevat|synoniem
+                                        (het eerste woord is een soort van / onderdeel van /
+                                         bevat het tweede; 'omgekeerd' erachter draait de richting om)
+  negeer 2                              (wijst het paar af; het komt niet meer terug)
+  negeer rest                           (wijst alle overige nummers af)
+  maak ongedaan                         (draait het laatste koppel- of negeer-commando terug)
+                                        (De score zegt dat twee woorden bij elkaar passen, niet HOE:
+                                         dat kies jij. Nova slaat pas iets op als jij koppelt.)
+
 ❓ ANDERE HELP
   help               (algemeen overzicht)
   help schaken / help wiskunde / help debug

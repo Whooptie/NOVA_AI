@@ -2053,4 +2053,31 @@ Vervolg op stap 1 en 2 van dezelfde dag, nadat Kevin met `zoek gelijkenissen voo
 - Hoge embedding-scores zijn vooral broertjes uit dezelfde groep of hiërarchische paren, geen "verwant" in de ruime zin. Daarom eerst filteren op wat de kennisbank al weet.
 - Een testfout van mezelf: `"kies" not in tekst` faalde omdat de voettekst "Jij kiest" bevat; test enkel de genummerde regels.
 
-**Open:** er is geen "maak ongedaan" voor een verkeerd opgeslagen relatie; de drempel 0,55 is een eerste keuze; punt 53 in `nova_state.md` (automatisch opslaan als onbevestigd) staat in de Volgende stappen.
+**Open:** de drempel 0,55 is een eerste keuze (nova_state.md punt 55); punt 53 (automatisch opslaan als onbevestigd) en punt 54 (stap 3, embeddings naast PMI) staan in de Volgende stappen.
+
+## ✅ Semantic Fase 12, stap 2c — `maak ongedaan` en `explain_related_to` in beide richtingen (20 oktober 2026)
+
+Twee kleine open punten uit stap 2b, samen afgewerkt.
+
+**`explain_related_to` kijkt beide kanten op.** "is motor gerelateerd aan fiets" gaf "Ik zie geen verband" als alleen fiets → motor was opgeslagen, omdat `related_to_chained()` enkel uitgaande relaties volgde (zelfde oorzaak als bij `waarop lijkt`). Fix in `core/semantic.py` (`ReasoningEngine`): `_related_to_index()` bouwt eenmalig per vraag een omgekeerde index (doel naar de woorden die ernaar wijzen, afgewezen relaties en senses uitgesloten), `_related_to_buren()` geeft uitgaande buren eerst en daarna de binnenkomende. De BFS blijft kortste-pad en houdt `MAX_DEPTH_RELATED = 4`. Ook het alternatief in `_geen_bewijs_met_alternatief()` ("maar ik weet wel dat X gerelateerd is aan Y") telt nu binnenkomende relaties mee. Live bevestigd: "Ja, bilspier is gerelateerd aan fiets". `test_related_to_beide_richtingen.py`, 9 tests; drie daarvan falen zonder de fix.
+
+**`maak ongedaan`.** Draait het laatste `koppel`- of `negeer`-commando terug (alle nummers uit dat commando), één keer. Bij koppel wordt de relatie eerst afgewezen en dan met `hard_delete_relation()` fysiek verwijderd (dat accepteert alleen al afgewezen relaties), dus er blijft geen tombstone achter; bij negeer verdwijnt de tombstone zodat het paar weer kan terugkomen. Alleen relaties met bron `embedding` worden aangeraakt: is er intussen iets aangepast, dan blijft het staan en meldt Nova dat. Staat het nummer nog in dezelfde lijst, dan is het weer vrij (niet als er intussen een nieuwe lijst is). Nova eindigt elk `koppel`/`negeer` nu met "Fout gekozen? Typ 'maak ongedaan'." Code: `similarity_proposals.py` (`_onthoud`, `_draai_terug`, `on_ongedaan`, event `intent_similarity_ongedaan`), `intent_router.py` (`detect_gelijkenis_ongedaan()`, eigen regex in route-stap 2J). Live bevestigd: koppel, ongedaan, vraag; en koppel, omgekeerde vraag, ongedaan.
+
+**Tests:** `test_similarity_proposals.py` 53 (van 43), nieuw `test_related_to_beide_richtingen.py` 9. Volledige suite: 2483 tests, 2482 groen, 1 overgeslagen.
+
+**Let op:** `maak ongedaan` is nu alleen voor deze lijst; een later algemeen ongedaan-commando moet hiermee samengaan.
+
+## ✅ Semantic Fase 12, stap 2d — wachtrijfilter voor bekende ketens + wachtrij doorgewerkt (20 oktober 2026)
+
+**Filter.** De wachtrij toonde paren waarvan de band al via een keten bekend is (bv. zitmeubel en meubelstuk, hoofd en voorhoofd via gezicht). Nieuw in `similarity_proposals.py`: `_bouw_ketens()` bouwt twee grafen (alleen `is_a`, en alleen `part_of`/`has_part` samen), `_bereikbaar()` doet een zoektocht door zo'n graaf en `_via_keten()` beslist of het ene woord een voorouder van het andere is. Gemengde ketens (soort + onderdeel) en ketens via een synoniem tellen bewust niet mee. Het aantal overgeslagen paren staat in `_overgeslagen_keten` en in de kopzin van de wachtrij. Live: 47 paren overgeslagen, 170 in de wachtrij.
+
+**Tests:** `test_similarity_proposals.py` 61 (van 53). Volledige suite: 2491 tests, 2490 groen, 1 overgeslagen.
+
+**Wachtrij doorgewerkt (samen met Claude, score 0,60 tot 0,55).** De opbrengst zakte van ruim de helft naar ongeveer een derde bruikbare paren. Volgens `concepts.json` staan er in totaal 154 koppelingen en 105 afgewezen paren met bron `embedding` (inclusief eerdere rondes). De wachtrij is nu leeg bij drempel 0,55; verhogen is niet nodig.
+
+**Lessen:**
+- Hoge scores zijn vooral broertjes (twee soorten beer, jeans en rok) en dat is meestal een afwijzing, omdat die band al via het gemeenschappelijke bovenwoord bekend is.
+- Het type typ je als `koppel 4 als soort` (met "als"). Zonder "als" valt het commando terug op de standaardreactie.
+- Nova werkt met de eerste betekenis: amandel = klier in de keel, dus amandel en appel is een terechte afwijzing.
+
+**Opgemerkte datapunten (jouw beslissing, nog niet aangepast):** `licht` heeft een foute `part_of fiets`; `grote massa ijs` lijkt dubbel met gletsjer/ijsmassa; het concept `metaal` ontbreekt (goud, zilver); instrument en muziekinstrument zijn mogelijk dubbel.

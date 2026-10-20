@@ -1379,6 +1379,11 @@ class ReasoningEngine:
         if source == target:
             return True, [source]
 
+        # Fase 12 (20 oktober 2026): related_to is wederzijds, dus ook
+        # relaties die NAAR een woord wijzen tellen als buur. Eenmalig
+        # een omgekeerde index bouwen, niet per stap alle concepten doorlopen.
+        index = self._related_to_index()
+
         # BFS: wachtrij van (woord, pad-tot-hier). Start met source
         # zelf, pad = [source].
         wachtrij = [(source, [source])]
@@ -1390,7 +1395,7 @@ class ReasoningEngine:
             if len(pad) - 1 >= self.MAX_DEPTH_RELATED:
                 continue
 
-            direct = self.relation_engine.get_relations(huidig, relation_type="related_to")
+            direct = self._related_to_buren(huidig, index)
             for buur in direct:
                 if buur in bezocht:
                     continue
@@ -1401,6 +1406,33 @@ class ReasoningEngine:
                 wachtrij.append((buur, nieuw_pad))
 
         return False, []
+
+    def _related_to_index(self) -> dict:
+        """
+        Omgekeerde index voor related_to: doel -> woorden die ernaar
+        wijzen (Fase 12, 20 oktober 2026). Nodig omdat een relatie maar
+        aan een kant wordt opgeslagen (fiets -> motor) terwijl related_to
+        wederzijds is. Afgewezen relaties en afgewezen senses tellen niet
+        mee, net als in RelationEngine.get_relations().
+        """
+        index = {}
+        for woord, concept in self.store.concepts.items():
+            for sense in concept.get("senses", []):
+                if sense.get("status") == "rejected":
+                    continue
+                for rel in sense.get("relations", []):
+                    if rel.get("type") != "related_to" or rel.get("status") == "rejected":
+                        continue
+                    doel = rel.get("target")
+                    if doel:
+                        index.setdefault(doel, set()).add(woord)
+        return index
+
+    def _related_to_buren(self, woord: str, index: dict) -> list:
+        """Uitgaande related_to-buren eerst (zoals voorheen), daarna de binnenkomende."""
+        uit = self.relation_engine.get_relations(woord, relation_type="related_to")
+        extra = sorted(w for w in index.get(woord, ()) if w not in uit)
+        return list(uit) + extra
 
     # ---------------------------------------------------------
     # 7.3 Contradiction detection
@@ -1526,6 +1558,9 @@ class ReasoningEngine:
         """
         source_clean = source.lower().strip()
         alternatieven = self.relation_engine.get_relations(source_clean, relation_type=relation_type)
+        if relation_type == "related_to":
+            # Fase 12: ook een relatie die naar 'source' wijst is een alternatief.
+            alternatieven = self._related_to_buren(source_clean, self._related_to_index())
 
         if not alternatieven:
             # Geen enkele relatie van dit type bekend -- kaal antwoord,

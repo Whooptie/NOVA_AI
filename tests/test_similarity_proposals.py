@@ -83,6 +83,19 @@ class NepSem:
                     return rel
         return None
 
+    def hard_delete_relation(self, word, sense_id, relation_type, target):
+        """Zoals Nova: alleen toegestaan voor een al afgewezen relatie."""
+        for s in self.store.concepts[word]["senses"]:
+            if s["sense_id"] != sense_id:
+                continue
+            for i, rel in enumerate(s["relations"]):
+                if rel["type"] == relation_type and rel["target"] == target:
+                    if rel["status"] != "rejected":
+                        return False
+                    s["relations"].pop(i)
+                    return True
+        return False
+
 
 class NepSpecialist:
     def __init__(self, resultaten, beschikbaar=True):
@@ -555,3 +568,175 @@ def test_init_module_abonneert_ook_review():
     bus = Bus()
     init_module(bus, None)
     assert "intent_similarity_review" in bus.handlers
+
+
+    # ---------------------------------------------------------------
+# "maak ongedaan"
+# ---------------------------------------------------------------
+def test_ongedaan_zonder_iets_te_doen(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    mod.on_ongedaan({})
+    assert "niets om ongedaan te maken" in bus.laatste()
+
+
+def test_ongedaan_draait_koppel_terug_en_geeft_nummer_vrij(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    zoek(mod)
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": "soort", "omgekeerd": True})
+    assert rels(sem, "rem") == {("is_a", "fiets", "confirmed")}
+    assert "maak ongedaan" in bus.laatste()
+    mod.on_ongedaan({})
+    assert rels(sem, "rem") == set()              # echt weg, geen tombstone
+    assert rels(sem) == set()
+    assert "Ongedaan gemaakt" in bus.laatste()
+    assert "Nummer 1 staat weer in de lijst" in bus.laatste()
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": None})   # opnieuw kan
+    assert rels(sem) == {("related_to", "rem", "confirmed")}
+
+
+def test_ongedaan_draait_hele_commando_terug(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    zoek(mod)
+    mod.on_keuze({"actie": "koppel", "nummers": [1, 2, 3], "type": None})
+    mod.on_ongedaan({})
+    assert rels(sem) == set()
+    assert "Nummer 1, 2, 3 staat weer" in bus.laatste()
+
+
+def test_ongedaan_draait_negeer_terug_en_paar_komt_terug(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    zoek(mod)
+    mod.on_keuze({"actie": "negeer", "nummers": [2], "type": None})
+    assert ("related_to", "zadel", "rejected") in rels(sem)
+    mod.on_ongedaan({})
+    assert rels(sem) == set()
+    assert "niet meer afgewezen" in bus.laatste()
+    zoek(mod)
+    assert ". zadel" in bus.laatste()
+
+
+def test_ongedaan_kan_maar_een_keer(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    zoek(mod)
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": None})
+    mod.on_ongedaan({})
+    mod.on_ongedaan({})
+    assert "niets om ongedaan te maken" in bus.laatste()
+
+
+def test_ongedaan_draait_alleen_het_laatste_commando_terug(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    zoek(mod)
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": None})
+    mod.on_keuze({"actie": "koppel", "nummers": [2], "type": None})
+    mod.on_ongedaan({})
+    assert rels(sem) == {("related_to", "rem", "confirmed")}
+
+
+def test_mislukt_commando_wist_de_ongedaan_info_niet(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    zoek(mod)
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": None})
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": None})   # al behandeld
+    mod.on_ongedaan({})
+    assert rels(sem) == set()
+
+
+def test_ongedaan_raakt_door_jou_aangepaste_relatie_niet_aan(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    zoek(mod)
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": None})
+    r = sem.store.concepts["fiets"]["senses"][0]["relations"][-1]
+    r["source"] = "user"
+    r.pop("oorspronkelijke_bron", None)       # nu door jou zelf ingevoerd
+    mod.on_ongedaan({})
+    assert rels(sem) == {("related_to", "rem", "confirmed")}
+    assert "intussen aangepast" in bus.laatste()
+
+
+def test_ongedaan_na_nieuwe_lijst_zet_niets_terug_in_de_verkeerde_lijst(drie_voorstellen):
+    bus, sem, mod = drie_voorstellen
+    zoek(mod)
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": None})
+    zoek(mod)                                  # nieuwe lijst zonder rem
+    nieuwe = list(mod._lijst)
+    mod.on_ongedaan({})
+    assert rels(sem) == set()
+    assert mod._lijst == nieuwe                # niet vervuild
+    assert "staat weer in de lijst" not in bus.laatste()
+
+
+def test_ongedaan_zonder_sem_en_abonnement():
+    bus = Bus()
+    mod = SimilarityProposals(bus, None, specialist=NepSpecialist([]))
+    mod.on_ongedaan({})
+    assert "niet beschikbaar" in bus.laatste()
+    assert "intent_similarity_ongedaan" in bus.handlers
+
+    # ---------------------------------------------------------------
+# Wachtrij: paren die al via een keten bekend zijn
+# ---------------------------------------------------------------
+def keten_wachtrij(paren, concepten):
+    bus, sem, mod = maak_wachtrij(paren, concepten)
+    mod.on_review({"actie": "start"})
+    return bus, mod
+
+
+def test_keten_is_a_wordt_overgeslagen_en_geteld():
+    # jurk -> kledingstuk -> kleding: jurk/kleding is al bekend
+    conc = {"jurk": met(rel("kledingstuk", "is_a")),
+            "kledingstuk": met(rel("kleding", "is_a")),
+            "kleding": met()}
+    bus, mod = keten_wachtrij([paar("jurk", "kleding", 0.9),
+                               paar("tent", "kamp", 0.8)], conc)
+    tekst = bus.laatste()
+    assert "jurk en kleding" not in tekst
+    assert "1. tent en kamp" in tekst
+    assert "1 paren over waarvan het ene woord al een voorouder" in tekst
+
+
+def test_keten_werkt_ook_andersom_in_de_paarvolgorde():
+    conc = {"jurk": met(rel("kledingstuk", "is_a")),
+            "kledingstuk": met(rel("kleding", "is_a")), "kleding": met()}
+    bus, mod = keten_wachtrij([paar("kleding", "jurk", 0.9)], conc)
+    assert "geen nieuwe paren" in bus.laatste()
+
+
+def test_keten_part_of_en_has_part_als_omgekeerde():
+    # romp has_part buik, buik has_part maag: maag part_of buik part_of romp
+    conc = {"romp": met(rel("buik", "has_part")),
+            "buik": met(rel("maag", "has_part")), "maag": met()}
+    bus, mod = keten_wachtrij([paar("maag", "romp", 0.9)], conc)
+    assert "geen nieuwe paren" in bus.laatste()
+
+
+def test_keten_via_synoniem_blijft_staan():
+    # meubelstuk = meubel, stoel is_a meubel: Nova volgt geen synoniemen, dus nieuw
+    conc = {"meubelstuk": met(rel("meubel", "synonym")),
+            "stoel": met(rel("meubel", "is_a")), "meubel": met()}
+    bus, mod = keten_wachtrij([paar("meubelstuk", "stoel", 0.9)], conc)
+    assert "1. meubelstuk en stoel" in bus.laatste()
+
+
+def test_is_a_en_part_of_ketens_worden_niet_door_elkaar_gehaald():
+    conc = {"a": met(rel("b", "is_a")), "b": met(rel("c", "part_of")), "c": met()}
+    bus, mod = keten_wachtrij([paar("a", "c", 0.9)], conc)
+    assert "1. a en c" in bus.laatste()
+
+
+def test_afgewezen_stap_in_keten_telt_niet_mee():
+    conc = {"a": met(rel("b", "is_a")),
+            "b": met(rel("c", "is_a", status="rejected")), "c": met()}
+    bus, mod = keten_wachtrij([paar("a", "c", 0.9)], conc)
+    assert "1. a en c" in bus.laatste()
+
+
+def test_keten_met_kringverwijzing_loopt_niet_vast():
+    conc = {"a": met(rel("b", "is_a")), "b": met(rel("a", "is_a")), "x": met()}
+    bus, mod = keten_wachtrij([paar("a", "x", 0.9)], conc)
+    assert "1. a en x" in bus.laatste()
+
+
+def test_geen_ketenmelding_als_er_niets_is_overgeslagen():
+    bus, mod = keten_wachtrij([paar("tent", "kamp", 0.9)], {})
+    assert "voorouder" not in bus.laatste()

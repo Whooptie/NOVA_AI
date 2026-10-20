@@ -2342,6 +2342,52 @@ class IntentRouter:
         "nova",
     })
 
+    # Optioneel lidwoord vóór een woord, voor de vraagpatronen hieronder
+    # (20 oktober 2026): "de", "het" en "een" worden toegelaten en
+    # genegeerd, zodat "welke onderdelen heeft het hart" net zo werkt als
+    # "welke onderdelen heeft hart". Zonder capture-groep.
+    _LID = r"(?:(?:een|de|het)\s+)?"
+
+    def _is_bekend_concept(self, woord):
+        """True als dit woord in concepts.json staat (puur een opzoeking)."""
+        if not self.semantic or not woord:
+            return False
+        try:
+            return bool(self.semantic.get_senses(woord))
+        except Exception:
+            return False
+
+    def _naar_enkelvoud(self, woord):
+        """
+        Zoekt het enkelvoud van een (mogelijk) meervoud, ENKEL als dat
+        enkelvoud als concept bestaat: 'zintuigen' -> 'zintuig',
+        'auto's' -> 'auto'. Geen taalmodel: een paar vaste
+        verbuigingsregels plus een controle in concepts.json. Is het
+        woord zelf al bekend, dan blijft het zoals het is. Geen treffer:
+        None.
+        """
+        woord = woord.lower().strip()
+        if self._is_bekend_concept(woord):
+            return woord
+        kandidaten = []
+        if woord.endswith("'s") and len(woord) > 3:
+            kandidaten.append(woord[:-2])
+        if woord.endswith("en") and len(woord) > 4:
+            stam = woord[:-2]
+            kandidaten.append(stam)
+            # klinkerverlenging: 'benen' -> 'ben' -> 'been'
+            if len(stam) >= 3 and stam[-2] in "aeou" and stam[-3] not in "aeiou":
+                kandidaten.append(stam[:-2] + stam[-2] * 2 + stam[-1])
+            # medeklinkverdubbeling: 'mannen' -> 'man'
+            if len(stam) >= 3 and stam[-1] == stam[-2]:
+                kandidaten.append(stam[:-1])
+        if woord.endswith("s") and len(woord) > 3:
+            kandidaten.append(woord[:-1])
+        for k in kandidaten:
+            if self._is_bekend_concept(k):
+                return k
+        return None
+
     def detect_relation_check(self, text):
         t = text.lower().strip().rstrip("?.")
 
@@ -2383,6 +2429,35 @@ class IntentRouter:
             self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
+        # 1c. "is de X een Y", "is het X een Y", "is X de Y" en "is X Y"
+        # (20 oktober 2026). Vangnet NA de patronen hierboven. Zonder enig
+        # lidwoord ("is sneeuw neerslag") is de zin te breed om blind te
+        # vertrouwen: dan moeten X en Y allebei een BEKEND, enkel woord
+        # zijn in concepts.json. Anders vallen we gewoon door.
+        m = re.match(r"is\s+(?:(een|de|het)\s+)?(\w+)\s+(?:(een|de|het)\s+)?([\w\s]+)$", t)
+        if m:
+            art_y = m.group(3)
+            x = m.group(2)
+            y = m.group(4).strip()
+            if (x not in self._GEEN_RELATIE_ONDERWERP
+                    and x not in ("een", "de", "het")
+                    and not y.startswith(("onderdeel", "gerelateerd"))):
+                if art_y:
+                    ok = True
+                else:
+                    ok = (" " not in y
+                          and self._is_bekend_concept(x)
+                          and self._is_bekend_concept(y))
+                if ok:
+                    dbg(f"{C_BLUE}→ relation_check (patroon 'is X Y' met/zonder lidwoord): '{x}' -> '{y}'{C_RESET}")
+                    self.event_bus.publish("intent_relation_check", {
+                        "source": x,
+                        "target": y,
+                        "lidwoord": False,
+                    })
+                    self._laatste_concept_kandidaat = x
+                    return True
+
         # 2. "X is een Y"
         m = re.match(r"(\w+)\s+is\s+een\s+([\w\s]+)", t)
         if m:
@@ -2405,8 +2480,8 @@ class IntentRouter:
         t = text.lower().strip().rstrip("?.")
 
         # 1. "is een X onderdeel van een Y" / "is een X een onderdeel van Y"
-        m = re.match(r"is\s+een\s+(\w+)\s+(?:een\s+)?onderdeel\s+van\s+(?:een\s+)?([\w\s]+)", t)
-        if m:
+        m = re.match(r"is\s+" + self._LID + r"(\w+)\s+(?:een\s+)?onderdeel\s+van\s+" + self._LID + r"([\w\s]+)", t)
+        if m and m.group(1) not in self._GEEN_RELATIE_ONDERWERP:
             dbg(f"{C_BLUE}→ part_of_check (patroon 'is een X onderdeel van Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_part_of_check", {
                 "source": m.group(1).strip(),
@@ -2418,7 +2493,7 @@ class IntentRouter:
             return True
 
         # 2. "zit een X in een Y"
-        m = re.match(r"zit\s+een\s+(\w+)\s+in\s+(?:een\s+)?([\w\s]+)", t)
+        m = re.match(r"zit\s+" + self._LID + r"(\w+)\s+in\s+" + self._LID + r"([\w\s]+)", t)
         if m:
             dbg(f"{C_BLUE}→ part_of_check (patroon 'zit een X in Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_part_of_check", {
@@ -2439,7 +2514,7 @@ class IntentRouter:
         t = text.lower().strip().rstrip("?.")
 
         # 1. "welke soorten X ken je" / "welke soorten van X ken je"
-        m = re.match(r"welke\s+soorten\s+(?:van\s+)?(\w+)\s+ken\s+je", t)
+        m = re.match(r"welke\s+soorten\s+(?:van\s+)?" + self._LID + r"(\w+)\s+ken\s+je", t)
         if m:
             dbg(f"{C_BLUE}→ subtypes_query (patroon 'welke soorten X ken je'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_subtypes_query", {
@@ -2448,8 +2523,25 @@ class IntentRouter:
             self._laatste_concept_kandidaat = m.group(1).strip()
             return True
 
+        # 1b. Meervoudsvorm: "welke zintuigen ken je", "welke dieren ken
+        # je" (20 oktober 2026). Het meervoud wordt via _naar_enkelvoud()
+        # terugvertaald naar een BESTAAND concept; lukt dat niet, dan
+        # valt de zin gewoon door naar de rest van de router.
+        m = re.match(r"welke\s+([\w']+)\s+ken\s+je", t)
+        if m and m.group(1) not in ("soorten", "onderdelen", "dingen", "woorden",
+                                    "betekenissen", "relaties", "concepten",
+                                    "begrippen", "zaken", "talen"):
+            enkelvoud = self._naar_enkelvoud(m.group(1))
+            if enkelvoud:
+                dbg(f"{C_BLUE}→ subtypes_query (patroon 'welke X(meervoud) ken je'): '{m.group(1)}' -> '{enkelvoud}'{C_RESET}")
+                self.event_bus.publish("intent_subtypes_query", {
+                    "target": enkelvoud
+                })
+                self._laatste_concept_kandidaat = enkelvoud
+                return True
+
         # 2. "noem soorten van X" / "noem soorten X"
-        m = re.match(r"noem\s+soorten\s+(?:van\s+)?(\w+)", t)
+        m = re.match(r"noem\s+soorten\s+(?:van\s+)?" + self._LID + r"(\w+)", t)
         if m:
             dbg(f"{C_BLUE}→ subtypes_query (patroon 'noem soorten X'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_subtypes_query", {
@@ -2480,7 +2572,7 @@ class IntentRouter:
         t = text.lower().strip().rstrip("?.")
 
         # 1. "welke onderdelen heeft X" / "welke onderdelen heeft een X"
-        m = re.match(r"welke\s+onderdelen\s+heeft\s+(?:een\s+)?(\w+)", t)
+        m = re.match(r"welke\s+onderdelen\s+heeft\s+" + self._LID + r"(\w+)", t)
         if m:
             dbg(f"{C_BLUE}→ parts_query (patroon 'welke onderdelen heeft X'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_parts_query", {
@@ -2490,7 +2582,7 @@ class IntentRouter:
             return True
 
         # 2. "waar bestaat X uit" / "waaruit bestaat X"
-        m = re.match(r"(?:waar\s+bestaat|waaruit\s+bestaat)\s+(?:een\s+)?(\w+)\s+uit", t)
+        m = re.match(r"(?:waar\s+bestaat|waaruit\s+bestaat)\s+" + self._LID + r"(\w+)(?:\s+uit)?$", t)
         if m:
             dbg(f"{C_BLUE}→ parts_query (patroon 'waar bestaat X uit'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_parts_query", {
@@ -2500,7 +2592,7 @@ class IntentRouter:
             return True
 
         # 3. "wat zit er allemaal in X" / "wat zit er in een X"
-        m = re.match(r"wat\s+zit\s+er\s+(?:allemaal\s+)?in\s+(?:een\s+)?(\w+)", t)
+        m = re.match(r"wat\s+zit\s+er\s+(?:allemaal\s+)?in\s+" + self._LID + r"(\w+)", t)
         if m:
             dbg(f"{C_BLUE}→ parts_query (patroon 'wat zit er in X'): '{m.group(1).strip()}'{C_RESET}")
             self.event_bus.publish("intent_parts_query", {
@@ -2521,7 +2613,7 @@ class IntentRouter:
         t = text.lower().strip().rstrip("?.")
 
         # 1. "is X gerelateerd aan Y"
-        m = re.match(r"is\s+(\w+)\s+gerelateerd\s+aan\s+([\w\s]+)", t)
+        m = re.match(r"is\s+" + self._LID + r"(\w+)\s+gerelateerd\s+aan\s+" + self._LID + r"([\w\s]+)", t)
         if m:
             dbg(f"{C_BLUE}→ related_to_check (patroon 'is X gerelateerd aan Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_related_to_check", {
@@ -2534,7 +2626,7 @@ class IntentRouter:
             return True
 
         # 2. "heeft X iets te maken met Y" / "heeft X te maken met Y"
-        m = re.match(r"heeft\s+(\w+)\s+(?:iets\s+)?te\s+maken\s+met\s+([\w\s]+)", t)
+        m = re.match(r"heeft\s+" + self._LID + r"(\w+)\s+(?:iets\s+)?te\s+maken\s+met\s+" + self._LID + r"([\w\s]+)", t)
         if m:
             dbg(f"{C_BLUE}→ related_to_check (patroon 'heeft X te maken met Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_related_to_check", {
@@ -2911,6 +3003,18 @@ class IntentRouter:
         dbg(f"[gelijkenis-overloop] {actie}")
         self.event_bus.publish("intent_similarity_review", {"actie": actie})
         self._emit_topic("gelijkenis_overloop", bron="detect")
+        return True
+
+    _GELIJKENIS_ONGEDAAN = re.compile(
+        r"^maak (?:dat |het |de laatste keuze |de laatste koppeling "
+        r"|laatste keuze |laatste koppeling )?ongedaan$")
+
+    def detect_gelijkenis_ongedaan(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+        if not self._GELIJKENIS_ONGEDAAN.match(t):
+            return False
+        dbg("[gelijkenis-ongedaan]")
+        self.event_bus.publish("intent_similarity_ongedaan", {})
         return True
 
     def detect_gelijkenis_keuze(self, text):
@@ -5181,7 +5285,8 @@ class IntentRouter:
         # 2J Gelijkenis-voorstellen via embeddings (Semantic Fase 12, stap 2)
         # -- "zoek gelijkenissen voor fiets" / "koppel 2" / "negeer 2".
         if (self.detect_gelijkenis_zoek(text) or self.detect_gelijkenis_overloop(text)
-                or self.detect_gelijkenis_keuze(text)):
+                or self.detect_gelijkenis_keuze(text)
+                or self.detect_gelijkenis_ongedaan(text)):
             return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).

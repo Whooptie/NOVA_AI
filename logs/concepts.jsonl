@@ -303,3 +303,7 @@
 {"timestamp": "2026-10-18T17:54:52.560517", "event_type": "concept_created", "word": "meenemen", "source": "system", "new_value": {"word": "meenemen"}}
 {"timestamp": "2026-10-18T18:43:05.480653", "event_type": "concept_created", "word": "steel", "source": "system", "new_value": {"word": "steel"}}
 {"timestamp": "2026-10-18T18:43:05.583164", "event_type": "concept_created", "word": "handvat", "source": "system", "new_value": {"word": "handvat"}}
+{"timestamp": "2026-10-20T16:54:23.633445", "event_type": "relation_hard_deleted", "word": "fiets", "source": "user", "sense_id": "fiets#1", "relation": {"type": "related_to", "target": "bilspier"}, "old_value": "bilspier", "new_value": null}
+{"timestamp": "2026-10-20T16:55:25.517251", "event_type": "relation_hard_deleted", "word": "fiets", "source": "user", "sense_id": "fiets#1", "relation": {"type": "related_to", "target": "bilspier"}, "old_value": "bilspier", "new_value": null}
+{"timestamp": "2026-10-20T17:55:53.777990", "event_type": "concept_created", "word": "koppel", "source": "system", "new_value": {"word": "koppel"}}
+{"timestamp": "2026-10-20T17:55:53.819585", "event_type": "concept_created", "word": "soort", "source": "system", "new_value": {"word": "soort"}}

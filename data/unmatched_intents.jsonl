@@ -157,3 +157,5 @@
 {"tekst": "moet ik morgen een regenjas aan", "hoogste_gok": "weather", "confidence": 0.2586, "tijdstip": "2026-10-18T19:54:42.122124"}
 {"tekst": "moet ik een paraplu meenemen in de stad", "hoogste_gok": "weather", "confidence": 0.2212, "tijdstip": "2026-10-18T19:54:52.560118"}
 {"tekst": "ik ben moe", "hoogste_gok": "preference", "confidence": 0.1879, "tijdstip": "2026-10-19T17:09:24.767311"}
+{"tekst": "sluen en", "hoogste_gok": "rain", "confidence": 0.1418, "tijdstip": "2026-10-20T18:44:49.726855"}
+{"tekst": "koppel 4 soort", "hoogste_gok": "chess", "confidence": 0.1511, "tijdstip": "2026-10-20T19:55:53.777352"}

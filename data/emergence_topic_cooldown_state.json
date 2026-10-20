@@ -30,11 +30,18 @@
       "getal": 39,
       "gezegd_op": 1792088050.865496,
       "volgende_toegestaan": 1792191672.8689609
+    },
+    "tijdspatroon": {
+      "label": "topic_detected:gelijkenis_overloop|19",
+      "getal": null,
+      "gezegd_op": 1792519208.972308,
+      "volgende_toegestaan": 1792597375.4595616
     }
   },
   "trending_topic:regen": 1791915931.473499,
   "woordverband:waarop:lijken": 1791917095.276982,
   "trending_topic:stoppen": 1792176986.354568,
   "trending_topic:extraheren": 1792434213.278081,
-  "woordverband:nieuw:partij": 1792435804.932295
+  "woordverband:nieuw:partij": 1792435804.932295,
+  "tijdspatroon:topic_detected:gelijkenis_overloop": 1792519208.971994
 }

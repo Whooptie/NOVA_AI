@@ -27,12 +27,20 @@
 #                            ze opslaat, zodat je de richting direct kan zien.
 #   "negeer 2" / "negeer 2 5" -> afgewezen (tombstone), komt nooit meer terug.
 #   "negeer rest"         -> alles in de huidige lijst dat je nog niet behandelde.
+#   "maak ongedaan"       -> draait je LAATSTE koppel- of negeer-commando terug (alles
+#                            wat dat commando opsloeg, in een keer). De relatie wordt
+#                            weer verwijderd, het paar mag opnieuw voorgesteld worden en
+#                            staat het nummer nog in de lijst, dan is het weer vrij.
 #
 # Belangrijk:
 #   * Er wordt NIETS opgeslagen zolang jij niet "koppel ..." of "negeer ..." typt.
 #   * Het model geeft alleen een score, GEEN relatietype. Jij kiest het type.
 #   * De wachtrij (B) toont geen paren die al een gedeelde ouder hebben (beide
 #     is_a getal, beide part_of huid, ...): die band staat al in de kennisbank.
+#     Hetzelfde geldt voor paren waarvan het ene woord al een voorouder van het
+#     andere is via een keten van is_a, of van part_of/has_part (bv. gletsjer ->
+#     grote massa ijs -> ijs). Ketens via een SYNONIEM tellen bewust niet mee:
+#     Nova's redenering volgt geen synoniemen, dus die directe band is echt nieuw.
 #     Ook komt elk woord er hooguit een keer in voor (met zijn beste partner),
 #     zodat een groep als de getallen de lijst niet volloopt.
 #   * Bij de wachtrij (B) kent Nova de richting van een paar niet. Daarom geldt
@@ -58,6 +66,7 @@
 #                                       "synoniem"|None,
 #                               "omgekeerd": bool}
 #                              (oudere vorm met "nummer": int werkt ook)
+#   intent_similarity_ongedaan {}
 #
 # Opslag: bron "embedding", confidence 0.6, daarna confirm_relation() (jij hebt
 # het immers gezien). oorspronkelijke_bron blijft "embedding" in concepts.json.
@@ -98,9 +107,12 @@ class SimilarityProposals:
         self._lijst_woord = None
         self._wachtrij = []             # nog te tonen paren (modus "wachtrij")
         self._overgeslagen_ouder = 0    # paren die al een gedeelde ouder hebben
+        self._overgeslagen_keten = 0    # paren die al via een is_a/part_of-keten bekend zijn
+        self._laatste = []              # wat het laatste koppel-/negeer-commando opsloeg
         event_bus.subscribe("intent_similarity_search", self.on_search)
         event_bus.subscribe("intent_similarity_review", self.on_review)
         event_bus.subscribe("intent_similarity_keuze", self.on_keuze)
+        event_bus.subscribe("intent_similarity_ongedaan", self.on_ongedaan)
         event_bus.publish("module_loaded", {"name": "similarity_proposals"})
 
     # ---------- hulpjes ----------
@@ -166,6 +178,49 @@ class SimilarityProposals:
 
     def _gedeelde_ouder(self, a, b):
         return bool(self._ouders(a) & self._ouders(b))
+
+    def _bouw_ketens(self):
+        """Twee grafen voor de wachtrij: woord -> directe ouders via is_a, en via
+        part_of (een has_part van een ander woord telt als omgekeerde part_of).
+        Afgewezen relaties en afgewezen senses tellen niet mee. Synoniemen en
+        related_to doen bewust NIET mee."""
+        is_a, part_of = {}, {}
+        concepten = getattr(self.sem.store, "concepts", None) or {}
+        for woord, concept in concepten.items():
+            for sense in concept.get("senses", []):
+                if sense.get("status") == "rejected":
+                    continue
+                for rel in sense.get("relations", []):
+                    doel = rel.get("target")
+                    if not doel or rel.get("status") == "rejected":
+                        continue
+                    soort = rel.get("type")
+                    if soort == "is_a":
+                        is_a.setdefault(woord, set()).add(doel)
+                    elif soort == "part_of":
+                        part_of.setdefault(woord, set()).add(doel)
+                    elif soort == "has_part":
+                        part_of.setdefault(doel, set()).add(woord)
+        return is_a, part_of
+
+    @staticmethod
+    def _bereikbaar(graaf, start, doel):
+        gezien, rij = {start}, [start]
+        while rij:
+            w = rij.pop()
+            for ouder in graaf.get(w, ()):
+                if ouder == doel:
+                    return True
+                if ouder not in gezien:
+                    gezien.add(ouder)
+                    rij.append(ouder)
+        return False
+
+    def _via_keten(self, ketens, a, b):
+        """Is een van de twee woorden al een (verre) voorouder van het andere,
+        via een zuivere keten van is_a OF van part_of (nooit door elkaar)?"""
+        return any(self._bereikbaar(graaf, a, b) or self._bereikbaar(graaf, b, a)
+                   for graaf in ketens)
 
     def _vind_sense_id(self, woord, rel_type, doel):
         concept = self.sem.store.get_concept(woord)
@@ -275,12 +330,17 @@ class SimilarityProposals:
             paren = spec.find_all_pairs(min_score=OVERLOOP_MIN_SCORE)  # hoog -> laag
             self._wachtrij, gebruikt = [], set()
             self._overgeslagen_ouder = 0
+            self._overgeslagen_keten = 0
+            ketens = self._bouw_ketens()
             for p in paren:
                 a, b = p["woord_a"], p["woord_b"]
                 if self._paar_status(a, b) is not None:
                     continue
                 if self._gedeelde_ouder(a, b):
                     self._overgeslagen_ouder += 1
+                    continue
+                if self._via_keten(ketens, a, b):
+                    self._overgeslagen_keten += 1
                     continue
                 if a in gebruikt or b in gebruikt:
                     continue   # elk woord hooguit een keer, met zijn beste partner
@@ -318,6 +378,10 @@ class SimilarityProposals:
             if self._overgeslagen_ouder:
                 overslag = (f" Ik sla {self._overgeslagen_ouder} paren over die al dezelfde "
                             f"ouder delen (bv. allebei een getal): die band weet ik al.")
+            if self._overgeslagen_keten:
+                overslag += (f" Ik sla {self._overgeslagen_keten} paren over waarvan het ene "
+                             f"woord al een voorouder van het andere is (bv. gletsjer, grote "
+                             f"massa ijs, ijs): ook die band weet ik al.")
             kop = (f"Ik heb al je concepten met elkaar vergeleken en zocht de sterkste "
                    f"paren die nog geen relatie hebben (score vanaf {OVERLOOP_MIN_SCORE:.2f}, "
                    f"elk woord hooguit een keer).{overslag} Nog niets opgeslagen. "
@@ -414,6 +478,7 @@ class SimilarityProposals:
                     posities.append(n - 1)
 
         rel_type = TYPE_NAAR_RELATIE[type_nl]
+        gedaan = []   # wat dit commando opsloeg, voor "maak ongedaan"
         for i in posities:
             v = self._lijst[i]
             if actie == "koppel":
@@ -429,20 +494,101 @@ class SimilarityProposals:
                     meldingen.append(f"Dat had je eerder afgewezen, dus niet opgeslagen: {zin}.")
                 else:
                     meldingen.append(f"Opgeslagen maar nog niet bevestigd (dat lukte niet): {zin}.")
+                if res in ("opgeslagen", "onbevestigd"):
+                    gedaan.append(self._onthoud("koppel", v, rel_type, i))
                 self._lijst[i] = None
             else:
                 if self._negeer(v):
                     meldingen.append(f"Afgewezen: '{v['word']}' en '{v['target']}'. "
                                      f"Ik stel dit paar niet meer voor.")
+                    gedaan.append(self._onthoud("negeer", v, "related_to", i))
                     self._lijst[i] = None
                 else:
                     meldingen.append(f"Nummer {i + 1} niet afgewezen (er staat intussen al een relatie, "
                                      f"of het lukte niet).")
 
+        if gedaan:
+            self._laatste = gedaan   # alleen als er echt iets is opgeslagen
+            meldingen.append("Fout gekozen? Typ 'maak ongedaan'.")
         if self._wachtrij and all(v is None for v in self._lijst):
             meldingen.append("Lijst klaar. Typ 'volgende gelijkenissen' voor de volgende paren.")
         if meldingen:
             self._toon("\n".join(meldingen))
+
+
+    # ---------- "maak ongedaan" ----------
+    def _onthoud(self, soort, v, rel_type, index):
+        """Bewaart wat er is opgeslagen, zodat 'maak ongedaan' het kan terugdraaien.
+        Aanroepen VOORDAT self._lijst[index] op None gaat."""
+        return {"soort": soort, "word": v["word"], "target": v["target"],
+                "rel_type": rel_type,
+                "sense_id": self._vind_sense_id(v["word"], rel_type, v["target"]),
+                "lijst": self._lijst, "index": index,
+                "item": self._lijst[index]}
+
+    def _draai_terug(self, a):
+        """Verwijdert de relatie van een eerdere koppel/negeer. Geeft:
+        ok | weg | gewijzigd | mislukt.  Raakt NOOIT iets aan dat niet door dit
+        voorstel is gemaakt (bron 'embedding') of intussen door jou is aangepast."""
+        w, d, t, sid = a["word"], a["target"], a["rel_type"], a["sense_id"]
+        if sid is None:
+            return "mislukt"
+        rel = None
+        for sense in (self.sem.store.get_concept(w) or {}).get("senses", []):
+            if sense.get("sense_id") != sid:
+                continue
+            for r in sense.get("relations", []):
+                if r.get("type") == t and r.get("target") == d:
+                    rel = r
+        if rel is None:
+            return "weg"
+        if BRON not in (rel.get("source"), rel.get("oorspronkelijke_bron")):
+            return "gewijzigd"
+        if rel.get("status") != "rejected":
+            if a["soort"] == "negeer":
+                return "gewijzigd"   # een afwijzing die intussen weer actief is: niet aanraken
+            # Eerst afwijzen, dan pas fysiek verwijderen (de guard van hard_delete_relation).
+            if not self.sem.reject_relation(w, sid, t, d, reason="ongedaan gemaakt"):
+                return "mislukt"
+        return "ok" if self.sem.hard_delete_relation(w, sid, t, d) else "mislukt"
+
+    def on_ongedaan(self, data=None, event_type=None):
+        if self.sem is None:
+            self._toon("De kennisbank is niet beschikbaar.")
+            return
+        if not self._laatste:
+            self._toon("Er is niets om ongedaan te maken. Ik kan alleen je laatste "
+                       "'koppel'- of 'negeer'-commando terugdraaien, en maar een keer.")
+            return
+        acties, self._laatste = self._laatste, []
+        meldingen, teruggezet = [], []
+        for a in reversed(acties):
+            w, d = a["word"], a["target"]
+            res = self._draai_terug(a)
+            if res == "ok":
+                if a["soort"] == "koppel":
+                    meldingen.append(f"Ongedaan gemaakt, verwijderd: {self._zin(a['rel_type'], w, d)}.")
+                else:
+                    meldingen.append(f"Ongedaan gemaakt: '{w}' en '{d}' zijn niet meer afgewezen "
+                                     f"en kunnen opnieuw voorgesteld worden.")
+                i = a["index"]
+                if self._lijst is a["lijst"] and 0 <= i < len(self._lijst) \
+                        and self._lijst[i] is None:
+                    self._lijst[i] = a["item"]
+                    self._lijst_tijd = time.time()
+                    teruggezet.append(i + 1)
+            elif res == "weg":
+                meldingen.append(f"'{w}' en '{d}': die relatie bestaat al niet meer, "
+                                 f"dus er is niets te doen.")
+            elif res == "gewijzigd":
+                meldingen.append(f"'{w}' en '{d}': die relatie is intussen aangepast, "
+                                 f"dus ik laat hem staan.")
+            else:
+                meldingen.append(f"'{w}' en '{d}': ongedaan maken lukte niet.")
+        if teruggezet:
+            nrs = ", ".join(str(n) for n in sorted(teruggezet))
+            meldingen.append(f"Nummer {nrs} staat weer in de lijst.")
+        self._toon("\n".join(meldingen))
 
 
 def init_module(event_bus, sem=None):

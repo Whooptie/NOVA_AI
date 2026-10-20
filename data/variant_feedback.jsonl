@@ -389,3 +389,9 @@
 {"sjabloon_naam": "reflectie_kw_twijfel", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792346092.6002622, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "reflectie_ben", "gekozen_variant_index": 0, "variant_tekst": "Oh… sinds wanneer ben je {1}?", "entity": null, "response_style": null, "moment": "2026-10-19T17:09:24.773233", "reactie_sentiment": null}
 {"sjabloon_naam": "reflectie_ben", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792422564.7739484, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "variant_tekst": "Hmm… al {duur} aan het {activiteit}.", "entity": "coding", "response_style": null, "moment": "2026-10-20T18:44:49.732489", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles oké?", "entity": "coding", "response_style": null, "moment": "2026-10-20T18:44:49.733350", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792514689.7328784, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792514689.7334864, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "variant_tekst": "Hmm… daar kom ik niet uit.", "entity": null, "response_style": "normaal", "moment": "2026-10-20T19:55:53.869270", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1792518953.8696458, "type": "sentiment_koppeling"}
