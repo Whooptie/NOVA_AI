@@ -49,6 +49,10 @@ nl_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/nl
 # Fase 12: embeddings (extern ML-model, niet de kern van Nova)
 sentence-transformers==6.1.0
 
+pyvis==0.3.2
+networkx==3.7
+jsonpickle==4.1.4
+
 # --- Standard library (no installation needed) ---
 # sqlite3      — Layer 0 memory (built into Python)
 # threading    — background timers, daemon threads

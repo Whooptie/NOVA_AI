@@ -53,3 +53,4 @@
 {"tekst": "welk weer wordt het morgen in beernem", "label": "weather", "gebruikt_bij_hertraining": "2026-10-19T18:11:45.313703"}
 {"tekst": "gaat het morgen regenen", "label": "rain", "gebruikt_bij_hertraining": "2026-10-19T18:11:45.313703"}
 {"tekst": "gaat het vandaag nog regenen", "label": "rain", "gebruikt_bij_hertraining": "2026-10-19T18:11:45.313703"}
+{"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-21T16:19:10.949162"}

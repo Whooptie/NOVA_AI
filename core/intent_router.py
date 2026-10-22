@@ -3532,6 +3532,96 @@ class IntentRouter:
         return False
 
     # ---------------------------------------------------------
+    # Kennisgraaf (Semantic Fase 13.3)
+    # "toon graaf van fiets [diepte 2]" / "laat de graaf van fiets zien"
+    # "hoe zijn fiets en auto verbonden" / "pad tussen fiets en auto"
+    # "graaf statistieken"
+    # Het eigenlijke werk doet modules/knowledge/graph_commands.py via
+    # de events intent_graph_show / intent_graph_path / intent_graph_stats.
+    # ---------------------------------------------------------
+    _GRAAF_TOON_PATRONEN = [
+        re.compile(r"^(?:toon|laat|geef|teken|maak|open)\s+(?:me\s+|mij\s+)?(?:de\s+|een\s+)?(?:kennis)?graaf\s+"
+                   r"(?:van|voor|rond)\s+(?:(?:een|de|het)\s+)?([\w\-]+(?: [\w\-]+){0,2}?)"
+                   r"(?: (?:met )?diepte (\d))?(?: zien)?$"),
+        re.compile(r"^(?:de\s+)?(?:kennis)?graaf\s+(?:van|voor|rond)\s+(?:(?:een|de|het)\s+)?"
+                   r"([\w\-]+(?: [\w\-]+){0,2}?)(?: (?:met )?diepte (\d))?$"),
+        re.compile(r"^visualiseer\s+(?:(?:een|de|het)\s+)?([\w\-]+(?: [\w\-]+){0,2}?)(?: (?:met )?diepte (\d))?$"),
+    ]
+    _GRAAF_PAD_PATRONEN = [
+        re.compile(r"^hoe\s+(?:zijn|hangen)\s+(?:(?:een|de|het)\s+)?([\w\-]+(?: [\w\-]+){0,2}?)\s+en\s+"
+                   r"(?:(?:een|de|het)\s+)?([\w\-]+(?: [\w\-]+){0,2}?)\s+"
+                   r"(?:met elkaar\s+)?(?:verbonden|gerelateerd|verwant|samen)$"),
+        re.compile(r"^(?:toon|laat|teken|zoek|geef)\s+(?:me\s+|mij\s+)?(?:het\s+|de\s+)?(?:pad|verbinding|route)\s+"
+                   r"(?:tussen|van)\s+(?:(?:een|de|het)\s+)?([\w\-]+(?: [\w\-]+){0,2}?)\s+(?:en|naar|tot)\s+"
+                   r"(?:(?:een|de|het)\s+)?([\w\-]+(?: [\w\-]+){0,2}?)(?: zien)?$"),
+        re.compile(r"^(?:pad|verbinding)\s+(?:tussen|van)\s+(?:(?:een|de|het)\s+)?([\w\-]+(?: [\w\-]+){0,2}?)\s+"
+                   r"(?:en|naar|tot)\s+(?:(?:een|de|het)\s+)?([\w\-]+(?: [\w\-]+){0,2}?)$"),
+    ]
+    _GRAAF_STATS = re.compile(
+        r"^(?:(?:toon|geef)\s+(?:me\s+|mij\s+)?(?:de\s+)?)?(?:kennis)?graaf[\s\-]?statistieken"
+        r"|^statistieken\s+van\s+(?:de\s+|je\s+)?(?:kennis)?graaf$"
+        r"|^hoe\s+(?:groot|dicht)\s+is\s+(?:je|jouw)\s+(?:kennis)?graaf$")
+
+    _GRAAF_ALLES = re.compile(
+        r"^(?:toon|laat|geef|teken|maak|open)\s+(?:me\s+|mij\s+)?(?:de\s+|je\s+|jouw\s+)?"
+        r"(?:hele|volledige|complete)\s+(?:kennisgraaf|graaf|kennis)(?:\s+zien)?$"
+        r"|^(?:de\s+)?(?:hele|volledige|complete)\s+(?:kennisgraaf|graaf)$"
+        r"|^(?:toon|laat|geef)\s+(?:me\s+|mij\s+)?(?:alles|al je kennis)\s+(?:in|van)\s+(?:de\s+)?(?:kennis)?graaf$")
+
+    def _graaf_woord_ok(self, woord):
+        """Een woord (of 2-3 woorden) dat als onderwerp kan dienen; geen stopwoord."""
+        woord = woord.strip()
+        return bool(woord) and woord not in self._GEEN_RELATIE_ONDERWERP
+
+    def _graaf_enkelvoud(self, woord):
+        """Meervoud -> enkelvoud als dat als concept bestaat; anders het woord zoals het is."""
+        return self._naar_enkelvoud(woord) or woord
+
+    def detect_graaf(self, text):
+        t = text.lower().strip().rstrip("?.! ").strip()
+
+        if self._GRAAF_STATS.match(t):
+            dbg("[graaf-statistieken]")
+            self.event_bus.publish("intent_graph_stats", {})
+            self._emit_topic("graaf_stats", bron="detect")
+            return True
+
+        if self._GRAAF_ALLES.match(t):
+            dbg("[graaf-alles]")
+            self.event_bus.publish("intent_graph_all", {})
+            self._emit_topic("graaf_alles", bron="detect")
+            return True
+
+        for patroon in self._GRAAF_PAD_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            a, b = m.group(1).strip(), m.group(2).strip()
+            if not (self._graaf_woord_ok(a) and self._graaf_woord_ok(b)):
+                continue
+            a, b = self._graaf_enkelvoud(a), self._graaf_enkelvoud(b)
+            dbg(f"[graaf-pad] {a} -> {b}")
+            self.event_bus.publish("intent_graph_path", {"word_a": a, "word_b": b})
+            self._emit_topic("graaf_pad", bron="detect", concept=a)
+            return True
+
+        for patroon in self._GRAAF_TOON_PATRONEN:
+            m = patroon.match(t)
+            if not m:
+                continue
+            woord = m.group(1).strip()
+            if not self._graaf_woord_ok(woord):
+                continue
+            woord = self._graaf_enkelvoud(woord)
+            diepte = int(m.group(2)) if m.group(2) else 1
+            dbg(f"[graaf-toon] {woord} diepte {diepte}")
+            self.event_bus.publish("intent_graph_show", {"word": woord, "diepte": diepte})
+            self._emit_topic("graaf_toon", bron="detect", concept=woord)
+            return True
+
+        return False
+
+    # ---------------------------------------------------------
     # Help
     # ---------------------------------------------------------
     def detect_help(self, text):
@@ -5287,6 +5377,14 @@ class IntentRouter:
         if (self.detect_gelijkenis_zoek(text) or self.detect_gelijkenis_overloop(text)
                 or self.detect_gelijkenis_keuze(text)
                 or self.detect_gelijkenis_ongedaan(text)):
+            return
+
+        # 2K Kennisgraaf (Semantic Fase 13.3) -- "toon graaf van fiets" /
+        # "hoe zijn fiets en auto verbonden" / "graaf statistieken". MOET
+        # vóór de intent-tabel en vóór stap 9 staan: "hoe zijn X en Y
+        # verbonden" bevat " zijn ", en semantic._detect_relation() zou dat
+        # als een is_a-uitspraak lezen (zelfde probleem als bij 7B).
+        if self.detect_graaf(text):
             return
 
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).

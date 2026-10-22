@@ -13578,6 +13578,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-20T17:31:28.056093"
+          },
+          {
+            "type": "related_to",
+            "target": "eierstok",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-10-21T17:32:48.488806"
           }
         ],
         "source": "user",
@@ -13588,12 +13596,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-11T00:00:00.000000",
-      "updated_at": "2026-10-20T17:31:28.093644",
+      "updated_at": "2026-10-21T17:32:48.529124",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:31:28.056103",
-      "usage_count": 3,
+      "last_used_at": "2026-10-21T17:32:48.488818",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-07-11T00:00:00.000000",
@@ -13605,6 +13613,10 @@
         },
         {
           "timestamp": "2026-10-20T17:31:28.056103",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:32:48.488818",
           "confidence": 1.0
         }
       ]
@@ -13673,6 +13685,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-20T17:31:28.093651"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "ei#1",
+        "relation": {
+          "type": "related_to",
+          "target": "eierstok",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:32:48.488815"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "ei#1",
+        "relation": {
+          "type": "related_to",
+          "target": "eierstok"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-10-21T17:32:48.529130"
       }
     ]
   },
@@ -16554,6 +16590,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:32:44.742160",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "programmeertaal",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:33:47.454342",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -16564,12 +16609,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-27T21:00:00.000000",
-      "updated_at": "2026-10-20T17:32:44.779556",
+      "updated_at": "2026-10-21T17:33:47.496132",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:32:44.742171",
-      "usage_count": 2,
+      "last_used_at": "2026-10-21T17:33:47.454353",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-07-27T21:00:00.000000",
@@ -16577,6 +16622,10 @@
         },
         {
           "timestamp": "2026-10-20T17:32:44.742171",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:33:47.454353",
           "confidence": 1.0
         }
       ]
@@ -16621,6 +16670,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:32:44.779565"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "programma#1",
+        "relation": {
+          "type": "related_to",
+          "target": "programmeertaal",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:33:47.454350"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "programma#1",
+        "relation": {
+          "type": "related_to",
+          "target": "programmeertaal"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:33:47.496142"
       }
     ]
   },
@@ -30036,6 +30109,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T19:40:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "vinger",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:33:47.375075",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -30046,15 +30128,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-15T19:40:00.000000",
+      "updated_at": "2026-10-21T17:33:47.414183",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T19:40:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-10-21T17:33:47.375086",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:33:47.375086",
           "confidence": 1.0
         }
       ]
@@ -30075,6 +30161,30 @@
         "old_value": null,
         "new_value": "Een handschoen is een kledingstuk dat je hand en vingers bedekt.",
         "timestamp": "2026-10-15T19:40:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "handschoen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vinger",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:33:47.375084"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "handschoen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vinger"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:33:47.414189"
       }
     ]
   },
@@ -32535,6 +32645,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:52:57.726157",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "varen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:32:23.816541",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -32545,12 +32664,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-20T17:52:57.765648",
+      "updated_at": "2026-10-21T17:32:23.854719",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:52:57.726170",
-      "usage_count": 1,
+      "last_used_at": "2026-10-21T17:32:23.816550",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -32558,6 +32677,10 @@
         },
         {
           "timestamp": "2026-10-20T17:52:57.726170",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:32:23.816550",
           "confidence": 1.0
         }
       ]
@@ -32602,6 +32725,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:52:57.765657"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "haven#1",
+        "relation": {
+          "type": "related_to",
+          "target": "varen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:32:23.816548"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "haven#1",
+        "relation": {
+          "type": "related_to",
+          "target": "varen"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:32:23.854725"
       }
     ]
   },
@@ -35000,6 +35147,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:30:08.830084",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "has_part",
+            "target": "snijtand",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:32:43.012478",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -35010,12 +35166,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-20T17:30:08.867324",
+      "updated_at": "2026-10-21T17:32:43.053748",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:30:08.830094",
-      "usage_count": 3,
+      "last_used_at": "2026-10-21T17:32:43.012488",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -35031,6 +35187,10 @@
         },
         {
           "timestamp": "2026-10-20T17:30:08.830094",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:32:43.012488",
           "confidence": 1.0
         }
       ]
@@ -35123,6 +35283,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:30:08.867332"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "kaak#1",
+        "relation": {
+          "type": "has_part",
+          "target": "snijtand",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:32:43.012485"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "kaak#1",
+        "relation": {
+          "type": "has_part",
+          "target": "snijtand"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:32:43.053755"
       }
     ]
   },
@@ -35557,6 +35741,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:29:59.109967",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "luchtpijp",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:33:47.141371",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -35567,12 +35760,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-20T17:29:59.147053",
+      "updated_at": "2026-10-21T17:33:47.181855",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:29:59.109981",
-      "usage_count": 1,
+      "last_used_at": "2026-10-21T17:33:47.141379",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -35580,6 +35773,10 @@
         },
         {
           "timestamp": "2026-10-20T17:29:59.109981",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:33:47.141379",
           "confidence": 1.0
         }
       ]
@@ -35624,6 +35821,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:29:59.147061"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "keel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "luchtpijp",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:33:47.141376"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "keel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "luchtpijp"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:33:47.181861"
       }
     ]
   },
@@ -36528,6 +36749,14 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:18:15.617158",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "pols",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-10-21T17:34:03.105831"
           }
         ],
         "source": "user",
@@ -36538,12 +36767,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-20T17:18:15.653933",
+      "updated_at": "2026-10-21T17:34:03.148947",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:18:15.617167",
-      "usage_count": 1,
+      "last_used_at": "2026-10-21T17:34:03.105840",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -36551,6 +36780,10 @@
         },
         {
           "timestamp": "2026-10-20T17:18:15.617167",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:34:03.105840",
           "confidence": 1.0
         }
       ]
@@ -36595,6 +36828,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:18:15.653940"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "nagel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pols",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:34:03.105837"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "nagel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pols"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-10-21T17:34:03.148954"
       }
     ]
   },
@@ -37836,6 +38093,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-20T17:30:13.791456"
+          },
+          {
+            "type": "related_to",
+            "target": "kniekap",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-10-21T17:32:48.405808"
           }
         ],
         "source": "user",
@@ -37846,12 +38111,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-20T17:30:13.828470",
+      "updated_at": "2026-10-21T17:32:48.447354",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:30:13.791466",
-      "usage_count": 2,
+      "last_used_at": "2026-10-21T17:32:48.405818",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -37863,6 +38128,10 @@
         },
         {
           "timestamp": "2026-10-20T17:30:13.791466",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:32:48.405818",
           "confidence": 1.0
         }
       ]
@@ -37931,6 +38200,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-20T17:30:13.828479"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "dij#1",
+        "relation": {
+          "type": "related_to",
+          "target": "kniekap",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:32:48.405815"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "dij#1",
+        "relation": {
+          "type": "related_to",
+          "target": "kniekap"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-10-21T17:32:48.447361"
       }
     ]
   },
@@ -37968,6 +38261,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T19:40:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "kuitspier",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:33:47.537398",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -37978,15 +38280,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-15T19:40:00.000000",
+      "updated_at": "2026-10-21T17:33:47.579211",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T19:40:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-10-21T17:33:47.537411",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:33:47.537411",
           "confidence": 1.0
         }
       ]
@@ -38007,6 +38313,30 @@
         "old_value": null,
         "new_value": "De knie is het gewricht in het midden van het been.",
         "timestamp": "2026-10-15T19:40:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "knie#1",
+        "relation": {
+          "type": "related_to",
+          "target": "kuitspier",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:33:47.537409"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "knie#1",
+        "relation": {
+          "type": "related_to",
+          "target": "kuitspier"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:33:47.579219"
       }
     ]
   },
@@ -52502,6 +52832,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:29:58.876983",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "geluid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:32:23.573211",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -52512,12 +52851,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-20T17:29:58.914269",
+      "updated_at": "2026-10-21T17:32:23.615287",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:29:58.876997",
-      "usage_count": 2,
+      "last_used_at": "2026-10-21T17:32:23.573220",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -52529,6 +52868,10 @@
         },
         {
           "timestamp": "2026-10-20T17:29:58.876997",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:32:23.573220",
           "confidence": 1.0
         }
       ]
@@ -52597,6 +52940,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:29:58.914278"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "gehoorbeentje#1",
+        "relation": {
+          "type": "related_to",
+          "target": "geluid",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:32:23.573218"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "gehoorbeentje#1",
+        "relation": {
+          "type": "related_to",
+          "target": "geluid"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:32:23.615294"
       }
     ]
   },
@@ -53043,6 +53410,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T20:00:00.000000"
+          },
+          {
+            "type": "part_of",
+            "target": "mond",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:33:58.351399",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -53053,15 +53429,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-15T20:00:00.000000",
+      "updated_at": "2026-10-21T17:33:58.390032",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T20:00:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-10-21T17:33:58.351406",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:33:58.351406",
           "confidence": 1.0
         }
       ]
@@ -53082,6 +53462,30 @@
         "old_value": null,
         "new_value": "Een kies is een brede tand achter in de mond waarmee je eten fijnmaalt.",
         "timestamp": "2026-10-15T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "kies#1",
+        "relation": {
+          "type": "part_of",
+          "target": "mond",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:33:58.351404"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "kies#1",
+        "relation": {
+          "type": "part_of",
+          "target": "mond"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:33:58.390040"
       }
     ]
   },
@@ -53905,6 +54309,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "slagader",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:32:23.737451",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -53915,15 +54328,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-15T20:00:00.000000",
+      "updated_at": "2026-10-21T17:32:23.776706",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T20:00:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-10-21T17:32:23.737461",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:32:23.737461",
           "confidence": 1.0
         }
       ]
@@ -53944,6 +54361,30 @@
         "old_value": null,
         "new_value": "Een hartboezem is een van de twee bovenste holtes van het hart waarin het bloed binnenkomt.",
         "timestamp": "2026-10-15T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "hartboezem#1",
+        "relation": {
+          "type": "related_to",
+          "target": "slagader",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:32:23.737458"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "hartboezem#1",
+        "relation": {
+          "type": "related_to",
+          "target": "slagader"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:32:23.776711"
       }
     ]
   },
@@ -54780,6 +55221,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-20T17:31:27.980204"
+          },
+          {
+            "type": "related_to",
+            "target": "handvat",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-10-21T17:32:48.569995"
           }
         ],
         "source": "user",
@@ -54790,12 +55239,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-20T17:31:28.018324",
+      "updated_at": "2026-10-21T17:32:48.609711",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:31:27.980212",
-      "usage_count": 2,
+      "last_used_at": "2026-10-21T17:32:48.570007",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -54807,6 +55256,10 @@
         },
         {
           "timestamp": "2026-10-20T17:31:27.980212",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:32:48.570007",
           "confidence": 1.0
         }
       ]
@@ -54875,6 +55328,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-20T17:31:28.018332"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "handpalm#1",
+        "relation": {
+          "type": "related_to",
+          "target": "handvat",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:32:48.570004"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "handpalm#1",
+        "relation": {
+          "type": "related_to",
+          "target": "handvat"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-10-21T17:32:48.609716"
       }
     ]
   },
@@ -56185,6 +56662,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:31:09.120551",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "longblaasje",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:32:23.655835",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -56195,12 +56681,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-20T17:31:09.157237",
+      "updated_at": "2026-10-21T17:32:23.696570",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:31:09.120564",
-      "usage_count": 2,
+      "last_used_at": "2026-10-21T17:32:23.655848",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -56212,6 +56698,10 @@
         },
         {
           "timestamp": "2026-10-20T17:31:09.120564",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:32:23.655848",
           "confidence": 1.0
         }
       ]
@@ -56280,6 +56770,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:31:09.157246"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "ademen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "longblaasje",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:32:23.655845"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "ademen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "longblaasje"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:32:23.696577"
       }
     ]
   },
@@ -56792,6 +57306,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:32:44.667746",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "tepel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:33:47.298175",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -56802,12 +57325,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-20T17:32:44.704870",
+      "updated_at": "2026-10-21T17:33:47.336167",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:32:44.667758",
-      "usage_count": 1,
+      "last_used_at": "2026-10-21T17:33:47.298184",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -56815,6 +57338,10 @@
         },
         {
           "timestamp": "2026-10-20T17:32:44.667758",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:33:47.298184",
           "confidence": 1.0
         }
       ]
@@ -56859,6 +57386,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:32:44.704878"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "borstvoeding#1",
+        "relation": {
+          "type": "related_to",
+          "target": "tepel",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:33:47.298182"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "borstvoeding#1",
+        "relation": {
+          "type": "related_to",
+          "target": "tepel"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:33:47.336172"
       }
     ]
   },
@@ -57383,6 +57934,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:32:44.518962",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "ovulatie",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-21T17:33:47.222225",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -57393,12 +57953,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-20T17:32:44.555948",
+      "updated_at": "2026-10-21T17:33:47.259999",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:32:44.518976",
-      "usage_count": 2,
+      "last_used_at": "2026-10-21T17:33:47.222237",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -57410,6 +57970,10 @@
         },
         {
           "timestamp": "2026-10-20T17:32:44.518976",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-10-21T17:33:47.222237",
           "confidence": 1.0
         }
       ]
@@ -57478,6 +58042,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:32:44.555957"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "bevruchting#1",
+        "relation": {
+          "type": "related_to",
+          "target": "ovulatie",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-10-21T17:33:47.222235"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "bevruchting#1",
+        "relation": {
+          "type": "related_to",
+          "target": "ovulatie"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-10-21T17:33:47.260006"
       }
     ]
   },

@@ -2081,3 +2081,34 @@ Twee kleine open punten uit stap 2b, samen afgewerkt.
 - Nova werkt met de eerste betekenis: amandel = klier in de keel, dus amandel en appel is een terechte afwijzing.
 
 **Opgemerkte datapunten (jouw beslissing, nog niet aangepast):** `licht` heeft een foute `part_of fiets`; `grote massa ijs` lijkt dubbel met gletsjer/ijsmassa; het concept `metaal` ontbreekt (goud, zilver); instrument en muziekinstrument zijn mogelijk dubbel.
+
+---
+
+## ✅ Semantic Fase 13 — Graph Visualization: data, 3D-pagina en chatcommando's (21 oktober 2026)
+
+De kennisgraaf zichtbaar gemaakt. Volledig symbolisch: tekenen, tellen, zoeken. Gebouwd in drie stappen met eerst de data en meting, dan de pagina, dan het commando. De eerste Pyvis-versie (platte 2D-momentopname) was te weinig: Kevin verwachtte een 3D-versie waarin je kunt draaien en op een woord klikken om nieuwe relaties te zien. Dat is daarom de standaard geworden; de Pyvis-versie blijft als `graph_render.py` bestaan.
+
+**13.1, `graph_data.py` (nieuw, `modules/knowledge/`):** pure functies zonder EventBus. `bouw_graaf()` (breadth-first rond een centrum, diepte en maximum 60 woorden), `volledige_graaf()`, `vind_pad()` (kortste pad over alle types, beide richtingen), `statistieken()` en `statistieken_tekst()` (de meting 50a). Relaties worden ontdubbeld: `has_part` is `part_of` omgekeerd, `related_to`/`synonym`/`antonym` zijn symmetrisch, de zwakste status wint, `rejected` telt niet mee.
+
+**13.2, `graph_render.py` en `graph_render_3d.py`:** het 3D-bestand bevat de hele graaf als JSON (met `<`, `>` en `&` geëscaped) en de tekenbibliotheek 3d-force-graph 1.73.4 (MIT, `modules/knowledge/vendor/`). Klikken, zoeken, pad en filters gebeuren in de browser; het bestand werkt offline. Overlappende labels worden als HTML bovenop de scene getekend. Pyvis haalde nog bootstrap van een CDN; dat is eruit gehaald.
+
+**13.3, `graph_commands.py` en stap 2K in `route()`:** `toon graaf van X [diepte N]`, `hoe zijn X en Y verbonden` en `graaf statistieken`. Events `intent_graph_show`, `intent_graph_path`, `intent_graph_stats`; topics `graaf_toon`, `graaf_pad`, `graaf_stats`. Eigen vroege stap, omdat "zijn" in de padvraag anders bij `semantic._detect_relation()` terechtkomt (zelfde probleem als stap 7B). Het bestand komt in `data/graphs/`; Nova zegt waar het staat.
+
+**Meting 21 oktober 2026:** 701 concepten, 723 betekenissen, 1745 opgeslagen relaties = 1337 unieke verbindingen, 14 losse concepten, 4 stukken (grootste 680), 1733 bevestigd, 12 niet bevestigd.
+
+**Wat de graaf liet zien:**
+- 408 van de 1745 opgeslagen relaties waren dezelfde waarheid in twee richtingen (`has_part` en `part_of`, of `related_to` van beide kanten).
+- Twee relaties (bevalling en geboorte) hebben als type de tekst `None`. De meting meldt dit nu; Kevin herstelt het zelf.
+- Types `property_of` en `used_for` bestonden in de data maar hadden geen kleur of naam.
+- De graaf tekent per woord, niet per betekenis: `trap` en `licht` voegen alle betekenissen samen. Dit bevestigt de eerder opgemerkte foute `part_of fiets` bij `licht`.
+
+**Live bevestigd (21 oktober 2026):** `toon graaf van fiets` (16 woorden bij het openen), `hoe zijn fiets en auto verbonden` (2 stappen, pad rood in de pagina) en `graaf statistieken`.
+
+**Tests:** 110 nieuwe (zie `nova_state.md`, testsectie). Volledige suite: 2601 tests, 2600 groen, 1 overgeslagen.
+
+**Lessen:**
+- Bij een visueel resultaat eerst een voorbeeld laten zien voor je verder bouwt; de eerste versie voldeed niet aan wat Kevin voor ogen had.
+- Alles testen in een echte browser (hier een headless Chromium met WebGL) vóór het opleveren; zo kwamen fouten in de labels en het zijpaneel aan het licht.
+- Een data-fout (`None` als type) valt pas op als je de data zichtbaar maakt; de meting hoort daarom ook die controle te doen.
+
+**Nog open:** `open_html` naar de laptop, help-onderwerp en Layer 7-label, `None` in `concepts.json` herstellen, en de graaf per betekenis (zie Volgende stappen 56 t/m 59).

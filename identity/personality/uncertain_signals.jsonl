@@ -1260,3 +1260,22 @@
 {"text": "welke onderdelen heeft het hart", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0487, "bron": "model_fallback", "tijdstip": "2026-10-20T20:17:58.871441"}
 {"text": "welke zintuigen ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-20T20:18:06.001243"}
 {"text": "is de zon een ster", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0583, "bron": "model_fallback", "tijdstip": "2026-10-20T20:18:12.823982"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-21T15:09:00.200199"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T19:31:26.747658"}
+{"text": "koppel 1 6 7 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T19:32:23.566213"}
+{"text": "koppel 2 als bevat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T19:32:43.006516"}
+{"text": "negeer 3 4 5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T19:32:48.399195"}
+{"text": "volgende gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T19:33:00.011066"}
+{"text": "koppel 2 3 4 6 7 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T19:33:47.136261"}
+{"text": "koppel 5 als onderdeel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T19:33:58.346708"}
+{"text": "negeer 1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T19:34:03.099074"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-21T20:23:16.070176"}
+{"text": "toon graaf van fiets", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.048, "bron": "model_fallback", "tijdstip": "2026-10-21T20:24:40.454222"}
+{"text": "hoe zijn fiets en auto verbonden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0579, "bron": "model_fallback", "tijdstip": "2026-10-21T20:24:54.063392"}
+{"text": "graaf statistieken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-21T20:25:10.375317"}
+{"text": "toon graaf van lichaam", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0038, "bron": "model_fallback", "tijdstip": "2026-10-21T20:26:13.622068"}
+{"text": "het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0487, "bron": "model_fallback", "tijdstip": "2026-10-22T08:55:40.129454"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-22T08:55:48.452946"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-22T08:55:48.459147"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-22T09:01:05.364289"}
+{"text": "toon de hele graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-22T09:01:33.935554"}

@@ -14,10 +14,10 @@
       "volgende_toegestaan": 1790859688.5405424
     },
     "trending_topic": {
-      "label": "extraheren",
+      "label": "gelijkenis",
       "getal": null,
-      "gezegd_op": 1792434213.278359,
-      "volgende_toegestaan": 1792516606.1343024
+      "gezegd_op": 1792520762.302033,
+      "volgende_toegestaan": 1792620728.2358973
     },
     "woordverband": {
       "label": "nieuw|partij",
@@ -43,5 +43,6 @@
   "trending_topic:stoppen": 1792176986.354568,
   "trending_topic:extraheren": 1792434213.278081,
   "woordverband:nieuw:partij": 1792435804.932295,
-  "tijdspatroon:topic_detected:gelijkenis_overloop": 1792519208.971994
+  "tijdspatroon:topic_detected:gelijkenis_overloop": 1792519208.971994,
+  "trending_topic:gelijkenis": 1792520762.301775
 }
