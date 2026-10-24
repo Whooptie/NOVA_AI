@@ -395,3 +395,23 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792514689.7334864, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "variant_tekst": "Hmm… daar kom ik niet uit.", "entity": null, "response_style": "normaal", "moment": "2026-10-20T19:55:53.869270", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1792518953.8696458, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "variant_tekst": "Wacht… nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-10-22T20:10:26.547258", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe gaat het?", "entity": "coding", "response_style": null, "moment": "2026-10-22T20:10:26.547922", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1792692626.5475264, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792692626.5480895, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Oh… daar weet ik niets over.", "entity": null, "response_style": "normaal", "moment": "2026-10-23T21:31:09.366076", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792783869.366271, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "variant_tekst": "Met '{entity}' bedoel je waarschijnlijk: {definition} Ik zie dat woord bij jou trouwens vaak in de buurt van '{associatie}'.", "entity": "router", "response_style": "normaal", "moment": "2026-10-23T21:31:22.498375", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1792783882.4985387, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "definitie", "gekozen_variant_index": 3, "variant_tekst": "{entity}, dat is: {definition}", "entity": "taalmodel", "response_style": "normaal", "moment": "2026-10-23T22:02:32.600361", "reactie_sentiment": null}
+{"sjabloon_naam": "definitie", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1792785752.6005511, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "variant_tekst": "Oh… dat snap ik niet.", "entity": null, "response_style": "normaal", "moment": "2026-10-23T22:02:45.412792", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "reactie_sentiment": "positief", "moment": 1792785765.413014, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "definitie", "gekozen_variant_index": 1, "variant_tekst": "Met '{entity}' bedoel je waarschijnlijk: {definition}", "entity": "schaal", "response_style": "normaal", "moment": "2026-10-23T22:12:28.158875", "reactie_sentiment": null}
+{"sjabloon_naam": "definitie", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792786348.1591482, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "definitie", "gekozen_variant_index": 4, "variant_tekst": "Wat ik weet over '{entity}': {definition}", "entity": "schaal", "response_style": "normaal", "moment": "2026-10-23T22:13:43.231637", "reactie_sentiment": null}
+{"sjabloon_naam": "definitie", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1792786423.2318108, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "variant_tekst": "Hmm… al {duur} aan het {activiteit}.", "entity": "coding", "response_style": null, "moment": "2026-10-23T22:13:52.600417", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles oké?", "entity": "coding", "response_style": null, "moment": "2026-10-23T22:13:52.600884", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792786432.6006021, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792786432.6010318, "type": "sentiment_koppeling"}

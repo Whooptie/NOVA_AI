@@ -2,7 +2,8 @@
   "aartrijke": {
     "datum": "2026-10-18",
     "temp": 10.1,
-    "laatste_waarschuwing_tekst": null
+    "laatste_waarschuwing_tekst": null,
+    "laatste_waarschuwing_datum": "2026-10-24"
   },
   "brugge": {
     "laatste_waarschuwing_tekst": null,

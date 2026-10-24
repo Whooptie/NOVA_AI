@@ -91,6 +91,7 @@ def get_help():
 ❓ HELP
   help               (dit overzicht)
   help semantic      (alles over Nova's kennis: leren, redeneren, tijd, zekerheid)
+  help graaf         (de kennisgraaf: Nova's kennis als 3D-pagina bekijken)
   help schaken       (schaakcommando's)
   help wiskunde      (wiskunde-overzicht)
   help debug         (debug-/testcommando's voor development)

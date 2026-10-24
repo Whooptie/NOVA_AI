@@ -177,3 +177,69 @@ def test_hele_graaf_zonder_kennis(tmp_path):
     gc.GraafCommands(bus, None, map_pad=str(tmp_path))
     bus.publish("intent_graph_all", {})
     assert "niet geladen" in bus.antwoorden()[0]
+
+
+# ---------- naar de laptop sturen (open_html) ----------
+
+class NepBridge:
+    def __init__(self, verbonden=True, resultaat=None):
+        self.verbonden = verbonden
+        self.resultaat = resultaat or {"ok": True}
+        self.commandos = []
+
+    def is_laptop_verbonden(self):
+        return self.verbonden
+
+    def stuur_commando_naar_laptop(self, soort, payload, timeout_seconden=10):
+        self.commandos.append((soort, payload))
+        return self.resultaat
+
+
+def test_pagina_gaat_naar_laptop_en_is_uitpakbaar(opstelling):
+    import base64
+    import gzip
+    router, bus, map_pad = opstelling
+    bus.modules["client_bridge"] = NepBridge()
+    antwoorden = _vraag(opstelling, "toon graaf van fiets")
+    soort, payload = bus.modules["client_bridge"].commandos[0]
+    assert soort == "open_html" and payload["bestandsnaam"] == "fiets_3d.html"
+    html = gzip.decompress(base64.b64decode(payload["inhoud"]))
+    assert html == open(os.path.join(map_pad, "fiets_3d.html"), "rb").read()
+    assert html.lstrip().lower().startswith(b"<!doctype html")
+    assert "geopend op je laptop" in antwoorden[0] and "fiets_3d.html" in antwoorden[0]
+
+
+def test_laptop_niet_verbonden_stuurt_niets(opstelling):
+    _, bus, map_pad = opstelling
+    bus.modules["client_bridge"] = NepBridge(verbonden=False)
+    antwoorden = _vraag(opstelling, "toon graaf van fiets")
+    assert bus.modules["client_bridge"].commandos == []
+    assert "niet verbonden" in antwoorden[0]
+    assert os.path.isfile(os.path.join(map_pad, "fiets_3d.html"))
+
+
+def test_laptop_weigert_wordt_eerlijk_gemeld(opstelling):
+    _, bus, _ = opstelling
+    bus.modules["client_bridge"] = NepBridge(resultaat={"ok": False, "reden": "Geen antwoord van de laptop binnen de tijd."})
+    antwoorden = _vraag(opstelling, "toon de hele kennisgraaf")
+    assert "lukte niet" in antwoorden[0] and "Geen antwoord" in antwoorden[0]
+
+
+def test_pad_en_overzicht_gaan_ook_naar_laptop(opstelling):
+    _, bus, _ = opstelling
+    bus.modules["client_bridge"] = NepBridge()
+    _vraag(opstelling, "hoe zijn fiets en auto verbonden")
+    _vraag(opstelling, "toon de hele kennisgraaf")
+    namen = [p["bestandsnaam"] for _, p in bus.modules["client_bridge"].commandos]
+    assert namen == ["pad_fiets_auto.html", "alles_3d.html"]
+
+
+def test_bridge_die_crasht_breekt_het_antwoord_niet(opstelling):
+    _, bus, _ = opstelling
+
+    class Kapot(NepBridge):
+        def stuur_commando_naar_laptop(self, *a, **k):
+            raise RuntimeError("boem")
+    bus.modules["client_bridge"] = Kapot()
+    antwoorden = _vraag(opstelling, "toon graaf van fiets")
+    assert "fiets_3d.html" in antwoorden[0] and "boem" in antwoorden[0]

@@ -1,6 +1,6 @@
 # modules/help/help.py
 
-from modules.help.topics import algemeen, schaken, debug, math, semantic
+from modules.help.topics import algemeen, schaken, debug, math, semantic, graaf
 
 C_RESET = "\033[0m"
 C_GREEN = "\033[92m"
@@ -35,6 +35,9 @@ class HelpModule:
             # tijd, zekerheid, weerleggen) staat in een eigen overzicht,
             # zodat "help" zelf kort blijft.
             tekst = semantic.get_help()
+        elif topic in ("graaf", "kennisgraaf"):
+            # De kennisgraaf (Semantic Fase 13): 3D-pagina, pad, statistieken.
+            tekst = graaf.get_help()
         else:
             tekst = algemeen.get_help()
 

@@ -124,7 +124,13 @@ def get_help():
                                         (De score zegt dat twee woorden bij elkaar passen, niet HOE:
                                          dat kies jij. Nova slaat pas iets op als jij koppelt.)
 
+🕸️ KENNISGRAAF (alles over de graaf: typ help graaf)
+  toon graaf van fiets                  (3D-pagina rond een woord, klikbaar)
+  toon de hele kennisgraaf              (alle woorden, kleuren per groep)
+  hoe zijn fiets en auto verbonden      (kortste pad, in gewone zinnen)
+  graaf statistieken                    (cijfers over mijn kennis)
+
 ❓ ANDERE HELP
   help               (algemeen overzicht)
-  help schaken / help wiskunde / help debug
+  help schaken / help wiskunde / help debug / help graaf
 """.strip()

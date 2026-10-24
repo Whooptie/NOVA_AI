@@ -2111,4 +2111,22 @@ De kennisgraaf zichtbaar gemaakt. Volledig symbolisch: tekenen, tellen, zoeken. 
 - Alles testen in een echte browser (hier een headless Chromium met WebGL) vóór het opleveren; zo kwamen fouten in de labels en het zijpaneel aan het licht.
 - Een data-fout (`None` als type) valt pas op als je de data zichtbaar maakt; de meting hoort daarom ook die controle te doen.
 
-**Nog open:** `open_html` naar de laptop, help-onderwerp en Layer 7-label, `None` in `concepts.json` herstellen, en de graaf per betekenis (zie Volgende stappen 56 t/m 59).
+**Help en Layer 7-label (22 oktober 2026):** `help graaf` (nieuw `topics/graaf.py`, registratie in `help.py`, verwijzingen in `help` en `help semantic`) en vier labels in `emergence_engine.py`; 5 nieuwe tests (`test_help_graaf.py`). Live bevestigd.
+
+**Nog open:** `None` in `concepts.json` herstellen en de graaf per betekenis (zie Volgende stappen 58 en 59).
+
+## ✅ Semantic Fase 13, vervolg: pagina v2, overzicht en `open_html` (22 oktober 2026)
+
+Kevin liet een screenshot zien van een donker graafdashboard (AI Workshop OS) met de vraag of het er zo uit zou moeten zien. De graaf-kant daarvan is symbolisch haalbaar en is gebouwd; de chatbol met taalmodel in dat voorbeeld is bewust NIET gebouwd (voor Nova zou dat een symbolische chat via een live verbinding zijn, een apart en groter stuk).
+
+**Pagina v2 (`graph_render_3d.py`, `graph_data.py`):** donker thema, linkerpaneel (zoeken, inspector, meest verbonden, pad, krachtschuifjes, relatietypes), rechterpaneel met groepen en aantallen, focus-dimming bij klikken, labels bij hubs, "Alles in beeld". `centrum=None` geeft het overzicht met alle woorden die relaties hebben (687 van 701). Nieuw `graph_data.gemeenschappen()`: Louvain via NetworkX met vaste seed, groepsnaam is het best verbonden woord; zonder NetworkX geen kleuren maar wel een werkende pagina. Een fout onderweg: `d3ReheatSimulation` voor de eerste digest gaf een 'tick'-fout en de graaf bleef leeg; opgelost door de krachten in `try/catch` en met `setTimeout` te starten.
+
+**Commando:** `toon de hele kennisgraaf` (event `intent_graph_all`, topic `graaf_alles`, bestand `alles_3d.html`).
+
+**`open_html`:** zie `nova_state.md` (sectie Semantic Fase 13). Gzip + base64 omdat de pagina ruim 1 MB is en WebSockets standaard 1 MB toelaat; `client_bridge.py` onveranderd. Veiligheid op de laptop: vaste map, gezuiverde naam, maximum 20 MB uitgepakt, doctype-controle.
+
+**Live bevestigd (22 oktober 2026):** `alles_3d.html` geopend en bekeken door Kevin ("het nu al top"). Kevin testte met beide krachtschuifjes helemaal open: dan wordt de graaf uitgerekt en lijken de punten klein; dat is geen fout. `open_html` ook live bevestigd: `toon de hele kennisgraaf` opende de pagina op de laptop.
+
+**Tests:** zie `nova_state.md`. Suite vóór open_html: 2615 tests, 2614 groen, 1 overgeslagen; daarna 2644 tests, 2643 groen, 1 overgeslagen.
+
+**Les:** een instelling die in een screenshot vreemd lijkt (hier de schuifjes) eerst navragen voordat je het ontwerp aanpast.

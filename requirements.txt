@@ -36,7 +36,6 @@ sympy==1.14.0            # math.py — symbolische algebra (solve_sym, factor_sy
 
 websockets==17.1
 opencv-python
-mediapipe
 simplemma==2.0.0
 
 # --- Semantic Fase 11: Knowledge Extraction ---
@@ -49,8 +48,11 @@ nl_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/nl
 # Fase 12: embeddings (extern ML-model, niet de kern van Nova)
 sentence-transformers==6.1.0
 
+# --- Semantic Fase 13: Graph Visualization (alles symbolisch: tekenen, tellen, zoeken) ---
+# pyvis = 2D-versie (graph_render.py). De 3D-pagina gebruikt GEEN pakket: 3d-force-graph staat vast in modules/knowledge/vendor/.
 pyvis==0.3.2
-networkx==3.7
+# networkx: groepskleuren in de 3D-pagina (Louvain, een grafenalgoritme, geen ML) en de meting. VAST gepind: een andere versie kan andere groepen geven.
+networkx==3.6.1
 jsonpickle==4.1.4
 
 # --- Standard library (no installation needed) ---

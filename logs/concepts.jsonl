@@ -307,3 +307,7 @@
 {"timestamp": "2026-10-20T16:55:25.517251", "event_type": "relation_hard_deleted", "word": "fiets", "source": "user", "sense_id": "fiets#1", "relation": {"type": "related_to", "target": "bilspier"}, "old_value": "bilspier", "new_value": null}
 {"timestamp": "2026-10-20T17:55:53.777990", "event_type": "concept_created", "word": "koppel", "source": "system", "new_value": {"word": "koppel"}}
 {"timestamp": "2026-10-20T17:55:53.819585", "event_type": "concept_created", "word": "soort", "source": "system", "new_value": {"word": "soort"}}
+{"timestamp": "2026-10-22T18:10:26.496921", "event_type": "concept_created", "word": "toon", "source": "system", "new_value": {"word": "toon"}}
+{"timestamp": "2026-10-23T19:31:09.304983", "event_type": "concept_created", "word": "onderdelen", "source": "system", "new_value": {"word": "onderdelen"}}
+{"timestamp": "2026-10-23T20:02:45.348884", "event_type": "concept_created", "word": "apparaten", "source": "system", "new_value": {"word": "apparaten"}}
+{"timestamp": "2026-10-23T20:13:52.544039", "event_type": "concept_created", "word": "betekenissen", "source": "system", "new_value": {"word": "betekenissen"}}

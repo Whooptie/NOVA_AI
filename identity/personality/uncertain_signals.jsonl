@@ -1279,3 +1279,61 @@
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-22T08:55:48.459147"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-22T09:01:05.364289"}
 {"text": "toon de hele graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-22T09:01:33.935554"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-22T19:10:23.730367"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-22T19:14:52.081972"}
+{"text": "toon de hele kennisgraaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-22T19:17:49.503481"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-22T19:29:27.430178"}
+{"text": "toon de hele graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-22T19:33:51.400433"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:05:10.351269"}
+{"text": "koppel 1 als onderdeel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:06:08.603926"}
+{"text": "koppel 2 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:06:12.845200"}
+{"text": "koppel 5 als bevat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:06:17.332766"}
+{"text": "negeer 3 4 6 7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:06:23.258190"}
+{"text": "volgende gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:06:35.625730"}
+{"text": "koppel 1 2 5 6 7 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:07:17.129879"}
+{"text": "negeer 3 4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:07:27.356200"}
+{"text": "volgende gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:07:37.764560"}
+{"text": "koppel 3 5 7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:08:34.854295"}
+{"text": "negeer 1 2 4 6 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:08:45.882965"}
+{"text": "volgende gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:09:00.682723"}
+{"text": "koppel 3 7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:09:57.176582"}
+{"text": "negeer 1 2 4 5 6 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:10:03.385139"}
+{"text": "toon de volledige graag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0537, "bron": "model_fallback", "tijdstip": "2026-10-22T20:10:26.480765"}
+{"text": "toon de volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-22T20:10:35.368424"}
+{"text": "graaf statistieken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-22T20:22:17.526416"}
+{"text": "toon de hele kennisgraaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-23T17:15:11.848099"}
+{"text": "toon de hele kennisgraaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-23T17:15:34.089760"}
+{"text": "toon de hele kennisgraaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-23T17:16:06.330017"}
+{"text": "weerleg concept: ken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T19:08:45.205811"}
+{"text": "weerleg concept: beschrijf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T19:08:50.422463"}
+{"text": "weerleg concept: teveel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T19:08:54.692637"}
+{"text": "weerleg concept: meenemen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T19:08:59.546607"}
+{"text": "weerleg concept: bestaat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T19:09:04.341101"}
+{"text": "weerleg concept: annuleren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T19:09:08.275825"}
+{"text": "weerleg concept: gerelateerd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T19:09:12.345647"}
+{"text": "wat weet je allemaal over zwangerschap", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0113, "bron": "model_fallback", "tijdstip": "2026-10-23T19:26:29.038349"}
+{"text": "welke beroepen ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-23T19:26:41.352324"}
+{"text": "toon de hele kennisgraaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-23T19:27:16.800494"}
+{"text": "toon de hele kennisgraaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-23T19:31:10.159637"}
+{"text": "hoe oud ben je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0018, "bron": "model_fallback", "tijdstip": "2026-10-23T21:12:44.413883"}
+{"text": "onderdelen heeft computer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T21:31:09.118175"}
+{"text": "welke onderdelen heeft computer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T21:31:16.798254"}
+{"text": "wat is een router", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-23T21:31:22.484865"}
+{"text": "welke soorten programma ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-23T21:31:31.163342"}
+{"text": "toon de hele graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-23T21:32:06.261566"}
+{"text": "weerleg concept: onderdelen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T22:02:16.009043"}
+{"text": "welke onderdelen heeft televisie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T22:02:25.334068"}
+{"text": "wat is een taalmodel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-23T22:02:32.587740"}
+{"text": "welke apparaten ken j", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T22:02:45.341158"}
+{"text": "welke apparaten ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-23T22:02:48.828096"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T22:03:24.637971"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-23T22:10:17.814802"}
+{"text": "weerleg concept: apparaten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T22:10:27.188553"}
+{"text": "welke apparaten ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-23T22:11:03.822941"}
+{"text": "wat is een schaal", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-23T22:12:28.144385"}
+{"text": "wat is een schaal", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-23T22:13:43.219188"}
+{"text": "kan je nog andere betekenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0086, "bron": "model_fallback", "tijdstip": "2026-10-23T22:13:52.535601"}
+{"text": "wat weet je allemaal over schaal", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0113, "bron": "model_fallback", "tijdstip": "2026-10-23T22:14:11.351165"}
+{"text": "wat weet je allemaal over licht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0113, "bron": "model_fallback", "tijdstip": "2026-10-23T22:29:38.039921"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T22:30:35.912263"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-24T09:50:17.463870"}

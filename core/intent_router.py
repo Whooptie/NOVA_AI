@@ -2353,7 +2353,16 @@ class IntentRouter:
         if not self.semantic or not woord:
             return False
         try:
-            return bool(self.semantic.get_senses(woord))
+            senses = self.semantic.get_senses(woord)
+            # Alleen echte betekenissen tellen: een automatisch aangemaakt
+            # leeg woord (definitie "unknown") of een geweerlegde betekenis
+            # is geen kennis. Anders zou bv. een auto-aangemaakt "apparaten"
+            # het echte enkelvoud "apparaat" verdringen.
+            return any(
+                (not isinstance(s, dict))
+                or (s.get("definition") != "unknown" and s.get("status") != "rejected")
+                for s in senses
+            )
         except Exception:
             return False
 

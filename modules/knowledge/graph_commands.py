@@ -10,6 +10,8 @@ Luistert naar drie events die intent_router.py stuurt:
   intent_graph_all    {}                                 "toon de hele kennisgraaf"
 
 Wat het doet:
+  - alle antwoorden: heeft Nova een verbonden laptop, dan wordt de pagina ook meteen op de laptop geopend
+    (commando "open_html" via client_bridge, zie _open_op_laptop)
   - show : maakt een interactieve 3D-pagina (graph_render_3d) in data/graphs/<woord>_3d.html
   - path : zoekt het kortste pad (graph_data.vind_pad), vertelt het in gewone zinnen en maakt
            een pagina waarin dat pad rood is (data/graphs/pad_<a>_<b>.html)
@@ -17,14 +19,20 @@ Wat het doet:
 
 100% symbolisch: opzoeken, tellen en tekenen. Geen ML, geen generatie.
 
-Het bestand komt op de plek waar Nova draait (data/graphs/). Het naar de laptop sturen en
-openen komt in een volgende stap (open_html via client_bridge); tot dan zegt Nova waar het
-bestand staat.
+Het bestand komt altijd op de plek waar Nova draait (data/graphs/) en Nova zegt waar. Is de laptop
+verbonden, dan wordt het bestand gecomprimeerd (gzip + base64) naar de laptop gestuurd en daar in
+de standaardbrowser geopend. Is de laptop niet verbonden, dan blijft het bij het bestand op de server.
 """
+
+import base64
+import gzip
+import os
 
 from modules.knowledge import graph_data
 from modules.knowledge.graph_render import LABELS_NL, STANDAARD_MAP
 
+MAX_NAAR_LAPTOP_BYTES = 12 * 1024 * 1024   # grotere pagina's sturen we niet (de laptop weigert > 20 MB)
+OPEN_HTML_TIMEOUT = 20                     # seconden wachten tot de laptop de pagina geopend heeft
 MAX_DIEPTE_CHAT = 3          # hoger geeft in het begin al een kluwen; klikken breidt verder uit
 
 
@@ -64,6 +72,32 @@ class GraafCommands:
             van, naar = naar, van
         return f"{van} {LABELS_NL.get(stap['type'], stap['type'])} {naar}"
 
+    def _open_op_laptop(self, pad):
+        """
+        Stuurt de pagina naar de laptop en laat hem daar openen. Geeft een korte zin terug om aan
+        het antwoord te hangen ("" als er niets te melden valt, bv. geen client_bridge geladen).
+        Gooit nooit een fout: het antwoord over het bestand zelf blijft altijd geldig.
+        """
+        bridge = getattr(self.event_bus, "modules", {}).get("client_bridge")
+        if bridge is None:
+            return ""
+        try:
+            if not bridge.is_laptop_verbonden():
+                return " Je laptop is niet verbonden, dus ik kon hem daar niet openen."
+            if os.path.getsize(pad) > MAX_NAAR_LAPTOP_BYTES:
+                return " De pagina is te groot om naar je laptop te sturen."
+            with open(pad, "rb") as f:
+                inhoud = base64.b64encode(gzip.compress(f.read(), compresslevel=6)).decode("ascii")
+            resultaat = bridge.stuur_commando_naar_laptop(
+                "open_html", {"bestandsnaam": os.path.basename(pad), "inhoud": inhoud},
+                timeout_seconden=OPEN_HTML_TIMEOUT)
+        except Exception as fout:
+            _dbg(f"fout bij sturen naar laptop: {fout}")
+            return f" Naar je laptop sturen lukte niet: {fout}"
+        if resultaat.get("ok"):
+            return " Hij is ook geopend op je laptop."
+        return f" Openen op je laptop lukte niet: {resultaat.get('reden') or 'onbekende fout'}."
+
     # ------------------------------------------------------------------
     # toon graaf van X
     # ------------------------------------------------------------------
@@ -97,7 +131,7 @@ class GraafCommands:
         extra = " Er zijn meer buren dan ik nu laat zien." if start["afgekapt"] else ""
         self._antwoord(
             f"Ik heb de graaf van {woord} gemaakt: {aantal} woorden om mee te beginnen.{extra} "
-            f"Klik in de pagina op een woord om meer te tonen. Bestand: {pad}")
+            f"Klik in de pagina op een woord om meer te tonen. Bestand: {pad}.{self._open_op_laptop(pad)}")
 
     # ------------------------------------------------------------------
     # toon de hele kennisgraaf
@@ -114,7 +148,7 @@ class GraafCommands:
             return self._antwoord(f"De graaf maken lukte niet: {fout}")
         self._antwoord("Ik heb de hele kennisgraaf gemaakt, met kleuren per groep woorden. "
                        "Zoek een woord, klik erop of laat een pad tussen twee woorden zien. "
-                       f"Bestand: {pad}")
+                       f"Bestand: {pad}.{self._open_op_laptop(pad)}")
 
     # ------------------------------------------------------------------
     # hoe zijn X en Y verbonden
@@ -146,7 +180,7 @@ class GraafCommands:
             from modules.knowledge import graph_render_3d
             bestand = graph_render_3d.schrijf_html_3d(
                 concepten, a, bestandsnaam=f"pad_{a}_{b}", map_pad=self.map_pad, diepte=1, pad=stappen)
-            zin += f" Bestand met het pad in het rood: {bestand}"
+            zin += f" Bestand met het pad in het rood: {bestand}.{self._open_op_laptop(bestand)}"
         except Exception as fout:           # het antwoord in woorden blijft gewoon geldig
             _dbg(f"fout bij maken pagina: {fout}")
         self._antwoord(zin)
