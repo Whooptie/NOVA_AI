@@ -78,6 +78,66 @@ def tijdstempel():
 # printen zelf.
 _typewriter_lock = threading.Lock()
 
+
+# Punt 31-fix (24 oktober 2026): gewone print()-aanroepen uit andere
+# threads (bv. "[CLIENT_BRIDGE] Laptop-client verbonden" uit de
+# WebSocket-thread) kwamen MIDDEN in Nova's typewriter-zin terecht.
+# _typewriter_lock hierboven beschermt enkel tegen twee typewriter-
+# prints tegelijk, niet tegen print() uit modules die dat lock niet
+# kennen. In plaats van elke print() in elke module aan te passen,
+# vervangen we sys.stdout door een "bewaker": zolang Nova aan het
+# typen is, worden schrijfacties van ANDERE threads even vastgehouden
+# en meteen na het einde van de zin (na de nieuwe regel) getoond.
+# Prints van de typende thread zelf gaan gewoon door.
+class _StdoutBewaker:
+    def __init__(self, echte_stdout):
+        self._echt = echte_stdout
+        self._lock = threading.Lock()
+        self._typende_thread = None   # id van de thread die nu typt, of None
+        self._wachtrij = []           # vastgehouden tekst van andere threads
+
+    def start_blok(self):
+        with self._lock:
+            self._typende_thread = threading.get_ident()
+
+    def einde_blok(self):
+        with self._lock:
+            self._typende_thread = None
+            wachtrij, self._wachtrij = self._wachtrij, []
+        for tekst in wachtrij:
+            self._echt.write(tekst)
+        self._echt.flush()
+
+    def write(self, tekst):
+        with self._lock:
+            if (self._typende_thread is not None
+                    and self._typende_thread != threading.get_ident()):
+                self._wachtrij.append(tekst)
+                return len(tekst)
+        return self._echt.write(tekst)
+
+    def flush(self):
+        self._echt.flush()
+
+    def __getattr__(self, naam):
+        # Alles wat we niet zelf regelen (fileno, isatty, encoding, ...)
+        # gaat naar de echte stdout. Zo blijft input() ook gewoon werken.
+        return getattr(self._echt, naam)
+
+
+_stdout_bewaker = None
+
+def installeer_stdout_bewaker():
+    """Vervangt sys.stdout (eenmalig) door de _StdoutBewaker hierboven."""
+    global _stdout_bewaker
+    if isinstance(sys.stdout, _StdoutBewaker):
+        _stdout_bewaker = sys.stdout
+    else:
+        _stdout_bewaker = _StdoutBewaker(sys.stdout)
+        sys.stdout = _stdout_bewaker
+    return _stdout_bewaker
+
+
 def print_nova_typewriter(tekst):
     """
     Print Nova's antwoord met een typewriter-effect: 'Nova: ' verschijnt
@@ -85,15 +145,24 @@ def print_nova_typewriter(tekst):
     Thread-safe via _typewriter_lock — zie uitleg hierboven bij Bug #30.
     """
     with _typewriter_lock:
-        # "Nova: " blijft in 1 keer verschijnen — geen vertraging hier
-        print(f"{tijdstempel()}{MAGENTA}Nova: {RESET}", end="", flush=True)
+        # Punt 31: prints van andere threads even vasthouden tot de zin klaar is.
+        bewaker = _stdout_bewaker
+        if bewaker is not None:
+            bewaker.start_blok()
+        try:
+            # "Nova: " blijft in 1 keer verschijnen — geen vertraging hier
+            print(f"{tijdstempel()}{MAGENTA}Nova: {RESET}", end="", flush=True)
 
-        # De rest van de tekst letter per letter
-        for letter in tekst:
-            print(f"{MAGENTA}{letter}{RESET}", end="", flush=True)
-            time.sleep(TYPEWRITER_SNELHEID)
+            # De rest van de tekst letter per letter
+            for letter in tekst:
+                print(f"{MAGENTA}{letter}{RESET}", end="", flush=True)
+                time.sleep(TYPEWRITER_SNELHEID)
 
-        print()  # nieuwe regel op het einde, anders plakt de volgende prompt eraan vast
+            print()  # nieuwe regel op het einde, anders plakt de volgende prompt eraan vast
+        finally:
+            # Altijd sluiten, ook bij een fout: anders blijven andere threads gedempt.
+            if bewaker is not None:
+                bewaker.einde_blok()
 
 def maak_invoer_veilig(tekst):
     """
@@ -521,7 +590,9 @@ def achtergrond_loop(loader):
             rain = loader.loaded_modules.get("rain")
             if rain:
                 try:
-                    rain.check_proactief()
+                    rain.check_proactief(
+                        mag_spreken=lambda: _layer5_laat_spreken_toe(loader)
+                    )
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in rain.check_proactief(): {e}")
 
@@ -600,6 +671,10 @@ def achtergrond_loop(loader):
 
 def main():
     global wachten_op_input, _afwezigheid_module
+
+    # Punt 31: vóór het laden van de modules, zodat ook hun prints bewaakt zijn.
+    installeer_stdout_bewaker()
+
     bus = EventBus()
 
     # Modules laden

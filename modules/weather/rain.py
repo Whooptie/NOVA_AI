@@ -78,7 +78,7 @@ OPEN_METEO_TYPE_URL = (
 # --- Gladheid en harde wind vooruit ("kans op gladheid over ongeveer 1 uur") ---
 # Zelfde venster en drempels als weather.py's weerwaarschuwing(), zodat
 # "nu" en "straks" op dezelfde manier meten.
-GLADHEID_MIN_C = 0              # gladheid: 0 tot 2 graden SAMEN met neerslag
+GLADHEID_MIN_C = -50            # gladheid: tot 2 graden SAMEN met neerslag; -50 = in de praktijk geen ondergrens (punt 48)
 GLADHEID_MAX_C = 2
 WIND_DREMPEL_MS = 15            # gemiddelde wind in m/s (zoals weather.py)
 VLAAG_DREMPEL_MS = 20           # windstoten in m/s (= 72 km/u)
@@ -753,8 +753,8 @@ def parse_gevaar(data):
 
 
 def is_glad(punt):
-    """Gladheid: 0-2 graden SAMEN met neerslag (droge kou geeft geen glad
-    wegdek). Neerslag per kwartier x 4 = mm per uur, zelfde drempel als de radar."""
+    """Gladheid: tot 2 graden (ook onder 0) SAMEN met neerslag (droge kou
+    geeft geen glad wegdek). Neerslag per kwartier x 4 = mm per uur, zelfde drempel als de radar."""
     if punt.temp is None or punt.neerslag is None:
         return False
     return (
@@ -1080,14 +1080,38 @@ class RainModule:
             zin += " (Let op: dit is een grovere schatting per kwartier.)"
         return zin
 
-    def check_proactief(self, nu=None):
+    def check_proactief(self, nu=None, mag_spreken=None):
         """
         Wordt door main.py's achtergrond_loop() om de paar minuten
-        aangeroepen. Kijkt enkel naar de standaardstad. Twee onafhankelijke
+        aangeroepen. Kijkt enkel naar de standaardstad. Drie onafhankelijke
         controles: (1) regen/sneeuw die binnenkort begint, (2) kans op
-        onweer. Doet niets (en crasht nooit) als een bron niet bereikbaar is.
-        Geeft de gepubliceerde zin(nen) terug, of None.
+        onweer, (3) gladheid en harde wind. Doet niets (en crasht nooit)
+        als een bron niet bereikbaar is. Geeft de gepubliceerde zin(nen)
+        terug, of None.
+
+        mag_spreken (punt 47, 24 oktober 2026): een functie zonder
+        argumenten die True geeft als Layer 5 vindt dat Nova nu mag
+        spreken (main.py geeft hier _layer5_laat_spreken_toe mee). Wordt
+        enkel aangeroepen als er ECHT iets te melden valt, en hoogstens
+        1x per check. Zegt ze nee (of gaat ze fout), dan wordt er niets
+        gepubliceerd en wordt ook de 'al gemeld'-staat NIET bijgewerkt:
+        de melding komt dus bij de volgende check opnieuw aan de beurt,
+        zolang ze binnen haar venster valt. Zonder mag_spreken (None)
+        werkt alles zoals voorheen.
         """
+        mag_cache = []
+
+        def mag_nu():
+            if mag_spreken is None:
+                return True
+            if not mag_cache:
+                try:
+                    mag_cache.append(bool(mag_spreken()))
+                except Exception as e:
+                    print(f"[rain] Layer 5-vraag mislukt, melding wacht: {e}")
+                    mag_cache.append(False)
+            return mag_cache[0]
+
         try:
             nu = nu or nu_lokaal()
             coords = self.get_coordinates(self.default_city)
@@ -1101,16 +1125,22 @@ class RainModule:
             if slots:
                 analyse = analyseer(slots, nu)
                 soort = bepaal_soort(typeinfo, nu, analyse)
-                zin, self._proactief_staat = beslis_proactief(
+                zin, nieuwe_staat = beslis_proactief(
                     analyse, nu, self._proactief_staat, soort
                 )
-                if zin:
+                if zin is None:
+                    self._proactief_staat = nieuwe_staat
+                elif mag_nu():
+                    self._proactief_staat = nieuwe_staat
                     meldingen.append(zin)
 
             # 2. Onweer (weermodel)
             info = analyseer_onweer(typeinfo, nu)
-            zin, self._onweer_staat = beslis_onweer(info, nu, self._onweer_staat)
-            if zin:
+            zin, nieuwe_staat = beslis_onweer(info, nu, self._onweer_staat)
+            if zin is None:
+                self._onweer_staat = nieuwe_staat
+            elif mag_nu():
+                self._onweer_staat = nieuwe_staat
                 meldingen.append(zin)
 
             # 3. Gladheid en harde wind (weermodel, komende 3 uur). Eigen
@@ -1118,8 +1148,12 @@ class RainModule:
             # niet tegenhouden.
             try:
                 info_gevaar = analyseer_gevaar(haal_gevaar(coords[0], coords[1]), nu)
-                zinnen, self._gevaar_staat = beslis_gevaar(info_gevaar, nu, self._gevaar_staat)
-                meldingen.extend(zinnen)
+                zinnen, nieuwe_staat = beslis_gevaar(info_gevaar, nu, self._gevaar_staat)
+                if not zinnen:
+                    self._gevaar_staat = nieuwe_staat
+                elif mag_nu():
+                    self._gevaar_staat = nieuwe_staat
+                    meldingen.extend(zinnen)
             except Exception as e:
                 print(f"[rain] gladheid/wind-check mislukt: {e}")
 

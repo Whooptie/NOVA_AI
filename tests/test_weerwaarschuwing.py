@@ -61,7 +61,7 @@ SCENARIOS = [
     ("gladheid_grens_0graad",      "Rain",         None, 3.0,  0.0,  True,  "gladheid"),
     ("gladheid_grens_2graad",      "Snow",         None, 3.0,  2.0,  True,  "gladheid"),
     ("net_boven_gladheidsgrens",   "Rain",         None, 3.0,  2.1,  True,  None),
-    ("net_onder_gladheidsgrens",   "Rain",         None, 3.0,  -0.1, True,  None),
+    ("net_onder_gladheidsgrens",   "Rain",         None, 3.0,  -0.1, True,  "Let op: kans op gladheid."),
     ("droge_kou_geen_neerslag",    "Clear",        None, 3.0,  1.0,  False, None),
 ]
 

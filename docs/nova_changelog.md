@@ -2174,3 +2174,41 @@ Kevin liet een screenshot zien van een donker graafdashboard (AI Workshop OS) me
 **Bijvangst:** `nova_client.log` toont dat de verbinding al sinds september vaak wegvalt (`keepalive ping timeout`, `no close frame received or sent`, soms `timed out during opening handshake`). Oorzaak niet onderzocht; vastgelegd als punt 58 in `nova_state.md`.
 
 **Nog open:** `avatar_bridge` (punt 40, poort 8766) moet hetzelfde token krijgen vóór ze live gaat.
+
+## ✅ Punt 29 — de tone-pipeline verandert geen "?" meer in "!" (24 oktober 2026)
+
+**Aanleiding:** live gezien op 30 september 2026: het emergence-sjabloon "Toevallig?" werd na de expressiestap "Toevallig!", waardoor een vraag een uitroep werd.
+
+**Oorzaak:** `expression_injector.py` deed op drie plekken `text.rstrip(".!?") + "!"` (`_inject_puberal()` bij `interrupts`, `_inject_puberal()` bij `expressiveness > 0.9`, en `_inject_dramatic_flair()`). Dat haalt elk eindteken weg, ook een `?`. Dezelfde regel maakte van "Hmm..." (aarzeling) ook "Hmm!".
+
+**Oplossing (100% symbolisch, gewone stringregels):** nieuwe hulpmethode `_maak_uitroep()`. Eindigt de tekst op `?`, `!`, `..` of `…`, dan blijft hij ongewijzigd; anders wordt een afsluitende punt (of niets) een `!`. De drie plekken roepen nu die methode aan. De `..`/`…`-regel is een bewuste uitbreiding op het punt; wie dat niet wil, haalt `"..", "…"` weg uit de `endswith(...)`.
+
+**Tests:** `test_expression_injector_uitroep.py` (23). Suite: 2701 tests, 2700 groen, 1 overgeslagen (was 2678). Bij het oude bestand falen 17 van de 23, waarvan 5 end-to-end, dus de bug was echt gereproduceerd.
+
+**Bewust niet aangepast:** `rstrip("!.")` bij lage `expressiveness` raakt een `?` niet. Het eerder gelaten geval `...)!` bij `get_trending()` (haakje gevolgd door een `!`) blijft zoals het was.
+
+**Les:** een eindteken dat betekenis draagt (`?`, `...`) mag een stijlstap nooit zomaar vervangen. Kies voor een hulpfunctie op één plek in plaats van drie keer dezelfde `rstrip`, dan kan de fout niet op een vierde plek terugkomen.
+
+## ✅ Punt 31 — prints uit andere threads breken Nova's typewriter-zin niet meer (24 oktober 2026)
+
+**Aanleiding:** live gezien op 3 oktober 2026: `[CLIENT_BRIDGE] Laptop-client verbonden` verscheen midden in een antwoord ("...maar ik leer graag bij[CLIENT_BRIDGE]...").
+
+**Oorzaak:** `_typewriter_lock` (Bug #30-fix) beschermt enkel tegen twee typewriter-prints tegelijk. Een gewone `print()` uit een andere module of thread (hier de WebSocket-thread van `client_bridge.py`) kent dat lock niet en print gewoon tussen de letters.
+
+**Oplossing (100% symbolisch, geen ML):** in plaats van honderden `print()`-aanroepen in alle modules aan te passen, vervangt `main.py` bij het opstarten `sys.stdout` door een `_StdoutBewaker` (`installeer_stdout_bewaker()`, aangeroepen aan het begin van `main()`, vóór het laden van de modules). `print_nova_typewriter()` roept binnen het bestaande lock `start_blok()` aan en in een `finally` altijd `einde_blok()`. Zolang het blok open is, worden schrijfacties van ANDERE threads in een wachtrij gezet; `einde_blok()` schrijft ze in dezelfde volgorde weg, direct na de nieuwe regel van Nova's zin. De typende thread zelf wordt nooit vastgehouden. Alle andere eigenschappen (`fileno`, `isatty`, `encoding`, ...) gaan via `__getattr__` naar de echte stdout, zodat `input()` zijn terminal blijft herkennen.
+
+**Gecontroleerd in een echte pseudo-terminal (op een kopie van `main.py`, buiten battleserver):** zonder bewaker kwam `Nova: Dit is een lang[CLIENT_BRIDGE] verbonden` / `e zin van Nova`; met bewaker bleef de zin heel en stond de melding op een eigen regel. `input()` las daarna gewoon "hallo nova" met `stdin`/`stdout` als tty.
+
+**Tests:** `test_main_stdout_bewaker.py` (10). Suite: 2711 tests, 2710 groen, 1 overgeslagen (was 2701). Kevins eigen `test_main_typewriter_lock.py` en `test_main_achtergrond_en_response.py` bleven ongewijzigd groen.
+
+**Live bevestiging:** nog te zien bij de eerstvolgende gelijktijdige melding (bv. de laptop die verbindt terwijl Nova praat).
+
+**Bewust niet gedekt:** (1) de `instant`-weergave (`help`, één keer geprint) valt buiten de bewaker; (2) een melding die binnenkomt terwijl Nova op jouw invoer wacht, verschijnt nog steeds over de `Jij:`-prompt heen; (3) `stderr` (tracebacks) blijft zoals het was.
+
+**Les:** een fout die in alle modules kan opduiken los je op één centrale plek op (hier de uitvoerstroom), niet door elke aanroep afzonderlijk aan te passen. En in pytest zet je `sys.stdout` binnen de test zelf, niet in een fixture, want pytest zet hem bij elke testfase opnieuw naar zijn eigen opvang.
+
+### 24 oktober 2026 — Punt 47 + 48: weermeldingen via Layer 5, gladheid ook onder 0°C
+- 47: `RainModule.check_proactief(nu=None, mag_spreken=None)`. `main.py` geeft `lambda: _layer5_laat_spreken_toe(loader)` mee. Layer 5 wordt enkel gevraagd als er echt iets te melden valt, hoogstens 1x per check. Bij nee (of fout) wordt er niets gepubliceerd en de "gemeld"-staat niet bijgewerkt, zodat de melding bij de volgende check opnieuw aan de beurt komt. Regen, onweer en gladheid/wind gaan alle drie door dezelfde gate (keuze van Claude, niet apart besproken).
+- 48: `GLADHEID_MIN_C` in `rain.py` naar -50 (praktisch geen ondergrens); `weather.py` leest de grenzen nu uit `rain.py` (één bron).
+- Tests: `test_gladheid_onder_nul.py`, `test_rain_proactief_layer5.py` (29).
+- Nog niet gecontroleerd: `forecast.py` heeft mogelijk een eigen gladheidsgrens.

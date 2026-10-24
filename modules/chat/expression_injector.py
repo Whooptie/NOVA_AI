@@ -39,6 +39,33 @@ class ExpressionInjector:
         return text
 
     # ---------------------------------------------------------
+    # 2B. Veilig een uitroepteken zetten (punt 29)
+    # ---------------------------------------------------------
+    @staticmethod
+    def _maak_uitroep(text: str) -> str:
+        """
+        Zet een "!" aan het einde van de tekst, maar ALLEEN waar dat de
+        betekenis niet verandert.
+
+        Bugfix (punt 29, 24 oktober 2026): de flair-stappen deden
+        text.rstrip(".!?") + "!", waardoor een vraag ("Toevallig?")
+        een uitroep werd ("Toevallig!"). Een "?" of "..." draagt
+        betekenis (een vraag, een aarzeling); een "." niet. Daarom:
+        - eindigt de tekst op "?" (ook "?!"/"??"): ongewijzigd laten;
+        - eindigt de tekst op "!": ongewijzigd laten;
+        - eindigt de tekst op ".." of "…" (aarzeling): ongewijzigd laten;
+        - anders: de afsluitende punt(en) vervangen door een "!".
+        """
+        if not text:
+            return text
+
+        zonder_spaties = text.rstrip()
+        if zonder_spaties.endswith(("?", "!", "..", "…")):
+            return text
+
+        return text.rstrip(". ") + "!"
+
+    # ---------------------------------------------------------
     # 3. Puberale flair
     # ---------------------------------------------------------
     def _inject_puberal(self, text: str, tone: dict, personality: dict) -> str:
@@ -56,13 +83,10 @@ class ExpressionInjector:
         # sneller/directer op zinsniveau — een extra duwtje bovenop wat
         # expressiveness al doet, niet in de plaats ervan.
         if personality.get("interrupts") and expressiveness > 0.6:
-            if not text.endswith("!"):
-                text = text.rstrip(".!?") + "!"
-            return text
+            return self._maak_uitroep(text)
 
         if expressiveness > 0.9:
-            if not text.endswith("!"):
-                text = text.rstrip(".!?") + "!"
+            text = self._maak_uitroep(text)
         elif expressiveness < 0.3:
             text = text.rstrip("!.")
 
@@ -86,8 +110,8 @@ class ExpressionInjector:
         if response_style == "kort":
             return text
 
-        if personality.get("dramatic") and not text.endswith("!"):
-            return text.rstrip(".!?") + "!"
+        if personality.get("dramatic"):
+            return self._maak_uitroep(text)
 
         return text
 

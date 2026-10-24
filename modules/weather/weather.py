@@ -664,13 +664,15 @@ class WeatherModule:
         if temperatuur is not None and temperatuur >= HITTE_DREMPEL_C:
             gevonden_waarschuwingen.append("het wordt erg warm")
 
-        # Gladheid: temperatuur rond het vriespunt (0-2°C) SAMEN met
-        # neerslag — droge kou alleen geeft geen glad wegdek. Venster
-        # bewust iets ruimer dan enkel "< 0°C", want net rond het
-        # vriespunt met neerslag is precies wanneer gladheid ontstaat of
-        # dreigt. Kevin's keuze, 19 juli 2026.
-        GLADHEID_MIN_C = 0
-        GLADHEID_MAX_C = 2
+        # Gladheid: temperatuur tot 2°C (ook onder 0) SAMEN met neerslag —
+        # droge kou alleen geeft geen glad wegdek. Venster bewust iets
+        # ruimer dan enkel "< 0°C" (Kevin's keuze, 19 juli 2026); sinds
+        # punt 48 (24 oktober 2026) vallen temperaturen ONDER 0 er ook in:
+        # met MIN op 0 ontbrak gladheid juist bij vorst. De grenzen komen
+        # uit rain.py, zodat "nu" (hier) en "straks" (rain.py) nooit
+        # uit elkaar kunnen lopen.
+        GLADHEID_MIN_C = rain.GLADHEID_MIN_C
+        GLADHEID_MAX_C = rain.GLADHEID_MAX_C
         if (
             temperatuur is not None
             and heeft_neerslag

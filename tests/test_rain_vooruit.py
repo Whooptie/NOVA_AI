@@ -264,7 +264,9 @@ def punt(temp=8.0, neerslag=0.0, wind=3.0, vlagen=5.0):
     (0.0, 0.3, True),     # precies op de ondergrens
     (2.0, 0.3, True),     # precies op de bovengrens
     (1.0, 0.3, True),
-    (-0.1, 0.3, False),   # net onder 0: zelfde venster als weather.py
+    (-0.1, 0.3, True),    # net onder 0: telt sinds punt 48 ook als glad
+    (-5.0, 0.3, True),    # stevige vorst met neerslag: glad
+    (-5.0, 0.0, False),   # droge vorst: niet glad
     (2.1, 0.3, False),    # net boven 2
     (1.0, 0.0, False),    # droge kou
     (1.0, 0.1, True),     # 0.1 mm in een kwartier = 0.4 mm/u: telt als neerslag
