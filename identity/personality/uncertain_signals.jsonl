@@ -1348,3 +1348,9 @@
 {"text": "hhey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-24T16:53:34.984821"}
 {"text": "toon de hele graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-24T16:57:53.256914"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-24T17:12:48.874547"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-24T20:39:53.371371"}
+{"text": "welke soorten zoogdier ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-24T21:17:41.604714"}
+{"text": "welke onderdelen heeft vogel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-24T21:17:55.753302"}
+{"text": "wat weet je allemaal over slang", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0113, "bron": "model_fallback", "tijdstip": "2026-10-24T21:18:14.456293"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-24T21:18:38.680897"}
+{"text": "weerleg concept: betekenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.056, "bron": "model_fallback", "tijdstip": "2026-10-24T21:20:06.983681"}

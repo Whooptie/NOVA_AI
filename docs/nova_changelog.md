@@ -2212,3 +2212,39 @@ Kevin liet een screenshot zien van een donker graafdashboard (AI Workshop OS) me
 - 48: `GLADHEID_MIN_C` in `rain.py` naar -50 (praktisch geen ondergrens); `weather.py` leest de grenzen nu uit `rain.py` (één bron).
 - Tests: `test_gladheid_onder_nul.py`, `test_rain_proactief_layer5.py` (29).
 - Nog niet gecontroleerd: `forecast.py` heeft mogelijk een eigen gladheidsgrens.
+
+## ✅ Punt 47 + 48 — weermeldingen via Layer 5 en gladheid ook onder 0°C (24 oktober 2026)
+
+**Aanleiding:** twee kandidaten uit de volgende-stappenlijst. (47) `rain.py`'s spontane meldingen (regen/sneeuw, onweer, gladheid/wind) gingen rechtstreeks naar `layer4_response`, zonder `context_manager.can_interrupt()`; enkel de ochtendsamenvatting vroeg Layer 5. (48) Het gladheidsvenster was 0 tot 2°C met neerslag: bij echte vorst (onder 0) ontbrak gladheid dus juist.
+
+**Haalbaarheid:** puur symbolisch (drempels en een aanroep van een bestaande functie).
+
+**Wat:**
+- `rain.py`: `check_proactief(nu=None, mag_spreken=None)`. `main.py` geeft `lambda: _layer5_laat_spreken_toe(loader)` mee. Layer 5 wordt enkel gevraagd als er echt iets te melden valt, hoogstens 1x per check (resultaat onthouden), en een fout in die vraag betekent "niet spreken". Alle drie de soorten gaan door dezelfde gate (keuze van Claude, niet apart besproken; makkelijk te versmallen).
+- Belangrijkste detail: `beslis_proactief/onweer/gevaar` zetten "gemeld" al op True zodra ze een zin teruggeven. De nieuwe staat wordt daarom pas overgenomen als de melding ook echt wordt gepubliceerd. Zegt Layer 5 nee, dan blijft de melding in behandeling en komt ze bij de volgende check (5 min later) opnieuw aan bod zolang ze binnen haar venster valt. Anders zou een geblokkeerde melding voorgoed verloren zijn.
+- Gladheid: `GLADHEID_MIN_C` in `rain.py` van 0 naar -50 (praktisch geen ondergrens); `weather.py` leest `GLADHEID_MIN_C/MAX_C` nu uit `rain.py`, zodat "nu" (weather) en "straks" (rain) niet uit elkaar kunnen lopen. Droge kou blijft geen gladheid.
+- `main.py`: de aanroep in `achtergrond_loop` geeft de Layer 5-vraag mee.
+
+**Tests:** `test_gladheid_onder_nul.py` (19), `test_rain_proactief_layer5.py` (10). Twee bestaande tests verwachtten nog de oude grens en zijn bijgewerkt: `test_rain_vooruit.py::test_is_glad` (-0,1°C is nu glad; vorst met en zonder neerslag erbij) en het scenario `net_onder_gladheidsgrens` in `test_weerwaarschuwing.py`. Suite: 2755 tests, 2754 groen, 1 overgeslagen.
+
+**Live niet bevestigd:** gladheid onder 0 vraagt echte vorst met neerslag; de Layer 5-gate een echte melding terwijl Kevin weg is.
+
+**Niet onderzocht:** `forecast.py` kan een eigen gladheidsgrens hebben; en of `can_interrupt()` False geeft als de laptop vergrendeld is (`context_manager.py` niet gezien).
+
+**Les:** (1) bij een "beslis"-functie die haar eigen staat bijwerkt, de staat pas overnemen als de actie ook echt gebeurt, anders gaat een uitgestelde melding verloren; (2) een grens die op twee plaatsen staat hoort op één plek te leven; (3) een nieuwe fix die een regel verandert kan oude tests breken die dat gedrag vastlegden; dat is geen fout van die tests, maar ze moeten bewust worden bijgewerkt.
+
+## ✅ Bug #47, #48 en #49 — weerleggingen blijven weerlegd (24 oktober 2026)
+
+**Bug #47 (weerleg-omweg via de placeholder):** `TeachEngine.teach()` en `wikipedia_teacher._teach_word()` roepen eerst `upgrade_unknown_sense()` aan, en die controleerde geen weerlegde sense; de rejected-guard zat enkel in `add_sense()`. Heeft een woord een `unknown`-placeholder (bv. via `auto_learn`), dan werd die meteen de weerlegde definitie als `confirmed`, zonder reactivatievraag. Fix in `semantic.py`: `upgrade_unknown_sense()` geeft bij dezelfde, afgewezen definitie hetzelfde `blocked: rejected`-signaal als `add_sense()`; `teach()` geeft dat door (zo handelt `SemanticConceptsModule.teach()` het af: vraag aan Kevin bij bron `user`, enkel melding bij andere bronnen), en `_teach_word()` meldt het.
+
+**Bug #48 (Wikipedia-refresh):** grotendeels al opgelost op 17 oktober (Fase 11.3-fix: bevestigde sense met rust laten, bestaande relaties inclusief weerlegde en bevestigde bewaren). De beschrijving in `nova_state.md` liep achter. Wat nog ontbrak: een audit-entry. Nu schrijft elke refresh een `wikipedia_refresh`-entry in de `audit_log` (oude definitie, oude status, nieuwe relaties). Eerste versie gebruikte `sense_engine._audit_sense()`, maar vier bestaande tests in `test_wikipedia_relaties_behouden.py` gebruiken een nep-semantic zonder `sense_engine`; daarom schrijft de code de entry nu rechtstreeks in `concept["audit_log"]`.
+
+**Bug #49 (valse bevestiging):** `RelationFlowEngine.handle_confirm()` negeerde de return van `add_relation()`. Nu meldt Nova bij `False` eerlijk wat er aan de hand is, via de nieuwe `_tekst_niet_opgeslagen()`: "Dat wist ik al" (relatie bestond), "Ik had eerder al afgewezen dat ..." (relatie bestond als `rejected`; dit tweede geval viel voorheen ook onder de valse bevestiging) of "Dat lukte niet" (sense niet gevonden).
+
+**Tests:** `test_bugs_47_48_49.py` (13). Zonder de fixes falen er 7. Suite: 2755 tests, 2754 groen, 1 overgeslagen.
+
+**Bewust niet gebouwd:** een reactivatievraag voor weerlegde relaties (die bestaat enkel voor senses). Nova zegt nu eerlijk dat ze het niet heeft opgeslagen, maar zo'n relatie is via chat niet terug te halen.
+
+**Live niet bevestigd.** Een proef voor #47: een woord met een `unknown`-placeholder (via `auto_learn`), een definitie weerleggen, dezelfde definitie opnieuw typen; Nova moet dan de heractivatievraag stellen in plaats van stil te bevestigen.
+
+**Les:** (1) bij een "bescherming" die op één pad zit, alle paden naar dezelfde schrijfactie nalopen; (2) de documentatie van een bug kan achterlopen op de code: eerst de code lezen voor je een bug "oplost"; (3) nieuwe code in een bestaande module mag niet meer methodes van het object aannemen dan bestaande tests leveren, anders breken ze op een nep-object.

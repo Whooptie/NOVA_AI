@@ -338,6 +338,8 @@ class WikipediaTeacher:
                         concept = self.semantic.store.get_concept(word)
                         for s in concept["senses"]:
                             if s.get("sense_id") == sense.get("sense_id"):
+                                oude_definitie = s.get("definition")
+                                oude_status = s.get("status")
                                 s["definition"] = definition
                                 s["confidence"] = WIKI_CONFIDENCE
                                 # Trust state (punt 3, 6 augustus 2026): een
@@ -357,6 +359,23 @@ class WikipediaTeacher:
                                          if (r.get("type"), str(r.get("target", "")).lower())
                                          not in bekend]
                                 s["relations"] = bestaand + nieuw
+                                # Bug #48-fix (24 oktober 2026): elke refresh laat
+                                # een spoor na in de audit_log (voorheen geen):
+                                # wat de definitie en status eerst waren en welke
+                                # relaties erbij kwamen. Bestaande relaties
+                                # (ook rejected/confirmed) blijven ongemoeid.
+                                concept.setdefault("audit_log", []).append({
+                                    "event_type": "wikipedia_refresh",
+                                    "source": "wikipedia",
+                                    "sense_id": s.get("sense_id"),
+                                    "old_value": oude_definitie,
+                                    "new_value": definition,
+                                    "oude_status": oude_status,
+                                    "nieuwe_relaties": [
+                                        f"{r.get('type')}: {r.get('target')}" for r in nieuw
+                                    ],
+                                    "timestamp": datetime.utcnow().isoformat(),
+                                })
                                 # Voorbeeldzinnen: bestaande blijven staan, nieuwe komen erbij.
                                 oude_vb = s.get("examples", [])
                                 s["examples"] = oude_vb + [e for e in (examples or [])
@@ -413,6 +432,16 @@ class WikipediaTeacher:
                 upgraded = self.semantic.sense_engine.upgrade_unknown_sense(
                     word, definition, source="wikipedia", confidence=WIKI_CONFIDENCE
                 )
+                # Bug #47-fix (24 oktober 2026): upgrade_unknown_sense()
+                # geeft nu ook een "blocked"-signaal bij een eerder
+                # afgewezen definitie. Zelfde melding als bij add_sense().
+                if isinstance(upgraded, dict) and upgraded.get("blocked") == "rejected":
+                    afgewezen = upgraded["sense"]
+                    return (
+                        f"'{word}' → \"{afgewezen.get('definition')}\" had je "
+                        f"eerder al afgewezen — deze Wikipedia-definitie is "
+                        f"dezelfde tekst, dus niet automatisch opgeslagen."
+                    )
                 if upgraded:
                     sense_id_voor_relaties = upgraded.get("sense_id")
                     if examples:

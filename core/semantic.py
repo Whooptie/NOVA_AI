@@ -284,6 +284,24 @@ class SenseEngine:
         if not concept:
             return None
 
+        # Bug #47-fix (24 oktober 2026): ook DIT pad moet een eerder
+        # afgewezen definitie blokkeren. Vroeger checkte alleen
+        # add_sense() op status == "rejected"; maar teach() en
+        # wikipedia_teacher.py roepen EERST deze methode aan. Had het
+        # woord een "unknown"-placeholder (bv. via auto_learn bij een
+        # meervoud), dan werd die placeholder meteen de weerlegde
+        # definitie als "confirmed" en kwam add_sense()'s guard nooit
+        # aan bod. Zelfde "blocked"-signaal als add_sense(), zodat de
+        # aanroepers het op dezelfde manier afhandelen.
+        for s in concept["senses"]:
+            if s.get("definition") == definition and s.get("status") == "rejected":
+                return {
+                    "blocked": "rejected",
+                    "sense": s,
+                    "attempted_source": source,
+                    "attempted_confidence": confidence,
+                }
+
         for s in concept["senses"]:
             if s.get("definition") == "unknown":
                 old_def = s["definition"]
@@ -2008,6 +2026,11 @@ class TeachEngine:
             word, definition, source=source,
             confidence=1.0 if source == "user" else 0.7
         )
+        # Bug #47-fix (24 oktober 2026): een eerder afgewezen definitie
+        # geeft hier een "blocked"-signaal terug (net als add_sense()
+        # hieronder). Doorgeven aan de aanroeper; GEEN is_a-extractie.
+        if isinstance(upgraded, dict) and upgraded.get("blocked") == "rejected":
+            return upgraded
         if upgraded:
             # Trust state (punt 3, 6 augustus 2026): de sense zelf wordt
             # hierboven al confirmed (Kevin typte deze definitie). De
@@ -2469,13 +2492,22 @@ class RelationFlowEngine:
         rel_type = self.pending_relation["relation_type"]
 
         if answer in ("ja", "yes", "y"):
-            self.relation_engine.add_relation(
+            # Bug #49-fix (24 oktober 2026): de return van add_relation()
+            # wordt nu gelezen. False betekent: de relatie bestond al
+            # (dedup), of de sense werd niet gevonden. Voorheen meldde
+            # Nova in beide gevallen "Oké, ik onthoud..." terwijl er niets
+            # veranderde.
+            sense_id = self.pending_relation["subject_sense_id"]
+            opgeslagen = self.relation_engine.add_relation(
                 subject,
                 rel_type,
                 obj,
-                sense_id=self.pending_relation["subject_sense_id"]
+                sense_id=sense_id
             )
-            self._send_chat(f"Oké, ik onthoud: '{subject}' {self._rel_tekst(rel_type)} '{obj}'.")
+            if opgeslagen:
+                self._send_chat(f"Oké, ik onthoud: '{subject}' {self._rel_tekst(rel_type)} '{obj}'.")
+            else:
+                self._send_chat(self._tekst_niet_opgeslagen(subject, rel_type, obj, sense_id))
             self.pending_relation = None
             return
 
@@ -2504,6 +2536,29 @@ class RelationFlowEngine:
 
     def _rel_tekst(self, rel_type):
         return self._REL_TEKSTEN.get(rel_type, rel_type)
+
+    def _tekst_niet_opgeslagen(self, subject, rel_type, obj, sense_id):
+        """
+        Bug #49-fix (24 oktober 2026): eerlijke melding als add_relation()
+        False gaf. Kijkt zelf in de sense waarom: afgewezen, al bekend, of
+        iets anders (dan eerlijk 'lukte niet').
+        """
+        zin = f"'{subject}' {self._rel_tekst(rel_type)} '{obj}'"
+        concept = self.store.get_concept(subject.lower().strip())
+        sense = None
+        if concept:
+            sense = next(
+                (s for s in concept.get("senses", []) if s.get("sense_id") == sense_id),
+                None,
+            )
+        if sense:
+            for rel in sense.get("relations", []):
+                if rel.get("type") == rel_type and rel.get("target") == obj.lower().strip():
+                    if rel.get("status") == "rejected":
+                        return (f"Ik had eerder al afgewezen dat {zin}. "
+                                f"Ik heb het niet opnieuw opgeslagen.")
+                    return f"Dat wist ik al: {zin}. Er is niets veranderd."
+        return f"Dat lukte niet: ik kon {zin} niet opslaan."
 
     def _ask_confirm(self):
         subject = self.pending_relation["subject"]
