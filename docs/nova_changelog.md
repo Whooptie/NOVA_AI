@@ -2113,7 +2113,7 @@ De kennisgraaf zichtbaar gemaakt. Volledig symbolisch: tekenen, tellen, zoeken. 
 
 **Help en Layer 7-label (22 oktober 2026):** `help graaf` (nieuw `topics/graaf.py`, registratie in `help.py`, verwijzingen in `help` en `help semantic`) en vier labels in `emergence_engine.py`; 5 nieuwe tests (`test_help_graaf.py`). Live bevestigd.
 
-**Nog open:** `None` in `concepts.json` herstellen en de graaf per betekenis (zie Volgende stappen 58 en 59).
+**Nog open:** niets meer; de `None`-relaties zijn hersteld en de graaf per betekenis kwam in 13.5 (zie hieronder).
 
 ## ✅ Semantic Fase 13, vervolg: pagina v2, overzicht en `open_html` (22 oktober 2026)
 
@@ -2130,3 +2130,47 @@ Kevin liet een screenshot zien van een donker graafdashboard (AI Workshop OS) me
 **Tests:** zie `nova_state.md`. Suite vóór open_html: 2615 tests, 2614 groen, 1 overgeslagen; daarna 2644 tests, 2643 groen, 1 overgeslagen.
 
 **Les:** een instelling die in een screenshot vreemd lijkt (hier de schuifjes) eerst navragen voordat je het ontwerp aanpast.
+
+## ✅ Semantic Fase 13, 13.5: vertakking per betekenis (24 oktober 2026)
+
+**Aanleiding:** Kevin vroeg of woorden met meerdere betekenissen als een vertakking getoond konden worden. De graaf tekende per woord, waardoor bv. `trap` (pedaal / trap in huis) en `licht` (fietslicht / oog) in 1 bolletje samenvielen.
+
+**Wat er kwam (100% symbolisch, geen ML):**
+- `graph_data.py`: `vertakte_woorden()`, `volledige_graaf(..., per_betekenis=False)` en de statistieken tonen hoeveel woorden meerdere betekenissen hebben.
+- `graph_render.py`: label en omgekeerd label voor het nieuwe relatietype `betekenis` (stam naar tak).
+- `graph_render_3d.py`: `per_betekenis=True` in de 3D-pagina. Stam plus een tak per betekenis (bv. "trap 1"), eigen takkleur, aangepaste teltekst en inspectorhints.
+- Padzoeken slaat `betekenis`-verbindingen over, dus een pad loopt nooit via de stam.
+- De pad-pagina uit de chat (`graaf pad`) blijft op woordniveau (`per_betekenis=False`).
+- De kleine lijsten "Meest verbonden" (links) en "Groepen" (rechts) zijn op verzoek van Kevin verborgen met `display:none`; terugzetten kan door dat attribuut weg te halen.
+- `requirements.txt`: `networkx==3.6.1` (in plaats van 3.7).
+
+**Regel voor relaties:** een relatie hangt aan de tak waar ze is opgeslagen. Staat ze alleen aan de andere kant, dan weet Nova niet welke betekenis bedoeld is en blijft ze aan de stam.
+
+**Resultaat op Kevins data (24 oktober 2026):** 843 woorden, 868 betekenissen, 19 woorden met meerdere niet-afgewezen betekenissen (42 takken), 0 relaties met type `None`.
+
+**Tests:** 17 bij voor de vertakking (11 data, 5 render, 1 commando's) en 5 voor `help graaf`. Suite: 2666 tests, 2665 groen, 1 overgeslagen.
+
+**Les:** (1) vraag eerst na wanneer iets in een screenshot vreemd lijkt, voordat je het ontwerp aanpast; (2) meet op Kevins huidige `concepts.json`, niet op oude data uit de testomgeving; (3) pin een bibliotheekversie op de versie die in de container draait (`pip list`), niet op de versie van de testomgeving.
+
+## ✅ Punt 32 — WebSocket-authenticatie en auditlog voor de laptopverbinding (24 oktober 2026)
+
+**Aanleiding:** externe code-review (19 september 2026), bevestigd door de Atlas-review (28 september 2026). `client_bridge.py` luisterde op `0.0.0.0:8765` zonder authenticatie, terwijl battleserver sinds Deel A en Onderdeel 5 zelf `open_app`/`close_app`/`open_url`/`open_html` naar de laptop stuurt.
+
+**Wat er kwam (100% symbolisch, een token vergelijken, geen ML):**
+- `client_bridge.py` (server): `_haal_verwacht_token()` (leest `NOVA_CLIENT_TOKEN` uit de `.env`, geen token = fail closed), `_controleer_token()` en `_sluit_wegens_weigering()`. Het eerste bericht van elke nieuwe verbinding moet `{"type": "auth", "token": "..."}` zijn en binnen `AUTH_TIMEOUT_SECONDEN = 5` komen. Vergelijking met `hmac.compare_digest` op utf-8-bytes. Bij een fout of ontbrekend token sluit de server met code 1008 ("Niet toegestaan"). In `_verwerk_client` gebeurt de controle VÓÓR `_verbonden_clients += 1` en vóór `_actieve_websocket` gezet wordt, zodat een onbekende verbinding de echte laptop nooit kan verdringen. Het token wordt nergens geprint of gelogd. Bij het opstarten: `Token-controle: AAN` of een duidelijke waarschuwing.
+- `nova_client.py` (laptop): `lees_token()` leest `C:\Nova_AI\client\nova_token.txt` en `main()` stuurt het als eerste bericht na het verbinden. Nieuwe aparte logger `nova_client.audit` naar `C:\Nova_AI\client\nova_audit.log` (`propagate=False`): een `ONTVANGEN`-regel per commando (in `verwerk_commando`, vóór het uitvoeren, dus ook voor geweigerde of onbekende commando's) en een `RESULTAAT`-regel per antwoord (in `_stuur_resultaat`). Hulpfunctie `_audit_details()`: app voor `open_app`/`close_app`, URL (max. 200 tekens) voor `open_url`, enkel de bestandsnaam voor `open_html` (nooit de HTML-inhoud).
+
+**Uitrol:** eerst de laptop (de oude server print enkel `Onbekend berichttype genegeerd: 'auth'`), daarna de server en `/reboot`. Token gemaakt met `python -c "import secrets; print(secrets.token_urlsafe(32))"`; op de laptop in `nova_token.txt`, op battleserver als `NOVA_CLIENT_TOKEN=...` in de `.env`. Het token is nooit in de chat of in de code beland.
+
+**Live bevestigd (24 oktober 2026, rond 10:33-10:36):**
+- Oude server: `Onbekend berichttype genegeerd: 'auth'` (de laptop stuurt dus het token). Na `/reboot`: `Token-controle: AAN` en `Laptop-client verbonden`, zonder weigering.
+- Auditlog: `open vlc` en `sluit vlc` staan er met `ONTVANGEN` en `RESULTAAT` (`ok=True`).
+- Bewust fout token: server `Verbinding van ('172.17.0.1', ...) geweigerd: geen of verkeerd token.`; laptop `received 1008 (policy violation) Niet toegestaan`. Na het terugzetten van het juiste token verbindt de laptop weer.
+
+**Tests:** `test_client_bridge_auth.py` (12). Suite: 2678 tests, 2677 groen, 1 overgeslagen (was 2666). Daarnaast een end-to-end proef in de ontwikkelomgeving met de echte `ClientBridge` op een vrije poort: zonder token (gesloten na de timeout), fout token (gesloten, niets geregistreerd), juist token (geregistreerd en `client_bridge:verbonden`).
+
+**Les:** (1) laat een beveiligingscontrole standaard dichtgaan: ontbreekt het token op de server, dan weigert hij alles en zegt dat luid; (2) controleer VÓÓR je een verbinding registreert, anders kan een onbekende verbinding de echte laptop verdringen; (3) rol een protocolwijziging uit met de kant die het nieuwe bericht kan negeren eerst, zodat er niets wegvalt; (4) het adres in de serverlog is `172.17.0.1`, de Docker-gateway, dus niet bruikbaar om te zien wie er echt verbond; (5) in `nova_client.py` staan Windows-paden op moduleniveau, dus het auditlog laat zich niet in battleserver-tests dekken, en is live bevestigd.
+
+**Bijvangst:** `nova_client.log` toont dat de verbinding al sinds september vaak wegvalt (`keepalive ping timeout`, `no close frame received or sent`, soms `timed out during opening handshake`). Oorzaak niet onderzocht; vastgelegd als punt 58 in `nova_state.md`.
+
+**Nog open:** `avatar_bridge` (punt 40, poort 8766) moet hetzelfde token krijgen vóór ze live gaat.

@@ -1337,3 +1337,9 @@
 {"text": "wat weet je allemaal over licht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0113, "bron": "model_fallback", "tijdstip": "2026-10-23T22:29:38.039921"}
 {"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-23T22:30:35.912263"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-24T09:50:17.463870"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-24T10:04:36.936867"}
+{"text": "toon hele graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-24T10:05:27.372278"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-24T10:10:23.547070"}
+{"text": "toon de hele graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-24T10:10:39.201882"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-24T10:32:05.647284"}
+{"text": "wanneer gaat het regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.016, "bron": "model_fallback", "tijdstip": "2026-10-24T10:39:53.222772"}

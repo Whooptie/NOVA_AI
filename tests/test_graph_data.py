@@ -296,3 +296,98 @@ def test_gemeenschappen_zonder_networkx(monkeypatch, concepten):
     monkeypatch.setattr(builtins, "__import__", nep)
     v = g.volledige_graaf(concepten)
     assert g.gemeenschappen(v["nodes"], v["edges"]) == ({}, [])
+
+
+# ---------- vertakking per betekenis (13.5) ----------
+
+def _tweebetekenissen():
+    """trap: pedaal (fiets) en trap in huis; huis noemt de trap ook zelf (zonder te weten welke)."""
+    return {
+        "trap": {"senses": [
+            {"sense_id": "trap#1", "definition": "pedaal", "status": "confirmed",
+             "relations": [_rel("part_of", "fiets")]},
+            {"sense_id": "trap#2", "definition": "treden", "status": "confirmed",
+             "relations": [_rel("part_of", "huis")]},
+        ]},
+        "fiets": {"senses": [_sense("fiets", "voertuig", [_rel("is_a", "voertuig")])]},
+        "huis": {"senses": [_sense("huis", "gebouw", [_rel("has_part", "trap")])]},
+        "voertuig": {"senses": [_sense("voertuig", "iets")]},
+    }
+
+
+def test_vertakte_woorden_vindt_enkel_meerdere_betekenissen():
+    c = _tweebetekenissen()
+    v = g.vertakte_woorden(c)
+    assert list(v) == ["trap"] and [t["sense_id"] for t in v["trap"]] == ["trap#1", "trap#2"]
+    assert v["trap"][0]["definitie"] == "pedaal" and v["trap"][1]["nr"] == "2"
+
+
+def test_afgewezen_betekenis_telt_niet_mee():
+    c = _tweebetekenissen()
+    c["trap"]["senses"][1]["status"] = "rejected"
+    assert g.vertakte_woorden(c) == {}
+
+
+def test_unknown_definitie_wordt_leeg_bij_tak():
+    c = _tweebetekenissen()
+    c["trap"]["senses"][1]["definition"] = "unknown"
+    assert g.vertakte_woorden(c)["trap"][1]["definitie"] == ""
+
+
+def test_standaard_blijft_een_bolletje_per_woord():
+    v = g.volledige_graaf(_tweebetekenissen())
+    assert "trap#1" not in {n["id"] for n in v["nodes"]}
+    assert not any(e["type"] == "betekenis" for e in v["edges"])
+
+
+def test_per_betekenis_maakt_takken_en_stam_verbindingen():
+    v = g.volledige_graaf(_tweebetekenissen(), per_betekenis=True)
+    ids = {n["id"] for n in v["nodes"]}
+    assert {"trap", "trap#1", "trap#2"} <= ids
+    tak_edges = {(e["van"], e["naar"]) for e in v["edges"] if e["type"] == "betekenis"}
+    assert tak_edges == {("trap", "trap#1"), ("trap", "trap#2")}
+    assert all(e["gericht"] is False for e in v["edges"] if e["type"] == "betekenis")
+
+
+def test_relatie_hangt_aan_de_juiste_betekenis():
+    edges = {(e["van"], e["type"], e["naar"]) for e in g.volledige_graaf(_tweebetekenissen(), per_betekenis=True)["edges"]}
+    assert ("trap#1", "part_of", "fiets") in edges
+    assert ("trap#2", "part_of", "huis") in edges
+    assert ("trap", "part_of", "fiets") not in edges
+
+
+def test_relatie_van_de_andere_kant_blijft_aan_de_stam():
+    # 'huis has_part trap' is enkel op huis opgeslagen: welke trap bedoeld is, weten we niet
+    c = _tweebetekenissen()
+    c["trap"]["senses"][1]["relations"] = []                    # trap#2 zegt zelf niets meer
+    edges = {(e["van"], e["type"], e["naar"]) for e in g.volledige_graaf(c, per_betekenis=True)["edges"]}
+    assert ("trap", "part_of", "huis") in edges
+
+
+def test_zelfde_relatie_op_twee_betekenissen_geeft_twee_lijnen():
+    c = _tweebetekenissen()
+    for s in c["trap"]["senses"]:
+        s["relations"] = [_rel("related_to", "voertuig")]
+    edges = {(e["van"], e["naar"]) for e in g.volledige_graaf(c, per_betekenis=True)["edges"] if e["type"] == "related_to"}
+    beide_richtingen = edges | {(b, a) for a, b in edges}
+    assert {("trap#1", "voertuig"), ("trap#2", "voertuig")} <= beide_richtingen
+
+
+def test_stam_houdt_zijn_woordgraad_en_tak_telt_zijn_eigen_lijnen():
+    nodes = {n["id"]: n for n in g.volledige_graaf(_tweebetekenissen(), per_betekenis=True)["nodes"]}
+    assert nodes["trap"]["aantal_relaties"] == 2          # woordniveau: fiets en huis
+    assert nodes["trap#1"]["aantal_relaties"] == 1        # alleen zijn eigen relatie (fiets), de verbinding met de stam telt niet mee
+    assert nodes["trap#1"]["stam"] == "trap" and nodes["trap#1"]["label"] == "trap 1"
+
+
+def test_tak_krijgt_nooit_dezelfde_naam_als_een_woord():
+    c = _tweebetekenissen()
+    c["trap#1"] = {"senses": [_sense("trap#1", "raar woord")]}
+    ids = [n["id"] for n in g.volledige_graaf(c, per_betekenis=True)["nodes"]]
+    assert len(ids) == len(set(ids))
+
+
+def test_statistieken_noemen_woorden_met_meerdere_betekenissen():
+    s = g.statistieken(_tweebetekenissen())
+    assert s["meerdere_betekenissen"] == {"trap": 2}
+    assert "meerdere betekenissen: 1 (trap 2)" in g.statistieken_tekst(s)

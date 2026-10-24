@@ -60,6 +60,7 @@ LABELS_NL = {
     "property_of": "is eigenschap van",
     "used_for": "wordt gebruikt voor",
     "None": "(relatietype ontbreekt!)",
+    "betekenis": "heeft als betekenis",     # stam -> tak in de 3D-pagina (Fase 13.5), geen echte relatie
 }
 
 # hoe een relatie heet als je hem vanaf de ANDERE kant leest (voor het zijpaneel van de 3D-graaf)
@@ -70,6 +71,7 @@ INVERS_NL = {
     "causes": "wordt veroorzaakt door",
     "property_of": "heeft als eigenschap",
     "used_for": "wordt hiervoor gebruikt",
+    "betekenis": "is een betekenis van",
 }
 
 

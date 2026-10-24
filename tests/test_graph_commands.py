@@ -243,3 +243,12 @@ def test_bridge_die_crasht_breekt_het_antwoord_niet(opstelling):
     bus.modules["client_bridge"] = Kapot()
     antwoorden = _vraag(opstelling, "toon graaf van fiets")
     assert "fiets_3d.html" in antwoorden[0] and "boem" in antwoorden[0]
+
+
+def test_pad_pagina_staat_op_woordniveau(opstelling):
+    import json
+    import re
+    _vraag(opstelling, "hoe zijn fiets en auto verbonden")
+    html = open(os.path.join(opstelling[2], "pad_fiets_auto.html"), encoding="utf-8").read()
+    data = json.loads(re.search(r'<script type="application/json" id="data">(.*?)</script>', html, re.S).group(1))
+    assert not any("stam" in n for n in data["nodes"])

@@ -1680,6 +1680,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T17:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "kamer",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
           }
         ],
         "source": "wikipedia",
@@ -2668,6 +2676,29 @@
         "confidence": 1.0,
         "audit_log": [],
         "status": "confirmed"
+      },
+      {
+        "sense_id": "tafel#2",
+        "definition": "Een tafel is een overzicht van getallen of gegevens in rijen en kolommen, zoals de tafel van vermenigvuldiging.",
+        "pos": "noun",
+        "examples": [
+          "De tafel van zeven leer je uit het hoofd.",
+          "Zij oefent de tafels van vermenigvuldiging."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "getal",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
@@ -2729,6 +2760,14 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:19:42.576608"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "tafel#2",
+        "old_value": null,
+        "new_value": "Een tafel is een overzicht van getallen of gegevens in rijen en kolommen, zoals de tafel van vermenigvuldiging.",
+        "timestamp": "2026-10-24T10:30:00.000000"
       }
     ]
   },
@@ -2948,6 +2987,14 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:21:14.785654",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "bank",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
           }
         ],
         "source": "user",
@@ -5184,6 +5231,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T17:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "kamer",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
           }
         ],
         "source": "user",
@@ -9167,6 +9222,22 @@
             "source": "user",
             "created_at": "2026-10-10T10:45:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "paard",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "dame",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
           }
         ],
         "source": "user",
@@ -10509,7 +10580,7 @@
       {
         "sense_id": "stuur#2",
         "definition": "Een fietsstuur wordt gebruikt om een fiets met de handen te sturen. Het is met het zitgedeelte en pedalen, een van de drie raakpunten van de bestuurder met de fiets.",
-        "pos": null,
+        "pos": "noun",
         "examples": [],
         "relations": [],
         "source": "wikipedia",
@@ -12974,6 +13045,37 @@
         "confidence": 1.0,
         "audit_log": [],
         "status": "confirmed"
+      },
+      {
+        "sense_id": "paard#2",
+        "definition": "Een paard is een schaakstuk in de vorm van een paardenhoofd dat in een L-vorm over het bord springt.",
+        "pos": "noun",
+        "examples": [
+          "Met het paard sprong hij over de pionnen heen.",
+          "In het schaakspel heeft elke speler twee paarden."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "schaak",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "spel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
@@ -13007,6 +13109,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-07-10T21:01:21.091285"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "paard#2",
+        "old_value": null,
+        "new_value": "Een paard is een schaakstuk in de vorm van een paardenhoofd dat in een L-vorm over het bord springt.",
+        "timestamp": "2026-10-24T10:30:00.000000"
       }
     ]
   },
@@ -19771,6 +19881,37 @@
         "confidence": 1.0,
         "audit_log": [],
         "status": "confirmed"
+      },
+      {
+        "sense_id": "bank#2",
+        "definition": "Een bank is een zitmeubel voor meerdere personen, vaak met een rugleuning.",
+        "pos": "noun",
+        "examples": [
+          "We zitten samen op de bank naar de tv te kijken.",
+          "De bank staat in de woonkamer."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "meubel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "stoel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
@@ -19804,6 +19945,14 @@
         "old_value": null,
         "new_value": "Een commerciële bank of kredietinstelling is een financieel instituut met een lopende rekening bij een centrale bank. Een centrale bank treedt op als bank voor commerciële banken en debiteert vervolgens hun lopende rekeningen.",
         "timestamp": "2026-07-31T20:07:36.780485"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bank#2",
+        "old_value": null,
+        "new_value": "Een bank is een zitmeubel voor meerdere personen, vaak met een rugleuning.",
+        "timestamp": "2026-10-24T10:30:00.000000"
       }
     ]
   },
@@ -23667,6 +23816,22 @@
             "source": "user",
             "created_at": "2026-10-14T18:30:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "paard",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "dame",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
           }
         ],
         "source": "user",
@@ -28418,6 +28583,45 @@
         "confidence": 1.0,
         "audit_log": [],
         "status": "confirmed"
+      },
+      {
+        "sense_id": "kamer#2",
+        "definition": "De Kamer is het deel van het parlement waar volksvertegenwoordigers wetten bespreken en goedkeuren.",
+        "pos": "noun",
+        "examples": [
+          "De Kamer stemde over het nieuwe voorstel.",
+          "Zij werd verkozen tot lid van de Kamer."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "overheid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "bestuur",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "democratie",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
@@ -28451,6 +28655,14 @@
         "old_value": null,
         "new_value": "Een kamer is een afgesloten ruimte in een huis of gebouw.",
         "timestamp": "2026-10-15T17:05:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kamer#2",
+        "old_value": null,
+        "new_value": "De Kamer is het deel van het parlement waar volksvertegenwoordigers wetten bespreken en goedkeuren.",
+        "timestamp": "2026-10-24T10:30:00.000000"
       }
     ]
   },
@@ -50762,6 +50974,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "tafel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
           }
         ],
         "source": "user",
@@ -64112,7 +64332,7 @@
       {
         "sense_id": "tractor#1",
         "definition": "Een tractor of trekker is een voertuig dat oorspronkelijk werd ontwikkeld voor gebruik in de landbouw ter vervanging van het paard, maar dat ook voor andere doeleinden wordt gebruikt. Het woord tractor is een algemene omschrijving voor een voertuig dat een passief voorwerp dat geen eigen aandrijving heeft, kan trekken, duwen of slepen.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "In de geïndustrialiseerde wereld heeft de tractor de rol van trekdieren in het boerenbedrijf en elders vrijwel volledig overgenomen.",
           "In Nederland zegt men meestal 'trekker', in Nederlands-Limburg en Vlaanderen is 'tractor' meer gangbaar."
@@ -65152,6 +65372,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T17:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "kamer",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
           }
         ],
         "source": "user",
@@ -67454,6 +67682,37 @@
         "confidence": 1.0,
         "status": "confirmed",
         "audit_log": []
+      },
+      {
+        "sense_id": "dame#2",
+        "definition": "Een dame, ook koningin genoemd, is het sterkste schaakstuk, dat zich in alle richtingen over het bord kan bewegen.",
+        "pos": "noun",
+        "examples": [
+          "Met de dame won hij de partij.",
+          "Verlies je dame niet te snel."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "schaak",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "spel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-10-24T10:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
@@ -67487,6 +67746,14 @@
         "old_value": null,
         "new_value": "Een dame is een beleefde benaming voor een vrouw.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "dame#2",
+        "old_value": null,
+        "new_value": "Een dame, ook koningin genoemd, is het sterkste schaakstuk, dat zich in alle richtingen over het bord kan bewegen.",
+        "timestamp": "2026-10-24T10:30:00.000000"
       }
     ]
   },

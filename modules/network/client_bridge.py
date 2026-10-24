@@ -79,9 +79,16 @@ Nog NIET gebouwd in deze eerste versie (bewust, stap voor stap):
 """
 
 import asyncio
+import hmac
 import json
+import os
 import threading
 import time
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    load_dotenv = None
 
 try:
     import websockets
@@ -110,6 +117,21 @@ DATA_VERVAL_SECONDEN = 180  # 3 minuten
 # webcaminterval in nova_client.py, pas dit dan mee aan (altijd iets
 # groter dan dat interval houden).
 PRESENCE_VERVAL_SECONDEN = 420  # 7 minuten
+
+# NIEUW (punt 32): authenticatie met een gedeeld geheim (token)
+AUTH_TIMEOUT_SECONDEN = 5
+TOKEN_NAAM = "NOVA_CLIENT_TOKEN"
+
+
+def _haal_verwacht_token():
+    """Geeft het token uit .env, of None. Geen token = FAIL CLOSED (alles geweigerd)."""
+    if load_dotenv is not None:
+        try:
+            load_dotenv()
+        except Exception:
+            pass
+    token = (os.getenv(TOKEN_NAAM) or "").strip()
+    return token or None
 
 
 class ClientBridge:
@@ -222,6 +244,13 @@ class ClientBridge:
 
         async with websockets.serve(self._verwerk_client, "0.0.0.0", LUISTER_POORT):
             print(f"[CLIENT_BRIDGE] WebSocket-server actief op 0.0.0.0:{LUISTER_POORT}")
+            if _haal_verwacht_token():
+                print("[CLIENT_BRIDGE] Token-controle: AAN (verbindingen zonder geldig token worden geweigerd).")
+            else:
+                print(
+                    f"[CLIENT_BRIDGE] WAARSCHUWING: {TOKEN_NAAM} ontbreekt in .env -- "
+                    "ALLE verbindingen worden geweigerd tot je een token instelt."
+                )
             await asyncio.Future()  # blijft eeuwig draaien
 
     # ------------------------------------------------------------
@@ -240,6 +269,10 @@ class ClientBridge:
         laptop verbonden is, moet een duidelijke, eerlijke fout geven,
         geen stille mislukking.
         """
+        # NIEUW (punt 32): EERST het token controleren, pas daarna registreren.
+        if not await self._controleer_token(websocket):
+            return
+
         self._verbonden_clients += 1
         with self._lock:
             self._actieve_websocket = websocket
@@ -260,6 +293,46 @@ class ClientBridge:
                     self._actieve_websocket = None
             if self.event_bus is not None:
                 self.event_bus.publish("client_bridge:verbroken", {"time": time.time()})
+
+    async def _controleer_token(self, websocket):
+        """
+        Wacht op het EERSTE bericht en controleert {"type":"auth","token":"..."}.
+        True = token klopt. Anders False en de verbinding wordt gesloten.
+        Het token zelf wordt NOOIT geprint. hmac.compare_digest vergelijkt in
+        constante tijd, zodat niemand het token via tijdsverschillen kan raden.
+        """
+        herkomst = getattr(websocket, "remote_address", None)
+        verwacht = _haal_verwacht_token()
+
+        if verwacht is None:
+            print(f"[CLIENT_BRIDGE] Verbinding van {herkomst} geweigerd: {TOKEN_NAAM} staat niet in .env.")
+            await self._sluit_wegens_weigering(websocket)
+            return False
+
+        gekregen = None
+        try:
+            ruw = await asyncio.wait_for(websocket.recv(), timeout=AUTH_TIMEOUT_SECONDEN)
+            data = json.loads(ruw)
+            if isinstance(data, dict) and data.get("type") == "auth":
+                gekregen = data.get("token")
+        except Exception:
+            gekregen = None
+
+        if isinstance(gekregen, str) and hmac.compare_digest(
+            gekregen.encode("utf-8"), verwacht.encode("utf-8")
+        ):
+            return True
+
+        print(f"[CLIENT_BRIDGE] Verbinding van {herkomst} geweigerd: geen of verkeerd token.")
+        await self._sluit_wegens_weigering(websocket)
+        return False
+
+    async def _sluit_wegens_weigering(self, websocket):
+        """Sluit een geweigerde verbinding netjes (code 1008 = beleid geschonden)."""
+        try:
+            await websocket.close(code=1008, reason="Niet toegestaan")
+        except Exception:
+            pass
 
     def _verwerk_bericht(self, ruwe_boodschap):
         """

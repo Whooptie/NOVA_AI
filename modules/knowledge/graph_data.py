@@ -77,6 +77,7 @@ def _verzamel_relaties(concepten, relatietypes=None, toon_afgewezen=False):
                     "bron": rel.get("source", ""),
                     "confidence": rel.get("confidence", 1.0),
                     "sense_id": sense.get("sense_id", ""),
+                    "eigenaar": _kaal_woord(woord),
                 })
     return resultaat
 
@@ -106,9 +107,17 @@ def _ontdubbel(relaties):
         van, rel_type, naar, gericht = _canoniek(rel["van"], rel["type"], rel["naar"])
         sleutel = (van, rel_type, naar)
         if sleutel not in uniek:
-            uniek[sleutel] = {**rel, "van": van, "type": rel_type, "naar": naar, "gericht": gericht}
+            uniek[sleutel] = {**rel, "van": van, "type": rel_type, "naar": naar, "gericht": gericht,
+                              "eigenaren": {}}
         elif rel["status"] != "confirmed":
             uniek[sleutel]["status"] = rel["status"]
+        # Onthoud op welke betekenis(sen) van welk woord deze relatie is opgeslagen: nodig voor
+        # de vertakking per betekenis (13.5). Eén woord kan dezelfde relatie op meerdere betekenissen hebben.
+        sid = rel.get("sense_id", "")
+        if sid:
+            lijst = uniek[sleutel]["eigenaren"].setdefault(rel.get("eigenaar", rel["van"]), [])
+            if sid not in lijst:
+                lijst.append(sid)
     return list(uniek.values())
 
 
@@ -244,10 +253,46 @@ def _maak_node(concepten, woord, afstand, aantal_relaties):
 # 13.1a-2  De volledige graaf (voor de interactieve 3D-pagina)
 # ---------------------------------------------------------------------------
 
-def volledige_graaf(concepten, toon_afgewezen=False):
+def vertakte_woorden(concepten, toon_afgewezen=False):
+    """
+    Woorden met 2 of meer (niet afgewezen) betekenissen, bv. trap (pedaal / trap in huis).
+    Terug: {woord: [{"sense_id","nr","definitie","status","ontstaan","node_id"}, ...]}
+    `node_id` is de naam van de tak in de graaf (standaard hetzelfde als sense_id, bv. "trap#1").
+    """
+    kaal_namen = {_kaal_woord(w) for w in concepten}
+    resultaat = {}
+    for woord, concept in concepten.items():
+        if not isinstance(concept, dict):
+            continue
+        stam = _kaal_woord(woord)
+        takken = []
+        for i, sense in enumerate(concept.get("senses", []), 1):
+            if not isinstance(sense, dict):
+                continue
+            if sense.get("status") == "rejected" and not toon_afgewezen:
+                continue
+            sid = str(sense.get("sense_id") or f"{stam}#{i}")
+            nr = sid.rsplit("#", 1)[-1] if "#" in sid else str(i)
+            node_id = sid if sid not in kaal_namen else f"{stam}\u00a7{nr}"   # nooit dezelfde naam als een woord
+            definitie = sense.get("definition", "")
+            takken.append({"sense_id": sid, "nr": nr, "node_id": node_id,
+                           "definitie": "" if definitie == "unknown" else (definitie or ""),
+                           "status": sense.get("status", "confirmed"), "ontstaan": sense.get("ontstaan")})
+        if len(takken) >= 2:
+            resultaat[stam] = takken
+    return resultaat
+
+
+def volledige_graaf(concepten, toon_afgewezen=False, per_betekenis=False):
     """
     ALLE nodes en edges (ontdubbeld), zodat de pagina zelf kan uitbreiden als je op een
     woord klikt, zonder dat Nova er nog iets voor hoeft te doen.
+
+    per_betekenis=True (13.5): een woord met meerdere betekenissen wordt een stam met een tak
+    per betekenis (bv. "trap" met "trap#1" en "trap#2"). Een relatie die op een betekenis is
+    opgeslagen, hangt aan die tak; een relatie die enkel aan de andere kant is opgeslagen
+    (bv. "fiets heeft als deel trap") weet niet welke betekenis bedoeld wordt en blijft aan de stam.
+    De takken zijn verbonden met de stam via edges van het type "betekenis".
 
     Terug: {"nodes": [...], "edges": [...]} in dezelfde vorm als bouw_graaf().
     """
@@ -260,9 +305,54 @@ def volledige_graaf(concepten, toon_afgewezen=False):
 
     ids = set(graad) | {_kaal_woord(w) for w in concepten}
     nodes = [_maak_node(concepten, woord, 0, graad.get(woord, 0)) for woord in sorted(ids)]
-    edges = [{"van": r["van"], "naar": r["naar"], "type": r["type"], "status": r["status"],
-              "bron": r["bron"], "confidence": r["confidence"], "gericht": r["gericht"]}
-             for r in relaties]
+
+    def _kaal_edge(r, van, naar):
+        return {"van": van, "naar": naar, "type": r["type"], "status": r["status"],
+                "bron": r["bron"], "confidence": r["confidence"], "gericht": r["gericht"]}
+
+    if not per_betekenis:
+        edges = [_kaal_edge(r, r["van"], r["naar"]) for r in relaties]
+        edges.sort(key=lambda e: (e["van"], e["type"], e["naar"]))
+        return {"nodes": nodes, "edges": edges}
+
+    vertakt = vertakte_woorden(concepten, toon_afgewezen)
+    tak_ids = {w: {t["sense_id"]: t["node_id"] for t in takken} for w, takken in vertakt.items()}
+
+    edges = []
+    for r in relaties:
+        eindpunten = []
+        for sleutel in ("van", "naar"):
+            woord = r[sleutel]
+            opties = [woord]
+            if woord in vertakt:
+                gevonden = [tak_ids[woord][sid] for sid in r["eigenaren"].get(woord, [])
+                            if sid in tak_ids[woord]]
+                if gevonden:
+                    opties = gevonden
+            eindpunten.append(opties)
+        for van in eindpunten[0]:
+            for naar in eindpunten[1]:
+                edges.append(_kaal_edge(r, van, naar))
+
+    tak_graad = {}
+    for e in edges:
+        tak_graad[e["van"]] = tak_graad.get(e["van"], 0) + 1
+        tak_graad[e["naar"]] = tak_graad.get(e["naar"], 0) + 1
+
+    for node in nodes:
+        takken = vertakt.get(node["id"])
+        if takken:
+            node["definitie"] = f"{node['id']} heeft {len(takken)} betekenissen (zie de takken)."
+            node["betekenissen"] = len(takken)
+    for stam, takken in vertakt.items():
+        for tak in takken:
+            nodes.append({"id": tak["node_id"], "label": f"{stam} {tak['nr']}", "afstand": 0,
+                          "aantal_relaties": tak_graad.get(tak["node_id"], 0), "bestaat": True,
+                          "definitie": tak["definitie"], "ontstaan": tak["ontstaan"],
+                          "stam": stam, "betekenis": tak["nr"]})
+            edges.append({"van": stam, "naar": tak["node_id"], "type": "betekenis",
+                          "status": "confirmed" if tak["status"] == "confirmed" else "unverified",
+                          "bron": "", "confidence": 1.0, "gericht": False})
     edges.sort(key=lambda e: (e["van"], e["type"], e["naar"]))
     return {"nodes": nodes, "edges": edges}
 
@@ -441,6 +531,7 @@ def statistieken(concepten):
         "stukken": len(verbonden_stukken),
         "grootste_stuk": verbonden_stukken[0] if verbonden_stukken else 0,
         "top_verbonden": top,
+        "meerdere_betekenissen": {w: len(t) for w, t in sorted(vertakte_woorden(concepten).items())},
     }
 
 
@@ -471,6 +562,11 @@ def statistieken_tekst(stats):
     if stats.get("type_ontbreekt"):
         regels.append(f"LET OP: {stats['type_ontbreekt']} relaties hebben als type de tekst 'None' "
                       f"(een fout in concepts.json).")
+    meer = stats.get("meerdere_betekenissen") or {}
+    if meer:
+        regels.append(f"Woorden met meerdere betekenissen: {len(meer)} ("
+                      + ", ".join(f"{w} {n}" for w, n in list(meer.items())[:8])
+                      + (" ..." if len(meer) > 8 else "") + "). In de 3D-pagina krijgen ze een tak per betekenis.")
     if stats["zonder_definitie"]:
         regels.append(f"Betekenissen zonder echte definitie ('unknown'): {stats['zonder_definitie']}.")
     if stats["top_verbonden"]:

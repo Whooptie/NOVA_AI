@@ -125,3 +125,48 @@ def test_data_heeft_groepen_hubs_en_kleur_per_node(concepten):
 def test_overzicht_bestandsnaam(concepten, tmp_path):
     pad = r3.schrijf_html_3d(concepten, None, map_pad=str(tmp_path))
     assert os.path.basename(pad) == "alles_3d.html"
+
+
+# ---------- v2.1: vertakking per betekenis ----------
+
+@pytest.fixture
+def vertakt():
+    c = {
+        "trap": {"senses": [
+            {"sense_id": "trap#1", "definition": "pedaal", "status": "confirmed",
+             "relations": [{"type": "part_of", "target": "fiets", "status": "confirmed", "source": "u", "confidence": 1}]},
+            {"sense_id": "trap#2", "definition": "treden", "status": "confirmed",
+             "relations": [{"type": "part_of", "target": "huis", "status": "confirmed", "source": "u", "confidence": 1}]},
+        ]},
+        "fiets": {"senses": [_sense("fiets", "voertuig")]},
+        "huis": {"senses": [_sense("huis", "gebouw")]},
+    }
+    return c
+
+
+def test_overzicht_heeft_takken_met_stam_en_groep(vertakt):
+    data = _data(r3.render_html_3d(vertakt, None))
+    nodes = {n["id"]: n for n in data["nodes"]}
+    assert nodes["trap#1"]["stam"] == "trap" and nodes["trap#1"]["betekenis"] == "1"
+    assert nodes["trap#1"]["c"] == nodes["trap"]["c"]
+    assert {"trap#1", "trap#2"} <= set(data["start"])
+
+
+def test_takken_zijn_geen_hubs(vertakt):
+    assert not any("#" in h for h in _data(r3.render_html_3d(vertakt, None))["hubs"])
+
+
+def test_centrum_start_bevat_takken_van_woorden_in_beeld(vertakt):
+    data = _data(r3.render_html_3d(vertakt, "fiets"))
+    assert "trap#1" in data["start"] and "trap#2" in data["start"]
+
+
+def test_pagina_met_pad_blijft_op_woordniveau(vertakt):
+    stappen = gd.vind_pad(vertakt, "fiets", "trap")
+    data = _data(r3.render_html_3d(vertakt, "fiets", pad=stappen, per_betekenis=False))
+    assert not any("stam" in n for n in data["nodes"])
+
+
+def test_betekenis_heeft_naam_en_kleur(vertakt):
+    data = _data(r3.render_html_3d(vertakt, None))
+    assert data["labels"]["betekenis"] and data["kleuren"]["betekenis"] and data["invers"]["betekenis"]

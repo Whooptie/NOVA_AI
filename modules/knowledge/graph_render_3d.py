@@ -59,6 +59,7 @@ KLEUREN_3D = {
     "property_of": "#f2d95c",
     "used_for": "#4fe0e0",
     "None": "#ff3b3b",
+    "betekenis": "#c9d1e6",
 }
 
 
@@ -82,12 +83,17 @@ def _json_veilig(data):
     return tekst.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
 
 
-def _bouw_data(concepten, centrum, diepte, max_start, toon_afgewezen, pad):
-    """centrum=None betekent: de HELE kennis als startbeeld (overzicht)."""
-    alles = graph_data.volledige_graaf(concepten, toon_afgewezen=toon_afgewezen)
+def _bouw_data(concepten, centrum, diepte, max_start, toon_afgewezen, pad, per_betekenis=True):
+    """
+    centrum=None betekent: de HELE kennis als startbeeld (overzicht).
+    per_betekenis=True: woorden met meerdere betekenissen krijgen een tak per betekenis (13.5).
+    """
+    woorden = graph_data.volledige_graaf(concepten, toon_afgewezen=toon_afgewezen)   # 1 bolletje per woord
+    alles = (graph_data.volledige_graaf(concepten, toon_afgewezen=toon_afgewezen, per_betekenis=True)
+             if per_betekenis else woorden)
 
     if centrum is None:
-        start_ids = [n["id"] for n in alles["nodes"] if n["aantal_relaties"] > 0]
+        start_ids = [n["id"] for n in woorden["nodes"] if n["aantal_relaties"] > 0]
         start_centrum, afgekapt = None, False
     else:
         start = graph_data.bouw_graaf(concepten, centrum, diepte=diepte, max_nodes=max_start,
@@ -97,19 +103,29 @@ def _bouw_data(concepten, centrum, diepte, max_start, toon_afgewezen, pad):
         start_ids = [n["id"] for n in start["nodes"]]
         start_centrum, afgekapt = start["centrum"], bool(start["afgekapt"])
 
-    toewijzing, groepen = graph_data.gemeenschappen(alles["nodes"], alles["edges"])
+    # de groepen worden altijd op woordniveau bepaald (takken erven de groep van hun stam)
+    toewijzing, groepen = graph_data.gemeenschappen(woorden["nodes"], woorden["edges"])
+
+    # takken van woorden die in het startbeeld staan, staan er ook bij
+    if per_betekenis:
+        in_start = set(start_ids)
+        start_ids = start_ids + [n["id"] for n in alles["nodes"] if n.get("stam") in in_start]
 
     nodes = []
     for n in alles["nodes"]:
         definitie = (n["definitie"] or "")[:MAX_DEFINITIE]
-        nodes.append({"id": n["id"], "label": n["label"], "def": definitie,
-                      "ontstaan": n["ontstaan"], "n": n["aantal_relaties"], "bestaat": n["bestaat"],
-                      "c": toewijzing.get(n["id"], -1)})
+        knoop = {"id": n["id"], "label": n["label"], "def": definitie,
+                 "ontstaan": n["ontstaan"], "n": n["aantal_relaties"], "bestaat": n["bestaat"],
+                 "c": toewijzing.get(n.get("stam", n["id"]), -1)}
+        if n.get("stam"):
+            knoop["stam"] = n["stam"]
+            knoop["betekenis"] = n["betekenis"]
+        nodes.append(knoop)
     for i, groep in enumerate(groepen):
         groep["kleur"] = GROEP_KLEUREN[i % len(GROEP_KLEUREN)]
 
     hubs = [n["id"] for n in sorted(
-        (n for n in nodes if n["bestaat"]), key=lambda n: (-n["n"], n["id"]))[:AANTAL_HUBS]]
+        (n for n in nodes if n["bestaat"] and "stam" not in n), key=lambda n: (-n["n"], n["id"]))[:AANTAL_HUBS]]
 
     pad_ids = []
     for stap in pad or []:
@@ -133,15 +149,17 @@ def _bouw_data(concepten, centrum, diepte, max_start, toon_afgewezen, pad):
 
 
 def render_html_3d(concepten, centrum=None, diepte=1, max_start=MAX_START_NODES,
-                   toon_afgewezen=False, pad=None, titel=None):
+                   toon_afgewezen=False, pad=None, titel=None, per_betekenis=True):
     """
     Geeft de HTML-tekst van de interactieve 3D-graaf.
       concepten : de concepts-dictionary (ConceptStore.concepts of json.load(concepts.json))
       centrum   : woord waar de graaf mee begint; None = de hele kennis als overzicht
       diepte    : hoeveel stappen rond het centrum al getoond worden bij het openen (standaard 1)
       pad       : optioneel, uitvoer van graph_data.vind_pad(); wordt rood en blijft zichtbaar
+      per_betekenis : woorden met meerdere betekenissen krijgen een tak per betekenis (standaard aan).
+                  Een pagina met `pad` (woordniveau) hoort op False te staan.
     """
-    data = _bouw_data(concepten, centrum, diepte, max_start, toon_afgewezen, pad)
+    data = _bouw_data(concepten, centrum, diepte, max_start, toon_afgewezen, pad, per_betekenis)
     kop = titel or (f"Kennisgraaf van Nova: {data['centrum']}" if data["centrum"] else "Kennisgraaf van Nova")
     return (_TEMPLATE
             .replace("__TITEL__", html_lib.escape(kop))
@@ -236,8 +254,8 @@ _TEMPLATE = r"""<!DOCTYPE html>
   <div id="inspector"><div class="hint">Klik op een woord: alleen dat woord en zijn verbindingen lichten op en je leest hier de uitleg. Klik op een leeg stuk om los te laten.</div></div>
   <div id="melding"></div>
 
-  <div class="kop">Meest verbonden</div>
-  <div id="hubs"></div>
+  <div class="kop" style="display:none">Meest verbonden</div>
+  <div id="hubs" style="display:none"></div>
 
   <div class="kop">Pad tussen twee woorden</div>
   <div class="rij"><input type="text" id="padA" list="woorden" placeholder="van"><input type="text" id="padB" list="woorden" placeholder="naar"></div>
@@ -261,7 +279,7 @@ _TEMPLATE = r"""<!DOCTYPE html>
 
 <div id="boven"><button id="fit" class="zacht">Alles in beeld</button></div>
 
-<div id="rechts"><div class="kop">Groepen</div><div id="groepen"></div></div>
+<div id="rechts" style="display:none"><div class="kop">Groepen</div><div id="groepen"></div></div>
 <datalist id="woorden"></datalist>
 
 <script type="application/json" id="data">__DATA__</script>
@@ -294,6 +312,9 @@ var byId = {}, byLabel = {}, adj = {};
 DATA.nodes.forEach(function (n) { byId[n.id] = n; byLabel[n.label.toLowerCase()] = n.id; adj[n.id] = []; });
 DATA.edges.forEach(function (e) { adj[e.van].push(e); adj[e.naar].push(e); });
 function andere(e, id) { return e.van === id ? e.naar : e.van; }
+var tak = {};                                   // stam -> ids van zijn takken (woorden met meerdere betekenissen)
+DATA.nodes.forEach(function (n) { if (n.stam) (tak[n.stam] = tak[n.stam] || []).push(n.id); });
+function leden(id) { return [id].concat(tak[id] || []); }
 
 var vis = {};                           // id -> node-object van de graaf
 var gekozen = null, focus = null;       // focus = {id: true} voor het gekozen woord en zijn buren
@@ -309,6 +330,7 @@ function groepKleur(n) {
 }
 function nodeKleur(n) {
   var k = groepKleur(n);
+  if (n.d.stam) k = meng(k, "#ffffff", 0.4);      // takken per betekenis: lichter dan hun stam
   if (n.id === gekozen) return "#ffffff";
   if (focus && !focus[n.id]) return meng(k, ACHTERGROND, 0.82);
   return k;
@@ -380,7 +402,9 @@ function huidigeLinks() {
 function ververs() {
   var nodes = Object.keys(vis).filter(zichtbaar).map(function (k) { return vis[k]; });
   Graph.graphData({ nodes: nodes, links: huidigeLinks() });
-  el("telling").textContent = nodes.length + " van " + DATA.nodes.length + " woorden zichtbaar · " + DATA.edges.length + " verbindingen";
+  var nTakken = Object.keys(tak).reduce(function (som, k) { return som + tak[k].length; }, 0);
+  el("telling").textContent = nodes.length + " van " + DATA.nodes.length + " zichtbaar (" + (DATA.nodes.length - nTakken) + " woorden"
+    + (nTakken ? " + " + nTakken + " betekenis-takken" : "") + ") · " + DATA.edges.length + " verbindingen";
   maakLabels();
 }
 
@@ -439,6 +463,7 @@ function toonInspector(id) {
   var n = byId[id];
   var h = document.createElement("h2"); h.textContent = n.label; p.appendChild(h);
   var g = DATA.groepen[n.c];
+  if (n.stam) { var bt = document.createElement("div"); bt.className = "hint"; bt.textContent = "betekenis " + n.betekenis + " van " + n.stam; p.appendChild(bt); }
   if (g) { var gg = document.createElement("div"); gg.className = "hint"; gg.textContent = "groep: " + g.naam; p.appendChild(gg); }
   var d = document.createElement("div"); d.className = "def";
   d.textContent = n.def || (n.bestaat ? "(geen definitie)" : "(nog geen eigen concept in Nova)");
@@ -447,7 +472,8 @@ function toonInspector(id) {
   var groepen = {};
   adj[id].forEach(function (e) {
     var uit = e.van === id, naam, ander = andere(e, id);
-    if (e.gericht === false || uit) naam = typeNaam(e.type);
+    if (e.type === "betekenis") naam = uit ? typeNaam("betekenis") : DATA.invers["betekenis"];
+    else if (e.gericht === false || uit) naam = typeNaam(e.type);
     else naam = DATA.invers[e.type] || (typeNaam(e.type) + " (omgekeerd)");
     (groepen[naam] = groepen[naam] || []).push({ id: ander, zwak: e.status !== "confirmed" });
   });
@@ -502,19 +528,23 @@ function tekenLabels() {
 }
 
 // ---------- pad zoeken (in de browser, over alle relaties) ----------
+// De stam-tak-verbindingen tellen NIET mee als stap: zo wordt trap (pedaal) nooit via het woord "trap"
+// verbonden met trap (in huis). Wie een stam intypt als begin of einde, mag wel met al zijn takken beginnen/eindigen.
 function zoekPad(a, b) {
   if (a === b) return [a];
-  var vorige = {}; vorige[a] = null;
-  var rij = [[a, 0]];
+  var doelen = {}; leden(b).forEach(function (x) { doelen[x] = true; });
+  var vorige = {}, rij = [];
+  leden(a).forEach(function (x) { vorige[x] = null; rij.push([x, 0]); });
   while (rij.length) {
     var h = rij.shift(), id = h[0], diep = h[1];
+    if (doelen[id] && diep > 0) { var p = [id], y = id; while (vorige[y] !== null) { y = vorige[y]; p.unshift(y); } return p; }
     if (diep >= 6) continue;
-    var buren = adj[id].map(function (e) { return andere(e, id); }).sort();
+    var buren = adj[id].filter(function (e) { return e.type !== "betekenis"; }).map(function (e) { return andere(e, id); }).sort();
     for (var i = 0; i < buren.length; i++) {
       var o = buren[i];
       if (o in vorige) continue;
       vorige[o] = id;
-      if (o === b) { var pad = [b], x = b; while (vorige[x] !== null) { x = vorige[x]; pad.unshift(x); } return pad; }
+      if (doelen[o]) { var pad = [o], x = o; while (vorige[x] !== null) { x = vorige[x]; pad.unshift(x); } return pad; }
       rij.push([o, diep + 1]);
     }
   }

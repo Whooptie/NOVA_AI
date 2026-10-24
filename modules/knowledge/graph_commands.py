@@ -179,7 +179,8 @@ class GraafCommands:
         try:
             from modules.knowledge import graph_render_3d
             bestand = graph_render_3d.schrijf_html_3d(
-                concepten, a, bestandsnaam=f"pad_{a}_{b}", map_pad=self.map_pad, diepte=1, pad=stappen)
+                concepten, a, bestandsnaam=f"pad_{a}_{b}", map_pad=self.map_pad, diepte=1, pad=stappen,
+                per_betekenis=False)
             zin += f" Bestand met het pad in het rood: {bestand}.{self._open_op_laptop(bestand)}"
         except Exception as fout:           # het antwoord in woorden blijft gewoon geldig
             _dbg(f"fout bij maken pagina: {fout}")
