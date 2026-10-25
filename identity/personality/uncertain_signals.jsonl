@@ -1371,3 +1371,29 @@
 {"text": "gaat het regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.016, "bron": "model_fallback", "tijdstip": "2026-10-25T10:57:20.127773"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T11:01:37.105898"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-25T11:01:42.990212"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T12:04:48.530096"}
+{"text": "een kat is een vogelµ", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T12:07:10.332860"}
+{"text": "weerleg: kat is_a vogelµ", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-25T12:07:32.773791"}
+{"text": "een kat is een vogel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T12:07:40.572829"}
+{"text": "weerleg: kat is_a vogel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-25T12:08:00.751703"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T12:13:45.793602"}
+{"text": "stel dat een hond een meubel is", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0236, "bron": "model_fallback", "tijdstip": "2026-10-25T12:13:53.809338"}
+{"text": "is een hond een meubel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T12:14:02.815436"}
+{"text": "wat zou dat betekenen", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.006, "bron": "model_fallback", "tijdstip": "2026-10-25T12:14:13.143813"}
+{"text": "welke aannames heb ik", "signaal": "focus", "model_signaal": "focus", "marge": 0.0363, "bron": "model_fallback", "tijdstip": "2026-10-25T12:14:23.003710"}
+{"text": "wis de aannames", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-25T12:14:29.424444"}
+{"text": "is een hond een meubel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T12:14:36.068171"}
+{"text": "wat zegt het weer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0608, "bron": "model_fallback", "tijdstip": "2026-10-25T12:27:14.123092"}
+{"text": "hoe laat is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-10-25T12:27:31.769224"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T12:51:31.673952"}
+{"text": "is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T12:51:42.110152"}
+{"text": "is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T12:51:57.312077"}
+{"text": "heb ik dit al eens gevraagd", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.046, "bron": "model_fallback", "tijdstip": "2026-10-25T12:52:06.917163"}
+{"text": "wanneer vroeg ik dat laatst", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0215, "bron": "model_fallback", "tijdstip": "2026-10-25T12:52:14.482609"}
+{"text": "stop met terugblikken", "signaal": "waardering", "model_signaal": "neutraal", "marge": 0.0368, "bron": "woordenlijst", "tijdstip": "2026-10-25T12:52:29.411121"}
+{"text": "wat is een tractor", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-25T12:52:48.499626"}
+{"text": "blik weer terug", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0011, "bron": "model_fallback", "tijdstip": "2026-10-25T12:53:13.463774"}
+{"text": "wat is een tractor", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-25T12:53:33.730615"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T12:56:19.817474"}
+{"text": "is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T12:56:36.690637"}
+{"text": "wat is een tractor", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-25T12:56:49.382288"}

@@ -2727,6 +2727,110 @@ class IntentRouter:
         ("kan X Y veroorzaken", re.compile(r"^kan\s+" + _ART + r"(\w+)\s+" + _ART + r"([\w\s]+?)\s+veroorzaken$")),
     ]
 
+    # ---------------------------------------------------------
+    # Hypothetisch redeneren (Taal & Redeneerlimieten, idee 4)
+    # "stel dat een hond een meubel is" -> tijdelijke aanname, enkel in
+    # het RAM-geheugen (modules/knowledge/hypothese.py). part_of-patronen
+    # staan VOOR is_a, anders leest "een wiel een deel van een auto is"
+    # fout als "wiel is een 'deel van een auto'".
+    # ---------------------------------------------------------
+    _HYP_START = re.compile(
+        r"^(?:stel je voor dat|stel dat|stel|veronderstel dat|veronderstel|"
+        r"neem aan dat|neem aan|laten we aannemen dat)\s+(.+)$")
+    _HYP_ART = r"(?:(?:een|de|het)\s+)?"
+    _HYP_PATRONEN = [
+        ("part_of", re.compile(r"^" + _HYP_ART + r"(\w+)\s+(?:een\s+)?(?:onderdeel|deel)\s+van\s+" + _HYP_ART + r"([\w\s]+?)\s+(?:is|zijn)$")),
+        ("causes", re.compile(r"^" + _HYP_ART + r"(\w+)\s+" + _HYP_ART + r"([\w\s]+?)\s+veroorzaakt$")),
+        ("causes", re.compile(r"^" + _HYP_ART + r"(\w+)\s+tot\s+" + _HYP_ART + r"([\w\s]+?)\s+leidt$")),
+        ("is_a", re.compile(r"^" + _HYP_ART + r"(\w+)\s+(?:een|de|het)\s+([\w\s]+?)\s+(?:is|zijn)$")),
+    ]
+    _HYP_GEVOLG = frozenset({
+        "wat zou dat betekenen", "wat zou dat dan betekenen", "wat betekent dat dan",
+        "wat volgt daaruit", "wat volgt er dan", "wat zou daaruit volgen",
+        "wat zou er dan gebeuren", "wat gebeurt er dan",
+    })
+    _HYP_WIS = re.compile(
+        r"^(?:(?:wis|verwijder) (?:de |alle |mijn )?aannames?|"
+        r"laat (?:de |alle )?aannames? vallen|terug naar de feiten)$")
+    _HYP_TOON = re.compile(
+        r"^(?:welke aannames(?: heb ik| neem je aan| neem ik aan)?|"
+        r"wat neem (?:je|ik) aan|toon (?:de )?aannames)$")
+
+    # ---------------------------------------------------------
+    # Terugblikken / case-based reasoning (Taal & Redeneerlimieten, idee 3)
+    # Het automatische deel ("je vroeg dit eerder al") zit volledig in
+    # modules/knowledge/case_herinnering.py en luistert zelf mee op de
+    # kennis-intents; hier staan alleen de expliciete zinnen.
+    # ---------------------------------------------------------
+    _CASE_FILLER = r"(?:(?:al|eens|eerder|ooit)\s+)*"
+    _CASE_VORIGE = re.compile(
+        r"^(?:heb ik (?:dit|dat|deze vraag|die vraag) " + _CASE_FILLER + r"gevraagd|"
+        r"vroeg ik (?:dit|dat)(?: (?:al|eens|eerder|ooit))+|"
+        r"hebben we (?:dit|dat) " + _CASE_FILLER + r"gehad)$")
+    _CASE_LAATST = re.compile(
+        r"^wanneer (?:vroeg|heb) ik (?:je )?(?:dit|dat) (?:voor het )?laatst(?: gevraagd)?$")
+    _CASE_UIT = re.compile(
+        r"^(?:stop met (?:het )?terugblikken|geen terugblikken meer|blik niet (?:meer )?terug)$")
+    _CASE_AAN = re.compile(
+        r"^(?:blik weer terug|begin weer met terugblikken|"
+        r"(?:doe|zet) (?:het )?terugblikken weer aan)$")
+
+    def detect_case_herinnering(self, text):
+        if self.event_bus.modules.get("case_herinnering") is None:
+            return False
+        t = text.lower().strip().rstrip("?.! ")
+        for patroon, event in (
+            (self._CASE_VORIGE, "intent_case_herinnering_vorige"),
+            (self._CASE_LAATST, "intent_case_herinnering_laatst"),
+            (self._CASE_UIT, "intent_case_herinnering_uit"),
+            (self._CASE_AAN, "intent_case_herinnering_aan"),
+        ):
+            if patroon.match(t):
+                dbg(f"{C_BLUE}→ {event}{C_RESET}")
+                self.event_bus.publish(event, {})
+                self._emit_topic("terugblik", bron="detect")
+                return True
+        return False
+
+    def detect_hypothese(self, text):
+        hyp = self.event_bus.modules.get("hypothese")
+        if hyp is None:
+            return False
+        t = text.lower().strip().rstrip("?.! ")
+
+        if self._HYP_WIS.match(t):
+            self.event_bus.publish("intent_hypothese_wis", {})
+            self._emit_topic("hypothese", bron="detect")
+            return True
+        if self._HYP_TOON.match(t):
+            self.event_bus.publish("intent_hypothese_toon", {})
+            self._emit_topic("hypothese", bron="detect")
+            return True
+        # Gevolg-vragen enkel als er aannames zijn; anders niets claimen
+        # ("wat betekent dat dan" kan ook een gewone vraag zijn).
+        if t in self._HYP_GEVOLG and hyp.heeft_aannames():
+            self.event_bus.publish("intent_hypothese_gevolg", {})
+            self._emit_topic("hypothese", bron="detect")
+            return True
+
+        m0 = self._HYP_START.match(t)
+        if not m0:
+            return False
+        rest = m0.group(1).strip()
+        for relatie, patroon in self._HYP_PATRONEN:
+            m = patroon.match(rest)
+            if not m:
+                continue
+            bron, doel = m.group(1).strip(), m.group(2).strip()
+            if not bron or not doel or bron in self._GEEN_RELATIE_ONDERWERP:
+                continue
+            dbg(f"{C_BLUE}→ hypothese ({relatie}): '{bron}' -> '{doel}'{C_RESET}")
+            self.event_bus.publish("intent_hypothese_stel", {
+                "subject": bron, "relation": relatie, "target": doel})
+            self._emit_topic("hypothese", bron="detect", concept=bron)
+            return True
+        return False
+
     def detect_causes_check(self, text):
         t = text.lower().strip().rstrip("?.! ")
 
@@ -5209,6 +5313,29 @@ class IntentRouter:
     # MAIN ROUTER
     # ---------------------------------------------------------
     def route(self, data, event_type=None):
+        # Hypothetisch redeneren (idee 4): tijdelijke aannames zijn enkel
+        # zichtbaar zolang DIT bericht verwerkt wordt. betreed_beurt()/
+        # verlaat_beurt() markeren begin en einde (en sturen na afloop
+        # eventueel een "let op"-melding).
+        # Idem voor case_herinnering.py (idee 3): die geeft na afloop,
+        # indien van toepassing, een "je vroeg dit eerder"-regel.
+        beurt_modules = [
+            m for m in (self.event_bus.modules.get("hypothese"),
+                        self.event_bus.modules.get("case_herinnering"))
+            if m is not None
+        ]
+        for m in beurt_modules:
+            m.betreed_beurt()
+        try:
+            return self._route_intern(data, event_type)
+        finally:
+            for m in beurt_modules:
+                try:
+                    m.verlaat_beurt()
+                except Exception as e:
+                    dbg(f"{C_RED}beurt-module fout: {e}{C_RESET}")
+
+    def _route_intern(self, data, event_type=None):
         text = data.get("text", "").strip()
         superscripts = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
         text = text.translate(superscripts)
@@ -5420,6 +5547,16 @@ class IntentRouter:
         # tegenvraag gepubliceerd, route() moet meteen stoppen).
         text = self._verwerk_referentie(text)
         if text is None:
+            return
+
+        # 2E2 Hypothetisch redeneren (idee 4) -- na referentie, vóór de
+        # kennisvragen, zodat "stel dat ..." niet als gewone zin wordt gelezen.
+        if self.detect_hypothese(text):
+            return
+
+        # 2E3 Terugblikken (case-based, idee 3) -- "heb ik dit al eens
+        # gevraagd", "wanneer vroeg ik dat laatst", aan/uit-commando.
+        if self.detect_case_herinnering(text):
             return
 
         # 2F Causale check (Semantic Fase 8.2, 11 oktober 2026) -- MOET

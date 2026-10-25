@@ -1157,7 +1157,24 @@ class RelationEngine:
                 return True
         return False
 
+    overlay = None  # tijdelijke aannames (hypothese.py), anders None
+
     def get_relations(self, word: str, relation_type: Optional[str] = None) -> List[str]:
+        resultaat = self._get_relations_echt(word, relation_type)
+        overlay = self.overlay
+        if overlay is None:
+            return resultaat
+        try:
+            extra = overlay.extra_relaties(word.lower().strip(), relation_type)
+        except Exception:
+            return resultaat
+        nieuw = [e for e in extra if e not in resultaat]
+        if not nieuw:
+            return resultaat
+        overlay.markeer_gebruikt()
+        return list(dict.fromkeys(list(resultaat) + list(extra)))
+
+    def _get_relations_echt(self, word: str, relation_type: Optional[str] = None) -> List[str]:
         word = word.lower().strip()
         concept = self.store.get_concept(word)
         if not concept:
@@ -1477,15 +1494,33 @@ class ReasoningEngine:
 
         # --- 1. is_a: onverenigbare categorieën ---
         INCOMPATIBLE_GROUPS = [
-            {"dier", "plant", "meubel", "voertuig", "gebouw", "apparaat", "voedsel"},
+            # Concrete soorten dingen: iets is er maar één van.
+            {"dier", "plant", "meubel", "voertuig", "gebouw", "apparaat",
+             "voedsel", "kledingstuk", "sieraad", "gereedschap",
+             "hemellichaam", "orgaan"},
+            # Dierklassen sluiten elkaar uit.
+            {"zoogdier", "vogel", "vis", "reptiel", "amfibie", "insect"},
+            # Abstracte categorieën.
+            {"kleur", "gevoel", "getal", "beroep", "activiteit"},
             {"levend", "niet-levend"},
             {"vloeibaar", "vast", "gas"},
         ]
 
+        # Synoniemen tellen als dezelfde categorie, anders geeft een woord
+        # dat beide heeft (bv. 'tafel' is_a meubel + meubelstuk) onterecht
+        # een conflict.
+        SYNONIEMEN = {"meubelstuk": "meubel", "voedingsmiddel": "voedsel"}
+
         parents = self.relation_engine.get_relations(word, relation_type="is_a")
 
         for group in INCOMPATIBLE_GROUPS:
-            gevonden = [p for p in parents if p in group]
+            gevonden = []
+            gezien = set()
+            for p in parents:
+                canoniek = SYNONIEMEN.get(p, p)
+                if canoniek in group and canoniek not in gezien:
+                    gezien.add(canoniek)
+                    gevonden.append(p)  # originele naam, voor de weerleg-suggestie
             if len(gevonden) >= 2:
                 contradictions.append({
                     "word": word,

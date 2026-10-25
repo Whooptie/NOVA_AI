@@ -2296,3 +2296,61 @@ Kevin liet een screenshot zien van een donker graafdashboard (AI Workshop OS) me
 - **Tests:** `tests/test_handler_fouten.py` (49 tests). Teststand 2842 → 2891 (2890 groen, 1 overgeslagen).
 
 **Open vervolgideeën:** stille uren (zoals bij regen, 23:00 tot 07:00) en de Layer 5-"mag nu spreken"-check voor de spontane melding; een echte test van `module_loader.py` zelf.
+
+---
+
+## ✅ identity_state.json — dode velden onderzocht en beslist (22 augustus 2026, afgesloten 25 oktober 2026)
+
+Vervolg op de overstimulation_level-sync-bug (zie #28). Ditmaal VOLLEDIG geverifieerd tegen de echte broncode (`personality_engine.py`, `behavior_modifiers.py`), niet enkel een vermoeden — zelfde controlepatroon als de `identity.json`-correctie van 1 augustus 2026.
+
+**Herkomst van de velden (vastgesteld 25 oktober 2026):** `identity_state.json` komt uit Fase 2 van de identity-roadmap ("Personality Engine") en is oorspronkelijk door Copilot opgezet, als een ontwerp op voorhand van wat een levendige persoonlijkheid zou kunnen bijhouden. Anders dan `traits.json` en `identity.json` (herzien op 17 juli 2026) is dit bestand nooit inhoudelijk herzien. De velden zijn dus niet ontstaan omdat een module ze nodig had, vandaar de vele velden zonder lezer of schrijver. Wel in gebruik: stemming, energie, overprikkeling en dramatische flair.
+
+**Beslissing: velden blijven staan in `identity_state.json` (geen opruiming), intentie hier vastgelegd i.p.v. in het JSON-bestand zelf.** Reden: `identity_state.json` blijft zo puur "wat Nova nu is", zonder documentatie-ruis ertussen.
+
+**Bevestigd dood, blijft dood:**
+- `current_focus`, `emotional_tone`, `emotional_history`, `mood_shift_tendency`, `puberaal_traits_active` — losse velden zonder aanwijsbare toekomstige aanroeper. Geen bouwplan.
+- `interaction_state` (hele object) — `kevin_priority`/`others_priority` lopen vooruit op een "Nova praat met meerdere mensen"-scenario dat nog niet bestaat. Blijft dood tot die usecase zich aandient.
+- `energy_dynamics` (hele object) — `apply_energy_modulation()` gebruikt hardcoded `0.5/0.2/0.3`-gewichten in `behavior_modifiers.py`, niet dit object. Bewust NIET aangesloten: dit zou een net gefixte, kwetsbare berekening (de 1.2-gewichtenbug en de tussentijdse-clamp-bug, 17 juli 2026) opnieuw openbreken voor beperkte winst.
+- `safety_state` (hele object) — veiligheidsflags (`romantic_filter_active`, `dependency_filter_active`, ...). Bewust NIET als opruim-bijvangst aangesloten; als die ooit echt afgedwongen moeten worden, verdient dat een eigen, doordacht traject.
+
+**Bevestigd dood, maar met een aannemelijke toekomstige aanroeper (indien Kevin ooit kiest te bouwen):**
+- `context_flags` (`is_in_deep_conversation`, `is_processing_complexity`, `is_excited`, `is_confused`, `is_focused`) — zou een pure afleiding kunnen zijn van bestaande data (`current_mood`, `overstimulation_level`, `emotion_engine.state`), zodat andere modules één boolean checken i.p.v. zelf drempelwaarden te herhalen. Lage bouwmoeite, geen nieuwe input nodig, 100% symbolisch.
+- `focus_dynamics` (`hyperfocus_active`, `hyperfocus_strength`, `task_switch_speed`) — zou kunnen aansluiten op Layer 5 activity/focus-detection (`activity_started:*`), als spiegeling naar `identity_state.json`, vergelijkbaar met `overstimulation_level`. 100% symbolisch.
+- Geen van beide gebouwd. **Besluit 25 oktober 2026:** pas bouwen als er een concrete usecase is. Zonder aanroeper zou het enkel een nieuw veld zijn dat niemand leest.
+
+**Niet in de oorspronkelijke lijst, deels mogelijk dood, NIET onderzocht:** `behavior_modulation_state.mirroring_intensity` en `behavior_modulation_state.adapt_energy_to_context` (enkel `chaotic_variability_state` daarbinnen wordt bevestigd gebruikt door `personality_engine.py`). Apart te bekijken indien relevant.
+
+**Les:** bij twijfel of een veld dood is, altijd de echte broncode van de enige lezer/schrijver controleren (hier `personality_engine.py` + `behavior_modifiers.py`) vóór een conclusie of beslissing vast te leggen — niet enkel op basis van het databestand zelf redeneren.
+
+---
+
+## ✅ Hypothetisch redeneren: tijdelijke aannames (Taal & Redeneerlimieten idee 4, 25 oktober 2026)
+
+**Doel:** "stel dat een hond een meubel is" laat Nova binnen die aanname redeneren, zonder dat de echte kennis verandert. 100% symbolisch.
+
+- **`modules/knowledge/hypothese.py` (nieuw).** Aannames (is_a, part_of, causes) staan enkel in RAM. Maximaal 5, verval na 10 minuten. Onderwerp moet een bekend concept zijn. Een aanname die al waar is, een dubbele of een cirkel wordt geweigerd.
+- **`core/semantic.py`:** `RelationEngine.get_relations()` is hernoemd naar `_get_relations_echt()`. Het nieuwe `get_relations()` voegt de extra relaties uit de klasse-variabele `overlay` toe. Omdat alle redeneerfuncties via `get_relations()` lezen, hoefde er verder niets aangepast.
+- **Isolatie.** De aannames zijn enkel zichtbaar tussen `betreed_beurt()` en `verlaat_beurt()` (in `route()`), per thread (`threading.local`). De achtergrond-thread van `contradiction_checker.py` ziet ze nooit. `concepts.json` wordt nooit geschreven (getest).
+- **`core/intent_router.py`:** `route()` is een wrapper rond `_route_intern()`. Nieuwe stap 2E2 en `detect_hypothese()` met patronen voor stel/veronderstel/neem aan, gevolgvragen, tonen en wissen. part_of-patronen staan vóór is_a. Gevolgvragen worden alleen opgepikt als er aannames zijn.
+- **Afwijkingen van het ontwerp.** "vergeet de aanname" kan niet, want `vergeet` wordt door stap 2B (handle_preference) opgevangen; gebruik "wis de aannames". De "let op"-melding komt na het antwoord, niet ervoor. Ze is voorzichtig ("kan ... gebruikt hebben") en verschijnt ook als je naar het onderwerp van een aanname vraagt zonder dat het antwoord ervan afhangt.
+- **Live bevestigd:** "ja" binnen de aanname, botsing met "dier" gemeld, na wissen weer "nee", `concepts.json` ongewijzigd. Dit bewijst dat de EventBus handlers synchroon in dezelfde thread uitvoert.
+- **Tests:** `tests/test_hypothese.py` (32 tests). Teststand 2891 → 2923 (2922 groen, 1 overgeslagen). Een eerste testopzet had per ongeluk de echte `ConceptStore` kunnen raken (verkeerde parameternaam); de fixture gebruikt nu `concepts_file=` en `log_file=` op tmp_path.
+
+**Open:** Layer 7-label voor topic `hypothese` in `emergence_engine.py`, en de `help`-tekst. Beperkingen v1: alleen toevoegen (niet ontkennen), `related_to`, vergelijken en onzekerheid zien de aannames niet.
+
+---
+
+## ✅ Case-based reasoning: terugblikken op eerdere vragen (Taal & Redeneerlimieten idee 3, 25 oktober 2026)
+
+**Doel:** Nova gebruikt Layer 0 actief als vergelijkingsmateriaal: "Je vroeg dit eerder al, gisteren. Toen antwoordde ik hetzelfde." Daarmee zijn alle vier ideeën uit `taal_en_redeneerlimieten_roadmap.md` afgerond (1+2 op 22 augustus, 4 en 3 op 25 oktober). 100% symbolisch, geen ML of embeddings.
+
+- **`modules/knowledge/case_herinnering.py` (nieuw).** Zoekt vergelijkbare vragen, vergelijkt Nova's toenmalige antwoord (het eerstvolgende `chat_response` binnen 60 seconden) met het huidige, en meldt het na het antwoord tussen haakjes. Beperkingen om irritatie te voorkomen: oude vraag minstens 1 uur oud, per onderwerp 1 keer per dag, stil onder een tijdelijke aanname, aan/uit via chat.
+- **Bewust niet `memory.find_similar()`:** die vergelijkt tekens met de volledige JSON van alle eventsoorten, dus vooral ruis. In plaats daarvan een eigen SELECT op `raw_user_message` over `interactions`, `interactions_old` en de gzip-archieven (gecachet tot de bestanden veranderen).
+- **`core/intent_router.py`:** `route()` is een wrapper die nu elke "beurt-module" (hypothese en case_herinnering) in- en uitmeldt; nieuwe stap 2E3 en `detect_case_herinnering()`. Het automatische deel heeft geen routerwijziging nodig: de module luistert zelf op de kennis-intents.
+- **Gevonden door de tests op de echte omgeving:** `core/nl_stopwoorden.py` bevat "geen". Daardoor gold "is een hond geen dier" als dezelfde vraag als "is een hond een dier". Ontkenningen (niet, geen, nooit, niets, niks) worden nu nooit meer weggefilterd, met een test die de echte lijst nabootst. Les: een nep-stopwoordenlijst in de testomgeving verbergt zulke fouten.
+- **Gevonden door de live test:** een oude STELLING ("een hond is een dier") werd als "je vroeg" gemeld, met Nova's toenmalige bevestigingsvraag als "antwoord". Nu herkent `is_vraag()` (vraagteken of vraagwoord/werkwoord vooraan, want Kevin typt het vraagteken vaak niet) het verschil: "Je zei eerder al iets vergelijkbaars".
+- **Live bevestigd:** terugblik na een herhaalde vraag, "heb ik dit al eens gevraagd", "wanneer vroeg ik dat laatst", uit en aan, en geen tweede melding binnen dezelfde dag, ook niet na een herstart.
+- **Tests:** `tests/test_case_herinnering.py` (48 tests), echte `MemoryModule` in een tijdelijke map. Teststand 2923 → 2971 (2970 groen, 1 overgeslagen).
+- **Projectstructuur in `nova_state.md` bijgewerkt** (25 oktober 2026): `hypothese.py`, `case_herinnering.py`, `handler_fouten.py`, `rekenwoorden.py`, help-topics `graaf` en `semantic`, en de nieuwe data- en logbestanden stonden nog niet in de boom.
+
+**Open vervolg:** Layer 7-labels voor de topics `hypothese` en `terugblik` in `emergence_engine.py` (`_topic_naam_labels`), en de nieuwe zinnen in de help-tekst. Beperking: alleen Kevins eigen berichten (`raw_user_message`) worden vergeleken, geen Layer 2-patronen.

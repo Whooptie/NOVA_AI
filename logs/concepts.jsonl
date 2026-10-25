@@ -312,3 +312,4 @@
 {"timestamp": "2026-10-23T20:02:45.348884", "event_type": "concept_created", "word": "apparaten", "source": "system", "new_value": {"word": "apparaten"}}
 {"timestamp": "2026-10-23T20:13:52.544039", "event_type": "concept_created", "word": "betekenissen", "source": "system", "new_value": {"word": "betekenissen"}}
 {"timestamp": "2026-10-25T09:42:03.097511", "event_type": "concept_created", "word": "fouten", "source": "system", "new_value": {"word": "fouten"}}
+{"timestamp": "2026-10-25T11:07:10.344808", "event_type": "concept_created", "word": "vogelµ", "source": "system", "new_value": {"word": "vogelµ"}}
