@@ -11,6 +11,14 @@ try:
 except Exception:
     _GEDEELDE_STOPWOORDEN = frozenset()
 
+# Bug #31 + punt 10 (25 oktober 2026): Nederlandse rekenzinnen ("wat is drie
+# plus vijf") vertalen naar een kale expressie voor math.py. Defensief
+# geimporteerd: ontbreekt het bestand, dan werkt detect_math() zoals voorheen.
+try:
+    from core.rekenwoorden import vertaal_rekenzin as _vertaal_rekenzin
+except Exception:
+    _vertaal_rekenzin = None
+
 C_RESET = "\033[0m"
 C_GREEN = "\033[92m"
 C_BLUE = "\033[94m"
@@ -2138,6 +2146,20 @@ class IntentRouter:
     def detect_math(self, text):
         t = text.strip()
         import re
+
+        # Bug #31 + punt 10 (25 oktober 2026): een rekenzin in woorden
+        # ("wat is drie plus vijf", "hoeveel is twintig gedeeld door vier")
+        # of met een inleiding ("wat is 3+5", "bereken 3+5"). math.py kan
+        # niet tegen die inleidende woorden en SymPy/eval kent geen
+        # getalwoorden, dus we sturen een SCHONE expressie ("3 + 5").
+        # vertaal_rekenzin() leest de hele zin of geeft None: dan loopt de
+        # rest van deze functie ongewijzigd.
+        if _vertaal_rekenzin is not None:
+            schoon = _vertaal_rekenzin(t)
+            if schoon:
+                dbg(f"{C_BLUE}→ math (rekenzin → {schoon}){C_RESET}")
+                self.event_bus.publish("intent_math", {"expr": schoon})
+                return True
         heeft_rekenkundig_streepje = False
         for m in re.finditer(r'-', t):
             voor = t[max(0, m.start() - 3):m.start()]

@@ -2248,3 +2248,20 @@ Kevin liet een screenshot zien van een donker graafdashboard (AI Workshop OS) me
 **Live niet bevestigd.** Een proef voor #47: een woord met een `unknown`-placeholder (via `auto_learn`), een definitie weerleggen, dezelfde definitie opnieuw typen; Nova moet dan de heractivatievraag stellen in plaats van stil te bevestigen.
 
 **Les:** (1) bij een "bescherming" die op één pad zit, alle paden naar dezelfde schrijfactie nalopen; (2) de documentatie van een bug kan achterlopen op de code: eerst de code lezen voor je een bug "oplost"; (3) nieuwe code in een bestaande module mag niet meer methodes van het object aannemen dan bestaande tests leveren, anders breken ze op een nep-object.
+
+---
+
+## ✅ Bug #31 + punt 10 (deels) — Nederlandse rekenzinnen werken (25 oktober 2026)
+
+**Bug #31** ("wat is drie plus vijf" ging naar Wikipedia). De oorzaak in de oude bugbeschrijving (volgorde van `detect_definition()` en `detect_math()`) klopte niet: `detect_math()` staat in de tabel al vóór de definitie. Echte oorzaak: `detect_math()` herkende een zin zonder operator-symbool niet als som, waarna de zin naar de definitie-route doorviel. Bijvangst: ook "wat is 3+5", "hoeveel is 3 + 5" en "bereken 3+5" gaven "Ongeldige expressie", omdat `math.py` de inleidende woorden meekreeg. De omweg "hoeveel is X" werkte dus nooit echt.
+
+**Oplossing (puur symbolisch, geen ML):**
+- Nieuw: `core/rekenwoorden.py` met `vertaal_rekenzin()` en `getalwoord_naar_int()`. Opzoektabellen voor getalwoorden (nul t/m 999.999, ook "tweeëntwintig" en "tweeduizend vijfhonderd") en operatiewoorden (plus, min/minus, maal/keer, gedeeld door, tot de macht), plus een strikte "alles of niets"-grammatica. Lukt het niet om de hele zin te lezen, dan komt er `None` terug en loopt de routing ongewijzigd verder.
+- `intent_router.py`: defensieve import bovenaan en een hook aan het begin van `detect_math()` die een schone expressie ("3 + 5") naar `math.py` stuurt via `intent_math`.
+- `tests/test_rekenwoorden.py`: 75 tests. Teststand 2755 → 2830 (2829 groen, 1 overgeslagen).
+
+**Live bevestigd:** "wat is drie plus vijf" → 3 + 5 = 8; "hoeveel is twintig gedeeld door vier" → 20 / 4 = 5; "wat is 3+5" → 8; "wat is een hond" blijft een definitie.
+
+**Bug #35** ("wat is er gebeurd op 9/11") bleek al opgelost: `on_this_day` staat in de routing vóór `math`. Live bevestigd met "wat is er gebeurt op 9/11". Bekende grens: "wat is 9/11" zonder datumwoord wordt een deling (9 / 11 = 0,818…).
+
+**Punt 10 blijft deels open:** vergelijkingen oplossen via natuurlijke taal, haakjes en "de som van …", komma-getallen in woorden.

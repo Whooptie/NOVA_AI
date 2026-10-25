@@ -1354,3 +1354,10 @@
 {"text": "wat weet je allemaal over slang", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0113, "bron": "model_fallback", "tijdstip": "2026-10-24T21:18:14.456293"}
 {"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-24T21:18:38.680897"}
 {"text": "weerleg concept: betekenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.056, "bron": "model_fallback", "tijdstip": "2026-10-24T21:20:06.983681"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T10:20:24.882352"}
+{"text": "wat is drie plus vijf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-25T10:20:38.559595"}
+{"text": "hoeveel is twintig gedeeld door vier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0557, "bron": "model_fallback", "tijdstip": "2026-10-25T10:20:45.612849"}
+{"text": "wat is 3+5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-25T10:20:53.012171"}
+{"text": "wat is een hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-25T10:20:59.381852"}
+{"text": "wat is 9/11", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-25T10:21:18.305711"}
+{"text": "wat is er gebeurt op 9/11", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0801, "bron": "model_fallback", "tijdstip": "2026-10-25T10:22:02.292205"}
