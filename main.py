@@ -272,6 +272,11 @@ PRESENCE_CHECK_INTERVAL_MINUTEN = 5
 # 1 getal, hoeveel minuten tussen elke check (30 = elke 30 minuten).
 WEATHER_CHECK_INTERVAL_MINUTEN = 30
 
+# Hoe vaak Nova haar foutenlogboek controleert op nieuwe fouten (zie
+# modules/debug/handler_fouten.py). De module bepaalt zelf of ze iets zegt
+# (max. 1 melding per 10 minuten, dezelfde fout hoogstens 1x per uur).
+FOUTEN_CHECK_INTERVAL_MINUTEN = 2
+
 # Hoe vaak Nova de regenradar checkt voor een proactieve melding
 # ("over 15 minuten begint het te regenen") — zie rain.py's
 # check_proactief(). De radar werkt per 5 minuten, vaker checken heeft
@@ -634,6 +639,17 @@ def achtergrond_loop(loader):
         # aantal_loops-modulo-patroon als emergence_engine hierboven.
         # Duurt in de praktijk 1-2 seconden (zie opstart-logs) -- geen
         # noemenswaardige impact op de rest van de achtergrondthread.
+        # Foutenlogboek (25 oktober 2026): als er sinds de vorige check een
+        # nieuwe fout in een handler is opgetreden (zie core/event_bus.py),
+        # meldt Nova dat zelf, kort en niet vaker dan 1x per 10 minuten.
+        if aantal_loops % FOUTEN_CHECK_INTERVAL_MINUTEN == 0:
+            fouten_module = loader.loaded_modules.get("handler_fouten")
+            if fouten_module:
+                try:
+                    fouten_module.check_nieuwe_fouten()
+                except Exception as e:
+                    print(f"[Achtergrondthread] Fout in handler_fouten.check_nieuwe_fouten(): {e}")
+
         if aantal_loops % INTENT_CLASSIFIER_RETRAIN_INTERVAL_MINUTEN == 0:
             intent_classifier = loader.loaded_modules.get("intent_classifier")
             if intent_classifier:

@@ -157,6 +157,45 @@ class IntentRouter:
         # in reboot_manager.py, want dat verschijnt wél meteen.
         self.event_bus.publish("system:reboot", {})
         return True
+
+    # ---------------------------------------------------------
+    # Foutenlogboek (25 oktober 2026, vervolg op bug #46)
+    # ---------------------------------------------------------
+    # "laatste fouten" / "zijn er fouten" / "wis de fouten". Bewust STRIKT:
+    # enkel complete korte zinnen, zodat een gewone zin met het woord
+    # "fouten" ("ik maak veel fouten") nooit hierdoor gekaapt wordt.
+    # Geen topic-event: dit is een technisch commando, geen gespreksonderwerp
+    # voor Layer 2.
+    _FOUTEN_WOORD = r"(?:fouten|foutmeldingen|foutenlog|foutlog|foutenlogboek)"
+    _FOUTEN_TOON = (
+        re.compile(rf"^(?:toon |laat |geef )?(?:me |mij )?(?:de |alle |mijn )?"
+                   rf"(?:laatste |recente |nieuwe |technische )?{_FOUTEN_WOORD}"
+                   rf"(?: zien| tonen)?$"),
+        re.compile(rf"^(?:zijn er|waren er) (?:nog |recent |technische )?"
+                   rf"{_FOUTEN_WOORD}(?: geweest| opgetreden| gebeurd)?$"),
+        re.compile(rf"^heb je (?:nog |recent |technische )?{_FOUTEN_WOORD}(?: gehad)?$"),
+        re.compile(rf"^welke (?:technische )?{_FOUTEN_WOORD} "
+                   rf"(?:heb je|waren er|zijn er)(?: gehad| geweest| opgetreden)?$"),
+    )
+    _FOUTEN_WIS = (
+        re.compile(rf"^(?:wis|verwijder|leeg|ruim op) (?:de |alle |mijn )?{_FOUTEN_WOORD}$"),
+        re.compile(rf"^(?:de |alle )?{_FOUTEN_WOORD} (?:wissen|verwijderen|leegmaken)$"),
+        re.compile(rf"^maak (?:de |het |mijn )?{_FOUTEN_WOORD} leeg$"),
+    )
+
+    def detect_handler_fouten(self, text):
+        t = re.sub(r"\s+", " ", (text or "").lower().strip().rstrip("?!. ").strip())
+        if not t:
+            return False
+        if any(p.match(t) for p in self._FOUTEN_WIS):
+            dbg(f"{C_BLUE}→ handler_fouten (wissen){C_RESET}")
+            self.event_bus.publish("intent_handler_fouten_wissen", {"text": text})
+            return True
+        if any(p.match(t) for p in self._FOUTEN_TOON):
+            dbg(f"{C_BLUE}→ handler_fouten (tonen){C_RESET}")
+            self.event_bus.publish("intent_handler_fouten", {"text": text})
+            return True
+        return False
     
     # ---------------------------------------------------------
     # Teach-flow
@@ -5307,6 +5346,11 @@ class IntentRouter:
 
         # 0 Reboot (altijd als allereerste gecontroleerd, voorrang op alles)
         if self.detect_reboot(text):
+            return
+
+        # 0B Foutenlogboek (25 oktober 2026) -- "laatste fouten". Strikte,
+        # korte zinnen, dus vroeg in de keten veilig.
+        if self.detect_handler_fouten(text):
             return
         
         # 1 Teach

@@ -2280,3 +2280,19 @@ Kevin liet een screenshot zien van een donker graafdashboard (AI Workshop OS) me
 - Teststand 2830 → 2842 (2841 groen, 1 overgeslagen).
 
 **Open vervolgidee:** commando "laatste fouten" waarmee Nova `bus.fouten` toont. Een spontane melding vraagt een lusbeveiliging, omdat de melding zelf een event is.
+
+---
+
+## ✅ Foutenlogboek: Nova leest haar eigen fouten en meldt ze (25 oktober 2026)
+
+**Vervolg op bug #46.** De EventBus logt fouten in handlers sinds die bug naar `logs/handler_fouten.log`. Nova kan dat nu zelf inlezen en vertellen.
+
+- **`modules/context/handler_fouten.py` (nieuw).** `lees_logbestand()` (leest enkel de laatste 200 KB, onleesbaar of afwezig → lege lijst), `groepeer()` (zelfde onderdeel + event + fout samenvoegen), `maak_overzicht()` (kop met aantal en laatste tijdstip, max. 5 regels, "(2x)"), en `HandlerFoutenModule` met `on_fouten`, `on_wissen` en `check_nieuwe_fouten()`.
+- **Lus-beveiliging.** De melding gaat zelf via de EventBus; faalt die route, dan zou elke melding een nieuwe fout veroorzaken. Daarom: minstens 10 minuten tussen twee meldingen (nieuwe fouten worden gebundeld) en dezelfde fout wordt 1 uur lang niet opnieuw gemeld. Getest met een bewust kapotte meldingsroute (hoogstens 4 meldingen in ruim 2 uur).
+- **`core/event_bus.py`:** `fout_teller` (telt alle fouten, ook die uit de deque van 50 vallen) en logrotatie boven 1 MB (`handler_fouten.log.1`).
+- **`core/intent_router.py`:** `detect_handler_fouten()` met strikte, volledige zinnen ("laatste fouten", "zijn er fouten", "heb je fouten gehad", "wis de fouten", ...). Een gewone zin als "ik maak veel fouten" wordt niet gekaapt. Geen topic-event (technisch commando, geen gespreksonderwerp voor Layer 2). Stap 0B in `route()`, direct na `/reboot`.
+- **`main.py`:** `FOUTEN_CHECK_INTERVAL_MINUTEN = 2` en een check in `achtergrond_loop()`.
+- **Gevonden bij het live testen:** de eerste versie stond in `modules/debug/` en werd nooit geladen, omdat `module_loader.py` die map overslaat (`if group == "debug": continue`). Het bestand staat nu in `modules/context/`; een test bewaakt dit. Bijvangst: tests die een module rechtstreeks aanmaken kunnen niet zien of de lader haar vindt.
+- **Tests:** `tests/test_handler_fouten.py` (49 tests). Teststand 2842 → 2891 (2890 groen, 1 overgeslagen).
+
+**Open vervolgideeën:** stille uren (zoals bij regen, 23:00 tot 07:00) en de Layer 5-"mag nu spreken"-check voor de spontane melding; een echte test van `module_loader.py` zelf.

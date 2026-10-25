@@ -417,3 +417,5 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792786432.6010318, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "variant_tekst": "Met '{entity}' bedoel je waarschijnlijk: {definition} Ik zie dat woord bij jou trouwens vaak in de buurt van '{associatie}'.", "entity": "hond", "response_style": "normaal", "moment": "2026-10-25T10:20:59.397058", "reactie_sentiment": null}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1792920059.3972514, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Oh… daar weet ik niets over.", "entity": null, "response_style": "normaal", "moment": "2026-10-25T10:42:03.167499", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1792921323.1678197, "type": "sentiment_koppeling"}
