@@ -1369,3 +1369,5 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T10:56:37.551182"}
 {"text": "laatste fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-25T10:56:51.850038"}
 {"text": "gaat het regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.016, "bron": "model_fallback", "tijdstip": "2026-10-25T10:57:20.127773"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T11:01:37.105898"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-25T11:01:42.990212"}

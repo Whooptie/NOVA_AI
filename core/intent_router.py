@@ -5213,7 +5213,7 @@ class IntentRouter:
         superscripts = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
         text = text.translate(superscripts)
         text = text.replace("×", "*")
-        dbg(f"{C_RESET}Ontvangen: '{text}'")
+        dbg(f"{C_YELLOW}Ontvangen: '{text}'{C_RESET}")
 
         # Layer 6, Fase 6 (Adaptive Learning, 17 juli 2026): elk ruw
         # bericht van Kevin publiceren als apart, algemeen event, VOOR
