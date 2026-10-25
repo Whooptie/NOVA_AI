@@ -2265,3 +2265,18 @@ Kevin liet een screenshot zien van een donker graafdashboard (AI Workshop OS) me
 **Bug #35** ("wat is er gebeurd op 9/11") bleek al opgelost: `on_this_day` staat in de routing vóór `math`. Live bevestigd met "wat is er gebeurt op 9/11". Bekende grens: "wat is 9/11" zonder datumwoord wordt een deling (9 / 11 = 0,818…).
 
 **Punt 10 blijft deels open:** vergelijkingen oplossen via natuurlijke taal, haakjes en "de som van …", komma-getallen in woorden.
+
+---
+
+## ✅ Bug #46 — EventBus roept een handler niet meer dubbel aan (25 oktober 2026)
+
+**Probleem:** `EventBus.publish()` riep `handler(data, event_type)` aan en bij een `TypeError` meteen daarna `handler(data)`. Dat was bedoeld voor handlers met 1 of 2 argumenten, maar een echte `TypeError` ín een handler liet die handler half dubbel draaien (gevolgd door een misleidende "missing argument"-melding die de echte fout verborg). Bewezen met een handler `def kapot(data, naam=None)`: die draaide in de oude logica 2 keer.
+
+**Oplossing (`core/event_bus.py`):**
+- Bij het eerste gebruik van een handler bepaalt `inspect.signature()` of hij 1 of 2 argumenten neemt (`*args` en 2+ positionele parameters → 2, anders 1; onbekende handtekening → 2). Het resultaat wordt per handler onthouden en de handler wordt altijd precies één keer aangeroepen.
+- **Gedragswijziging:** een fout in een handler stopt `publish()` niet meer. De fout wordt gelogd in `logs/handler_fouten.log` (met traceback), bewaard in `bus.fouten` (laatste 50, voor een toekomstig "laatste fouten"-commando), gemeld als `[EVENTBUS] Fout in handler ...` en de traceback blijft in de console. De andere handlers draaien gewoon door. Het vangnet in de hoofdloop van `main.py` blijft bestaan voor fouten buiten de bus.
+- `publish()` loopt over een kopie van de handlerlijst, zodat een handler zich tijdens het publiceren veilig kan afmelden.
+- `tests/test_event_bus_bug46.py`: 12 tests. `tests/test_bug36_kapotte_invoer.py::test_hoofdloop_overleeft_fout_in_een_module` aangepast (de fout wordt nu eerder, door de bus, gemeld; de test schrijft niet meer in het echte logbestand).
+- Teststand 2830 → 2842 (2841 groen, 1 overgeslagen).
+
+**Open vervolgidee:** commando "laatste fouten" waarmee Nova `bus.fouten` toont. Een spontane melding vraagt een lusbeveiliging, omdat de melding zelf een event is.

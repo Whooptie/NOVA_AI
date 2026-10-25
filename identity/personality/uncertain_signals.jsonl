@@ -1361,3 +1361,5 @@
 {"text": "wat is een hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-25T10:20:59.381852"}
 {"text": "wat is 9/11", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-25T10:21:18.305711"}
 {"text": "wat is er gebeurt op 9/11", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0801, "bron": "model_fallback", "tijdstip": "2026-10-25T10:22:02.292205"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T10:38:24.028131"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-25T10:38:31.117306"}

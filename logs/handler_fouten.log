@@ -1,0 +1,8 @@
+[2026-10-25 10:33:45] event='chat_message' handler=_NepLoader.discover_and_load.<locals>.crashende_handler
+Traceback (most recent call last):
+  File "/app/core/event_bus.py", line 73, in _roep_aan
+    handler(data)
+  File "/app/tests/test_bug36_kapotte_invoer.py", line 148, in crashende_handler
+    raise ValueError("bewust veroorzaakte testfout")
+ValueError: bewust veroorzaakte testfout
+

@@ -158,14 +158,23 @@ def _draai_main_met_invoer(monkeypatch, invoer_regels):
     nova_main.main()
 
 
-def test_hoofdloop_overleeft_fout_in_een_module(monkeypatch, capsys):
+def test_hoofdloop_overleeft_fout_in_een_module(monkeypatch, capsys, tmp_path):
     # Voor de fix: de ValueError zou uit main() ontsnappen en Nova stoppen.
     # Na de fix: fout getoond, en het VOLGENDE bericht komt nog gewoon aan.
+    #
+    # Sinds bug #46 (25 oktober 2026) vangt de EventBus een fout in een
+    # handler zelf al op (en logt hem) voordat hij de hoofdloop bereikt; het
+    # vangnet in main.py blijft bestaan voor fouten buiten de bus. Beide
+    # meldingen tellen hier dus als "de fout is zichtbaar".
+    import core.event_bus as eb
+    monkeypatch.setattr(eb, "_LOGBESTAND", tmp_path / "logs" / "handler_fouten.log")
+
     _draai_main_met_invoer(monkeypatch, ["crash", "hallo", "exit"])
 
     assert _NepLoader.laatst_ontvangen == ["crash", "hallo"]
     uitvoer = capsys.readouterr()
-    assert "Onverwachte fout" in uitvoer.out
+    assert ("Onverwachte fout" in uitvoer.out
+            or "[EVENTBUS] Fout in handler" in uitvoer.out)
     assert "bewust veroorzaakte testfout" in uitvoer.err  # traceback blijft zichtbaar
 
 
