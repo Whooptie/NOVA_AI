@@ -21,39 +21,48 @@ python-dotenv>=1.0.1       # Reads the .env file (API keys)
 jsonschema>=4.21.0         # identity.json / schema.json validation
 
 # --- Layer 5: Context & Activity Awareness ---
-pygetwindow>=0.0.9         # activity_detector.py — active window/process detection
+pygetwindow>=0.0.9         # activity_detector.py — active window/process detection (Windows client)
 mediapipe>=0.10.9          # presence_detector.py — BlazeFace face detection (bounded ML tool, not an LLM)
+opencv-python              # webcam access for presence detection (Windows client)
+
+# --- Client-server connection ---
+websockets==17.1           # WebSocket bridge between the core and the Windows companion client
 
 # --- Layer 6: Personality / Adaptive Learning ---
-scikit-learn==1.9.0        # train_classifier.py / microlearning.py — signal_model.pkl (bounded ML classifier, not an LLM). VAST gepind (i.p.v. >=) omdat signal_model.pkl via volume mount buiten het image blijft en dus niet automatisch meegroeit bij een herbouw — een latere scikit-learn-versie zou het opgeslagen model kunnen breken zonder duidelijke foutmelding. Zie Bug #38 in nova_changelog.md.
+# scikit-learn is PINNED (not >=): signal_model.pkl lives outside the Docker image
+# (volume mount), so it does not follow a rebuild. A newer scikit-learn could break
+# the saved model without a clear error message. See Bug #38 in nova_changelog.md.
+scikit-learn==1.9.0        # train_classifier.py / microlearning.py — bounded ML classifier, not an LLM
+
+# --- Math ---
+numpy>=1.14.0              # math.py
+sympy==1.14.0              # math.py — symbolic algebra (solve_sym, factor_sym, integrate_sym, ...)
+
+# --- Language helpers ---
+simplemma==2.0.0           # lemmatizer
+
+# --- Semantic Phase 11: Knowledge Extraction ---
+# spaCy = bounded ML specialist (sentence parsing), NOT the core of Nova; all decisions are symbolic.
+# PINNED (like simplemma/scikit-learn): another version can change the parse and break the extractor tests.
+spacy==3.8.16
+# Dutch model nl_core_news_sm 3.8.0 (license CC BY-SA 4.0, see README). Installed directly via URL,
+# so the Dockerfile does not need to change.
+nl_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/nl_core_news_sm-3.8.0/nl_core_news_sm-3.8.0-py3-none-any.whl
+
+# --- Semantic Phase 12: Embeddings (external ML model, not the core of Nova) ---
+sentence-transformers==6.1.0
+
+# --- Semantic Phase 13: Graph Visualization (all symbolic: drawing, counting, searching) ---
+# pyvis = 2D version (graph_render.py). The 3D page uses NO package: 3d-force-graph is
+# vendored in modules/knowledge/vendor/.
+pyvis==0.3.2
+# networkx: group colors in the 3D page (Louvain, a graph algorithm, not ML) and the measurements.
+# PINNED: another version can produce different groups.
+networkx==3.6.1
+jsonpickle==4.1.4
 
 # --- Testing ---
 pytest>=8.2.0              # Unit tests
-
-# --- Math ---
-numpy>=1.14.0            # math.py
-sympy==1.14.0            # math.py — symbolische algebra (solve_sym, factor_sym, integrate_sym, ...)
-
-websockets==17.1
-opencv-python
-simplemma==2.0.0
-
-# --- Semantic Fase 11: Knowledge Extraction ---
-# spaCy = bounded ML-specialist (zinsontleding), NIET de kern van Nova; alle beslissingen zijn symbolisch.
-# VAST gepind (net als simplemma/scikit-learn): een andere versie kan de parse veranderen en de extractor-tests breken.
-spacy==3.8.16
-# Nederlands model nl_core_news_sm 3.8.0 (licentie CC BY-SA 4.0, zie README). Direct via URL, zodat de Dockerfile niet hoeft te veranderen.
-nl_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/nl_core_news_sm-3.8.0/nl_core_news_sm-3.8.0-py3-none-any.whl
-
-# Fase 12: embeddings (extern ML-model, niet de kern van Nova)
-sentence-transformers==6.1.0
-
-# --- Semantic Fase 13: Graph Visualization (alles symbolisch: tekenen, tellen, zoeken) ---
-# pyvis = 2D-versie (graph_render.py). De 3D-pagina gebruikt GEEN pakket: 3d-force-graph staat vast in modules/knowledge/vendor/.
-pyvis==0.3.2
-# networkx: groepskleuren in de 3D-pagina (Louvain, een grafenalgoritme, geen ML) en de meting. VAST gepind: een andere versie kan andere groepen geven.
-networkx==3.6.1
-jsonpickle==4.1.4
 
 # --- Standard library (no installation needed) ---
 # sqlite3      — Layer 0 memory (built into Python)

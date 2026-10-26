@@ -22,6 +22,8 @@ Nova is built on **symbolic AI** (GOFAI-style, event-driven): she learns through
 
 > *"No black box. No cloud. No surprises."*
 
+🤗 Short overview page: [Nova AI on Hugging Face](https://huggingface.co/spaces/Whooptie/Nova_AI)
+
 ---
 
 ## 💬 Nova in action
@@ -99,6 +101,8 @@ Nova is built on **symbolic AI** (GOFAI-style, event-driven): she learns through
 | 📚 Consulting Wikipedia & auto-learning | ✅ |
 | 🧠 Understanding semantic concepts (hundreds of them) with chained reasoning & contradiction detection | ✅ |
 | 🔀 Causal reasoning ("does rain lead to slipping?"), time ("when did X appear?", timelines) and honest uncertainty ("how sure are you?") | ✅ |
+| 🕸️ Interactive 3D knowledge graph ("show the graph of X", "how are X and Y connected?") — opened on my laptop | ✅ |
+| 🧲 Suggesting similar concepts with a small local embedding model — she only proposes, nothing is linked until I confirm | ✅ |
 | 📥 Proposing facts from Wikipedia text (a local parser reads the sentence structure, rules decide) — nothing is stored until I confirm | ✅ |
 | 🔗 Learning word associations through use (PMI scoring), incl. bridging & trending topics | ✅ |
 | 📊 Recognizing behavioral patterns by time & frequency | ✅ |
@@ -241,7 +245,7 @@ Nova_AI/
 - **Never acts without consent** — Nova always suggests first, even when speaking up proactively
 - **Fully transparent** — everything is logged and inspectable, every concept carries an audit trail
 - **Open architecture** — every concept is readable in `concepts.json`
-- **ML only as a sensor** — external models may help perceive (e.g. presence detection, short-reply classification, intent classification, sentence parsing), Nova decides what to do with it
+- **ML only as a sensor** — external models may help perceive (e.g. presence detection, short-reply classification, intent classification, sentence parsing, text similarity), Nova decides what to do with it
 - **Proposals, not assumptions** — when Nova reads facts from Wikipedia text she only proposes them; nothing is stored until I confirm
 - **Whitelists, not free commands** — when the server asks the laptop to do something, the laptop only accepts known apps and https links to Wikipedia; anything else is refused
 
@@ -258,13 +262,13 @@ This repository serves primarily as a **personal backup**, and has been made pub
 ## 🚀 On the roadmap
 
 - 🟡 Enforcing "may push back, but only if factually grounded" as actual behavior (currently a stated principle, not yet fully wired up in code)
-- 🟢 Semantic similarity (embeddings) and graph visualisation — the last phases of the semantic roadmap; causal, temporal and uncertainty reasoning and fact extraction are done
+- 🟢 Semantic roadmap: causal, temporal and uncertainty reasoning, fact extraction, similarity suggestions (embeddings) and the 3D knowledge graph are all done. Still open: using embeddings to complement the PMI word associations in Layer 1
 - 🟢 Expanding proactive topic suggestions beyond chess (Plex, other board games — each needs its own `topic_detected:` event first)
 - 🟢 Word embeddings for Layer 1 (pre-trained Dutch model, as a complement to the existing PMI-based associations)
 - 🟡 Avatar — a 3D face with expressions, lip-sync and a hologram look runs on my laptop; next: connect it to Nova's own events, a local female voice, phone and TV versions
 - 🔮 More board games (checkers, Go)
 - 🔮 Smart home integration (lights, sensors, TV)
-- 🟢 Client-server architecture — a lightweight Windows companion client streams activity/focus/presence to the core over WebSocket (Tailscale-reachable, auto-reconnecting), and already carries out whitelisted commands sent back from the core (opening/closing apps, opening Wikipedia pages). Next: a shared-secret check on the connection, window control, file access, and a phone-side client.
+- 🟢 Client-server architecture — a lightweight Windows companion client streams activity/focus/presence to the core over WebSocket (Tailscale-reachable, auto-reconnecting), and already carries out whitelisted commands sent back from the core (opening/closing apps, opening Wikipedia pages). The connection is protected by a shared-secret token. Next: window control, file access, and a phone-side client.
 - 🟢 Personal dates — remembering things like "exam next Monday" and reminding me on the day itself (building on the finished calendar modules)
 - 🔮 Robotics integration (far future)
 
