@@ -1397,3 +1397,11 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-25T12:56:19.817474"}
 {"text": "is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T12:56:36.690637"}
 {"text": "wat is een tractor", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-25T12:56:49.382288"}
+{"text": "wat weet je allemaal over roos", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0113, "bron": "model_fallback", "tijdstip": "2026-10-25T20:34:35.198592"}
+{"text": "welke onderdelen heeft tuin", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-25T20:34:47.518368"}
+{"text": "welke soorten bloem ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-10-25T20:34:56.426443"}
+{"text": "is een eik een boom", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-25T20:35:04.339173"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-25T20:35:22.875914"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-25T20:35:42.049498"}
+{"text": "weerleg concept: vogelµ", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-25T20:38:58.591778"}
+{"text": "weerleg concept: fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-25T20:39:06.056298"}

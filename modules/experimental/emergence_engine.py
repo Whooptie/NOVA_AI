@@ -336,6 +336,8 @@ class EmergenceEngine:
             "graaf_alles": "de hele kennisgraaf bekijken",
             "graaf_pad": "de verbinding tussen woorden zoeken",
             "graaf_stats": "de cijfers van mijn kennisgraaf",
+            "hypothese": "wat-als-vragen",
+            "terugblik": "terugblikken op eerdere vragen",
         }
 
         # Vertaalt het stuk na "activity_started:" naar een Nederlands

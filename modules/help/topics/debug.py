@@ -112,6 +112,16 @@ def get_help():
                                    en bij een doorverwijspagina ook wat onze eigen
                                    extractiefunctie ermee doet)
 
+🚨 FOUTENLOGBOEK (bug #46, 25 oktober 2026)
+  laatste fouten                 (leest logs/handler_fouten.log en vat samen: aantal,
+                                   laatste tijdstip, max. 5 verschillende fouten met
+                                   "(2x)" als dezelfde fout vaker voorkwam)
+  zijn er fouten                 (zelfde als "laatste fouten"; ook "heb je fouten gehad"
+                                   en "welke fouten heb je gehad" werken)
+  wis de fouten                  (maakt logs/handler_fouten.log en het geheugen leeg)
+                                  Nova meldt nieuwe fouten ook uit zichzelf (max. 1 melding
+                                  per 10 minuten, dezelfde fout hoogstens 1x per uur).
+
 ℹ️ Dit zijn tijdelijke test-/debugcommando's voor jou als developer,
    geen onderdeel van Nova's normale gesprek met de gebruiker.
 """.strip()

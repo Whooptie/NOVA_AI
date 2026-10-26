@@ -1,6 +1,6 @@
 # 🧠 Nova — State of the Project
 
-> Laatste update: 25 oktober 2026
+> Laatste update: 26 oktober 2026
 > Doel van dit bestand: altijd als eerste uploaden in een nieuw Claude-gesprek zodat context volledig is.
 
 ---
@@ -210,7 +210,9 @@ NOVA_AI/
 │   ├── migrate_trust_state.py
 │   ├── test_atomic_save.py
 │   └── vergelijk_lemmatizer.py
-├── tests/
+├── tools/
+│   └── run_benchmark.py          # Nova-benchmark (niveau 1 routing, niveau 2 antwoord), zie sectie "Nova-benchmark"
+├── tests/                        # incl. tests/benchmark/benchmark_cases.json (de benchmarkvragen)
 ├── docs/
 │   ├── nova_state.md
 │   ├── nova_changelog.md
@@ -1448,6 +1450,26 @@ De kennisgraaf (`concepts.json`) wordt zichtbaar als interactieve 3D-pagina. **E
 
 ---
 
+## 🧪 Nova-benchmark (sinds 26 oktober 2026)
+
+Meet wat Nova echt doet met een vraag, los van de pytest-suite. pytest bewijst dat de code doet wat Kevin bedacht; de benchmark meet of Nova goed antwoordt op vragen en laat gaten zien. **100% symbolisch**: enkel tekst vergelijken, geen ML.
+
+**Bestanden:** `tools/run_benchmark.py` (de runner), `tests/benchmark/benchmark_cases.json` (de vragen met verwachtingen; Kevin beheert dit, het veld `doel` is een geheugensteun en wordt door de runner genegeerd), `data/benchmark_resultaten.jsonl` (één regel per run).
+
+**Gebruik** (in de container, vanuit `/app`): `python tools/run_benchmark.py --niveau 2` (score), `--ontdek` (toont per vraag de events en antwoorden, geen score), `--categorie X`, `--geen-opslaan`, `--met-netwerk`.
+
+**Twee niveaus:** niveau 1 = routing (welke `intent_*`-events publiceert de `IntentRouter`). Niveau 2 = antwoord: een mini-Nova van vier onderdelen (echte `EventBus` + `SemanticConceptsModule` + `ChatModule` + `IntentRouter`), bewust zonder `ModuleLoader`, dus geen poort 8765, webcam of achtergrondlussen.
+
+**Veiligheid:** draait op een tijdelijke kopie van het project; stopt meteen als de modules of `CONCEPTS_FILE` buiten die kopie wijzen; zet `concepts.json` per vraag terug; vergelijkt de hash van de echte `data/concepts.json` voor en na (waarschuwing bij verschil); netwerk standaard uit; tijdslimiet van 20 s per vraag; een fout in een EventBus-handler wordt als fout gemeld.
+
+**Controles per case:** `moet_event`, `mag_event_niet` (events, prefix-match) en `moet_bevatten_een_van`, `mag_niet_bevatten` (hele woorden in het antwoord, enkel uit het veld `text` van `chat_response`/`layer4_response`).
+
+**Nulmeting niveau 2 (26 oktober 2026):** 29 cases, 21 geslaagd, 8 gefaald (72%). Alles groen behalve: meerdere betekenissen (bank, tafel, python: Nova noemt enkel de eerste), afgewezen feiten (`hond is_a meubel` krijgt hetzelfde antwoord als een onbekend feit), de bewering "een hond is een meubel" (Nova vraagt "mag ik onthouden?" zonder te wijzen op de eerdere afwijzing), een onbekend woord (Nova zegt niet dat ze het woord niet kent) en percentages ("15 procent van 80" wordt niet herkend).
+
+**Beperkingen:** antwoorden van `math`, `time`, `holiday`, `calendar`, `weather` en `greeting` zijn nog niet meetbaar (die modules draaien niet in de mini-Nova); daar wordt enkel het event gecontroleerd. `onb-01` (flurbo) gaat naar `intent_wiki` (Wikipedia, netwerk staat uit). Een score op niveau 1 zegt weinig: routing is het makkelijke deel.
+
+---
+
 ## 🚀 Volgende stappen (in volgorde van prioriteit)
 
 **Historische kanttekening (16 augustus 2026, VERVALLEN sinds 5 september 2026):** hieronder stonden punten gemarkeerd met 🏠 omdat destijds bewust gekozen werd om GEEN nieuwe modules te bouwen die (a) fysieke apparaten/sensoren aansturen of aflezen, OF (b) een nieuw ML-model/embedder integreren, zolang de Unraid-server er niet was — dat zou het integratiewerk twee keer hebben vereist. **Nova draait sinds 5 september 2026 op battleserver (Unraid/Docker, zie changelog Bug/mijlpaal #44)** — deze beperking geldt dus niet langer, en de 🏠-markering hieronder is nog enkel historisch te lezen (waarom een punt destijds uitgesteld werd), geen actuele blokkade meer. Punten die specifiek Windows-gebonden sensoren nodig hebben (bv. vensternamen) lopen sinds de Windows-companion-client (13 sept 2026, zie changelog) via `nova_client.py` op Kevins laptop, niet meer via battleserver zelf.
@@ -1537,6 +1559,11 @@ De kennisgraaf (`concepts.json`) wordt zichtbaar als interactieve 3D-pagina. **E
 55. 🟢 **Drempels van de gelijkenissen afstellen** (Semantic Fase 12; ontstaan 20 oktober 2026). `MIN_SCORE = 0.45` (per woord, `zoek gelijkenissen voor X`) en `OVERLOOP_MIN_SCORE = 0.55` (wachtrij) in `similarity_proposals.py` zijn eerste keuzes, gebaseerd op een handvol woorden en de meting van 19 oktober (MiniLM 62,1% van de bevestigde relaties in de top 10). Na een tijd gebruik bijstellen: te veel ruis of broertjes in de lijst betekent de drempel omhoog, te weinig paren in de wachtrij (nu 187) betekent omlaag. Bekijk daarvoor welk deel van de voorgestelde paren Kevin met `koppel` neemt en welk deel met `negeer` wegzet. Cosinus en PMI hebben aparte drempels, die schalen zijn niet vergelijkbaar.
 57. 🟢 **Live kennisgraaf, één gedeelde chat en een "spook" op de laptop** (idee, ontstaan 22 oktober 2026). Kevins wensen: (1) de graaf ververst vanzelf en heeft een chatvak in de pagina; (2) dezelfde chat vanuit meerdere "deuren": de terminal (`docker attach`), een achtergrondprogramma op de laptop en de webpagina op de gsm via Tailscale; (3) een melding op de laptop als Nova iets uit zichzelf zegt, met de mogelijkheid om meteen te antwoorden; (4) GEEN app die je opent, maar een "spook" dat altijd op de achtergrond verbonden is. **Eerlijk over symbolisch versus ML:** alles hieronder is symbolisch. De chat stuurt tekst naar dezelfde `IntentRouter`; er komt geen taalmodel bij. Spraak ("luisteren" via een microfoon) zou spraakherkenning zijn (ML, bv. Whisper) en kan alleen als aparte, extern gelabelde tool, nooit als kern van Nova; Kevin moet nog zeggen of hij dat bedoelt. **Ontwerp in grote lijnen:** een kleine WebSocket-/HTTP-server in Nova (zoals `client_bridge.py`, op een nieuwe poort die in de Docker-container op Unraid moet worden opengezet), bereikbaar alleen via Tailscale (`http://100.83.181.76:<poort>`), eerst alleen lezen en chatten. Elke deur meldt zich bij het verbinden aan met een naam (`terminal`, `laptop`, `gsm`) en elk bericht krijgt die naam als label, zodat Nova weet welk apparaat het laatst typte en welke verbindingen open staan. Alle deuren delen één gesprek en één context (ook "ja"/"bevestig 3" uit de laatste lijst). **Spontane berichten** gaan naar het laatst actieve apparaat (Kevins keuze), met een vervaltijd van ongeveer 5 minuten zonder typen en de laptop als terugval; staat er geen enkel apparaat open, dan bewaart Nova het bericht tot de volgende verbinding. De bestaande Layer 5-regels (niet storen tijdens coderen enz.) blijven bepalen OF Nova iets zegt; het apparaat-label bepaalt alleen WAARHEEN. **De "spook" op de laptop** is een uitbreiding van `nova_client.py` (draait al zonder venster via de Taakplanner): icoon in het systeemvak, altijd verbonden, een nieuw commando "toon melding" (zelfde patroon als `open_url`), en voor het antwoord een klein eigen venster rechtsonder met een typvak dat na enkele seconden verdwijnt. Een echte Windows-toast met invoervak kan ook, maar is gevoelig voor instellingen en onbetrouwbaarder; eerst het eigen venster. Een melding op de gsm bij een vergrendeld scherm vraagt een push-dienst (bv. een zelfgehoste `ntfy`-server); een webpagina kan alleen iets tonen zolang ze open staat. De terminal blijft bestaan als gewone deur. **Nog te beslissen (Kevin):** of "luisteren" ook spraak betekent, en of de pagina op de gsm een eigen pushmelding nodig heeft.
 58. 🟢 **De laptopverbinding valt vaak weg** (gezien in `nova_client.log`, 24 oktober 2026; terugkerend sinds september). De client verbindt telkens zelf weer, dus er gaat weinig verloren, maar het gebeurt meerdere keren per dag, bv. op 23 oktober om 09:08, 09:14, 09:59, 10:15, 10:31 en 13:13. Foutmeldingen: `keepalive ping timeout` (code 1011), `no close frame received or sent` en bij het opnieuw verbinden `timed out during opening handshake`. Oorzaak NIET onderzocht: kan Tailscale, wifi, de keepalive-instellingen van `websockets` (laptop of server) of een geblokkeerde event-loop zijn. Aanpak: eerst de serverlog van dezelfde momenten naast het clientlog leggen. Los van punt 32.
+59. 🟡 **Afgewezen feit herkennen en benoemen, en tegenspreken** (uit de benchmark, 26 oktober 2026; cases `afg-01`, `afg-02`, `afg-03`, `onb-02`). Nova antwoordt op "is een hond een meubel" met "Ik kan niet bewijzen dat…", hetzelfde als bij een onbekend feit, terwijl `hond is_a meubel` op `rejected` staat. Op de bewering "een hond is een meubel" vraagt ze "Mag ik onthouden…?" zonder te zeggen dat dit eerder is afgewezen en botst met wat ze weet. Gewenst: een apart antwoord voor afgewezen feiten ("dat heb je eerder afgewezen") en een duidelijk onderscheid met onbekende woorden ("ik ken 'flurbo' niet"). Hangt samen met het open werkpunt "tegenspreken, maar feitelijk onderbouwd" en met "negative retrieval" uit de Atlas-review. Puur symbolisch.
+60. 🟡 **Meerdere betekenissen noemen** (benchmark `amb-01` t/m `amb-03`). Bank, tafel en python hebben elk twee betekenissen in `concepts.json`, maar Nova noemt bij "wat is een X" enkel de eerste. **Ontwerpkeuze (Kevin):** een korte toevoeging ("er is ook een andere betekenis: …") of juist bewust één betekenis kiezen zolang de context ontbreekt. Dan de verwachting in `benchmark_cases.json` aanpassen.
+61. 🟢 **Percentages in `detect_math`** (benchmark `rek-02`). "Hoeveel is 15 procent van 80" gaat nu naar `intent_fallback`. Kleine, losse toevoeging; puur symbolisch (`80 * 15 / 100`).
+62. 🟢 **Benchmark uitbreiden naar de overige modules** (niveau 3). Antwoord-controles voor `math`, `time`, `holiday`, `calendar`, `weather` en `greeting` vragen dat die modules in de mini-Nova geladen worden; eerst kijken hoe `module_loader.py` ze aanmaakt. Verder: een pytest voor de runner zelf (`beoordeel()` is een zuivere functie), willekeurige ketens uit de 221 tweestaps-`is_a`-ketens in `concepts.json`, en een "ongeziene set" van ongeveer 10 vragen die tijdens het bouwen nooit worden gebruikt.
+63. 🟢 **Benchmark als vaste routine.** Na elke grote wijziging `python tools/run_benchmark.py --niveau 2` draaien en de trend in `data/benchmark_resultaten.jsonl` bekijken. Een verwachting wordt nooit aangepast om een score te halen: pas Nova aan of laat de case falen.
 
 *(Afgeronde werkpunten verplaatst naar `nova_changelog.md`, 18 juli 2026 — inclusief Personality pipeline deel 1+2, microlearning.py, Layer 2 opruimwerk, Layer 5 Fase 1-5, Layer 6-integratie response_style, emotion_engine decay, Layer 6 identity-blueprint-koppeling, het achtergrondthread-patroon, de `behavior_modifiers.py`-koppeling, en Activity Awareness Deel A. Aangevuld 9 augustus 2026 met punt 6b (`find_bridge()` gekoppeld aan gesprekslogica) en punt 24 (tombstone-eval, bug #32/#32/#32/#32/#36#36#36#36 opgelost) — zie changelog voor details van alle verplaatste punten.)*
 
@@ -1671,7 +1698,7 @@ Ondanks de naam is `layer4_response` intussen **niet meer exclusief voor Layer 4
 
 ## 🧪 tests/ — pytest-testsuite (sinds 8 augustus 2026)
 
-`/app/tests/` in de `nova-ai`-container op battleserver (bewerken via VSCode over SSH, geen lokale kopie meer). Draaien vanuit de project-root in de container: `pytest tests/ -v`. Stand 25 oktober 2026: **2971 tests: 2970 groen, 1 overgeslagen** (~18s). De overgeslagen test is `test_kopie_is_gelijk_aan_nova_client` in `test_nova_client_open_url.py`: `nova_client.py` staat op de laptop, niet op battleserver.
+`/app/tests/` in de `nova-ai`-container op battleserver (bewerken via VSCode over SSH, geen lokale kopie meer). Draaien vanuit de project-root in de container: `pytest tests/ -v`. Stand 26 oktober 2026: **3004 tests: 3003 groen, 1 overgeslagen** (~18s). De overgeslagen test is `test_kopie_is_gelijk_aan_nova_client` in `test_nova_client_open_url.py`: `nova_client.py` staat op de laptop, niet op battleserver.
 
 Startpunt was een externe review (5 assertions in 21 print-gebaseerde scripts, plus een `SystemExit` die `pytest tests/` liet crashen bij collectie) — sindsdien in meerdere rondes opgebouwd, telkens risico-gebaseerd geprioriteerd (kans op stille regressie, niet moduleomvang):
 

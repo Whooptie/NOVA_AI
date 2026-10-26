@@ -2353,4 +2353,26 @@ Vervolg op de overstimulation_level-sync-bug (zie #28). Ditmaal VOLLEDIG geverif
 - **Tests:** `tests/test_case_herinnering.py` (48 tests), echte `MemoryModule` in een tijdelijke map. Teststand 2923 → 2971 (2970 groen, 1 overgeslagen).
 - **Projectstructuur in `nova_state.md` bijgewerkt** (25 oktober 2026): `hypothese.py`, `case_herinnering.py`, `handler_fouten.py`, `rekenwoorden.py`, help-topics `graaf` en `semantic`, en de nieuwe data- en logbestanden stonden nog niet in de boom.
 
-**Open vervolg:** Layer 7-labels voor de topics `hypothese` en `terugblik` in `emergence_engine.py` (`_topic_naam_labels`), en de nieuwe zinnen in de help-tekst. Beperking: alleen Kevins eigen berichten (`raw_user_message`) worden vergeleken, geen Layer 2-patronen.
+**Afgewerkt (25 oktober 2026, later die dag):** Layer 7-labels `hypothese` ("wat-als-vragen") en `terugblik` ("terugblikken op eerdere vragen") in `_topic_naam_labels`; nieuwe secties "WAT ALS" en "TERUGBLIKKEN" in `help semantic` en regels in `help` (algemeen) met de twee patronen-regels. 22 nieuwe tests (`test_emergence_hypothese_labels.py`, `test_help_hypothese_terugblik.py`, die bewaakt dat elke zin in de help ook echt herkend wordt). Teststand 2971 → 2993. **Beperking:** alleen Kevins eigen berichten (`raw_user_message`) worden vergeleken, geen Layer 2-patronen.
+
+## ✅ Synoniem-zinsvormen: "ander woord voor" en "het synoniem van" (26 oktober 2026)
+
+**Aanleiding:** de eerste run van de Nova-benchmark liet zien dat "wat is een ander woord voor zus" werd behandeld als definitievraag over het hele zinsdeel ("ander woord voor zus", dus ook een Wikipedia-opzoeking). "Wat is het synoniem van X" werkte evenmin.
+
+**Wat er kwam (100% symbolisch, een lijst met zinsvormen uitbreiden):** in `intent_router.py` krijgen de synoniem-prefixen in `detect_definition()` en in `_SEMANTISCHE_VRAAG_PREFIXEN` drie extra vormen: `wat is het synoniem van `, `wat is een ander woord voor `, `ander woord voor `. Daardoor komt ook `intent_synonym` uit, en wordt "wat is een ander woord voor tijd" niet als klokvraag gelezen.
+
+**Tests:** `tests/test_intent_router_synoniem_zinsvormen.py` (11). Teststand 2993 → 3004 (3003 groen, 1 overgeslagen).
+
+**Live bevestigd (26 oktober 2026):** "wat is een ander woord voor zus" → "Synoniemen van 'zus': zuster."; "wat is het synoniem van kunstmatige intelligentie" → "Synoniemen van 'kunstmatige intelligentie': ai."
+
+## ✅ Nova-benchmark, niveau 1 (routing) en niveau 2 (antwoord), met nulmeting (26 oktober 2026)
+
+**Aanleiding:** een beoordeling van buitenaf zei dat groene tests niet bewijzen dat Nova goed antwoordt op vragen die niet vooraf bedacht zijn. pytest meet of de code doet wat Kevin bedacht; de benchmark meet wat Nova echt antwoordt. 100% symbolisch, geen ML.
+
+**Wat er kwam:** `tools/run_benchmark.py` en `tests/benchmark/benchmark_cases.json` (29 cases in 11 categorieën). Niveau 1 stuurt elke vraag door `IntentRouter.route()` en kijkt welke events ze publiceert. Niveau 2 bouwt een mini-Nova (echte `EventBus`, `SemanticConceptsModule`, `ChatModule`, `IntentRouter`; geen `ModuleLoader`) en vangt het antwoord op uit `chat_response`/`layer4_response`. Veiligheid: tijdelijke kopie van het project, stop als modules of `CONCEPTS_FILE` buiten de kopie liggen, `concepts.json` per vraag teruggezet, hash-controle van de echte `data/concepts.json`, netwerk uit, tijdslimiet van 20 s per vraag, handler-fouten uit de EventBus als fout gemeld. Resultaten komen in `data/benchmark_resultaten.jsonl`.
+
+**Nulmeting niveau 2:** 29 cases, 21 geslaagd, 8 gefaald (72%). Gevonden gaten: (1) bank, tafel en python noemen enkel de eerste betekenis; (2) een afgewezen feit krijgt hetzelfde antwoord als een onbekend feit; (3) de bewering "een hond is een meubel" krijgt "mag ik onthouden?" zonder verwijzing naar de eerdere afwijzing; (4) bij een onbekend woord zegt Nova niet dat ze het niet kent; (5) percentages worden niet herkend. Ook gevonden en meteen opgelost: de synoniem-zinsvormen (zie hierboven). Zie "Volgende stappen" 59 t/m 63.
+
+**Gefixt tijdens het bouwen:** de runner verzamelde eerst alle tekstvelden van een event, waardoor het veld `source` ("semantic") in het gemeten antwoord kwam; nu enkel het veld `text`.
+
+**Beperkingen:** antwoorden van `math`, `time`, `holiday`, `calendar`, `weather` en `greeting` zijn nog niet meetbaar in de mini-Nova; dat is niveau 3 (punt 62). De runner heeft zelf nog geen pytest.

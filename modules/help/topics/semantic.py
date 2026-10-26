@@ -124,6 +124,26 @@ def get_help():
                                         (De score zegt dat twee woorden bij elkaar passen, niet HOE:
                                          dat kies jij. Nova slaat pas iets op als jij koppelt.)
 
+🔮 WAT ALS (tijdelijke aannames, er wordt niets opgeslagen)
+  stel dat een hond een meubel is       (ook: veronderstel dat / neem aan dat; Nova neemt het tijdelijk aan)
+  stel dat een wiel een onderdeel van een boom is
+  stel dat regen droogte veroorzaakt    (ook: stel dat regen tot droogte leidt)
+  is een hond een meubel                (Nova antwoordt binnen je aanname en zegt dat er bij)
+  wat zou dat betekenen                 (wat uit je aannames volgt, en wat er botst met wat ik weet)
+  welke aannames heb ik
+  wis de aannames                       (ook: laat de aannames vallen / terug naar de feiten)
+                                        Maximaal 5 tegelijk. Ze vervallen na 10 minuten en komen
+                                        nooit in mijn echte kennis terecht. Het onderwerp moet een
+                                        woord zijn dat ik al ken.
+
+🔁 TERUGBLIKKEN (vergelijkbare eerdere vragen)
+  Vraag je iets dat je eerder al vroeg, dan zegt Nova dat na haar antwoord (met hoe vaak, wanneer
+  en of haar antwoord toen hetzelfde was). Hoogstens 1 keer per onderwerp per dag.
+  heb ik dit al eens gevraagd           (over je vorige vraag; ook: vroeg ik dit al eens)
+  wanneer vroeg ik dat laatst
+  stop met terugblikken                 (Nova blikt dan niet meer vanzelf terug; blijft bewaard)
+  blik weer terug
+
 🕸️ KENNISGRAAF (alles over de graaf: typ help graaf)
   toon graaf van fiets                  (3D-pagina rond een woord, klikbaar)
   toon de hele kennisgraaf              (alle woorden, kleuren per groep)

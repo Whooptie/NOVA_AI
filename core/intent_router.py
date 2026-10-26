@@ -1026,7 +1026,8 @@ class IntentRouter:
         t = text.lower().strip()
 
         # Synoniemen
-        for p in ["wat zijn synoniemen van ", "wat is een synoniem van ", "synoniemen van "]:
+        for p in ["wat zijn synoniemen van ", "wat is een synoniem van ", "synoniemen van ",
+                  "wat is het synoniem van ", "wat is een ander woord voor ", "ander woord voor "]:
             if t.startswith(p):
                 word = t[len(p):].strip().rstrip("?.")
                 dbg(f"{C_BLUE}→ definition (synoniem): '{word}'{C_RESET}")
@@ -1920,6 +1921,7 @@ class IntentRouter:
         "wat is ", "wat zijn ", "wat betekent ", "wat betekend ",
         "betekent ", "betekend ", "definieer", "definitie van ",
         "wat zijn synoniemen van ", "wat is een synoniem van ", "synoniemen van ",
+        "wat is het synoniem van ", "wat is een ander woord voor ", "ander woord voor ",
         "wat is het tegenovergestelde van ", "wat zijn antoniemen van ", "tegendeel van ",
         "waarvoor gebruik je ", "waarvoor is ", "waarvoor dient ",
         "wat veroorzaakt ", "wat zorgt voor ", "wat leidt tot ", "waartoe leidt ", "waartoe leiden ",

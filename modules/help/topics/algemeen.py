@@ -34,7 +34,9 @@ def get_help():
   hoe zeker ben je dat een hond een dier is
   wat weet je niet zeker
   weerleg: hond is_a meubel
-  help semantic  (leren, redeneren, oorzaak/gevolg, tijd, zekerheid, weerleggen)
+  stel dat een hond een meubel is     (tijdelijke wat-als-aanname, niets wordt opgeslagen)
+  heb ik dit al eens gevraagd         (Nova kijkt terug naar eerdere, vergelijkbare vragen)
+  help semantic  (leren, redeneren, oorzaak/gevolg, tijd, zekerheid, weerleggen, wat-als, terugblikken)
 
 💛 VOORKEUREN
   onthoud: ik hou van koffie          (voorkeur vastleggen)
@@ -87,6 +89,8 @@ def get_help():
       patronen topic_detected:ontstaan                 (wanneer ontstond X)
       patronen topic_detected:tijdlijn                 (tijdlijn van X)
       patronen topic_detected:zekerheid                (hoe zeker ben je dat ...)
+      patronen topic_detected:hypothese                (stel dat ...: wat-als-aannames)
+      patronen topic_detected:terugblik                (heb ik dit al eens gevraagd)
     
 ❓ HELP
   help               (dit overzicht)
