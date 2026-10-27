@@ -50,7 +50,7 @@ niet hier -- deze module doet enkel opslag en opvraging.
 """
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from modules.paths import get_project_root
@@ -78,6 +78,14 @@ class KevinProfile:
 
     BRONNEN = ("expliciet", "automatisch")
 
+    def _vandaag(self):
+        """
+        Geeft vandaag terug als 'JJJJ-MM-DD'. Bewust een aparte methode
+        zodat tests de datum kunnen vastzetten (zonder dit zou elke
+        test van de echte klok afhangen).
+        """
+        return datetime.now().strftime("%Y-%m-%d")
+
     def __init__(self, event_bus=None):
         self.event_bus = event_bus
 
@@ -101,7 +109,7 @@ class KevinProfile:
         self.data_pad.parent.mkdir(parents=True, exist_ok=True)
 
         if not self.data_pad.exists():
-            leeg = {"voorkeuren": {}, "afkeuren": {}, "sense_voorkeuren": {}}
+            leeg = {"voorkeuren": {}, "afkeuren": {}, "sense_voorkeuren": {}, "historiek": {}}
             self.data_pad.write_text(
                 json.dumps(leeg, ensure_ascii=False, indent=2),
                 encoding="utf-8"
@@ -126,7 +134,7 @@ class KevinProfile:
             data = json.loads(ruw)
         except (json.JSONDecodeError, OSError) as e:
             dbg(f"{C_RED}kon databestand niet lezen ({e}), start met leeg profiel{C_RESET}")
-            return {"voorkeuren": {}, "afkeuren": {}}
+            return {"voorkeuren": {}, "afkeuren": {}, "sense_voorkeuren": {}, "historiek": {}}
 
         data.setdefault("voorkeuren", {})
         data.setdefault("afkeuren", {})
@@ -148,6 +156,25 @@ class KevinProfile:
 
         if gemigreerd:
             dbg(f"{C_YELLOW}oud databestand (v1) gedetecteerd, automatisch gemigreerd naar v2-structuur{C_RESET}")
+
+        # v3 (27 oktober 2026): bi-temporele geschiedenis.
+        # 'historiek' bewaart AFGESLOTEN versies en beëindigde voorkeuren,
+        # apart van voorkeuren/afkeuren (die enkel bevatten wat NU geldt).
+        # Bestaande blokken krijgen valid_from = None: "begin onbekend".
+        # Bewust NIET created_at/datum als nepdatum ingevuld -- Nova weet
+        # niet wanneer iets echt begon, en doet dus ook niet alsof.
+        data.setdefault("historiek", {})
+        v3_gemigreerd = False
+        for categorie in ("voorkeuren", "afkeuren"):
+            for woord, info in data[categorie].items():
+                for bron in self.BRONNEN:
+                    blok = info.get(bron)
+                    if blok is not None and "valid_from" not in blok:
+                        blok["valid_from"] = None
+                        v3_gemigreerd = True
+
+        if v3_gemigreerd:
+            dbg(f"{C_YELLOW}databestand gemigreerd naar v3-structuur (valid_from toegevoegd){C_RESET}")
 
         return data
 
@@ -276,12 +303,35 @@ class KevinProfile:
             woord_info = {}
 
         bestaand_in_bron = woord_info.get(bron)
-        aantal = bestaand_in_bron["aantal_keer_genoemd"] + 1 if bestaand_in_bron else 1
+        vandaag = self._vandaag()
+
+        # Verandert het sentiment BINNEN dezelfde bron (bv. expliciet
+        # positief -> expliciet negatief), dan is dat een echte
+        # verandering in Kevins leven: het oude blok wordt afgesloten
+        # in de historiek i.p.v. overschreven. Een verschil TUSSEN
+        # expliciet en automatisch is geen verandering maar een conflict
+        # (bestaand gedrag, ongewijzigd).
+        sentiment_veranderd = (
+            bestaand_in_bron is not None
+            and bestaand_in_bron["sentiment"] != sentiment
+        )
+
+        if sentiment_veranderd:
+            self._sluit_blok_af(woord, bron, bestaand_in_bron, vandaag)
+            aantal = 1
+            valid_from = vandaag
+        elif bestaand_in_bron:
+            aantal = bestaand_in_bron["aantal_keer_genoemd"] + 1
+            valid_from = bestaand_in_bron.get("valid_from")
+        else:
+            aantal = 1
+            valid_from = vandaag
 
         woord_info[bron] = {
             "sentiment": sentiment,
-            "datum": datetime.now().strftime("%Y-%m-%d"),
+            "datum": vandaag,
             "aantal_keer_genoemd": aantal,
+            "valid_from": valid_from,
         }
 
         actief_sentiment = self._bepaal_actief_sentiment(woord_info)
@@ -318,6 +368,7 @@ class KevinProfile:
                 "aantal_keer_genoemd": aantal,
                 "actief_sentiment": actief_sentiment,
                 "conflict": conflict,
+                "sentiment_veranderd": sentiment_veranderd,
             })
 
     def remove_preference(self, woord, bron=None):
@@ -348,6 +399,7 @@ class KevinProfile:
         if bron is None:
             # Volledig verwijderen, ongeacht bronnen.
             del self.data[categorie][woord]
+            self.data.setdefault("historiek", {}).pop(woord, None)
             self._opslaan()
             dbg(f"{C_GREEN}'{woord}' volledig verwijderd uit {categorie}{C_RESET}")
             if self.event_bus:
@@ -378,6 +430,148 @@ class KevinProfile:
         if self.event_bus:
             self.event_bus.publish("preference_forgotten", {"woord": woord, "bron": bron})
         return True
+
+    # -----------------------------------------------------------
+    # Bi-temporele geschiedenis (v3, 27 oktober 2026)
+    # -----------------------------------------------------------
+    def _sluit_blok_af(self, woord, bron, blok, einddatum):
+        """
+        Zet een (oud) bron-blok in de historiek met een einddatum.
+        Interne helper, wijzigt zelf niets aan voorkeuren/afkeuren.
+        """
+        self.data.setdefault("historiek", {}).setdefault(woord, []).append({
+            "bron": bron,
+            "sentiment": blok["sentiment"],
+            "valid_from": blok.get("valid_from"),
+            "valid_until": einddatum,
+            "aantal_keer_genoemd": blok["aantal_keer_genoemd"],
+        })
+
+    def beeindig_preference(self, woord, datum=None):
+        """
+        Beëindigt een voorkeur/afkeur: "dit geldt niet meer", zonder te
+        wissen. Alle huidige blokken (expliciet + automatisch) gaan met
+        een einddatum naar de historiek, het woord verdwijnt uit
+        voorkeuren/afkeuren (en wordt dus nergens meer als actueel
+        gezien). Dit is wat 'vergeet: <woord>' voortaan doet.
+
+        Echt wissen (vergissing) gaat via wis_definitief().
+
+        Geeft True terug als er iets beëindigd werd, False als het
+        woord niet (meer) actueel was.
+        """
+        woord = woord.strip().lower()
+        categorie, woord_info = self._vind_woord(woord)
+
+        if woord_info is None:
+            dbg(f"'{woord}' niet gevonden, niets te beëindigen")
+            return False
+
+        einde = datum or self._vandaag()
+        actief_sentiment = self._bepaal_actief_sentiment(woord_info)
+
+        for bron in self.BRONNEN:
+            blok = woord_info.get(bron)
+            if blok:
+                self._sluit_blok_af(woord, bron, blok, einde)
+
+        del self.data[categorie][woord]
+        self._opslaan()
+        dbg(f"{C_GREEN}'{woord}' beëindigd per {einde} (zit nu in de historiek){C_RESET}")
+
+        if self.event_bus:
+            self.event_bus.publish("preference_ended", {
+                "woord": woord,
+                "sentiment": actief_sentiment,
+                "valid_until": einde,
+            })
+        return True
+
+    def wis_definitief(self, woord):
+        """
+        Wist een woord VOLLEDIG: huidige voorkeur én historiek. Bedoeld
+        voor vergissingen ("dit had Nova nooit mogen onthouden"), niet
+        voor "ik hou er niet meer van" (dat is beeindig_preference()).
+
+        Werkt ook op een al beëindigd woord (enkel historiek over).
+        Geeft True terug als er iets gewist werd.
+        """
+        woord = woord.strip().lower()
+
+        # remove_preference(bron=None) wist ook de historiek van een
+        # actueel woord (zie hierboven). Enkel aanroepen als het woord
+        # nog actueel is, anders meldt het onterecht "niet gevonden".
+        _, actueel = self._vind_woord(woord)
+        verwijderd = self.remove_preference(woord) if actueel is not None else False
+
+        if not verwijderd and woord in self.data.get("historiek", {}):
+            del self.data["historiek"][woord]
+            self._opslaan()
+            dbg(f"{C_GREEN}historiek van '{woord}' definitief gewist{C_RESET}")
+            if self.event_bus:
+                self.event_bus.publish("preference_forgotten", {"woord": woord, "bron": None})
+            verwijderd = True
+
+        return verwijderd
+
+    def get_historiek(self, woord):
+        """
+        Geeft het volledige verloop van een woord terug: afgesloten
+        versies + wat nu nog geldt (valid_until = None), oudste eerst.
+        Elk element: {"bron", "sentiment", "valid_from", "valid_until",
+        "aantal_keer_genoemd"}. valid_from None = begin onbekend.
+        Lege lijst als het woord nergens bekend is.
+        """
+        woord = woord.strip().lower()
+        resultaat = [dict(e) for e in self.data.get("historiek", {}).get(woord, [])]
+
+        _, woord_info = self._vind_woord(woord)
+        if woord_info:
+            for bron in self.BRONNEN:
+                blok = woord_info.get(bron)
+                if blok:
+                    resultaat.append({
+                        "bron": bron,
+                        "sentiment": blok["sentiment"],
+                        "valid_from": blok.get("valid_from"),
+                        "valid_until": None,
+                        "aantal_keer_genoemd": blok["aantal_keer_genoemd"],
+                    })
+
+        resultaat.sort(key=lambda e: e["valid_from"] or "")
+        return resultaat
+
+    def get_veranderingen(self, dagen=90):
+        """
+        Geeft de veranderingen van de laatste 'dagen' dagen terug (voor
+        Layer 7 en eventuele vragen als "wat is er veranderd"). Een
+        verandering = een afgesloten blok waarvan valid_until binnen het
+        venster valt.
+
+        Elk element: {"woord", "bron", "oud_sentiment", "valid_until",
+        "huidig_sentiment", "beeindigd"}. 'huidig_sentiment' is None en
+        'beeindigd' True als het woord nu helemaal niet meer actueel is.
+        Nieuwste eerst.
+        """
+        grens_dt = datetime.strptime(self._vandaag(), "%Y-%m-%d") - timedelta(days=dagen)
+        grens = grens_dt.strftime("%Y-%m-%d")
+
+        resultaat = []
+        for woord, lijst in self.data.get("historiek", {}).items():
+            huidig = self.get_preference(woord)
+            for entry in lijst:
+                if entry["valid_until"] >= grens:
+                    resultaat.append({
+                        "woord": woord,
+                        "bron": entry["bron"],
+                        "oud_sentiment": entry["sentiment"],
+                        "valid_until": entry["valid_until"],
+                        "huidig_sentiment": huidig["sentiment"] if huidig else None,
+                        "beeindigd": huidig is None,
+                    })
+
+        resultaat.sort(key=lambda e: e["valid_until"], reverse=True)
+        return resultaat
 
     def get_preference(self, woord):
         """

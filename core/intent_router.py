@@ -266,6 +266,29 @@ class IntentRouter:
         t = text.strip()
         tl = t.lower()
 
+        # --- wis definitief: <woord> ---
+        # Echt wissen (vergissing): huidige voorkeur EN historiek weg.
+        # Voor "ik hou er niet meer van" is 'vergeet:' bedoeld (beeindigt).
+        if tl.startswith("wis definitief:") or tl.startswith("wis definitief "):
+            rest = t.split(":", 1)[1].strip() if ":" in t else t[len("wis definitief "):].strip()
+            if not rest:
+                self.event_bus.publish("chat_response", {
+                    "text": "Gebruik: wis definitief: <woord>"
+                })
+                return True
+
+            if self.kevin_profile:
+                gewist = self.kevin_profile.wis_definitief(rest)
+                if gewist:
+                    self.event_bus.publish("chat_response", {
+                        "text": f"Gewist: '{rest}' en alles wat ik erover bijhield is weg."
+                    })
+                else:
+                    self.event_bus.publish("chat_response", {
+                        "text": f"Ik had niets onthouden over '{rest}'."
+                    })
+            return True
+
         # --- vergeet: <woord> ---
         if tl.startswith("vergeet:") or tl.startswith("vergeet "):
             woord = t.split(":", 1)[1].strip() if ":" in t else t.split(maxsplit=1)[1].strip()
@@ -276,8 +299,15 @@ class IntentRouter:
                 return True
 
             if self.kevin_profile:
-                verwijderd = self.kevin_profile.remove_preference(woord)
-                if not verwijderd:
+                beeindigd = self.kevin_profile.beeindig_preference(woord)
+                if beeindigd:
+                    self.event_bus.publish("chat_response", {
+                        "text": (
+                            f"Oké, ik reken '{woord}' niet meer mee. Wil je het helemaal "
+                            f"wissen, zeg dan: wis definitief: {woord}"
+                        )
+                    })
+                else:
                     self.event_bus.publish("chat_response", {
                         "text": f"Ik had niets onthouden over '{woord}'."
                     })

@@ -2393,3 +2393,17 @@ Vervolg op de overstimulation_level-sync-bug (zie #28). Ditmaal VOLLEDIG geverif
 **Router-kleuren.** De regels van de gelijkenis-, graaf-, uncertainty- en kennis-routes in `intent_router.py` printten kleurloos; nu `dbg(f"{C_BLUE}→ ...{C_RESET}")`, zoals de oudere routes. Alleen de weergave in de logs veranderde.
 
 **Open:** nog ongeveer 240 paren in de wachtrij; datapunten voor Kevin: `licht` heeft een foute `part_of fiets`, `grote massa ijs` lijkt dubbel met gletsjer/ijsmassa, het concept `metaal` ontbreekt en instrument/muziekinstrument zijn mogelijk dubbel.
+
+## ✅ Bi-temporele voorkeuren + Layer 7-insight `voorkeur_verandering` (27 oktober 2026)
+
+Punt 9 uit "Volgende stappen" afgerond. Zie `nova_state.md`, sectie "Bi-temporele voorkeuren", voor de werking.
+
+**Ontwerpkeuzes (met Kevin):** `valid_from = null` voor bestaande data (geen nepdatum); `vergeet:` beëindigt standaard, apart commando `wis definitief:` wist echt (zelfde tweeniveau-idee als tombstone/hard_delete in `semantic.py`); oude versies in een aparte `historiek`-sleutel i.p.v. tussen de actuele voorkeuren, zodat bestaande lezers niets hoeven te weten; `sense_voorkeuren` ongemoeid; Layer 7 meteen meegenomen.
+
+**Gewijzigd:** `kevin_profile.py` (v3-migratie, `_vandaag()`, `_sluit_blok_af()`, `beeindig_preference()`, `wis_definitief()`, `get_historiek()`, `get_veranderingen()`, `add_preference()` sluit oud blok af bij verandering, `remove_preference()` wist historiek, corrupt-bestand-terugval nu volledig), `intent_router.py` (`handle_preference()`: `vergeet:` beëindigt, nieuw `wis definitief:`), `emergence_engine.py` (insight-type 6 + cooldown-sleutel per woord + inhoud-vergelijking + dispatch in `reflect()`), `module_loader.py` (`kevin_profile` in `emergence_layers`).
+
+**Bewust niet gebouwd:** "overgestapt van thee op koffie" (geen categorie-veld, zou gokken); automatische herkenning als verandering (kan ruis zijn); help-tekst voor `wis definitief:` (nog open).
+
+**Tests:** 51 nieuw (20 + 21 + 10), volledige suite 3054 geslaagd, 1 overgeslagen. Isolatie via `monkeypatch` op `get_project_root` (geen pad-parameter in `KevinProfile`/`EmergenceEngine`) en stubs voor het profiel.
+
+**Live bevestigd:** v3-migratie bij opstart, `vergeet:` met nieuwe bevestiging, insight "tot 27 oktober gold: je hield van thee" in `emergence`, `wis definitief:`. Het hardop-pad zelf is enkel via pytest bevestigd (in die ronde won het trending-woord op marge). Cosmetisch: de melding "niet gevonden" bij `wis definitief` op een al beëindigd woord is gefixt door eerst `_vind_woord()` te checken.

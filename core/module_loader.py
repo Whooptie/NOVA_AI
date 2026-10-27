@@ -466,6 +466,9 @@ class ModuleLoader:
             "pattern_matcher": self.loaded_modules.get("pattern_matcher"),
             "microlearning": self.loaded_modules.get("microlearning"),
             "context_manager": self.loaded_modules.get("context_manager"),
+            # 27 oktober 2026: voor insight-type 'voorkeur_verandering'
+            # (kevin_profile.get_veranderingen()).
+            "kevin_profile": self.loaded_modules.get("kevin_profile"),
         }
         emergence = emergence_engine.init_module(self.event_bus, layers=emergence_layers)
         emergence.__load_time_ms__ = int((time.time() - start) * 1000)

@@ -41,7 +41,10 @@ def get_help():
 💛 VOORKEUREN
   onthoud: ik hou van koffie          (voorkeur vastleggen)
   onthoud: ik hou niet van kou        (afkeur vastleggen)
-  vergeet: koffie                     (voorkeur/afkeur laten vergeten)
+  vergeet: koffie                     (Nova rekent het niet meer mee, maar
+                                        onthoudt dat je het vroeger wel zei)
+  wis definitief: koffie              (alles over koffie echt wissen,
+                                        ook die oude geschiedenis)
   wat kan ik drinken                  (suggestie op basis van je voorkeuren)
   wat kan ik eten                     (idem, voor eten)
   wat weet je over mij                (volledig overzicht van je profiel)

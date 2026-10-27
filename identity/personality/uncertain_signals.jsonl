@@ -1452,3 +1452,8 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-27T19:20:23.566546"}
 {"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-27T19:20:36.622105"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-27T19:32:01.861886"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-27T20:28:35.380990"}
+{"text": "onthoud: ik hou van thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0175, "bron": "model_fallback", "tijdstip": "2026-10-27T20:29:13.659007"}
+{"text": "vergeet: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-27T20:29:27.907024"}
+{"text": "wis definitief: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-27T20:30:07.471583"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-27T20:32:21.620723"}

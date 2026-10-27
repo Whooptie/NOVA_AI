@@ -542,6 +542,40 @@ class EmergenceEngine:
         self.SCHERM_FOCUS_ACTIVITEITEN = {"coding"}
 
         # ─────────────────────────────────
+        # Insight-type 6: voorkeur_verandering (Layer 5-profiel, 27 oktober 2026)
+        # ─────────────────────────────────
+        # Leest kevin_profile.get_veranderingen(): voorkeuren die Kevin zelf
+        # liet veranderen of beëindigde. Zegt WAT en SINDS WANNEER, nooit
+        # WAAROM (dat weet Nova niet). Automatische herkenning telt niet
+        # mee als verandering (kan ruis zijn), tenzij Kevin het woord
+        # beëindigde.
+        self.VOORKEUR_VERANDERING_VENSTER_DAGEN = 30
+        self._sjablonen_voorkeur_verandering = {
+            "opening": [
+                "Iets wat ik over jou bijhoud, Kevin:",
+                "Ik merk een verschil met vroeger.",
+                "Dit viel me op in wat ik van je weet:",
+                "Kleine kanttekening bij wat ik over je onthouden had:",
+                "Er is iets veranderd, zie ik.",
+            ],
+            "midden_beeindigd": [
+                "{oud_zin}, maar sinds {datum} geldt dat niet meer.",
+                "tot {datum} gold: {oud_zin}. Dat heb je laten vallen.",
+                "{oud_zin} — tot {datum}. Daarna heb je dat losgelaten.",
+            ],
+            "midden_veranderd": [
+                "{oud_zin}, maar sinds {datum} is dat anders: {nieuw_zin}.",
+                "voor {datum} gold: {oud_zin}. Sindsdien: {nieuw_zin}.",
+                "{oud_zin} — tot {datum}. Daarna: {nieuw_zin}.",
+            ],
+            "afsluiting": [
+                "Tja.",
+                "Gewoon een observatie.",
+                "Ik hou het bij.",
+            ],
+        }
+
+        # ─────────────────────────────────
         # Confidence-gate: vanaf welke drempel mag Nova een insight
         # ECHT HARDOP zeggen (via layer4_response), i.p.v. het enkel
         # intern bij te houden (via emergence:insight)?
@@ -584,6 +618,10 @@ class EmergenceEngine:
             # hardop", zelfde als hoe kennisdichtheid/personality_drift
             # hun eigen, niet-0-1-schaal hebben.
             "scherm_focus": 1.0,
+            # Geen natuurlijke schaal (zoals scherm_focus): elke gevonden
+            # verandering mag hardop; de echte rem zit in de gates
+            # (timing, nieuwe inhoud, cooldowns).
+            "voorkeur_verandering": 1.0,
         }
 
         # ─────────────────────────────────
@@ -1272,6 +1310,113 @@ class EmergenceEngine:
     # Overkoepelende analyse
     # ─────────────────────────────────
 
+    # ─────────────────────────────────
+    # Insight-type 6: voorkeur_verandering (27 oktober 2026)
+    # ─────────────────────────────────
+    _MAANDEN_NL = [
+        "januari", "februari", "maart", "april", "mei", "juni", "juli",
+        "augustus", "september", "oktober", "november", "december",
+    ]
+    _OUD_ZIN = {
+        "positief": "je hield van {woord}",
+        "negatief": "je hield niet van {woord}",
+        "neutraal_gemengd": "je had gemengde gevoelens over {woord}",
+    }
+    _NIEUW_ZIN = {
+        "positief": "je houdt nu wel van {woord}",
+        "negatief": "je houdt nu niet van {woord}",
+        "neutraal_gemengd": "je gevoelens over {woord} zijn nu gemengd",
+    }
+
+    def _datum_leesbaar(self, iso: str) -> str:
+        """'2026-10-27' -> '27 oktober'. Bij een onleesbare datum: ongewijzigd."""
+        try:
+            d = datetime.strptime(iso, "%Y-%m-%d")
+            return f"{d.day} {self._MAANDEN_NL[d.month - 1]}"
+        except (TypeError, ValueError):
+            return str(iso)
+
+    def analyze_preference_change(self) -> Optional[Dict]:
+        """
+        Zoekt de MEEST RECENTE verandering in Kevins voorkeuren (laatste
+        VOORKEUR_VERANDERING_VENSTER_DAGEN dagen) via
+        kevin_profile.get_veranderingen().
+
+        Telt enkel mee: een verandering in de 'expliciet'-bron (Kevin
+        zei het zelf) of een beëindigd woord (Kevin liet het vallen).
+        Een wissel in enkel de 'automatisch'-bron is mogelijk ruis en
+        telt niet. Een woord dat terugkwam met HETZELFDE sentiment is
+        geen verandering.
+
+        Retourneert None als er niets te melden is.
+        """
+        profiel = self.layers.get("kevin_profile")
+        if profiel is None:
+            return None
+
+        get_veranderingen = getattr(profiel, "get_veranderingen", None)
+        if get_veranderingen is None:
+            return None
+
+        try:
+            veranderingen = get_veranderingen(self.VOORKEUR_VERANDERING_VENSTER_DAGEN)
+        except Exception:
+            return None
+
+        kandidaten = []
+        for v in veranderingen or []:
+            beeindigd = bool(v.get("beeindigd"))
+            if not beeindigd and v.get("bron") != "expliciet":
+                continue
+            if not beeindigd and v.get("oud_sentiment") == v.get("huidig_sentiment"):
+                continue
+            kandidaten.append(v)
+
+        if not kandidaten:
+            return None
+
+        nieuwste_datum = max(v["valid_until"] for v in kandidaten)
+        nieuwste = sorted(
+            (v for v in kandidaten if v["valid_until"] == nieuwste_datum),
+            key=lambda v: v.get("woord", ""),
+        )
+        keuze = next((v for v in nieuwste if v.get("bron") == "expliciet"), nieuwste[0])
+
+        return {
+            "type": "voorkeur_verandering",
+            "woord": keuze["woord"],
+            "oud_sentiment": keuze.get("oud_sentiment"),
+            "huidig_sentiment": keuze.get("huidig_sentiment"),
+            "beeindigd": bool(keuze.get("beeindigd")),
+            "datum": keuze["valid_until"],
+            # Geen natuurlijke schaal (zelfde situatie als scherm_focus).
+            "confidence": 1.0,
+        }
+
+    def _formuleer_voorkeur_verandering(self, insight: Dict) -> str:
+        """Sjabloonzin voor een 'voorkeur_verandering'-insight. Geen generatie."""
+        woord = insight["woord"]
+        oud_zin = self._OUD_ZIN.get(
+            insight.get("oud_sentiment"), "ik had iets over {woord} genoteerd"
+        ).format(woord=woord)
+        datum = self._datum_leesbaar(insight["datum"])
+
+        opening = random.choice(self._sjablonen_voorkeur_verandering["opening"])
+        if insight.get("beeindigd"):
+            midden = random.choice(
+                self._sjablonen_voorkeur_verandering["midden_beeindigd"]
+            ).format(oud_zin=oud_zin, datum=datum)
+        else:
+            nieuw_zin = self._NIEUW_ZIN.get(
+                insight.get("huidig_sentiment"), "dat is nu anders"
+            ).format(woord=woord)
+            midden = random.choice(
+                self._sjablonen_voorkeur_verandering["midden_veranderd"]
+            ).format(oud_zin=oud_zin, nieuw_zin=nieuw_zin, datum=datum)
+        afsluiting = random.choice(self._sjablonen_voorkeur_verandering["afsluiting"])
+
+        return f"{opening} {midden} {afsluiting}"
+
     def analyze_meta_patterns(self) -> List[Dict]:
         """
         Verzamelt insights van alle beschikbare insight-types.
@@ -1306,6 +1451,10 @@ class EmergenceEngine:
         scherm_focus = self.analyze_screen_focus()
         if scherm_focus is not None:
             insights.append(scherm_focus)
+
+        voorkeur_verandering = self.analyze_preference_change()
+        if voorkeur_verandering is not None:
+            insights.append(voorkeur_verandering)
 
         return insights
 
@@ -1345,6 +1494,8 @@ class EmergenceEngine:
             return f"trending_topic:{insight.get('woord', '')}"
         if insight_type == "woordverband":
             return f"woordverband:{insight.get('woord1', '')}:{insight.get('woord2', '')}"
+        if insight_type == "voorkeur_verandering":
+            return f"voorkeur_verandering:{insight.get('woord', '')}"
 
         return insight_type
 
@@ -1411,6 +1562,11 @@ class EmergenceEngine:
             return str(insight.get("trait", "")), insight.get("aantal_shifts")
         if insight_type == "scherm_focus":
             return str(insight.get("screen_focus", "")), None
+        if insight_type == "voorkeur_verandering":
+            return (
+                f"{insight.get('woord', '')}|{insight.get('beeindigd')}|"
+                f"{insight.get('huidig_sentiment')}|{insight.get('datum', '')}"
+            ), None
 
         # Onbekend type: de volledige tekst van de insight-dict als label
         # -- elke wijziging telt dus als nieuw, nooit een crash.
@@ -1665,6 +1821,8 @@ class EmergenceEngine:
                 tekst = self._formuleer_drift(insight)
             elif insight["type"] == "scherm_focus":
                 tekst = self._formuleer_scherm_focus(insight)
+            elif insight["type"] == "voorkeur_verandering":
+                tekst = self._formuleer_voorkeur_verandering(insight)
             else:
                 # Toekomstige insight-types die nog geen sjabloon
                 # hebben: bewust overslaan i.p.v. een kale/rare tekst

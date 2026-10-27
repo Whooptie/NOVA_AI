@@ -4,43 +4,50 @@
       "expliciet": {
         "sentiment": "positief",
         "datum": "2026-07-25",
-        "aantal_keer_genoemd": 1
+        "aantal_keer_genoemd": 1,
+        "valid_from": null
       },
       "automatisch": {
         "sentiment": "negatief",
         "datum": "2026-07-25",
-        "aantal_keer_genoemd": 1
+        "aantal_keer_genoemd": 1,
+        "valid_from": null
       }
     },
     "schaken": {
       "automatisch": {
         "sentiment": "positief",
         "datum": "2026-07-25",
-        "aantal_keer_genoemd": 1
+        "aantal_keer_genoemd": 1,
+        "valid_from": null
       },
       "expliciet": {
         "sentiment": "positief",
         "datum": "2026-07-25",
-        "aantal_keer_genoemd": 1
+        "aantal_keer_genoemd": 1,
+        "valid_from": null
       }
     },
     "lopen in het bos": {
       "automatisch": {
         "sentiment": "positief",
         "datum": "2026-08-15",
-        "aantal_keer_genoemd": 1
+        "aantal_keer_genoemd": 1,
+        "valid_from": null
       }
     },
     "koffie": {
       "automatisch": {
         "sentiment": "neutraal_gemengd",
         "datum": "2026-10-11",
-        "aantal_keer_genoemd": 8
+        "aantal_keer_genoemd": 8,
+        "valid_from": null
       },
       "expliciet": {
         "sentiment": "neutraal_gemengd",
         "datum": "2026-07-26",
-        "aantal_keer_genoemd": 2
+        "aantal_keer_genoemd": 2,
+        "valid_from": null
       }
     }
   },
@@ -49,18 +56,21 @@
       "automatisch": {
         "sentiment": "negatief",
         "datum": "2026-07-25",
-        "aantal_keer_genoemd": 1
+        "aantal_keer_genoemd": 1,
+        "valid_from": null
       }
     },
     "tandarts": {
       "expliciet": {
         "sentiment": "negatief",
         "datum": "2026-07-25",
-        "aantal_keer_genoemd": 1
+        "aantal_keer_genoemd": 1,
+        "valid_from": null
       }
     }
   },
   "sense_voorkeuren": {
     "python": "python#1"
-  }
+  },
+  "historiek": {}
 }
