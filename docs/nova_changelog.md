@@ -2376,3 +2376,20 @@ Vervolg op de overstimulation_level-sync-bug (zie #28). Ditmaal VOLLEDIG geverif
 **Gefixt tijdens het bouwen:** de runner verzamelde eerst alle tekstvelden van een event, waardoor het veld `source` ("semantic") in het gemeten antwoord kwam; nu enkel het veld `text`.
 
 **Beperkingen:** antwoorden van `math`, `time`, `holiday`, `calendar`, `weather` en `greeting` zijn nog niet meetbaar in de mini-Nova; dat is niveau 3 (punt 62). De runner heeft zelf nog geen pytest.
+
+## ✅ Semantic Fase 12, stap 2e — wachtrij in rondes doorgewerkt, help-blok en router-kleuren (27 oktober 2026)
+
+**Wachtrij in rondes.** De wachtrij gebruikt elk woord hooguit één keer per ronde. Na een ronde komen de tweede keuzes van die woorden naar boven en begint er dus een nieuwe ronde, met weer hoge scores (0,80 en meer). Dat is geen herstart: de eerder gekoppelde en afgewezen paren staan vast in `concepts.json`. Ook nieuw aangeleerde concepten leveren nieuwe paren op. Op 27 oktober telde de wachtrij 286 paren bij 1108 concepten.
+
+**Resultaat tot nu toe** (bron `embedding`, volgens `concepts.json` van 27 oktober): 181 gekoppeld en 126 afgewezen. De opbrengst is van batch tot batch zeer wisselend, van 1 tot 7 bruikbare paren op 8. Tweede keuzes zijn vaker broertjes of lichaamsdelen die dicht bij elkaar liggen en die al via een bovenwoord verbonden zijn.
+
+**Lessen:**
+- De score zegt niets over HOE twee woorden bij elkaar horen; daarom altijd zelf het type kiezen (`koppel 4 als soort omgekeerd`).
+- Homoniemen zijn de valkuil: "stof" (weefsel) en "stofzuiger" (zuigt stof) of "ei" (dierlijk ei) en "eicel". Nova vergelijkt de eerste betekenis.
+- Een hogere drempel helpt niet tegen lage opbrengst: de wachtrij toont al de hoogste scores eerst.
+
+**`help semantic`.** Nieuwe sectie "GELIJKENISSEN" met `zoek gelijkenissen voor X`, `gelijkenissen overlopen`, `volgende gelijkenissen`, `koppel`, `negeer` en `maak ongedaan`.
+
+**Router-kleuren.** De regels van de gelijkenis-, graaf-, uncertainty- en kennis-routes in `intent_router.py` printten kleurloos; nu `dbg(f"{C_BLUE}→ ...{C_RESET}")`, zoals de oudere routes. Alleen de weergave in de logs veranderde.
+
+**Open:** nog ongeveer 240 paren in de wachtrij; datapunten voor Kevin: `licht` heeft een foute `part_of fiets`, `grote massa ijs` lijkt dubbel met gletsjer/ijsmassa, het concept `metaal` ontbreekt en instrument/muziekinstrument zijn mogelijk dubbel.

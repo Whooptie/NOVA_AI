@@ -3048,7 +3048,7 @@ class IntentRouter:
                 continue
             if len(doel.split()) > 3:
                 continue
-            dbg(f"[uncertainty] {bron} {rel_type} {doel}")
+            dbg(f"{C_BLUE}→ uncertainty: {bron} {rel_type} {doel}{C_RESET}")
             event = "intent_uncertainty_why" if t.startswith("waarom") else "intent_uncertainty_query"
             self.event_bus.publish(event, {
                 "relation_type": rel_type, "source": bron, "target": doel})
@@ -3077,7 +3077,7 @@ class IntentRouter:
             woord = (m.group(1) or "").strip() or None
             if woord and (woord in self._GEEN_RELATIE_ONDERWERP or len(woord.split()) > 3):
                 continue
-            dbg(f"[uncertainty-lijst] {woord}")
+            dbg(f"{C_BLUE}→ uncertainty-lijst: '{woord}'{C_RESET}")
             self.event_bus.publish("intent_uncertainty_list", {"word": woord})
             self._emit_topic("zekerheid", bron="detect", concept=woord)
             return True
@@ -3089,7 +3089,7 @@ class IntentRouter:
         if not m:
             return False
         actie = "bevestig" if m.group(1) == "bevestig" else "wijs_af"
-        dbg(f"[uncertainty-keuze] {actie} {m.group(2)}")
+        dbg(f"{C_BLUE}→ uncertainty-keuze ({actie} {m.group(2)}){C_RESET}")
         self.event_bus.publish("intent_uncertainty_keuze", {
             "actie": actie, "nummer": int(m.group(2))})
         return True
@@ -3116,7 +3116,7 @@ class IntentRouter:
             woord = m.group(1).strip()
             if not woord or len(woord.split()) > 3 or woord in self._GEEN_RELATIE_ONDERWERP:
                 continue
-            dbg(f"[kennis-extractie] {woord}")
+            dbg(f"{C_BLUE}→ kennis-extractie: '{woord}'{C_RESET}")
             self.event_bus.publish("intent_kennis_extract", {"word": woord})
             self._emit_topic("kennis_extractie", bron="detect", concept=woord)
             return True
@@ -3131,7 +3131,7 @@ class IntentRouter:
         actie = "neem" if (neem_nr or neem_alles) else "laat_vallen"
         nummer = int(neem_nr or vallen_nr) if (neem_nr or vallen_nr) else None
         alles = bool(neem_alles or vallen_alles)
-        dbg(f"[kennis-keuze] {actie} {nummer or 'alles'}")
+        dbg(f"{C_BLUE}→ kennis-keuze ({actie} {nummer or 'alles'}){C_RESET}")
         self.event_bus.publish("intent_kennis_keuze", {
             "actie": actie, "nummer": nummer, "alles": alles})
         return True
@@ -3162,7 +3162,7 @@ class IntentRouter:
             woord = m.group(1).strip()
             if not woord or len(woord.split()) > 3 or woord in self._GEEN_RELATIE_ONDERWERP:
                 continue
-            dbg(f"[gelijkenis-zoek] {woord}")
+            dbg(f"{C_BLUE}→ gelijkenis-zoek: '{woord}'{C_RESET}")
             self.event_bus.publish("intent_similarity_search", {"word": woord})
             self._emit_topic("gelijkenis_zoek", bron="detect", concept=woord)
             return True
@@ -3176,7 +3176,7 @@ class IntentRouter:
             actie = "volgende"
         else:
             return False
-        dbg(f"[gelijkenis-overloop] {actie}")
+        dbg(f"{C_BLUE}→ gelijkenis-overloop ({actie}){C_RESET}")
         self.event_bus.publish("intent_similarity_review", {"actie": actie})
         self._emit_topic("gelijkenis_overloop", bron="detect")
         return True
@@ -3189,7 +3189,7 @@ class IntentRouter:
         t = text.lower().strip().rstrip("?.! ").strip()
         if not self._GELIJKENIS_ONGEDAAN.match(t):
             return False
-        dbg("[gelijkenis-ongedaan]")
+        dbg(f"{C_BLUE}→ gelijkenis-ongedaan{C_RESET}")
         self.event_bus.publish("intent_similarity_ongedaan", {})
         return True
 
@@ -3203,8 +3203,8 @@ class IntentRouter:
         koppel_nrs, type_nl, omgekeerd, negeer_nrs, rest = m.groups()
         actie = "koppel" if koppel_nrs else "negeer"
         nummers = [int(n) for n in (koppel_nrs or negeer_nrs or "").split()]
-        dbg(f"[gelijkenis-keuze] {actie} {nummers or 'rest'} {type_nl or ''}"
-            f"{' omgekeerd' if omgekeerd else ''}")
+        dbg(f"{C_BLUE}→ gelijkenis-keuze ({actie} {nummers or 'rest'} {type_nl or ''}"
+            f"{' omgekeerd' if omgekeerd else ''}){C_RESET}")
         self.event_bus.publish("intent_similarity_keuze", {
             "actie": actie, "nummers": nummers, "rest": bool(rest),
             "type": type_nl, "omgekeerd": bool(omgekeerd)})
@@ -3757,13 +3757,13 @@ class IntentRouter:
         t = text.lower().strip().rstrip("?.! ").strip()
 
         if self._GRAAF_STATS.match(t):
-            dbg("[graaf-statistieken]")
+            dbg(f"{C_BLUE}→ graaf-statistieken{C_RESET}")
             self.event_bus.publish("intent_graph_stats", {})
             self._emit_topic("graaf_stats", bron="detect")
             return True
 
         if self._GRAAF_ALLES.match(t):
-            dbg("[graaf-alles]")
+            dbg(f"{C_BLUE}→ graaf-alles{C_RESET}")
             self.event_bus.publish("intent_graph_all", {})
             self._emit_topic("graaf_alles", bron="detect")
             return True
@@ -3776,7 +3776,7 @@ class IntentRouter:
             if not (self._graaf_woord_ok(a) and self._graaf_woord_ok(b)):
                 continue
             a, b = self._graaf_enkelvoud(a), self._graaf_enkelvoud(b)
-            dbg(f"[graaf-pad] {a} -> {b}")
+            dbg(f"{C_BLUE}→ graaf-pad: '{a}' -> '{b}'{C_RESET}")
             self.event_bus.publish("intent_graph_path", {"word_a": a, "word_b": b})
             self._emit_topic("graaf_pad", bron="detect", concept=a)
             return True
@@ -3790,7 +3790,7 @@ class IntentRouter:
                 continue
             woord = self._graaf_enkelvoud(woord)
             diepte = int(m.group(2)) if m.group(2) else 1
-            dbg(f"[graaf-toon] {woord} diepte {diepte}")
+            dbg(f"{C_BLUE}→ graaf-toon: '{woord}' (diepte {diepte}){C_RESET}")
             self.event_bus.publish("intent_graph_show", {"word": woord, "diepte": diepte})
             self._emit_topic("graaf_toon", bron="detect", concept=woord)
             return True
