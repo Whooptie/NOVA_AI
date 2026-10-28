@@ -15,9 +15,12 @@ except Exception:
 # plus vijf") vertalen naar een kale expressie voor math.py. Defensief
 # geimporteerd: ontbreekt het bestand, dan werkt detect_math() zoals voorheen.
 try:
-    from core.rekenwoorden import vertaal_rekenzin as _vertaal_rekenzin
+    from core.rekenfuncties import vertaal_wiskundezin as _vertaal_rekenzin
 except Exception:
-    _vertaal_rekenzin = None
+    try:
+        from core.rekenwoorden import vertaal_rekenzin as _vertaal_rekenzin
+    except Exception:
+        _vertaal_rekenzin = None
 
 C_RESET = "\033[0m"
 C_GREEN = "\033[92m"
@@ -2196,7 +2199,7 @@ class IntentRouter:
         # zinsvorm nog niet. "om" is optioneel: zowel "zet ... om naar
         # ..." als "converteer ... naar ..." moeten werken.
         m = re.search(
-            r'(?:zet|converteer|reken)\s+(\d+(?:[.,]\d+)?)\s*([a-zA-Zµ°]+)\s+(?:om\s+)?naar\s+([a-zA-Zµ°éë]+)',
+            r'(?:zet|converteer|reken)\s+(\d+(?:[.,]\d+)?)\s*([a-zA-Zµ°]+)\s+(?:om\s+)?naar\s+(?!(?:binair|octaal|hexadecimaal|hex)\b)([a-zA-Zµ°éë]+)',
             t, re.IGNORECASE
         )
         if m:

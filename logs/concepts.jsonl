@@ -313,3 +313,7 @@
 {"timestamp": "2026-10-23T20:13:52.544039", "event_type": "concept_created", "word": "betekenissen", "source": "system", "new_value": {"word": "betekenissen"}}
 {"timestamp": "2026-10-25T09:42:03.097511", "event_type": "concept_created", "word": "fouten", "source": "system", "new_value": {"word": "fouten"}}
 {"timestamp": "2026-10-25T11:07:10.344808", "event_type": "concept_created", "word": "vogelµ", "source": "system", "new_value": {"word": "vogelµ"}}
+{"timestamp": "2026-10-28T18:45:25.176151", "event_type": "concept_created", "word": "sorteer", "source": "system", "new_value": {"word": "sorteer"}}
+{"timestamp": "2026-10-28T18:45:25.242734", "event_type": "concept_created", "word": "positie", "source": "system", "new_value": {"word": "positie"}}
+{"timestamp": "2026-10-28T18:46:05.826237", "event_type": "concept_created", "word": "stel", "source": "system", "new_value": {"word": "stel"}}
+{"timestamp": "2026-10-28T18:46:16.414517", "event_type": "concept_created", "word": "opstel", "source": "system", "new_value": {"word": "opstel"}}

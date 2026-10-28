@@ -101232,5 +101232,197 @@
         "timestamp": "2026-10-26T20:30:00.000000"
       }
     ]
+  },
+  "sorteer": {
+    "senses": [
+      {
+        "sense_id": "sorteer#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-28T18:45:25.176143",
+      "updated_at": "2026-10-28T18:45:25.176536",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-28T18:45:25.176536",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-28T18:45:25.176536",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "sorteer"
+        },
+        "timestamp": "2026-10-28T18:45:25.176147"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "sorteer#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-28T18:45:25.176534"
+      }
+    ]
+  },
+  "positie": {
+    "senses": [
+      {
+        "sense_id": "positie#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-28T18:45:25.242719",
+      "updated_at": "2026-10-28T18:45:25.243133",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-28T18:45:25.243133",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-28T18:45:25.243133",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "positie"
+        },
+        "timestamp": "2026-10-28T18:45:25.242729"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "positie#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-28T18:45:25.243131"
+      }
+    ]
+  },
+  "stel": {
+    "senses": [
+      {
+        "sense_id": "stel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-28T18:46:05.826229",
+      "updated_at": "2026-10-28T18:46:05.826405",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-28T18:46:05.826405",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-28T18:46:05.826405",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "stel"
+        },
+        "timestamp": "2026-10-28T18:46:05.826233"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "stel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-28T18:46:05.826402"
+      }
+    ]
+  },
+  "opstel": {
+    "senses": [
+      {
+        "sense_id": "opstel#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-10-28T18:46:16.414509",
+      "updated_at": "2026-10-28T18:46:16.414695",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-10-28T18:46:16.414695",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-10-28T18:46:16.414695",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "opstel"
+        },
+        "timestamp": "2026-10-28T18:46:16.414513"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "opstel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-10-28T18:46:16.414692"
+      }
+    ]
   }
 }

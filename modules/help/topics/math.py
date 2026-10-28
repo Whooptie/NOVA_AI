@@ -32,7 +32,9 @@ Alle notatie hieronder werkt zoals je het al gewend bent: "^" voor machten,
   transpose([[1,2],[3,4]])        (getransponeerde matrix)
   identity(3)                     (3x3 eenheidsmatrix)
   solve([[2,1],[1,3]], [5,10])    (stelsel vergelijkingen oplossen)
-  rotX(90)   rotY(90)   rotZ(90)  (rotatiematrix rond een as, in graden)
+  rotX(1.5708)   rotY(1.5708)   rotZ(1.5708)
+                                   (rotatiematrix rond een as, hoek in RADIALEN;
+                                    in gewone taal mag je graden zeggen)
 
 ➗ ALGEBRA (numeriek)
   wortel(1, -5, 6)                (kwadratische vergelijking oplossen)
@@ -111,6 +113,17 @@ Alle notatie hieronder werkt zoals je het al gewend bent: "^" voor machten,
   meetkundige_reeks(1, 2, 5)       (meetkundige reeks)
   kans_dobbelsteen(2, 7)           (kans op een bepaalde som met dobbelstenen)
   kans_kaart(4, 52, 5)             (kans op minstens 1 gewenste kaart)
+
+🗣️ IN GEWONE TAAL (je hoeft de formulenaam niet te kennen)
+  zoek de waarde van x, als 2x + 3 = 11      ontbind x^2 - 4
+  werk de haakjes uit van (x+1)^2             de afgeleide van x kwadraat in 3
+  de integraal van x^2 van 0 tot 3            de limiet van sin(x)/x als x naar 0 gaat
+  de grootste gemene deler van 48 en 18       is zeventien een priemgetal
+  het gemiddelde van 2, 4 en 6                255 naar binair
+  het inproduct van [1,2,3] en [4,5,6]        de determinant van [[1,2],[3,4]]
+  de kracht bij een massa van 1000 en een versnelling van 3
+  de kans op een som van 7 met 2 dobbelstenen
+  1/3 + 1/6 als breuk                         sorteer [5,2,8,1]
 
 ℹ️ Dit is het volledige overzicht van math.py. Voor de architectuur en
    redenen achter keuzes: zie math_roadmap.md.

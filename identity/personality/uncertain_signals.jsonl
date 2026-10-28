@@ -1457,3 +1457,56 @@
 {"text": "vergeet: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-27T20:29:27.907024"}
 {"text": "wis definitief: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-27T20:30:07.471583"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-27T20:32:21.620723"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:03.797296"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:08.195924"}
+{"text": "wat is de som van drie en vijf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0787, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:20.427163"}
+{"text": "twee maal de som van drie en vijf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0091, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:25.927672"}
+{"text": "wat is twee komma vijf plus een", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:31.397356"}
+{"text": "twintig procent van tachtig", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0038, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:38.676631"}
+{"text": "bereken (drie plus vijf) maal twee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:47.707125"}
+{"text": "het verschil tussen 4 en 10", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0487, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:53.700882"}
+{"text": "de wortel van negen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0091, "bron": "model_fallback", "tijdstip": "2026-10-28T16:22:59.391045"}
+{"text": "vijf kwadraat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-28T16:23:05.797980"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-28T16:34:20.441696"}
+{"text": "zoek de waarde van x, als 2x + 3 = 11", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0091, "bron": "model_fallback", "tijdstip": "2026-10-28T16:34:32.376070"}
+{"text": "ontbind x^2 - 4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-28T16:34:39.127008"}
+{"text": "de grootste gemene deler van 48 en 18", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0091, "bron": "model_fallback", "tijdstip": "2026-10-28T16:34:46.969228"}
+{"text": "wat wordt het weer morgen?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0679, "bron": "model_fallback", "tijdstip": "2026-10-28T19:24:58.260621"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-28T19:43:12.902391"}
+{"text": "het inproduct van [1,2,3] en [4,5,6]", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0174, "bron": "model_fallback", "tijdstip": "2026-10-28T19:43:21.609249"}
+{"text": "de lengte van vector [3,4]", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0091, "bron": "model_fallback", "tijdstip": "2026-10-28T19:43:29.736098"}
+{"text": "de determinant van [[1,2],[3,4]]", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0091, "bron": "model_fallback", "tijdstip": "2026-10-28T19:43:34.275323"}
+{"text": "de determinant van [1 2; 3 4]", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0091, "bron": "model_fallback", "tijdstip": "2026-10-28T19:43:38.282350"}
+{"text": "los het stelsel [[2,1],[1,3]] met [5,10] op", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0253, "bron": "model_fallback", "tijdstip": "2026-10-28T19:43:44.303220"}
+{"text": "de rotatiematrix rond de x-as met 90 graden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-28T19:43:51.244000"}
+{"text": "de kracht bij een massa van 1000 kg en een versnelling van 3 m/s2", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.001, "bron": "model_fallback", "tijdstip": "2026-10-28T19:44:00.739037"}
+{"text": "de snelheid na 3 seconden bij een beginsnelheid van 0 en een versnelling van 9,81", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.001, "bron": "model_fallback", "tijdstip": "2026-10-28T19:44:09.072100"}
+{"text": "het bereik van een projectiel met snelheid 20 m/s onder een hoek van 45 graden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0051, "bron": "model_fallback", "tijdstip": "2026-10-28T19:44:15.613033"}
+{"text": "de kans op een som van 7 met 2 dobbelstenen", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0079, "bron": "model_fallback", "tijdstip": "2026-10-28T19:44:25.171236"}
+{"text": "de kans op precies 3 successen bij 10 pogingen en een kans van 0,5", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.004, "bron": "model_fallback", "tijdstip": "2026-10-28T19:44:34.077450"}
+{"text": "1/3 + 1/6 als breuk", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-28T19:44:39.211207"}
+{"text": "de som van x^2 voor x van 1 tot 5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0243, "bron": "model_fallback", "tijdstip": "2026-10-28T19:44:46.550206"}
+{"text": "de correlatie tussen [1,2,3,4] en [2,4,6,8]", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-28T19:44:54.908430"}
+{"text": "sorteer [5,2,8,1], de positie van 7 in [1,3,5,7,9], de levenshtein afstand tussen kitten en sitting, stel de precisie in op 3, x^2 + 2x + 1 voor x = 3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-28T19:45:00.570368"}
+{"text": "sorteer [5,2,8,1], de positie van 7 in [1,3,5,7,9]", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0158, "bron": "model_fallback", "tijdstip": "2026-10-28T19:45:25.163620"}
+{"text": "sorteer [5,2,8,1]", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-28T19:45:34.637065"}
+{"text": "de positie van 7 in [1,3,5,7,9]", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0158, "bron": "model_fallback", "tijdstip": "2026-10-28T19:45:41.962407"}
+{"text": "de levenshtein afstand tussen kitten en sitting", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-28T19:45:51.041275"}
+{"text": "stel de precisie in op", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-10-28T19:46:05.817793"}
+{"text": "stel de precisie in op3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0166, "bron": "model_fallback", "tijdstip": "2026-10-28T19:46:13.034522"}
+{"text": "stel de precisie in opstel de precisie in op", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0088, "bron": "model_fallback", "tijdstip": "2026-10-28T19:46:16.408451"}
+{"text": "stel de precisie in op", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-10-28T19:46:19.996666"}
+{"text": "stel de precisie in op 3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0075, "bron": "model_fallback", "tijdstip": "2026-10-28T19:46:24.218627"}
+{"text": "x^2 + 2x + 1 voor x = 3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-28T19:46:44.722510"}
+{"text": "reset de precisie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-28T19:50:38.804011"}
+{"text": "de kans op minstens een van de 4 gewenste kaarten als ik 5 kaarten trek uit 52", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0157, "bron": "model_fallback", "tijdstip": "2026-10-28T19:50:53.421280"}
+{"text": "meetkundige reeks met beginwaarde 1, factor 2 en 5 termen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-28T19:51:03.678917"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-28T19:55:01.324459"}
+{"text": "de rotatiematrix rond de x-as met 90 graden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-28T19:55:12.358004"}
+{"text": "hoeveel ml is 250 cl", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-10-28T20:04:18.890662"}
+{"text": "5 km in m", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0098, "bron": "model_fallback", "tijdstip": "2026-10-28T20:04:28.576026"}
+{"text": "zet 5 km om naar m", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0619, "bron": "model_fallback", "tijdstip": "2026-10-28T20:04:36.227164"}
+{"text": "zet 255 om naar binair", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0619, "bron": "model_fallback", "tijdstip": "2026-10-28T20:04:44.877891"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-28T20:05:16.215335"}
+{"text": "zet 255 om naar binair", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0619, "bron": "model_fallback", "tijdstip": "2026-10-28T20:05:26.922529"}
+{"text": "hoeveel ml is 250 cl", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-10-28T20:05:33.823498"}

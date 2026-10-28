@@ -54,6 +54,9 @@ def test_geen_getalwoord_geeft_none(woord):
     ("wat is 7*6", "7 * 6"),
     ("wat is 3 x 4", "3 * 4"),
     ("reken uit 2^10", "2 ^ 10"),
+    # sinds 28 oktober 2026 wel ondersteund (parser)
+    ("wat is twee komma vijf plus een", "2.5 + 1"),
+    ("wat is (3+5)*2", "(3 + 5) * 2"),
 ])
 def test_vertaal_rekenzin(zin, verwacht):
     assert vertaal_rekenzin(zin) == verwacht
@@ -72,8 +75,6 @@ def test_vertaal_rekenzin(zin, verwacht):
     "wat is er gebeurd op 9/11",              # datumvraag blijft datumvraag
     "gebeurtenissen op 9/11",
     "ik wil twee plus een gratis",
-    "wat is twee komma vijf plus een",        # niet ondersteund
-    "wat is (3+5)*2",                         # haakjes: niet ondersteund
     "wat is drie vijf plus twee",
 ])
 def test_geen_rekenzin_geeft_none(zin):

@@ -2407,3 +2407,25 @@ Punt 9 uit "Volgende stappen" afgerond. Zie `nova_state.md`, sectie "Bi-temporel
 **Tests:** 51 nieuw (20 + 21 + 10), volledige suite 3054 geslaagd, 1 overgeslagen. Isolatie via `monkeypatch` op `get_project_root` (geen pad-parameter in `KevinProfile`/`EmergenceEngine`) en stubs voor het profiel.
 
 **Live bevestigd:** v3-migratie bij opstart, `vergeet:` met nieuwe bevestiging, insight "tot 27 oktober gold: je hield van thee" in `emergence`, `wis definitief:`. Het hardop-pad zelf is enkel via pytest bevestigd (in die ronde won het trending-woord op marge). Cosmetisch: de melding "niet gevonden" bij `wis definitief` op een al beëindigd woord is gefixt door eerst `_vind_woord()` te checken.
+
+---
+
+## ✅ Punt 7 fase 1 — rekenzinnen als echte parser + gewone taal naar formules (28 oktober 2026)
+
+Kevin wilde wiskunde in gewone taal kunnen zeggen, ook als hij de naam van de formule niet kent ("ontbind x^2 - 4", "de grootste gemene deler van 48 en 18"). Volledig symbolisch gebouwd, geen ML of LLM.
+
+**`core/rekenwoorden.py` (vervangen door een parser):** tokenizer, woord- en woordgroeptabel en een recursieve parser (+/-, */÷, ^ rechts-associatief, machten achter een getal). Ondersteunt haakjes (ook "haakje openen/sluiten"), "de som/het product/het verschil/het quotiënt van", komma-getallen in woorden en cijfers, procent, helft/dubbele, kwadraat en "tot de derde macht", wortel. Dubbelzinnige zinnen ("de helft van twintig plus vier") geven bewust `None`; "het verschil" wordt `abs(a - b)`; een minteken vooraan wordt niet ondersteund.
+
+**`core/rekenfuncties.py` (nieuw):** tabel met zinssjablonen die elk naar één math.py-functie wijzen, met strenge controle van de argumenten (getallen in cijfers of woorden, formules met x/y/z/t, sin/cos/tan/log/ln/exp/sqrt/abs). Dekt vergelijkingen en stelsels, afgeleide, integraal, limiet, ontbinden, uitwerken, vereenvoudigen, nulpunten, ggd/kgv, faculteit, priemgetallen, modulo, combinaties, permutaties, statistiek, talstelsels, afronden, absolute waarde (deel 1) en vectoren, matrices, rotatiematrices, fysica, kansen, breuken, sigma, meetkundige reeks, regressie/correlatie, formule op een punt, nulpunt vanaf een startwaarde, precisie, sorteren, zoeken en levenshtein (deel 2). `vertaal_wiskundezin()` probeert eerst de sjablonen en daarna `vertaal_rekenzin()`.
+
+**`intent_router.py`:** de import bovenaan wijst nu naar `vertaal_wiskundezin` (met terugval op `vertaal_rekenzin`); de hook in `detect_math()` is ongewijzigd. Eenhedenomrekeningen lopen ongewijzigd via `detect_conversie()`, dat vóór `detect_math()` in de tabel staat.
+
+**Bevinding:** `rotX/rotY/rotZ` in `math.py` rekenen in radialen (de eenheid `deg` bestaat wel, maar de functies eisen een gewoon getal). De helptekst zei ten onrechte "in graden". De vertaler rekent graden zelf om (90 graden → `rotX(1.5707963267948966)`).
+
+**Tests:** `test_rekenwoorden_parser.py` (88), `test_rekenfuncties.py` (76) en `test_rekenfuncties_uitbreiding.py` (59) nieuw; in `test_rekenwoorden.py` zijn 2 verwachtingen omgedraaid. Teststand 3054 → 3278 (3277 groen, 1 overgeslagen).
+
+**Live bevestigd (battleserver):** rekenzinnen (som van, procent, wortel, kwadraat, verschil), vergelijking (x = 4), ontbinden, ggd (6), inproduct (32), norm (5), determinant (−2), stelsel, rotatie, kracht (3000 N), snelheid na t, projectiel, dobbelstenen (16,67%), binomiaal, kaarten (34,1158%), meetkundige reeks (31), breuken, sigma (55), correlatie, sorteren, zoeken, levenshtein en precisie.
+
+**Help-tekst:** `modules/help/topics/math.py` aangevuld met het blok "IN GEWONE TAAL" en de rot-regel gecorrigeerd (radialen).
+
+**Open:** complexe getallen, grafen, `dv`/`val_met_weerstand` en breuken in woorden; fase 2 (LLM als vertaler voor vrije vraagstukken, met bevestiging) staat in `nova_state.md` punt 7.

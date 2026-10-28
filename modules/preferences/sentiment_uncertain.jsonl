@@ -70,3 +70,8 @@
 {"text": "blik weer terug", "categorie": "neutraal_gemengd", "marge": 0.061, "grof_sentiment_regex": null, "tijdstip": "2026-10-25T12:53:13.462084"}
 {"text": "toon volledige graaf", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-26T20:32:29.656588"}
 {"text": "koppel 1 2 3 6 7", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-27T19:04:21.514324"}
+{"text": "sorteer [5,2,8,1]", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-28T19:45:34.635162"}
+{"text": "stel de precisie in op3", "categorie": "positief", "marge": 0.0596, "grof_sentiment_regex": null, "tijdstip": "2026-10-28T19:46:13.032524"}
+{"text": "stel de precisie in opstel de precisie in op", "categorie": "positief", "marge": 0.0683, "grof_sentiment_regex": null, "tijdstip": "2026-10-28T19:46:16.406708"}
+{"text": "stel de precisie in op", "categorie": "positief", "marge": 0.0621, "grof_sentiment_regex": null, "tijdstip": "2026-10-28T19:46:19.994771"}
+{"text": "stel de precisie in op 3", "categorie": "positief", "marge": 0.0621, "grof_sentiment_regex": null, "tijdstip": "2026-10-28T19:46:24.216560"}

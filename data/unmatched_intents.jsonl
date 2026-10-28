@@ -167,3 +167,8 @@
 {"tekst": "", "hoogste_gok": "chess", "confidence": 0.1137, "tijdstip": "2026-10-25T12:56:58.202618"}
 {"tekst": "toon volledige graag", "hoogste_gok": "chess", "confidence": 0.1131, "tijdstip": "2026-10-26T20:32:22.594088"}
 {"tekst": "koppel 1 2 3 6 7koppel 1 2 3 6 7", "hoogste_gok": "math", "confidence": 0.2605, "tijdstip": "2026-10-27T19:04:17.427723"}
+{"tekst": "sorteer [5,2,8,1], de positie van 7 in [1,3,5,7,9]", "hoogste_gok": "math", "confidence": 0.1677, "tijdstip": "2026-10-28T19:45:25.175359"}
+{"tekst": "stel de precisie in op", "hoogste_gok": "math", "confidence": 0.1386, "tijdstip": "2026-10-28T19:46:05.825926"}
+{"tekst": "stel de precisie in op3", "hoogste_gok": "math", "confidence": 0.1368, "tijdstip": "2026-10-28T19:46:13.041929"}
+{"tekst": "stel de precisie in opstel de precisie in op", "hoogste_gok": "math", "confidence": 0.1369, "tijdstip": "2026-10-28T19:46:16.414206"}
+{"tekst": "stel de precisie in op", "hoogste_gok": "math", "confidence": 0.1386, "tijdstip": "2026-10-28T19:46:20.002295"}
