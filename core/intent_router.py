@@ -1346,6 +1346,26 @@ class IntentRouter:
                 # expression_injector), net als greeting/fallback al
                 # deden. response_pipeline.py verzint daarbij GEEN nieuwe
                 # tekst, het voegt enkel Nova's stemming/expressie toe.
+                # Meerduidig woord (30 oktober 2026): heeft het woord meerdere
+                # betekenissen en geeft de zin geen aanwijzing, dan slaan we
+                # Layer 4 over en laat ChatModule vragen welke betekenis
+                # bedoeld is. We sturen WEL intent_definition, met de extra
+                # aanduiding "betekenis_keuze".
+                keuzes = None
+                if self.semantic and hasattr(self.semantic, "get_betekenis_keuzes"):
+                    try:
+                        keuzes = self.semantic.get_betekenis_keuzes(word, t.split())
+                    except Exception:
+                        keuzes = None
+                if isinstance(keuzes, tuple):
+                    dbg(f"{C_BLUE}→ definition (meerduidig, keuzevraag): '{word}'{C_RESET}")
+                    self.event_bus.publish("intent_definition", {
+                        "text": text,
+                        "word": word,
+                        "betekenis_keuze": True
+                    })
+                    return True
+
                 response_engine = self.event_bus.modules.get("response_engine")
 
                 if response_engine is not None:
@@ -5487,6 +5507,17 @@ class IntentRouter:
         if self.semantic and self.semantic.pending_reactivation:
             self.semantic.handle_reactivation_confirm(text)
             return
+
+        # -1F2 Pending betekenis-keuze bij een meerduidig woord (30 oktober
+        # 2026) -- zelfde voorrang-redenering als -1F hierboven: een "2" als
+        # antwoord op "welke betekenis bedoel je?" mag nooit door de
+        # generieke sense-choice-check (text.isdigit()) verderop opgevangen
+        # worden. Geeft handle_definitie_keuze() False terug (Kevin begon
+        # over iets anders), dan vervalt de vraag en loopt de routing gewoon door.
+        if self.semantic:
+            pending_keuze = getattr(self.semantic, "pending_definitie_keuze", None)
+            if isinstance(pending_keuze, dict) and self.semantic.handle_definitie_keuze(text):
+                return
 
         # -1G Pending referentie-vraag (Taal & Redeneerlimieten, idee
         # 1+2, zie taal_en_redeneerlimieten_roadmap.md) -- als Nova net

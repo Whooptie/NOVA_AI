@@ -1199,6 +1199,20 @@ class RelationEngine:
 
         return list(dict.fromkeys(results))
 
+    def is_afgewezen(self, subject: str, relation_type: str, target: str) -> bool:
+        """True als deze relatie ooit is afgewezen (status 'rejected')."""
+        concept = self.store.get_concept(subject.lower().strip())
+        if not concept:
+            return False
+        target = target.lower().strip()
+        for sense in concept.get("senses", []):
+            for rel in sense.get("relations", []):
+                if (rel.get("type") == relation_type
+                        and rel.get("target") == target
+                        and rel.get("status") == "rejected"):
+                    return True
+        return False
+
     def is_a(self, source: str, target: str) -> bool:
         source = source.lower().strip()
         target = target.lower().strip()
@@ -1274,6 +1288,62 @@ class ReasoningEngine:
         # dus bewust korter dan MAX_DEPTH (6). causes_chained() zelf
         # blijft ongewijzigd MAX_DEPTH gebruiken.
         self.MAX_DEPTH_CAUSAL = 4
+
+    # Categorieën die elkaar uitsluiten (eerder lokaal in find_contradictions(),
+    # nu gedeeld met explain_is_a()).
+    INCOMPATIBLE_GROUPS = [
+        # Concrete soorten dingen: iets is er maar één van.
+        {"dier", "plant", "meubel", "voertuig", "gebouw", "apparaat",
+         "voedsel", "kledingstuk", "sieraad", "gereedschap",
+         "hemellichaam", "orgaan"},
+        # Dierklassen sluiten elkaar uit.
+        {"zoogdier", "vogel", "vis", "reptiel", "amfibie", "insect"},
+        # Abstracte categorieën.
+        {"kleur", "gevoel", "getal", "beroep", "activiteit"},
+        {"levend", "niet-levend"},
+        {"vloeibaar", "vast", "gas"},
+    ]
+    SYNONIEMEN = {"meubelstuk": "meubel", "voedingsmiddel": "voedsel"}
+
+    def _is_a_voorouders(self, woord: str) -> list:
+        """Alle voorouders via is_a (breadth-first, begrensd door MAX_DEPTH)."""
+        woord = woord.lower().strip()
+        gezien = []
+        wachtrij = [(woord, 0)]
+        while wachtrij:
+            huidig, diepte = wachtrij.pop(0)
+            if diepte >= self.MAX_DEPTH:
+                continue
+            for ouder in self.relation_engine.get_relations(huidig, relation_type="is_a"):
+                if ouder != woord and ouder not in gezien:
+                    gezien.append(ouder)
+                    wachtrij.append((ouder, diepte + 1))
+        return gezien
+
+    def _botst_is_a(self, source: str, target: str):
+        """
+        Geeft de voorouder van 'source' terug die 'target' uitsluit
+        (zelfde onverenigbare groep, andere categorie), of None.
+        """
+        t = self.SYNONIEMEN.get(target, target)
+        for groep in self.INCOMPATIBLE_GROUPS:
+            if t not in groep:
+                continue
+            for ouder in self._is_a_voorouders(source):
+                o = self.SYNONIEMEN.get(ouder, ouder)
+                if o in groep and o != t:
+                    return ouder
+        return None
+
+    def _is_onbekend(self, woord: str) -> bool:
+        """True als het woord geen enkele echte (niet-afgewezen) betekenis heeft."""
+        concept = self.store.get_concept(woord.lower().strip())
+        if not concept:
+            return True
+        return not any(
+            s.get("definition") != "unknown" and s.get("status") != "rejected"
+            for s in concept.get("senses", [])
+        )
 
     # ---------------------------------------------------------
     # 7.1 Chaining — is A via tussenstappen een B?
@@ -1493,23 +1563,8 @@ class ReasoningEngine:
         contradictions = []
 
         # --- 1. is_a: onverenigbare categorieën ---
-        INCOMPATIBLE_GROUPS = [
-            # Concrete soorten dingen: iets is er maar één van.
-            {"dier", "plant", "meubel", "voertuig", "gebouw", "apparaat",
-             "voedsel", "kledingstuk", "sieraad", "gereedschap",
-             "hemellichaam", "orgaan"},
-            # Dierklassen sluiten elkaar uit.
-            {"zoogdier", "vogel", "vis", "reptiel", "amfibie", "insect"},
-            # Abstracte categorieën.
-            {"kleur", "gevoel", "getal", "beroep", "activiteit"},
-            {"levend", "niet-levend"},
-            {"vloeibaar", "vast", "gas"},
-        ]
-
-        # Synoniemen tellen als dezelfde categorie, anders geeft een woord
-        # dat beide heeft (bv. 'tafel' is_a meubel + meubelstuk) onterecht
-        # een conflict.
-        SYNONIEMEN = {"meubelstuk": "meubel", "voedingsmiddel": "voedsel"}
+        INCOMPATIBLE_GROUPS = self.INCOMPATIBLE_GROUPS
+        SYNONIEMEN = self.SYNONIEMEN
 
         parents = self.relation_engine.get_relations(word, relation_type="is_a")
 
@@ -1578,6 +1633,15 @@ class ReasoningEngine:
         een = "een " if lidwoord else ""
 
         if not found:
+            s = source.lower().strip()
+            t = target.lower().strip()
+            if self.relation_engine.is_afgewezen(s, "is_a", t):
+                return f"Nee, dat heb je eerder afgewezen: {een}{source} is geen {target}."
+            botsend = self._botst_is_a(s, t)
+            if botsend:
+                return f"Nee, {een}{source} is een {botsend}, en dat sluit '{target}' uit."
+            if self._is_onbekend(s) and not self.relation_engine.get_relations(s, relation_type="is_a"):
+                return f"Ik ken '{source}' niet, dus ik kan dat niet beoordelen."
             return self._geen_bewijs_met_alternatief(
                 source, target, relation_type="is_a",
                 sjabloon="Ik kan niet bewijzen dat '{source}' een '{target}' is, "
@@ -2419,6 +2483,15 @@ class RelationFlowEngine:
         subject = subject.strip()
         obj = obj.strip()
 
+        # Eerder afgewezen? Dan niet opnieuw vragen, maar zeggen waarom.
+        if self.relation_engine.is_afgewezen(subject, relation_type, obj):
+            self.pending_relation = None
+            self._send_chat(
+                f"Dat heb je eerder afgewezen: '{subject}' "
+                f"{self._rel_tekst(relation_type)} '{obj}'. Ik sla het niet opnieuw op."
+            )
+            return
+
         self.pending_relation = {
             "subject": subject,
             "object": obj,
@@ -2640,6 +2713,9 @@ class SemanticConceptsModule:
         # eigen, kleinere state -- dit gaat over sense-reactivatie, niet
         # over een nieuwe relatie tussen twee woorden.
         self.pending_reactivation = None
+        # 30 oktober 2026: wachtende "welke betekenis bedoel je?"-vraag bij
+        # een meerduidig woord. None = er wacht niets.
+        self.pending_definitie_keuze = None
         self.flow_engine = RelationFlowEngine(
             self.store, self.sense_engine, self.relation_engine, event_bus
         )
@@ -2808,6 +2884,138 @@ class SemanticConceptsModule:
 
         # 3. zoek definitie (met optionele sense-disambiguatie, Bug #10)
         return self.sense_engine.get_best_definition(word, context_words)
+
+    # ---------------------------------------------------------
+    # Betekenis-keuze bij meerduidige woorden (30 oktober 2026)
+    # ---------------------------------------------------------
+    _ORDINALEN = {
+        "1e": 1, "eerste": 1,
+        "2e": 2, "tweede": 2,
+        "3e": 3, "derde": 3,
+        "4e": 4, "vierde": 4,
+        "5e": 5, "vijfde": 5,
+    }
+
+    def get_betekenis_keuzes(self, word, context_words=None):
+        """
+        Geeft (woord, lijst_senses) terug als 'word' meerdere echte
+        betekenissen heeft EN er geen aanwijzing is welke bedoeld is.
+        Anders None (dan is er niets te vragen).
+
+        Geen vraag nodig als:
+        - het woord minder dan 2 echte (niet-afgewezen) betekenissen heeft;
+        - de zin zelf een signaalwoord bevat (detect_sense vindt een winnaar);
+        - Kevin ooit een voorkeur instelde ("onthoud sense <woord>")
+          die naar een bestaande sense verwijst.
+
+        De beste sense (hoogste confidence) staat altijd als eerste.
+        Puur symbolisch, geen ML.
+        """
+        try:
+            pos_guess = self.sense_engine.detect_pos(word)
+            woord = self.teach_engine._normalize_plural_if_noun(word, pos_guess)
+        except Exception:
+            woord = word
+        woord = (woord or "").lower().strip()
+        if not woord:
+            return None
+
+        echte = [
+            s for s in self.sense_engine.get_senses(woord)
+            if s.get("definition") != "unknown" and s.get("status") != "rejected"
+        ]
+
+        # Dubbele definities eruit; hoogste confidence eerst (sorted is stabiel).
+        uniek = []
+        gezien = set()
+        for s in sorted(echte, key=lambda x: x.get("confidence", 0), reverse=True):
+            definitie = s.get("definition")
+            if definitie in gezien:
+                continue
+            gezien.add(definitie)
+            uniek.append(s)
+
+        if len(uniek) < 2:
+            return None
+
+        if context_words and self.sense_engine.detect_sense(woord, context_words):
+            return None
+
+        kevin_profile = self.event_bus.modules.get("kevin_profile") if self.event_bus else None
+        if kevin_profile is not None:
+            try:
+                voorkeur = kevin_profile.get_sense_voorkeur(woord)
+            except Exception:
+                voorkeur = None
+            if voorkeur and any(s.get("sense_id") == voorkeur for s in uniek):
+                return None
+
+        return woord, uniek
+
+    def start_definitie_keuze(self, word, context_words=None) -> bool:
+        """
+        Stelt de vraag "welke betekenis bedoel je?" en onthoudt de opties.
+        Geeft True terug als de vraag gesteld is, False als er niets te
+        kiezen valt (dan moet de aanroeper gewoon antwoorden).
+        """
+        keuzes = self.get_betekenis_keuzes(word, context_words)
+        if not keuzes:
+            return False
+
+        woord, senses = keuzes
+        regels = [f"Bij '{woord}' ken ik meer dan één betekenis, dus welke bedoel je?"]
+        for i, s in enumerate(senses, start=1):
+            regels.append(f"{i}. {s.get('definition')}")
+        regels.append("Antwoord met het nummer.")
+
+        self.pending_definitie_keuze = {
+            "woord": woord,
+            "senses": [
+                {"sense_id": s.get("sense_id"), "definition": s.get("definition")}
+                for s in senses
+            ],
+        }
+        self._send_chat("\n".join(regels))
+        return True
+
+    def handle_definitie_keuze(self, user_input: str) -> bool:
+        """
+        Verwerkt het antwoord op de keuzevraag. Geeft True terug als het
+        bericht als antwoord is behandeld (de router stopt dan), False als
+        het een ander onderwerp was (de vraag vervalt, de router gaat
+        gewoon door met het bericht).
+        """
+        pending = self.pending_definitie_keuze
+        if not pending:
+            return False
+
+        t = user_input.strip().lower().rstrip(".!?, ")
+        for lidwoord in ("de ", "het "):
+            if t.startswith(lidwoord):
+                t = t[len(lidwoord):].strip()
+                break
+
+        if t.isdigit():
+            nummer = int(t)
+        else:
+            nummer = self._ORDINALEN.get(t)
+
+        if nummer is None:
+            # Geen nummer: Kevin begon over iets anders -> vraag vervalt.
+            self.pending_definitie_keuze = None
+            return False
+
+        senses = pending["senses"]
+        if nummer < 1 or nummer > len(senses):
+            self._send_chat(f"Kies een nummer tussen 1 en {len(senses)}.")
+            return True  # vraag blijft open
+
+        gekozen = senses[nummer - 1]
+        self.pending_definitie_keuze = None
+        self.event_bus.publish("layer4_response", {
+            "text": f"{pending['woord']} betekent: {gekozen['definition']}"
+        })
+        return True
 
     def detect_sense(self, word, context_words):
         return self.sense_engine.detect_sense(word, context_words)

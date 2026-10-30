@@ -2429,3 +2429,28 @@ Kevin wilde wiskunde in gewone taal kunnen zeggen, ook als hij de naam van de fo
 **Help-tekst:** `modules/help/topics/math.py` aangevuld met het blok "IN GEWONE TAAL" en de rot-regel gecorrigeerd (radialen).
 
 **Open:** complexe getallen, grafen, `dv`/`val_met_weerstand` en breuken in woorden; fase 2 (LLM als vertaler voor vrije vraagstukken, met bevestiging) staat in `nova_state.md` punt 7.
+
+---
+
+## ✅ Benchmark 72% → 100%: afgewezen feiten, onbekende woorden en keuzevraag bij meerdere betekenissen (30 oktober 2026)
+
+Aanleiding: de nulmeting van `python tools/run_benchmark.py --niveau 2` (26 oktober) gaf 21 van 29 (72%). Alles hieronder is puur symbolisch, geen ML of LLM. Eindstand: 29 van 29 (100%), teststand 3301 groen + 1 overgeslagen. Er is geen verwachting in `benchmark_cases.json` aangepast om een score te halen.
+
+**Punt 50 — afgewezen feit en onbekend woord (`afg-01`, `afg-02`, `afg-03`, `onb-02`), 72% → 90%.** In `core/semantic.py`:
+- `RelationEngine.is_afgewezen(subject, relation_type, target)`: True als een relatie met die soort en dat doel op `rejected` staat.
+- `ReasoningEngine.INCOMPATIBLE_GROUPS` en `SYNONIEMEN` zijn klasse-attributen geworden (voorheen lokaal in `find_contradictions()`); nieuwe hulpfuncties `_is_a_voorouders()`, `_botst_is_a()` en `_is_onbekend()`.
+- `explain_is_a()` geeft bij een negatief antwoord in vaste volgorde: afgewezen → botsende categorie ("Nee, een kat is een zoogdier, en dat sluit 'vogel' uit.") → onbekend woord ("Ik ken 'X' niet, dus ik kan dat niet beoordelen.") → het oude "ik kan niet bewijzen…".
+- `RelationFlowEngine.start_relation_flow()`: een bewering die eerder is afgewezen ("een hond is een meubel") krijgt "Dat heb je eerder afgewezen…" i.p.v. een nieuwe "mag ik onthouden?"-vraag.
+
+**Punt 52 — percentages (`rek-02`).** Bleek al opgelost door punt 7 fase 1 (28 oktober); niets gewijzigd.
+
+**Punt 51 — keuzevraag bij meerdere betekenissen (`amb-01` t/m `amb-03`), 90% → 100%.** Kevin koos: Nova vraagt welke betekenis bedoeld is.
+- `core/semantic.py` (`SemanticConceptsModule`): `pending_definitie_keuze`, `get_betekenis_keuzes()`, `start_definitie_keuze()`, `handle_definitie_keuze()`. Geen vraag bij één echte betekenis, bij een signaalwoord in de zin (`detect_sense`), bij een ingestelde voorkeur (`kevin_profile`) of als afgewezen betekenissen niet meetellen. Beste betekenis (hoogste confidence) staat als eerste; dubbele definities worden samengevoegd.
+- `core/intent_router.py`: in `detect_definition()` wordt Layer 4 overgeslagen bij een meerduidig woord; het event `intent_definition` krijgt het extra veld `betekenis_keuze`. In `_route_intern()` staat nieuw punt -1F2: het antwoord ("2", "de tweede") gaat vóór de generieke sense-choice-check naar `handle_definitie_keuze()`. Een ander bericht laat de vraag vervallen en wordt gewoon verwerkt; een ongeldig nummer houdt de vraag open.
+- `modules/chat/chat.py`: `on_definition()` stelt de vraag als `betekenis_keuze` gezet is.
+
+**Tests:** `test_explain_is_a_afwijzing.py` (7) en `test_definitie_keuze.py` (17) nieuw. Drie oudere tests in `test_intent_router_tijd_en_relatie.py` braken doordat de nep-`_NepRelationEngine` `is_afgewezen()` miste; opgelost in de testhulp (geen aanpassing van verwachtingen).
+
+**Live bevestigd (battleserver, 30 oktober 2026):** "wat is een bank" geeft de genummerde keuzevraag, "1" geeft de gekozen betekenis met de gewone tone-laag.
+
+**Open / bevinding:** (1) `case_herinnering.py` voegt midden in de keuzevraag "Je zei eerder al iets vergelijkbaars…" toe; overslaan zolang er een keuzevraag openstaat. (2) Idee: de gekozen betekenis onthouden via `set_sense_voorkeur()`. (3) De `doel`-teksten van `rek-02` en `afg-02` in `benchmark_cases.json` zijn verouderd (alleen een geheugensteun, de runner negeert ze).

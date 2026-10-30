@@ -1510,3 +1510,7 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-28T20:05:16.215335"}
 {"text": "zet 255 om naar binair", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0619, "bron": "model_fallback", "tijdstip": "2026-10-28T20:05:26.922529"}
 {"text": "hoeveel ml is 250 cl", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-10-28T20:05:33.823498"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-30T19:51:45.974801"}
+{"text": "wat is een bank", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-30T19:52:02.784858"}
+{"text": "1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-30T19:52:21.827228"}
+{"text": "wat wordt het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0679, "bron": "model_fallback", "tijdstip": "2026-10-30T19:54:23.372553"}

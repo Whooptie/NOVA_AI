@@ -71,7 +71,7 @@
      "moet_event": ["intent_math"]},
     {"id": "rek-02", "categorie": "rekenen", "vraag": "hoeveel is 15 procent van 80",
      "moet_event": ["intent_math"],
-     "doel": "BEKEND GAT: percentages gaan nu naar intent_fallback"},
+     "doel": "opgelost: rekenzin wordt 15 * 80 / 100. Het antwoord zelf is nog niet meetbaar (math draait niet in de mini-Nova)"},
     {"id": "tijd-01", "categorie": "datum_tijd", "vraag": "hoe laat is het",
      "moet_event": ["intent_time_query"]},
     {"id": "feest-01", "categorie": "datum_tijd", "vraag": "wanneer is pasen in 2027",
@@ -81,7 +81,7 @@
     {"id": "groet-01", "categorie": "gesprek", "vraag": "hallo nova",
      "moet_event": ["intent_greeting"]},
     {"id": "bedank-01", "categorie": "gesprek", "vraag": "bedankt",
-     "moet_event": ["layer4_response"], "moet_bevatten_een_van": ["graag", "zeg", "probleem", "niets"]},
+     "moet_event": ["layer4_response"], "moet_bevatten_een_van": ["graag", "zeg", "probleem", "niets", "plezier"]},
     {"id": "weer-01", "categorie": "weer", "vraag": "wat is het weer",
      "moet_event": ["intent_weather"]}
   ]

@@ -1,7 +1,7 @@
 {
   "kennisdichtheid": 1792088050.865194,
   "personality_drift": 1790792458.600563,
-  "trending_topic:weer": 1790792465.983727,
+  "trending_topic:weer": 1793386914.620338,
   "scherm_focus": 1789498308.476603,
   "trending_topic:gebeurd": 1789843351.832547,
   "trending_topic:open": 1790448087.099271,
@@ -14,10 +14,10 @@
       "volgende_toegestaan": 1790859688.5405424
     },
     "trending_topic": {
-      "label": "gelijkenis",
+      "label": "weer",
       "getal": null,
-      "gezegd_op": 1793214307.9046,
-      "volgende_toegestaan": 1793284875.135322
+      "gezegd_op": 1793386914.620667,
+      "volgende_toegestaan": 1793461054.9166727
     },
     "woordverband": {
       "label": "nieuw|partij",

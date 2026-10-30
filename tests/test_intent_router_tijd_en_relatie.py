@@ -184,12 +184,22 @@ class _NepRelationEngine:
     def get_relations(self, woord, relation_type=None):
         return list(self.relaties)
 
+    def is_afgewezen(self, subject, relation_type, target):
+        # Deze oude tests gaan over de "ik weet wel dat..."-zin,
+        # niet over afgewezen feiten (die staan in test_explain_is_a_afwijzing.py).
+        return False
+
 
 def _maak_reasoning(gevonden, pad, alternatieven=()):
     klasse = _reasoning_klasse()
     obj = klasse.__new__(klasse)  # __init__ overslaan: geen bestanden/engines nodig
     obj.is_a_chained = lambda s, t: (gevonden, list(pad))
     obj.relation_engine = _NepRelationEngine(alternatieven)
+    # De nieuwe controles (botsende categorie, onbekend woord) bewust uit:
+    # deze tests meten alleen de oude antwoordzinnen. De nieuwe controles
+    # worden getest in test_explain_is_a_afwijzing.py.
+    obj._botst_is_a = lambda source, target: None
+    obj._is_onbekend = lambda woord: False
     return obj
 
 

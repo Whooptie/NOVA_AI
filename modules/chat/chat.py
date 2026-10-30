@@ -97,6 +97,16 @@ class ChatModule:
         # bestand het zelf apart moet stripping.
         word = word.strip(".,!?;:")
 
+        # Meerduidig woord (30 oktober 2026): de router zet "betekenis_keuze"
+        # als het woord meerdere betekenissen heeft. Dan stellen we de
+        # keuzevraag i.p.v. stil één betekenis te kiezen.
+        if data.get("betekenis_keuze") and self.semantic and hasattr(self.semantic, "start_definitie_keuze"):
+            try:
+                if self.semantic.start_definitie_keuze(word, text.split()):
+                    return
+            except Exception:
+                pass
+
         meaning = None
         if self.semantic and hasattr(self.semantic, "get_meaning"):
             try:
