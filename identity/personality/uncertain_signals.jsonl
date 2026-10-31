@@ -1514,3 +1514,6 @@
 {"text": "wat is een bank", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-30T19:52:02.784858"}
 {"text": "1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-30T19:52:21.827228"}
 {"text": "wat wordt het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0679, "bron": "model_fallback", "tijdstip": "2026-10-30T19:54:23.372553"}
+{"text": "hye", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T10:04:32.711745"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-31T10:04:37.317941"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-31T10:07:47.275909"}

@@ -248,7 +248,7 @@ class TestAntwoordWanneerIs:
     def test_pasen_springt_naar_volgend_jaar_als_al_voorbij(self, bus, mod):
         # Vandaag = 17 sept 2026, Pasen 2026 (5 april) is al voorbij
         mod.on_holiday_intent({"text": "wanneer valt pasen", "type": "wanneer_is"})
-        assert bus.laatste_tekst() == "Pasen valt dit jaar op zondag 28 maart 2027."
+        assert bus.laatste_tekst() == "Pasen valt volgend jaar op zondag 28 maart 2027."
 
     def test_pinksteren_matcht_niet_op_pinkstermaandag(self, bus, mod):
         mod.on_holiday_intent({"text": "wanneer is pinksteren", "type": "wanneer_is"})

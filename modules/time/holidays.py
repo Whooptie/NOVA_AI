@@ -31,6 +31,7 @@
 # is niet gevraagd.
 # ============================================================
 
+import re
 from datetime import date, timedelta
 
 # --------------------------------------------------------
@@ -269,22 +270,46 @@ class HolidaysModule:
             return
 
         vandaag = self.today()
-        jaar = vandaag.year
-        datum = self.datum_van_feestdag(gevonden_naam, jaar)
 
-        # Als de feestdag dit jaar al voorbij is, toon volgend
-        # jaar (zelfde logica als calendar.py's automatische
-        # jaarsprong) -- "wanneer is Kerst" op 27 december moet
-        # niet een datum in het verleden teruggeven.
-        if datum < vandaag:
-            jaar += 1
+        # Noemt de vraag zelf een jaartal ("pasen in 2028")? Dan
+        # rekenen we dat jaar uit en springen we NIET naar volgend jaar.
+        # De paasformule (computus) geldt voor de Gregoriaanse kalender,
+        # dus vanaf 1583.
+        expliciet_jaar = None
+        jaar_match = re.search(r"\b(\d{4})\b", t)
+        if jaar_match:
+            expliciet_jaar = int(jaar_match.group(1))
+            if expliciet_jaar < 1583:
+                msg = "Feestdagen reken ik enkel uit voor de jaren 1583 tot 9999."
+                self.event_bus.publish("layer4_response", {"text": msg})
+                return
+
+        if expliciet_jaar is not None:
+            jaar = expliciet_jaar
             datum = self.datum_van_feestdag(gevonden_naam, jaar)
+        else:
+            jaar = vandaag.year
+            datum = self.datum_van_feestdag(gevonden_naam, jaar)
+
+            # Als de feestdag dit jaar al voorbij is, toon volgend
+            # jaar (zelfde logica als calendar.py's automatische
+            # jaarsprong) -- "wanneer is Kerst" op 27 december moet
+            # niet een datum in het verleden teruggeven.
+            if datum < vandaag:
+                jaar += 1
+                datum = self.datum_van_feestdag(gevonden_naam, jaar)
 
         from modules.time.calendar import DAGNAMEN, MAANDNAMEN
 
         dagnaam = DAGNAMEN[datum.weekday()]
         maandnaam = MAANDNAMEN[datum.month]
-        msg = f"{gevonden_naam} valt dit jaar op {dagnaam} {datum.day} {maandnaam} {datum.year}."
+
+        if expliciet_jaar is not None:
+            msg = f"{gevonden_naam} valt in {jaar} op {dagnaam} {datum.day} {maandnaam}."
+        elif jaar == vandaag.year:
+            msg = f"{gevonden_naam} valt dit jaar op {dagnaam} {datum.day} {maandnaam} {datum.year}."
+        else:
+            msg = f"{gevonden_naam} valt volgend jaar op {dagnaam} {datum.day} {maandnaam} {datum.year}."
         self.event_bus.publish("layer4_response", {"text": msg})
 
     # --------------------------------------------------------

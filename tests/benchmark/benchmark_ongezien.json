@@ -1,0 +1,30 @@
+{
+  "versie": 1,
+  "uitleg": "De ONGEZIENE SET. Dezelfde controles als benchmark_cases.json, maar apart gescoord (python tools/run_benchmark.py --niveau 3 --ongezien). Regels: (1) pas Nova nooit aan met een vraag uit deze set in gedachten, alleen algemeen; (2) een gefaalde vraag hier is een gat, geen aanleiding om de verwachting te verzachten; (3) vervang vragen die je gebruikt hebt om iets te repareren door nieuwe, het liefst vragen die iemand anders bedenkt.",
+  "cases": [
+    {"id": "ong-01", "categorie": "rekenen", "vraag": "wat is 144 gedeeld door 12",
+     "moet_event": ["intent_math"], "niveau3": {"moet_bevatten_een_van": ["12"]}},
+    {"id": "ong-02", "categorie": "rekenen", "vraag": "wat is 2 tot de macht 10",
+     "moet_event": ["intent_math"], "niveau3": {"moet_bevatten_een_van": ["1024"]}},
+    {"id": "ong-03", "categorie": "rekenen", "vraag": "hoeveel is 20 procent van 150",
+     "moet_event": ["intent_math"], "niveau3": {"moet_bevatten_een_van": ["30"]}},
+    {"id": "ong-04", "categorie": "datum_tijd", "vraag": "wanneer is pasen in 2028",
+     "moet_event": ["intent_holiday_query"],
+     "niveau3": {"moet_bevatten_alle": ["16"], "moet_bevatten_een_van": ["april", "04", "4"]}},
+    {"id": "ong-05", "categorie": "datum_tijd", "vraag": "wanneer is kerstmis in 2028",
+     "moet_event": ["intent_holiday_query"],
+     "niveau3": {"moet_bevatten_alle": ["25"], "moet_bevatten_een_van": ["december", "12"]}},
+    {"id": "ong-06", "categorie": "datum_tijd", "vraag": "welke dag is het overmorgen",
+     "moet_event": ["intent_calendar_query"],
+     "niveau3": {"moet_bevatten_een_van": ["$overmorgen_weekdag"]}},
+    {"id": "ong-07", "categorie": "meerstaps", "vraag": "is een hond een zoogdier",
+     "moet_event": ["intent_relation_check"], "moet_bevatten_een_van": ["ja"]},
+    {"id": "ong-08", "categorie": "afgewezen_feit", "vraag": "is een hond een plant",
+     "moet_event": ["intent_relation_check"], "mag_niet_bevatten": ["ja"],
+     "moet_bevatten_een_van": ["nee", "afgewezen", "onjuist"]},
+    {"id": "ong-09", "categorie": "definitie", "vraag": "wat is een fiets",
+     "moet_event": ["intent_definition"]},
+    {"id": "ong-10", "categorie": "gesprek", "vraag": "bedankt voor de hulp",
+     "moet_event": ["layer4_response"], "moet_bevatten_een_van": ["graag", "zeg", "probleem", "niets", "plezier", "altijd"]}
+  ]
+}

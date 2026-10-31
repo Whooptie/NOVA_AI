@@ -2454,3 +2454,26 @@ Aanleiding: de nulmeting van `python tools/run_benchmark.py --niveau 2` (26 okto
 **Live bevestigd (battleserver, 30 oktober 2026):** "wat is een bank" geeft de genummerde keuzevraag, "1" geeft de gekozen betekenis met de gewone tone-laag.
 
 **Open / bevinding:** (1) `case_herinnering.py` voegt midden in de keuzevraag "Je zei eerder al iets vergelijkbaars…" toe; overslaan zolang er een keuzevraag openstaat. (2) Idee: de gekozen betekenis onthouden via `set_sense_voorkeur()`. (3) De `doel`-teksten van `rek-02` en `afg-02` in `benchmark_cases.json` zijn verouderd (alleen een geheugensteun, de runner negeert ze).
+
+---
+
+## ✅ Benchmark niveau 3: extra modules, ongeziene set, willekeurige ketens, en twee gevonden fouten (31 oktober 2026)
+
+Aanleiding: niveau 2 stond op 100%, maar kon het antwoord van `math`, `time`, `calendar`, `holidays`, `weather` en `greeting` niet meten. Alles hieronder is puur symbolisch, geen ML of LLM. Eindstand: vaste set 29 van 29, ongezien 10 van 10, willekeurige ketens 15 van 15; pytest 3346 groen + 1 overgeslagen.
+
+**Runner (`tools/run_benchmark.py`).**
+- `--niveau 3` laadt `time/zone`, `time/time`, `time/calendar`, `time/holidays` en `math/math` in de mini-Nova; `--module PAD` voegt er meer toe. Een module die niet start geeft "niet meetbaar", nooit een gok.
+- `--ongezien`: tien vragen uit `tests/benchmark/benchmark_ongezien.json` die tijdens het bouwen nooit gebruikt zijn.
+- `--willekeurig N` (met `--seed`): vragen "is een X een Y" uit de bevestigde tweestaps-`is_a`-ketens van `concepts.json`; dezelfde seed geeft dezelfde vragen.
+- Nieuw veld `niveau3` per case (overschrijft de controles van niveau 2) en placeholders zoals `$morgen_weekdag`; nieuwe controles `moet_bevatten_alle` en `moet_overeenkomen_een_van` (regex).
+- `tests/test_run_benchmark.py` (32 tests) test `beoordeel()`, de placeholders en de ketenvragen zonder Nova te starten.
+
+**Fout 1 — `modules/time/calendar.py`.** "welke dag is het morgen" antwoordde "Het is vandaag zaterdag." omdat `antwoord_dag()` de tekst niet kreeg. Nu geeft `on_calendar_intent` de tekst door en herkent `_dag_offset()` eergisteren, gisteren, morgen en overmorgen (woordgrens, dus "goedemorgen" telt niet). Antwoorden: "Morgen is het zondag.", "Overmorgen is het maandag.", "Gisteren was het vrijdag.", "Eergisteren was het donderdag.". Gevonden door `kal-01` en `ong-06`.
+
+**Fout 2 — `modules/time/holidays.py`.** "wanneer is pasen in 2028" gaf Pasen 2027 met de tekst "dit jaar". Nu wordt een jaartal in de vraag gebruikt (geen sprong naar volgend jaar, antwoord "valt in 2028 op zondag 16 april") en zegt Nova zonder jaartal "dit jaar" of "volgend jaar" naargelang het klopt. Een jaar voor 1583 wordt geweigerd (de paasformule geldt voor de Gregoriaanse kalender). Gevonden door `ong-04`.
+
+**Tests:** `test_calendar_morgen_en_feestdag_jaar.py` (13) en `test_run_benchmark.py` (32) nieuw. In `test_holidays.py` is één verwachting verbeterd van "Pasen valt dit jaar op zondag 28 maart 2027." naar "Pasen valt volgend jaar …", omdat de oude zin feitelijk fout was (Pasen 2027 is op 17 september 2026 volgend jaar).
+
+**Benchmark-verwachting aangepast:** `bedank-01` accepteert nu ook "altijd" ("Altijd, Kevin." is een goed bedankantwoord, Kevin besliste dit). Dat is een verruiming omdat het antwoord klopt, niet om de score te halen.
+
+**Open / bevinding:** `weather` is nog niet meetbaar zonder netwerk; de `doel`-teksten van `rek-02`, `afg-02` en `feest-01` zijn verouderd; `calendar._parse_datum()` zoekt "morgen" nog als losse tekst in een zin (zonder woordgrens), waardoor bv. "hoeveel dagen tot goedemorgen" als morgen zou tellen. Dat is een klein randgeval, niet getest.

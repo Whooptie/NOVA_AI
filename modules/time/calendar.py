@@ -114,7 +114,7 @@ class CalendarModule:
         text = data.get("text", "")
 
         if vraag_type == "dag":
-            self.antwoord_dag()
+            self.antwoord_dag(text)
         elif vraag_type == "datum":
             self.antwoord_datum()
         elif vraag_type == "maand":
@@ -135,10 +135,38 @@ class CalendarModule:
     # --------------------------------------------------------
     # Gerichte antwoorden -- elk kort en specifiek (optie B)
     # --------------------------------------------------------
-    def antwoord_dag(self):
-        vandaag = self.today()
-        dagnaam = DAGNAMEN[vandaag.weekday()]
-        msg = f"Het is vandaag {dagnaam}."
+    def _dag_offset(self, text):
+        """Kijkt of de vraag over een andere dag dan vandaag gaat.
+        Geeft het aantal dagen verschil terug (-2, -1, 0, 1 of 2).
+        De langste woorden staan eerst: 'overmorgen' bevat het woord
+        'morgen' en 'eergisteren' bevat 'gisteren'. Met \\b (woordgrens)
+        telt 'goedemorgen' of 'vanmorgen' niet mee."""
+        t = (text or "").lower()
+        if re.search(r"\beergisteren\b", t):
+            return -2
+        if re.search(r"\bovermorgen\b", t):
+            return 2
+        if re.search(r"\bmorgen\b", t):
+            return 1
+        if re.search(r"\bgisteren\b", t):
+            return -1
+        return 0
+
+    def antwoord_dag(self, text=""):
+        offset = self._dag_offset(text)
+        datum = self.today() + timedelta(days=offset)
+        dagnaam = DAGNAMEN[datum.weekday()]
+
+        if offset == 1:
+            msg = f"Morgen is het {dagnaam}."
+        elif offset == 2:
+            msg = f"Overmorgen is het {dagnaam}."
+        elif offset == -1:
+            msg = f"Gisteren was het {dagnaam}."
+        elif offset == -2:
+            msg = f"Eergisteren was het {dagnaam}."
+        else:
+            msg = f"Het is vandaag {dagnaam}."
         self.event_bus.publish("layer4_response", {"text": msg})
 
     def antwoord_datum(self):
