@@ -317,3 +317,13 @@
 {"timestamp": "2026-10-28T18:45:25.242734", "event_type": "concept_created", "word": "positie", "source": "system", "new_value": {"word": "positie"}}
 {"timestamp": "2026-10-28T18:46:05.826237", "event_type": "concept_created", "word": "stel", "source": "system", "new_value": {"word": "stel"}}
 {"timestamp": "2026-10-28T18:46:16.414517", "event_type": "concept_created", "word": "opstel", "source": "system", "new_value": {"word": "opstel"}}
+{"timestamp": "2026-10-31T19:17:09.447288", "event_type": "concept_created", "word": "herinneren", "source": "system", "new_value": {"word": "herinneren"}}
+{"timestamp": "2026-10-31T19:17:23.000067", "event_type": "concept_created", "word": "draai", "source": "system", "new_value": {"word": "draai"}}
+{"timestamp": "2026-10-31T19:53:09.253842", "event_type": "relation_hard_deleted", "word": "jurk", "source": "user", "sense_id": "jurk#1", "relation": {"type": "related_to", "target": "kleding"}, "old_value": "kleding", "new_value": null}
+{"timestamp": "2026-10-31T19:53:15.675226", "event_type": "relation_hard_deleted", "word": "gletsjer", "source": "user", "sense_id": "gletsjer#1", "relation": {"type": "related_to", "target": "ijs"}, "old_value": "ijs", "new_value": null}
+{"timestamp": "2026-10-31T19:53:22.231039", "event_type": "relation_hard_deleted", "word": "baarmoeder", "source": "user", "sense_id": "baarmoeder#1", "relation": {"type": "related_to", "target": "moeder"}, "old_value": "moeder", "new_value": null}
+{"timestamp": "2026-10-31T19:53:30.827242", "event_type": "relation_hard_deleted", "word": "aorta", "source": "user", "sense_id": "aorta#1", "relation": {"type": "related_to", "target": "hartboezem"}, "old_value": "hartboezem", "new_value": null}
+{"timestamp": "2026-10-31T19:53:42.228149", "event_type": "relation_hard_deleted", "word": "kauwen", "source": "user", "sense_id": "kauwen#1", "relation": {"type": "related_to", "target": "snijtand"}, "old_value": "snijtand", "new_value": null}
+{"timestamp": "2026-10-31T19:54:39.177132", "event_type": "relation_hard_deleted", "word": "instrument", "source": "user", "sense_id": "instrument#1", "relation": {"type": "related_to", "target": "snaarinstrument"}, "old_value": "snaarinstrument", "new_value": null}
+{"timestamp": "2026-10-31T19:58:08.787547", "event_type": "relation_hard_deleted", "word": "jurk", "source": "user", "sense_id": "jurk#1", "relation": {"type": "is_a", "target": "kleding"}, "old_value": "kleding", "new_value": null}
+{"timestamp": "2026-10-31T20:44:35.491874", "event_type": "concept_created", "word": "hijsen", "source": "system", "new_value": {"word": "hijsen"}}

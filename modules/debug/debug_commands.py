@@ -67,6 +67,8 @@ class DebugCommands:
             (lambda t: t == "topic suggesties", self._topic_suggesties),
             (lambda t: t == "topic suggesties forceer", self._topic_suggesties_forceer),
             (lambda t: t.startswith("variant debug"), self._variant_debug),
+            (lambda t: t == "datum terugblik", self._datum_terugblik),
+            (lambda t: t == "datum terugblik forceer", self._datum_terugblik_forceer),
             (lambda t: t == "label status", self._label_status),
             (lambda t: t.startswith("label signaal") or t.startswith("label sentiment"), self._label),
         ]
@@ -476,6 +478,40 @@ class DebugCommands:
             print(f"{C_CYAN}{soort}: {s['unieke_zinnen']} unieke zinnen ({s['regels']} regels) -- "
                   f"{s['ongelabeld']} ongelabeld, {s['kevin']} door jou, "
                   f"{s['auto']} automatisch, {s['skip']} overgeslagen.{C_RESET}")
+
+    # ------------------------------------------------------------------
+    # Datum-terugblik (roadmap punt 8, modules/knowledge/datum_terugblik.py)
+    # ------------------------------------------------------------------
+
+    def _datum_terugblik(self, user_input):
+        """
+        Toont wat de datum-terugblik NU zou vinden en waarom per afstand
+        (1/3/6/12/24 maanden) wel of niet. Puur informatief: zegt niets
+        hardop en wijzigt de spam-state niet.
+        """
+        module = self.loader.loaded_modules.get("datum_terugblik")
+        if not module:
+            print(f"{C_RED}datum_terugblik-module niet gevonden.{C_RESET}")
+            return
+        print(f"{C_CYAN}--- Datum-terugblik ---{C_RESET}")
+        print(f"{C_CYAN}{module.status_tekst()}{C_RESET}")
+
+    def _datum_terugblik_forceer(self, user_input):
+        """
+        Roept check_nu(forceer=True) ECHT aan: slaat de spamregels en Layer 5
+        over en publiceert een echte layer4_response als er een treffer is.
+        LET OP: dit telt als de melding van vandaag en zet de gemelde woorden
+        in cooldown (zelfde patroon als 'topic suggesties forceer').
+        """
+        module = self.loader.loaded_modules.get("datum_terugblik")
+        if not module:
+            print(f"{C_RED}datum_terugblik-module niet gevonden.{C_RESET}")
+            return
+        gesproken, reden = module.check_nu(forceer=True)
+        if gesproken:
+            print(f"{C_CYAN}Datum-terugblik gemeld (zie Nova's antwoord).{C_RESET}")
+        else:
+            print(f"{C_CYAN}Niets gemeld: {reden}.{C_RESET}")
 
     # ------------------------------------------------------------------
     # Layer 0 — Memory

@@ -245,3 +245,67 @@ def test_ander_bericht_na_vraag_wordt_gewoon_verwerkt(omgeving):
     router.route({"text": "hallo nova"})
     assert sem.pending_definitie_keuze is None
     assert len(bus.events("intent_greeting")) == 1
+
+
+# ---------------------------------------------------------
+# Woord met context erachter: "wat is kraan lekken"
+# ---------------------------------------------------------
+def _maak_kraan(sem):
+    _voeg_toe(sem, "kraan", "een toestel waaruit water stroomt", confidence=1.0,
+              signaal=["lekken", "keuken"])
+    _voeg_toe(sem, "kraan", "een machine om zware dingen op te tillen", confidence=0.5,
+              signaal=["hijsen", "bouwplaats"])
+
+
+def test_router_woord_met_signaalwoord_erachter_kiest_zonder_vraag(omgeving):
+    sem, bus = omgeving
+    _maak_kraan(sem)
+    router = IntentRouter(bus, sem)
+    bus.leeg()
+    router.route({"text": "wat is kraan lekken"})
+    events = bus.events("intent_definition")
+    assert len(events) == 1
+    assert events[0]["word"] == "kraan"
+    assert "betekenis_keuze" not in events[0]
+
+
+def test_router_woord_met_context_in_de_zin_kiest_zonder_vraag(omgeving):
+    sem, bus = omgeving
+    _maak_kraan(sem)
+    router = IntentRouter(bus, sem)
+    bus.leeg()
+    router.route({"text": "wat is de kraan in de keuken"})
+    events = bus.events("intent_definition")
+    assert events[0]["word"] == "kraan"
+    assert "betekenis_keuze" not in events[0]
+
+
+def test_router_woord_met_context_zonder_signaalwoord_stelt_toch_de_vraag(omgeving):
+    sem, bus = omgeving
+    _maak_kraan(sem)
+    router = IntentRouter(bus, sem)
+    bus.leeg()
+    router.route({"text": "wat is de kraan in de tuin"})
+    events = bus.events("intent_definition")
+    assert events[0]["word"] == "kraan"
+    assert events[0]["betekenis_keuze"] is True
+
+
+def test_router_eenduidig_woord_met_staart_blijft_ongewijzigd(omgeving):
+    sem, bus = omgeving
+    _voeg_toe(sem, "hond", "een huisdier")
+    router = IntentRouter(bus, sem)
+    bus.leeg()
+    router.route({"text": "wat is een hond en een kat"})
+    events = bus.events("intent_definition")
+    assert events[0]["word"] == "hond en een kat"
+
+
+def test_router_bekende_meerwoordterm_blijft_ongewijzigd(omgeving):
+    sem, bus = omgeving
+    _voeg_toe(sem, "zwart gat", "een hemellichaam met enorme zwaartekracht")
+    _maak_kraan(sem)
+    router = IntentRouter(bus, sem)
+    bus.leeg()
+    router.route({"text": "wat is een zwart gat"})
+    assert bus.events("intent_definition")[0]["word"] == "zwart gat"

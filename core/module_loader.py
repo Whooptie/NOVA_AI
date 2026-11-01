@@ -469,6 +469,8 @@ class ModuleLoader:
             # 27 oktober 2026: voor insight-type 'voorkeur_verandering'
             # (kevin_profile.get_veranderingen()).
             "kevin_profile": self.loaded_modules.get("kevin_profile"),
+            # 1 november 2026: voor insight-type 'datum_terugblik'.
+            "datum_terugblik": self.loaded_modules.get("datum_terugblik"),
         }
         emergence = emergence_engine.init_module(self.event_bus, layers=emergence_layers)
         emergence.__load_time_ms__ = int((time.time() - start) * 1000)

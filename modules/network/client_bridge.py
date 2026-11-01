@@ -429,15 +429,19 @@ class ClientBridge:
     # Publieke, thread-safe lees-API voor de Remote*-klassen hieronder
     # ------------------------------------------------------------
 
-    def get_laatste_activity(self):
+    # max_leeftijd (1 november 2026): standaard blijft het de 180 seconden
+    # van hierboven, dus voor Layer 5 verandert er niets. ntfy_meldingen.py
+    # vraagt er bewust een KORTERE tijd (45 s) mee om te weten of Kevin NU
+    # actief op de laptop is.
+    def get_laatste_activity(self, max_leeftijd=DATA_VERVAL_SECONDEN):
         with self._lock:
-            if self._is_vers(self._laatste_activity_tijd):
+            if self._is_vers(self._laatste_activity_tijd, max_leeftijd):
                 return self._laatste_activity
             return None
 
-    def get_laatste_focus(self):
+    def get_laatste_focus(self, max_leeftijd=DATA_VERVAL_SECONDEN):
         with self._lock:
-            if self._is_vers(self._laatste_focus_tijd):
+            if self._is_vers(self._laatste_focus_tijd, max_leeftijd):
                 return self._laatste_focus
             return None
 

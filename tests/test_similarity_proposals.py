@@ -740,3 +740,45 @@ def test_keten_met_kringverwijzing_loopt_niet_vast():
 def test_geen_ketenmelding_als_er_niets_is_overgeslagen():
     bus, mod = keten_wachtrij([paar("tent", "kamp", 0.9)], {})
     assert "voorouder" not in bus.laatste()
+
+
+# ---------------------------------------------------------------
+# Extra types: oorzaak, gevolg, gebruikt voor, tegengestelde, eigenschap
+# ---------------------------------------------------------------
+@pytest.mark.parametrize("type_nl,rel_type,zin", [
+    ("oorzaak", "causes", "'a0' veroorzaakt 'b0'"),
+    ("gebruikt voor", "used_for", "'a0' wordt gebruikt voor 'b0'"),
+    ("tegengestelde", "antonym", "'a0' is het tegenovergestelde van 'b0'"),
+    ("eigenschap", "property_of", "'a0' is een eigenschap van 'b0'"),
+    ("voorbeeld", "instance_of", "'a0' is een voorbeeld van 'b0'")])
+def test_wachtrij_extra_types(wachtrij, type_nl, rel_type, zin):
+    bus, sem, mod = wachtrij
+    mod.on_review({"actie": "start"})
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": type_nl})
+    assert rels(sem, "a0") == {(rel_type, "b0", "confirmed")}
+    assert zin in bus.laatste()
+
+
+def test_gevolg_draait_de_richting_zelf(wachtrij):
+    # lijst "a0 en b0" + 'als gevolg': a0 is het gevolg van b0 = b0 causes a0
+    bus, sem, mod = wachtrij
+    mod.on_review({"actie": "start"})
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": "gevolg"})
+    assert rels(sem, "a0") == set()
+    assert rels(sem, "b0") == {("causes", "a0", "confirmed")}
+    assert "'b0' veroorzaakt 'a0'" in bus.laatste()
+
+
+def test_gevolg_met_omgekeerd_draait_terug(wachtrij):
+    bus, sem, mod = wachtrij
+    mod.on_review({"actie": "start"})
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": "gevolg", "omgekeerd": True})
+    assert rels(sem, "a0") == {("causes", "b0", "confirmed")}
+
+
+def test_extra_type_kan_ongedaan_gemaakt_worden(wachtrij):
+    bus, sem, mod = wachtrij
+    mod.on_review({"actie": "start"})
+    mod.on_keuze({"actie": "koppel", "nummers": [1], "type": "oorzaak"})
+    mod.on_ongedaan({})
+    assert rels(sem, "a0") == set()

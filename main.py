@@ -420,6 +420,23 @@ def installeer_stopsignaal(loader):
         print(f"[Afsluiten] Kon geen stopsignaal-afhandeling registreren: {e}")
 
 
+def _gsm_vangt_melding_op(loader):
+    """
+    Zou een proactief bericht nu op Kevins gsm terechtkomen (ntfy)?
+    Alleen als de module ntfy_meldingen aanstaat EN Kevin niet actief op de
+    laptop is (punt 55, stap 2b). Bij elke twijfel of fout: False, dus het
+    oude gedrag blijft dan gewoon gelden.
+    """
+    ntfy = loader.loaded_modules.get("ntfy_meldingen")
+    if ntfy is None:
+        return False
+    try:
+        return ntfy.gsm_vangt_op() is True
+    except Exception as e:
+        print(f"[Achtergrondthread] Fout in ntfy_meldingen.gsm_vangt_op(): {e}")
+        return False
+
+
 def _layer5_laat_spreken_toe(loader):
     """
     Mag Nova nu spontaan iets zeggen? Vraagt het aan Layer 5
@@ -449,6 +466,17 @@ def _layer5_laat_spreken_toe(loader):
     return bool(antwoord)
 
 
+def _layer5_gsm_laat_spreken_toe(loader):
+    """
+    Zoals _layer5_laat_spreken_toe(), maar de gsm mag Layer 5 overrulen:
+    zegt Layer 5 nee, maar komt het bericht toch op Kevins gsm terecht, dan
+    mag het wel. Voor de ochtendsamenvatting en de weermeldingen van rain.py
+    (regen, onweer, gladheid, harde wind; 's nachts zwijgt rain.py zelf,
+    23:00 tot 07:00).
+    """
+    return _layer5_laat_spreken_toe(loader) or _gsm_vangt_melding_op(loader)
+
+
 def _layer5_ochtend_mag_spreken(loader):
     """
     Mag de ochtendsamenvatting nu? Eerst de gewone Layer 5-vraag
@@ -463,7 +491,7 @@ def _layer5_ochtend_mag_spreken(loader):
 
     Elke twijfel of fout betekent NEE (liever later dan tegen een lege kamer).
     """
-    if _layer5_laat_spreken_toe(loader):
+    if _layer5_gsm_laat_spreken_toe(loader):
         return True
 
     context_manager = loader.loaded_modules.get("context_manager")
@@ -596,7 +624,7 @@ def achtergrond_loop(loader):
             if rain:
                 try:
                     rain.check_proactief(
-                        mag_spreken=lambda: _layer5_laat_spreken_toe(loader)
+                        mag_spreken=lambda: _layer5_gsm_laat_spreken_toe(loader)
                     )
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in rain.check_proactief(): {e}")

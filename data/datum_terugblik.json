@@ -1,0 +1,17 @@
+{
+  "laatst_gemeld_datum": null,
+  "gemeld": {},
+  "laatste_analyse": {
+    "datum": "2026-11-01",
+    "actieve_dagen": 74,
+    "reden": "geen enkele afstand haalt de drempel",
+    "beste": null,
+    "afgewezen": [
+      "1 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
+      "3 mnd: 1 gedeeld opvallend woord(en), score 2.9 (te laag)",
+      "6 mnd: te weinig berichten rond 1 mei (0)",
+      "12 mnd: te weinig berichten rond 1 november (0)",
+      "24 mnd: te weinig berichten rond 1 november (0)"
+    ]
+  }
+}

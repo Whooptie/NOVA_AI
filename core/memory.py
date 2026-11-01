@@ -772,6 +772,14 @@ class MemoryModule:
                 print("Memory: database compact gemaakt (VACUUM).")
             except Exception as e:
                 print("Memory vacuum_db error:", e)
+                return
+
+            # Punt 32: een VACUUM schrijft veel naar het -wal bestand, en dat
+            # blijft groot tot de volgende afsluiting. Daarom meteen leegmaken.
+            try:
+                self.conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+            except Exception as e:
+                print(f"Memory: WAL-checkpoint na VACUUM mislukt: {e}")
 
     def backup_data(self):
         """

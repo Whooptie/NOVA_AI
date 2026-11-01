@@ -126,8 +126,12 @@ class IntentRouter:
 
     def detect_body(self, text):
         t = text.lower()
-        aanraking = any(w in t for w in ["raak", "aai", "wrijf", "vrijf", "streel", "aanraken"])
-        penetratie = any(w in t for w in ["erin", "dieper", "stop mijn", "schuif in"])
+        # Woordgrenzen: "erin" mocht ook in "herinnering" matchen en "aai"
+        # in "draai". Aanraking-woorden moeten aan het BEGIN van een woord
+        # staan (raakt, aait, wrijft blijven werken); penetratie-woorden
+        # moeten hele woorden zijn.
+        aanraking = re.search(r"\b(?:raak|aai|wrijf|vrijf|streel|aanraken)", t) is not None
+        penetratie = re.search(r"\b(?:erin|dieper|stop mijn|schuif in)\b", t) is not None
 
         if not (aanraking or penetratie):
             return False
@@ -1055,6 +1059,39 @@ class IntentRouter:
     # ---------------------------------------------------------
     # Definition
     # ---------------------------------------------------------
+    def _kap_definitie_woord(self, word):
+        """
+        Haalt het eigenlijke woord uit een definitievraag met context erachter:
+        "wat is kraan lekken" of "wat is de kraan in de keuken" -> "kraan".
+
+        Alleen als de VOLLEDIGE tekst geen bekend woord is, maar het begin ervan
+        wel en dat begin meerdere betekenissen heeft (daar helpen de
+        signaalwoorden uit de rest van de zin). Eenduidige woorden en
+        onbekende zinnen blijven ongewijzigd, zodat de Wikipedia-fallback
+        voor onbekende woorden blijft werken. De volledige zin gaat
+        elders al als context mee (t.split()).
+        """
+        if not self.semantic or " " not in word:
+            return word
+
+        def echte_senses(w):
+            try:
+                return [
+                    s for s in self.semantic.get_senses(w)
+                    if s.get("definition") != "unknown" and s.get("status") != "rejected"
+                ]
+            except Exception:
+                return []
+
+        if echte_senses(word):
+            return word
+        delen = word.split()
+        for aantal in range(len(delen) - 1, 0, -1):
+            kandidaat = " ".join(delen[:aantal])
+            if len(echte_senses(kandidaat)) > 1:
+                return kandidaat
+        return word
+
     def detect_definition(self, text):
         t = text.lower().strip()
 
@@ -1323,6 +1360,12 @@ class IntentRouter:
                     if word.startswith(art):
                         word = word[len(art):].strip()
                         break
+
+                # Context achter het woord ("kraan lekken", "kraan in de
+                # keuken"): het woord zelf bepalen, de rest van de zin
+                # blijft als context (t.split()) beschikbaar voor de
+                # signaalwoorden van meerduidige woorden.
+                word = self._kap_definitie_woord(word)
 
                 # Per-woord-timing (Layer 2-koppeling, uitbreiding op de
                 # bewust generieke "definitie"-topic uit Fase 7): het
@@ -3203,7 +3246,7 @@ class IntentRouter:
         r"^(?:gelijkenissen overlopen|overloop (?:de )?gelijkenissen|loop (?:de )?gelijkenissen door)$")
     _GELIJKENIS_OVERLOOP_VOLGENDE = re.compile(r"^volgende gelijkenissen$")
     _GELIJKENIS_KEUZE = re.compile(
-        r"^(?:koppel (\d{1,2}(?: \d{1,2})*)(?: als (soort|onderdeel|bevat|synoniem|verwant)(?: (omgekeerd))?)?"
+        r"^(?:koppel (\d{1,2}(?: \d{1,2})*)(?: als (soort|onderdeel|bevat|synoniem|verwant|oorzaak|gevolg|gebruikt voor|tegengestelde|eigenschap|voorbeeld)(?: (omgekeerd))?)?"
         r"|negeer (?:(\d{1,2}(?: \d{1,2})*)|(rest)))$")
 
     def detect_gelijkenis_zoek(self, text):

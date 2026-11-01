@@ -338,6 +338,9 @@ class EmergenceEngine:
             "graaf_stats": "de cijfers van mijn kennisgraaf",
             "hypothese": "wat-als-vragen",
             "terugblik": "terugblikken op eerdere vragen",
+            "body": "hoe ik me lichamelijk voel",
+            "gelijkenis_zoek": "woorden zoeken die op elkaar lijken",
+            "gelijkenis_overloop": "overlap tussen woorden bekijken",
         }
 
         # Vertaalt het stuk na "activity_started:" naar een Nederlands
@@ -622,6 +625,12 @@ class EmergenceEngine:
             # verandering mag hardop; de echte rem zit in de gates
             # (timing, nieuwe inhoud, cooldowns).
             "voorkeur_verandering": 1.0,
+            # datum_terugblik: confidence = de woordscore uit datum_terugblik.py
+            # (som van ln(1/dagfrequentie) van de gedeelde opvallende woorden).
+            # De module zelf eist al minstens 4.0 (2 woorden) of 4.5 (1 zeldzaam
+            # woord). Deze waarde is de verstelbare rem: hoger = strenger. Met
+            # 'emergence feedback datum_terugblik slecht' schuift ze vanzelf op.
+            "datum_terugblik": 4.0,
         }
 
         # ─────────────────────────────────
@@ -1417,6 +1426,57 @@ class EmergenceEngine:
 
         return f"{opening} {midden} {afsluiting}"
 
+    # ─────────────────────────────────
+    # Insight-type 7: datum_terugblik (1 november 2026)
+    # ─────────────────────────────────
+    def analyze_datum_terugblik(self) -> Optional[Dict]:
+        """
+        Vraagt modules/knowledge/datum_terugblik.py of Kevin deze dagen over iets
+        schrijft waar hij ook rond dezelfde datum 1/3/6/12/24 maanden geleden
+        over schreef ("drie maanden geleden hadden we het ook over ...").
+
+        De module doet het eigenlijke werk (puur symbolisch: woordfrequenties
+        over de dagen, geen ML) en bewaakt haar eigen regels: 1 per dag,
+        09:00-21:00, 30 dagen cooldown per woord. Hier komt enkel het inzicht
+        binnen, zodat Layer 7 het meeweegt met de andere inzichten, het via
+        de gedeelde gates (Layer 5, cooldowns, feedback) hardop zegt, en
+        maximaal 1 inzicht per ronde uitspreekt.
+
+        Retourneert None als de laag ontbreekt, niets sterks vindt of faalt.
+        """
+        bron = self.layers.get("datum_terugblik")
+        if bron is None:
+            return None
+        vind = getattr(bron, "vind_insight", None)
+        if vind is None:
+            return None
+        try:
+            return vind()
+        except Exception:
+            # Zelfde defensieve stijl als de andere analyze_*-methodes.
+            return None
+
+    def _formuleer_datum_terugblik(self, insight: Dict) -> str:
+        """De sjabloonzin is al door datum_terugblik.py opgebouwd (vaste sjablonen)."""
+        return insight["tekst"]
+
+    def _meld_uitgesproken_aan_bron(self, insight: Dict):
+        """
+        Laat een bron-module weten dat haar inzicht ECHT hardop gezegd is, zodat
+        die haar eigen spam-state (1 per dag, cooldown per woord) kan bijwerken.
+        Nu enkel nodig voor datum_terugblik; een fout hier mag reflect() nooit raken.
+        """
+        if insight.get("type") != "datum_terugblik":
+            return
+        bron = self.layers.get("datum_terugblik")
+        markeer = getattr(bron, "markeer_gemeld", None)
+        if markeer is None:
+            return
+        try:
+            markeer(insight)
+        except Exception:
+            pass
+
     def analyze_meta_patterns(self) -> List[Dict]:
         """
         Verzamelt insights van alle beschikbare insight-types.
@@ -1455,6 +1515,10 @@ class EmergenceEngine:
         voorkeur_verandering = self.analyze_preference_change()
         if voorkeur_verandering is not None:
             insights.append(voorkeur_verandering)
+
+        datum_terugblik = self.analyze_datum_terugblik()
+        if datum_terugblik is not None:
+            insights.append(datum_terugblik)
 
         return insights
 
@@ -1567,6 +1631,9 @@ class EmergenceEngine:
                 f"{insight.get('woord', '')}|{insight.get('beeindigd')}|"
                 f"{insight.get('huidig_sentiment')}|{insight.get('datum', '')}"
             ), None
+
+        if insight_type == "datum_terugblik":
+            return "|".join(sorted(insight.get("stammen", []))), None
 
         # Onbekend type: de volledige tekst van de insight-dict als label
         # -- elke wijziging telt dus als nieuw, nooit een crash.
@@ -1823,6 +1890,8 @@ class EmergenceEngine:
                 tekst = self._formuleer_scherm_focus(insight)
             elif insight["type"] == "voorkeur_verandering":
                 tekst = self._formuleer_voorkeur_verandering(insight)
+            elif insight["type"] == "datum_terugblik":
+                tekst = self._formuleer_datum_terugblik(insight)
             else:
                 # Toekomstige insight-types die nog geen sjabloon
                 # hebben: bewust overslaan i.p.v. een kale/rare tekst
@@ -1867,6 +1936,7 @@ class EmergenceEngine:
         self._registreer_periodiek(gekozen_insight)
         gekozen_resultaat["uitgesproken"] = True
         self.event_bus.publish("layer4_response", {"text": gekozen_resultaat["text"]})
+        self._meld_uitgesproken_aan_bron(gekozen_insight)
 
         return geformuleerd
 

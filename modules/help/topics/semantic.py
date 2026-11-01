@@ -118,6 +118,12 @@ def get_help():
   koppel 1 als soort|onderdeel|bevat|synoniem
                                         (het eerste woord is een soort van / onderdeel van /
                                          bevat het tweede; 'omgekeerd' erachter draait de richting om)
+  koppel 1 als oorzaak|gevolg|gebruikt voor|tegengestelde|eigenschap
+                                        (oorzaak: het eerste woord veroorzaakt het tweede;
+                                         gevolg: het eerste is het gevolg van het tweede, de richting
+                                         draait vanzelf; gebruikt voor: bv. fornuis, koken;
+                                         tegengestelde: bv. warm, koud; eigenschap: het eerste is een
+                                         eigenschap van het tweede)
   negeer 2                              (wijst het paar af; het komt niet meer terug)
   negeer rest                           (wijst alle overige nummers af)
   maak ongedaan                         (draait het laatste koppel- of negeer-commando terug)

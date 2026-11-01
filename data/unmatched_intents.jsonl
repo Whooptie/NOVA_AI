@@ -173,3 +173,8 @@
 {"tekst": "stel de precisie in opstel de precisie in op", "hoogste_gok": "math", "confidence": 0.1369, "tijdstip": "2026-10-28T19:46:16.414206"}
 {"tekst": "stel de precisie in op", "hoogste_gok": "math", "confidence": 0.1386, "tijdstip": "2026-10-28T19:46:20.002295"}
 {"tekst": "hye", "hoogste_gok": "time", "confidence": 0.1629, "tijdstip": "2026-10-31T10:04:32.722802"}
+{"tekst": "ik wil me herinneren", "hoogste_gok": "rain", "confidence": 0.1215, "tijdstip": "2026-10-31T20:17:09.446200"}
+{"tekst": "draai het licht aan", "hoogste_gok": "rain", "confidence": 0.1505, "tijdstip": "2026-10-31T20:17:22.999686"}
+{"tekst": "toon volledige graag", "hoogste_gok": "chess", "confidence": 0.1131, "tijdstip": "2026-10-31T21:04:25.635564"}
+{"tekst": "ewat is kraan hijsen", "hoogste_gok": "time", "confidence": 0.1261, "tijdstip": "2026-10-31T21:44:35.490862"}
+{"tekst": "helpdebug", "hoogste_gok": "rain", "confidence": 0.1151, "tijdstip": "2026-11-01T21:19:15.115701"}

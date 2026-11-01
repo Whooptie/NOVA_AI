@@ -75,3 +75,6 @@
 {"text": "stel de precisie in opstel de precisie in op", "categorie": "positief", "marge": 0.0683, "grof_sentiment_regex": null, "tijdstip": "2026-10-28T19:46:16.406708"}
 {"text": "stel de precisie in op", "categorie": "positief", "marge": 0.0621, "grof_sentiment_regex": null, "tijdstip": "2026-10-28T19:46:19.994771"}
 {"text": "stel de precisie in op 3", "categorie": "positief", "marge": 0.0621, "grof_sentiment_regex": null, "tijdstip": "2026-10-28T19:46:24.216560"}
+{"text": "draai het licht aan", "categorie": "neutraal_gemengd", "marge": 0.0148, "grof_sentiment_regex": null, "tijdstip": "2026-10-31T20:17:22.991042"}
+{"text": "toon volledige graaf", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-31T21:04:32.854726"}
+{"text": "toon volledige graaf", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-10-31T21:53:06.143549"}

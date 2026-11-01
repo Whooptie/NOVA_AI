@@ -1517,3 +1517,125 @@
 {"text": "hye", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T10:04:32.711745"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-31T10:04:37.317941"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-10-31T10:07:47.275909"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:37:57.126461"}
+{"text": "koppel 1 4 6 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:38:59.939834"}
+{"text": "koppel 5 7 als bevat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:39:09.115301"}
+{"text": "negeer 2 3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:39:24.692512"}
+{"text": "volgende gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:39:35.544157"}
+{"text": "koppel 2 5 7 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:40:54.644392"}
+{"text": "koppel 3 als bevat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:41:06.369528"}
+{"text": "negeer 1 6", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:41:12.316663"}
+{"text": "wat is een thermostaat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-31T14:49:44.760257"}
+{"text": "is een acteur een beroep", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-31T14:50:03.220030"}
+{"text": "waarop lijkt kopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:50:10.949567"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T14:50:42.785150"}
+{"text": "wat betekent werken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0383, "bron": "model_fallback", "tijdstip": "2026-10-31T14:59:54.384549"}
+{"text": "wat betekent werken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0383, "bron": "model_fallback", "tijdstip": "2026-10-31T15:01:02.488203"}
+{"text": "is een pion een schaakstuk", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0584, "bron": "model_fallback", "tijdstip": "2026-10-31T15:01:42.344104"}
+{"text": "is een dame een schaakstuk", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-10-31T15:01:53.014450"}
+{"text": "wat is een kraan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-31T15:07:31.298097"}
+{"text": "wat betekent kussen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0417, "bron": "model_fallback", "tijdstip": "2026-10-31T15:07:38.067365"}
+{"text": "wat is een slot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-31T15:07:49.635364"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T15:08:10.423779"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-31T16:11:48.451920"}
+{"text": "wat is een herinnering", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-31T20:13:16.514111"}
+{"text": "wat is een model", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-31T20:13:28.033219"}
+{"text": "waarop lijkt onthouden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:13:40.094878"}
+{"text": "wat is een herinnering", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-31T20:13:47.196385"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-31T20:16:47.327814"}
+{"text": "wat is een herinnering", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-10-31T20:16:58.466105"}
+{"text": "ik wil me herinneren", "signaal": "focus", "model_signaal": "focus", "marge": 0.0058, "bron": "model_fallback", "tijdstip": "2026-10-31T20:17:09.437929"}
+{"text": "draai het licht aan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0168, "bron": "model_fallback", "tijdstip": "2026-10-31T20:17:22.992569"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-31T20:20:50.622467"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:21:09.843115"}
+{"text": "koppel 1 2 3 4 5 6 7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:22:11.549253"}
+{"text": "teach herinneren iets uit het verleden weer in je gedachten terugroepen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0272, "bron": "model_fallback", "tijdstip": "2026-10-31T20:23:49.965444"}
+{"text": "teach opstel een geschreven tekst waarin je iets beschrijft, vertelt of uitlegt", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.008, "bron": "model_fallback", "tijdstip": "2026-10-31T20:24:24.811312"}
+{"text": "teach positie de plaats waar iets of iemand zich bevindt", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-10-31T20:24:37.376183"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-31T20:25:47.519725"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:25:57.791394"}
+{"text": "koppel 1 5 7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:26:37.928087"}
+{"text": "negeer 3 4 6", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:26:43.251857"}
+{"text": "koppel 2 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:26:50.091627"}
+{"text": "weerleg: fornuis causes koken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:38:43.953999"}
+{"text": "fornuis wordt gebruikt voor koken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-31T20:38:52.789506"}
+{"text": "bevruchting veroorzaakt zwangerschap", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:44:10.999847"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-31T20:47:16.779101"}
+{"text": "overloop gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:47:31.117912"}
+{"text": "koppel 6 7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:48:02.791188"}
+{"text": "koppel 2 als soort", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:48:20.973974"}
+{"text": "koppel 3 als bevat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:48:26.697590"}
+{"text": "negeer 1 4 5 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:48:31.974706"}
+{"text": "volgende gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:48:37.368058"}
+{"text": "koppel 3 6", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:49:01.410666"}
+{"text": "negeer 1 2 4 5 7 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:49:06.346849"}
+{"text": "volgende gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:49:23.077451"}
+{"text": "koppel 2 3 4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:50:12.988839"}
+{"text": "negeer 1 5 6 7 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:50:17.254765"}
+{"text": "verwijder definitief: snaarinstrument related_to instrument", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:53:00.855480"}
+{"text": "verwijder definitief: jurk related_to kleding", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:53:09.248163"}
+{"text": "verwijder definitief: gletsjer related_to ijs", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:53:15.668690"}
+{"text": "verwijder definitief: baarmoeder related_to moeder", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:53:22.225809"}
+{"text": "verwijder definitief: aorta related_to hartboezem", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:53:30.820867"}
+{"text": "verwijder definitief: kauwen related_to snijtand", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:53:42.221394"}
+{"text": "verwijder definitief: instrument related_to snaarinstrument", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:54:39.171759"}
+{"text": "zoek gelijkenissen voor jurk", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-31T20:54:53.706645"}
+{"text": "koppel 1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:55:29.139942"}
+{"text": "koppel 2 als soort", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:55:40.589841"}
+{"text": "zoek gelijkenissen voor snaarinstrument", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-31T20:55:50.950858"}
+{"text": "koppel 4 als soort omgekeerd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:56:31.362413"}
+{"text": "zoek gelijkenissen voor gletsjer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-31T20:56:37.203828"}
+{"text": "weerleg: jurk is_a kleding", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:58:01.288920"}
+{"text": "verwijder definitief: jurk is_a kleding", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:58:08.779826"}
+{"text": "zoek gelijkenissen voor baarmoeder", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-31T20:58:29.832601"}
+{"text": "koppel 1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T20:58:54.282376"}
+{"text": "zoek gelijkenissen voor aorta", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-31T21:00:08.178819"}
+{"text": "koppel 1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:00:41.733767"}
+{"text": "koppel 2 als onderdeel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:00:49.476513"}
+{"text": "zoek gelijkenissen voor kauwen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-10-31T21:00:57.271991"}
+{"text": "koppel 1 2 3 4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:01:16.572557"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:01:36.158419"}
+{"text": "koppel 4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:02:15.407693"}
+{"text": "koppel 2 als bevat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:02:19.712424"}
+{"text": "koppel 8 als soort omgekeerd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:02:24.092110"}
+{"text": "negeer 1 3 5 6 7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:02:31.018810"}
+{"text": "volgende gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:02:38.442162"}
+{"text": "koppel 1 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:03:16.277166"}
+{"text": "koppel 3 als tegengestelde", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:03:20.617004"}
+{"text": "negeer 2 4 5 6 7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:03:28.362357"}
+{"text": "toon volledige graag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.06, "bron": "model_fallback", "tijdstip": "2026-10-31T21:04:25.626494"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:04:32.856541"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:05:09.738525"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:06:55.245703"}
+{"text": "koppel 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:07:28.296510"}
+{"text": "koppel 1 als bevat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:07:32.893718"}
+{"text": "koppel 7 als oorzaak", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:07:43.604489"}
+{"text": "negeer 2 3 4 5 6", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:07:50.672954"}
+{"text": "wat veroorzaakt embryo", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0417, "bron": "model_fallback", "tijdstip": "2026-10-31T21:07:58.567351"}
+{"text": "wat is de kraan in de keuken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0511, "bron": "model_fallback", "tijdstip": "2026-10-31T21:31:10.085646"}
+{"text": "wat is de toren van het schaakbord", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0953, "bron": "model_fallback", "tijdstip": "2026-10-31T21:31:24.442879"}
+{"text": "wat is kraan lekken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-31T21:44:18.436963"}
+{"text": "ewat is kraan hijsen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.035, "bron": "model_fallback", "tijdstip": "2026-10-31T21:44:35.481791"}
+{"text": "wat is kraan hijsen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-31T21:46:22.124786"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-10-31T21:50:39.017841"}
+{"text": "wat is kraan lekken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-31T21:51:21.740797"}
+{"text": "wat is de kraan in de keuken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0511, "bron": "model_fallback", "tijdstip": "2026-10-31T21:51:39.272249"}
+{"text": "wat is kraan hijsen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0793, "bron": "model_fallback", "tijdstip": "2026-10-31T21:51:51.613409"}
+{"text": "wat is de toren van het schaakbord", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0953, "bron": "model_fallback", "tijdstip": "2026-10-31T21:52:01.420080"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-10-31T21:53:06.145823"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T18:10:44.422440"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T18:12:43.807659"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T18:21:46.551216"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T18:46:43.743347"}
+{"text": "wat wordt het weer morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0679, "bron": "model_fallback", "tijdstip": "2026-11-01T18:47:08.338429"}
+{"text": "gaat het nog regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0115, "bron": "model_fallback", "tijdstip": "2026-11-01T18:47:21.066281"}
+{"text": "overloop gelijkenissen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-01T18:47:47.050996"}
+{"text": "welke feestdag is het vandaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0946, "bron": "model_fallback", "tijdstip": "2026-11-01T20:43:12.414606"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T20:53:04.915625"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T21:19:00.900188"}
+{"text": "helpdebug", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-01T21:19:15.101454"}
+{"text": "laatste fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-01T21:20:00.316984"}
+{"text": "zijn er fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.053, "bron": "model_fallback", "tijdstip": "2026-11-01T21:20:08.300836"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T21:28:42.587106"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T21:46:40.873614"}
+{"text": "wat is een hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-01T21:51:40.579735"}

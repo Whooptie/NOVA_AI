@@ -94,7 +94,16 @@ TYPE_NAAR_RELATIE = {
     "onderdeel": "part_of",
     "bevat": "has_part",
     "synoniem": "synonym",
+    "oorzaak": "causes",              # eerste woord veroorzaakt het tweede
+    "gevolg": "causes",               # eerste woord is het gevolg van het tweede (richting wordt gedraaid)
+    "gebruikt voor": "used_for",      # eerste woord wordt gebruikt voor het tweede
+    "tegengestelde": "antonym",       # eerste woord is het tegenovergestelde van het tweede
+    "eigenschap": "property_of",      # eerste woord is een eigenschap van het tweede
+    "voorbeeld": "instance_of",       # eerste woord is een voorbeeld van het tweede
 }
+# Typen waarbij de lijst-volgorde (a, b) de omgekeerde opslag is: "a is het gevolg van b"
+# wordt opgeslagen als "b causes a".
+TYPE_DRAAIT = {"gevolg"}
 
 
 class SimilarityProposals:
@@ -119,8 +128,11 @@ class SimilarityProposals:
     def _toon(self, tekst):
         # chat_response (geen layer4_response): een lijst mag niet door de
         # toon-pipeline, die zet anders een '!' achter de laatste regel.
+        # instant=True: main.py toont dit in een keer, zonder typewriter-effect
+        # (lange lijsten met paren duren anders veel te lang).
         self.event_bus.publish("chat_response",
-                               {"source": "similarity_proposals", "text": tekst})
+                               {"source": "similarity_proposals", "text": tekst,
+                                "instant": True})
 
     def _get_specialist(self):
         if self._specialist is not None:
@@ -162,6 +174,15 @@ class SimilarityProposals:
         if any(r.get("status") != "rejected" for r in rels):
             return "bekend"
         return "afgewezen"
+
+    def _zonder_definitie(self, woord):
+        """True als het woord enkel 'unknown'-betekenissen heeft (automatisch aangeleerd,
+        nog geen echte definitie). De embedding vergelijkt dan enkel het kale woord,
+        dus zulke paren zijn te onbetrouwbaar om voor te stellen."""
+        concept = self.sem.store.get_concept(woord)
+        senses = [s for s in (concept or {}).get("senses", [])
+                  if s.get("status") != "rejected"]
+        return bool(senses) and all(s.get("definition") == "unknown" for s in senses)
 
     def _ouders(self, woord):
         """Doelen van de actieve is_a- en part_of-relaties van een woord."""
@@ -241,6 +262,11 @@ class SimilarityProposals:
             "part_of": f"'{w}' is onderdeel van '{d}'",
             "has_part": f"'{w}' bevat '{d}'",
             "synonym": f"'{w}' is een synoniem van '{d}'",
+            "causes": f"'{w}' veroorzaakt '{d}'",
+            "used_for": f"'{w}' wordt gebruikt voor '{d}'",
+            "antonym": f"'{w}' is het tegenovergestelde van '{d}'",
+            "property_of": f"'{w}' is een eigenschap van '{d}'",
+            "instance_of": f"'{w}' is een voorbeeld van '{d}'",
         }.get(rel_type, f"'{w}' {rel_type} '{d}'")
 
     def _nieuwe_lijst(self, items, woord=None):
@@ -311,6 +337,7 @@ class SimilarityProposals:
         voet = ("De score zegt dat ze bij elkaar passen, niet HOE. Jij kiest:\n"
                 "  'koppel 1'  (verwant)   of   'koppel 1 als soort|onderdeel|bevat|synoniem'\n"
                 "  'koppel 1 3 4' voor meerdere tegelijk  |  'omgekeerd' erachter draait de richting om\n"
+                "  ook: 'koppel 1 als oorzaak|gevolg|gebruikt voor|tegengestelde|eigenschap|voorbeeld'\n"
                 "  'negeer 2'  om af te wijzen   |   'negeer rest'  voor al het overige.")
         self._toon(kop + "\n" + "\n".join(regels) + "\n" + voet)
 
@@ -336,6 +363,8 @@ class SimilarityProposals:
                 a, b = p["woord_a"], p["woord_b"]
                 if self._paar_status(a, b) is not None:
                     continue
+                if self._zonder_definitie(a) or self._zonder_definitie(b):
+                    continue   # nog geen echte definitie: later opnieuw als ze die krijgen
                 if self._gedeelde_ouder(a, b):
                     self._overgeslagen_ouder += 1
                     continue
@@ -393,6 +422,9 @@ class SimilarityProposals:
                 "  'koppel 1 als soort|onderdeel|bevat': het eerste woord is een soort van / "
                 "onderdeel van / bevat het tweede. Ik ken de richting niet zelf: zet "
                 "'omgekeerd' erachter om te draaien (bv. 'koppel 7 als soort omgekeerd').\n"
+                "  'koppel 1 als oorzaak|gevolg|gebruikt voor|tegengestelde|eigenschap|voorbeeld': "
+                "het eerste woord veroorzaakt het tweede / is het gevolg ervan / wordt ervoor "
+                "gebruikt / is het tegengestelde / is een eigenschap van het tweede.\n"
                 "  'negeer 2'  |  'negeer rest'\n"
                 "  'volgende gelijkenissen'  voor de volgende paren (wat je liet staan "
                 "komt een volgende keer terug).")
@@ -451,7 +483,8 @@ class SimilarityProposals:
         type_nl = data.get("type")
         if type_nl not in TYPE_NAAR_RELATIE:
             return
-        omgekeerd = bool(data.get("omgekeerd"))
+        # 'gevolg' draait de richting zelf; 'omgekeerd' erachter draait dat weer terug.
+        omgekeerd = bool(data.get("omgekeerd")) != (type_nl in TYPE_DRAAIT)
         if self.sem is None or not self._lijst_actueel():
             self._toon("Ik heb geen actuele voorstellen. Vraag eerst bv. "
                        "'zoek gelijkenissen voor fiets' of 'gelijkenissen overlopen'.")

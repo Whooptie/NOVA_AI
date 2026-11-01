@@ -112,6 +112,16 @@ def get_help():
                                    en bij een doorverwijspagina ook wat onze eigen
                                    extractiefunctie ermee doet)
 
+📅 DATUM-TERUGBLIK (roadmap punt 8)
+  datum terugblik                (toont wat Nova nu zou vinden: per afstand van 1/3/6/12/24
+                                   maanden geleden of er een sterke overeenkomst is met de
+                                   laatste dagen, met per woord de score — puur informatief)
+  datum terugblik forceer        (meldt een treffer ECHT, zonder spamregels of Layer 5 —
+                                   telt als de melding van vandaag)
+                                  Zonder commando meldt Nova dit zelf: max. 1x per dag,
+                                  tussen 09:00 en 21:00. Standen via DATUM_TERUGBLIK_MODUS
+                                  (aan / droog / uit).
+
 🚨 FOUTENLOGBOEK (bug #46, 25 oktober 2026)
   laatste fouten                 (leest logs/handler_fouten.log en vat samen: aantal,
                                    laatste tijdstip, max. 5 verschillende fouten met

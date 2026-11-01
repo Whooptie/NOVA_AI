@@ -2477,3 +2477,93 @@ Aanleiding: niveau 2 stond op 100%, maar kon het antwoord van `math`, `time`, `c
 **Benchmark-verwachting aangepast:** `bedank-01` accepteert nu ook "altijd" ("Altijd, Kevin." is een goed bedankantwoord, Kevin besliste dit). Dat is een verruiming omdat het antwoord klopt, niet om de score te halen.
 
 **Open / bevinding:** `weather` is nog niet meetbaar zonder netwerk; de `doel`-teksten van `rek-02`, `afg-02` en `feest-01` zijn verouderd; `calendar._parse_datum()` zoekt "morgen" nog als losse tekst in een zin (zonder woordgrens), waardoor bv. "hoeveel dagen tot goedemorgen" als morgen zou tellen. Dat is een klein randgeval, niet getest.
+
+## ✅ Punt 33 — back-ups in WAL-modus gecontroleerd (31 oktober 2026)
+
+Zorg was dat `backup_data()` enkel `interactions.db` kopieerde en het WAL-bestand miste. Bij nazicht van `memory.py` bleek het .db-deel al `bron_conn.backup(doel_conn)` (SQLite's eigen back-up) te gebruiken, dus een consistente kopie, ook met WAL. Geverifieerd op battleserver: `PRAGMA integrity_check` op `interactions_2026-10-31_135210.db` geeft `ok`, 416.023 events in de hoofdtabel, en `max(timestamp)` is gelijk aan het laatste event van de jsonl-back-up van dezelfde ronde (13:51:17). Het jsonl-bestand is een exact begin van het huidige `interactions.jsonl` (54.643 van 55.113 regels, geen kapotte regels, tijdsvolgorde in orde).
+
+Restrisico, bewust niet opgelost: `shutil.copy2` van het jsonl-bestand gebeurt binnen `self.lock`, maar `append_to_disk()` schrijft buiten die lock. Valt een schrijfactie precies tijdens het kopiëren, dan kan de laatste regel van de back-up half zijn. Zeldzaam; bij een herstel die ene regel negeren.
+
+## ✅ Punt 32 — WAL-bestand na VACUUM (31 oktober 2026)
+
+`vacuum_db()` voert na de VACUUM nu `PRAGMA wal_checkpoint(TRUNCATE)` uit (bij een fout blijft de melding "WAL-checkpoint na VACUUM mislukt" zichtbaar, de onderhoudsronde loopt door). 3 tests in `tests/test_memory_wal_checkpoint.py` (WAL leeg na VACUUM, data intact, geen crash zonder databankverbinding); de eerste test faalt zonder de fix. Live bevestigd op <datum>: `interactions.db-wal` is <grootte> na de onderhoudsronde van <tijd>.
+
+## ✅ Punt 49 — laptopverbinding die wegvalt: verklaard, geen bug (31 oktober 2026)
+
+Onderzoek: het serverlog (`docker logs -t nova-ai`, UTC) naast de stroomgebeurtenissen van de laptop (PowerShell `Get-WinEvent`, providers Kernel-Power en Power-Troubleshooter, lokale tijd) gelegd voor 29-31 oktober. Elke verbreking van de verbinding valt 5 tot 8 seconden na gebeurtenis 506 ("het systeem wordt in moderne stand-by gezet"), elke herverbinding 10 tot 20 seconden na gebeurtenis 507 ("het systeem wordt afgesloten", dus wakker). De `1011 keepalive ping timeout`-meldingen komen 40 tot 50 seconden na het in stand-by gaan: de verbinding blijft dan half open staan en de server merkt het pas bij de ping. Tijdens een actieve codeersessie is de laptop wakker en valt er niets weg.
+
+Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend apparaat kan geen WebSocket openhouden, en de client verbindt zichzelf na het wakker worden weer. Geen codewijziging nodig. Tailscale, wifi-instellingen en de keepalive-waarden zijn niet de oorzaak. Gevolg voor de planning: de laptop is vaak niet bereikbaar, dus het postvak en de gsm-route (punt 25 en 55) zijn zinvol.
+
+## ✅ Punt 55, stap 2a — proactieve berichten ook naar de gsm via ntfy (1 november 2026)
+
+**Aanleiding:** weermeldingen (22:20, 00:21, 11:53) kwamen alleen in Nova's eigen terminal, terwijl niemand daar keek. Het opsparen van `afwezigheid.py` werkt alleen bij een vergrendeld scherm met een verbonden laptop: in het log staat één echt succes (23 oktober, 2 bewaarde berichten na 160,5 min). Een dichtgeklapte laptop (Modern Standby, zie punt 49) valt daar buiten. Voor `weather.py` ontbrak bovendien elke Layer 5-controle.
+
+**ntfy op battleserver** (apart Docker-programma, geen onderdeel van Nova): `docker run -d --name ntfy --restart unless-stopped -p 8090:80 -e NTFY_BASE_URL=http://100.83.181.76:8090 -e NTFY_CACHE_FILE=/var/cache/ntfy/cache.db -e TZ=Europe/Brussels -v /mnt/user/appdata/ntfy/cache:/var/cache/ntfy binwiederhier/ntfy serve`. Alleen bereikbaar via Tailscale. Berichten blijven ongeveer 12 uur bewaard en worden afgeleverd zodra de gsm verbindt. De kanaalnaam (`NTFY_TOPIC`) werkt als wachtwoord en staat enkel in `.env`.
+
+**Nieuw: `modules/network/ntfy_meldingen.py`.** Abonneert zichzelf op `chat_response` (automatisch geladen, `main.py` is niet gewijzigd). Een bericht uit een andere thread dan de hoofdthread is proactief (zelfde regel als `afwezigheid.py`). Proactief gaat naar de gsm TENZIJ je actief op de laptop bent: de laptop is verbonden, de activiteit is niet `afwezig` (vergrendeld) en de focus is `actief`, beide met data van maximaal 45 seconden oud. Elke twijfel of fout betekent: naar de gsm. De terminal verandert niet; de gsm komt erbovenop. Versturen gebeurt in een achtergrondthread met 5 seconden time-out. Maximaal 20 berichten per uur. De kanaalnaam komt nooit in het log. Instellingen in `.env`: `NTFY_URL`, `NTFY_TOPIC` en optioneel `NTFY_ZELFTEST_NA_SECONDEN` (één testbericht langs dezelfde beslissing, 5 tot 600 seconden na het opstarten).
+
+**`client_bridge.py`:** `get_laatste_activity()` en `get_laatste_focus()` kregen een optionele parameter `max_leeftijd` (standaard `DATA_VERVAL_SECONDEN`, dus voor Layer 5 verandert er niets). De module vraagt er 45 seconden mee. Samen met `is_laptop_verbonden()` is een dichtgeklapte laptop binnen ongeveer 8 seconden gedetecteerd, en een half open verbinding binnen 45 tot 50 seconden.
+
+**Getest:** `tests/test_ntfy_meldingen.py`, 91 tests (beslissing, thread-regel, versturen, fouten, uurlimiet, zelftest, en de ECHTE `ClientBridge` met oude data, vergrendeling en weggevallen verbinding). Vier daarvan falen op de oude `client_bridge.py`. Volledige suite: 3454 tests (3453 groen, 1 overgeslagen).
+
+**Live bevestigd (1 november 2026):** test A: aan de laptop gaf het log "Niet naar de gsm: je bent actief op de laptop" en bleef de gsm stil. Test B: laptop dicht, de testmelding kwam om 18:14 op de gsm binnen.
+
+**Op dat moment nog open (punt 55):** stap 2b (zie het volgende blok) en stap 2c, oude meldingen laten vervallen. Test C (vergrendeld met Win+L) is nog niet live gedaan. Bekend: antwoorden vanaf de gsm kunnen niet (ntfy werkt één kant op).
+
+**Opstartmelding:** bij elke start stuurt de module "Nova is opgestart om HH:MM" naar de gsm, ONGEACHT of Kevin actief op de laptop is (in VS Code ziet hij de terminal niet). Zo merkt hij een herstart die hij niet zelf deed (stroomstoring, crash, Docker). Probeert het tot 10 keer, 30 seconden na elkaar, omdat ntfy na een stroomstoring mogelijk later start dan Nova. Standaard AAN; uitzetten met `NTFY_OPSTARTMELDING=uit` in `.env`. Tijdens een pytest-run nooit automatisch aan. De zelftest (`NTFY_ZELFTEST_NA_SECONDEN`) blijft bestaan als tijdelijk testhulpmiddel.
+
+## ✅ Punt 55, stap 2b — ochtendsamenvatting en gevaarlijk weer bereiken de gsm (1 november 2026)
+
+**Aanleiding:** `rain.py` (regen, onweer, gladheid, harde wind) en de ochtendsamenvatting van `weather.py` vragen eerst aan Layer 5 (`_layer5_laat_spreken_toe()`) of Nova mag spreken. Zit Kevin niet aan de laptop, dan zegt Layer 5 nee: het bericht wordt dan nooit gepubliceerd en dus ook niet naar de gsm gestuurd. De ochtendsamenvatting bleef zo wachten tot Kevin iets in de terminal typte.
+
+**Keuze van Kevin:** "de ochtendsamenvatting en de gevaarlijke weersomstandigheden zijn genoeg". Gewone regen- en sneeuwmeldingen blijven dus achter Layer 5. De stille uren van `rain.py` (23:00 tot 07:00) zijn niet aangeraakt, dus 's nachts komt er ook geen onweer- of windmelding. De ochtendsamenvatting mag vanaf 06:00 (`OCHTEND_VAN_UUR`); staat de gsm dan op stil, dan wacht het bericht daar tot Kevin kijkt (ntfy bewaart berichten ongeveer 12 uur).
+
+**Wijzigingen**
+- `ntfy_meldingen.py`: nieuwe methode `gsm_vangt_op()`: True als de module aanstaat en Kevin niet actief op de laptop is (zelfde regel als de echte beslissing). Elke twijfel of fout: False.
+- `main.py`: `_gsm_vangt_melding_op(loader)` (alleen een echte `True` telt) en `_layer5_gsm_laat_spreken_toe(loader)` = Layer 5 OF de gsm. `_layer5_ochtend_mag_spreken()` gebruikt die nieuwe poort. `rain.check_proactief()` krijgt er als tweede poort `mag_spreken_gevaar` bij. `_layer5_laat_spreken_toe()` zelf is niet gewijzigd.
+- `rain.py`: `check_proactief(nu, mag_spreken, mag_spreken_gevaar=None)`. Regen/sneeuw gebruikt `mag_spreken`; onweer en gladheid/harde wind gebruiken `mag_spreken_gevaar`. Zonder aparte gevaarpoort delen ze dezelfde poort en hetzelfde onthouden antwoord, dus Layer 5 wordt nog steeds hoogstens één keer per check gevraagd.
+- `weather.py` en `forecast.py` zijn niet gewijzigd. De proactieve weerwaarschuwingen van `weather.py` (`check_proactieve_waarschuwing`) gaan al buiten Layer 5 om en bereikten de gsm sinds stap 2a.
+
+**Gevonden bij het testen:** de eerste opzet gaf regen en gevaar elk een eigen onthouden antwoord, waardoor Layer 5 met één poort twee keer gevraagd werd. De bestaande test `test_rain_proactief_layer5.py::test_layer5_wordt_hoogstens_een_keer_per_check_gevraagd` ving dat; hersteld.
+
+**Getest:** `tests/test_ntfy_poort.py`, 43 tests (zie nova_state.md, testlijst). Volledige suite: 3497 tests (3496 groen, 1 overgeslagen).
+
+**Besloten, niet gebouwd:** een dichtgeklapte laptop als "afwezig" laten tellen in `afwezigheid.py`. Reden (Kevin): hij is via gsm of laptop bijna altijd bereikbaar, dus "Hey Kev, daar ben je weer" zou zelden kloppen; de gsm-melding dekt het echte probleem (niets missen) al.
+
+**Live bevestigen:** 2 november 2026 rond 06:00, laptop dicht of vergrendeld: komt de ochtendsamenvatting op de gsm? Pas na die bevestiging in nova_state.md "live bevestigd" zetten. Nog open: stap 2c (oude meldingen laten vervallen) en test C (vergrendeld met Win+L).
+
+## ✅ Punt 8 — proactieve datum-terugkoppeling: `datum_terugblik.py` (1 november 2026)
+
+**Wat het doet:** Nova meldt ongevraagd dat een onderwerp rond dezelfde datum in het verleden ook al speelde, bv. "3 maanden geleden rond deze dag hadden we het over ... en ...". Volledig symbolisch, geen ML.
+
+**Hoe het kiest:** woordstammen uit Kevins eigen berichten (helpers van `case_herinnering.py` hergebruikt). Per stam wordt geteld op hoeveel van alle dagen hij voorkomt; een woord op meer dan 20% van de dagen (`MAX_DAGFREQ`) telt niet. Score = som van ln(1/dagfrequentie) van de gedeelde woorden. Vergeleken wordt de periode rond vandaag min 1, 3, 6, 12 en 24 maanden (venster ±3 dagen) met de laatste 7 dagen. Drempel `MIN_SCORE` 4.0, bij één woord `EEN_WOORD_MIN_SCORE` 4.5, en het woord moet toen op minstens 2 aparte dagen vallen (`MIN_DAGEN_TOEN`).
+
+**Spamregels (aanpasbaar bovenaan het bestand):** hoogstens 1 melding per dag, alleen tussen 09:00 en 21:00, 30 dagen rust per woordstam (`HERHALING_DAGEN`), en altijd eerst `can_interrupt()` via Layer 5. Modus via `DATUM_TERUGBLIK_MODUS`: `aan`, `droog` (print alleen "zou zeggen") of `uit`.
+
+**Gevonden met echte data (twee valse treffers, beide opgelost):**
+1. Een reken-sessie (`snelheid_na(...)`, score 83,5) gaf een treffer. Opgelost met `lijkt_op_code()` en `MIN_DAGEN_TOEN=2`.
+2. De woorden "berekenen", "bank", "weet" (uit "weet jij hoe laat het ongeveer is") gaven een treffer. Opgelost met `NEGEER_WOORDEN`, inclusief woorden waarmee Kevin Nova aanspreekt, en met een uitleg per woord in de statusuitvoer. Daarna: terecht geen treffer.
+
+**Koppelingen**
+- `modules/knowledge/datum_terugblik.py` (nieuw), automatisch geladen door `module_loader.py`; eigen `shutdown()` (zichtbaar in het reboot-log).
+- Layer 7: `emergence_engine.py` kreeg insight-type `datum_terugblik` (`LAYER4_DREMPELS` 4.0, `analyze_datum_terugblik`, `_formuleer_datum_terugblik`, `_meld_uitgesproken_aan_bron`, takken in `_inhoud_van` en `reflect()`). `module_loader.py` geeft de module mee in `emergence_layers`. Is ze gekoppeld, dan zwijgt haar eigen thread en `check_nu()` meldt "loopt via emergence_engine". Daardoor gelden de bestaande cooldown, de feedback-adaptieve drempel en de `_mag_nu_spreken`-poort ook hier.
+- `debug_commands.py`: `datum terugblik` en `datum terugblik forceer`; `help debug`: sectie "DATUM-TERUGBLIK".
+- `scripts/terugblik_status.py`: toont read-only wat de module nu zou zeggen, met `--datum YYYY-MM-DD`.
+
+**Live bevestigd (1 november 2026):** module start en sluit netjes af; `datum terugblik` toont "Modus: aan (spreekt via: emergence_engine (Layer 7))"; `emergence drempel datum_terugblik` toont drempel 4.0. Dat het geen melding gaf klopt: 3 maanden geleden had score 2,9 (te laag), 12 en 24 maanden hebben nog geen data (data begint ~maart 2026).
+
+**Nog open:** de eerste ECHTE melding is nog niet gezien, dus het eind-tot-eind-pad (emergence, tone-pipeline, gsm-poort) is hiermee niet live bewezen. Aanrader: `DATUM_TERUGBLIK_MODUS=droog` tot er een terechte treffer is, dan op `aan`.
+
+**Getest:** 65 nieuwe tests (45 + 5 + 15). Volledige suite: 3566 tests (3565 groen, 1 overgeslagen).
+
+**Opmerking over de bestanden:** het origineel van `emergence_engine.py` heeft CRLF-regeleinden; zoek/vervang-blokken moeten daarop passen.
+
+## 🛠️ Koppelingen-audit: `scripts/koppelingen_audit.py` (1 november 2026)
+
+**Aanleiding:** Kevin had het gevoel dat veel modules niet aan alle lagen gekoppeld zijn. Het enige wat daarover vaststond waren twee gaten uit `nova_state.md`: de proactieve waarschuwing van `weather.py` en `contradiction_checker.py` vragen nog niet eerst `can_interrupt()`.
+
+**Gebouwd:** een statisch script (leest de code met `ast`, voert niets uit, wijzigt niets). Uitvoer: een tabel module x laag (`●` rechtstreeks, `○` via events, `E` eigen laag) en zes lijsten met aanwijzingen (proactief zonder Layer 5-check, thread zonder `shutdown()`, topics zonder Layer 7-label, events zonder luisteraar, luisteraars zonder zender, modules zonder laagverwijzing). Opties: `--alles`, `--md rapport.md`, `--root pad`. Gebruik: `docker exec nova-ai python scripts/koppelingen_audit.py`.
+
+**Beperking (eerlijk):** het ziet alleen letterlijke namen (`.get("context_manager")`, `publish("layer4_response", ...)`). Dynamisch samengestelde namen blijven onzichtbaar, dus een bevinding is een aanwijzing en geen bewezen bug.
+
+**Getest:** alleen hier op de beschikbare bestanden (`datum_terugblik`, `emergence_engine`, `debug_commands`) en op een nepmodule die zonder Layer 5-check praat en een thread zonder `shutdown()` heeft (beide gevonden). Nog niet op Kevins volledige code gedraaid en nog geen pytest-bestand; zie `nova_state.md` punt 57.

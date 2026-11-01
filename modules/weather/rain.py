@@ -1080,7 +1080,7 @@ class RainModule:
             zin += " (Let op: dit is een grovere schatting per kwartier.)"
         return zin
 
-    def check_proactief(self, nu=None, mag_spreken=None):
+    def check_proactief(self, nu=None, mag_spreken=None, mag_spreken_gevaar=None):
         """
         Wordt door main.py's achtergrond_loop() om de paar minuten
         aangeroepen. Kijkt enkel naar de standaardstad. Drie onafhankelijke
@@ -1098,19 +1098,34 @@ class RainModule:
         de melding komt dus bij de volgende check opnieuw aan de beurt,
         zolang ze binnen haar venster valt. Zonder mag_spreken (None)
         werkt alles zoals voorheen.
-        """
-        mag_cache = []
 
-        def mag_nu():
-            if mag_spreken is None:
-                return True
-            if not mag_cache:
-                try:
-                    mag_cache.append(bool(mag_spreken()))
-                except Exception as e:
-                    print(f"[rain] Layer 5-vraag mislukt, melding wacht: {e}")
-                    mag_cache.append(False)
-            return mag_cache[0]
+        mag_spreken_gevaar (punt 55, stap 2b): dezelfde soort functie, maar
+        enkel voor onweer en gladheid/harde wind. main.py geeft hier een
+        poort mee die ook "ja" zegt als de melding op Kevins gsm terecht-
+        komt. Gewone regen/sneeuw blijft achter mag_spreken. Zonder
+        mag_spreken_gevaar (None) gebruikt ook gevaarlijk weer gewoon
+        mag_spreken, dus alles werkt zoals voorheen.
+        """
+        def maak_mag(poort):
+            cache = []
+
+            def mag():
+                if poort is None:
+                    return True
+                if not cache:
+                    try:
+                        cache.append(bool(poort()))
+                    except Exception as e:
+                        print(f"[rain] Layer 5-vraag mislukt, melding wacht: {e}")
+                        cache.append(False)
+                return cache[0]
+
+            return mag
+
+        mag_nu = maak_mag(mag_spreken)
+        # Zonder aparte gevaarpoort delen regen en gevaar dezelfde poort (en
+        # hetzelfde onthouden antwoord): Layer 5 wordt dan hoogstens 1x per check gevraagd.
+        mag_gevaar = mag_nu if mag_spreken_gevaar is None else maak_mag(mag_spreken_gevaar)
 
         try:
             nu = nu or nu_lokaal()
@@ -1139,19 +1154,19 @@ class RainModule:
             zin, nieuwe_staat = beslis_onweer(info, nu, self._onweer_staat)
             if zin is None:
                 self._onweer_staat = nieuwe_staat
-            elif mag_nu():
+            elif mag_gevaar():
                 self._onweer_staat = nieuwe_staat
                 meldingen.append(zin)
 
             # 3. Gladheid en harde wind (weermodel, komende 3 uur). Eigen
-            # foutafscherming: een probleem hier mag de meldingen hierboven
+            # foutafscherming: een probleem hier mag de mel        mag_gevaar = maak_mag(mag_spreken_gevaar if mag_spreken_gevaar is not None else mag_spreken)dingen hierboven
             # niet tegenhouden.
             try:
                 info_gevaar = analyseer_gevaar(haal_gevaar(coords[0], coords[1]), nu)
                 zinnen, nieuwe_staat = beslis_gevaar(info_gevaar, nu, self._gevaar_staat)
                 if not zinnen:
                     self._gevaar_staat = nieuwe_staat
-                elif mag_nu():
+                elif mag_gevaar():
                     self._gevaar_staat = nieuwe_staat
                     meldingen.extend(zinnen)
             except Exception as e:
