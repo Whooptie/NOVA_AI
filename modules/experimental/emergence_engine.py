@@ -367,6 +367,10 @@ class EmergenceEngine:
             "slapen": "slapen",
             "koffie zetten": "koffie zetten",
             "een e-mail versturen": "een e-mail versturen",
+            "investeringen_bijhouden_gedetecteerd": "je investeringen bijhouden",
+            "mailen_gedetecteerd": "mailen",
+            "werken_aan_uurrooster_gedetecteerd": "werken aan je uurrooster",
+            "films_zoeken_gedetecteerd": "films zoeken",
         }
 
         # WHITELIST (30 juli 2026): enkel event_types die hier expliciet
@@ -393,7 +397,30 @@ class EmergenceEngine:
             "slapen",
             "koffie zetten",
             "een e-mail versturen",
+            "investeringen_bijhouden_gedetecteerd",
+            "mailen_gedetecteerd",
+            "werken_aan_uurrooster_gedetecteerd",
+            "films_zoeken_gedetecteerd",
         }
+
+        # Naam-onderhoud (roadmap punt 12): activiteiten waarover Kevin
+        # BEWUST besloten heeft dat ze NIET in de whitelist horen.
+        self.BEWUST_UITGESLOTEN_ACTIVITEITEN = {
+            "unknown_gedetecteerd",
+            "talking_to_nova_gedetecteerd",
+            "naar de tandarts",
+            "schermafbeelding_maken_gedetecteerd",
+            "afwezig_gedetecteerd",
+            "bestanden_beheren_gedetecteerd",
+        }
+
+        # Naam-onderhoud: topic-families met een DYNAMISCH samengestelde
+        # naam; die hoeven nooit een eigen vertaling.
+        self.DYNAMISCHE_TOPIC_VOORVOEGSELS = (
+            "definitie_", "uitleg_", "help_", "concept_overview_",
+            "andere_betekenis_", "open_app_", "close_app_",
+            "oorzaken_", "gevolgen_",
+        )
 
         # ─────────────────────────────────
         # Sjablonen — kennisdichtheid (Layer 3, semantic.py)
@@ -781,6 +808,30 @@ class EmergenceEngine:
             return self._activity_naam_labels.get(activiteit_naam, activiteit_naam)
 
         return event_type
+
+    def beoordeel_naam(self, event_type: str) -> Optional[str]:
+        """
+        Naam-onderhoud (roadmap punt 12). Puur opzoeken in bestaande lijsten:
+        - None                   -> niets aan de hand
+        - "activiteit_whitelist" -> activiteit niet in whitelist en niet bewust uitgesloten
+        - "topic_vertaling"      -> topic zonder vertaling in _topic_naam_labels
+        """
+        if event_type.startswith("activity_started:"):
+            naam = event_type.split(":", 1)[1]
+            if (naam not in self.INSIGHT_WAARDIGE_ACTIVITEITEN
+                    and naam not in self.BEWUST_UITGESLOTEN_ACTIVITEITEN):
+                return "activiteit_whitelist"
+            return None
+
+        if event_type.startswith("topic_detected:"):
+            naam = event_type.split(":", 1)[1]
+            if naam.startswith(self.DYNAMISCHE_TOPIC_VOORVOEGSELS):
+                return None
+            if naam not in self._topic_naam_labels:
+                return "topic_vertaling"
+            return None
+
+        return None
 
     # ─────────────────────────────────
     # Insight-type 1: sterkste woordassociatie (Layer 1)

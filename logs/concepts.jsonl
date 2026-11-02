@@ -327,3 +327,4 @@
 {"timestamp": "2026-10-31T19:54:39.177132", "event_type": "relation_hard_deleted", "word": "instrument", "source": "user", "sense_id": "instrument#1", "relation": {"type": "related_to", "target": "snaarinstrument"}, "old_value": "snaarinstrument", "new_value": null}
 {"timestamp": "2026-10-31T19:58:08.787547", "event_type": "relation_hard_deleted", "word": "jurk", "source": "user", "sense_id": "jurk#1", "relation": {"type": "is_a", "target": "kleding"}, "old_value": "kleding", "new_value": null}
 {"timestamp": "2026-10-31T20:44:35.491874", "event_type": "concept_created", "word": "hijsen", "source": "system", "new_value": {"word": "hijsen"}}
+{"timestamp": "2026-11-02T17:15:55.624946", "event_type": "concept_created", "word": "context", "source": "system", "new_value": {"word": "context"}}

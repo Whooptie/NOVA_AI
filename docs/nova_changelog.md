@@ -2624,3 +2624,49 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Twee kleine verbeteringen na de live test (2 november 2026):** bij regels op concept-niveau stond het woord twee keer in de lijstuitvoer (`_formatteer_regel(r, met_woord=True)` laat de plek dan weg); `audit bron <naam> [status]` kreeg een optioneel statusfilter, bv. `audit bron wikipedia rejected`.
 
 **Getest:** `tests/test_audit_zoeken.py` (32 tests, tijdelijke `concepts.json` per test, raakt `data/` nooit aan). Volledige suite bij het afronden van punt 11: 3632 geslaagd, 1 overgeslagen.
+
+## ✅ Punt 12 — Layer 7 whitelist-onderhoud: `naam_onderhoud.py` (2 november 2026)
+
+**Wat het doet:** Nova meldt zelf (in de chat) wanneer er een nieuwe `activity_started:<naam>` voorkomt die niet in `INSIGHT_WAARDIGE_ACTIVITEITEN` of `BEWUST_UITGESLOTEN_ACTIVITEITEN` staat, of een `topic_detected:<naam>` zonder vertaling in `_topic_naam_labels`. 100% symbolisch (tellen, opzoeken, vaste zin), geen ML.
+
+**Ontwerpkeuzes**
+- Drempel `MIN_OBSERVATIES_VOOR_NIEUWE_NAAM_MELDING` = 4. Controle in een eigen achtergrondthread (eerste na 3 min, daarna elke 30 min), maximaal 12 namen per bericht.
+- Afwijking van het voorstel "event vanuit `pattern_matcher.py`": de module vraagt zelf `get_all_patterns()` op. Reden: een bericht dat uit de hoofdthread komt wordt door `ntfy_meldingen.py` en `afwezigheid.py` niet als proactief herkend, en een eigen thread wel. `pattern_matcher.py` is niet aangepast.
+- Kanaal: `chat_response` (technisch, geen toon-pipeline), enkel als `context_manager.can_interrupt()` het toelaat. Zo niet, dan is de naam niet als gemeld gemarkeerd en volgt een nieuwe poging in de volgende ronde.
+- Anti-spam: `data/naam_onderhoud_state.json` (atomisch geschreven). Elke naam wordt maar één keer gemeld, ook na een herstart.
+- `emergence_engine.py` kreeg `BEWUST_UITGESLOTEN_ACTIVITEITEN`, `DYNAMISCHE_TOPIC_VOORVOEGSELS` en de methode `beoordeel_naam()`, zodat whitelist, labels en uitsluitingen op één plek blijven.
+- Geen wijziging in `module_loader.py`: de module staat in `modules/knowledge/` met de standaard `init_module(event_bus, sem=None)` en wordt vanzelf gevonden. `reboot_manager` sluit hem af via `shutdown()`.
+
+**Live bevestigd (2 november 2026):** na een reboot meldde Nova 11 nieuwe activiteiten met hun aantallen. Eerst blokkeerde `can_interrupt()` (je werkte aan Nova), zoals bedoeld; met een tijdelijke omleiding kwam de melding door. Alle bestaande topics bleken al vertaald.
+
+**Beslissingen over de 11 gemelde activiteiten:** whitelist (met labels) voor `investeringen_bijhouden`, `mailen`, `werken_aan_uurrooster` en `films_zoeken`. Uitgesloten: `schermafbeelding_maken`, `afwezig` en `bestanden_beheren` (dekt twee dingen: Nova-bestanden doorzoeken en films toevoegen). De overige vier (`films_en_series`, `meeting`, `sociale_media` en `werken_aan_voorraad`) zijn op de laptop verfijnd of weggehaald uit de mapping.
+
+**Aanpassingen op de laptop (`nova_client.py`, `ACTIVITEIT_MAPPING`)**
+- `films_en_series` gesplitst: `plex_gebruiken` (`plex.exe`, `plex - google chrome`), `films_kijken` (VLC), `films_zoeken` (o.a. imdb, opensubtitles, `.srt`), `films_downloaden` (`torrent`, kickass, piratebay).
+- `meeting` werd `teams_gebruiken`; `voorraad` en `google - mijn activiteit` zijn weggehaald.
+- Nieuwe werklabels uit `onbekende_activiteiten.json`: `werken_aan_shiftverwerking`, `werken_aan_leveringen`, `werken_aan_bestellingen`, `werken_aan_pestcontrole`. `werken_aan_nova` en `investeringen_bijhouden` kregen extra trefwoorden, plus nieuw label `avatar_maken`.
+- Getest op een kopie van het bestand: compileert, geen dubbele sleutels, controle van de matching tegen de echte titels.
+
+**Nog open:** de nieuwe labels (`plex_gebruiken`, `teams_gebruiken`, `films_kijken`, `films_downloaden`, de werklabels en `avatar_maken`) verschijnen vanzelf in een volgende onderhoudsmelding; Kevin kiest dan W of U. `github`, `grok` en `blender` blijven brede trefwoorden. `_onderwerp_label()` geeft voor `definitie_`/`uitleg_`/`help_` nog de kale naam terug (apart punt).
+
+**Getest:** `tests/test_naam_onderhoud.py` (6 tests, tegen nep-modules en tijdelijke state-file). Volledige suite bij het afronden: 3641 geslaagd, 1 overgeslagen.
+
+---
+
+## ✅ Punt 58 (a) — scherminhoud lezen via Windows UI Automation (2 november 2026)
+
+**Wat het doet:** de laptop-client (`nova_client.py`) leest naast de venstertitel ook extra context uit het voorgrondvenster, zodat `ACTIVITEIT_MAPPING` onderscheid kan maken tussen activiteiten met dezelfde titel (Plex kijken, beheren of gebruiken; Verkenner in een Nova-map of een filmmap; een Excel-dialoog bij een bepaalde werkmap). 100% symbolisch (Windows-vensterfuncties en UI Automation), geen ML, geen screenshots. Er gaat enkel een label naar de server, nooit tekst of beeld.
+
+**Wijzigingen in `nova_client.py` (`ActivityDetector`)**
+- Nieuwe methoden `_lees_context`, `_doorloop_voorgrond` (tijdsbudget 1 s, `UIAutomationInitializerInThread` voor de werkthread), `_context_browser` (webadres uit de adresbalk), `_context_zustervenster` (titel van het venster van hetzelfde proces eronder, voor Office-dialogen), `_context_verkenner` en `_pad_uit_teksten` (volledig pad uit de broodkruimelbalk).
+- `_match_activiteit(raw_titel, raw_proces, context="")` zoekt in titel + proces + context; een sleutel met ` & ` geldt enkel als alle delen voorkomen. Nieuwe regels staan bovenaan `ACTIVITEIT_MAPPING` (eerste match wint): Plex (`films_kijken`, `plex_beheren`, `plex_gebruiken`), Unraid (`server_beheren`) en Verkenner (`nova_bestanden`, `films_toevoegen`).
+- Latente fout opgelost: `_detecteer_actief_venster` gaf de procesnaam altijd als `None`, waardoor sleutels als `code.exe` of `explorer.exe` nooit matchten. Nu wordt de echte procesnaam ingevuld. Dit kan oudere labels licht verschuiven.
+- Nieuwe afhankelijkheid op de laptop: `pip install uiautomation`.
+
+**Hulpscripts (alleen op de laptop, raken Nova niet aan):** `tools/scherm_inspectie.py` (rapport van titel, eigenaar, zustervensters, adres, tabbladen, knoppen en optioneel tekst) en `tools/verkenner_paden.py` (paden van Verkenner-tabbladen via `Shell.Application`, een reserve die uiteindelijk niet nodig bleek).
+
+**Bevindingen:** Chrome gaf ook met toegankelijkheid aan zijn paginaknoppen maar beperkt vrij (limiet van 1500 elementen bereikt), dus titel + webadres volstaan. Bestandsnamen met een punt werden eerst voor webadressen aangezien; opgelost met een lijst bekende domeinextensies (e-mailadressen vallen er bewust buiten). De "Adresbalk" van Verkenner is bij tabbladen verouderd; de broodkruimelbalk bevat wel het juiste pad. Windows kan middenstukken van lange paden inklappen (`BreadcrumbBarEllipsisTextBlock`): station en laatste mappen blijven zichtbaar.
+
+**Live bevestigd (2 november 2026):** in `patterns_layer2.json` staan nu `plex_gebruiken` (3), `server_beheren` (2), `films_toevoegen` (1) en `nova_bestanden` (1).
+
+**Nog open:** `films_kijken` en `plex_beheren` zijn nog niet gezien; Teams-meeting versus -chat en "ordenen" in Plex zijn niet getest (Kevin laat ze bewust liggen). Na een paar dagen de aantallen in `patterns_layer2.json` vergelijken en `onbekende_activiteiten.json` opschonen (ruis zoals "Taakplanner", Kladblok-logs en "% voltooid"-meldingen). Geen nieuwe pytest-tests: de code draait enkel op Windows en is op de laptop getest.

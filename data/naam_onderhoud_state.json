@@ -1,0 +1,48 @@
+{
+  "gemeld": {
+    "activity_started:bestanden_beheren_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:films_en_series_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:investeringen_bijhouden_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:mailen_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:werken_aan_uurrooster_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:schermafbeelding_maken_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:afwezig_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:meeting_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:films_zoeken_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:sociale_media_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:werken_aan_voorraad_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793629233.1924558
+    }
+  }
+}
