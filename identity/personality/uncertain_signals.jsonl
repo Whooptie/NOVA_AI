@@ -1657,3 +1657,12 @@
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-02T18:01:56.994953"}
 {"text": "µcontext", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-02T18:15:55.608874"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T18:17:43.623406"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T19:06:46.672604"}
+{"text": "is het nat buiten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0925, "bron": "model_fallback", "tijdstip": "2026-11-02T19:06:59.802991"}
+{"text": "ik heb een paraplu nodig", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0337, "bron": "model_fallback", "tijdstip": "2026-11-02T19:09:00.835398"}
+{"text": "de pion staat vreemd", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0549, "bron": "model_fallback", "tijdstip": "2026-11-02T19:09:31.178625"}
+{"text": "wat een mooie sneeuw", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0775, "bron": "model_fallback", "tijdstip": "2026-11-02T19:09:52.809944"}
+{"text": "hoeveel seconden zijn het nog", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0447, "bron": "model_fallback", "tijdstip": "2026-11-02T19:10:11.048702"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T19:25:10.788206"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T19:32:45.918381"}
+{"text": "test hint hoeveel minuten nog", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0268, "bron": "model_fallback", "tijdstip": "2026-11-02T19:32:59.687565"}

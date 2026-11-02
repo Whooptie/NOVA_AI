@@ -2670,3 +2670,24 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Live bevestigd (2 november 2026):** in `patterns_layer2.json` staan nu `plex_gebruiken` (3), `server_beheren` (2), `films_toevoegen` (1) en `nova_bestanden` (1).
 
 **Nog open:** `films_kijken` en `plex_beheren` zijn nog niet gezien; Teams-meeting versus -chat en "ordenen" in Plex zijn niet getest (Kevin laat ze bewust liggen). Na een paar dagen de aantallen in `patterns_layer2.json` vergelijken en `onbekende_activiteiten.json` opschonen (ruis zoals "Taakplanner", Kladblok-logs en "% voltooid"-meldingen). Geen nieuwe pytest-tests: de code draait enkel op Windows en is op de laptop getest.
+
+---
+
+## ✅ Punt 13 (versie 1) — `intent_router.py` raadpleegt `concepts.json` bij lage classifier-confidence (2 november 2026)
+
+**Waarom:** `semantic.py` werd tot nu toe vooral voor definities en relatievragen gebruikt. Als de Intent Classifier onzeker was, deed de kennis in `concepts.json` niets met de routing.
+
+**Wat er gebouwd is:**
+- Nieuw `core/concept_hint.py` (pure functies): `bouw_graaf()`, `haal_sleutelwoorden()`, `zoek_hint()` en `hint_voor_zin()`. Kennisvolgen is puur symbolisch (buurlijst uit `concepts.json`, relaties in beide richtingen, `rejected` genegeerd, simplemma voor de lemma-vorm, `nl_stopwoorden` voor de stopwoorden). Geen ML.
+- `intent_router.py`: nieuwe methode `_probeer_concept_hint()`, aangeroepen aan het einde van `_probeer_intent_classifier()`, enkel in de zone onder `DREMPEL_VRAAG`. De volgorde van `route()` is niet aangeraakt. De hint vraagt altijd eerst via `pending_question` ("Bedoel je dat je …? (Ik denk dat omdat 'X' bij 'Y' hoort.)") en hergebruikt `_laatste_classifier_vraag`, dus de bestaande correctie ("nee ik bedoelde X") en `_CLASSIFIER_ACTIE_REGISTER` werken ongewijzigd.
+- `concepts.json` aangevuld (samen, met de hand geplakt): extra `related_to`-relaties bij `weer` (regen, zon, wind, sneeuw, storm, bewolkt, onweer, mist, vorst, warm, koud), `tijd` (uur, minuut, seconde, laat, dag) en `schaken` (schaakbord, pion, koning). Achteraf (live test, 19:33) ook `klok` → `minuut` en `seconde`: `klok` bleek die relaties niet te hebben, waardoor "hoeveel minuten nog" geen hint gaf nadat `tijd` als anker was weggehaald.
+- Debug-commando `hint test <zin>` (help-topic `help debug` bijgewerkt).
+- Tests: `tests/test_concept_hint.py` (8).
+
+**Meting en bijstelling:** eerst `MAX_AFSTAND` = 2 met `tijd` en `klok` als tijd-anker. Op de 145 unieke zinnen uit `unmatched_intents.jsonl` onder 0.30 vuurde de hint 44 keer, vaak fout: `tijd` is een hub-woord met 23 buren (`dag`, `vaak`, `vroeg`, `leeftijd`, `laat`), en bij afstand 2 hangt bijna alles aan alles ("hoe werkt een computer" gaf `time`, "is fiets een dier" gaf `rain`, "ik zag een egel in de tuin" gaf `rain`). Bijgesteld naar `MAX_AFSTAND` = 1 en enkel `klok` als anker voor `time` (`klok` heeft al `uur`, `minuut`, `seconde`, `horloge` en `wekker` als buren, dus daarvoor hoefde niets in `concepts.json` bij). Resultaat: 10 hints op dezelfde log, bijna allemaal goed (`paraplu` ×5 en `regenjas` geven `rain`, `warm` en `sneeuw` geven `weather`, `uur` geeft `time`, `pion` geeft `chess`). Eén rest-geval, "wat hoort bij regen", is een kennisvraag die nu eerder in `route()` wordt opgevangen.
+
+**Live bevestigd (2 november 2026, 19:09):** "de pion staat vreemd" gaf `chess` via `pion` → `schaken`; "wat een mooie sneeuw" gaf `weather` via `sneeuw` → `weer` (de classifier had er `rain` van gemaakt, de hint had gelijk); "hoeveel seconden zijn het nog" gaf `time` via `seconde` → `tijd`. De pytest-suite bleef groen (3648 geslaagd, 1 overgeslagen, met 7 concept-hint-tests).
+
+**Bevindingen:** (1) een hint kent alleen categorieën: "de pion staat vreemd" gaf "wil je schaken?" en liep uit op een nieuw bord, terwijl `chess_evaluation` beter paste. (2) "is het nat buiten" haalt 0.47 bij de classifier (`weather`) terwijl de hint `rain` zou zeggen: dat is precies de zone 0.30 tot 0.70, bewust buiten versie 1 gelaten.
+
+**Nog open (versie 2):** de zone 0.30 tot 0.70, waar classifier en hint elkaar kunnen tegenspreken. Eerst meten hoe vaak dat gebeurt (bv. via `hint test` op zinnen uit het log) voor er iets wordt gebouwd. Verder ankerwoorden voor meer categorieën, samen aanvullen in `concepts.json`.

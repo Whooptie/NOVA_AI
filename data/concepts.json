@@ -16465,6 +16465,11 @@
           "Hij keek op de klok om te zien hoe laat het was."
         ],
         "relations": [
+          { "type": "related_to", "target": "uur", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "minuut", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "seconde", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "laat", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "dag", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
           {
             "type": "related_to",
             "target": "moment",
@@ -32279,6 +32284,22 @@
         ],
         "relations": [
           {
+            "type": "related_to",
+            "target": "minuut",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-11-02T14:00:00.000000",
+            "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "seconde",
+            "confidence": 0.9,
+            "source": "user",
+            "created_at": "2026-11-02T14:00:00.000000",
+            "status": "confirmed"
+          },
+          {
             "type": "is_a",
             "target": "apparaat",
             "confidence": 0.8,
@@ -32400,6 +32421,9 @@
           "Zij wint bijna elk potje schaken."
         ],
         "relations": [
+          { "type": "related_to", "target": "schaakbord", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "pion", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "koning", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
           {
             "type": "is_a",
             "target": "aanduiding",
@@ -38801,6 +38825,17 @@
           "Hoe is het weer in Brussel?"
         ],
         "relations": [
+          { "type": "related_to", "target": "regen", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "zon", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "wind", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "sneeuw", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "storm", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "bewolkt", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "onweer", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "mist", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "vorst", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "warm", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          { "type": "related_to", "target": "koud", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
           {
             "type": "related_to",
             "target": "temperatuur",

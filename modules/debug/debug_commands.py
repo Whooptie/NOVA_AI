@@ -62,6 +62,7 @@ class DebugCommands:
             (lambda t: t == "intent debug", self._intent_debug),
             (lambda t: t.startswith("intent test"), self._intent_test),
             (lambda t: t == "intent retrain", self._intent_retrain),
+            (lambda t: t.startswith("hint test"), self._hint_test),
             (lambda t: t.startswith("wiki debug"), self._wiki_debug),
             (lambda t: t == "contradicties", self._contradicties),
             (lambda t: t == "topic suggesties", self._topic_suggesties),
@@ -1265,6 +1266,85 @@ class DebugCommands:
             print(f"{C_CYAN}Hertraining geslaagd. {clf.get_stats()}{C_RESET}")
         else:
             print(f"{C_RED}Hertraining mislukt (zie logs hierboven).{C_RESET}")
+
+    def _hint_test(self, user_input):
+        """
+        Fase 13 (2 november 2026): toont naast elkaar wat de Intent
+        Classifier van een zin vindt EN wat de concept-hint (core/
+        concept_hint.py, via concepts.json) ervan vindt, plus wat
+        intent_router.py daadwerkelijk zou doen. Puur informatief: geen
+        pending_question, geen logging, niets wordt uitgevoerd.
+
+        Gebruik: hint test <zin>
+        """
+        # Late import: een fout in concept_hint mag nooit alle andere
+        # debug-commando's onbruikbaar maken (zelfde patroon als _label).
+        try:
+            from core import concept_hint
+        except Exception as e:
+            print(f"{C_RED}concept_hint kon niet geladen worden: {e}{C_RESET}")
+            return
+
+        # "hint test" is 2 woorden, de rest is de te testen zin.
+        delen = user_input.split(maxsplit=2)
+        if len(delen) < 3:
+            print(f"{C_RED}Gebruik: hint test <zin>{C_RESET}")
+            return
+
+        zin = delen[2]
+        print(f"{C_CYAN}--- Hint test: '{zin}' ---{C_RESET}")
+
+        # 1. Wat vindt de classifier?
+        clf = self.loader.loaded_modules.get("intent_classifier")
+        router = self.loader.loaded_modules.get("intent_router")
+        drempel_direct = getattr(router, "DREMPEL_DIRECT", 0.70)
+        drempel_vraag = getattr(router, "DREMPEL_VRAAG", 0.30)
+        resultaat = clf.predict(zin) if clf else None
+
+        if resultaat is None:
+            print(f"{C_CYAN}Classifier: geen getraind model beschikbaar.{C_RESET}")
+        else:
+            print(f"{C_CYAN}Classifier: '{resultaat['label']}' "
+                  f"(confidence: {resultaat['confidence']}){C_RESET}")
+
+        # 2. Wat vindt de concept-hint? (los van de drempels)
+        hint = concept_hint.hint_voor_zin(zin)
+
+        # LET OP: leest concept_hint._cache rechtstreeks (intern
+        # attribuut, geen publieke API) -- mag hier, voor een
+        # developer-only debug-commando, maar niet elders herhalen.
+        concepts = concept_hint._cache.get("concepts")
+        if concepts is None:
+            print(f"{C_RED}Concepts: kon concepts.json niet laden "
+                  f"(controleer het pad in hint_voor_zin()).{C_RESET}")
+        else:
+            woorden = concept_hint.haal_sleutelwoorden(zin, concepts)
+            print(f"{C_CYAN}Gekende sleutelwoorden: "
+                  f"{', '.join(woorden) if woorden else '(geen)'}{C_RESET}")
+
+        if hint is None:
+            print(f"{C_CYAN}Hint: geen (geen gekend woord binnen "
+                  f"{concept_hint.MAX_AFSTAND} stap van een anker, of een "
+                  f"gelijkspel tussen categorieën).{C_RESET}")
+        else:
+            print(f"{C_CYAN}Hint: '{hint['label']}' via '{hint['sleutelwoord']}' "
+                  f"-> '{hint['anker']}' (afstand {hint['afstand']}){C_RESET}")
+
+        # 3. Wat zou intent_router.py nu echt doen?
+        if resultaat is None:
+            conclusie = "niets (zonder classifier-resultaat komt de router niet bij de hint)"
+        elif resultaat["confidence"] >= drempel_direct:
+            conclusie = (f"classifier voert '{resultaat['label']}' DIRECT uit "
+                         f"(hint wordt niet gebruikt)")
+        elif resultaat["confidence"] >= drempel_vraag:
+            conclusie = (f"classifier vraagt bevestiging voor '{resultaat['label']}' "
+                         f"(hint wordt in versie 1 niet gebruikt)")
+        elif hint is None:
+            conclusie = "loggen naar unmatched_intents.jsonl, dan normale fallback"
+        else:
+            conclusie = (f"HINT vraagt bevestiging voor '{hint['label']}' "
+                         f"(classifier was te onzeker)")
+        print(f"{C_CYAN}Router zou doen: {conclusie}.{C_RESET}")
 
 
 def init_module(event_bus, loader=None):

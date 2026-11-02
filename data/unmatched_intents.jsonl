@@ -180,3 +180,7 @@
 {"tekst": "helpdebug", "hoogste_gok": "rain", "confidence": 0.1151, "tijdstip": "2026-11-01T21:19:15.115701"}
 {"tekst": "zoek fouten", "hoogste_gok": "preference", "confidence": 0.1381, "tijdstip": "2026-11-02T12:45:29.862503"}
 {"tekst": "µcontext", "hoogste_gok": "chess", "confidence": 0.1103, "tijdstip": "2026-11-02T18:15:55.624391"}
+{"tekst": "de pion staat vreemd", "hoogste_gok": "chess", "confidence": 0.2617, "tijdstip": "2026-11-02T19:09:31.186805"}
+{"tekst": "wat een mooie sneeuw", "hoogste_gok": "rain", "confidence": 0.264, "tijdstip": "2026-11-02T19:09:52.817128"}
+{"tekst": "hoeveel seconden zijn het nog", "hoogste_gok": "time", "confidence": 0.1601, "tijdstip": "2026-11-02T19:10:11.055991"}
+{"tekst": "test hint hoeveel minuten nog", "hoogste_gok": "time", "confidence": 0.1341, "tijdstip": "2026-11-02T19:32:59.701470"}

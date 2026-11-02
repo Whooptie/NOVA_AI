@@ -106,6 +106,9 @@ def get_help():
   intent debug                   (aantal voorbeelden, categorieën, laatste training)
   intent test <zin>               (test een zin rechtstreeks tegen de classifier)
   intent retrain                  (forceert retrain_vanuit_bestanden() nu meteen)
+  hint test <zin>                 (Fase 13: toont naast elkaar de classifier-uitslag en
+                                   de concept-hint uit concepts.json, plus wat de router
+                                   nu echt zou doen -- puur informatief, voert niets uit)
 
 🌐 WIKIPEDIA TEACHER
   wiki debug <woord>             (toont ruw Wikipedia-antwoord: type + extract,

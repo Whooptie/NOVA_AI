@@ -5049,11 +5049,47 @@ class IntentRouter:
             return True
 
         # confidence < DREMPEL_VRAAG -- te onzeker om zelfs te vragen.
-        # Loggen voor toekomstig bijtrainen, dan gewoon door naar de
-        # normale fallback() (geen True hier -- retourneer False zodat
-        # route() zelf fallback(text) nog aanroept).
+        # Loggen voor toekomstig bijtrainen. Daarna (Fase 13) nog een
+        # kans via semantic: kent Nova een woord uit de zin dat bij een
+        # categorie hoort? Zo ja: vraag het. Zo nee: normale fallback().
         self._log_unmatched_intent(text, resultaat)
+        if self._probeer_concept_hint(text):
+            return True
         return False
+
+    def _probeer_concept_hint(self, text):
+        """
+        Fase 13: gebruikt concepts.json als routing-hint wanneer de
+        classifier te onzeker is. Voert NOOIT zelf iets uit, stelt
+        altijd eerst de bevestigingsvraag (zelfde route als de
+        classifier-twijfel, dus 'nee ik bedoelde X' werkt ook).
+        """
+        from core.concept_hint import hint_voor_zin
+
+        pending = self.event_bus.modules.get("pending_question")
+        if pending is None:
+            return False
+
+        hint = hint_voor_zin(text)
+        if not hint:
+            return False
+
+        label = hint["label"]
+        if label not in self._CLASSIFIER_ACTIE_REGISTER:
+            return False
+
+        label_nl = self._CLASSIFIER_LABEL_NL_VRAAG.get(label, label)
+        dbg(f"{C_YELLOW}→ concept-hint: '{label}' via "
+            f"'{hint['sleutelwoord']}' -> '{hint['anker']}' "
+            f"(afstand {hint['afstand']}) -- vraag bevestiging{C_RESET}")
+        pending.set(f"classifier_intent_{label}", verval_seconden=60)
+        self._laatste_classifier_vraag = {"tekst": text, "label": label}
+        self.event_bus.publish("chat_response", {
+            "text": (f"Bedoel je dat je {label_nl}? "
+                     f"(Ik denk dat omdat '{hint['sleutelwoord']}' "
+                     f"bij '{hint['anker']}' hoort.)")
+        })
+        return True
 
     def _log_unmatched_intent(self, text, resultaat):
         """
