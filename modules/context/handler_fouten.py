@@ -175,7 +175,21 @@ class HandlerFoutenModule:
     def _signatuur(f):
         return (f.get("handler"), f.get("event"), f.get("fout"))
 
-    def check_nieuwe_fouten(self, nu=None):
+    def _mag_spreken_nu(self, mag_spreken=None):
+        """Mag Nova nu uit zichzelf spreken (Layer 5)? Faalt open: bij een
+        fout of ontbrekende laag telt het als 'ja'."""
+        try:
+            if mag_spreken is not None:
+                return bool(mag_spreken())
+            modules = getattr(self.event_bus, "modules", None) or {}
+            ctx = modules.get("context_manager")
+            if ctx is None:
+                return True
+            return bool(ctx.can_interrupt())
+        except Exception:
+            return True
+
+    def check_nieuwe_fouten(self, nu=None, mag_spreken=None):
         """
         Geeft de gepubliceerde zin terug, of None. Crasht nooit.
         """
@@ -199,6 +213,12 @@ class HandlerFoutenModule:
                 return None
             if nu - self._laatste_melding < MIN_INTERVAL:
                 return None                       # te snel na de vorige melding
+
+            # Layer 5-poort (of de gsm-uitzondering uit main.py). Zegt die nee,
+            # dan blijven de fouten in self._wachtend staan en worden ze later
+            # gebundeld gemeld.
+            if not self._mag_spreken_nu(mag_spreken):
+                return None
 
             wachtend, self._wachtend = self._wachtend, []
             for f in wachtend:

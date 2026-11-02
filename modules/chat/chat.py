@@ -30,7 +30,8 @@ class ChatModule:
         event_bus.subscribe("intent_causes_check", self.on_causes_check)
         event_bus.subscribe("intent_properties", self.on_properties)
         event_bus.subscribe("intent_meaning", self.on_meaning)
-        event_bus.subscribe("concept_learned", self.on_concept_learned)
+        # "concept_learned" werd nergens gepubliceerd; de melding "Nova leerde een
+        # nieuw woord" komt uit het semantic_update-event (zie main.py).
         event_bus.subscribe("intent_wiki", self.on_wiki_response)
         event_bus.subscribe("intent_identity", self.on_identity_question)
         event_bus.subscribe("intent_self_architecture", self.on_self_architecture_question)
@@ -877,14 +878,6 @@ class ChatModule:
         )
         self.event_bus.publish("layer4_response", {"text": tekst})
 
-    # -------------------------
-    # 6. Concept learned (logging / feedback)
-    # -------------------------
-    def on_concept_learned(self, data, event_type=None):
-        word = data.get("word")
-        definition = data.get("definition")
-        # Console logging is ok; geen chat_response hier nodig
-        print(f"Nova leerde een nieuw woord: {word} → {definition}")
 
     # -------------------------
     # Wikipedia

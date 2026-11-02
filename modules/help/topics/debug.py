@@ -122,6 +122,20 @@ def get_help():
                                   tussen 09:00 en 21:00. Standen via DATUM_TERUGBLIK_MODUS
                                   (aan / droog / uit).
 
+🔎 AUDIT-LOG DOORZOEKEN (roadmap punt 11, alleen lezen)
+  audit                          (hulptekst met alle varianten)
+  audit <woord>                  (alle audit-regels van dat woord, nieuwste eerst)
+  audit woord <woord>            (idem, voor een woord dat zelf een sleutelwoord is,
+                                   bv. "audit woord bron")
+  audit laatste [n]              (de n nieuwste regels over alle woorden, standaard 10)
+  audit afgewezen [dagen]        (afwijzingen van de laatste dagen, standaard 30)
+  audit bron <naam> [status]     (alle betekenissen en relaties met die bron,
+                                   bv. "audit bron wikipedia rejected" -- kijkt naar
+                                   de data, niet naar het audit-log; status is optioneel)
+  audit event <tekst> [dagen]    (regels waarvan de eventnaam <tekst> bevat,
+                                   bv. "audit event upgrade 14")
+                                  Toont max. 25 regels, daarna "… en nog N meer".
+
 🚨 FOUTENLOGBOEK (bug #46, 25 oktober 2026)
   laatste fouten                 (leest logs/handler_fouten.log en vat samen: aantal,
                                    laatste tijdstip, max. 5 verschillende fouten met

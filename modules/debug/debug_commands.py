@@ -71,6 +71,7 @@ class DebugCommands:
             (lambda t: t == "datum terugblik forceer", self._datum_terugblik_forceer),
             (lambda t: t == "label status", self._label_status),
             (lambda t: t.startswith("label signaal") or t.startswith("label sentiment"), self._label),
+            (lambda t: t == "audit" or t.startswith("audit "), self._audit),
         ]
 
         # Fase B (2 oktober 2026): welke twijfelzin er per soort laatst
@@ -478,6 +479,37 @@ class DebugCommands:
             print(f"{C_CYAN}{soort}: {s['unieke_zinnen']} unieke zinnen ({s['regels']} regels) -- "
                   f"{s['ongelabeld']} ongelabeld, {s['kevin']} door jou, "
                   f"{s['auto']} automatisch, {s['skip']} overgeslagen.{C_RESET}")
+
+    # ------------------------------------------------------------------
+    # Roadmap punt 11 -- audit-log doorzoeken (modules/debug/audit_zoeken.py)
+    # ------------------------------------------------------------------
+
+    def _audit(self, user_input):
+        """
+        Gebruik:
+          audit                       -> hulptekst
+          audit <woord>               -> audit-regels van dat woord
+          audit laatste [n]           -> de n nieuwste regels
+          audit afgewezen [dagen]     -> afwijzingen van de laatste dagen
+          audit bron <naam>           -> alles met die bron
+          audit event <tekst> [dagen] -> regels waarvan de eventnaam <tekst> bevat
+
+        Puur lezen: de logica zit in audit_zoeken.py, dit is enkel de
+        bediening. Alleen via de chat bereikbaar (geen los script).
+        """
+        # Late import: een fout in audit_zoeken mag nooit alle andere
+        # debug-commando's onbruikbaar maken (zelfde patroon als _label).
+        try:
+            from modules.debug import audit_zoeken
+        except Exception as e:
+            print(f"{C_RED}audit_zoeken kon niet geladen worden: {e}{C_RESET}")
+            return
+
+        # "audit" is het eerste woord, de rest zijn de argumenten.
+        delen = user_input.strip().split(maxsplit=1)
+        argumenten = delen[1] if len(delen) > 1 else ""
+
+        print(f"{C_CYAN}{audit_zoeken.voer_audit_uit(argumenten)}{C_RESET}")
 
     # ------------------------------------------------------------------
     # Datum-terugblik (roadmap punt 8, modules/knowledge/datum_terugblik.py)

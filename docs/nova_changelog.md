@@ -2512,25 +2512,25 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 
 **Opstartmelding:** bij elke start stuurt de module "Nova is opgestart om HH:MM" naar de gsm, ONGEACHT of Kevin actief op de laptop is (in VS Code ziet hij de terminal niet). Zo merkt hij een herstart die hij niet zelf deed (stroomstoring, crash, Docker). Probeert het tot 10 keer, 30 seconden na elkaar, omdat ntfy na een stroomstoring mogelijk later start dan Nova. Standaard AAN; uitzetten met `NTFY_OPSTARTMELDING=uit` in `.env`. Tijdens een pytest-run nooit automatisch aan. De zelftest (`NTFY_ZELFTEST_NA_SECONDEN`) blijft bestaan als tijdelijk testhulpmiddel.
 
-## ✅ Punt 55, stap 2b — ochtendsamenvatting en gevaarlijk weer bereiken de gsm (1 november 2026)
+## ✅ Punt 55, stap 2b — ochtendsamenvatting en weermeldingen bereiken de gsm (1 november 2026)
 
 **Aanleiding:** `rain.py` (regen, onweer, gladheid, harde wind) en de ochtendsamenvatting van `weather.py` vragen eerst aan Layer 5 (`_layer5_laat_spreken_toe()`) of Nova mag spreken. Zit Kevin niet aan de laptop, dan zegt Layer 5 nee: het bericht wordt dan nooit gepubliceerd en dus ook niet naar de gsm gestuurd. De ochtendsamenvatting bleef zo wachten tot Kevin iets in de terminal typte.
 
-**Keuze van Kevin:** "de ochtendsamenvatting en de gevaarlijke weersomstandigheden zijn genoeg". Gewone regen- en sneeuwmeldingen blijven dus achter Layer 5. De stille uren van `rain.py` (23:00 tot 07:00) zijn niet aangeraakt, dus 's nachts komt er ook geen onweer- of windmelding. De ochtendsamenvatting mag vanaf 06:00 (`OCHTEND_VAN_UUR`); staat de gsm dan op stil, dan wacht het bericht daar tot Kevin kijkt (ntfy bewaart berichten ongeveer 12 uur).
+**Keuze van Kevin:** "de ochtendsamenvatting en de gevaarlijke weersomstandigheden zijn genoeg". Eerst alleen ochtend en gevaarlijk weer; daarna bijgestuurd: ook gewone regen- en sneeuwmeldingen overdag mogen naar de gsm (Kevin dacht enkel aan 's nachts niet). De stille uren van `rain.py` (23:00 tot 07:00) zijn niet aangeraakt, dus 's nachts komt er ook geen onweer- of windmelding. De ochtendsamenvatting mag vanaf 06:00 (`OCHTEND_VAN_UUR`); staat de gsm dan op stil, dan wacht het bericht daar tot Kevin kijkt (ntfy bewaart berichten ongeveer 12 uur).
 
 **Wijzigingen**
 - `ntfy_meldingen.py`: nieuwe methode `gsm_vangt_op()`: True als de module aanstaat en Kevin niet actief op de laptop is (zelfde regel als de echte beslissing). Elke twijfel of fout: False.
-- `main.py`: `_gsm_vangt_melding_op(loader)` (alleen een echte `True` telt) en `_layer5_gsm_laat_spreken_toe(loader)` = Layer 5 OF de gsm. `_layer5_ochtend_mag_spreken()` gebruikt die nieuwe poort. `rain.check_proactief()` krijgt er als tweede poort `mag_spreken_gevaar` bij. `_layer5_laat_spreken_toe()` zelf is niet gewijzigd.
-- `rain.py`: `check_proactief(nu, mag_spreken, mag_spreken_gevaar=None)`. Regen/sneeuw gebruikt `mag_spreken`; onweer en gladheid/harde wind gebruiken `mag_spreken_gevaar`. Zonder aparte gevaarpoort delen ze dezelfde poort en hetzelfde onthouden antwoord, dus Layer 5 wordt nog steeds hoogstens één keer per check gevraagd.
+- `main.py`: `_gsm_vangt_melding_op(loader)` (alleen een echte `True` telt) en `_layer5_gsm_laat_spreken_toe(loader)` = Layer 5 OF de gsm. `_layer5_ochtend_mag_spreken()` gebruikt die nieuwe poort. `rain.check_proactief()` krijgt de gsm-poort als `mag_spreken`. `_layer5_laat_spreken_toe()` zelf is niet gewijzigd.
+- `rain.py`: `check_proactief(nu, mag_spreken, mag_spreken_gevaar=None)`. Regen/sneeuw gebruikt `mag_spreken`; onweer en gladheid/harde wind kunnen een aparte `mag_spreken_gevaar` krijgen, maar `main.py` gebruikt die niet. Zonder aparte gevaarpoort delen alle drie dezelfde poort en hetzelfde onthouden antwoord, dus Layer 5 wordt hoogstens één keer per check gevraagd.
 - `weather.py` en `forecast.py` zijn niet gewijzigd. De proactieve weerwaarschuwingen van `weather.py` (`check_proactieve_waarschuwing`) gaan al buiten Layer 5 om en bereikten de gsm sinds stap 2a.
 
 **Gevonden bij het testen:** de eerste opzet gaf regen en gevaar elk een eigen onthouden antwoord, waardoor Layer 5 met één poort twee keer gevraagd werd. De bestaande test `test_rain_proactief_layer5.py::test_layer5_wordt_hoogstens_een_keer_per_check_gevraagd` ving dat; hersteld.
 
-**Getest:** `tests/test_ntfy_poort.py`, 43 tests (zie nova_state.md, testlijst). Volledige suite: 3497 tests (3496 groen, 1 overgeslagen).
+**Getest:** `tests/test_ntfy_poort.py`, 47 tests (zie nova_state.md, testlijst). Volledige suite op dat moment: 3501 tests (3500 groen, 1 overgeslagen).
 
 **Besloten, niet gebouwd:** een dichtgeklapte laptop als "afwezig" laten tellen in `afwezigheid.py`. Reden (Kevin): hij is via gsm of laptop bijna altijd bereikbaar, dus "Hey Kev, daar ben je weer" zou zelden kloppen; de gsm-melding dekt het echte probleem (niets missen) al.
 
-**Live bevestigen:** 2 november 2026 rond 06:00, laptop dicht of vergrendeld: komt de ochtendsamenvatting op de gsm? Pas na die bevestiging in nova_state.md "live bevestigd" zetten. Nog open: stap 2c (oude meldingen laten vervallen) en test C (vergrendeld met Win+L).
+**Live bevestigd (2 november 2026):** laptop dicht, de ochtendsamenvatting kwam om 06:03 op de gsm ("Goeiemorgen Kevin! Vandaag wordt het in Aartrijke tussen 8°C en 13°C met motregen…"). Nog open: stap 2c (oude meldingen laten vervallen) en test C (vergrendeld met Win+L).
 
 ## ✅ Punt 8 — proactieve datum-terugkoppeling: `datum_terugblik.py` (1 november 2026)
 
@@ -2567,3 +2567,60 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Beperking (eerlijk):** het ziet alleen letterlijke namen (`.get("context_manager")`, `publish("layer4_response", ...)`). Dynamisch samengestelde namen blijven onzichtbaar, dus een bevinding is een aanwijzing en geen bewezen bug.
 
 **Getest:** alleen hier op de beschikbare bestanden (`datum_terugblik`, `emergence_engine`, `debug_commands`) en op een nepmodule die zonder Layer 5-check praat en een thread zonder `shutdown()` heeft (beide gevonden). Nog niet op Kevins volledige code gedraaid en nog geen pytest-bestand; zie `nova_state.md` punt 57.
+
+## ✅ Punt 55, stap 2c — oude relatieve-tijdmeldingen vallen weg in het welkom-terug-lijstje (2 november 2026)
+
+**Aanleiding:** op 23 oktober 2026 stond na 2 uur 40 nog "over ongeveer 10 minuten begint het te regenen" in het welkom-terug-lijstje van `afwezigheid.py`. Dat was dan niet meer waar.
+
+**Keuze:** alleen voor de laptop (Kevin: "dit is enkel voor de laptop he?"). Een melding die al op de gsm staat kan ntfy hier niet per bericht laten verlopen. Opzet: tekstherkenning in `afwezigheid.py` zelf. Een extra veld bij elk bericht zou onderweg verloren gaan (het bericht loopt via `layer4_response` en de pipeline), en de berichtteksten aanpassen zou veel rain-tests breken.
+
+**Wijzigingen (alleen `modules/context/afwezigheid.py`)**
+- `import re`; nieuwe constanten `RELATIEVE_TIJD_VERLOOPT_MINUTEN = 30` en `_RELATIEVE_TIJD` (zoekt "zo meteen", "over ongeveer", "nog ongeveer", hoofdletterongevoelig).
+- Nieuwe methode `_is_verlopen(bericht, nu)`: True als het bericht een relatieve tijd bevat en 30 minuten of langer bewaard ligt.
+- `_formuleer_lijst()` laat verlopen berichten weg. De telling van "(en nog X oudere meldingen die ik heb laten vallen)" blijft kloppen, want verlopen berichten tellen mee. Berichten zonder relatieve tijd houden de grens van 12 uur.
+- Geen wijziging in `rain.py`, `weather.py`, `main.py` of de berichtteksten.
+
+**Eerlijk:** gewone tekstherkenning, volledig symbolisch. Een nieuwe formulering met een relatieve tijd wordt pas herkend als ze aan `_RELATIEVE_TIJD` is toegevoegd; de test die de echte zinnen van `rain.py` controleert, vangt het als een zin zo verandert dat ze niet meer herkend wordt.
+
+**Getest:** `tests/test_afwezigheid_verlopen.py`, 16 nieuwe tests (zie nova_state.md, testlijst). Aantoonbaar rood bij uitgeschakelde filtering en bij een te lange grens. `test_afwezigheid.py` (52) ongewijzigd groen. Volledige suite: 3582 tests (3581 groen, 1 overgeslagen).
+
+**Test C live bevestigd (2 november 2026):** laptop vergrendeld met Win+L, de melding kwam op de gsm binnen. **Punt 55 is hiermee afgerond.** Bewust niet gedaan: een dichtgeklapte laptop als "afwezig" laten tellen, en oude meldingen laten verlopen op de gsm (ntfy kan dat niet per bericht). Wat blijft: een Windows-melding op de laptop zelf (punt 25), en antwoorden vanaf de gsm, die wachten op een gsm-client (punt 19B/46).
+
+## ✅ Koppelingen-audit afgerond en drie Layer 5-gaten gedicht (2 november 2026)
+
+**Aanleiding:** punt 57 uit `nova_state.md` (Kevins gevoel dat niet alle modules aan de juiste lagen hangen). Het script `scripts/koppelingen_audit.py` (1 november 2026) gaf aanwijzingen; die zijn nagekeken in de echte code.
+
+**Het script verbeterd:**
+- Bestanden in `identity/` tellen als Layer 6 (voorheen ontbraken ze in de tabel, omdat het script de eigen laag aan de bestandsnaam koppelde).
+- Bevinding 1 kijkt per functie (een `check_*`- of lus-functie die spreekt) of die functie zelf een Layer 5-poort heeft, in plaats van per bestand. Dat maakte de gaten in `weather.py` en `handler_fouten.py` zichtbaar.
+- `_on_shutdown` telt als shutdown; `main.py` telt niet mee bij bevinding 2.
+- `intent_*`-luisteraars zonder zender worden apart gehouden (dynamisch gepubliceerd door de router).
+- Bevinding 3 ziet nu ook topics uit de intent-tabellen (`("naam", self.detect_...)`), niet alleen losse `_emit_topic("naam")`.
+- Nieuwe bevinding 7: bestanden die geen enkele test importeert (7a: `identity/`, 7b: de rest).
+
+**Layer 5-poort voor drie modules die uit zichzelf spreken:** `contradiction_checker.py`, `weather.py` (`check_proactieve_waarschuwing`) en `handler_fouten.py` (`check_nieuwe_fouten`). Elk kreeg een `_mag_spreken_nu()` en een optionele `mag_spreken`-parameter. `main.py` geeft `lambda: _layer5_gsm_laat_spreken_toe(loader)` mee: zegt Layer 5 nee maar komt de melding via ntfy op Kevins gsm terecht, dan mag ze toch door. Zegt de poort nee, dan wordt er niets als gemeld opgeslagen (`_markeer_status`, `_al_gemelde_conflicten` en `_wachtend` blijven ongewijzigd), zodat de volgende check het opnieuw probeert. Zonder `context_manager` of bij een fout in `can_interrupt()` geldt "ja" (faalt open). Bewust niet via een stil uur geregeld; die logica zit in Layer 5 zelf.
+
+**Overige kleine wijzigingen:** drie labels (`bridge_query`, `preference_query`, `rain`) in `emergence_engine._topic_naam_labels`; dode `concept_learned`-luisteraar en `on_concept_learned` verwijderd uit `chat.py`.
+
+**Beoordeeld en bewust niet aangepast:** `intent_router._check_uitleg_vervolg_bewerking` (reactief, draait alleen op een bericht van Kevin, stap -1A), `memory_write_failed` (staat in `core/logger.py`'s `explicit_error_events`, wordt gelogd), `body` (losse module, hoort niet in Layer 7).
+
+**Tests:** `test_koppelingen_audit.py` (14), `test_contradiction_checker_layer5.py` (8), `test_weather_layer5.py` (7), `test_handler_fouten_layer5.py` (6). Volledige suite: 3603 geslaagd, 1 overgeslagen.
+
+## ✅ Punt 11 — debug-commando `audit`: audit-log doorzoeken (2 november 2026)
+
+**Wat het doet:** je typt in het gesprek met Nova `audit ...` en ze doorzoekt de audit-logs in `concepts.json` (concept- en sense-niveau). Alleen lezen, 100% symbolisch. Bewust géén los CLI-script: dat zou een tweede toegangsweg naast de chat zijn (zie punt 30, cognitive coupling).
+
+**Commando's:** `audit` (hulptekst), `audit <woord>`, `audit woord <woord>` (voor een woord dat zelf een sleutelwoord is), `audit laatste [n]` (standaard 10), `audit afgewezen [dagen]` (standaard 30), `audit bron <naam> [status]`, `audit event <tekst> [dagen]`. Max. 25 regels, daarna "… en nog N meer".
+
+**Koppelingen**
+- `modules/debug/audit_zoeken.py` (nieuw): pure functies, geen klasse, geen `init_module()`. Ingang `voer_audit_uit(argumenten, concepts_pad=None, nu=None)` geeft altijd een tekst terug, nooit een exception. Leest `data/concepts.json` rechtstreeks (atomische saves, dus veilig; de registratienaam van semantic in de loader was niet nodig).
+- `debug_commands.py`: één nieuwe regel in `self._commands` (`t == "audit" or t.startswith("audit ")`) en de methode `_audit()` (late import, zelfde patroon als `_label`).
+- `help debug`: sectie "AUDIT-LOG DOORZOEKEN".
+
+**Echte data vond één fout:** de audit-regels noemen het veld `event_type`, niet `event`. Daardoor stond overal `?` als eventnaam en vond `audit afgewezen` niets, terwijl er wel een `sense_rejected` in stond. Opgelost door `event_type` vooraan in `EVENT_SLEUTELS` te zetten; twee regressietests toegevoegd (`TestEchtFormaat`). Tweede kleine fout (gevonden met de tests): `audit event ... <dagen>` meldde de "regels zonder tijdstip"-voetnoot niet als er verder niets overbleef.
+
+**Live bevestigd (2 november 2026):** `audit afgewezen 30` geeft 211 afwijzingen (vooral `relation_rejected` met reden "gelijkenis-voorstel (embedding) afgewezen", plus `sense_rejected`); `audit laatste 5` toont echte eventnamen; `audit bron wikipedia` geeft 49 treffers; `help debug` toont het nieuwe blok.
+
+**Twee kleine verbeteringen na de live test (2 november 2026):** bij regels op concept-niveau stond het woord twee keer in de lijstuitvoer (`_formatteer_regel(r, met_woord=True)` laat de plek dan weg); `audit bron <naam> [status]` kreeg een optioneel statusfilter, bv. `audit bron wikipedia rejected`.
+
+**Getest:** `tests/test_audit_zoeken.py` (32 tests, tijdelijke `concepts.json` per test, raakt `data/` nooit aan). Volledige suite bij het afronden van punt 11: 3632 geslaagd, 1 overgeslagen.

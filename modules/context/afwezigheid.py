@@ -45,6 +45,7 @@ een zelf-deadlock geven (threading.Lock is niet herbetreedbaar).
 """
 
 import random
+import re
 import threading
 import time
 from datetime import datetime
@@ -72,6 +73,18 @@ class AfwezigheidModule:
     # (een weerwaarschuwing van gisterochtend is niet meer nuttig), enkel
     # nog geteld in een korte "en nog X oudere"-regel.
     MAX_BERICHT_LEEFTIJD_UUR = 12
+
+    # Punt 55c (2 november 2026): een bericht met een RELATIEVE tijd erin
+    # ("over ongeveer 10 minuten begint het te regenen", "zo meteen",
+    # "nog ongeveer 45 minuten") is na een tijdje onwaar. Zo'n bericht
+    # wordt na dit aantal minuten niet meer getoond bij terugkomst (het
+    # telt mee in de regel "en nog X oudere meldingen die ik heb laten
+    # vallen"). Berichten zonder relatieve tijd ("Let op: er wordt onweer
+    # verwacht") houden de gewone grens van MAX_BERICHT_LEEFTIJD_UUR.
+    RELATIEVE_TIJD_VERLOOPT_MINUTEN = 30
+    _RELATIEVE_TIJD = re.compile(
+        r"\b(zo meteen|over ongeveer|nog ongeveer)\b", re.IGNORECASE
+    )
 
     _WELKOM_OPENINGEN = [
         "Welkom terug!",
@@ -286,7 +299,10 @@ class AfwezigheidModule:
         er niets te tonen valt.
         """
         max_leeftijd = self.MAX_BERICHT_LEEFTIJD_UUR * 3600
-        recent = [b for b in berichten if nu - b["tijd"] <= max_leeftijd]
+        recent = [
+            b for b in berichten
+            if nu - b["tijd"] <= max_leeftijd and not self._is_verlopen(b, nu)
+        ]
         te_oud = len(berichten) - len(recent) + weggevallen
 
         if not recent and not te_oud:
@@ -302,6 +318,16 @@ class AfwezigheidModule:
             regels.append(f"\n(en nog {te_oud} oudere {meervoud} die ik heb laten vallen)")
 
         return "".join(regels)
+
+    def _is_verlopen(self, bericht, nu):
+        """
+        True als het bericht een relatieve tijd bevat ("over ongeveer 10
+        minuten") en al langer dan RELATIEVE_TIJD_VERLOOPT_MINUTEN bewaard
+        ligt: wat het zei is dan niet meer waar.
+        """
+        if nu - bericht["tijd"] < self.RELATIEVE_TIJD_VERLOOPT_MINUTEN * 60:
+            return False
+        return bool(self._RELATIEVE_TIJD.search(bericht["tekst"]))
 
     @staticmethod
     def _duur_tekst(minuten):

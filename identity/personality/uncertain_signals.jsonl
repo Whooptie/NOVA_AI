@@ -1639,3 +1639,11 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T21:28:42.587106"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-01T21:46:40.873614"}
 {"text": "wat is een hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-01T21:51:40.579735"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T12:43:12.552299"}
+{"text": "gaat het vandaag nog regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0304, "bron": "model_fallback", "tijdstip": "2026-11-02T12:45:02.374926"}
+{"text": "laatste fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-02T12:45:25.295116"}
+{"text": "zoek fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-02T12:45:29.850292"}
+{"text": "zijn er fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.053, "bron": "model_fallback", "tijdstip": "2026-11-02T12:47:12.002046"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T13:45:25.776497"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T13:48:36.889945"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T13:56:44.424879"}

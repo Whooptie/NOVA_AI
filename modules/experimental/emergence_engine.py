@@ -341,6 +341,9 @@ class EmergenceEngine:
             "body": "hoe ik me lichamelijk voel",
             "gelijkenis_zoek": "woorden zoeken die op elkaar lijken",
             "gelijkenis_overloop": "overlap tussen woorden bekijken",
+            "bridge_query": "wat twee woorden gemeen hebben",
+            "preference_query": "wat ik over jouw voorkeuren weet",
+            "rain": "de regenradar",
         }
 
         # Vertaalt het stuk na "activity_started:" naar een Nederlands

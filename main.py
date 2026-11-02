@@ -610,7 +610,9 @@ def achtergrond_loop(loader):
             weather = loader.loaded_modules.get("weather")
             if weather:
                 try:
-                    weather.check_proactieve_waarschuwing()
+                    weather.check_proactieve_waarschuwing(
+                        mag_spreken=lambda: _layer5_gsm_laat_spreken_toe(loader)
+                    )
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in check_proactieve_waarschuwing(): {e}")
 
@@ -674,7 +676,9 @@ def achtergrond_loop(loader):
             fouten_module = loader.loaded_modules.get("handler_fouten")
             if fouten_module:
                 try:
-                    fouten_module.check_nieuwe_fouten()
+                    fouten_module.check_nieuwe_fouten(
+                        mag_spreken=lambda: _layer5_gsm_laat_spreken_toe(loader)
+                    )
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in handler_fouten.check_nieuwe_fouten(): {e}")
 
@@ -696,7 +700,9 @@ def achtergrond_loop(loader):
             contradiction_checker = loader.loaded_modules.get("contradiction_checker")
             if contradiction_checker:
                 try:
-                    contradiction_checker.check_contradictions()
+                    contradiction_checker.check_contradictions(
+                        mag_spreken=lambda: _layer5_gsm_laat_spreken_toe(loader)
+                    )
                 except Exception as e:
                     print(f"[Achtergrondthread] Fout in contradiction_checker.check_contradictions(): {e}")
 

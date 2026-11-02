@@ -762,7 +762,7 @@ class WeatherModule:
     # praktijk nog te weinig of te veel blijkt.
     ZELFDE_PLEK_DREMPEL_KM = 20
 
-    def check_proactieve_waarschuwing(self):
+    def check_proactieve_waarschuwing(self, mag_spreken=None):
         """Wordt periodiek aangeroepen vanuit achtergrond_loop() in main.py
         (elke 30 min). Checkt de standaardstad, en indien de IP-locatie een
         ANDERE stad is DIE OOK ECHT VER GENOEG WEG LIGT (> ZELFDE_PLEK_DREMPEL_KM),
@@ -801,9 +801,25 @@ class WeatherModule:
                 steden_om_te_checken.append(ip_stad)
 
         for stad in steden_om_te_checken:
-            self._check_waarschuwing_voor_stad(stad)
+            self._check_waarschuwing_voor_stad(stad, mag_spreken)
 
-    def _check_waarschuwing_voor_stad(self, city):
+    def _mag_spreken_nu(self, mag_spreken=None):
+        """Mag Nova nu uit zichzelf spreken (Layer 5)? Een meegegeven
+        mag_spreken-functie (uit main.py, met de gsm-uitzondering) heeft
+        voorrang; anders vragen we context_manager.can_interrupt().
+        Faalt open: bij een fout of ontbrekende laag telt het als 'ja'."""
+        try:
+            if mag_spreken is not None:
+                return bool(mag_spreken())
+            modules = getattr(self.event_bus, "modules", None) or {}
+            ctx = modules.get("context_manager")
+            if ctx is None:
+                return True
+            return bool(ctx.can_interrupt())
+        except Exception:
+            return True
+
+    def _check_waarschuwing_voor_stad(self, city, mag_spreken=None):
         """Haalt het huidige weer op voor 1 stad, en publiceert een
         proactieve melding als er een waarschuwing is EN die vandaag nog
         niet gemeld werd voor deze stad."""
@@ -842,6 +858,12 @@ class WeatherModule:
 
         if not self._is_nieuwe_episode(city, waarschuwing):
             return  # zelfde waarschuwing als de vorige check, nog dezelfde episode
+
+        # Layer 5-poort (of de gsm-uitzondering uit main.py). Zegt die nee,
+        # dan NIET opslaan: bij de volgende check (30 min) is het dan nog
+        # steeds een nieuwe episode en wordt het alsnog gemeld.
+        if not self._mag_spreken_nu(mag_spreken):
+            return
 
         self._markeer_status(city, waarschuwing_tekst=waarschuwing)
         opening = random.choice(self._sjablonen_proactieve_waarschuwing["opening"])

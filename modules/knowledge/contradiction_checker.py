@@ -107,7 +107,7 @@ class ContradictionChecker:
     # zelfde patroon als weather.check_proactieve_waarschuwing() en
     # emergence.reflect().
     # ------------------------------------------------------------------
-    def check_contradictions(self):
+    def check_contradictions(self, mag_spreken=None):
         """
         Loopt over ALLE concepten in concepts.json (goedkoop -- pure
         in-memory dict-lookups, geen I/O, geen externe aanroepen per
@@ -153,6 +153,12 @@ class ContradictionChecker:
             self._sla_state_op()
             return
 
+        # Layer 5: mag Nova nu uit zichzelf spreken? Zo niet: NIETS als gemeld
+        # markeren, de volgende cyclus (15 min) probeert het opnieuw.
+        if not self._mag_spreken_nu(mag_spreken):
+            self._sla_state_op()
+            return
+
         for c in nieuwe_conflicten:
             self._al_gemelde_conflicten.add(self._conflict_sleutel(c))
         self._sla_state_op()
@@ -161,6 +167,24 @@ class ContradictionChecker:
         self.event_bus.publish("layer4_response", {"text": tekst})
 
     # ------------------------------------------------------------------
+    def _mag_spreken_nu(self, mag_spreken=None) -> bool:
+        """
+        Vraagt Layer 5 (context_manager.can_interrupt()) of Nova nu uit zichzelf
+        mag spreken. Faalt open: ontbreekt context_manager, of gaat er iets mis,
+        dan telt het als 'ja' (Layer 5 ontbreken mag deze check nooit stiller
+        maken dan voorheen -- zelfde regel als session_watcher.check_pauze()).
+        """
+        try:
+            if mag_spreken is not None:
+                return bool(mag_spreken())
+            modules = getattr(self.event_bus, "modules", None) or {}
+            ctx = modules.get("context_manager")
+            if ctx is None:
+                return True
+            return bool(ctx.can_interrupt())
+        except Exception:
+            return True
+
     def _is_part_of_cirkel(self, c: dict) -> bool:
         """
         Onderscheidt een part_of-cirkelconflict (idee #3 uit

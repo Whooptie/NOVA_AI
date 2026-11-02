@@ -483,3 +483,8 @@
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793564355.1240835, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1793564355.1244733, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 2, "variant_tekst": "Ik ken '{entity}' als: {definition} Grappig genoeg komt dat bij jou vaak samen voor met '{associatie}'.", "entity": "hond", "response_style": "normaal", "moment": "2026-11-01T21:51:40.596524", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793566300.5968096, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "variant_tekst": "Oh… je bent al een tijdje met {activiteit} bezig.", "entity": "coding", "response_style": null, "moment": "2026-11-02T12:45:29.870003", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe gaat het?", "entity": "coding", "response_style": null, "moment": "2026-11-02T12:45:29.870948", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1793619929.8706298, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1793619929.871104, "type": "sentiment_koppeling"}
