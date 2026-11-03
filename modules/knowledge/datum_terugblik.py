@@ -135,6 +135,7 @@ NEGEER_WOORDEN = frozenset({
     "kun", "kunt", "kan", "kunnen", "wil", "willen", "mag", "moet", "moeten",
     "hoeveel", "welke", "waarom", "wanneer", "bijvoorbeeld", "ongeveer", "eigenlijk",
     "test", "testen", "getest", "debug", "commando",
+    "bank", "plus", "levenshtein",
 })
 
 _MAANDEN = ["januari", "februari", "maart", "april", "mei", "juni", "juli",
@@ -212,6 +213,33 @@ def lijkt_op_code(tekst):
     return bool(_CODE_PATROON.search(tekst or ""))
 
 
+# Berichten die een VRAAG OF COMMANDO AAN NOVA zijn (nova_state.md, 3 november 2026).
+# "wat is bank" of "zoek gelijkenissen voor hond" is Nova gebruiken of testen, geen
+# gesprek over iets uit je leven. De eerste echte melding ging zo over 'levenshtein',
+# 'plus' en 'bank'. Zo'n bericht begint met een vast patroon en is kort; een lang
+# bericht dat toevallig met "wat is" begint, telt wel mee. Vul gerust patronen aan.
+MAX_WOORDEN_TESTVRAAG = 10
+
+_TESTVRAAG_PATROON = re.compile(
+    r"^\s*(?:nova\s*[,:!]?\s*)?(?:"
+    r"wat\s+is|wat\s+zijn|wat\s+betekent|wat\s+betekenen|wat\s+bedoel\s+je\s+met"
+    r"|definieer|definitie\s+van|geef\s+(?:een\s+|de\s+)?(?:definitie|voorbeeld|synoniem|antoniem)\s+van"
+    r"|synoniem\s+van|antoniem\s+van|zoek\s+gelijkenissen|gelijkenissen\s+overlopen"
+    r"|waarop\s+lijkt|waar\s+lijkt|extraheer"
+    r")\b",
+    re.IGNORECASE,
+)
+
+
+def is_testvraag(tekst):
+    """True voor een korte vraag of opdracht aan Nova ("wat is bank", "zoek gelijkenissen
+    voor hond"): gereedschap gebruiken of testen, geen gesprek. Telt niet mee."""
+    tekst = tekst or ""
+    if len(tekst.split()) > MAX_WOORDEN_TESTVRAAG:
+        return False
+    return bool(_TESTVRAAG_PATROON.match(tekst))
+
+
 def woord_stammen(tekst):
     """
     Geeft {stam: leesbaar woord} van de inhoudswoorden van een bericht.
@@ -251,15 +279,20 @@ def vind_terugblik(rijen, nu_datum, afstanden=AFSTANDEN_MAANDEN):
        "afgewezen": [ (afstand_maanden, reden) ... ]}
     """
     dagindex = {}
+    overgeslagen_testvragen = 0
     for ts, tekst in rijen:
         if lijkt_op_code(tekst):
+            continue
+        if is_testvraag(tekst):
+            overgeslagen_testvragen += 1
             continue
         stammen = woord_stammen(tekst)
         if not stammen:
             continue
         dagindex.setdefault(_naar_dt(ts).date(), []).append((ts, tekst, stammen))
 
-    analyse = {"actieve_dagen": len(dagindex), "reden": None, "kandidaten": [], "afgewezen": []}
+    analyse = {"actieve_dagen": len(dagindex), "reden": None, "kandidaten": [], "afgewezen": [],
+               "testvragen_overgeslagen": overgeslagen_testvragen}
     n_dagen = len(dagindex)
     if n_dagen < MIN_ACTIEVE_DAGEN:
         analyse["reden"] = (f"te weinig dagen met berichten ({n_dagen}, minimum {MIN_ACTIEVE_DAGEN})")
@@ -354,6 +387,8 @@ def formuleer(kandidaat, voorbeeld=TOON_VOORBEELD, kies=random.choice):
 def formatteer_status(analyse, nu_datum):
     regels = [f"Datum: {nu_datum.day} {_MAANDEN[nu_datum.month - 1]} {nu_datum.year}",
               f"Dagen met berichten: {analyse['actieve_dagen']}"]
+    if analyse.get("testvragen_overgeslagen"):
+        regels.append(f"Overgeslagen: {analyse['testvragen_overgeslagen']} vraag/vragen aan Nova (\"wat is ...\" e.d.)")
     if analyse.get("reden"):
         regels.append(f"Resultaat: geen terugblik ({analyse['reden']})")
     for k in analyse["kandidaten"]:

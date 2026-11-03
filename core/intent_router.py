@@ -256,6 +256,44 @@ class IntentRouter:
     # ---------------------------------------------------------
     # Preferences-flow (Fase 2: expliciet commando)
     # ---------------------------------------------------------
+    @staticmethod
+    def _splits_einddatum(rest):
+        """
+        Haalt een optionele 'per <datum>' van het einde van een
+        'vergeet:'-commando af (punt 60e, 3 november 2026).
+
+            'koffie per 2025-06-01'  -> ('koffie', '2025-06-01', None)
+            'koffie per 01-06-2025'  -> ('koffie', '2025-06-01', None)
+            'koffie'                 -> ('koffie', None, None)
+            'koffie per 2999-01-01'  -> ('koffie', None, <foutmelding>)
+
+        Alleen een 'per' gevolgd door iets dat op een datum lijkt telt
+        als einddatum; 'vergeet: per se' blijft gewoon het woord
+        'per se'. Datumformaten: JJJJ-MM-DD of DD-MM-JJJJ (ook met /).
+        Een ongeldige of toekomstige datum geeft een foutmelding en er
+        wordt dan niets beëindigd.
+        """
+        m = re.match(r"^(.*\S)\s+per\s+(\d{1,4}[-/]\d{1,2}[-/]\d{1,4})$", rest.strip(), flags=re.IGNORECASE)
+        if not m:
+            return rest.strip(), None, None
+        woord, ruw = m.group(1).strip(), m.group(2).replace("/", "-")
+        from datetime import datetime
+        datum = None
+        for formaat in ("%Y-%m-%d", "%d-%m-%Y"):
+            try:
+                datum = datetime.strptime(ruw, formaat)
+                break
+            except ValueError:
+                continue
+        if datum is None:
+            return woord, None, (
+                f"Die datum '{m.group(2)}' snap ik niet. Gebruik JJJJ-MM-DD of DD-MM-JJJJ, "
+                f"bv. 'vergeet: {woord} per 2025-06-01'."
+            )
+        if datum.date() > datetime.now().date():
+            return woord, None, "Die datum ligt in de toekomst. Een voorkeur kan alleen vanaf nu of eerder stoppen."
+        return woord, datum.strftime("%Y-%m-%d"), None
+
     def handle_preference(self, text):
         """
         Herkent 'onthoud: ...' en 'vergeet: ...'. Dit is bewust dezelfde
@@ -269,6 +307,8 @@ class IntentRouter:
             onthoud: ik drink graag koffie   -> positief, "koffie"
             onthoud: ik hou niet van kou     -> negatief, "kou"
             vergeet: kou                     -> verwijderd
+            vergeet: kou per 2025-06-01      -> verwijderd, met 1 juni 2025
+                                                als einddatum (punt 60e)
         """
         t = text.strip()
         tl = t.lower()
@@ -301,16 +341,38 @@ class IntentRouter:
             woord = t.split(":", 1)[1].strip() if ":" in t else t.split(maxsplit=1)[1].strip()
             if not woord:
                 self.event_bus.publish("chat_response", {
-                    "text": "Gebruik: vergeet: <woord>"
+                    "text": "Gebruik: vergeet: <woord>  (of: vergeet: <woord> per 2025-06-01)"
                 })
                 return True
 
-            if self.kevin_profile:
-                beeindigd = self.kevin_profile.beeindig_preference(woord)
-                if beeindigd:
+            # Punt 60e (3 november 2026): optionele einddatum achteraan.
+            woord, datum, fout = self._splits_einddatum(woord)
+            if fout:
+                self.event_bus.publish("chat_response", {"text": fout})
+                return True
+
+            if datum and self.kevin_profile:
+                begin_fn = getattr(self.kevin_profile, "laatste_begindatum", None)
+                begin = begin_fn(woord) if begin_fn else None
+                if begin and datum < begin:
                     self.event_bus.publish("chat_response", {
                         "text": (
-                            f"Oké, ik reken '{woord}' niet meer mee. Wil je het helemaal "
+                            f"Ik heb '{woord}' pas sinds {begin} genoteerd, dus het kan niet "
+                            f"al op {datum} gestopt zijn. Kies een datum vanaf {begin}."
+                        )
+                    })
+                    return True
+
+            if self.kevin_profile:
+                if datum:
+                    beeindigd = self.kevin_profile.beeindig_preference(woord, datum)
+                else:
+                    beeindigd = self.kevin_profile.beeindig_preference(woord)
+                if beeindigd:
+                    sinds = f" (geldt niet meer sinds {datum})" if datum else ""
+                    self.event_bus.publish("chat_response", {
+                        "text": (
+                            f"Oké, ik reken '{woord}' niet meer mee{sinds}. Wil je het helemaal "
                             f"wissen, zeg dan: wis definitief: {woord}"
                         )
                     })
@@ -581,6 +643,25 @@ class IntentRouter:
 
         return False
 
+    @staticmethod
+    def _splits_reden(rest):
+        """
+        Haalt een optioneel 'reden: ...'-deel van het einde van een
+        weerleg-commando af (punt 60b, 3 november 2026).
+
+            'hond is_a meubel reden: een hond is geen meubelstuk'
+            -> ('hond is_a meubel', 'een hond is geen meubelstuk')
+
+        Zonder 'reden:' komt (rest, "") terug, dus alle oude commando's
+        werken ongewijzigd. Hoofdletters maken niet uit. De reden wordt
+        in het audit_log bewaard (reject_sense/-concept/-relation
+        accepteerden al een reason, maar kregen er nooit een).
+        """
+        m = re.search(r"\s+reden\s*:\s*", rest, flags=re.IGNORECASE)
+        if not m:
+            return rest, ""
+        return rest[:m.start()].strip(), rest[m.end():].strip()
+
     def _verwerk_weerleg_concept(self, rest, hard):
         """
         Verwacht 'rest' als één enkel woord, bv. 'verzonnenwoord'.
@@ -588,6 +669,7 @@ class IntentRouter:
         impliciet ook alle relaties eronder, want get_relations()
         negeert alles onder een rejected sense sowieso al).
         """
+        rest, reden = self._splits_reden(rest)
         woord = rest.strip().lower()
         if not woord or " " in woord:
             voorbeeld = "verwijder definitief concept: verzonnenwoord" if hard else "weerleg concept: verzonnenwoord"
@@ -616,10 +698,10 @@ class IntentRouter:
                     )
                 })
         else:
-            aantal = self.semantic.reject_concept(woord)
+            aantal = self.semantic.reject_concept(woord, reden)
             if aantal:
                 self.event_bus.publish("chat_response", {
-                    "text": f"Genoteerd, ik reken niets meer van '{woord}' mee ({aantal} betekenis{'sen' if aantal != 1 else ''} geweerlegd)."
+                    "text": f"Genoteerd, ik reken niets meer van '{woord}' mee ({aantal} betekenis{'sen' if aantal != 1 else ''} geweerlegd)." + (" Reden bewaard." if reden else "")
                 })
             else:
                 self.event_bus.publish("chat_response", {
@@ -634,6 +716,7 @@ class IntentRouter:
         sense met de hoogste confidence die deze relatie draagt) --
         Kevin hoeft geen sense_id te kennen, enkel het woord.
         """
+        rest, reden = self._splits_reden(rest)
         delen = rest.split(maxsplit=2)
         if len(delen) != 3:
             voorbeeld = "verwijder definitief: hond is_a meubel" if hard else "weerleg: hond is_a meubel"
@@ -687,10 +770,10 @@ class IntentRouter:
                     )
                 })
         else:
-            resultaat = self.semantic.reject_relation(woord, gevonden_sense_id, relatie_type, target)
+            resultaat = self.semantic.reject_relation(woord, gevonden_sense_id, relatie_type, target, reden)
             if resultaat:
                 self.event_bus.publish("chat_response", {
-                    "text": f"Genoteerd, ik reken '{woord} {relatie_type} {target}' niet meer mee."
+                    "text": f"Genoteerd, ik reken '{woord} {relatie_type} {target}' niet meer mee." + (" Reden bewaard." if reden else "")
                 })
             else:
                 self.event_bus.publish("chat_response", {
@@ -706,6 +789,7 @@ class IntentRouter:
         handle_sense_voorkeur() al tonen -- Kevin ziet dat nummer dus
         al ergens in een eerder antwoord staan.
         """
+        rest, reden = self._splits_reden(rest)
         delen = rest.rsplit(maxsplit=1)
         if len(delen) != 2 or not delen[1].isdigit():
             voorbeeld = "verwijder definitief betekenis: python 2" if hard else "weerleg betekenis: python 2"
@@ -748,10 +832,10 @@ class IntentRouter:
                     )
                 })
         else:
-            resultaat = self.semantic.reject_sense(woord, sense_id)
+            resultaat = self.semantic.reject_sense(woord, sense_id, reden)
             if resultaat:
                 self.event_bus.publish("chat_response", {
-                    "text": f"Genoteerd, ik reken betekenis {nummer} van '{woord}' niet meer mee."
+                    "text": f"Genoteerd, ik reken betekenis {nummer} van '{woord}' niet meer mee." + (" Reden bewaard." if reden else "")
                 })
             else:
                 self.event_bus.publish("chat_response", {

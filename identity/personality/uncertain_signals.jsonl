@@ -1666,3 +1666,29 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T19:25:10.788206"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-02T19:32:45.918381"}
 {"text": "test hint hoeveel minuten nog", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0268, "bron": "model_fallback", "tijdstip": "2026-11-02T19:32:59.687565"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-02T19:48:15.449616"}
+{"text": "gaat het vandaag regenen?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0344, "bron": "model_fallback", "tijdstip": "2026-11-03T11:20:08.042311"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T12:17:18.240564"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T12:26:56.527933"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T12:37:45.092805"}
+{"text": "een vuurtoren is een toren die schepen waarschuwt met licht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0619, "bron": "model_fallback", "tijdstip": "2026-11-03T12:38:41.488335"}
+{"text": "1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T12:40:07.088213"}
+{"text": "teach walrus een zeezoogdier met lange slagtanden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-03T12:42:25.320353"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T13:00:51.209141"}
+{"text": "weerleg: vuurtoren is_a toren reden: testje", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0618, "bron": "model_fallback", "tijdstip": "2026-11-03T13:01:06.094711"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T13:14:21.568361"}
+{"text": "is een walrus een zeezoogdier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-03T13:14:36.308578"}
+{"text": "wat weet je niet zeker over walrus", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0736, "bron": "model_fallback", "tijdstip": "2026-11-03T13:14:56.009776"}
+{"text": "bevestig 1", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:15:10.868882"}
+{"text": "is een walrus een zeezoogdier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-03T13:15:21.190909"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T13:23:53.283852"}
+{"text": "onthoud: ik hou van thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0175, "bron": "model_fallback", "tijdstip": "2026-11-03T13:24:14.355316"}
+{"text": "vergeet: thee per 2025/06/01", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:25:36.295361"}
+{"text": "vergeet: koffie per 2999-01-01", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0523, "bron": "model_fallback", "tijdstip": "2026-11-03T13:25:53.439153"}
+{"text": "naam onderhoud", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:27:10.189418"}
+{"text": "wis definitief: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:29:09.946919"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T13:30:03.461133"}
+{"text": "onthoud: ik hou van thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0175, "bron": "model_fallback", "tijdstip": "2026-11-03T13:30:18.033018"}
+{"text": "vergeet: thee per 2025-06-01", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:30:28.227904"}
+{"text": "vergeet: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:30:40.914418"}
+{"text": "wis definitief: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:30:53.714467"}

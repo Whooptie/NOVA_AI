@@ -2691,3 +2691,101 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Bevindingen:** (1) een hint kent alleen categorieën: "de pion staat vreemd" gaf "wil je schaken?" en liep uit op een nieuw bord, terwijl `chess_evaluation` beter paste. (2) "is het nat buiten" haalt 0.47 bij de classifier (`weather`) terwijl de hint `rain` zou zeggen: dat is precies de zone 0.30 tot 0.70, bewust buiten versie 1 gelaten.
 
 **Nog open (versie 2):** de zone 0.30 tot 0.70, waar classifier en hint elkaar kunnen tegenspreken. Eerst meten hoe vaak dat gebeurt (bv. via `hint test` op zinnen uit het log) voor er iets wordt gebouwd. Verder ankerwoorden voor meer categorieën, samen aanvullen in `concepts.json`.
+
+## ✅ Twee meldingen bij een dichte laptop: pauze-melding en datum-terugblik (3 november 2026)
+
+**Gezien (2 november 2026, 20:02 en 20:03):** laptop dicht, en toch twee meldingen op de gsm. De gsm-route zelf werkte zoals bedoeld (log: "Naar de gsm (laptop niet verbonden)").
+
+**1. "30 minuten verder zonder pauze" (`session_watcher.py`)**
+- **Oorzaak:** `check_pauze()` gebruikt de focusdata van de bridge, en die blijft `DATA_VERVAL_SECONDEN` (180 s) geldig. `ntfy_meldingen` is strenger (45 s) en wist al dat de laptop weg was. De tijden klopten: Nova startte om 19:32, sessie vanaf 19:33, melding om 20:03.
+- **Fix:** nieuwe methode `_laptop_niet_vers_actief()` (vraagt `ntfy_meldingen.gsm_vangt_op()`; enkel een echte `True` telt; zonder module of bij een fout het oude gedrag) en een extra poort in `check_pauze()` voor de melding. `laatste_melding_time` blijft ongewijzigd, dus de melding komt pas als Kevin echt terug is. Eén logregel per sessie.
+- **Bewust niet gedaan:** `DATA_VERVAL_SECONDEN` verlagen (raakt heel Layer 5). Restpunt: `check_activity_interruption()` heeft dezelfde 3 minuten, maar zit achter Layer 5.
+- **Getest:** `tests/test_session_watcher_gsm.py`, 12 tests, rood zonder de fix.
+
+**2. Datum-terugblik over 'levenshtein', 'plus' en 'bank' (`datum_terugblik.py`)**
+- Eerste echte melding van de module: het eind-tot-eind-pad (emergence, tone-pipeline, gsm-poort) is hiermee live bewezen.
+- De treffer was zwak: testwoorden uit augustus ("wat is bank"). 'bank' stond NIET op de negeerlijst.
+- **Snelle oplossing:** 'bank', 'plus' en 'levenshtein' toegevoegd aan `NEGEER_WOORDEN`.
+- **Gebouwd (3 november 2026):** `is_testvraag()` en `MAX_WOORDEN_TESTVRAAG = 10` in `datum_terugblik.py`. Berichten die beginnen met een vast patroon ("wat is", "wat zijn", "wat betekent", "wat bedoel je met", "definieer", "definitie van", "geef een voorbeeld/synoniem/antoniem/definitie van", "zoek gelijkenissen", "gelijkenissen overlopen", "waarop lijkt", "extraheer", ook met "nova," ervoor) en niet langer dan 10 woorden zijn, tellen niet meer mee. `vind_terugblik()` telt ze in `testvragen_overgeslagen`, en de statusregel toont dat. Gewone patroon-controle, volledig symbolisch.
+- **Database bekeken:** `interactions` heeft geen intent-label bij een bericht (`raw_user_message` en `intent_...` zijn aparte rijen zonder gedeeld id). Koppelen kan alleen op tijd, en dat is minder exact; daarom is de patroon-variant gekozen.
+- **Getest:** `tests/test_datum_terugblik_testvragen.py`, 34 tests. Volledige suite: 3696 tests (3695 groen, 1 overgeslagen).
+- De formulering "Net als de laatste dagen ging het drie maanden geleden … over …" is een gewoon sjabloon en klopt.
+
+**Volledige suite:** 3662 tests (3661 groen, 1 overgeslagen).
+
+---
+
+## ✅ Punt 60a — centrale opslag- en auditroute voor automatische relaties (3 november 2026)
+
+**Aanleiding:** de Atlas-herevaluatie van 2 november 2026 wees erop dat twee automatische schrijvers relaties rechtstreeks aan een sense toevoegden, zonder audit-regel: `TeachEngine._auto_extract_is_a` (`core/semantic.py`) en `WikipediaTeacher._teach_word` (`modules/knowledge/wikipedia_teacher.py`). Alleen `RelationEngine.add_relation()` schreef een `relation_add` in het `audit_log`.
+
+**Gebouwd:**
+- Nieuwe methode `ConceptStore.add_auto_relation(word, sense, rel) -> bool` in `core/semantic.py`. Ze doet wat beide schrijvers vroeger zelf deden (een doelwoord dat al in de sense staat wordt overgeslagen, ook een afgewezen) en schrijft er nu een `relation_add`-regel bij in het `audit_log` van het concept, in hetzelfde formaat als `RelationEngine._audit_relation()`. Ze werkt ook `metadata.updated_at` bij. Een relatie zonder `target` wordt geweigerd.
+- De methode slaat zelf NIET op; de aanroeper roept `store.save()` aan, zoals voorheen.
+- `_auto_extract_is_a` en `_teach_word` roepen nu allebei `add_auto_relation()` aan. Het gedrag naar buiten is gelijk gebleven (zelfde relaties, zelfde `status: "unverified"`, zelfde bron-namen `auto_extract` en `wikipedia`). Nieuw is alleen de audit-regel.
+
+**Getest:**
+- `tests/test_auto_relatie_audit.py`, 5 tests: toevoegen met audit, dubbel doelwoord zonder tweede audit, afgewezen doelwoord komt niet terug, relatie zonder doelwoord wordt geweigerd, en `auto_extract` schrijft een audit-regel.
+- Volledige suite op Kevins machine: 3700 geslaagd, 1 overgeslagen.
+- Live: `teach walrus een zeezoogdier met lange slagtanden` gaf in `concepts.json` een relatie `is_a → zeezoogdier` (`auto_extract`, `unverified`) plus een `relation_add` met `source: auto_extract` en een bijgewerkte `updated_at`. De Wikipedia-route is nog niet live getest (zelfde methode).
+
+**Wat deze test ook liet zien (nu punt 64 en 65 in `nova_state.md`):**
+- De zin "een vuurtoren is een toren die schepen waarschuwt met licht" ging langs de relatieparser en bewaarde alleen de relatie. De definitie bleef `"unknown"`.
+- Na "welke betekenis van toren?" stond in de relatie alleen `target: "toren"`, zonder sense-nummer.
+
+- **Bewust niet gedaan:** bestaande relaties kregen geen audit-regel met terugwerkende kracht. Niet nagelopen of er nog andere plekken zijn die relaties buiten `add_relation()` om schrijven.
+
+---
+
+## ✅ Punt 60b — reden meegeven bij `weerleg` (3 november 2026)
+
+**Aanleiding:** Atlas-herevaluatie van 2 november 2026. `reject_sense`, `reject_concept` en `reject_relation` in `core/semantic.py` accepteerden al een `reason` en bewaarden die in het audit-log, maar de drie weerleg-handlers in `core/intent_router.py` gaven er nooit een mee, dus een afwijzing had geen uitleg.
+
+**Gebouwd (`core/intent_router.py`):**
+- Nieuwe statische methode `IntentRouter._splits_reden(rest)`: haalt een optioneel `reden: ...`-deel van het einde van het commando af (hoofdletters en spaties rond de dubbele punt maken niet uit) en geeft `(rest, reden)` terug, of `(rest, "")` zonder reden.
+- `_verwerk_weerleg_concept`, `_verwerk_weerleg_relatie` en `_verwerk_weerleg_betekenis` roepen die methode eerst aan en geven de reden door aan `reject_*`. Het afsplitsen gebeurt vóór de bestaande controles, zodat "weerleg concept: hond reden: x" niet meer als meerdere woorden wordt gelezen.
+- Bij een gelukte weerlegging met reden voegt Nova " Reden bewaard." aan het antwoord toe.
+- Syntaxis: `weerleg: hond is_a meubel reden: een hond is geen meubelstuk`, `weerleg betekenis: python 2 reden: ...`, `weerleg concept: woord reden: ...`. Zonder `reden:` ongewijzigd gedrag.
+- `verwijder definitief ...` haalt een `reden:` ook weg, maar gebruikt hem niet (na een harde verwijdering is er geen record meer om hem aan te hangen).
+
+**Getest:**
+- `tests/test_weerleg_reden.py`, 9 tests (3 op de hulpmethode, 6 op de drie handlers met en zonder reden). In mijn testkopie waren de 6 tests met reden rood zonder de wijziging.
+- Volledige suite op Kevins machine: 3709 geslaagd, 1 overgeslagen.
+- Live: `weerleg: vuurtoren is_a toren reden: testje` gaf een `relation_rejected`-regel met `old_value: confirmed`, `new_value: rejected` en `reason: "testje"` in het `audit_log`.
+
+- **Help-tekst:** `reden:` staat nu in `help semantic` (`modules/help/topics/semantic.py`), met een extra controle in `tests/test_help_semantic.py`.
+
+---
+
+## ✅ Punt 60c — bevestigd en onbevestigd onderscheiden in antwoorden (3 november 2026)
+
+**Aanleiding:** Atlas-herevaluatie van 2 november 2026. Relaties met `status: "unverified"` (automatisch afgeleid of van Wikipedia, nooit door Kevin bevestigd) telden mee in de redeneerketens en Nova beantwoordde "is een hond een dier" met een gewoon "Ja", zonder te zeggen dat dat op een onbevestigde bron rustte. Alleen de zekerheidsvragen (`uncertainty.py`, "hoe zeker ben je dat…") maakten dat onderscheid al.
+
+**Gebouwd (`core/semantic.py`, `ReasoningEngine`):**
+- `BRON_NAAM`: leesbare namen voor de bron van een relatie (Wikipedia, "een automatische afleiding uit een definitie", "een automatische gok").
+- `_onbevestigde_schakels(relation_type, pad)`: loopt de schakels van een gevonden pad na en geeft de schakels terug waarvan geen enkele niet-afgewezen relatie `confirmed` is. Zonder `store` (oude tests met stub-objecten) geeft ze een lege lijst. Tijdelijke aannames (`stel dat…`) staan niet in de store en tellen dus niet mee.
+- `_onbevestigd_zin(relation_type, pad)`: bouwt de toevoeging: "Let op: dat heb je nog niet bevestigd (bron)." bij een directe relatie, "één schakel heb je nog niet bevestigd: a → b (bron)" of "N schakels…" bij een keten. Lege tekst als alles bevestigd is.
+- `explain_is_a`, `explain_part_of` en `explain_causes` (beide "Ja"-takken) plakken die zin achter het antwoord. Negatieve antwoorden zijn ongewijzigd.
+
+**Getest:**
+- `tests/test_onbevestigd_antwoord.py`, 13 tests (is_a direct/keten/volledig bevestigd/na bevestigen/negatief, part_of, causes direct en keten, bronnamen). Alle 3470 bestaande tests in mijn testkopie bleven groen.
+- Volledige suite op Kevins machine: 3723 geslaagd, 1 overgeslagen.
+- Live: `is een walrus een zeezoogdier` gaf "Ja, … Let op: dat heb je nog niet bevestigd (een automatische afleiding uit een definitie)"; na `wat weet je niet zeker over walrus` en `bevestig 1` gaf dezelfde vraag het gewone antwoord.
+
+**Bewust niet gedaan (nu punt 66 in `nova_state.md`):** lijsten ("welke soorten…", "welke onderdelen…"), `vergelijk`, `explain_related_to` en de "waarom niet"-antwoorden hebben nog geen markering.
+
+---
+
+## ✅ Punt 60e — einddatum bij `vergeet:` (3 november 2026)
+
+**Aanleiding:** Atlas-herevaluatie van 2 november 2026. `KevinProfile.beeindig_preference()` accepteerde al een `datum`, maar `IntentRouter.handle_preference()` gaf er nooit een mee. `valid_until` was daardoor altijd de dag waarop Kevin `vergeet:` typte, en "dit stopte op een eerdere datum" kon niet vastgelegd worden.
+
+**Gebouwd:**
+- `IntentRouter._splits_einddatum(rest)` (statisch): haalt een optionele `per <datum>` van het einde van het commando af. Formaten `JJJJ-MM-DD` of `DD-MM-JJJJ`, ook met `/`. Alleen een `per` gevolgd door iets dat op een datum lijkt telt als einddatum, dus `vergeet: per se` blijft het woord "per se". Een onbestaande datum of een datum in de toekomst geeft een foutmelding en er wordt niets beëindigd.
+- `vergeet:`-tak in `handle_preference()`: geeft de datum door aan `beeindig_preference(woord, datum)` (zonder datum blijft de oude aanroep met één argument, zodat bestaande teststubs blijven werken). Het antwoord noemt de datum: "(geldt niet meer sinds …)".
+- `KevinProfile.laatste_begindatum(woord)`: geeft de laatste bekende `valid_from` van de huidige blokken, of `None` als die onbekend is. De router weigert een einddatum die ervóór ligt.
+- Help-tekst: extra regel onder `vergeet:` in `modules/help/topics/algemeen.py`.
+
+**Gevonden tijdens de live test:** `vergeet: thee per 2025/06/01` op een voorkeur die net was aangemaakt gaf een historiekregel met `valid_from: 2026-11-03` en `valid_until: 2025-06-01` (einde vóór begin). Daarom is de begindatum-controle toegevoegd; de testvoorkeur is met `wis definitief: thee` opgeruimd.
+
+**Getest:** 12 nieuwe tests in `tests/test_intent_router_vergeet_wis.py` (stub-profiel en echt `KevinProfile` in `tmp_path`: datum doorgegeven, Europees formaat, schuine streep, meerwoordig, zonder datum, "per se", onbestaande en toekomstige datum, einde vóór begin geweigerd, einde op de begindag toegestaan, onbekend begin niet geblokkeerd). Volledige suite op Kevins machine: 3735 geslaagd, 1 overgeslagen. Live bevestigd.

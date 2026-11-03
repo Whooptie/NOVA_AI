@@ -92,6 +92,42 @@ class ConceptStore:
             extra={k: v for k, v in entry.items() if k not in ("event_type", "source", "timestamp")}
         )
 
+    def add_auto_relation(self, word: str, sense: Dict[str, Any], rel: Dict[str, Any]) -> bool:
+        """Centrale schrijfroute voor relaties die NIET via add_relation()
+        lopen (automatische bronnen: auto_extract, wikipedia).
+
+        Doet wat die twee schrijvers vroeger elk zelf deden (dubbele
+        doelwoorden overslaan, afgewezen doelwoorden dus ook) en schrijft
+        er nu ook een audit-regel bij, in hetzelfde formaat als
+        RelationEngine._audit_relation(). Slaat NIET zelf op: de aanroeper
+        roept store.save() aan, zoals voorheen.
+
+        Geeft True terug als de relatie is toegevoegd, anders False."""
+        word = word.lower().strip()
+        target = rel.get("target")
+        if not target:
+            return False
+        if any(r.get("target") == target for r in sense.get("relations", [])):
+            return False
+
+        sense.setdefault("relations", []).append(rel)
+
+        concept = self.concepts.get(word)
+        if concept is not None:
+            concept.setdefault("metadata", {})["updated_at"] = datetime.utcnow().isoformat()
+            concept.setdefault("audit_log", []).append({
+                "event_type": "relation_add",
+                "source": rel.get("source", "auto"),
+                "sense_id": sense.get("sense_id"),
+                "relation": {
+                    "type": rel.get("type"),
+                    "target": rel.get("target"),
+                    "confidence": rel.get("confidence"),
+                },
+                "timestamp": datetime.utcnow().isoformat()
+            })
+        return True
+
     def ensure_concept(self, word: str) -> Dict[str, Any]:
         word = word.lower().strip()
         if word not in self.concepts:
@@ -1611,6 +1647,67 @@ class ReasoningEngine:
     # ---------------------------------------------------------
     # 7.4 Hulpfuncties voor uitleg
     # ---------------------------------------------------------
+    # ---------------------------------------------------------
+    # Punt 60c (3 november 2026): bevestigd vs. onbevestigd in antwoorden
+    # ---------------------------------------------------------
+    BRON_NAAM = {
+        "wikipedia": "Wikipedia",
+        "auto_extract": "een automatische afleiding uit een definitie",
+        "auto": "een automatische gok",
+        "auto_learn": "een automatische gok",
+    }
+
+    def _onbevestigde_schakels(self, relation_type: str, pad: list) -> list:
+        """
+        Welke schakels van een gevonden pad heeft Kevin nog niet bevestigd?
+        Geeft een lijst (van, naar, bron) terug, in padvolgorde.
+
+        Een schakel telt als bevestigd zodra MINSTENS 1 niet-afgewezen
+        relatie van dit type tussen die twee woorden de status
+        "confirmed" heeft. Schakels die enkel uit tijdelijke aannames
+        komen (hypothese.py) staan niet in de store en tellen niet mee.
+        """
+        store = getattr(self, "store", None)
+        if store is None:
+            return []
+        resultaat = []
+        for van, naar in zip(pad, pad[1:]):
+            concept = store.get_concept(van)
+            if not concept:
+                continue
+            gevonden = []
+            for sense in concept.get("senses", []):
+                if sense.get("status") == "rejected":
+                    continue
+                for rel in sense.get("relations", []):
+                    if (rel.get("type") == relation_type
+                            and rel.get("target") == naar
+                            and rel.get("status") != "rejected"):
+                        gevonden.append(rel)
+            if not gevonden:
+                continue
+            if any(r.get("status") == "confirmed" for r in gevonden):
+                continue
+            bron = gevonden[0].get("source")
+            resultaat.append((van, naar, self.BRON_NAAM.get(bron, bron or "onbekende bron")))
+        return resultaat
+
+    def _onbevestigd_zin(self, relation_type: str, pad: list) -> str:
+        """
+        Korte toevoeging aan een "Ja"-antwoord als (een deel van) het
+        bewijs nog niet door Kevin is bevestigd. Lege tekst als alles
+        bevestigd is, zodat die antwoorden ongewijzigd blijven.
+        """
+        onbevestigd = self._onbevestigde_schakels(relation_type, pad)
+        if not onbevestigd:
+            return ""
+        if len(pad) == 2:
+            return f" Let op: dat heb je nog niet bevestigd ({onbevestigd[0][2]})."
+        delen = ", ".join(f"{v} → {n} ({b})" for v, n, b in onbevestigd)
+        if len(onbevestigd) == 1:
+            return f" Let op: één schakel heb je nog niet bevestigd: {delen}."
+        return f" Let op: {len(onbevestigd)} schakels heb je nog niet bevestigd: {delen}."
+
     def explain_is_a(self, source: str, target: str, lidwoord: bool = True) -> str:
         """
         Geeft een leesbare uitleg van het redeneerpad.
@@ -1648,11 +1745,13 @@ class ReasoningEngine:
                          "maar ik weet wel dat " + een + "{source} een {alt} is."
             )
 
+        extra = self._onbevestigd_zin("is_a", pad)
+
         if len(pad) == 2:
-            return f"Ja, {een}{source} is een {target}."
+            return f"Ja, {een}{source} is een {target}." + extra
 
         stappen = " → ".join(pad)
-        return f"Ja, {een}{source} is een {target}, want: {stappen}."
+        return f"Ja, {een}{source} is een {target}, want: {stappen}." + extra
 
     # ---------------------------------------------------------
     # 7.4b Hulpfunctie voor "waarom niet"-uitleg (idee #5)
@@ -1720,14 +1819,16 @@ class ReasoningEngine:
                          "maar ik weet wel dat {source} {alt} veroorzaakt."
             )
 
+        extra = self._onbevestigd_zin("causes", pad)
+
         if len(pad) == 2:
-            return f"Ja, {source} veroorzaakt {target}."
+            return f"Ja, {source} veroorzaakt {target}." + extra
 
         # Fase 8.3 (11 oktober 2026, nova_state.md punt 33): een keten van
         # meerdere causale schakels is minder zeker dan een directe oorzaak
         # (anders dan bij is_a-ketens), dus "waarschijnlijk" i.p.v. "want".
         stappen = " → ".join(pad)
-        return f"Waarschijnlijk wel: {source} leidt tot {target}, via: {stappen}."
+        return f"Waarschijnlijk wel: {source} leidt tot {target}, via: {stappen}." + extra
 
     # ---------------------------------------------------------
     # 7.2c Alle gevolgen / alle oorzaken (Fase 8.1)
@@ -1834,11 +1935,13 @@ class ReasoningEngine:
                          "maar ik weet wel dat een {source} onderdeel is van {alt}."
             )
 
+        extra = self._onbevestigd_zin("part_of", pad)
+
         if len(pad) == 2:
-            return f"Ja, een {source} is onderdeel van {target}."
+            return f"Ja, een {source} is onderdeel van {target}." + extra
 
         stappen = " → ".join(pad)
-        return f"Ja, een {source} is onderdeel van {target}, want: {stappen}."
+        return f"Ja, een {source} is onderdeel van {target}, want: {stappen}." + extra
 
     def explain_related_to(self, source: str, target: str) -> str:
         """
@@ -2264,20 +2367,20 @@ class TeachEngine:
         if target == word:
             return
 
-        # Relatie toevoegen als die nog niet bestaat
-        bestaande = [r["target"] for r in sense.get("relations", [])]
-        if target not in bestaande:
-            sense.setdefault("relations", []).append({
-                "type": "is_a",
-                "target": target,
-                "confidence": 0.9,
-                "source": "auto_extract",
-                # Trust state (punt 3, 6 augustus 2026): automatisch uit
-                # een definitie geëxtraheerd, nooit door Kevin bevestigd
-                # -> unverified totdat hij het bevestigt of afwijst.
-                "status": "unverified",
-                "created_at": datetime.utcnow().isoformat()
-            })
+        # Relatie toevoegen als die nog niet bestaat (via de centrale
+        # schrijfroute, die ook een audit-regel schrijft)
+        rel = {
+            "type": "is_a",
+            "target": target,
+            "confidence": 0.9,
+            "source": "auto_extract",
+            # Trust state (punt 3, 6 augustus 2026): automatisch uit
+            # een definitie geëxtraheerd, nooit door Kevin bevestigd
+            # -> unverified totdat hij het bevestigt of afwijst.
+            "status": "unverified",
+            "created_at": datetime.utcnow().isoformat()
+        }
+        if self.store.add_auto_relation(word, sense, rel):
             self.store.save()
 
     def auto_learn(self, word: str) -> dict:

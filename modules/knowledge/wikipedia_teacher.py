@@ -496,9 +496,9 @@ class WikipediaTeacher:
                     if sense is None:
                         sense = concept["senses"][0]
 
-                    bestaande = [r["target"] for r in sense.get("relations", [])]
-                    if rel["target"] not in bestaande:
-                        sense.setdefault("relations", []).append(rel)
+                    # Centrale schrijfroute: zelfde dubbelcheck als voorheen,
+                    # plus een audit-regel in het concept.
+                    if self.semantic.store.add_auto_relation(word, sense, rel):
                         self.semantic.store.save()
                         relaties_geleerd.append(f"{rel['type']}: {rel['target']}")
             except Exception:

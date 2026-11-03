@@ -52,6 +52,8 @@ def test_help_semantic_aliassen(topic):
     "wat weet je niet zeker", "bevestig 3", "wijs af 3",
     # weerleggen
     "weerleg: hond is_a meubel", "verwijder definitief: hond is_a meubel",
+    # reden bij weerleggen (punt 60b)
+    "weerleg: hond is_a meubel reden:",
 ])
 def test_help_semantic_bevat_alle_fases(commando):
     assert commando in semantic.get_help()

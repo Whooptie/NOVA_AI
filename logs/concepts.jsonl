@@ -328,3 +328,7 @@
 {"timestamp": "2026-10-31T19:58:08.787547", "event_type": "relation_hard_deleted", "word": "jurk", "source": "user", "sense_id": "jurk#1", "relation": {"type": "is_a", "target": "kleding"}, "old_value": "kleding", "new_value": null}
 {"timestamp": "2026-10-31T20:44:35.491874", "event_type": "concept_created", "word": "hijsen", "source": "system", "new_value": {"word": "hijsen"}}
 {"timestamp": "2026-11-02T17:15:55.624946", "event_type": "concept_created", "word": "context", "source": "system", "new_value": {"word": "context"}}
+{"timestamp": "2026-11-03T11:38:41.500139", "event_type": "concept_created", "word": "vuurtoren", "source": "system", "new_value": {"word": "vuurtoren"}}
+{"timestamp": "2026-11-03T11:42:25.326480", "event_type": "concept_created", "word": "walrus", "source": "system", "new_value": {"word": "walrus"}}
+{"timestamp": "2026-11-03T12:27:10.229496", "event_type": "concept_created", "word": "naam", "source": "system", "new_value": {"word": "naam"}}
+{"timestamp": "2026-11-03T12:27:10.309001", "event_type": "concept_created", "word": "onderhoud", "source": "system", "new_value": {"word": "onderhoud"}}

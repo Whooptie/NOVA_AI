@@ -102,6 +102,10 @@ def get_help():
   weerleg: hond is_a meubel                    (wijst 1 relatie af, blijft zichtbaar in geschiedenis)
   weerleg betekenis: python 2                  (wijst 1 betekenis af)
   weerleg concept: verzonnenwoord              (wijst ALLE betekenissen van een woord af)
+  weerleg: hond is_a meubel reden: een hond is geen meubelstuk
+                                               (met 'reden:' erachter bewaart Nova waarom je het afwijst;
+                                                werkt ook bij weerleg betekenis: en weerleg concept:.
+                                                De reden staat in de geschiedenis van het woord)
   verwijder definitief: hond is_a meubel       (verwijdert een AFGEWEZEN relatie echt;
                                                 moet eerst geweerlegd zijn)
   verwijder definitief betekenis: python 2     (idem, voor een betekenis)

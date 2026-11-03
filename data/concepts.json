@@ -16465,11 +16465,46 @@
           "Hij keek op de klok om te zien hoe laat het was."
         ],
         "relations": [
-          { "type": "related_to", "target": "uur", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "minuut", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "seconde", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "laat", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "dag", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          {
+            "type": "related_to",
+            "target": "uur",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "minuut",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "seconde",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "laat",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "dag",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "moment",
@@ -32421,9 +32456,30 @@
           "Zij wint bijna elk potje schaken."
         ],
         "relations": [
-          { "type": "related_to", "target": "schaakbord", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "pion", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "koning", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          {
+            "type": "related_to",
+            "target": "schaakbord",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "pion",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "koning",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
           {
             "type": "is_a",
             "target": "aanduiding",
@@ -38825,17 +38881,94 @@
           "Hoe is het weer in Brussel?"
         ],
         "relations": [
-          { "type": "related_to", "target": "regen", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "zon", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "wind", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "sneeuw", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "storm", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "bewolkt", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "onweer", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "mist", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "vorst", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "warm", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
-          { "type": "related_to", "target": "koud", "confidence": 0.9, "source": "user", "status": "confirmed", "created_at": "2026-11-02T14:00:00.000000" },
+          {
+            "type": "related_to",
+            "target": "regen",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "zon",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "wind",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "sneeuw",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "storm",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "bewolkt",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "onweer",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "mist",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "vorst",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "warm",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "koud",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-02T14:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "temperatuur",
@@ -117180,6 +117313,269 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-02T17:15:55.625420"
+      }
+    ]
+  },
+  "vuurtoren": {
+    "senses": [
+      {
+        "sense_id": "vuurtoren#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "toren",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "rejected",
+            "created_at": "2026-11-03T11:40:16.672884"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-03T11:38:41.500128",
+      "updated_at": "2026-11-03T12:01:06.100902",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-03T11:40:16.672895",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-03T11:38:41.501013",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-03T11:40:16.672895",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vuurtoren"
+        },
+        "timestamp": "2026-11-03T11:38:41.500136"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vuurtoren#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-03T11:38:41.501010"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vuurtoren#1",
+        "relation": {
+          "type": "is_a",
+          "target": "toren",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-03T11:40:16.672892"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "vuurtoren#1",
+        "relation": {
+          "type": "is_a",
+          "target": "toren"
+        },
+        "old_value": "confirmed",
+        "new_value": "rejected",
+        "reason": "testje",
+        "timestamp": "2026-11-03T12:01:06.100912"
+      }
+    ]
+  },
+  "walrus": {
+    "senses": [
+      {
+        "sense_id": "walrus#1",
+        "definition": "een zeezoogdier met lange slagtanden",
+        "pos": "noun",
+        "examples": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zeezoogdier",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-03T11:42:25.402374",
+            "oorspronkelijke_bron": "auto_extract"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-03T11:42:25.326470",
+      "updated_at": "2026-11-03T12:15:10.875819",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-03T11:42:25.327386",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-03T11:42:25.327386",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "walrus"
+        },
+        "timestamp": "2026-11-03T11:42:25.326476"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "walrus#1",
+        "old_value": null,
+        "new_value": "een zeezoogdier met lange slagtanden",
+        "timestamp": "2026-11-03T11:42:25.327384"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "walrus#1",
+        "relation": {
+          "type": "is_a",
+          "target": "zeezoogdier",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-03T11:42:25.402391"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "walrus#1",
+        "relation": {
+          "type": "is_a",
+          "target": "zeezoogdier"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.9,
+        "timestamp": "2026-11-03T12:15:10.875825"
+      }
+    ]
+  },
+  "naam": {
+    "senses": [
+      {
+        "sense_id": "naam#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-03T12:27:10.229481",
+      "updated_at": "2026-11-03T12:27:10.231842",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-03T12:27:10.231842",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-03T12:27:10.231842",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "naam"
+        },
+        "timestamp": "2026-11-03T12:27:10.229492"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "naam#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-03T12:27:10.231839"
+      }
+    ]
+  },
+  "onderhoud": {
+    "senses": [
+      {
+        "sense_id": "onderhoud#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-03T12:27:10.308986",
+      "updated_at": "2026-11-03T12:27:10.309458",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-03T12:27:10.309458",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-03T12:27:10.309458",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "onderhoud"
+        },
+        "timestamp": "2026-11-03T12:27:10.308996"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "onderhoud#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-03T12:27:10.309456"
       }
     ]
   }

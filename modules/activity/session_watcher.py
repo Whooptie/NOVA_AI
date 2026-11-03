@@ -168,6 +168,11 @@ class SessionWatcher:
         # Voorkomt dat dezelfde regel elke minuut in de log komt.
         self._uitstel_gemeld_voor = None
 
+        # (3 november 2026) Voor welke sessie (herkend aan _sessie_start) is
+        # al gemeld dat de pauze-melding wacht omdat de laptop niet vers
+        # actief is? Voorkomt dat dezelfde regel elke minuut in de log komt.
+        self._vers_uitstel_gemeld_voor = None
+
         # Herkenningsreactie (7 oktober 2026): op welke dag (JJJJ-MM-DD)
         # kwam ze het laatst, en wanneer stuurde Kevin zijn laatste
         # bericht? Een absoluut pad in HERKENNING_STATE_BESTAND (bv. in
@@ -793,6 +798,24 @@ class SessionWatcher:
         except Exception:
             return "onbekend"
 
+    def _laptop_niet_vers_actief(self):
+        """
+        (3 november 2026) True als ntfy_meldingen zegt dat Kevin NIET actief
+        op de laptop is, volgens zijn strenge regel (verbonden, niet
+        afwezig, focus "actief", data van hoogstens 45 s oud). Ontbreekt
+        de module, staat ze uit, of geeft ze iets anders dan een echte
+        True of een fout, dan False: het oude gedrag blijft dan gewoon
+        werken.
+        """
+        modules = getattr(self.event_bus, "modules", None) or {}
+        ntfy = modules.get("ntfy_meldingen")
+        if ntfy is None:
+            return False
+        try:
+            return ntfy.gsm_vangt_op() is True
+        except Exception:
+            return False
+
     def check_pauze(self):
         """
         Wordt periodiek (elke 60 seconden) aangeroepen door de
@@ -853,6 +876,23 @@ class SessionWatcher:
             # Kevin is net even niet actief (bv. 3 min iets aan het
             # lezen) -- geen melding tegen een leeg scherm, maar de
             # sessie blijft wel doorlopen tot stap 2 ze afsluit.
+            return
+
+        # (3 november 2026) Laptop net dichtgeklapt? De focusdata blijft
+        # nog even "geldig" (DATA_VERVAL_SECONDEN in client_bridge.py),
+        # terwijl ntfy_meldingen met zijn strengere regel (data van
+        # hoogstens 45 s) al weet dat Kevin niet meer actief is. Live gezien
+        # op 2 november 2026 om 20:03: "30 minuten verder zonder pauze"
+        # terwijl de laptop dicht was. Zegt ntfy dat de laptop niet vers
+        # actief is, dan wachten we: laatste_melding_time blijft ongewijzigd,
+        # dus de melding komt pas als Kevin echt terug is.
+        if self._laptop_niet_vers_actief():
+            if self._vers_uitstel_gemeld_voor != self._sessie_start:
+                self._vers_uitstel_gemeld_voor = self._sessie_start
+                print(
+                    "[SESSION_WATCHER] Pauze-melding wacht: laptop is niet "
+                    "vers actief (ntfy_meldingen)."
+                )
             return
 
         # Referentiepunt: sinds de laatste melding BINNEN deze sessie,

@@ -447,6 +447,25 @@ class KevinProfile:
             "aantal_keer_genoemd": blok["aantal_keer_genoemd"],
         })
 
+    def laatste_begindatum(self, woord):
+        """
+        Geeft de LAATSTE bekende begindatum ('JJJJ-MM-DD') van de huidige
+        blokken van dit woord, of None als het woord niet actueel is of
+        geen begindatum kent (oude blokken hebben valid_from = None:
+        "begin onbekend"). Wordt gebruikt om een einddatum te weigeren
+        die vóór het begin ligt (punt 60e, 3 november 2026).
+        """
+        woord = woord.strip().lower()
+        _, woord_info = self._vind_woord(woord)
+        if woord_info is None:
+            return None
+        datums = []
+        for bron in self.BRONNEN:
+            blok = woord_info.get(bron)
+            if blok and blok.get("valid_from"):
+                datums.append(blok["valid_from"])
+        return max(datums) if datums else None
+
     def beeindig_preference(self, woord, datum=None):
         """
         Beëindigt een voorkeur/afkeur: "dit geldt niet meer", zonder te

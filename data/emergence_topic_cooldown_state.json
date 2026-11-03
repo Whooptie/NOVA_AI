@@ -36,6 +36,12 @@
       "getal": null,
       "gezegd_op": 1792519208.972308,
       "volgende_toegestaan": 1792597375.4595616
+    },
+    "datum_terugblik": {
+      "label": "bank|levenshtein|plu",
+      "getal": null,
+      "gezegd_op": 1793646175.219555,
+      "volgende_toegestaan": 1793747745.4940026
     }
   },
   "trending_topic:regen": 1791915931.473499,
@@ -46,5 +52,6 @@
   "tijdspatroon:topic_detected:gelijkenis_overloop": 1792519208.971994,
   "trending_topic:gelijkenis": 1793562337.249082,
   "trending_topic:volgen": 1793043998.757287,
-  "trending_topic:toon": 1793129386.099541
+  "trending_topic:toon": 1793129386.099541,
+  "datum_terugblik": 1793646175.219293
 }

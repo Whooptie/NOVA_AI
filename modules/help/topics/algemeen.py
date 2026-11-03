@@ -43,6 +43,8 @@ def get_help():
   onthoud: ik hou niet van kou        (afkeur vastleggen)
   vergeet: koffie                     (Nova rekent het niet meer mee, maar
                                         onthoudt dat je het vroeger wel zei)
+  vergeet: koffie per 2025-06-01      (idem, maar met de datum waarop het stopte;
+                                        ook DD-MM-JJJJ, niet in de toekomst)
   wis definitief: koffie              (alles over koffie echt wissen,
                                         ook die oude geschiedenis)
   wat kan ik drinken                  (suggestie op basis van je voorkeuren)

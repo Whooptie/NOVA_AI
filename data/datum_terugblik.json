@@ -1,24 +1,21 @@
 {
-  "laatst_gemeld_datum": null,
-  "gemeld": {},
+  "laatst_gemeld_datum": "2026-11-02",
+  "gemeld": {
+    "levenshtein": "2026-11-02",
+    "plu": "2026-11-02",
+    "bank": "2026-11-02"
+  },
   "laatste_analyse": {
-    "datum": "2026-11-02",
-    "actieve_dagen": 75,
-    "reden": null,
-    "beste": {
-      "afstand_maanden": 3,
-      "woorden": [
-        "levenshtein",
-        "plus",
-        "bank"
-      ],
-      "score": 9.08
-    },
+    "datum": "2026-11-03",
+    "actieve_dagen": 76,
+    "reden": "geen enkele afstand haalt de drempel",
+    "beste": null,
     "afgewezen": [
       "1 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "6 mnd: te weinig berichten rond 2 mei (0)",
-      "12 mnd: te weinig berichten rond 2 november (0)",
-      "24 mnd: te weinig berichten rond 2 november (0)"
+      "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
+      "6 mnd: te weinig berichten rond 3 mei (0)",
+      "12 mnd: te weinig berichten rond 3 november (0)",
+      "24 mnd: te weinig berichten rond 3 november (0)"
     ]
   }
 }
