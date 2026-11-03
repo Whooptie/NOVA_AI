@@ -43,6 +43,14 @@
     "activity_started:werken_aan_voorraad_gedetecteerd": {
       "reden": "activiteit_whitelist",
       "gemeld_op": 1793629233.1924558
+    },
+    "activity_started:server_beheren_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793733250.9314394
+    },
+    "activity_started:plex_gebruiken_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793733250.9314394
     }
   }
 }

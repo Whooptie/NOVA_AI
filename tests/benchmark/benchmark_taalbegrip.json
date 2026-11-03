@@ -1,0 +1,603 @@
+{
+ "_uitleg": "Taalbenchmark punt 61, VASTE set. Mag je wel op afstellen (regressie). Veld taalniveau 1-5, dimensie intentie|redenering|context|onzekerheid. Een gefaalde onzekerheid-case = onterecht antwoord.",
+ "cases": [
+  {
+   "id": "taal-t1-01",
+   "taalniveau": 1,
+   "dimensie": "intentie",
+   "categorie": "definitie",
+   "vraag": "wat is een hond",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "wolf",
+    "dier",
+    "huisdier"
+   ]
+  },
+  {
+   "id": "taal-t1-02",
+   "taalniveau": 1,
+   "dimensie": "intentie",
+   "categorie": "definitie",
+   "vraag": "wat is regen",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "neerslag",
+    "waterdruppels"
+   ]
+  },
+  {
+   "id": "taal-t1-03",
+   "taalniveau": 1,
+   "dimensie": "intentie",
+   "categorie": "definitie",
+   "vraag": "wat is een stoel",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "zitmeubel",
+    "rugleuning"
+   ]
+  },
+  {
+   "id": "taal-t1-04",
+   "taalniveau": 1,
+   "dimensie": "intentie",
+   "categorie": "relatie",
+   "vraag": "is een zebra een dier",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t1-05",
+   "taalniveau": 1,
+   "dimensie": "intentie",
+   "categorie": "oorzaak",
+   "vraag": "wat veroorzaakt modder",
+   "moet_event": [
+    "intent_causes"
+   ],
+   "moet_bevatten_een_van": [
+    "regen"
+   ]
+  },
+  {
+   "id": "taal-t1-06",
+   "taalniveau": 1,
+   "dimensie": "intentie",
+   "categorie": "synoniem",
+   "vraag": "wat is een synoniem van zus",
+   "moet_event": [
+    "intent_synonym"
+   ],
+   "moet_bevatten_een_van": [
+    "zuster"
+   ]
+  },
+  {
+   "id": "taal-t2-01",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "definitie",
+   "vraag": "kun je me vertellen wat een hond is",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "wolf",
+    "dier",
+    "huisdier"
+   ]
+  },
+  {
+   "id": "taal-t2-02",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "definitie",
+   "vraag": "leg eens uit wat een stoel is",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "zitmeubel",
+    "rugleuning"
+   ]
+  },
+  {
+   "id": "taal-t2-03",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "definitie",
+   "vraag": "zeg eens, wat is regen eigenlijk",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "neerslag",
+    "waterdruppels"
+   ]
+  },
+  {
+   "id": "taal-t2-04",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "definitie",
+   "vraag": "weet jij wat een zebra is",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "zoogdier",
+    "paardachtig"
+   ]
+  },
+  {
+   "id": "taal-t2-05",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "definitie",
+   "vraag": "wat houdt het woord tijger in",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "roofdier",
+    "oranje"
+   ]
+  },
+  {
+   "id": "taal-t2-06",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "relatie",
+   "vraag": "een zebra, is dat een dier",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t2-07",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "relatie",
+   "vraag": "klopt het dat een kat een zoogdier is",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t2-08",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "synoniem",
+   "vraag": "wat is een ander woord voor zuster",
+   "moet_event": [
+    "intent_synonym"
+   ],
+   "moet_bevatten_een_van": [
+    "zus"
+   ]
+  },
+  {
+   "id": "taal-t2-09",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "oorzaak",
+   "vraag": "waardoor ontstaat modder",
+   "moet_event": [
+    "intent_causes"
+   ],
+   "moet_bevatten_een_van": [
+    "regen"
+   ]
+  },
+  {
+   "id": "taal-t2-10",
+   "taalniveau": 2,
+   "dimensie": "intentie",
+   "categorie": "gevolg",
+   "vraag": "wat is het gevolg van regen",
+   "moet_event": [
+    "intent_effects"
+   ],
+   "moet_bevatten_een_van": [
+    "modder"
+   ]
+  },
+  {
+   "id": "taal-t3-01",
+   "taalniveau": 3,
+   "dimensie": "redenering",
+   "categorie": "keten",
+   "vraag": "is een tijger een zoogdier",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t3-02",
+   "taalniveau": 3,
+   "dimensie": "redenering",
+   "categorie": "keten",
+   "vraag": "is een tijger een dier",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t3-03",
+   "taalniveau": 3,
+   "dimensie": "redenering",
+   "categorie": "keten",
+   "vraag": "veroorzaakt regen uitglijden",
+   "moet_event": [
+    "intent_causes_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja",
+    "wel",
+    "modder"
+   ]
+  },
+  {
+   "id": "taal-t3-04",
+   "taalniveau": 3,
+   "dimensie": "redenering",
+   "categorie": "keten",
+   "vraag": "is een kat een dier en een zoogdier",
+   "moet_bevatten_een_van": [
+    "ja"
+   ],
+   "mag_niet_bevatten": [
+    "nee"
+   ]
+  },
+  {
+   "id": "taal-t3-05",
+   "taalniveau": 3,
+   "dimensie": "redenering",
+   "categorie": "keten",
+   "vraag": "is een fiets ook een voertuig",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t3-06",
+   "taalniveau": 3,
+   "dimensie": "redenering",
+   "categorie": "keten",
+   "vraag": "is een stoel een meubel",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t3-07",
+   "taalniveau": 3,
+   "dimensie": "redenering",
+   "categorie": "uitleg",
+   "vraag": "hoe komt het dat een tijger een dier is",
+   "moet_bevatten_een_van": [
+    "kat",
+    "roofdier",
+    "zoogdier"
+   ]
+  },
+  {
+   "id": "taal-t3-08",
+   "taalniveau": 3,
+   "dimensie": "redenering",
+   "categorie": "uitleg",
+   "vraag": "waarom is een zebra een dier",
+   "moet_bevatten_een_van": [
+    "zoogdier"
+   ]
+  },
+  {
+   "id": "taal-t4-01",
+   "taalniveau": 4,
+   "dimensie": "context",
+   "categorie": "ellips",
+   "vraag": "en een kat?",
+   "voorvragen": [
+    "wat is een hond"
+   ],
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "huisdier",
+    "klein",
+    "zoogdier"
+   ]
+  },
+  {
+   "id": "taal-t4-02",
+   "taalniveau": 4,
+   "dimensie": "context",
+   "categorie": "verwijzing",
+   "vraag": "is dat een dier",
+   "voorvragen": [
+    "wat is een tijger"
+   ],
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t4-03",
+   "taalniveau": 4,
+   "dimensie": "context",
+   "categorie": "ellips",
+   "vraag": "en een kat?",
+   "voorvragen": [
+    "is een zebra een dier"
+   ],
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t4-04",
+   "taalniveau": 4,
+   "dimensie": "context",
+   "categorie": "dubbelzinnig",
+   "vraag": "wat is een toren",
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "gebouw",
+    "schaakstuk",
+    "bedoel",
+    "welke",
+    "ook",
+    "andere"
+   ]
+  },
+  {
+   "id": "taal-t4-05",
+   "taalniveau": 4,
+   "dimensie": "context",
+   "categorie": "keuze",
+   "vraag": "ik bedoel het schaakstuk",
+   "voorvragen": [
+    "wat is een toren"
+   ],
+   "moet_bevatten_een_van": [
+    "schaakstuk"
+   ]
+  },
+  {
+   "id": "taal-t4-06",
+   "taalniveau": 4,
+   "dimensie": "context",
+   "categorie": "verwijzing",
+   "vraag": "wat is het gevolg ervan",
+   "voorvragen": [
+    "wat is regen"
+   ],
+   "moet_event": [
+    "intent_effects"
+   ],
+   "moet_bevatten_een_van": [
+    "modder"
+   ]
+  },
+  {
+   "id": "taal-t4-07",
+   "taalniveau": 4,
+   "dimensie": "context",
+   "categorie": "verwijzing",
+   "vraag": "is dat een berg",
+   "voorvragen": [
+    "wat is een vulkaan"
+   ],
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ja"
+   ]
+  },
+  {
+   "id": "taal-t4-08",
+   "taalniveau": 4,
+   "dimensie": "context",
+   "categorie": "ellips",
+   "vraag": "en een bank?",
+   "voorvragen": [
+    "wat is een stoel"
+   ],
+   "moet_event": [
+    "intent_definition"
+   ],
+   "moet_bevatten_een_van": [
+    "zitmeubel",
+    "financieel",
+    "bedoel",
+    "welke",
+    "ook",
+    "andere"
+   ]
+  },
+  {
+   "id": "taal-t5-01",
+   "taalniveau": 5,
+   "dimensie": "onzekerheid",
+   "categorie": "onbekend",
+   "vraag": "is een glorbix een vis",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ken",
+    "onbekend",
+    "weet",
+    "idee"
+   ],
+   "mag_niet_bevatten": [
+    "ja",
+    "nee"
+   ]
+  },
+  {
+   "id": "taal-t5-02",
+   "taalniveau": 5,
+   "dimensie": "onzekerheid",
+   "categorie": "onbekend",
+   "vraag": "wat is een zwabbelknoop",
+   "moet_event": [
+    "intent_definition",
+    "intent_wiki"
+   ],
+   "moet_bevatten_een_van": [
+    "ken",
+    "onbekend",
+    "weet",
+    "idee",
+    "leer",
+    "opzoeken"
+   ]
+  },
+  {
+   "id": "taal-t5-03",
+   "taalniveau": 5,
+   "dimensie": "onzekerheid",
+   "categorie": "onbekend",
+   "vraag": "is een tijger een glorbix",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ken",
+    "onbekend",
+    "weet",
+    "idee"
+   ],
+   "mag_niet_bevatten": [
+    "ja",
+    "nee"
+   ]
+  },
+  {
+   "id": "taal-t5-04",
+   "taalniveau": 5,
+   "dimensie": "onzekerheid",
+   "categorie": "onbekend",
+   "vraag": "wat veroorzaakt een glorbix",
+   "moet_bevatten_een_van": [
+    "ken",
+    "onbekend",
+    "weet",
+    "idee"
+   ],
+   "mag_niet_bevatten": [
+    "regen",
+    "modder"
+   ]
+  },
+  {
+   "id": "taal-t5-05",
+   "taalniveau": 5,
+   "dimensie": "onzekerheid",
+   "categorie": "buiten_kennis",
+   "vraag": "wie is de president van glorbistan",
+   "moet_bevatten_een_van": [
+    "ken",
+    "onbekend",
+    "weet",
+    "idee"
+   ]
+  },
+  {
+   "id": "taal-t5-06",
+   "taalniveau": 5,
+   "dimensie": "onzekerheid",
+   "categorie": "onbekend",
+   "vraag": "wat is het synoniem van zwabbelknoop",
+   "moet_bevatten_een_van": [
+    "ken",
+    "onbekend",
+    "weet",
+    "idee",
+    "geen"
+   ],
+   "mag_niet_bevatten": [
+    "zuster",
+    "ai"
+   ]
+  },
+  {
+   "id": "taal-t5-07",
+   "taalniveau": 5,
+   "dimensie": "onzekerheid",
+   "categorie": "onbekend",
+   "vraag": "is een flurbo een zoogdier",
+   "moet_event": [
+    "intent_relation_check"
+   ],
+   "moet_bevatten_een_van": [
+    "ken",
+    "onbekend",
+    "weet",
+    "idee"
+   ],
+   "mag_niet_bevatten": [
+    "ja",
+    "nee"
+   ]
+  },
+  {
+   "id": "taal-t5-08",
+   "taalniveau": 5,
+   "dimensie": "onzekerheid",
+   "categorie": "onbekend",
+   "vraag": "kan blorf regen veroorzaken",
+   "moet_bevatten_een_van": [
+    "ken",
+    "onbekend",
+    "weet",
+    "idee"
+   ],
+   "mag_niet_bevatten": [
+    "ja",
+    "nee"
+   ]
+  }
+ ]
+}

@@ -185,3 +185,4 @@
 {"tekst": "hoeveel seconden zijn het nog", "hoogste_gok": "time", "confidence": 0.1601, "tijdstip": "2026-11-02T19:10:11.055991"}
 {"tekst": "test hint hoeveel minuten nog", "hoogste_gok": "time", "confidence": 0.1341, "tijdstip": "2026-11-02T19:32:59.701470"}
 {"tekst": "naam onderhoud", "hoogste_gok": "chess", "confidence": 0.1422, "tijdstip": "2026-11-03T13:27:10.202813"}
+{"tekst": "", "hoogste_gok": "chess", "confidence": 0.1136, "tijdstip": "2026-11-03T19:42:58.225119"}

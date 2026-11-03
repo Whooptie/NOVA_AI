@@ -2733,7 +2733,7 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 - De zin "een vuurtoren is een toren die schepen waarschuwt met licht" ging langs de relatieparser en bewaarde alleen de relatie. De definitie bleef `"unknown"`.
 - Na "welke betekenis van toren?" stond in de relatie alleen `target: "toren"`, zonder sense-nummer.
 
-- **Bewust niet gedaan:** bestaande relaties kregen geen audit-regel met terugwerkende kracht. Niet nagelopen of er nog andere plekken zijn die relaties buiten `add_relation()` om schrijven.
+- **Bewust niet gedaan:** bestaande relaties kregen geen audit-regel met terugwerkende kracht. Nagelopen op 3 november 2026: er zijn geen andere plekken die relaties buiten `add_relation()` en `add_auto_relation()` om wegschrijven; de Wikipedia-refresh (`wikipedia_teacher.py`) heeft sinds bug #48 zijn eigen audit-regel `wikipedia_refresh`.
 
 ---
 
@@ -2789,3 +2789,64 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Gevonden tijdens de live test:** `vergeet: thee per 2025/06/01` op een voorkeur die net was aangemaakt gaf een historiekregel met `valid_from: 2026-11-03` en `valid_until: 2025-06-01` (einde vóór begin). Daarom is de begindatum-controle toegevoegd; de testvoorkeur is met `wis definitief: thee` opgeruimd.
 
 **Getest:** 12 nieuwe tests in `tests/test_intent_router_vergeet_wis.py` (stub-profiel en echt `KevinProfile` in `tmp_path`: datum doorgegeven, Europees formaat, schuine streep, meerwoordig, zonder datum, "per se", onbestaande en toekomstige datum, einde vóór begin geweigerd, einde op de begindag toegestaan, onbekend begin niet geblokkeerd). Volledige suite op Kevins machine: 3735 geslaagd, 1 overgeslagen. Live bevestigd.
+
+---
+
+## ✅ Punt 60d — afwijzingen ook op schrijfwijze en spelfout (3 november 2026)
+
+**Aanleiding:** Atlas-herevaluatie van 2 november 2026. `SenseEngine.add_sense()` en `upgrade_unknown_sense()` blokkeerden een afgewezen (`rejected`) definitie alleen bij exact dezelfde tekst. "Een huisdier." of "huisdeir" kwam er als nieuwe betekenis door.
+
+**Beslissing:** geen losse tekstovereenkomst op de hele zin. `difflib` geeft tegenstellingen een hoge score ("lange" tegenover "korte" slagtanden 0,89, "vier" tegenover "twee" poten 0,87, "rood" tegenover "groen" 0,89). Een geblokkeerde definitie komt enkel terug via Kevins uitdrukkelijke bevestiging, en die heractiveert de OUDE betekenis. Een te losse vergelijking kost dus echte, goede definities.
+
+**Gebouwd (`core/semantic.py`):**
+- `definitie_gelijkenis(a, b)` geeft "exact", "genormaliseerd" of "spelfout", of `None`.
+  - "genormaliseerd": gelijk na kleine letters, zonder leestekens en zonder lidwoorden (een, de, het, 't).
+  - "spelfout": evenveel woorden, precies één verschilt, en dat woord lijkt op het andere (difflib >= 0.85 op dat ene woord).
+- `add_sense()` en `upgrade_unknown_sense()` gebruiken die functie voor rejected senses (een "unknown"-placeholder telt niet). Het "blocked"-signaal heeft nu ook `match`.
+- Imports `re` en `difflib` bovenaan toegevoegd.
+
+**Getest:**
+- `tests/test_afwijzing_op_betekenis.py`, 20 tests: herkende gevallen, tegenstellingen die NIET gelijkgesteld worden, add_sense (andere schrijfwijze, spelfout met automatische bron, geblokkeerde sense blijft ongewijzigd, ander kernwoord mag wel, niet-afgewezen sense niet geblokkeerd, placeholder), en het upgrade-pad.
+- Volledige suite op Kevins machine: 3755 geslaagd, 1 overgeslagen.
+- Live met 'kameel': `teach kameel Een huisdier` na een weerlegging gaf de bevestigingsvraag met de oude tekst; `nee` hield het afgewezen; `teach kameel een zoogdier met twee bulten` werd wel toegevoegd.
+
+**Bewust niet gedaan:** synoniemen en herformuleringen worden niet gelijkgesteld (punt 62a, na benchmark 61). De melding voor automatische bronnen zegt nog "dezelfde betekenis", ook bij een bijna-gelijke tekst.
+
+---
+
+## ✅ Punt 60f — meer tegenstrijdigheden opsporen (3 november 2026)
+
+**Aanleiding:** Atlas-herevaluatie van 2 november 2026. `find_contradictions()` controleerde enkel onverenigbare categorieën bij DIRECTE ouders (dier/meubel) en `part_of`-cirkels. Daarnaast raadde `contradiction_checker.py` het soort conflict uit de vorm van de lijst (`word in conflict`), waardoor een `is_a`-cirkel een niet-werkende `part_of`-suggestie zou krijgen.
+
+**Gemeten (kopie van de kennisgraaf van 2 november, 1234 concepten):** 0 conflicten van welke soort ook: geen `is_a`-cirkels, geen botsing via voorouders, geen synoniem+antoniem, geen `is_a`+`part_of` naar hetzelfde doel, geen relaties naar zichzelf. Het werk is dus een vangnet voor als de automatische schrijvers (Wikipedia, `auto_extract`) meer onbevestigde relaties toevoegen.
+
+**Gebouwd:**
+- `core/semantic.py`, `ReasoningEngine.find_contradictions()`: elk conflict heeft een `type` (`categorie`, `part_of_cirkel`, `is_a_cirkel`, `geerfde_categorie`, `synoniem_antoniem`). Nieuw: `is_a`-cirkels (ook zelfrelatie), botsing via voorouders (groep die al als directe botsing gemeld wordt, wordt overgeslagen; veld `via` bevat per voorouder de directe ouder), en synoniem+antoniem van hetzelfde woord (alfabetisch eerste woord meldt, dus één melding per paar).
+- `modules/knowledge/contradiction_checker.py`: `_conflict_sleutel()` houdt de oude sleutel voor `categorie`/`part_of_cirkel`/geen type (spam-state blijft geldig) en zet bij de nieuwe types het type ervoor. `_is_part_of_cirkel()` gebruikt het type als dat er is. `_bouw_melding_regel()` heeft meldingen en `weerleg:`-suggesties voor de drie nieuwe soorten.
+- `modules/debug/debug_commands.py`: het commando `contradicties` gebruikt de suggestie van de checker i.p.v. altijd "weerleg … is_a …".
+
+**Getest:**
+- `tests/test_tegenstrijdigheden_60f.py`, 20 tests: type-veld, cirkels (direct, langere keten, geen vals alarm bij een gewone keten, verdwijnt na weerleggen), geërfde botsing (geen dubbele melding bij directe botsing, geen vals alarm binnen een keten), synoniem+antoniem (ook geen dubbele melding), meldingen, sleutels.
+- Volledige suite op Kevins machine: 3775 geslaagd, 1 overgeslagen.
+- Live: `kameel is een walrus` en `walrus is een kameel` (beide bevestigd met "ja"), `contradicties` toonde de cirkel vanuit beide woorden met een werkende suggestie; na `weerleg: walrus is_a kameel` was de cirkel weg.
+
+**Bewust niet gedaan:** blokkeren bij het toevoegen (alleen achteraf-detectie), `causes`-lussen (terugkoppeling bestaat echt), antoniem-symmetrie en `has_part`/`part_of`-spiegels (56 gevallen in de kopie, geen fouten maar ontbrekende gegevens).
+
+**Gevolg voor "stel dat…":** de hypothese-module vergelijkt conflicten met en zonder aanname, dus een aanname die een cirkel of geërfde botsing veroorzaakt krijgt nu ook "Let op, dat botst: …".
+
+## ✅ Punt 61 — taalbenchmark: taalbegrip meten in vijf taalniveaus (3 november 2026)
+
+**Doel:** meten of Nova begrijpt wat Kevin bedoelt, ook als de zin anders is dan haar patronen, vóór er iets aan taalbegrip (punt 62) gebouwd wordt. Geen wijziging aan Nova zelf, enkel een meetinstrument. 🟢 pure Python.
+
+**Gebouwd**
+- `tools/run_benchmark.py` uitgebreid: `--taal`, `--blind`, `--taalniveau N` (minstens niveau 2, wordt automatisch gekozen); case-veld `voorvragen` (eerdere vragen in dezelfde mini-Nova, hun events tellen niet mee), `taalniveau`, `dimensie`; rapport per taalniveau en per dimensie; hulpfuncties `tel_per`, `onterechte_antwoorden`, `niet_eerlijk_onzeker`, `print_taaltabellen`; resultaatregel met `"soort":"taal"`.
+- `tests/benchmark/benchmark_taalbegrip.json` (40 cases, vast) en `tests/benchmark/benchmark_taalbegrip_blind.json` (20 cases, blind).
+- `tests/test_taalbenchmark.py`: 76 tests (casebestanden geldig, id's uniek, geen zin in beide sets, contextcases hebben voorvragen, onbekende woorden verbieden "ja"/"nee", tellers en exitcode).
+
+**Ontwerpkeuze (gecorrigeerd tijdens het bouwen):** een eerste versie telde stilte (geen antwoord) als "onterecht antwoord". Dat is niet hetzelfde als stellig iets verzinnen. Nu is onterecht enkel: een verboden woord ("ja"/"nee") staat in het antwoord (exitcode 1). Stilte of een onduidelijk antwoord staat apart onder "niet eerlijk onzeker" (geen exitcode 1).
+
+**Nulmeting:** zie `nova_state.md`, sectie Nova-benchmark. Vast 45% (18/40), blind 50% (10/20), 0 onterechte antwoorden. Grootste gaten: T2 parafrases (20%) en T4 context (12%).
+
+**Getest:** `tests/test_taalbenchmark.py` 76 groen; `python tools/run_benchmark.py --niveau 2` en `--niveau 3` onveranderd 29/29; live `--taal` en `--blind` op battleserver gaven dezelfde cijfers als de kloon.
+
+**Bewust niet gedaan:** de dimensie "concepten gevonden" (de runner ziet geen concepten, enkel events en tekst); geen verbeteringen aan Nova (dat is punt 62).

@@ -332,3 +332,8 @@
 {"timestamp": "2026-11-03T11:42:25.326480", "event_type": "concept_created", "word": "walrus", "source": "system", "new_value": {"word": "walrus"}}
 {"timestamp": "2026-11-03T12:27:10.229496", "event_type": "concept_created", "word": "naam", "source": "system", "new_value": {"word": "naam"}}
 {"timestamp": "2026-11-03T12:27:10.309001", "event_type": "concept_created", "word": "onderhoud", "source": "system", "new_value": {"word": "onderhoud"}}
+{"timestamp": "2026-11-03T18:14:33.047403", "event_type": "concept_created", "word": "kameel", "source": "system", "new_value": {"word": "kameel"}}
+{"timestamp": "2026-11-03T18:15:21.019578", "event_type": "concept_hard_deleted", "word": "kameel", "source": "user", "aantal_senses_verwijderd": 2}
+{"timestamp": "2026-11-03T18:41:21.116095", "event_type": "concept_created", "word": "kameel", "source": "system", "new_value": {"word": "kameel"}}
+{"timestamp": "2026-11-03T18:43:25.224364", "event_type": "concept_hard_deleted", "word": "kameel", "source": "user", "aantal_senses_verwijderd": 1}
+{"timestamp": "2026-11-03T18:43:30.915524", "event_type": "concept_hard_deleted", "word": "walrus", "source": "user", "aantal_senses_verwijderd": 1}

@@ -1692,3 +1692,23 @@
 {"text": "vergeet: thee per 2025-06-01", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:30:28.227904"}
 {"text": "vergeet: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:30:40.914418"}
 {"text": "wis definitief: thee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T13:30:53.714467"}
+{"text": "gaat het nog regenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0115, "bron": "model_fallback", "tijdstip": "2026-11-03T16:14:59.909330"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T19:14:21.229645"}
+{"text": "teach kameel een huisdier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-03T19:14:33.039669"}
+{"text": "weerleg betekenis: kameel 1 reden: klopt niet", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0707, "bron": "model_fallback", "tijdstip": "2026-11-03T19:14:40.109510"}
+{"text": "teach kameel Een huisdier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-03T19:14:48.519404"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:14:55.864845"}
+{"text": "teach kameel een zoogdier met twee bulten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-03T19:15:04.371329"}
+{"text": "weerleg concept: kameel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:15:12.484947"}
+{"text": "verwijder definitief concept: kameel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:15:21.013208"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T19:41:02.499869"}
+{"text": "kameel is een walrus", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-11-03T19:41:21.103051"}
+{"text": "walrus is een kameel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0538, "bron": "model_fallback", "tijdstip": "2026-11-03T19:41:40.221530"}
+{"text": "weerleg: walrus is_a kameel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:42:05.527653"}
+{"text": "weerleg: kameel is_a walrus", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:42:13.900185"}
+{"text": "verwijder definitief concept: kameel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:42:32.592929"}
+{"text": "weerleg concept: kameel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:42:54.213861"}
+{"text": "weerleg concept: walrus", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:43:12.962776"}
+{"text": "verwijder definitief concept: kameel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:43:25.217440"}
+{"text": "verwijder definitief concept: walrus", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:43:30.909083"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T20:19:10.205992"}

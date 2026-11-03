@@ -4,6 +4,8 @@ import json
 import os
 from datetime import datetime
 from typing import List, Dict, Optional, Any
+import re
+import difflib
 
 # Gedeelde stopwoordenlijst (5 oktober 2026), zie core/nl_stopwoorden.py.
 from core.nl_stopwoorden import STOPWOORDEN
@@ -179,6 +181,52 @@ class ConceptStore:
                 "confidence": confidence
             })
 
+# ---------------------------------------------------------
+# Punt 60d (3 november 2026): afwijzingen op betekenis, niet enkel op
+# exacte tekst. Bewust VOORZICHTIG: een te losse vergelijking zou ook
+# goede nieuwe definities blokkeren ("lange" vs "korte" slagtanden
+# scoren met difflib 0.89, "vier" vs "twee" poten 0.87), en een
+# geblokkeerde definitie kan enkel via Kevins expliciete bevestiging
+# terug. Daarom enkel deze twee gevallen:
+#   1. "genormaliseerd": gelijk na kleine letters, zonder leestekens en
+#      zonder lidwoorden (een/de/het) -- "Een huisdier." == "huisdier".
+#   2. "spelfout": evenveel woorden, precies 1 woord verschilt, en dat
+#      woord lijkt op het andere (difflib >= 0.85) -- "huisdeir".
+# Alles wat verder gaat (synoniemen, herformuleringen) blijft bewust
+# NIET automatisch gelijkgesteld; daarvoor is eerst meten nodig
+# (punt 61).
+# ---------------------------------------------------------
+_DEFINITIE_LIDWOORDEN = {"een", "de", "het", "t"}
+_SPELFOUT_DREMPEL = 0.85
+
+
+def _definitie_tokens(tekst: str) -> list:
+    tekst = (tekst or "").lower()
+    tekst = re.sub(r"[^\w\s]", " ", tekst)
+    return [w for w in tekst.split() if w not in _DEFINITIE_LIDWOORDEN]
+
+
+def definitie_gelijkenis(a: str, b: str) -> Optional[str]:
+    """
+    Geeft "exact", "genormaliseerd" of "spelfout" als twee definities
+    dezelfde betekenis lijken te hebben volgens de voorzichtige regels
+    hierboven, anders None.
+    """
+    if a == b:
+        return "exact"
+    ta, tb = _definitie_tokens(a), _definitie_tokens(b)
+    if not ta or not tb:
+        return None
+    if ta == tb:
+        return "genormaliseerd"
+    if len(ta) == len(tb):
+        verschillend = [(x, y) for x, y in zip(ta, tb) if x != y]
+        if len(verschillend) == 1:
+            x, y = verschillend[0]
+            if difflib.SequenceMatcher(None, x, y).ratio() >= _SPELFOUT_DREMPEL:
+                return "spelfout"
+    return None
+
 
 # ---------------------------------------------------------
 # 2. SenseEngine – senses per woord
@@ -268,6 +316,22 @@ class SenseEngine:
                 self.store.save()
                 return s
 
+        # Punt 60d (3 november 2026): een afgewezen definitie komt ook
+        # niet terug als ze enkel anders getypt is (hoofdletters,
+        # leestekens, lidwoorden) of een spelfout bevat. Zelfde
+        # "blocked"-signaal als hierboven; "match" zegt waarom.
+        for s in senses:
+            if s.get("status") == "rejected" and s.get("definition") != "unknown":
+                match = definitie_gelijkenis(s.get("definition"), definition)
+                if match:
+                    return {
+                        "blocked": "rejected",
+                        "sense": s,
+                        "attempted_source": source,
+                        "attempted_confidence": confidence,
+                        "match": match,
+                    }
+
         # Unknown upgraden
         for s in senses:
             if s.get("definition") == "unknown":
@@ -330,13 +394,16 @@ class SenseEngine:
         # aan bod. Zelfde "blocked"-signaal als add_sense(), zodat de
         # aanroepers het op dezelfde manier afhandelen.
         for s in concept["senses"]:
-            if s.get("definition") == definition and s.get("status") == "rejected":
-                return {
-                    "blocked": "rejected",
-                    "sense": s,
-                    "attempted_source": source,
-                    "attempted_confidence": confidence,
-                }
+            if s.get("status") == "rejected" and s.get("definition") != "unknown":
+                match = definitie_gelijkenis(s.get("definition"), definition)
+                if match:
+                    return {
+                        "blocked": "rejected",
+                        "sense": s,
+                        "attempted_source": source,
+                        "attempted_confidence": confidence,
+                        "match": match,
+                    }
 
         for s in concept["senses"]:
             if s.get("definition") == "unknown":
@@ -1615,6 +1682,7 @@ class ReasoningEngine:
             if len(gevonden) >= 2:
                 contradictions.append({
                     "word": word,
+                    "type": "categorie",
                     "conflict": gevonden,
                     "reason": f"'{word}' kan niet tegelijk {' en '.join(gevonden)} zijn"
                 })
@@ -1634,6 +1702,7 @@ class ReasoningEngine:
                 volledige_cirkel = [word] + terug_pad
                 contradictions.append({
                     "word": word,
+                    "type": "part_of_cirkel",
                     "conflict": [doel, word],
                     "reason": (
                         f"'{word}' is onderdeel van '{doel}', maar via een keten "
@@ -1641,6 +1710,92 @@ class ReasoningEngine:
                         f"({' → '.join(volledige_cirkel)}) -- dat kan niet allebei"
                     )
                 })
+
+        # ------------------------------------------------------------
+        # Punt 60f (3 november 2026): drie extra controles, alle drie
+        # enkel achteraf-detectie (zoals hierboven), en elk conflict
+        # heeft een expliciet "type" zodat contradiction_checker.py niet
+        # meer hoeft te raden wat voor conflict het is.
+        # ------------------------------------------------------------
+
+        # --- 3. is_a: cirkels (hond -> dier -> hond) ---
+        for doel in parents:
+            if doel == word:
+                contradictions.append({
+                    "word": word,
+                    "type": "is_a_cirkel",
+                    "conflict": [doel, word],
+                    "reason": f"'{word}' is een soort van zichzelf -- dat kan niet"
+                })
+                continue
+            terug_gevonden, terug_pad = self.is_a_chained(doel, word)
+            if terug_gevonden:
+                volledige_cirkel = [word] + terug_pad
+                contradictions.append({
+                    "word": word,
+                    "type": "is_a_cirkel",
+                    "conflict": [doel, word],
+                    "reason": (
+                        f"'{word}' is een soort van '{doel}', maar via een keten "
+                        f"is '{doel}' ook weer een soort van '{word}' "
+                        f"({' → '.join(volledige_cirkel)}) -- dat kan niet allebei"
+                    )
+                })
+
+        # --- 4. is_a: onverenigbare categorieën via VOOROUDERS ---
+        # Sectie 1 kijkt enkel naar directe ouders. Hier ook: hond is_a
+        # dier en hond is_a x, waarbij x via een keten een plant is.
+        # Een groep die sectie 1 al meldde (2+ directe ouders) wordt hier
+        # overgeslagen, zodat hetzelfde conflict niet dubbel verschijnt.
+        voorouders = self._is_a_voorouders(word)
+        for group in INCOMPATIBLE_GROUPS:
+            directe_treffers = {SYNONIEMEN.get(p, p) for p in parents if SYNONIEMEN.get(p, p) in group}
+            if len(directe_treffers) >= 2:
+                continue
+            gevonden = []
+            gezien = set()
+            for v in voorouders:
+                canoniek = SYNONIEMEN.get(v, v)
+                if canoniek in group and canoniek not in gezien:
+                    gezien.add(canoniek)
+                    gevonden.append(v)
+            if len(gevonden) >= 2:
+                # Via welke DIRECTE ouder komt elke voorouder? Dat is de
+                # relatie die Kevin kan weerleggen.
+                via = {}
+                for v in gevonden:
+                    for p in parents:
+                        if p == v or v in self._is_a_voorouders(p):
+                            via[v] = p
+                            break
+                contradictions.append({
+                    "word": word,
+                    "type": "geerfde_categorie",
+                    "conflict": gevonden,
+                    "via": via,
+                    "reason": (
+                        f"'{word}' erft via zijn voorouders zowel "
+                        f"{' als '.join(repr(g) for g in gevonden)}, en die sluiten elkaar uit"
+                    )
+                })
+
+        # --- 5. synoniem EN antoniem van hetzelfde woord ---
+        synoniemen = set(self.relation_engine.get_relations(word, relation_type="synonym"))
+        antoniemen = set(self.relation_engine.get_relations(word, relation_type="antonym"))
+        for t in sorted(synoniemen & antoniemen):
+            # Staat het ook omgekeerd zo bij 't', dan meldt 't' het zelf
+            # al (alfabetisch eerste meldt het): geen dubbele melding.
+            if t < word:
+                t_syn = set(self.relation_engine.get_relations(t, relation_type="synonym"))
+                t_ant = set(self.relation_engine.get_relations(t, relation_type="antonym"))
+                if word in (t_syn & t_ant):
+                    continue
+            contradictions.append({
+                "word": word,
+                "type": "synoniem_antoniem",
+                "conflict": [t],
+                "reason": f"'{word}' en '{t}' staan bij mij zowel als synoniem als als antoniem genoteerd"
+            })
 
         return contradictions
 

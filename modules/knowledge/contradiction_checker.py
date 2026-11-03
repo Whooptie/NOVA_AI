@@ -78,7 +78,15 @@ class ContradictionChecker:
         """
         woord = contradiction.get("word", "")
         conflict = sorted(contradiction.get("conflict", []))
-        return f"{woord}::{'|'.join(conflict)}"
+        basis = f"{woord}::{'|'.join(conflict)}"
+        # Punt 60f (3 november 2026): de oude types houden hun oude
+        # sleutel (anders zou al gemeld = opnieuw gemeld worden); de
+        # nieuwe types krijgen hun type ervoor, want een is_a-cirkel
+        # [doel, woord] heeft anders dezelfde sleutel als een part_of-cirkel.
+        soort = contradiction.get("type")
+        if soort in (None, "categorie", "part_of_cirkel"):
+            return basis
+        return f"{soort}::{basis}"
 
     # ------------------------------------------------------------------
     def alle_contradicties_nu(self) -> list[dict]:
@@ -196,6 +204,9 @@ class ContradictionChecker:
         Bij een is_a-conflict staat 'word' zelf NOOIT in conflict
         (dat zijn enkel de botsende ouder-categorieën).
         """
+        soort = c.get("type")
+        if soort is not None:
+            return soort == "part_of_cirkel"
         return c.get("word") in c.get("conflict", [])
 
     def _weerleg_type_voor(self, c: dict) -> str:
@@ -212,6 +223,33 @@ class ContradictionChecker:
         """
         woord = c["word"]
         rel_type = self._weerleg_type_voor(c)
+        soort = c.get("type")
+
+        # Punt 60f (3 november 2026): de drie nieuwe soorten.
+        if soort == "is_a_cirkel":
+            doel = c["conflict"][0]
+            if doel == woord:
+                return (
+                    f"'{woord}' staat bij mij als een soort van zichzelf genoteerd",
+                    f"'weerleg: {woord} is_a {doel}'",
+                )
+            return (
+                f"'{woord}' is bij mij een soort van '{doel}' en (via een omweg) andersom",
+                f"'weerleg: {woord} is_a {doel}'",
+            )
+        if soort == "geerfde_categorie":
+            via = c.get("via", {})
+            delen = [via.get(v, v) for v in c["conflict"]]
+            namen = " en ".join(f"'{v}'" for v in c["conflict"])
+            kernzin = f"'{woord}' erft via zijn voorouders {namen}, en die sluiten elkaar uit"
+            suggestie = " of ".join(f"'weerleg: {woord} is_a {d}'" for d in dict.fromkeys(delen))
+            return kernzin, suggestie
+        if soort == "synoniem_antoniem":
+            t = c["conflict"][0]
+            return (
+                f"'{woord}' en '{t}' staan bij mij zowel als synoniem als als antoniem genoteerd",
+                f"'weerleg: {woord} synonym {t}' of 'weerleg: {woord} antonym {t}'",
+            )
 
         if self._is_part_of_cirkel(c):
             doel = c["conflict"][0]

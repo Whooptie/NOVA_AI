@@ -41,6 +41,18 @@ GEBRUIK (vanuit de projectmap, bv. /app)
   python tools/run_benchmark.py --niveau 2 --willekeurig 15          # 15 willekeurige is_a-ketens erbij
   python tools/run_benchmark.py --niveau 3 --ongezien                # de ongeziene set (aparte score)
 
+TAALBENCHMARK (punt 61): meet of Nova begrijpt wat je bedoelt, in 5 taalniveaus
+  T1 bekende formuleringen, T2 parafrases, T3 nieuwe combinaties/ketens,
+  T4 context en dubbelzinnigheid, T5 onbekende situaties (eerlijk "weet ik niet").
+  python tools/run_benchmark.py --taal                 # vaste set, score per taalniveau
+  python tools/run_benchmark.py --taal --taalniveau 3  # enkel taalniveau 3
+  python tools/run_benchmark.py --blind                # blinde set: NIET op afstellen
+  python tools/run_benchmark.py --taal --ontdek        # events + antwoorden per vraag
+  ONTERECHT ANTWOORD = een onzekerheid-case waarin een verboden woord (bv. "ja"/"nee")
+  in het antwoord staat: Nova antwoordde stellig terwijl ze het niet kon weten.
+  Dat geeft exitcode 1. Stilte of een onduidelijk antwoord op zo'n case is apart
+  zichtbaar ("niet eerlijk onzeker") maar geeft geen exitcode 1.
+
 CONTROLES IN EEN CASE (alle optioneel)
   moet_event                 lijst: minstens een gepubliceerd event begint met een van deze namen
   mag_event_niet             lijst: geen enkel event begint met een van deze namen
@@ -50,6 +62,11 @@ CONTROLES IN EEN CASE (alle optioneel)
   mag_niet_bevatten          lijst woorden (HELE woorden) die NIET in het ANTWOORD mogen staan
   niveau3                    object met extra controles die ALLEEN op niveau 3 gelden
                              (en die dezelfde sleutels van de case dan overschrijven)
+  voorvragen                 lijst vragen die EERST (in dezelfde mini-Nova) gesteld worden, voor
+                             context-cases ("en een kat?"). Hun antwoord telt niet mee.
+                             Werkt vanaf niveau 2.
+  taalniveau                 1-5, enkel voor de taalbenchmark (zie hieronder)
+  dimensie                   intentie | redenering | context | onzekerheid (taalbenchmark)
   Placeholders in de lijsten: $vandaag_weekdag, $morgen_weekdag, $overmorgen_weekdag
   (worden bij het draaien ingevuld met de Nederlandse weekdag, tijdzone Brussel).
   Het ANTWOORD bestaat enkel uit events "chat_response" en "layer4_response".
@@ -75,6 +92,8 @@ import time
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CASES_PAD = os.path.join(PROJECT_ROOT, "tests", "benchmark", "benchmark_cases.json")
 ONGEZIEN_PAD = os.path.join(PROJECT_ROOT, "tests", "benchmark", "benchmark_ongezien.json")
+TAAL_PAD = os.path.join(PROJECT_ROOT, "tests", "benchmark", "benchmark_taalbegrip.json")
+BLIND_PAD = os.path.join(PROJECT_ROOT, "tests", "benchmark", "benchmark_taalbegrip_blind.json")
 RESULTATEN_PAD = os.path.join(PROJECT_ROOT, "data", "benchmark_resultaten.jsonl")
 ECHT_CONCEPTS_PAD = os.path.join(PROJECT_ROOT, "data", "concepts.json")
 
@@ -94,6 +113,15 @@ STANDAARD_NIVEAU3_MODULES = [
 
 WEEKDAGEN = ["maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag", "zondag"]
 CATEGORIE_KETENS = "willekeurige_ketens"
+TAALNIVEAU_NAMEN = {
+    1: "bekende formuleringen",
+    2: "parafrases",
+    3: "nieuwe combinaties",
+    4: "context en dubbelzinnigheid",
+    5: "onbekende situaties",
+}
+DIMENSIES = ("intentie", "redenering", "context", "onzekerheid")
+DIMENSIE_ONTERECHT = "onzekerheid"
 KETEN_WOORD = re.compile(r"^[a-zà-ÿ][a-zà-ÿ \-]*$")
 
 
@@ -277,7 +305,7 @@ class Keten:
             except Exception as e:  # noqa: BLE001
                 self.mislukt.setdefault(naam, f"{type(e).__name__}: {e}")
 
-    def draai(self, vraag):
+    def draai(self, vraag, voorvragen=None):
         with open(self._concepts_pad, "wb") as f:
             f.write(self._concepts_origineel)
 
@@ -293,14 +321,18 @@ class Keten:
                 self._laad_extra(bus, sem)
             self._chat(bus, semantic_module=sem)
             router = self._router(bus, semantic_module=sem)
+            for eerder in voorvragen or []:
+                router.route({"text": eerder}, "chat_message")
+            start[0] = len(bus.opgenomen)
             router.route({"text": vraag}, "chat_message")
 
+        start = [0]
         _, fout = draai_met_tijdslimiet(_doe)
         if not fout:
             handler_fouten = list(getattr(bus, "fouten", None) or [])
             if handler_fouten:
                 fout = f"handler-fout in de EventBus: {handler_fouten[-1]}"
-        return bus.opgenomen, fout
+        return bus.opgenomen[start[0]:], fout
 
 
 # ---------------------------------------------------------------- placeholders
@@ -512,6 +544,12 @@ def main():
     ap.add_argument("--cases", default=CASES_PAD, help="pad naar benchmark_cases.json")
     ap.add_argument("--ongezien", action="store_true",
                     help="draai de ongeziene set (tests/benchmark/benchmark_ongezien.json), apart gescoord")
+    ap.add_argument("--taal", action="store_true",
+                    help="draai de taalbenchmark (vaste set), score per taalniveau (minstens niveau 2)")
+    ap.add_argument("--blind", action="store_true",
+                    help="draai de BLINDE taalset (nooit op afstellen, enkel kijken)")
+    ap.add_argument("--taalniveau", type=int, choices=(1, 2, 3, 4, 5), default=None,
+                    help="enkel dit taalniveau (met --taal of --blind)")
     ap.add_argument("--willekeurig", type=int, default=0, metavar="N",
                     help="voeg N willekeurige tweestaps-is_a-ketens uit concepts.json toe (niveau 2 of 3)")
     ap.add_argument("--seed", type=int, default=None,
@@ -524,9 +562,18 @@ def main():
     args = ap.parse_args()
 
     niveau = args.niveau
+    taal_modus = args.taal or args.blind
+    if taal_modus and niveau < 2:
+        niveau = 2
+        print("Taalbenchmark: antwoorden zijn nodig, dus niveau 2 gebruikt.")
     cases_pad = ONGEZIEN_PAD if args.ongezien else args.cases
     verzameling = "ongezien" if args.ongezien else "vast"
+    if taal_modus:
+        cases_pad = BLIND_PAD if args.blind else TAAL_PAD
+        verzameling = "taal-blind" if args.blind else "taal-vast"
     cases = laad_cases(cases_pad, args.categorie)
+    if args.taalniveau:
+        cases = [c for c in cases if c.get("taalniveau") == args.taalniveau]
     if args.willekeurig and niveau < 2:
         print("Let op: --willekeurig werkt pas vanaf --niveau 2 (er is een antwoord nodig). Genegeerd.")
         args.willekeurig = 0
@@ -592,7 +639,7 @@ def main():
         for case in cases:
             case = los_placeholders_op(case, nu)
             if niveau >= 2:
-                events, fout = keten.draai(case["vraag"])
+                events, fout = keten.draai(case["vraag"], case.get("voorvragen"))
             else:
                 events, fout = draai_vraag_niveau1(IntentRouter, case["vraag"])
             if args.ontdek:
@@ -615,7 +662,8 @@ def main():
             print("\nKlaar. Kijk of de verwachte events/antwoorden in je cases kloppen met wat hierboven staat.")
             return controleer_echte_data(hash_voor)
 
-        code = rapporteer(resultaten, args.geen_opslaan, niveau, verzameling, seed, modules_mislukt)
+        code = rapporteer(resultaten, args.geen_opslaan, niveau, verzameling, seed, modules_mislukt,
+                          taal=taal_modus)
         return controleer_echte_data(hash_voor) or code
     finally:
         os.chdir(PROJECT_ROOT)
@@ -637,7 +685,65 @@ def controleer_echte_data(hash_voor):
 NIVEAU_NAMEN = {1: "routing", 2: "antwoord", 3: "antwoord met extra modules"}
 
 
-def rapporteer(resultaten, geen_opslaan, niveau, verzameling="vast", seed=None, modules_mislukt=None):
+def tel_per(resultaten, sleutel):
+    """Telt geslaagd/gefaald/fout/niet_meetbaar per waarde van case[sleutel]."""
+    uit = {}
+    for case, status, _ in resultaten:
+        waarde = case.get(sleutel)
+        if waarde is None:
+            continue
+        d = uit.setdefault(waarde, {"geslaagd": 0, "gefaald": 0, "fout": 0, "niet_meetbaar": 0})
+        d[status] += 1
+    return uit
+
+
+def _onzekerheid_gefaald(resultaten):
+    return [(c, r) for c, s, r in resultaten
+            if s == "gefaald" and c.get("dimensie") == DIMENSIE_ONTERECHT]
+
+
+def onterechte_antwoorden(resultaten):
+    """Onzekerheid-cases waar Nova STELLIG antwoordde (een verboden woord als 'ja'/'nee' stond in
+    het antwoord) terwijl ze het niet kon weten. Dit is de ergste fout en geeft exitcode 1."""
+    return [(c, r) for c, r in _onzekerheid_gefaald(resultaten) if "verboden woord" in r]
+
+
+def niet_eerlijk_onzeker(resultaten):
+    """Onzekerheid-cases die faalden zonder stellig antwoord: stilte of een onduidelijke zin.
+    Niet gevaarlijk, wel een gat (ze zegt niet duidelijk 'dat weet ik niet')."""
+    return [(c, r) for c, r in _onzekerheid_gefaald(resultaten) if "verboden woord" not in r]
+
+
+def print_taaltabellen(resultaten):
+    per_niv = tel_per(resultaten, "taalniveau")
+    per_dim = tel_per(resultaten, "dimensie")
+    print("\n--- score per taalniveau ---")
+    for n in sorted(per_niv):
+        d = per_niv[n]
+        meetbaar = d["geslaagd"] + d["gefaald"] + d["fout"]
+        print(f"  T{n} {TAALNIVEAU_NAMEN.get(n, '?'):<28}{d['geslaagd']:>3}/{meetbaar:<3} {_score(d):>5}")
+    print("--- score per dimensie ---")
+    for naam in DIMENSIES:
+        if naam in per_dim:
+            d = per_dim[naam]
+            meetbaar = d["geslaagd"] + d["gefaald"] + d["fout"]
+            print(f"  {naam:<28}{d['geslaagd']:>3}/{meetbaar:<3} {_score(d):>5}")
+    onterecht = onterechte_antwoorden(resultaten)
+    print("--- ONTERECHTE ANTWOORDEN (de ergste fout) ---")
+    if not onterecht:
+        print("  geen")
+    for c, r in onterecht:
+        print(f"  [{c['id']}] {c['vraag']!r}\n      {r}")
+    gat = niet_eerlijk_onzeker(resultaten)
+    print("--- NIET EERLIJK ONZEKER (stilte of onduidelijk, niet gevaarlijk) ---")
+    if not gat:
+        print("  geen")
+    for c, r in gat:
+        print(f"  [{c['id']}] {c['vraag']!r}\n      {r}")
+
+
+def rapporteer(resultaten, geen_opslaan, niveau, verzameling="vast", seed=None, modules_mislukt=None,
+               taal=False):
     per_cat = {}
     for case, status, _ in resultaten:
         d = per_cat.setdefault(case.get("categorie", "?"),
@@ -672,6 +778,9 @@ def rapporteer(resultaten, geen_opslaan, niveau, verzameling="vast", seed=None, 
         for c, r in nm:
             print(f"  [{c['id']}] {c['vraag']!r}: {r}")
 
+    if taal:
+        print_taaltabellen(resultaten)
+
     if not geen_opslaan:
         record = {
             "datum": datetime.datetime.now().isoformat(timespec="seconds"),
@@ -682,6 +791,12 @@ def rapporteer(resultaten, geen_opslaan, niveau, verzameling="vast", seed=None, 
             "per_categorie": per_cat,
             "mislukt": [c["id"] for c, _, _ in mislukt],
         }
+        if taal:
+            record["soort"] = "taal"
+            record["per_taalniveau"] = tel_per(resultaten, "taalniveau")
+            record["per_dimensie"] = tel_per(resultaten, "dimensie")
+            record["onterecht"] = [c["id"] for c, _ in onterechte_antwoorden(resultaten)]
+            record["niet_eerlijk_onzeker"] = [c["id"] for c, _ in niet_eerlijk_onzeker(resultaten)]
         if seed is not None:
             record["seed"] = seed
         if modules_mislukt:
@@ -690,6 +805,9 @@ def rapporteer(resultaten, geen_opslaan, niveau, verzameling="vast", seed=None, 
         with open(RESULTATEN_PAD, "a", encoding="utf-8") as f:
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
         print(f"\nResultaat toegevoegd aan {os.path.relpath(RESULTATEN_PAD, PROJECT_ROOT)}")
+    if taal and onterechte_antwoorden(resultaten):
+        print("\n!!! Onterecht antwoord gezien: exitcode 1.")
+        return 1
     return 0
 
 

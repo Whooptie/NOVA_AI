@@ -217,12 +217,14 @@ class DebugCommands:
         print(f"{C_CYAN}--- {len(conflicten)} tegenstrijdigheid(en) gevonden ---{C_RESET}")
         for c in conflicten:
             woord = c["word"]
-            a, b = c["conflict"][0], c["conflict"][1]
             sleutel = checker._conflict_sleutel(c)
+            # Punt 60f: de suggestie komt van de checker zelf, zodat ze bij
+            # elk soort conflict het juiste relatietype gebruikt.
+            _, suggestie = checker._bouw_melding_regel(c)
             al_gemeld = sleutel in checker._al_gemelde_conflicten
             status = "al eerder gemeld aan Kevin" if al_gemeld else "nog niet gemeld"
             print(f"{C_CYAN}  '{woord}': {c['reason']} ({status}){C_RESET}")
-            print(f"{C_CYAN}    Oplossen: weerleg: {woord} is_a {a}   OF   weerleg: {woord} is_a {b}{C_RESET}")
+            print(f"{C_CYAN}    Oplossen: {suggestie}{C_RESET}")
 
     # ------------------------------------------------------------------
     # Punt 7 — Topic Suggestions (topic_events_roadmap.md Fase 5)

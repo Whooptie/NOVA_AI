@@ -496,3 +496,7 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Alles oké?", "entity": "coding", "response_style": null, "moment": "2026-11-03T13:27:10.390943", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793708830.3906796, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1793708830.3910565, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "variant_tekst": "Oh… je bent al een tijdje met {activiteit} bezig.", "entity": "coding", "response_style": null, "moment": "2026-11-03T19:42:58.257517", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 2, "variant_tekst": "Nog lang?", "entity": "coding", "response_style": null, "moment": "2026-11-03T19:42:58.258112", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1793731378.2578192, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793731378.2582443, "type": "sentiment_koppeling"}
