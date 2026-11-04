@@ -19,6 +19,12 @@ try:
 except Exception:
     _normaliseer_vraag = None
 
+# Punt 62d (4 november 2026): vervolgvragen op de laatste kennisvraag.
+try:
+    from core import context_resolver as _context_resolver
+except Exception:  # noqa: BLE001 -- zonder de module werkt de router gewoon verder
+    _context_resolver = None
+
 # Bug #31 + punt 10 (25 oktober 2026): Nederlandse rekenzinnen ("wat is drie
 # plus vijf") vertalen naar een kale expressie voor math.py. Defensief
 # geimporteerd: ontbreekt het bestand, dan werkt detect_math() zoals voorheen.
@@ -5449,6 +5455,42 @@ class IntentRouter:
             return nieuw
         return text
 
+    def _vervolgvraag_zonder_onderwerp(self, text):
+        """Een verwijzing ("waardoor ontstaat dat") zonder onthouden vraag: eerlijk terugvragen."""
+        self.event_bus.publish("chat_response", {
+            "text": "Waar heb je het over? Ik weet niet op welk woord dit slaat, "
+                    "stel de vraag nog eens met het woord erin."
+        })
+        return None
+
+    def _verwerk_vervolgvraag(self, text):
+        if _context_resolver is None:
+            return text
+        last_ctx = self.event_bus.modules.get("last_context")
+        if last_ctx is None or not hasattr(last_ctx, "get_vraag"):
+            return text
+        try:
+            vraag = last_ctx.get_vraag()
+            if vraag:
+                opgelost = _context_resolver.los_op(text, *vraag)
+                if opgelost:
+                    nieuw, regel = opgelost
+                    dbg(f"{C_YELLOW}→ vervolgvraag ({regel}): '{text}' → '{nieuw}'{C_RESET}")
+                    self.event_bus.publish("context_resolved", {"origineel": text, "opgelost": nieuw, "regel": regel})
+                    text = nieuw
+                elif _context_resolver.is_verwijzing_zonder_onderwerp(text):
+                    return self._vervolgvraag_zonder_onderwerp(text)
+            elif _context_resolver.is_verwijzing_zonder_onderwerp(text):
+                # Punt 74: "wat is een ander woord voor" zonder eerdere vraag mag niet
+                # als onderwerp "ander woord voor" naar Wikipedia.
+                return self._vervolgvraag_zonder_onderwerp(text)
+            herkend = _context_resolver.herken_vraag(text)
+            if herkend:
+                last_ctx.set_vraag(*herkend)
+        except Exception as e:
+            dbg(f"{C_RED}vervolgvraag fout: {e}{C_RESET}")
+        return text
+        
     def _verwerk_referentie(self, text):
         """
         Referentie-resolutie (idee 1). Wordt vroeg in route()
@@ -5821,6 +5863,13 @@ class IntentRouter:
         text = self._normaliseer_omhulsel(text)
 
         text = self._verwerk_referentie(text)
+        if text is None:
+            return
+
+        # 2E1 Vervolgvraag op de laatste kennisvraag (punt 62d, 4 november 2026):
+        # "en een kat?" na "wat is een hond" wordt "wat is een kat". Past de zin in
+        # geen vaste vorm, of is er geen onthouden vraag, dan blijft ze ongewijzigd.
+        text = self._verwerk_vervolgvraag(text)
         if text is None:
             return
 

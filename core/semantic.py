@@ -3389,7 +3389,20 @@ class SemanticConceptsModule:
         return self.relation_engine.get_all_relations(word)
         
     # Relation detectie
+    # Punt 74 (4 november 2026): een vraag is nooit een leerzin. "en wat is een ander
+    # woord ervoor" werd gelezen als "'en wat' is een soort van 'ander woord ervoor'".
+    _VRAAGWOORD_BEGIN = re.compile(
+        r"^(?:(?:en|ok|oke|oké|nou|maar|ja)[, ]+)?"
+        r"(?:wat|wie|waar|waarom|waardoor|wanneer|hoe|welk|welke|hoeveel)\b"
+    )
+
+    def _is_vraagzin(self, text: str) -> bool:
+        t = text.strip().lower()
+        return t.endswith("?") or bool(self._VRAAGWOORD_BEGIN.match(t))
+
     def _detect_relation(self, text: str) -> bool:
+        if self._is_vraagzin(text):
+            return False
         detected = self.parser.detect_relation(text)
         if not detected:
             return False

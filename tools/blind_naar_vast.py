@@ -41,13 +41,20 @@ def _schrijf(pad, data):
         f.write("\n")
 
 
+def _sleutel(case):
+    """Dezelfde vraag na een andere eerdere beurt is een andere case (punt 62d)."""
+    voor = " >> ".join(v.strip().lower() for v in case.get("voorvragen", []))
+    vraag = case["vraag"].strip().lower()
+    return f"{voor} >> {vraag}" if voor else vraag
+
+
 def plan_verhuizing(vast, blind):
     """Berekent de verhuizing zonder iets te schrijven.
 
     Geeft (nieuwe_vaste_cases, overgeslagen_vragen):
     nieuwe_vaste_cases = lijst (oud_id, nieuwe_case), overgeslagen = vragen die al vast waren.
     """
-    bestaande_vragen = {c["vraag"].strip().lower() for c in vast["cases"]}
+    bestaande_vragen = {_sleutel(c) for c in vast["cases"]}
     hoogste = {}
     for c in vast["cases"]:
         m = re.match(r"taal-t(\d+)-(\d+)$", c["id"])
@@ -57,7 +64,7 @@ def plan_verhuizing(vast, blind):
 
     nieuw, overgeslagen = [], []
     for c in blind["cases"]:
-        vraag = c["vraag"].strip().lower()
+        vraag = _sleutel(c)
         if vraag in bestaande_vragen:
             overgeslagen.append(c["vraag"])
             continue

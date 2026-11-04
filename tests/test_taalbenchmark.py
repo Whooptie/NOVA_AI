@@ -40,8 +40,11 @@ def test_id_s_zijn_uniek_over_beide_sets():
 
 
 def test_vragen_zijn_niet_gedeeld_tussen_vast_en_blind():
-    vast = {c["vraag"].lower() for c in _cases(VAST)}
-    blind = {c["vraag"].lower() for c in _cases(BLIND)}
+    def sleutel(c):
+        # Dezelfde vervolgzin na een andere eerdere beurt is een andere case (62d).
+        return " >> ".join(v.lower() for v in c.get("voorvragen", [])) + " >> " + c["vraag"].lower()
+    vast = {sleutel(c) for c in _cases(VAST)}
+    blind = {sleutel(c) for c in _cases(BLIND)}
     assert not (vast & blind), "een blinde zin staat ook in de vaste set"
 
 

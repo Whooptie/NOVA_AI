@@ -53,6 +53,9 @@ class LastContext:
         self._antwoord_type = None
         self._opties = None
         self._laatste_update = None
+        # Punt 62d: de vorm van de laatste kennisvraag, bv.
+        # ("is {x} een dier", "een zebra", "np"). Zie core/context_resolver.py.
+        self._vraag = None
 
     # ------------------------------------------------------------
     # Interne helper
@@ -82,6 +85,24 @@ class LastContext:
         self._antwoord_type = antwoord_type
         self._opties = None
         self._laatste_update = time.time()
+
+    def set_vraag(self, sjabloon, onderwerp, soort):
+        """
+        Onthoudt de vorm van de laatste kennisvraag (punt 62d), zodat een
+        vervolgzin als "en een kat?" of "is dat een dier" kan voortbouwen.
+        Overschrijft altijd de vorige vraag. Raakt concept en opties niet aan.
+        """
+        if not sjabloon or not onderwerp:
+            return
+        self._vraag = (sjabloon, onderwerp, soort)
+        self._laatste_update = time.time()
+
+    def get_vraag(self):
+        """Geeft (sjabloon, onderwerp, soort) van de laatste kennisvraag,
+        of None als er geen is of het verlopen is."""
+        if self._is_verlopen():
+            return None
+        return self._vraag
 
     def set_opties(self, opties):
         """
@@ -143,6 +164,7 @@ class LastContext:
         self._concept = None
         self._antwoord_type = None
         self._opties = None
+        self._vraag = None
         self._laatste_update = None
 
 

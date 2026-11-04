@@ -1717,3 +1717,11 @@
 {"text": "kun je me vertellen wat een hond is", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0173, "bron": "model_fallback", "tijdstip": "2026-11-04T11:02:35.558044"}
 {"text": "waarom is een zebra een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.014, "bron": "model_fallback", "tijdstip": "2026-11-04T11:02:47.492016"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T11:34:15.657144"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T13:29:07.346542"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T14:00:52.176530"}
+{"text": "hoelaat is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0925, "bron": "model_fallback", "tijdstip": "2026-11-04T14:14:24.250398"}
+{"text": "nee ik bedoelde de tijd", "signaal": "focus", "model_signaal": "focus", "marge": 0.0025, "bron": "model_fallback", "tijdstip": "2026-11-04T14:14:43.359414"}
+{"text": "hoe warm is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0615, "bron": "model_fallback", "tijdstip": "2026-11-04T14:14:59.927825"}
+{"text": "hoe koud wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0507, "bron": "model_fallback", "tijdstip": "2026-11-04T14:17:56.782969"}
+{"text": "hoeveel is 5 plus 5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-11-04T14:20:31.209805"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T14:32:25.012589"}

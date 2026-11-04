@@ -317,6 +317,10 @@ class Keten:
             if not hasattr(bus, "modules"):
                 bus.modules = {}
             bus.modules["semantic"] = sem
+            # Het echte Nova heeft last_context (core/module_loader.py); zonder dit kan de
+            # benchmark nooit meten of "en een kat?" / "is dat een dier" werkt (62d).
+            from core.last_context import init_module as _init_last_context
+            bus.register_module("last_context", _init_last_context(bus))
             if self._extra:
                 self._laad_extra(bus, sem)
             self._chat(bus, semantic_module=sem)

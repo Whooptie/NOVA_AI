@@ -17,6 +17,27 @@ Voorbeelden:
     onbekend  | is een glorbix een vis
 
 Types: definitie, relatie, oorzaak, gevolg, synoniem, onbekend.
+
+GESPREKKEN VAN MEERDERE BEURTEN (punt 62d, vervolgvragen). Zet de eerdere
+beurten voor de laatste vraag, gescheiden door ">>":
+
+    definitie | wat is een hond >> en een kat? | huisdier, zoogdier
+    relatie   | wat is een tijger >> is dat een dier | ja
+    onbekend  | wat is een kat >> wat is een hond >> en wat eten die
+
+De laatste beurt is de vraag die gemeten wordt; de rest zijn "voorvragen".
+Zo'n case krijgt taalniveau 4 (context). Bij 'onbekend' betekent het: de
+vervolgzin is bewust vaag, en Nova hoort eerlijk te zeggen dat ze het niet
+weet (nooit "ja" of "nee").
+- Bij 'onbekend' (taalniveau 5) laat je de woorden weg: Nova hoort dan
+  eerlijk te zeggen dat ze het niet weet, en mag NOOIT "ja" of "nee" antwoorden.
+- De verwachte woorden komen uit WAT WAAR IS (jouw kennis / concepts.json),
+  NIET uit wat Nova nu toevallig antwoordt.
+- Lege regels en regels die met # beginnen worden overgeslagen.
+
+GEBRUIK (vanuit de projectmap, bv. /app)
+    python tools/maak_blind_cases.py blind_nieuw.txt            # controleert enkel (droog)
+    python tools/maak_blind_cases.py blind_nieuw.txt --schrijf  # voegt toe aan de blinde set
 - Bij 'onbekend' (taalniveau 5) laat je de woorden weg: Nova hoort dan
   eerlijk te zeggen dat ze het niet weet, en mag NOOIT "ja" of "nee" antwoorden.
 - De verwachte woorden komen uit WAT WAAR IS (jouw kennis / concepts.json),
@@ -68,6 +89,34 @@ def lees_regels(pad):
             if not vraag:
                 fouten.append(f"regel {nummer}: de vraag is leeg")
                 continue
+            beurten = [b.strip() for b in vraag.split(">>")]
+            if any(not b for b in beurten):
+                fouten.append(f"regel {nummer}: een beurt rond '>>' is leeg ({regel!r})")
+                continue
+            voorvragen, vraag = beurten[:-1], beurten[-1]
+            if voorvragen:
+                if soort == "onbekend":
+                    cases.append({
+                        "taalniveau": 4, "dimensie": "context", "categorie": "vaag",
+                        "vraag": vraag, "voorvragen": voorvragen,
+                        "moet_bevatten_een_van": ONBEKEND_WOORDEN,
+                        "mag_niet_bevatten": ONBEKEND_VERBODEN,
+                    })
+                elif soort in TYPES:
+                    if not woorden:
+                        fouten.append(f"regel {nummer}: geef minstens één verwacht woord "
+                                      f"(of gebruik type 'onbekend' voor een bewust vage vervolgzin)")
+                        continue
+                    event, categorie = TYPES[soort]
+                    cases.append({
+                        "taalniveau": 4, "dimensie": "context", "categorie": f"vervolg_{categorie}",
+                        "vraag": vraag, "voorvragen": voorvragen,
+                        "moet_event": [event], "moet_bevatten_een_van": woorden,
+                    })
+                else:
+                    fouten.append(f"regel {nummer}: onbekend type {soort!r} (kies uit "
+                                  f"{', '.join(list(TYPES) + ['onbekend'])})")
+                continue
             if soort == "onbekend":
                 cases.append({
                     "taalniveau": 5, "dimensie": "onzekerheid", "categorie": "onbekend",
@@ -94,10 +143,17 @@ def _laad(pad):
         return json.load(f)
 
 
+def _sleutel(case):
+    """Zelfde vraag na een andere eerdere beurt is een andere case ("en een kat?")."""
+    voor = " >> ".join(v.strip().lower() for v in case.get("voorvragen", []))
+    vraag = case["vraag"].strip().lower()
+    return f"{voor} >> {vraag}" if voor else vraag
+
+
 def voeg_toe(cases, vast_pad=VAST_PAD, blind_pad=BLIND_PAD, schrijf=False):
     """Controleert dubbels, geeft id's, schrijft optioneel. Geeft (toegevoegd, fouten)."""
     vast, blind = _laad(vast_pad), _laad(blind_pad)
-    bestaand = {c["vraag"].strip().lower() for c in vast["cases"] + blind["cases"]}
+    bestaand = {_sleutel(c) for c in vast["cases"] + blind["cases"]}
     fouten, nieuw = [], []
     volgnummer = {}
     for c in blind["cases"]:
@@ -106,7 +162,7 @@ def voeg_toe(cases, vast_pad=VAST_PAD, blind_pad=BLIND_PAD, schrijf=False):
             sleutel = deel[0]
             volgnummer[sleutel] = max(volgnummer.get(sleutel, 0), int(deel[1]))
     for c in cases:
-        sleutel_vraag = c["vraag"].strip().lower()
+        sleutel_vraag = _sleutel(c)
         if sleutel_vraag in bestaand:
             fouten.append(f"staat al in de vaste of blinde set: {c['vraag']!r}")
             continue

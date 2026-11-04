@@ -61,3 +61,10 @@ def test_schrijf_verhuist_en_leegt_blind(tmp_path):
 def test_lege_blinde_set_is_geen_fout(tmp_path):
     vp, bp = _sets(tmp_path, [_case("taal-t2-01", 2, "a")], [])
     assert bnv.main(["--schrijf"], vast_pad=str(vp), blind_pad=str(bp)) == 0
+    
+
+def test_zelfde_vervolgzin_na_andere_voorvraag_wordt_wel_verhuisd():
+    vast = {"cases": [{"id": "taal-t4-01", "taalniveau": 4, "vraag": "en een kat?", "voorvragen": ["wat is een hond"]}]}
+    blind = {"cases": [{"id": "blind-t4-01", "taalniveau": 4, "vraag": "en een kat?", "voorvragen": ["is een zebra een dier"]}]}
+    nieuw, overgeslagen = bnv.plan_verhuizing(vast, blind)
+    assert overgeslagen == [] and nieuw[0][1]["id"] == "taal-t4-02"

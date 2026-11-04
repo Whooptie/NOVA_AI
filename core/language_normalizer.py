@@ -248,6 +248,22 @@ REGELS = [
     ("synoniem_ander_woord",
      re.compile(rf"^wat is een ander woord voor {_ART}(?P<x>{_X})$"),
      lambda m: ("wat is een ander woord voor " + m.group("x")) if _woord_ok(m.group("x")) else None),
+    # Ronde 3 (4 november 2026): andere manieren om naar een synoniem te vragen.
+    ("synoniem_hoe_noem",
+     re.compile(rf"^hoe (?:noem|zeg|schrijf) (?:je|jij|men|u) {_ART}(?P<x>{_X}) (?:anders|ook(?: wel)?)$"),
+     _b_synoniem),
+    ("synoniem_hoe_heet",
+     re.compile(rf"^hoe heet {_ART}(?P<x>{_X}) (?:anders|ook(?: wel)?|nog meer)$"), _b_synoniem),
+    ("synoniem_ook_noemen",
+     re.compile(rf"^hoe (?:kun|kan|kunnen) (?:je|jij|men|u) {_ART}(?P<x>{_X}) (?:ook|nog) (?:noemen|zeggen)$"),
+     _b_synoniem),
+    ("synoniem_andere_naam",
+     re.compile(rf"^wat is (?:een |de )?(?:andere naam|andere benaming|andere term|alternatief woord) "
+                rf"voor {_ART}(?P<x>{_X})$"), _b_synoniem),
+    # "wat is dat precies" -> "wat is dat": de vulwoorden zijn al weg, dit laat de kale
+    # verwijzing herkennen in plaats van "dat precies" op te zoeken.
+    ("definitie_kale_verwijzing",
+     re.compile(r"^wat is (?:dat|dit|die|deze|het)$"), lambda m: m.group(0)),
     ("synoniem_meervoud",
      re.compile(rf"^wat zijn synoniemen van {_ART}(?P<x>{_X})$"),
      lambda m: ("wat zijn synoniemen van " + m.group("x")) if _woord_ok(m.group("x")) else None),

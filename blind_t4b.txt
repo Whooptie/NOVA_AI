@@ -1,0 +1,42 @@
+definitie | Wat is een tang? >> wat doet zo'n ding | gereedschap, grijpen, knijpen
+relatie | Is kaas een zuivelproduct? >> en boter dan? | ja
+oorzaak | Waardoor ontstaat roest? >> hoe komt dat eigenlijk | ijzer, zuurstof, vocht
+gevolg | Wat gebeurt er als je te veel koffie drinkt? >> en dan? | onrustig, slapeloos, hart
+synoniem | Hoe noem je een bakkerij anders? >> ander woord ervoor | broodwinkel, bakkerszaak
+onbekend | Wat is een schaar? >> en die dan?
+definitie | Wat is een thermometer? >> wat meet dat ding eigenlijk | temperatuur, koorts, warmte
+relatie | Is een olifant een zoogdier? >> een nijlpaard ook? | ja
+oorzaak | Waarom smelt sneeuw? >> waardoor gebeurt dat | temperatuur, warmte, dooi
+gevolg | Wat is het gevolg van te weinig slaap? >> en wat dan | moe, concentratie, humeur
+synoniem | Hoe heet een computer ook wel? >> ander woord | pc, laptop, apparaat
+onbekend | Wat doet een hamer? >> die ook?
+definitie | Wat is een rivier? >> wat is dat precies | water, stroom, stroming
+relatie | Is pasta een soort graanproduct? >> en rijst dan? | ja
+oorzaak | Waardoor krijg je een blaar? >> hoe ontstaat zo'n ding | wrijving, druk, vocht
+gevolg | Wat gebeurt er als je te veel zout eet? >> gevolgen daarvan | dorst, bloeddruk, nieren
+synoniem | Hoe noem je een jas anders? >> synoniem | mantel, coat, overjas
+onbekend | Is melk gezond? >> en dat?
+definitie | Wat is een brug? >> wat is zo'n constructie | verbinding, overspanning, water
+relatie | Is een spin een insect? >> een mug wel? | nee
+oorzaak | Waarom ontstaat mist? >> waardoor komt dat | vocht, afkoeling, lucht
+gevolg | Wat is het gevolg van veel sporten? >> en dan? | fit, spieren, conditie
+synoniem | Hoe heet een school ook wel? >> ander woord | instituut, onderwijs, gebouw
+onbekend | Wat is een boek? >> die?
+definitie | Wat is een hart? >> wat doet dat orgaan | pompen, bloed, kloppen
+relatie | Is een bij een insect? >> een wesp ook? | ja
+oorzaak | Waardoor krijg je hoofdpijn? >> hoe ontstaat dat | stress, spanning, dehydratie
+gevolg | Wat gebeurt er als je te weinig water drinkt? >> gevolgen | dorst, hoofdpijn, vermoeid
+synoniem | Hoe noem je een stoel? wacht nee, een bank | ander woord voor bank | zitmeubel, sofa
+onbekend | Wat is een schoen? >> en die daar?
+definitie | Wat is een meer? >> wat is zo'n waterplas | stilstaand, zoet, groot
+relatie | Is brood een koolhydraat? >> pasta ook? | ja
+oorzaak | Waarom gaat melk schiften? >> waardoor gebeurt dat | zuur, warmte, bacteriën
+gevolg | Wat is het gevolg van roken? >> en dan? | longen, kanker, ademhaling
+synoniem | Hoe heet een dokter anders? >> ander woord | arts, geneesheer, medicus
+onbekend | Is koffie cafeïne? >> en dat?
+definitie | Wat is een zaag? >> wat is dat gereedschap | zagen, hout, tanden
+relatie | Is een koe een herkauwer? >> een schaap ook? | ja
+oorzaak | Waardoor ontstaat een blauwe plek? >> hoe komt die | klap, bloed, onderhuids
+gevolg | Wat gebeurt er als je te lang in de kou staat? >> gevolgen | kou, rillen, onderkoeling
+synoniem | Hoe noem je een vergadering anders? >> ander woord | meeting, overleg, bijeenkomst
+onbekend | Wat is een computer? >> en dat ding?

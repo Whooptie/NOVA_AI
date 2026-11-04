@@ -1,0 +1,1435 @@
+Taalbenchmark: antwoorden zijn nodig, dus niveau 2 gebruikt.
+Kopie van het project maken (je echte bestanden blijven onaangeroerd)...
+Kopie klaar in 19.9s: /tmp/nova_bench_2o03z52k/nova
+✅ Identity blueprint succesvol geladen en gevalideerd.
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een hond'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'hond'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is regen'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'regen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een stoel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'stoel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een zebra een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'zebra' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat veroorzaakt modder'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'modder'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een synoniem van zus'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'zus'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'kun je me vertellen wat een hond is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'kun je me vertellen wat een hond is' → 'wat is een hond'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'hond'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'leg eens uit wat een stoel is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'leg eens uit wat een stoel is' → 'wat is een stoel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'stoel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'zeg eens, wat is regen eigenlijk'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_kaal): 'zeg eens, wat is regen eigenlijk' → 'wat is regen'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'regen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'weet jij wat een zebra is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'weet jij wat een zebra is' → 'wat is een zebra'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'zebra'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat houdt het woord tijger in'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_inhoud): 'wat houdt het woord tijger in' → 'wat is tijger'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'tijger'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'een zebra, is dat een dier'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_is_dat): 'een zebra, is dat een dier' → 'is een zebra een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'zebra' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'klopt het dat een kat een zoogdier is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_klopt): 'klopt het dat een kat een zoogdier is' → 'is een kat een zoogdier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'kat' -> 'zoogdier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een ander woord voor zuster'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'zuster'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor ontstaat modder'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (oorzaak_waardoor): 'waardoor ontstaat modder' → 'wat veroorzaakt modder'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'modder'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het gevolg van regen'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'regen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een tijger een zoogdier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'tijger' -> 'zoogdier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een tijger een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'tijger' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'veroorzaakt regen uitglijden'[0m 
+[96m[ROUTER][0m [94m→ causes_check (patroon 'veroorzaakt X Y'): 'regen' -> 'uitglijden'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een kat een dier en een zoogdier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'kat' -> 'dier en een zoogdier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een fiets ook een voertuig'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_ook): 'is een fiets ook een voertuig' → 'is een fiets een voertuig'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'fiets' -> 'voertuig'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een stoel een meubel'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'stoel' -> 'meubel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe komt het dat een tijger een dier is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_waarom_bijzin): 'hoe komt het dat een tijger een dier is' → 'is een tijger een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'tijger' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waarom is een zebra een dier'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_waarom): 'waarom is een zebra een dier' → 'is een zebra een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'zebra' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een hond'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'hond'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en een kat?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en een kat?' → 'wat is een kat'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'kat'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een tijger'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'tijger'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is dat een dier'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (relatie_verwijzing): 'is dat een dier' → 'is een tijger een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'tijger' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een zebra een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'zebra' -> 'dier'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en een kat?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en een kat?' → 'is een kat een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'kat' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een toren'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'toren'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een toren'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'toren'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ik bedoel het schaakstuk'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is regen'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'regen'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het gevolg ervan'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (gevolg_verwijzing): 'wat is het gevolg ervan' → 'wat zijn de gevolgen van regen'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'regen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een vulkaan'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'vulkaan'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is dat een berg'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (relatie_verwijzing): 'is dat een berg' → 'is een vulkaan een berg'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'vulkaan' -> 'berg'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een stoel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'stoel'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en een bank?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en een bank?' → 'wat is een bank'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'bank'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een glorbix een vis'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'glorbix' -> 'vis'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een zwabbelknoop'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'zwabbelknoop'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een tijger een glorbix'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'tijger' -> 'glorbix'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat veroorzaakt een glorbix'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'glorbix'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wie is de president van glorbistan'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het synoniem van zwabbelknoop'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'zwabbelknoop'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een flurbo een zoogdier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'flurbo' -> 'zoogdier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'kan blorf regen veroorzaken'[0m 
+[96m[ROUTER][0m [94m→ causes_check (patroon 'kan X Y veroorzaken'): 'blorf' -> 'regen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'vertel eens wat een paard is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'vertel eens wat een paard is' → 'wat is een paard'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'paard'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat betekent het woord vulkaan'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_woord): 'wat betekent het woord vulkaan' → 'wat is vulkaan'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'vulkaan'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'kun je uitleggen wat een auto is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'kun je uitleggen wat een auto is' → 'wat is een auto'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'auto'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een fiets een voertuig, denk ik'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_kaal): 'is een fiets een voertuig, denk ik' → 'is een fiets een voertuig'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'fiets' -> 'voertuig'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ik wil graag weten of een paard een zoogdier is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_of): 'ik wil graag weten of een paard een zoogdier is' → 'is een paard een zoogdier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'paard' -> 'zoogdier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord betekent hetzelfde als zus'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hetzelfde): 'welk woord betekent hetzelfde als zus' → 'wat is een synoniem van zus'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'zus'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een tijger een kat'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'tijger' -> 'kat'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een boom een plant'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'boom' -> 'plant'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een appel een fruit'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'appel' -> 'fruit'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'veroorzaakt modder uitglijden'[0m 
+[96m[ROUTER][0m [94m→ causes_check (patroon 'veroorzaakt X Y'): 'modder' -> 'uitglijden'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een vis een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'vis' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een appel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'appel'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en een auto?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en een auto?' → 'wat is een auto'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'auto'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een kat een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'kat' -> 'dier'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en een vis?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en een vis?' → 'is een vis een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'vis' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een model'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'model'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een boom'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'boom'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is dat een plant'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (relatie_verwijzing): 'is dat een plant' → 'is een boom een plant'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'boom' -> 'plant'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een krobbel een fruit'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'krobbel' -> 'fruit'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een plimpstok'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'plimpstok'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een appel een quarzel'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'appel' -> 'quarzel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat veroorzaakt een plimpstok'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'plimpstok'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wie won het wereldkampioenschap van 2090'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een fiets'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'fiets'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'leg eens uit wat een boom is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'leg eens uit wat een boom is' → 'wat is een boom'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'boom'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe zou je een stoel beschrijven'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_beschrijven): 'hoe zou je een stoel beschrijven' → 'wat is een stoel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'stoel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat betekent het woord "regen"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_woord): 'wat betekent het woord "regen"' → 'wat is regen'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'regen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'kun je uitleggen wat een boek is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'kun je uitleggen wat een boek is' → 'wat is een boek'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'boek'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat voor iets is een appel'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_wat_voor): 'wat voor iets is een appel' → 'wat is een appel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'appel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'vertel me wat een huis is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'vertel me wat een huis is' → 'wat is een huis'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'huis'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is precies een auto'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_kaal): 'wat is precies een auto' → 'wat is een auto'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'auto'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe definieer je een rivier'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_hoe): 'hoe definieer je een rivier' → 'wat is een rivier'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'rivier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een appel een soort fruit'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_kaal): 'is een appel een soort fruit' → 'is een appel een fruit'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'appel' -> 'fruit'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoort een hond bij de dieren'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een fiets een voertuig'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'fiets' -> 'voertuig'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'klopt het dat een boom een plant is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_klopt): 'klopt het dat een boom een plant is' → 'is een boom een plant'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'boom' -> 'plant'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is regen een vorm van neerslag'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_kaal): 'is regen een vorm van neerslag' → 'is regen een neerslag'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is X een Y'): 'regen' -> 'neerslag'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoort een stoel bij de meubels'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een boek iets om te lezen'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'klopt het dat een auto een machine is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_klopt): 'klopt het dat een auto een machine is' → 'is een auto een machine'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'auto' -> 'machine'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een huis een gebouw'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'huis' -> 'gebouw'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat veroorzaakt een brand'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'brand'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor wordt iemand moe'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat zorgt ervoor dat ijs smelt'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor ontstaat schimmel'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (oorzaak_waardoor): 'waardoor ontstaat schimmel' → 'wat veroorzaakt schimmel'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'schimmel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat maakt dat een plant groeit'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor breekt een glas'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat veroorzaakt een regenboog'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'regenboog'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor wordt de lucht koud'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat zorgt voor een overstroming'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'overstroming'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat komt er van regen'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_komt): 'wat komt er van regen' → 'wat zijn de gevolgen van regen'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'regen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat gebeurt er als je water kookt'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het resultaat van slapen'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_resultaat): 'wat is het resultaat van slapen' → 'wat zijn de gevolgen van slapen'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'slapen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat ontstaat er na een brand'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_ontstaat): 'wat ontstaat er na een brand' → 'wat zijn de gevolgen van brand'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'brand'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat volgt er op veel eten'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_ontstaat): 'wat volgt er op veel eten' → 'wat zijn de gevolgen van veel eten'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'veel eten'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat komt er van planten water geven'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_komt): 'wat komt er van planten water geven' → 'wat zijn de gevolgen van planten water geven'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'planten water geven'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat gebeurt er als ijs smelt'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het gevolg van niet slapen'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'niet slapen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat ontstaat er bij een botsing'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_ontstaat): 'wat ontstaat er bij een botsing' → 'wat zijn de gevolgen van botsing'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'botsing'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat komt er van de zon schijnen'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_komt): 'wat komt er van de zon schijnen' → 'wat zijn de gevolgen van zon schijnen'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'zon schijnen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een ander woord voor auto'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'auto'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord heeft dezelfde betekenis als huis'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_betekenis): 'welk woord heeft dezelfde betekenis als huis' → 'wat is een synoniem van huis'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'huis'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een synoniem van mooi'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'mooi'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord betekent ook "klein"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hetzelfde): 'welk woord betekent ook "klein"' → 'wat is een synoniem van klein'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'klein'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een ander woord voor snel'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'snel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord is hetzelfde als "eten"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_is): 'welk woord is hetzelfde als "eten"' → 'wat is een synoniem van eten'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'eten'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat betekent hetzelfde als "dierenarts"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hetzelfde): 'wat betekent hetzelfde als "dierenarts"' → 'wat is een synoniem van dierenarts'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'dierenarts'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord is synoniem aan "groot"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_is): 'welk woord is synoniem aan "groot"' → 'wat is een synoniem van groot'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'groot'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een ander woord voor "kinderen"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_ander_woord): 'wat is een ander woord voor "kinderen"' → 'wat is een ander woord voor kinderen'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'kinderen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een blorptang'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'blorptang'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een zxqfw een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'zxqfw' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat betekent "flurble"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_citaat): 'wat betekent "flurble"' → 'wat is flurble'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'flurble'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een quaznik een soort fruit'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_kaal): 'is een quaznik een soort fruit' → 'is een quaznik een fruit'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'quaznik' -> 'fruit'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een snorplex'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'snorplex'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een vrombel een meubel'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'vrombel' -> 'meubel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat voor iets is een krimzot'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_wat_voor): 'wat voor iets is een krimzot' → 'wat is een krimzot'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'krimzot'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een plonx een voertuig'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'plonx' -> 'voertuig'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat betekent het woord "drimble"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_woord): 'wat betekent het woord "drimble"' → 'wat is drimble'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'drimble'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe noem je een dier dat blaft'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is de functie van een paraplu'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'functie van een paraplu'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'kun je zeggen wat een klok doet'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een vogel die niet vliegt'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'vogel die niet vliegt'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'leg uit wat een brug is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'leg uit wat een brug is' → 'wat is een brug'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'brug'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het verschil tussen een beker en een glas'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'verschil tussen een beker en een glas'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe zou je een berg beschrijven'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_beschrijven): 'hoe zou je een berg beschrijven' → 'wat is een berg'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'berg'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een instrument met snaren'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'instrument met snaren'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'kun je uitleggen wat een sleutel is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_bijzin): 'kun je uitleggen wat een sleutel is' → 'wat is een sleutel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'sleutel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een plek waar je boeken leent'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'plek waar je boeken leent'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een pinguïn een vogel'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'pinguïn' -> 'vogel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoort een gitaar bij de muziekinstrumenten'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een brug een soort constructie'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_kaal): 'is een brug een soort constructie' → 'is een brug een constructie'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'brug' -> 'constructie'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'klopt het dat een bibliotheek een gebouw is'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_klopt): 'klopt het dat een bibliotheek een gebouw is' → 'is een bibliotheek een gebouw'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'bibliotheek' -> 'gebouw'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een sleutel iets om mee te openen'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoort een berg bij de landschappen'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een paraplu bedoeld tegen regen'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'klopt het dat een klok tijd meet'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een struisvogel een vogel'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'struisvogel' -> 'vogel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoort een beker bij de drinkbekers'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor ontstaat een echo'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (oorzaak_waardoor): 'waardoor ontstaat een echo' → 'wat veroorzaakt echo'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'echo'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat zorgt ervoor dat een ballon opstijgt'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor wordt iemand verkouden'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat maakt dat een kaars brandt'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor ontstaat mist'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (oorzaak_waardoor): 'waardoor ontstaat mist' → 'wat veroorzaakt mist'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'mist'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat zorgt voor een zonsverduistering'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'zonsverduistering'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor breekt een tak'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat veroorzaakt een blaar'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'blaar'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor wordt een plant geel'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat zorgt ervoor dat ijs smelt in de zon'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat gebeurt er als je een ballon loslaat'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het resultaat van een zonsverduistering'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_resultaat): 'wat is het resultaat van een zonsverduistering' → 'wat zijn de gevolgen van zonsverduistering'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'zonsverduistering'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat komt er van te lang in de zon zitten'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat ontstaat er na een echo'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_ontstaat): 'wat ontstaat er na een echo' → 'wat zijn de gevolgen van echo'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'echo'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat volgt er op een kaars aansteken'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_ontstaat): 'wat volgt er op een kaars aansteken' → 'wat zijn de gevolgen van kaars aansteken'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'kaars aansteken'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat gebeurt er als een plant geen water krijgt'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het gevolg van een blaar'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'blaar'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat komt er van mist'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (gevolg_komt): 'wat komt er van mist' → 'wat zijn de gevolgen van mist'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'mist'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat ontstaat er als een tak breekt'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat gebeurt er als je een sleutel omdraait'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord betekent hetzelfde als "snel"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hetzelfde): 'welk woord betekent hetzelfde als "snel"' → 'wat is een synoniem van snel'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'snel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een ander woord voor "koud"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_ander_woord): 'wat is een ander woord voor "koud"' → 'wat is een ander woord voor koud'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'koud'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord heeft dezelfde betekenis als "blij"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_betekenis): 'welk woord heeft dezelfde betekenis als "blij"' → 'wat is een synoniem van blij'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'blij'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een synoniem van "groot"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_kaal): 'wat is een synoniem van "groot"' → 'wat is een synoniem van groot'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'groot'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een ander woord voor "eten"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_ander_woord): 'wat is een ander woord voor "eten"' → 'wat is een ander woord voor eten'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'eten'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord is hetzelfde als "huis"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_is): 'welk woord is hetzelfde als "huis"' → 'wat is een synoniem van huis'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'huis'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat betekent hetzelfde als "auto"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hetzelfde): 'wat betekent hetzelfde als "auto"' → 'wat is een synoniem van auto'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'auto'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord is synoniem aan "kind"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_is): 'welk woord is synoniem aan "kind"' → 'wat is een synoniem van kind'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'kind'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een ander woord voor "water"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_ander_woord): 'wat is een ander woord voor "water"' → 'wat is een ander woord voor water'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'water'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een florbnix een instrument'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'florbnix' -> 'instrument'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een krimzot'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'krimzot'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een plonx een vogel'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'plonx' -> 'vogel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat betekent "snorplex"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_citaat): 'wat betekent "snorplex"' → 'wat is snorplex'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'snorplex'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een vrombel een berg'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'vrombel' -> 'berg'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een drimble'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'drimble'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een quaznik een soort brug'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_kaal): 'is een quaznik een soort brug' → 'is een quaznik een brug'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'quaznik' -> 'brug'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat voor iets is een zxqfw'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_wat_voor): 'wat voor iets is een zxqfw' → 'wat is een zxqfw'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'zxqfw'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is een blorptang een sleutel'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'blorptang' -> 'sleutel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat betekent het woord "flurble"'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_woord): 'wat betekent het woord "flurble"' → 'wat is flurble'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'flurble'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een fiets'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'fiets'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe zit dat met een auto'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'hoe zit dat met een auto' → 'wat is een auto'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'auto'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een huis'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'huis'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en wat is een ander woord ervoor'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'en wat is een ander woord ervoor' → 'wat is een synoniem van huis'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'huis'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een brand'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'brand'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor ontstaat dat'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (oorzaak_verwijzing): 'waardoor ontstaat dat' → 'wat veroorzaakt brand'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'brand'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een appel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'appel'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat dacht je van een banaan'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'wat dacht je van een banaan' → 'wat is een banaan'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'banaan'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is slaap'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'slaap'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat gebeurt er daardoor'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (gevolg_verwijzing): 'wat gebeurt er daardoor' → 'wat zijn de gevolgen van slaap'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'slaap'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een stoel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'stoel'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en dan een tafel'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en dan een tafel' → 'wat is een tafel'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'tafel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een auto'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'auto'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'welk woord betekent hetzelfde'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'welk woord betekent hetzelfde' → 'wat is een synoniem van auto'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'auto'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is modder'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'modder'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor komt dat'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (oorzaak_verwijzing): 'waardoor komt dat' → 'wat veroorzaakt modder'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'modder'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een vogel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'vogel'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'idem voor een vis'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'idem voor een vis' → 'wat is een vis'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'vis'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een kat'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'kat'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoort die bij de zoogdieren'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is zon'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'zon'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het resultaat ervan'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (gevolg_verwijzing): 'wat is het resultaat ervan' → 'wat zijn de gevolgen van zon'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'zon'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een boek'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'boek'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ok en een krant'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'ok en een krant' → 'wat is een krant'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'krant'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een hond'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'hond'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een ander woord voor'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'wat is een ander woord voor' → 'wat is een synoniem van hond'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'hond'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een overstroming'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'overstroming'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat zorgt ervoor'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (oorzaak_verwijzing): 'wat zorgt ervoor' → 'wat veroorzaakt overstroming'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'overstroming'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een schoen'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'schoen'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe zit het met een laars'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'hoe zit het met een laars' → 'wat is een laars'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'laars'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een appel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'appel'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is dat fruit'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is vuur'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'vuur'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat komt er van'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (gevolg_verwijzing): 'wat komt er van' → 'wat zijn de gevolgen van vuur'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'vuur'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een paard'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'paard'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en een koe'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en een koe' → 'wat is een koe'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'koe'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een huis'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'huis'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'idem voor woning'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'idem voor woning' → 'wat is woning'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'woning'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is ijs'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'ijs'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor smelt dat'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een bank'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'bank'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat dacht je van een stoel'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'wat dacht je van een stoel' → 'wat is een stoel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'stoel'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een vis'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'vis'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'is dat een dier'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (relatie_verwijzing): 'is dat een dier' → 'is een vis een dier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'vis' -> 'dier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is regen'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'regen'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en wat eten die'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een kat'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'kat'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een hond'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'hond'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en wat eten die'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een boom'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'boom'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een plant'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'plant'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is het gevolg ervan'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (gevolg_verwijzing): 'wat is het gevolg ervan' → 'wat zijn de gevolgen van plant'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'plant'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een appel'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'appel'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is een banaan'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'banaan'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ok en een peer'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'ok en een peer' → 'wat is een peer'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'peer'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een tang?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'tang'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat doet zo'n ding'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is kaas een zuivelproduct?'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is X een Y'): 'kaas' -> 'zuivelproduct'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en boter dan?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en boter dan?' → 'is boter een zuivelproduct'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is X een Y'): 'boter' -> 'zuivelproduct'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Waardoor ontstaat roest?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (oorzaak_waardoor): 'Waardoor ontstaat roest?' → 'wat veroorzaakt roest'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'roest'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe komt dat eigenlijk'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (oorzaak_verwijzing): 'hoe komt dat eigenlijk' → 'wat veroorzaakt roest'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'roest'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat gebeurt er als je te veel koffie drinkt?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en dan?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Hoe noem je een bakkerij anders?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hoe_noem): 'Hoe noem je een bakkerij anders?' → 'wat is een synoniem van bakkerij'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'bakkerij'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ander woord ervoor'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'ander woord ervoor' → 'wat is een synoniem van bakkerij'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'bakkerij'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een schaar?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'schaar'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en die dan?'[0m 
+[96m[ROUTER][0m [93m→ referentie opgelost: 'en die dan?' → 'en schaar dan?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en schaar dan?' → 'wat is schaar'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'schaar'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een thermometer?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'thermometer'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat meet dat ding eigenlijk'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is een olifant een zoogdier?'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'olifant' -> 'zoogdier'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'een nijlpaard ook?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'een nijlpaard ook?' → 'is een nijlpaard een zoogdier'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'nijlpaard' -> 'zoogdier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Waarom smelt sneeuw?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor gebeurt dat'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is het gevolg van te weinig slaap?'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'te weinig slaap'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en wat dan'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Hoe heet een computer ook wel?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hoe_heet): 'Hoe heet een computer ook wel?' → 'wat is een synoniem van computer'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'computer'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ander woord'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'ander woord' → 'wat is een synoniem van computer'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'computer'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat doet een hamer?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'die ook?'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een rivier?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'rivier'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is dat precies'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (definitie_kale_verwijzing): 'wat is dat precies' → 'wat is dat'[0m 
+[96m[ROUTER][0m [93m→ referentie opgelost: 'wat is dat' → 'wat is rivier'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'rivier'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is pasta een soort graanproduct?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (relatie_kaal): 'Is pasta een soort graanproduct?' → 'is pasta een graanproduct'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is X een Y'): 'pasta' -> 'graanproduct'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en rijst dan?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'en rijst dan?' → 'is rijst een graanproduct'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is X een Y'): 'rijst' -> 'graanproduct'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Waardoor krijg je een blaar?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe ontstaat zo'n ding'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat gebeurt er als je te veel zout eet?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'gevolgen daarvan'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Hoe noem je een jas anders?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hoe_noem): 'Hoe noem je een jas anders?' → 'wat is een synoniem van jas'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'jas'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'synoniem'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'synoniem' → 'wat is een synoniem van jas'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'jas'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is melk gezond?'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is X Y' met/zonder lidwoord): 'melk' -> 'gezond'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en dat?'[0m 
+[96m[ROUTER][0m [93m→ referentie opgelost: 'en dat?' → 'en melk'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een brug?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'brug'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is zo'n constructie'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'zo'n constructie'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is een spin een insect?'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'spin' -> 'insect'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'een mug wel?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'een mug wel?' → 'is een mug een insect'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'mug' -> 'insect'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Waarom ontstaat mist?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (oorzaak_waarom): 'Waarom ontstaat mist?' → 'wat veroorzaakt mist'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'mist'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor komt dat'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (oorzaak_verwijzing): 'waardoor komt dat' → 'wat veroorzaakt mist'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'mist'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is het gevolg van veel sporten?'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'veel sporten'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en dan?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Hoe heet een school ook wel?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hoe_heet): 'Hoe heet een school ook wel?' → 'wat is een synoniem van school'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'school'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ander woord'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'ander woord' → 'wat is een synoniem van school'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'school'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een boek?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'boek'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'die?'[0m 
+[96m[ROUTER][0m [93m→ referentie opgelost: 'die?' → 'boek'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een hart?'[0m 
+[96m[ROUTER][0m [94m→ definition (meerduidig, keuzevraag): 'hart'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat doet dat orgaan'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is een bij een insect?'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'bij' -> 'insect'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'een wesp ook?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Waardoor krijg je hoofdpijn?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe ontstaat dat'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat gebeurt er als je te weinig water drinkt?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'gevolgen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Hoe noem je een stoel? wacht nee, een bank'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een schoen?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'schoen'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en die daar?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een meer?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'meer'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is zo'n waterplas'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'zo'n waterplas'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is brood een koolhydraat?'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is X een Y'): 'brood' -> 'koolhydraat'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'pasta ook?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'pasta ook?' → 'is pasta een koolhydraat'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is X een Y'): 'pasta' -> 'koolhydraat'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Waarom gaat melk schiften?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'waardoor gebeurt dat'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is het gevolg van roken?'[0m 
+[96m[ROUTER][0m [94m→ definition (effects = gevolgen van): 'roken'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en dan?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Hoe heet een dokter anders?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hoe_heet): 'Hoe heet een dokter anders?' → 'wat is een synoniem van dokter'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'dokter'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ander woord'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'ander woord' → 'wat is een synoniem van dokter'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'dokter'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is koffie cafeïne?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en dat?'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een zaag?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'zaag'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'wat is dat gereedschap'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'dat gereedschap'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Is een koe een herkauwer?'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'koe' -> 'herkauwer'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'een schaap ook?'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (ellips): 'een schaap ook?' → 'is een schaap een herkauwer'[0m 
+[96m[ROUTER][0m [94m→ relation_check (patroon 'is een X een Y'): 'schaap' -> 'herkauwer'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Waardoor ontstaat een blauwe plek?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (oorzaak_waardoor): 'Waardoor ontstaat een blauwe plek?' → 'wat veroorzaakt blauwe plek'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'blauwe plek'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'hoe komt die'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (oorzaak_verwijzing): 'hoe komt die' → 'wat veroorzaakt blauwe plek'[0m 
+[96m[ROUTER][0m [94m→ definition (causes = oorzaken van): 'blauwe plek'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat gebeurt er als je te lang in de kou staat?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+[96m[ROUTER][0m [93mOntvangen: 'gevolgen'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Hoe noem je een vergadering anders?'[0m 
+[96m[ROUTER][0m [93m→ genormaliseerd (synoniem_hoe_noem): 'Hoe noem je een vergadering anders?' → 'wat is een synoniem van vergadering'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'vergadering'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'ander woord'[0m 
+[96m[ROUTER][0m [93m→ vervolgvraag (synoniem_verwijzing): 'ander woord' → 'wat is een synoniem van vergadering'[0m 
+[96m[ROUTER][0m [94m→ definition (synoniem): 'vergadering'[0m 
+[96m[ROUTER][0m [92mIntentRouter geladen[0m 
+[96m[ROUTER][0m [93mOntvangen: 'Wat is een computer?'[0m 
+[96m[ROUTER][0m [94m→ definition (oude route/wikipedia-fallback): 'computer'[0m 
+[96m[ROUTER][0m [93mOntvangen: 'en dat ding?'[0m 
+[96m[ROUTER][0m [91m→ fallback[0m 
+
+=== RESULTAAT (niveau 2: antwoord; set: taal-vast) ===
+categorie              score  goed  fout  crash  n.m.
+buiten_kennis             0%     0     2      0     0
+definitie                77%    23     7      0     0
+dubbelzinnig            100%     2     0      0     0
+ellips                  100%     5     0      0     0
+gevolg                   10%     2    19      0     0
+keten                    91%    10     1      0     0
+keuze                     0%     0     1      0     0
+onbekend                 57%    17    13      0     0
+oorzaak                  14%     3    18      0     0
+relatie                  42%    10    14      0     0
+synoniem                 18%     4    18      0     0
+uitleg                  100%     2     0      0     0
+vaag                     10%     1     9      0     0
+vervolg_definitie        56%     9     7      0     0
+vervolg_gevolg            0%     0    10      0     0
+vervolg_oorzaak           9%     1    10      0     0
+vervolg_relatie          20%     2     8      0     0
+vervolg_synoniem         20%     2     8      0     0
+verwijzing              100%     4     0      0     0
+-----------------------------------------------------
+TOTAAL                   40%    97   145      0     0
+(n.m. = niet meetbaar op dit niveau, telt niet mee in de score)
+
+Mislukte cases:
+  [taal-t3-04] 'is een kat een dier en een zoogdier'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik kan niet bewijzen dat 'kat' een 'dier en een zoogdier' is, maar ik weet wel dat een kat een zoogdier is.")
+  [taal-t4-05] 'ik bedoel het schaakstuk'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-02] 'wat is een zwabbelknoop'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-05] 'wie is de president van glorbistan'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-08] 'kan blorf regen veroorzaken'
+      gefaald: antwoord mist een van ['ken', 'onbekend', 'weet', 'idee'] (antwoord: "ik kan niet bewijzen dat 'blorf' leidt tot 'regen'.")
+  [taal-t5-10] 'wat is een plimpstok'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-13] 'wie won het wereldkampioenschap van 2090'
+      gefaald: geen antwoord ontvangen
+  [taal-t2-27] 'hoort een hond bij de dieren'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-31] 'hoort een stoel bij de meubels'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-32] 'is een boek iets om te lezen'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-33] 'klopt het dat een auto een machine is'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik kan niet bewijzen dat 'auto' een 'machine' is, maar ik weet wel dat een auto een voertuig is.")
+  [taal-t2-35] 'wat veroorzaakt een brand'
+      gefaald: antwoord mist een van ['vuur', 'hitte'] (antwoord: "ik ken geen oorzaken van 'brand'.")
+  [taal-t2-36] 'waardoor wordt iemand moe'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-37] 'wat zorgt ervoor dat ijs smelt'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-39] 'wat maakt dat een plant groeit'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-40] 'waardoor breekt een glas'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-41] 'wat veroorzaakt een regenboog'
+      gefaald: antwoord mist een van ['zonlicht', 'regen'] (antwoord: "ik ken geen oorzaken van 'regenboog'.")
+  [taal-t2-42] 'waardoor wordt de lucht koud'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-43] 'wat zorgt voor een overstroming'
+      gefaald: antwoord mist een van ['veel regen', 'rivier'] (antwoord: "ik ken geen oorzaken van 'overstroming'.")
+  [taal-t2-45] 'wat gebeurt er als je water kookt'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-46] 'wat is het resultaat van slapen'
+      gefaald: antwoord mist een van ['rust', 'energie'] (antwoord: "ik ken geen gevolgen van 'slapen'.")
+  [taal-t2-47] 'wat ontstaat er na een brand'
+      gefaald: antwoord mist een van ['as', 'rook'] (antwoord: "ik ken geen gevolgen van 'brand'.")
+  [taal-t2-48] 'wat volgt er op veel eten'
+      gefaald: antwoord mist een van ['vol gevoel', 'verzadiging'] (antwoord: "ik ken geen gevolgen van 'veel eten'.")
+  [taal-t2-49] 'wat komt er van planten water geven'
+      gefaald: antwoord mist een van ['groei', 'bloei'] (antwoord: "ik ken geen gevolgen van 'planten water geven'.")
+  [taal-t2-50] 'wat gebeurt er als ijs smelt'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-51] 'wat is het gevolg van niet slapen'
+      gefaald: antwoord mist een van ['moeheid', 'vermoeidheid'] (antwoord: "ik ken geen gevolgen van 'niet slapen'.")
+  [taal-t2-52] 'wat ontstaat er bij een botsing'
+      gefaald: antwoord mist een van ['schade', 'deuk'] (antwoord: "ik ken geen gevolgen van 'botsing'.")
+  [taal-t2-53] 'wat komt er van de zon schijnen'
+      gefaald: antwoord mist een van ['warmte', 'licht'] (antwoord: "ik ken geen gevolgen van 'zon schijnen'.")
+  [taal-t2-54] 'wat is een ander woord voor auto'
+      gefaald: antwoord mist een van ['wagen', 'voertuig'] (antwoord: "ik ken geen synoniemen van 'auto'.")
+  [taal-t2-55] 'welk woord heeft dezelfde betekenis als huis'
+      gefaald: antwoord mist een van ['woning', 'gebouw'] (antwoord: "ik ken geen synoniemen van 'huis'.")
+  [taal-t2-56] 'wat is een synoniem van mooi'
+      gefaald: antwoord mist een van ['prachtig', 'schoon'] (antwoord: "ik ken geen synoniemen van 'mooi'.")
+  [taal-t2-57] 'welk woord betekent ook "klein"'
+      gefaald: antwoord mist een van ['mini', 'gering'] (antwoord: "ik ken geen synoniemen van 'klein'.")
+  [taal-t2-58] 'wat is een ander woord voor snel'
+      gefaald: antwoord mist een van ['vlug', 'rap'] (antwoord: "ik ken geen synoniemen van 'snel'.")
+  [taal-t2-59] 'welk woord is hetzelfde als "eten"'
+      gefaald: antwoord mist een van ['voedsel', 'maaltijd'] (antwoord: "ik ken geen synoniemen van 'eten'.")
+  [taal-t2-60] 'wat betekent hetzelfde als "dierenarts"'
+      gefaald: antwoord mist een van ['veterinair'] (antwoord: "ik ken geen synoniemen van 'dierenarts'.")
+  [taal-t2-62] 'wat is een ander woord voor "kinderen"'
+      gefaald: antwoord mist een van ['kids', 'jeugd'] (antwoord: "ik ken geen synoniemen van 'kinderen'.")
+  [taal-t5-14] 'wat is een blorptang'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-16] 'wat betekent "flurble"'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-18] 'wat is een snorplex'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-20] 'wat voor iets is een krimzot'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-22] 'wat betekent het woord "drimble"'
+      gefaald: geen antwoord ontvangen
+  [taal-t2-63] 'hoe noem je een dier dat blaft'
+      gefaald: geen event uit ['intent_definition'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-64] 'wat is de functie van een paraplu'
+      gefaald: geen antwoord ontvangen
+  [taal-t2-65] 'kun je zeggen wat een klok doet'
+      gefaald: geen event uit ['intent_definition'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-66] 'wat is een vogel die niet vliegt'
+      gefaald: geen antwoord ontvangen
+  [taal-t2-68] 'wat is het verschil tussen een beker en een glas'
+      gefaald: geen antwoord ontvangen
+  [taal-t2-70] 'wat is een instrument met snaren'
+      gefaald: geen antwoord ontvangen
+  [taal-t2-72] 'wat is een plek waar je boeken leent'
+      gefaald: geen antwoord ontvangen
+  [taal-t2-73] 'is een pinguïn een vogel'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik ken 'pinguïn' niet, dus ik kan dat niet beoordelen.")
+  [taal-t2-74] 'hoort een gitaar bij de muziekinstrumenten'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-75] 'is een brug een soort constructie'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik kan niet bewijzen dat 'brug' een 'constructie' is.")
+  [taal-t2-76] 'klopt het dat een bibliotheek een gebouw is'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik ken 'bibliotheek' niet, dus ik kan dat niet beoordelen.")
+  [taal-t2-77] 'is een sleutel iets om mee te openen'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-78] 'hoort een berg bij de landschappen'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-79] 'is een paraplu bedoeld tegen regen'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-80] 'klopt het dat een klok tijd meet'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-81] 'is een struisvogel een vogel'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik ken 'struisvogel' niet, dus ik kan dat niet beoordelen.")
+  [taal-t2-82] 'hoort een beker bij de drinkbekers'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-83] 'waardoor ontstaat een echo'
+      gefaald: antwoord mist een van ['geluid', 'weerkaatsing'] (antwoord: "ik ken geen oorzaken van 'echo'.")
+  [taal-t2-84] 'wat zorgt ervoor dat een ballon opstijgt'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-85] 'waardoor wordt iemand verkouden'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-86] 'wat maakt dat een kaars brandt'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-87] 'waardoor ontstaat mist'
+      gefaald: antwoord mist een van ['vocht', 'koude lucht'] (antwoord: "ik ken geen oorzaken van 'mist'.")
+  [taal-t2-88] 'wat zorgt voor een zonsverduistering'
+      gefaald: antwoord mist een van ['maan', 'zon'] (antwoord: "ik ken geen oorzaken van 'zonsverduistering'.")
+  [taal-t2-89] 'waardoor breekt een tak'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-90] 'wat veroorzaakt een blaar'
+      gefaald: antwoord mist een van ['wrijving', 'schoen'] (antwoord: "ik ken geen oorzaken van 'blaar'.")
+  [taal-t2-91] 'waardoor wordt een plant geel'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-92] 'wat zorgt ervoor dat ijs smelt in de zon'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-93] 'wat gebeurt er als je een ballon loslaat'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-94] 'wat is het resultaat van een zonsverduistering'
+      gefaald: antwoord mist een van ['donker', 'schaduw'] (antwoord: "ik ken geen gevolgen van 'zonsverduistering'.")
+  [taal-t2-95] 'wat komt er van te lang in de zon zitten'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-96] 'wat ontstaat er na een echo'
+      gefaald: antwoord mist een van ['herhaling', 'geluid'] (antwoord: "ik ken geen gevolgen van 'echo'.")
+  [taal-t2-97] 'wat volgt er op een kaars aansteken'
+      gefaald: antwoord mist een van ['licht', 'warmte'] (antwoord: "ik ken geen gevolgen van 'kaars aansteken'.")
+  [taal-t2-98] 'wat gebeurt er als een plant geen water krijgt'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-99] 'wat is het gevolg van een blaar'
+      gefaald: antwoord mist een van ['pijn', 'vocht'] (antwoord: "ik ken geen gevolgen van 'blaar'.")
+  [taal-t2-100] 'wat komt er van mist'
+      gefaald: antwoord mist een van ['slecht zicht', 'nevel'] (antwoord: "ik ken geen gevolgen van 'mist'.")
+  [taal-t2-101] 'wat ontstaat er als een tak breekt'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-102] 'wat gebeurt er als je een sleutel omdraait'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t2-103] 'welk woord betekent hetzelfde als "snel"'
+      gefaald: antwoord mist een van ['vlug', 'rap'] (antwoord: "ik ken geen synoniemen van 'snel'.")
+  [taal-t2-104] 'wat is een ander woord voor "koud"'
+      gefaald: antwoord mist een van ['fris', 'koel'] (antwoord: "ik ken geen synoniemen van 'koud'.")
+  [taal-t2-105] 'welk woord heeft dezelfde betekenis als "blij"'
+      gefaald: antwoord mist een van ['gelukkig', 'vrolijk'] (antwoord: "ik ken geen synoniemen van 'blij'.")
+  [taal-t2-106] 'wat is een synoniem van "groot"'
+      gefaald: antwoord mist een van ['reusachtig', 'enorm'] (antwoord: "ik ken geen synoniemen van 'groot'.")
+  [taal-t2-107] 'wat is een ander woord voor "eten"'
+      gefaald: antwoord mist een van ['voedsel', 'maaltijd'] (antwoord: "ik ken geen synoniemen van 'eten'.")
+  [taal-t2-108] 'welk woord is hetzelfde als "huis"'
+      gefaald: antwoord mist een van ['woning', 'gebouw'] (antwoord: "ik ken geen synoniemen van 'huis'.")
+  [taal-t2-109] 'wat betekent hetzelfde als "auto"'
+      gefaald: antwoord mist een van ['wagen', 'voertuig'] (antwoord: "ik ken geen synoniemen van 'auto'.")
+  [taal-t2-110] 'welk woord is synoniem aan "kind"'
+      gefaald: antwoord mist een van ['jeugd', 'jongere'] (antwoord: "ik ken geen synoniemen van 'kind'.")
+  [taal-t2-111] 'wat is een ander woord voor "water"'
+      gefaald: antwoord mist een van ['h2o', 'vloeistof'] (antwoord: "ik ken geen synoniemen van 'water'.")
+  [taal-t5-24] 'wat is een krimzot'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-26] 'wat betekent "snorplex"'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-28] 'wat is een drimble'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-30] 'wat voor iets is een zxqfw'
+      gefaald: geen antwoord ontvangen
+  [taal-t5-32] 'wat betekent het woord "flurble"'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-14] 'en wat is een ander woord ervoor'
+      gefaald: antwoord mist een van ['woning', 'gebouw'] (antwoord: "ik ken geen synoniemen van 'huis'.")
+  [taal-t4-15] 'waardoor ontstaat dat'
+      gefaald: antwoord mist een van ['vuur', 'hitte', 'vonk'] (antwoord: "ik ken geen oorzaken van 'brand'.")
+  [taal-t4-17] 'wat gebeurt er daardoor'
+      gefaald: antwoord mist een van ['rust', 'energie', 'dromen'] (antwoord: "ik ken geen gevolgen van 'slaap'.")
+  [taal-t4-19] 'welk woord betekent hetzelfde'
+      gefaald: antwoord mist een van ['wagen', 'voertuig'] (antwoord: "ik ken geen synoniemen van 'auto'.")
+  [taal-t4-22] 'hoort die bij de zoogdieren'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-23] 'wat is het resultaat ervan'
+      gefaald: antwoord mist een van ['warmte', 'licht', 'zonnebrand'] (antwoord: "ik ken geen gevolgen van 'zon'.")
+  [taal-t4-24] 'ok en een krant'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-26] 'wat zorgt ervoor'
+      gefaald: antwoord mist een van ['regen', 'rivier', 'water'] (antwoord: "ik ken geen oorzaken van 'overstroming'.")
+  [taal-t4-28] 'is dat fruit'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-29] 'wat komt er van'
+      gefaald: antwoord mist een van ['warmte', 'rook', 'as'] (antwoord: "ik ken geen gevolgen van 'vuur'.")
+  [taal-t4-31] 'idem voor woning'
+      gefaald: geen event uit ['intent_synonym'] (kreeg: ['context_resolved', 'intent_definition', 'intent_wiki', 'topic_detected:definitie_woning']); geen antwoord ontvangen
+  [taal-t4-32] 'waardoor smelt dat'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-35] 'en wat eten die'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-36] 'en wat eten die'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-39] "wat doet zo'n ding"
+      gefaald: geen event uit ['intent_definition'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-40] 'en boter dan?'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik ken 'boter' niet, dus ik kan dat niet beoordelen.")
+  [taal-t4-41] 'hoe komt dat eigenlijk'
+      gefaald: antwoord mist een van ['ijzer', 'zuurstof', 'vocht'] (antwoord: "ik ken geen oorzaken van 'roest'.")
+  [taal-t4-42] 'en dan?'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-43] 'ander woord ervoor'
+      gefaald: antwoord mist een van ['broodwinkel', 'bakkerszaak'] (antwoord: "ik ken geen synoniemen van 'bakkerij'.")
+  [taal-t4-44] 'en die dan?'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-45] 'wat meet dat ding eigenlijk'
+      gefaald: geen event uit ['intent_definition'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-47] 'waardoor gebeurt dat'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['chat_response']); antwoord mist een van ['temperatuur', 'warmte', 'dooi'] (antwoord: 'waar heb je het over? ik weet niet op welk woord dit slaat, stel de vraag nog eens met het woord erin.')
+  [taal-t4-48] 'en wat dan'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-49] 'ander woord'
+      gefaald: antwoord mist een van ['pc', 'laptop', 'apparaat'] (antwoord: "ik ken geen synoniemen van 'computer'.")
+  [taal-t4-50] 'die ook?'
+      gefaald: antwoord mist een van ['ken', 'onbekend', 'weet', 'idee'] (antwoord: 'waar heb je het over?')
+  [taal-t4-52] 'en rijst dan?'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik kan niet bewijzen dat 'rijst' een 'graanproduct' is, maar ik weet wel dat rijst een voedingsmiddel is.")
+  [taal-t4-53] "hoe ontstaat zo'n ding"
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-54] 'gevolgen daarvan'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['chat_response']); antwoord mist een van ['dorst', 'bloeddruk', 'nieren'] (antwoord: 'waar heb je het over? ik weet niet op welk woord dit slaat, stel de vraag nog eens met het woord erin.')
+  [taal-t4-55] 'synoniem'
+      gefaald: antwoord mist een van ['mantel', 'coat', 'overjas'] (antwoord: "ik ken geen synoniemen van 'jas'.")
+  [taal-t4-56] 'en dat?'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-57] "wat is zo'n constructie"
+      gefaald: geen antwoord ontvangen
+  [taal-t4-58] 'een mug wel?'
+      gefaald: antwoord mist een van ['nee'] (antwoord: 'ja, een mug is een insect.')
+  [taal-t4-59] 'waardoor komt dat'
+      gefaald: antwoord mist een van ['vocht', 'afkoeling', 'lucht'] (antwoord: "ik ken geen oorzaken van 'mist'.")
+  [taal-t4-60] 'en dan?'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-61] 'ander woord'
+      gefaald: antwoord mist een van ['instituut', 'onderwijs', 'gebouw'] (antwoord: "ik ken geen synoniemen van 'school'.")
+  [taal-t4-62] 'die?'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-63] 'wat doet dat orgaan'
+      gefaald: geen event uit ['intent_definition'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-64] 'een wesp ook?'
+      gefaald: geen event uit ['intent_relation_check'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-65] 'hoe ontstaat dat'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['chat_response']); antwoord mist een van ['stress', 'spanning', 'dehydratie'] (antwoord: 'waar heb je het over? ik weet niet op welk woord dit slaat, stel de vraag nog eens met het woord erin.')
+  [taal-t4-66] 'gevolgen'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['chat_response']); antwoord mist een van ['dorst', 'hoofdpijn', 'vermoeid'] (antwoord: 'waar heb je het over? ik weet niet op welk woord dit slaat, stel de vraag nog eens met het woord erin.')
+  [taal-t2-112] 'Hoe noem je een stoel? wacht nee, een bank'
+      gefaald: geen event uit ['intent_synonym'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-67] 'en die daar?'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-68] "wat is zo'n waterplas"
+      gefaald: geen antwoord ontvangen
+  [taal-t4-69] 'pasta ook?'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik kan niet bewijzen dat 'pasta' een 'koolhydraat' is, maar ik weet wel dat pasta een voedingsmiddel is.")
+  [taal-t4-70] 'waardoor gebeurt dat'
+      gefaald: geen event uit ['intent_causes'] (kreeg: ['chat_response']); antwoord mist een van ['zuur', 'warmte', 'bacteriën'] (antwoord: 'waar heb je het over? ik weet niet op welk woord dit slaat, stel de vraag nog eens met het woord erin.')
+  [taal-t4-71] 'en dan?'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['intent_fallback']); geen antwoord ontvangen
+  [taal-t4-73] 'en dat?'
+      gefaald: antwoord mist een van ['ken', 'onbekend', 'weet', 'idee'] (antwoord: 'waar heb je het over?')
+  [taal-t4-74] 'wat is dat gereedschap'
+      gefaald: geen antwoord ontvangen
+  [taal-t4-75] 'een schaap ook?'
+      gefaald: antwoord mist een van ['ja'] (antwoord: "ik kan niet bewijzen dat 'schaap' een 'herkauwer' is, maar ik weet wel dat een schaap een zoogdier is.")
+  [taal-t4-76] 'hoe komt die'
+      gefaald: antwoord mist een van ['klap', 'bloed', 'onderhuids'] (antwoord: "ik ken geen oorzaken van 'blauwe plek'.")
+  [taal-t4-77] 'gevolgen'
+      gefaald: geen event uit ['intent_effects'] (kreeg: ['chat_response']); antwoord mist een van ['kou', 'rillen', 'onderkoeling'] (antwoord: 'waar heb je het over? ik weet niet op welk woord dit slaat, stel de vraag nog eens met het woord erin.')
+  [taal-t4-78] 'ander woord'
+      gefaald: antwoord mist een van ['meeting', 'overleg', 'bijeenkomst'] (antwoord: "ik ken geen synoniemen van 'vergadering'.")
+  [taal-t4-79] 'en dat ding?'
+      gefaald: geen antwoord ontvangen
+
+--- score per taalniveau ---
+  T1 bekende formuleringen         6/6    100%
+  T2 parafrases                   36/112   32%
+  T3 nieuwe combinaties           12/13    92%
+  T4 context en dubbelzinnigheid  26/79    33%
+  T5 onbekende situaties          17/32    53%
+--- score per dimensie ---
+  intentie                     42/118   36%
+  redenering                   12/13    92%
+  context                      26/79    33%
+  onzekerheid                  17/32    53%
+--- ONTERECHTE ANTWOORDEN (de ergste fout) ---
+  geen
+--- NIET EERLIJK ONZEKER (stilte of onduidelijk, niet gevaarlijk) ---
+  [taal-t5-02] 'wat is een zwabbelknoop'
+      geen antwoord ontvangen
+  [taal-t5-05] 'wie is de president van glorbistan'
+      geen antwoord ontvangen
+  [taal-t5-08] 'kan blorf regen veroorzaken'
+      antwoord mist een van ['ken', 'onbekend', 'weet', 'idee'] (antwoord: "ik kan niet bewijzen dat 'blorf' leidt tot 'regen'.")
+  [taal-t5-10] 'wat is een plimpstok'
+      geen antwoord ontvangen
+  [taal-t5-13] 'wie won het wereldkampioenschap van 2090'
+      geen antwoord ontvangen
+  [taal-t5-14] 'wat is een blorptang'
+      geen antwoord ontvangen
+  [taal-t5-16] 'wat betekent "flurble"'
+      geen antwoord ontvangen
+  [taal-t5-18] 'wat is een snorplex'
+      geen antwoord ontvangen
+  [taal-t5-20] 'wat voor iets is een krimzot'
+      geen antwoord ontvangen
+  [taal-t5-22] 'wat betekent het woord "drimble"'
+      geen antwoord ontvangen
+  [taal-t5-24] 'wat is een krimzot'
+      geen antwoord ontvangen
+  [taal-t5-26] 'wat betekent "snorplex"'
+      geen antwoord ontvangen
+  [taal-t5-28] 'wat is een drimble'
+      geen antwoord ontvangen
+  [taal-t5-30] 'wat voor iets is een zxqfw'
+      geen antwoord ontvangen
+  [taal-t5-32] 'wat betekent het woord "flurble"'
+      geen antwoord ontvangen
+
+--- WAAROM FAALT HET? (taal, stilte, kennis) ---
+   49  TAALGAT (verkeerd of geen event: de zin werd niet begrepen)
+   31  STILTE (juiste event, maar geen antwoord; vaak netwerk uit of onbekend woord)
+   65  KENNISGAT (juiste event, maar het verwachte woord staat niet in de kennisgraaf)
+    0  OVERIG (verboden woord, ongeldige regex, ...)
+  Router begreep 193/242 zinnen (80%): dit is de echte taalscore, los van wat er in de graaf staat.
+  Taalgaten (hier kunnen regels in de normalizer helpen):
+    [taal-t2-27] 'hoort een hond bij de dieren'
+    [taal-t2-31] 'hoort een stoel bij de meubels'
+    [taal-t2-32] 'is een boek iets om te lezen'
+    [taal-t2-36] 'waardoor wordt iemand moe'
+    [taal-t2-37] 'wat zorgt ervoor dat ijs smelt'
+    [taal-t2-39] 'wat maakt dat een plant groeit'
+    [taal-t2-40] 'waardoor breekt een glas'
+    [taal-t2-42] 'waardoor wordt de lucht koud'
+    [taal-t2-45] 'wat gebeurt er als je water kookt'
+    [taal-t2-50] 'wat gebeurt er als ijs smelt'
+    [taal-t2-63] 'hoe noem je een dier dat blaft'
+    [taal-t2-65] 'kun je zeggen wat een klok doet'
+    [taal-t2-74] 'hoort een gitaar bij de muziekinstrumenten'
+    [taal-t2-77] 'is een sleutel iets om mee te openen'
+    [taal-t2-78] 'hoort een berg bij de landschappen'
+    [taal-t2-79] 'is een paraplu bedoeld tegen regen'
+    [taal-t2-80] 'klopt het dat een klok tijd meet'
+    [taal-t2-82] 'hoort een beker bij de drinkbekers'
+    [taal-t2-84] 'wat zorgt ervoor dat een ballon opstijgt'
+    [taal-t2-85] 'waardoor wordt iemand verkouden'
+    [taal-t2-86] 'wat maakt dat een kaars brandt'
+    [taal-t2-89] 'waardoor breekt een tak'
+    [taal-t2-91] 'waardoor wordt een plant geel'
+    [taal-t2-92] 'wat zorgt ervoor dat ijs smelt in de zon'
+    [taal-t2-93] 'wat gebeurt er als je een ballon loslaat'
+    [taal-t2-95] 'wat komt er van te lang in de zon zitten'
+    [taal-t2-98] 'wat gebeurt er als een plant geen water krijgt'
+    [taal-t2-101] 'wat ontstaat er als een tak breekt'
+    [taal-t2-102] 'wat gebeurt er als je een sleutel omdraait'
+    [taal-t4-22] 'hoort die bij de zoogdieren'
+    [taal-t4-28] 'is dat fruit'
+    [taal-t4-31] 'idem voor woning'
+    [taal-t4-32] 'waardoor smelt dat'
+    [taal-t4-39] "wat doet zo'n ding"
+    [taal-t4-42] 'en dan?'
+    [taal-t4-45] 'wat meet dat ding eigenlijk'
+    [taal-t4-47] 'waardoor gebeurt dat'
+    [taal-t4-48] 'en wat dan'
+    [taal-t4-53] "hoe ontstaat zo'n ding"
+    [taal-t4-54] 'gevolgen daarvan'
+    [taal-t4-60] 'en dan?'
+    [taal-t4-63] 'wat doet dat orgaan'
+    [taal-t4-64] 'een wesp ook?'
+    [taal-t4-65] 'hoe ontstaat dat'
+    [taal-t4-66] 'gevolgen'
+    [taal-t2-112] 'Hoe noem je een stoel? wacht nee, een bank'
+    [taal-t4-70] 'waardoor gebeurt dat'
+    [taal-t4-71] 'en dan?'
+    [taal-t4-77] 'gevolgen'
+
+Resultaat toegevoegd aan data/benchmark_resultaten.jsonl

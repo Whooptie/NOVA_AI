@@ -118,3 +118,53 @@ def test_main_geeft_exitcode_1_bij_fout_en_0_bij_succes(tmp_path, capsys):
     goed = tmp_path / "goed.txt"
     goed.write_text("relatie | zeg eens, is een walvis een zoogdier | ja\n", encoding="utf-8")
     assert mb.main([str(goed)]) == 0
+
+
+# ---- gesprekken van meerdere beurten (punt 62d) ----
+def test_gesprek_met_voorvraag_wordt_t4_case(tmp_path):
+    cases, fouten = mb.lees_regels(_tekst(tmp_path, "definitie | wat is een hond >> en een kat? | huisdier, dier\n"))
+    assert fouten == []
+    c = cases[0]
+    assert c["taalniveau"] == 4 and c["dimensie"] == "context"
+    assert c["vraag"] == "en een kat?" and c["voorvragen"] == ["wat is een hond"]
+    assert c["moet_event"] == ["intent_definition"]
+    assert c["moet_bevatten_een_van"] == ["huisdier", "dier"]
+
+
+def test_gesprek_met_twee_voorvragen(tmp_path):
+    cases, fouten = mb.lees_regels(_tekst(tmp_path, "definitie | wat is een appel >> wat is een banaan >> ok en een peer | fruit\n"))
+    assert fouten == []
+    assert cases[0]["voorvragen"] == ["wat is een appel", "wat is een banaan"]
+    assert cases[0]["vraag"] == "ok en een peer"
+
+
+def test_vaag_gesprek_is_onbekend_met_voorvragen(tmp_path):
+    cases, fouten = mb.lees_regels(_tekst(tmp_path, "onbekend | wat is een kat >> wat is een hond >> en wat eten die\n"))
+    assert fouten == []
+    c = cases[0]
+    assert c["taalniveau"] == 4 and c["voorvragen"] == ["wat is een kat", "wat is een hond"]
+    assert c["mag_niet_bevatten"] == ["ja", "nee"] and "moet_event" not in c
+
+
+def test_gesprek_zonder_woorden_is_fout(tmp_path):
+    cases, fouten = mb.lees_regels(_tekst(tmp_path, "gevolg | wat is regen >> en wat eten die |\n"))
+    assert cases == [] and len(fouten) == 1
+
+
+def test_lege_beurt_is_fout(tmp_path):
+    cases, fouten = mb.lees_regels(_tekst(tmp_path, "definitie | wat is een hond >> | dier\n"))
+    assert cases == [] and len(fouten) == 1
+
+
+def test_zelfde_vraag_na_andere_voorvraag_is_geen_dubbel(tmp_path):
+    vp, bp = _sets(tmp_path, vast=[{"id": "taal-t4-01", "vraag": "en een kat?", "voorvragen": ["wat is een hond"]}])
+    cases, _ = mb.lees_regels(_tekst(tmp_path, "relatie | is een zebra een dier >> en een kat? | ja\n"))
+    nieuw, fouten = mb.voeg_toe(cases, vast_pad=vp, blind_pad=bp)
+    assert fouten == [] and nieuw[0]["id"] == "blind-t4-01"
+
+
+def test_zelfde_gesprek_is_wel_dubbel(tmp_path):
+    vp, bp = _sets(tmp_path, vast=[{"id": "taal-t4-01", "vraag": "en een kat?", "voorvragen": ["wat is een hond"]}])
+    cases, _ = mb.lees_regels(_tekst(tmp_path, "definitie | wat is een hond >> en een kat? | dier\n"))
+    nieuw, fouten = mb.voeg_toe(cases, vast_pad=vp, blind_pad=bp)
+    assert nieuw == [] and len(fouten) == 1

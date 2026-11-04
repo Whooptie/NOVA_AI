@@ -2545,6 +2545,1222 @@
         "nee"
       ],
       "id": "taal-t5-32"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "hoe zit dat met een auto",
+      "voorvragen": [
+        "wat is een fiets"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "voertuig",
+        "vervoermiddel",
+        "auto"
+      ],
+      "id": "taal-t4-13"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "en wat is een ander woord ervoor",
+      "voorvragen": [
+        "wat is een huis"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "woning",
+        "gebouw"
+      ],
+      "id": "taal-t4-14"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "waardoor ontstaat dat",
+      "voorvragen": [
+        "wat is een brand"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "vuur",
+        "hitte",
+        "vonk"
+      ],
+      "id": "taal-t4-15"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat dacht je van een banaan",
+      "voorvragen": [
+        "wat is een appel"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "fruit",
+        "geel",
+        "banaan"
+      ],
+      "id": "taal-t4-16"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "wat gebeurt er daardoor",
+      "voorvragen": [
+        "wat is slaap"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "rust",
+        "energie",
+        "dromen"
+      ],
+      "id": "taal-t4-17"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "en dan een tafel",
+      "voorvragen": [
+        "wat is een stoel"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "meubel",
+        "zitplaats",
+        "tafel"
+      ],
+      "id": "taal-t4-18"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "welk woord betekent hetzelfde",
+      "voorvragen": [
+        "wat is een auto"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "wagen",
+        "voertuig"
+      ],
+      "id": "taal-t4-19"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "waardoor komt dat",
+      "voorvragen": [
+        "wat is modder"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "regen",
+        "water",
+        "aarde"
+      ],
+      "id": "taal-t4-20"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "idem voor een vis",
+      "voorvragen": [
+        "wat is een vogel"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "dier",
+        "zwemmen",
+        "vis"
+      ],
+      "id": "taal-t4-21"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "hoort die bij de zoogdieren",
+      "voorvragen": [
+        "wat is een kat"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-22"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "wat is het resultaat ervan",
+      "voorvragen": [
+        "wat is zon"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "warmte",
+        "licht",
+        "zonnebrand"
+      ],
+      "id": "taal-t4-23"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "ok en een krant",
+      "voorvragen": [
+        "wat is een boek"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "lezen",
+        "papier",
+        "krant"
+      ],
+      "id": "taal-t4-24"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "wat is een ander woord voor",
+      "voorvragen": [
+        "wat is een hond"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "hond",
+        "canine"
+      ],
+      "id": "taal-t4-25"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "wat zorgt ervoor",
+      "voorvragen": [
+        "wat is een overstroming"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "regen",
+        "rivier",
+        "water"
+      ],
+      "id": "taal-t4-26"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "hoe zit het met een laars",
+      "voorvragen": [
+        "wat is een schoen"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "schoeisel",
+        "voet",
+        "laars"
+      ],
+      "id": "taal-t4-27"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "is dat fruit",
+      "voorvragen": [
+        "wat is een appel"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-28"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "wat komt er van",
+      "voorvragen": [
+        "wat is vuur"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "warmte",
+        "rook",
+        "as"
+      ],
+      "id": "taal-t4-29"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "en een koe",
+      "voorvragen": [
+        "wat is een paard"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "dier",
+        "zoogdier",
+        "koe"
+      ],
+      "id": "taal-t4-30"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "idem voor woning",
+      "voorvragen": [
+        "wat is een huis"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "woning",
+        "gebouw"
+      ],
+      "id": "taal-t4-31"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "waardoor smelt dat",
+      "voorvragen": [
+        "wat is ijs"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "warmte",
+        "zon",
+        "hitte"
+      ],
+      "id": "taal-t4-32"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat dacht je van een stoel",
+      "voorvragen": [
+        "wat is een bank"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "meubel",
+        "zitten",
+        "stoel"
+      ],
+      "id": "taal-t4-33"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "is dat een dier",
+      "voorvragen": [
+        "wat is een vis"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-34"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "en wat eten die",
+      "voorvragen": [
+        "wat is regen"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-35"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "en wat eten die",
+      "voorvragen": [
+        "wat is een kat",
+        "wat is een hond"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-36"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "wat is het gevolg ervan",
+      "voorvragen": [
+        "wat is een boom",
+        "wat is een plant"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-37"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "ok en een peer",
+      "voorvragen": [
+        "wat is een appel",
+        "wat is een banaan"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "fruit",
+        "peer"
+      ],
+      "id": "taal-t4-38"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat doet zo'n ding",
+      "voorvragen": [
+        "Wat is een tang?"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "gereedschap",
+        "grijpen",
+        "knijpen"
+      ],
+      "id": "taal-t4-39"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "en boter dan?",
+      "voorvragen": [
+        "Is kaas een zuivelproduct?"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-40"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "hoe komt dat eigenlijk",
+      "voorvragen": [
+        "Waardoor ontstaat roest?"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "ijzer",
+        "zuurstof",
+        "vocht"
+      ],
+      "id": "taal-t4-41"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "en dan?",
+      "voorvragen": [
+        "Wat gebeurt er als je te veel koffie drinkt?"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "onrustig",
+        "slapeloos",
+        "hart"
+      ],
+      "id": "taal-t4-42"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "ander woord ervoor",
+      "voorvragen": [
+        "Hoe noem je een bakkerij anders?"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "broodwinkel",
+        "bakkerszaak"
+      ],
+      "id": "taal-t4-43"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "en die dan?",
+      "voorvragen": [
+        "Wat is een schaar?"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-44"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat meet dat ding eigenlijk",
+      "voorvragen": [
+        "Wat is een thermometer?"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "temperatuur",
+        "koorts",
+        "warmte"
+      ],
+      "id": "taal-t4-45"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "een nijlpaard ook?",
+      "voorvragen": [
+        "Is een olifant een zoogdier?"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-46"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "waardoor gebeurt dat",
+      "voorvragen": [
+        "Waarom smelt sneeuw?"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "temperatuur",
+        "warmte",
+        "dooi"
+      ],
+      "id": "taal-t4-47"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "en wat dan",
+      "voorvragen": [
+        "Wat is het gevolg van te weinig slaap?"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "moe",
+        "concentratie",
+        "humeur"
+      ],
+      "id": "taal-t4-48"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "ander woord",
+      "voorvragen": [
+        "Hoe heet een computer ook wel?"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "pc",
+        "laptop",
+        "apparaat"
+      ],
+      "id": "taal-t4-49"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "die ook?",
+      "voorvragen": [
+        "Wat doet een hamer?"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-50"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat is dat precies",
+      "voorvragen": [
+        "Wat is een rivier?"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "water",
+        "stroom",
+        "stroming"
+      ],
+      "id": "taal-t4-51"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "en rijst dan?",
+      "voorvragen": [
+        "Is pasta een soort graanproduct?"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-52"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "hoe ontstaat zo'n ding",
+      "voorvragen": [
+        "Waardoor krijg je een blaar?"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "wrijving",
+        "druk",
+        "vocht"
+      ],
+      "id": "taal-t4-53"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "gevolgen daarvan",
+      "voorvragen": [
+        "Wat gebeurt er als je te veel zout eet?"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "dorst",
+        "bloeddruk",
+        "nieren"
+      ],
+      "id": "taal-t4-54"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "synoniem",
+      "voorvragen": [
+        "Hoe noem je een jas anders?"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "mantel",
+        "coat",
+        "overjas"
+      ],
+      "id": "taal-t4-55"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "en dat?",
+      "voorvragen": [
+        "Is melk gezond?"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-56"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat is zo'n constructie",
+      "voorvragen": [
+        "Wat is een brug?"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "verbinding",
+        "overspanning",
+        "water"
+      ],
+      "id": "taal-t4-57"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "een mug wel?",
+      "voorvragen": [
+        "Is een spin een insect?"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "nee"
+      ],
+      "id": "taal-t4-58"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "waardoor komt dat",
+      "voorvragen": [
+        "Waarom ontstaat mist?"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "vocht",
+        "afkoeling",
+        "lucht"
+      ],
+      "id": "taal-t4-59"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "en dan?",
+      "voorvragen": [
+        "Wat is het gevolg van veel sporten?"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "fit",
+        "spieren",
+        "conditie"
+      ],
+      "id": "taal-t4-60"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "ander woord",
+      "voorvragen": [
+        "Hoe heet een school ook wel?"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "instituut",
+        "onderwijs",
+        "gebouw"
+      ],
+      "id": "taal-t4-61"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "die?",
+      "voorvragen": [
+        "Wat is een boek?"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-62"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat doet dat orgaan",
+      "voorvragen": [
+        "Wat is een hart?"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "pompen",
+        "bloed",
+        "kloppen"
+      ],
+      "id": "taal-t4-63"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "een wesp ook?",
+      "voorvragen": [
+        "Is een bij een insect?"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-64"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "hoe ontstaat dat",
+      "voorvragen": [
+        "Waardoor krijg je hoofdpijn?"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "stress",
+        "spanning",
+        "dehydratie"
+      ],
+      "id": "taal-t4-65"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "gevolgen",
+      "voorvragen": [
+        "Wat gebeurt er als je te weinig water drinkt?"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "dorst",
+        "hoofdpijn",
+        "vermoeid"
+      ],
+      "id": "taal-t4-66"
+    },
+    {
+      "taalniveau": 2,
+      "dimensie": "intentie",
+      "categorie": "synoniem",
+      "vraag": "Hoe noem je een stoel? wacht nee, een bank",
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "ander woord voor bank"
+      ],
+      "id": "taal-t2-112"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "en die daar?",
+      "voorvragen": [
+        "Wat is een schoen?"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-67"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat is zo'n waterplas",
+      "voorvragen": [
+        "Wat is een meer?"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "stilstaand",
+        "zoet",
+        "groot"
+      ],
+      "id": "taal-t4-68"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "pasta ook?",
+      "voorvragen": [
+        "Is brood een koolhydraat?"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-69"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "waardoor gebeurt dat",
+      "voorvragen": [
+        "Waarom gaat melk schiften?"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "zuur",
+        "warmte",
+        "bacteriën"
+      ],
+      "id": "taal-t4-70"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "en dan?",
+      "voorvragen": [
+        "Wat is het gevolg van roken?"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "longen",
+        "kanker",
+        "ademhaling"
+      ],
+      "id": "taal-t4-71"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "ander woord",
+      "voorvragen": [
+        "Hoe heet een dokter anders?"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "arts",
+        "geneesheer",
+        "medicus"
+      ],
+      "id": "taal-t4-72"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "en dat?",
+      "voorvragen": [
+        "Is koffie cafeïne?"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-73"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_definitie",
+      "vraag": "wat is dat gereedschap",
+      "voorvragen": [
+        "Wat is een zaag?"
+      ],
+      "moet_event": [
+        "intent_definition"
+      ],
+      "moet_bevatten_een_van": [
+        "zagen",
+        "hout",
+        "tanden"
+      ],
+      "id": "taal-t4-74"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_relatie",
+      "vraag": "een schaap ook?",
+      "voorvragen": [
+        "Is een koe een herkauwer?"
+      ],
+      "moet_event": [
+        "intent_relation_check"
+      ],
+      "moet_bevatten_een_van": [
+        "ja"
+      ],
+      "id": "taal-t4-75"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_oorzaak",
+      "vraag": "hoe komt die",
+      "voorvragen": [
+        "Waardoor ontstaat een blauwe plek?"
+      ],
+      "moet_event": [
+        "intent_causes"
+      ],
+      "moet_bevatten_een_van": [
+        "klap",
+        "bloed",
+        "onderhuids"
+      ],
+      "id": "taal-t4-76"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_gevolg",
+      "vraag": "gevolgen",
+      "voorvragen": [
+        "Wat gebeurt er als je te lang in de kou staat?"
+      ],
+      "moet_event": [
+        "intent_effects"
+      ],
+      "moet_bevatten_een_van": [
+        "kou",
+        "rillen",
+        "onderkoeling"
+      ],
+      "id": "taal-t4-77"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vervolg_synoniem",
+      "vraag": "ander woord",
+      "voorvragen": [
+        "Hoe noem je een vergadering anders?"
+      ],
+      "moet_event": [
+        "intent_synonym"
+      ],
+      "moet_bevatten_een_van": [
+        "meeting",
+        "overleg",
+        "bijeenkomst"
+      ],
+      "id": "taal-t4-78"
+    },
+    {
+      "taalniveau": 4,
+      "dimensie": "context",
+      "categorie": "vaag",
+      "vraag": "en dat ding?",
+      "voorvragen": [
+        "Wat is een computer?"
+      ],
+      "moet_bevatten_een_van": [
+        "ken",
+        "onbekend",
+        "weet",
+        "idee"
+      ],
+      "mag_niet_bevatten": [
+        "ja",
+        "nee"
+      ],
+      "id": "taal-t4-79"
     }
   ]
 }

@@ -2877,3 +2877,58 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Bewust niet gedaan en vastgelegd als punt:** meervoud op het relatiepad en de regel "hoort X bij de Y" (70); bijzinvragen als `waardoor breekt een tak` (71); kennisgaten in de graaf, doel- en omgekeerde vragen (72); eerlijk "dat weet ik niet" bij Wikipedia zonder resultaat (69, aangevuld met de bevestiging van de netwerk-stilte); onderwerp onthouden voor "en een kat?" (62d, T4 blijft 12%).
 
 **Wat geleerd:** een hoge score op de vaste set meet vooral wat je er zelf op afstelde; de blinde set en het onderscheid taal/kennis/stilte zeggen veel meer. Beide blinde batches (69 en 59 zinnen) zijn na gebruik naar de vaste set verhuisd.
+
+---
+
+## ✅ Punt 62d — vervolgvragen op de laatste kennisvraag (4 november 2026)
+
+**Probleem:** benchmark T4 (context) haalde 12%. Na "wat is een hond" begreep Nova "en een kat?" niet, en na "wat is een tijger" ook "is dat een dier" niet. De bestaande verwijzing (`_is_kale_verwijzing` in `intent_router.py`) werkt alleen voor zinnen zonder zelfstandig naamwoord ("die?", "wat is dat?").
+
+**Eerst gemeten, dan gebouwd:** de benchmark-mini-Nova had `last_context` niet geregistreerd, terwijl het echte Nova (`core/module_loader.py`) dat wel heeft. Na het registreren bleef T4 op 12%. De conclusie was dus dat het bestaande mechanisme het niet dekt, en dat er echt iets bij moest.
+
+**Wat gebouwd is:**
+- `core/context_resolver.py` (nieuw): `herken_vraag()` en `los_op()`, pure functies met reguliere expressies. Onthoudt de LAATSTE kennisvraag als sjabloon met onderwerp ("is {x} een dier", "een zebra") en vult een vervolgzin ermee aan. Vormen: "en/dan/en dan/hoe zit het met <onderwerp>" (zelfde vraag, nieuw onderwerp), "is dat/die/dit/deze (dan) (ook) een <doel>" (zelfde onderwerp, nieuw doel), "wat is het gevolg/de oorzaak ervan/daarvan/hiervan". Een lijst woorden die nooit een onderwerp zijn ("dat", "hoe", "wat", "en", ...) voorkomt dat "en dat?" een begrip lijkt.
+- `core/last_context.py`: `set_vraag()` en `get_vraag()`, plus wissen in `clear()`. Dezelfde vervaltermijn van 300 seconden.
+- `core/intent_router.py`: stap 2E1 `_verwerk_vervolgvraag()` in `route()`, direct na `_verwerk_referentie`. Bij een fout of geen passende vorm blijft de zin ongewijzigd. Event `context_resolved`.
+- `tools/run_benchmark.py`: de mini-Nova registreert nu `last_context`, zodat de benchmark dit kan meten.
+
+**Meting:** T4 op de vaste set van 1/8 (12%) naar 11/12 (92%), de set is intussen gegroeid met verbrande blinde zinnen. Router begreep 145/174 (83%). 0 onterechte antwoorden. Niveau 1, 2 en 3 van de oude benchmark blijven 100%. **Eerlijke meting op een verse blinde batch van Grok (26 gesprekken): T4 5/26 (19%), Router begreep 8/26 (31%), 0 onterechte antwoorden.** Het mechanisme werkt dus voor de zinsvormen die ik ontwierp ("en een kat?", "is dat een dier", "wat is het gevolg ervan"), maar echte vervolgzinnen zijn veel gevarieerder: "waardoor ontstaat dat", "hoe zit dat met een auto", "idem voor een vis", "hoort die bij de zoogdieren", "wat dacht je van een banaan". De 92% was grotendeels afgesteld; de 19% is het getal om mee verder te werken.
+
+**Getest:** `test_context_resolver.py` (40). Volledige suite: 4194 geslaagd, 1 overgeslagen.
+
+**Benchmark-hulpmiddelen erbij:** `tools/maak_blind_cases.py` leest nu gesprekken van meerdere beurten (`type | beurt 1 >> beurt 2 | woorden`; de case krijgt `voorvragen` en taalniveau 4, een bewust vage vervolgzin is type `onbekend`). `tools/blind_naar_vast.py` en de test `test_vragen_zijn_niet_gedeeld_tussen_vast_en_blind` herkennen dubbels nu op vraag plus eerdere beurten, zodat "en een kat?" na een ander onderwerp een andere case is. Tests erbij in `test_maak_blind_cases.py` en `test_blind_naar_vast.py`.
+
+**Bewust niet gedaan:** meerdere eerder besproken onderwerpen onthouden ("En wat eten die?" kan op hond én kat slaan); bij twijfel vragen wat Kevin bedoelt; kale verwijzingen zonder zelfstandig naamwoord (die blijven bij de bestaande code).
+
+**Open gebleven:** `taal-t4-05` ("ik bedoel het schaakstuk" als antwoord op een keuzevraag): `handle_definitie_keuze` begrijpt alleen een nummer. Vastgelegd als punt 73 in `nova_state.md`.
+
+**Open gebleven (aanvulling):** de vier families taalgaten uit de blinde batch (tweede ronde van 62d) en punt 74 (rommelige vervolgzinnen geven een onzinnige leervraag of Wikipedia-zoekopdracht).
+
+**Wat geleerd:** een nieuwe module in de benchmark-mini-Nova moet daar ook geregistreerd zijn, anders meet de benchmark niets. En een score op zelf bedachte gevallen (92%) zegt weinig: dezelfde functie haalde 19% op zinnen die Grok bedacht. Een voorbeeld in de opdracht aan Grok werd door hem overgenomen; geef voorbeelden dus nooit in dezelfde vorm als wat je wilt testen.
+
+---
+
+## ✅ Punt 62d, ronde 2 en 3 — meer vervolgvormen en eerlijk terugvragen (4 november 2026)
+
+**Aanleiding:** de eerste verse blinde batch van Grok (26 gesprekken) gaf T4 19% (Router begreep 31%). Een tweede batch (42 gesprekken, opdracht zonder voorbeeldzinnen) gaf T4 0/42 en Router begreep 12/42 (29%).
+
+**Uitsplitsing van batch 2 (41 gesprekken van minstens twee beurten):** bij 16 werd de eerste vraag niet begrepen (8 bijzinvragen, 6 synoniemvragen "hoe noem je X anders" / "hoe heet X ook wel", plus een functievraag en een relatie zonder lidwoord), bij 17 de vervolgzin, en bij 8 waren beide begrepen maar faalde het op kennis of antwoordwoorden. Een groot deel van de lage T4-score kwam dus niet uit de vervolgzin zelf.
+
+**Ronde 2 (`core/context_resolver.py`, `core/intent_router.py`, `core/semantic.py`):**
+- Meer inleidingen voor een nieuw onderwerp: "hoe zit dat met", "wat dacht je van", "idem voor", "ok en".
+- Oorzaak/gevolg met een verwijswoord: "waardoor ontstaat/komt dat", "wat gebeurt er daardoor", "wat zorgt ervoor", "wat komt er van"; synoniem: "wat is een ander woord voor" (ook afgebroken), "welk woord betekent hetzelfde".
+- Punt 74 (a)+(b): `_is_vraagzin()` in `semantic.py` zodat een vraagzin nooit een leervoorstel wordt ("mag ik onthouden dat 'en wat' is een soort van …"), en een verwijzing zonder onthouden vraag geeft in de router een eerlijk "Waar heb je het over?" in plaats van een Wikipedia-zoekopdracht "ander woord voor".
+
+**Ronde 3:**
+- Ellips met een bijwoord erachter ("een nijlpaard ook?", "en boter dan?", "een mug wel?"), kale woorden ("gevolgen", "oorzaken", "ander woord", "synoniem", "hoe komt dat eigenlijk") en vulwoorden aan het eind negeren.
+- `language_normalizer.py`: vijf regels erbij ("hoe noem je een jas anders", "hoe heet een school ook wel", "hoe kun je een huis ook noemen", "wat is een andere naam voor tuin", "wat is dat precies" wordt "wat is dat").
+- Volgorde in `los_op()`: verwijswoorden vóór de ellips. Een test ving dat "en de effecten" anders als onderwerp "effecten" gelezen werd.
+- Fout gevonden in de volle vaste-setrun: "bij" stond in de lijst woorden die nooit een onderwerp zijn, waardoor "Is een bij een insect?" niet onthouden werd en "een wesp ook?" faalde. Met lidwoord is "bij" nu wel een onderwerp.
+
+**Meting:** na ronde 3 op de vaste set (242 zinnen): Router begreep 193/242 (80%), T4 26/79 (33%), totaal 40%, 49 taalgaten, 31 stiltes, 65 kennisgaten, 0 onterechte antwoorden. Deze cijfers zijn afgesteld op de twee batches; er is bewust geen derde verse batch gemeten.
+
+**Getest:** `test_context_resolver_ronde2.py` (54), `test_taalronde3.py` (49). Volledige suite: 4371 geslaagd, 1 overgeslagen.
+
+**Bewust niet gedaan en vastgelegd:** "en dan?" en "en wat dan" (dubbelzinnig); beschrijvende verwijzingen ("dat ding", "dat orgaan"; kennis nodig, punt 72); "hoort die bij de zoogdieren" (punt 70); "is dat fruit" zonder lidwoord; "waardoor smelt dat" (punt 71); de meetregel voor vage vervolgzinnen (punt 75, nog niet aangepast).
+
+**Wat geleerd:** vaste vormen voor vervolgvragen zijn een loopband: elke batch toont nieuwe zinsvormen en verbrandt zichzelf. De grotere winst zit in bijzinvragen (punt 71), want de helft van de onbegrepen eerste vragen zat daar, en in kennis in `concepts.json`. Splits een lage score altijd in eerste vraag, vervolgzin en kennis voordat je regels bouwt.
