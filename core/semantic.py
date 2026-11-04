@@ -1968,6 +1968,11 @@ class ReasoningEngine:
                 break
 
         if pad is None:
+            # Punt 69b: een onbekend ONDERWERP eerlijk benoemen, zoals explain_is_a()
+            # al deed. Een onbekend doel laten we zoals het was: doelen in de graaf
+            # hoeven geen eigen concept te zijn.
+            if self._is_onbekend(source) and not self.get_all_effects(source):
+                return f"Ik ken '{source}' niet, dus ik kan dat niet beoordelen."
             return self._geen_bewijs_met_alternatief(
                 source, target, relation_type="causes",
                 sjabloon="Ik kan niet bewijzen dat '{source}' leidt tot '{target}', "
@@ -2344,6 +2349,27 @@ class TeachEngine:
             stem = w[:-2]
             if self.store.has_concept(stem):
                 return stem
+            # Punt 70: spellingswijzigingen bij -en, enkel als het woord zelf
+            # GEEN concept is en het enkelvoud wel:
+            #   dubbele medeklinker: landschappen -> landschapp -> landschap
+            #   lange klinker:       bomen -> bom -> boom
+            if not self.store.has_concept(w):
+                if len(stem) > 3 and stem[-1] == stem[-2] and stem[-1] not in "aeiou":
+                    if self.store.has_concept(stem[:-1]):
+                        return stem[:-1]
+                if len(stem) > 2 and stem[-1] not in "aeiou" and stem[-2] in "aeou" \
+                        and stem[-3] not in "aeiou":
+                    lang = stem[:-1] + stem[-2] + stem[-1]
+                    if self.store.has_concept(lang):
+                        return lang
+                # Enkelvoud op -e: groenten -> groente (alleen "n" weg)
+                if self.store.has_concept(w[:-1]):
+                    return w[:-1]
+
+        # 1b) auto's -> auto (punt 70)
+        if w.endswith("'s") and len(w) > 3 and not self.store.has_concept(w):
+            if self.store.has_concept(w[:-2]):
+                return w[:-2]
 
         # 2) nieuwe simpele logica: -s
         if w.endswith("s") and len(w) > 3:

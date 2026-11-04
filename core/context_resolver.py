@@ -154,6 +154,10 @@ _NAAM = r"(?:dat|dit|die|deze|het)"
 _RELATIE_VERWIJZING = re.compile(
     rf"^(?:en )?is {_NAAM} (?:dan )?(?:ook )?(?P<y>{_LID} {_W}(?: {_W})?)$"
 )
+# "hoort die bij de zoogdieren" (punt 70): klasse in het meervoud, zoals in de normalizer.
+_HOORT_VERWIJZING = re.compile(
+    rf"^(?:en )?(?:hoort|behoort|valt) {_NAAM} (?:dan )?(?:ook )?(?:bij|tot|onder) de (?P<y>{_W})$"
+)
 _VERWIJS = r"(?:ervan|daarvan|hiervan|van dat|van dit|van die|van deze)"
 _GEVOLG_VERWIJZING = re.compile(
     r"^(?:en )?(?:"
@@ -230,6 +234,12 @@ def los_op(tekst, sjabloon, onderwerp, soort):
         if not _onderwerp_ok(y):
             return None
         return f"is {onderwerp} {y}", "relatie_verwijzing"
+
+    m = _HOORT_VERWIJZING.match(t)
+    if m and soort == "np":
+        y = m.group("y")
+        if len(y) >= 4 and re.search(r"(?:en|s)$", y) and _onderwerp_ok(y):
+            return f"is {onderwerp} een {y}", "hoort_verwijzing"
 
     return None
 

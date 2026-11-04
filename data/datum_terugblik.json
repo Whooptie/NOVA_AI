@@ -1,18 +1,28 @@
 {
-  "laatst_gemeld_datum": "2026-11-02",
+  "laatst_gemeld_datum": "2026-11-04",
   "gemeld": {
     "levenshtein": "2026-11-02",
     "plu": "2026-11-02",
-    "bank": "2026-11-02"
+    "bank": "2026-11-02",
+    "warm": "2026-11-04",
+    "hond": "2026-11-04",
+    "werk": "2026-11-04"
   },
   "laatste_analyse": {
     "datum": "2026-11-04",
     "actieve_dagen": 77,
-    "reden": "geen enkele afstand haalt de drempel",
-    "beste": null,
+    "reden": null,
+    "beste": {
+      "afstand_maanden": 3,
+      "woorden": [
+        "warm",
+        "hond",
+        "werkt"
+      ],
+      "score": 5.51
+    },
     "afgewezen": [
       "1 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "3 mnd: 2 gedeeld opvallend woord(en), score 3.8 (te laag)",
       "6 mnd: te weinig berichten rond 4 mei (0)",
       "12 mnd: te weinig berichten rond 4 november (0)",
       "24 mnd: te weinig berichten rond 4 november (0)"

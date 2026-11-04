@@ -49,7 +49,7 @@ def test_ronde2_idempotent(invoer, verwacht, regel):
 
 ONGEWIJZIGD = [
     # bijzinvragen ("wat gebeurt er als ijs smelt") zijn sinds punt 71 wel herschreven: zie test_bijzinvragen71.py
-    "hoort een hond bij de dieren",       # meervoud: lemmatizer nodig
+    # "hoort een hond bij de dieren" is sinds punt 70 wel herschreven: zie test_meervoud70.py
     "wat betekent flurble",               # zonder aanhalingstekens: werkt al
     "wat is regen",
     "wat is een synoniem van mooi",

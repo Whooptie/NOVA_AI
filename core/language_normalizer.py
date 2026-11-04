@@ -170,6 +170,23 @@ def _b_antoniem(m):
         return None
     return "wat is het tegenovergestelde van " + m.group("x")
 
+def _b_hoort_bij(m):
+    """
+    "hoort een hond bij de dieren" -> "is een hond een dieren" (punt 70).
+    Alleen met "de" + een MEERVOUDSWOORD ("bij de dieren", "tot de meubels"):
+    dat is een klasse, dus is_a. Enkelvoud ("hoort een wiel bij een auto",
+    "bij de auto") kan ook part_of of "hoort erbij" zijn en blijft ongemoeid.
+    Het meervoud zelf wordt later (bij de relatiecontrole in chat.py) naar
+    enkelvoud gezet.
+    """
+    y = m.group("y")
+    if len(y) < 4 or not re.search(r"(?:en|s)$", y):
+        return None
+    if not _woord_ok(m.group("x")) or y in _VERBODEN:
+        return None
+    return f"is {_term(m.group('artx'), m.group('x'))} een {y}"
+
+
 # ---------------------------------------------------------------- bijzinvragen (punt 71)
 # "wat gebeurt er als je een ballon loslaat", "waardoor breekt een tak",
 # "wat zorgt ervoor dat ijs smelt". De graaf heeft geen concept voor zo'n hele
@@ -300,6 +317,10 @@ REGELS = [
      re.compile(rf"^{_ARTX}(?P<x>{_X}) is dat (?:ook )?(?P<arty>{_LID}) (?P<y>{_Y})$"), _b_relatie),
     ("relatie_ook",
      re.compile(rf"^is {_ARTX}(?P<x>{_X}) ook (?P<arty>{_LID}) (?P<y>{_Y})$"), _b_relatie),
+
+    ("relatie_hoort_bij",
+     re.compile(rf"^(?:hoort|behoort|valt) {_ARTX}(?P<x>{_X}) (?:ook )?(?:bij|tot|onder) de (?P<y>{_W})$"),
+     _b_hoort_bij),
 
     # C. Oorzaak en gevolg
     ("oorzaak_waardoor",

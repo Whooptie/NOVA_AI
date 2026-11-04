@@ -117,7 +117,8 @@ class TestExplainCauses:
 
     def test_onbekend_woord_geen_crash(self, engines):
         _, _, _, rs = engines
-        assert "kan niet bewijzen" in rs.explain_causes("nooitgezien", "ook_niet")
+        # Sinds punt 69b zegt Nova eerlijk dat ze het onderwerp niet kent.
+        assert "Ik ken 'nooitgezien' niet" in rs.explain_causes("nooitgezien", "ook_niet")
 
     def test_rejected_relatie_telt_niet_mee(self, engines):
         _, se, re_, rs = engines

@@ -2957,3 +2957,50 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Bewust niet gedaan:** "waarom smelt sneeuw" ("waarom"-vragen zijn dubbelzinnig met relatievragen), "wat maakt dat" zonder lidwoord ("wat maakt dat kaarsen branden"), en vragen over Nova zelf die toevallig niet in de lijst woorden staan ("wat gebeurt er als je een nieuwe functie krijgt" wordt nog herschreven). Een lidwoord vooraan verdwijnt in het antwoord ("het regent" wordt 'regent').
 
 **Wat geleerd:** de aanpak was klein omdat de bestaande vragen "gevolgen van X" en "wat veroorzaakt X" al een woord als tekst accepteren; de regel hoefde alleen de vorm te herkennen. Dezelfde route breekt als de gebeurtenis later een eigen concept krijgt.
+
+---
+
+## ✅ Punt 72a, eerste deel — kennisgaten-logboek (4 november 2026)
+
+**Aanleiding:** Nova logt zinnen die ze niet begrijpt (`unmatched_intents.jsonl`), maar niet de keren dat ze de vraag wel begrijpt en het antwoord niet kent ("Ik ken geen oorzaken van 'modder'"). De 82 kennisgaten van de benchmark komen uit de woorden van Grok, niet uit Kevins eigen vragen, en Kevin praat nog weinig met Nova.
+
+**Wat er is gebouwd:**
+- `modules/knowledge/kennisgaten_log.py`: luistert op `raw_user_message`, `layer4_response` en `chat_response`; één regel per bericht in `data/kennisgaten.jsonl`. Eén aparte module in plaats van aanpassingen in `chat.py`, omdat de "ik ken …"-antwoorden uit meerdere plekken komen (`chat.py`, `intent_router.py`, `concept_overview.py`, `wikipedia_teacher.py`). Auto-ontdekt door `module_loader.py`.
+- `tools/kennisgaten_overzicht.py`: toont de lijst per soort, meest gevraagd bovenaan; optioneel gefilterd op soort.
+
+**Bewust niet:** geen commando in Nova zelf (dat zou een nieuwe intent in de router vragen); geen ML; antwoorden die een andere zin gebruiken dan de patronen in `_PATRONEN` worden niet gezien.
+
+**Getest:** `test_kennisgaten_log.py` (29). Volledige suite in mijn kopie: 4013 geslaagd.
+
+**Volgende stap:** een paar weken gewoon praten, dan met het overzicht de meest gevraagde woorden samen invullen in `concepts.json`.
+
+---
+
+## ✅ Punt 70 — meervoud op het relatiepad en "hoort bij de …" (4 november 2026)
+
+**Aanleiding:** "hoort een hond bij de dieren" en vijf gelijkaardige zinnen stonden als taalgat in de benchmark; ook "is een hond een dieren" gaf "ik kan niet bewijzen dat 'hond' een 'dieren' is", terwijl Nova meervoud wel kende (`TeachEngine._normalize_plural_if_noun`) maar op het relatiepad niet gebruikte.
+
+**Wat er is gebouwd:**
+- `core/language_normalizer.py`: regel `relatie_hoort_bij`: "hoort/behoort/valt X bij/tot/onder de Y" wordt "is een X een Y", alleen als Y een meervoud lijkt (eindigt op -en of -s, minstens vier letters). Enkelvoud ("hoort een wiel bij een auto") kan `part_of` of "hoort erbij" zijn en blijft ongemoeid. Dit sluit ook (a-rest) van punt 62 af.
+- `modules/chat/chat.py`: `_enkelvoud()` zet het laatste woord van source en target van meervoud naar enkelvoud in `on_relation_check`, behalve als het woord zelf al een concept is ("plaats" wordt nooit "plaat").
+- `core/semantic.py`: `_normalize_plural_if_noun` kent nu dubbele medeklinker (landschappen → landschap), lange klinker (bomen → boom, tomaten → tomaat), enkelvoud op -e (groenten → groente) en auto's → auto, telkens alleen als het enkelvoud al een concept is en het woord zelf niet.
+- `core/context_resolver.py`: "hoort die bij de zoogdieren" na een vraag over een woord met lidwoord gebruikt het onthouden onderwerp.
+
+**Getest:** `test_meervoud70.py` (35). Twee oude tests aangepast, die vastlegden dat deze zin NIET herschreven werd (`test_language_normalizer_ronde2.py`). Volledige suite in mijn kopie: 4047 geslaagd.
+
+**Meting (vaste set van 242 zinnen):** Router begreep 211 (87%) naar 217 (90%), taalgaten 31 naar 25, totaal geslaagd 98 (40%) naar 102 (42%), T2 36/112 naar 39/112, T4 27/79 naar 28/79, 0 onterechte antwoorden; niveau 1/2/3 bleven 100%.
+
+**Bewust niet:** "bij de buren" of "bij de ouders" (meervoud, maar geen klasse) wordt ook als `is_a` gelezen en antwoordt dan "Nee, een kat is geen buur" in plaats van niets; "hoort X bij Y" zonder "de" + meervoud; "kun je zeggen of een hond bij de dieren hoort" (andere zinsvorm); `behoort`/`valt` met enkelvoud.
+
+**Wat geleerd:** de aanpak van het oude punt (de functie die er al was op het nieuwe pad aanroepen) werkte; de spellingsregels zijn bewust voorzichtig: alleen als het enkelvoud al in `concepts.json` staat en het woord zelf geen concept is.
+
+### 4 november 2026 — Punt 69: eerlijk "dat weet ik niet"
+- Diagnose: echt Nova antwoordt al eerlijk bij onbekende woorden en fallbacks; de benchmark liet die lagen weg
+  en telde dan "stilte". Eén echt gat: causes-check met onbekend onderwerp gaf "ik kan niet bewijzen…".
+- core/semantic.py `explain_causes`: onbekend onderwerp zonder gevolgen → "Ik ken 'X' niet, dus ik kan dat niet beoordelen."
+- tools/run_benchmark.py: `--met-antwoordlaag` + `ANTWOORDLAAG_MODULES`; vaste random-seed per vraag.
+- Bewust niet gewijzigd: onbekend DOEL ("tijger een glorbix"), want doelen in de graaf hoeven geen concept te zijn.
+- Eerlijke bevinding: zonder vaste seed wisselde T5 per run (3 van de 5 fallback-zinnen bevatten geen
+  "ken/weet"); dat is een eigenschap van de generieke fallback, geen taalfout.
+- Meting in de testkopie (46 cases): standaard 91% / `--met-antwoordlaag` 98%, T5 8/8, 0 stilte.
+- Tests: tests/test_onbekend69.py (9).

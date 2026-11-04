@@ -82,3 +82,6 @@
 {"text": "wat gebeurt er als je stopt", "categorie": "neutraal_gemengd", "marge": 0.0408, "grof_sentiment_regex": null, "tijdstip": "2026-11-04T16:13:48.851051"}
 {"text": "wat gebeurt er als je een update krijgt", "categorie": "neutraal_gemengd", "marge": 0.0525, "grof_sentiment_regex": null, "tijdstip": "2026-11-04T16:13:55.636434"}
 {"text": "waardoor ontstaat modder", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-04T16:14:09.038260"}
+{"text": "hoe werkt je geheugen", "categorie": "positief", "marge": 0.0703, "grof_sentiment_regex": null, "tijdstip": "2026-11-04T16:17:39.481131"}
+{"text": "Hoort die bij de zoogdieren", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-04T19:35:39.804650"}
+{"text": "toon volledige graaf", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-04T20:19:09.752645"}

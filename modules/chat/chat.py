@@ -150,6 +150,24 @@ class ChatModule:
     # -------------------------
     # 3. Relation check
     # -------------------------
+    def _enkelvoud(self, term):
+        """
+        Zet het LAATSTE woord van een term van meervoud naar enkelvoud, met de
+        bestaande TeachEngine._normalize_plural_if_noun (punt 70). Een woord dat
+        zelf al een concept is blijft staan ("plaats" wordt nooit "plaat"). Bij
+        elke twijfel of fout komt de term ongewijzigd terug.
+        """
+        try:
+            te = self.semantic.teach_engine
+            delen = term.split()
+            if not delen or te.store.has_concept(delen[-1]):
+                return term
+            pos_guess = self.semantic.sense_engine.detect_pos(delen[-1])
+            delen[-1] = te._normalize_plural_if_noun(delen[-1], pos_guess)
+            return " ".join(delen)
+        except Exception:
+            return term
+
     def on_relation_check(self, data, event_type=None):
         # Let op: confirm-flow gebeurt nu in IntentRouter,
         # hier komen alleen definitieve checks terecht.
@@ -168,6 +186,11 @@ class ChatModule:
         # exact het gedrag van vóór deze wijziging.
         lidwoord = data.get("lidwoord", True)
         een = "een " if lidwoord else ""
+
+        # Punt 70: "is een hond een dieren" / "hoort een hond bij de dieren" ->
+        # het meervoud van source en target eerst naar enkelvoud.
+        source = self._enkelvoud(source)
+        target = self._enkelvoud(target)
 
         if self.semantic and hasattr(self.semantic, "explain_is_a"):
             msg = self.semantic.explain_is_a(source, target, lidwoord=lidwoord)

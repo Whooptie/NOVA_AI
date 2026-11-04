@@ -111,6 +111,17 @@ STANDAARD_NIVEAU3_MODULES = [
     "modules.math.math",
 ]
 
+# Met --met-antwoordlaag (punt 69): de lagen die in het echte Nova van een kaal
+# antwoord een gesprekszin maken, en de Wikipedia-leraar. Zonder deze lagen blijft
+# een fallback of een onbekend woord in de benchmark STIL, terwijl Nova in werkelijkheid
+# antwoordt ("Hmm… dat ken ik niet", "Ik ken 'X' nog niet. Leer het me met: teach ...").
+ANTWOORDLAAG_MODULES = [
+    "modules.chat.response_pipeline",
+    "modules.chat.chat_response_engine",
+    "modules.chat.expression_injector",
+    "modules.knowledge.wikipedia_teacher",
+]
+
 WEEKDAGEN = ["maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag", "zondag"]
 CATEGORIE_KETENS = "willekeurige_ketens"
 TAALNIVEAU_NAMEN = {
@@ -306,6 +317,9 @@ class Keten:
                 self.mislukt.setdefault(naam, f"{type(e).__name__}: {e}")
 
     def draai(self, vraag, voorvragen=None):
+        # De antwoordlaag kiest fallback-zinnen met random.choice(); met een vaste seed
+        # per vraag geeft elke meting dezelfde uitkomst (anders wisselt T5 per run).
+        random.seed(f"benchmark:{vraag}")
         with open(self._concepts_pad, "wb") as f:
             f.write(self._concepts_origineel)
 
@@ -563,6 +577,9 @@ def main():
     ap.add_argument("--geen-opslaan", action="store_true", help="schrijf niets naar data/benchmark_resultaten.jsonl")
     ap.add_argument("--bewaar-kopie", action="store_true", help="verwijder de tijdelijke kopie niet")
     ap.add_argument("--met-netwerk", action="store_true", help="laat netwerk (bv. Wikipedia) toe")
+    ap.add_argument("--met-antwoordlaag", action="store_true",
+                    help="laad ook de antwoordlagen en de Wikipedia-leraar (zoals het echte Nova), "
+                         "zodat fallback en onbekende woorden een antwoord krijgen")
     args = ap.parse_args()
 
     niveau = args.niveau
@@ -625,6 +642,17 @@ def main():
                     [(n, getattr(sys.modules.get(n), "__file__", None)) for n in extra],
                 ):
                     return 2
+            if args.met_antwoordlaag:
+                laag = [m for m in ANTWOORDLAAG_MODULES if m not in (extra or [])]
+                laag_fouten = importeer_modules(laag)
+                voorfouten = dict(voorfouten, **laag_fouten)
+                laag_ok = [m for m in laag if m not in laag_fouten]
+                if not controleer_in_kopie(
+                    kopie,
+                    [(n, getattr(sys.modules.get(n), "__file__", None)) for n in laag_ok],
+                ):
+                    return 2
+                extra = (extra or []) + laag_ok
             keten = Keten(concepts_kopie, extra_modules=extra, voorfouten=voorfouten)
 
             if args.willekeurig:

@@ -1,4 +1,976 @@
 {
+  "wagen": {
+    "senses": [
+      {
+        "sense_id": "wagen#1",
+        "definition": "Een wagen is een ander woord voor een auto: een voertuig met wielen en een motor.",
+        "pos": "noun",
+        "examples": [
+          "Hij parkeert de wagen voor de deur.",
+          "Onze wagen moet naar de garage."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "auto",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "voertuig",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wagen"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "wagen#1",
+        "old_value": null,
+        "new_value": "Een wagen is een ander woord voor een auto: een voertuig met wielen en een motor.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "mobiel": {
+    "senses": [
+      {
+        "sense_id": "mobiel#1",
+        "definition": "Een mobiel is een draagbare telefoon, ook gsm of smartphone genoemd.",
+        "pos": "noun",
+        "examples": [
+          "Ik laat mijn mobiel thuis liggen.",
+          "Mijn mobiel is bijna leeg."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "gsm",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "telefoon",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "mobiel"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "mobiel#1",
+        "old_value": null,
+        "new_value": "Een mobiel is een draagbare telefoon, ook gsm of smartphone genoemd.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "rijwiel": {
+    "senses": [
+      {
+        "sense_id": "rijwiel#1",
+        "definition": "Een rijwiel is een ouderwets woord voor een fiets.",
+        "pos": "noun",
+        "examples": [
+          "Opa reed vroeger op een zwart rijwiel.",
+          "Het rijwiel stond tegen de muur."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "fiets",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "voertuig",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "rijwiel"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "rijwiel#1",
+        "old_value": null,
+        "new_value": "Een rijwiel is een ouderwets woord voor een fiets.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "woning": {
+    "senses": [
+      {
+        "sense_id": "woning#1",
+        "definition": "Een woning is een gebouw of deel van een gebouw waar mensen wonen, zoals een huis of appartement.",
+        "pos": "noun",
+        "examples": [
+          "De woning heeft drie slaapkamers.",
+          "Ze zoeken een woning in de stad."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "huis",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "gebouw",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "woning"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "woning#1",
+        "old_value": null,
+        "new_value": "Een woning is een gebouw of deel van een gebouw waar mensen wonen, zoals een huis of appartement.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "mama": {
+    "senses": [
+      {
+        "sense_id": "mama#1",
+        "definition": "Mama is wat kinderen zeggen tegen hun moeder.",
+        "pos": "noun",
+        "examples": [
+          "Mama maakt het avondeten klaar.",
+          "Het kind roept om mama."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "moeder",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "ouder",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "mama"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "mama#1",
+        "old_value": null,
+        "new_value": "Mama is wat kinderen zeggen tegen hun moeder.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "papa": {
+    "senses": [
+      {
+        "sense_id": "papa#1",
+        "definition": "Papa is wat kinderen zeggen tegen hun vader.",
+        "pos": "noun",
+        "examples": [
+          "Papa brengt me naar school.",
+          "Het meisje zwaait naar papa."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "vader",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "ouder",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "papa"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "papa#1",
+        "old_value": null,
+        "new_value": "Papa is wat kinderen zeggen tegen hun vader.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "kwaad": {
+    "senses": [
+      {
+        "sense_id": "kwaad#1",
+        "definition": "Kwaad betekent boos: je voelt woede om iets dat je niet leuk vindt.",
+        "pos": "adj",
+        "examples": [
+          "Hij was kwaad omdat de bus te laat kwam.",
+          "Ze keek kwaad naar het scherm."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "boos",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kwaad"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "kwaad#1",
+        "old_value": null,
+        "new_value": "Kwaad betekent boos: je voelt woede om iets dat je niet leuk vindt.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "vrolijk": {
+    "senses": [
+      {
+        "sense_id": "vrolijk#1",
+        "definition": "Vrolijk betekent blij en opgewekt.",
+        "pos": "adj",
+        "examples": [
+          "De kinderen zijn vrolijk.",
+          "Ze zong een vrolijk liedje."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "blij",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vrolijk"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "vrolijk#1",
+        "old_value": null,
+        "new_value": "Vrolijk betekent blij en opgewekt.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "angstig": {
+    "senses": [
+      {
+        "sense_id": "angstig#1",
+        "definition": "Angstig betekent bang of vol angst.",
+        "pos": "adj",
+        "examples": [
+          "Het kind keek angstig om zich heen.",
+          "Ik voel me angstig voor het examen."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "bang",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "angstig"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "angstig#1",
+        "old_value": null,
+        "new_value": "Angstig betekent bang of vol angst.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "woud": {
+    "senses": [
+      {
+        "sense_id": "woud#1",
+        "definition": "Een woud is een groot bos.",
+        "pos": "noun",
+        "examples": [
+          "Ze wandelden uren door het woud.",
+          "In het woud leven herten en everzwijnen."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "bos",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "gebied",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "woud"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "woud#1",
+        "old_value": null,
+        "new_value": "Een woud is een groot bos.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "docent": {
+    "senses": [
+      {
+        "sense_id": "docent#1",
+        "definition": "Een docent is iemand die les geeft, een leraar.",
+        "pos": "noun",
+        "examples": [
+          "De docent legt de opdracht uit.",
+          "Onze docent geeft les in wiskunde."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "leraar",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "beroep",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "docent"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "docent#1",
+        "old_value": null,
+        "new_value": "Een docent is iemand die les geeft, een leraar.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "spreken": {
+    "senses": [
+      {
+        "sense_id": "spreken#1",
+        "definition": "Spreken is woorden zeggen met je stem.",
+        "pos": "verb",
+        "examples": [
+          "Ze spreekt zacht.",
+          "Mag ik even met je spreken?"
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "praten",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "spreken"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "spreken#1",
+        "old_value": null,
+        "new_value": "Spreken is woorden zeggen met je stem.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "grootvader": {
+    "senses": [
+      {
+        "sense_id": "grootvader#1",
+        "definition": "Een grootvader is de vader van je vader of moeder.",
+        "pos": "noun",
+        "examples": [
+          "Mijn grootvader vertelt graag verhalen.",
+          "Grootvader woont op de boerderij."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "opa",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "persoon",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "grootvader"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "grootvader#1",
+        "old_value": null,
+        "new_value": "Een grootvader is de vader van je vader of moeder.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "wc": {
+    "senses": [
+      {
+        "sense_id": "wc#1",
+        "definition": "Een wc is een toilet.",
+        "pos": "noun",
+        "examples": [
+          "Het wc is op de eerste verdieping.",
+          "Wie heeft het wc gebruikt?"
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "toilet",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wc"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "wc#1",
+        "old_value": null,
+        "new_value": "Een wc is een toilet.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
+  "poetsen": {
+    "senses": [
+      {
+        "sense_id": "poetsen#1",
+        "definition": "Poetsen is iets schoonmaken door het te wrijven of te schrobben.",
+        "pos": "verb",
+        "examples": [
+          "Ze poetst de ramen elke week.",
+          "Op zaterdag poetsen we het huis."
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "schoonmaken",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-04T20:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-04T20:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "poetsen"
+        },
+        "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "poetsen#1",
+        "old_value": null,
+        "new_value": "Poetsen is iets schoonmaken door het te wrijven of te schrobben.",
+        "timestamp": "2026-11-04T20:00:00.000000"
+      }
+    ]
+  },
   "sorteren": {
     "senses": [
       {
@@ -6023,6 +6995,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-31T15:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "sneeuw",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:45:28.607398",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -6033,15 +7014,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:30:00.000000",
-      "updated_at": "2026-10-31T15:30:00.000000",
+      "updated_at": "2026-11-04T18:45:28.684038",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T15:30:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:45:28.607407",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:45:28.607407",
           "confidence": 1.0
         }
       ]
@@ -6062,6 +7047,30 @@
         "old_value": null,
         "new_value": "Bevriezen is hard worden door de kou, zoals water dat ijs wordt.",
         "timestamp": "2026-10-31T15:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "bevriezen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "sneeuw",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:45:28.607405"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "bevriezen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "sneeuw"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:45:28.684047"
       }
     ]
   },
@@ -6289,6 +7298,14 @@
           "De hittegolf duurde een week."
         ],
         "relations": [
+          {
+            "type": "causes",
+            "target": "droogte",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "warmte",
@@ -6640,6 +7657,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-31T15:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "vloer",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:40:41.729665"
           }
         ],
         "source": "user",
@@ -6650,15 +7675,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:30:00.000000",
-      "updated_at": "2026-10-31T15:30:00.000000",
+      "updated_at": "2026-11-04T18:40:41.803785",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T15:30:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:40:41.729679",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:40:41.729679",
           "confidence": 1.0
         }
       ]
@@ -6679,6 +7708,30 @@
         "old_value": null,
         "new_value": "Een kelder is een ruimte onder de grond onder een huis.",
         "timestamp": "2026-10-31T15:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "kelder#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vloer",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:40:41.729676"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "kelder#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vloer"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:40:41.803794"
       }
     ]
   },
@@ -6693,6 +7746,14 @@
           "Het toilet is beneden."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "wc",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "part_of",
             "target": "huis",
@@ -6808,6 +7869,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-31T15:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "zolder",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:43:50.687599"
           }
         ],
         "source": "user",
@@ -6818,15 +7887,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:30:00.000000",
-      "updated_at": "2026-10-31T15:30:00.000000",
+      "updated_at": "2026-11-04T18:43:50.767006",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T15:30:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:43:50.687607",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:50.687607",
           "confidence": 1.0
         }
       ]
@@ -6847,6 +7920,30 @@
         "old_value": null,
         "new_value": "Een plafond is de bovenkant van een kamer, waar je naar boven tegen kijkt.",
         "timestamp": "2026-10-31T15:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "plafond#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zolder",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:50.687605"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "plafond#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zolder"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:43:50.767017"
       }
     ]
   },
@@ -7555,6 +8652,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "poetsen",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "wassen",
             "confidence": 0.9,
@@ -7670,6 +8775,14 @@
             "status": "confirmed",
             "created_at": "2026-10-31T19:22:11.711312",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "wassen",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:45:33.530884"
           }
         ],
         "source": "user",
@@ -7680,12 +8793,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:30:00.000000",
-      "updated_at": "2026-10-31T19:22:11.786902",
+      "updated_at": "2026-11-04T18:45:33.609896",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T19:22:11.711324",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:45:33.530897",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:30:00.000000",
@@ -7693,6 +8806,10 @@
         },
         {
           "timestamp": "2026-10-31T19:22:11.711324",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:45:33.530897",
           "confidence": 1.0
         }
       ]
@@ -7737,6 +8854,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-31T19:22:11.786913"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "opruimen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "wassen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:45:33.530894"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "opruimen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "wassen"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:45:33.609906"
       }
     ]
   },
@@ -10308,6 +11449,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "spreken",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "mond",
             "confidence": 0.9,
@@ -10514,6 +11663,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-31T15:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "oorbel",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:43:17.389065"
           }
         ],
         "source": "user",
@@ -10524,15 +11681,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:00:00.000000",
-      "updated_at": "2026-10-31T15:00:00.000000",
+      "updated_at": "2026-11-04T18:43:17.466612",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T15:00:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:43:17.389078",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:17.389078",
           "confidence": 1.0
         }
       ]
@@ -10553,6 +11714,30 @@
         "old_value": null,
         "new_value": "Luisteren is aandachtig naar geluid of naar iemands woorden horen.",
         "timestamp": "2026-10-31T15:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "luisteren#1",
+        "relation": {
+          "type": "related_to",
+          "target": "oorbel",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:17.389075"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "luisteren#1",
+        "relation": {
+          "type": "related_to",
+          "target": "oorbel"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:43:17.466622"
       }
     ]
   },
@@ -10782,6 +11967,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-31T15:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "warm",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:41:16.075480",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -10792,15 +11986,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:00:00.000000",
-      "updated_at": "2026-10-31T15:00:00.000000",
+      "updated_at": "2026-11-04T18:41:16.152250",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T15:00:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:41:16.075490",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:41:16.075490",
           "confidence": 1.0
         }
       ]
@@ -10821,6 +12019,30 @@
         "old_value": null,
         "new_value": "Een verwarming is een installatie die een ruimte warm maakt.",
         "timestamp": "2026-10-31T15:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "verwarming#1",
+        "relation": {
+          "type": "related_to",
+          "target": "warm",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:41:16.075487"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "verwarming#1",
+        "relation": {
+          "type": "related_to",
+          "target": "warm"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:41:16.152259"
       }
     ]
   },
@@ -10927,6 +12149,14 @@
           "Mijn agenda zit vol deze week."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "kalender",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "kalender",
@@ -12194,6 +13424,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "rijwiel",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "fietsen",
             "confidence": 1.0,
@@ -12591,6 +13829,14 @@
           "Onze huiskat jaagt graag op muizen."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "kat",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "is_a",
             "target": "kat",
@@ -13126,6 +14372,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "vacht",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:46:31.901702"
           }
         ],
         "source": "user",
@@ -13136,13 +14390,13 @@
     ],
     "metadata": {
       "created_at": "2026-06-29T17:33:27.306128",
-      "updated_at": "2026-07-12T17:50:55.727715",
+      "updated_at": "2026-11-04T18:46:31.982116",
       "sources": [
         "user",
         "auto"
       ],
-      "last_used_at": "2026-07-12T17:50:55.727715",
-      "usage_count": 3,
+      "last_used_at": "2026-11-04T18:46:31.901714",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-06-29T17:33:27.309583",
@@ -13155,6 +14409,10 @@
         {
           "timestamp": "2026-07-12T17:50:55.727715",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-04T18:46:31.901714",
+          "confidence": 1.0
         }
       ]
     },
@@ -13185,6 +14443,30 @@
           "confidence": 1.0
         },
         "timestamp": "2026-06-29T17:37:52.228284"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "dier#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vacht",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:46:31.901712"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "dier#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vacht"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:46:31.982126"
       }
     ]
   },
@@ -15712,6 +16994,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "woning",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "has_part",
             "target": "terras",
             "confidence": 1.0,
@@ -17150,6 +18440,14 @@
           "Onze kat miauwde om eten."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "huiskat",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "is_a",
             "target": "zoogdier",
@@ -18817,6 +20115,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "huid",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "lichaam",
             "confidence": 0.6,
@@ -18876,6 +20182,14 @@
           "Ze kocht verse voedingsmiddelen op de markt."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "voedsel",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "koken",
@@ -19516,6 +20830,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "vrolijk",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "plezier",
             "confidence": 1.0,
@@ -19591,6 +20913,14 @@
           "Ze keek boos naar de rommel op tafel."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "kwaad",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "is_a",
             "target": "gevoel",
@@ -19772,6 +21102,22 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "overstroming",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "causes",
+            "target": "nat",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "regenworm",
             "confidence": 1.0,
@@ -19923,6 +21269,14 @@
           "Ze zaten in de zon te genieten van het weer."
         ],
         "relations": [
+          {
+            "type": "causes",
+            "target": "warmte",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "zonnebloem",
@@ -24706,6 +26060,15 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "related_to",
+            "target": "satelliet",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:43:46.833917",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -24716,15 +26079,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-11-04T18:43:46.911848",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:43:46.833930",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:46.833930",
           "confidence": 1.0
         }
       ]
@@ -24745,6 +26112,30 @@
         "old_value": null,
         "new_value": "De maan is de natuurlijke satelliet die om de aarde draait en 's nachts licht geeft door het zonlicht te weerkaatsen.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "maan#1",
+        "relation": {
+          "type": "related_to",
+          "target": "satelliet",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:46.833928"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "maan#1",
+        "relation": {
+          "type": "related_to",
+          "target": "satelliet"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:43:46.911858"
       }
     ]
   },
@@ -26373,6 +27764,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "angstig",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "gevoel",
             "confidence": 0.8,
@@ -26587,6 +27986,15 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-27T18:10:39.694150"
+          },
+          {
+            "type": "related_to",
+            "target": "zuster",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:43:47.277435",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -26597,12 +28005,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-11T00:00:00.000000",
-      "updated_at": "2026-10-27T18:10:39.763286",
+      "updated_at": "2026-11-04T18:43:47.350899",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-27T18:10:39.694163",
-      "usage_count": 3,
+      "last_used_at": "2026-11-04T18:43:47.277448",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-07-11T00:00:00.000000",
@@ -26614,6 +28022,10 @@
         },
         {
           "timestamp": "2026-10-27T18:10:39.694163",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:47.277448",
           "confidence": 1.0
         }
       ]
@@ -26682,6 +28094,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-27T18:10:39.763296"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "broer#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zuster",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:47.277446"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "broer#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zuster"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:43:47.350908"
       }
     ]
   },
@@ -27391,6 +28827,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "programma",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:46:26.997955",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -27401,12 +28846,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-11T00:00:00.000000",
-      "updated_at": "2026-10-22T18:07:17.518539",
+      "updated_at": "2026-11-04T18:46:27.073977",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-22T18:07:17.476129",
-      "usage_count": 2,
+      "last_used_at": "2026-11-04T18:46:26.997968",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-07-11T00:00:00.000000",
@@ -27414,6 +28859,10 @@
         },
         {
           "timestamp": "2026-10-22T18:07:17.476129",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:46:26.997968",
           "confidence": 1.0
         }
       ]
@@ -27458,6 +28907,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-22T18:07:17.518547"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "code#1",
+        "relation": {
+          "type": "related_to",
+          "target": "programma",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:46:26.997966"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "code#1",
+        "relation": {
+          "type": "related_to",
+          "target": "programma"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:46:27.073986"
       }
     ]
   },
@@ -27962,6 +29435,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "ovulatie",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:40:42.178083"
           }
         ],
         "source": "user",
@@ -27972,12 +29453,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-11T00:00:00.000000",
-      "updated_at": "2026-10-22T18:08:46.014492",
+      "updated_at": "2026-11-04T18:40:42.253280",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-22T18:08:45.973038",
-      "usage_count": 5,
+      "last_used_at": "2026-11-04T18:40:42.178097",
+      "usage_count": 6,
       "confidence_history": [
         {
           "timestamp": "2026-07-11T00:00:00.000000",
@@ -27997,6 +29478,10 @@
         },
         {
           "timestamp": "2026-10-22T18:08:45.973038",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:40:42.178097",
           "confidence": 1.0
         }
       ]
@@ -28113,6 +29598,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-22T18:08:46.014500"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "ei#1",
+        "relation": {
+          "type": "related_to",
+          "target": "ovulatie",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:40:42.178094"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "ei#1",
+        "relation": {
+          "type": "related_to",
+          "target": "ovulatie"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:40:42.253291"
       }
     ]
   },
@@ -29494,6 +31003,14 @@
           "Dit was de plek waar ze elkaar altijd ontmoetten."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "plaats",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "gebied",
@@ -30892,6 +32409,14 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:36:15.977838",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "schop",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:40:41.877453"
           }
         ],
         "source": "user",
@@ -30902,12 +32427,12 @@
     ],
     "metadata": {
       "created_at": "2026-07-12T18:33:00.000000",
-      "updated_at": "2026-10-20T17:36:16.015271",
+      "updated_at": "2026-11-04T18:40:41.953575",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:36:15.977847",
-      "usage_count": 2,
+      "last_used_at": "2026-11-04T18:40:41.877467",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-07-12T18:33:00.000000",
@@ -30919,6 +32444,10 @@
         },
         {
           "timestamp": "2026-10-20T17:36:15.977847",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:40:41.877467",
           "confidence": 1.0
         }
       ]
@@ -30987,6 +32516,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:36:16.015281"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "hakken#1",
+        "relation": {
+          "type": "related_to",
+          "target": "schop",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:40:41.877464"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "hakken#1",
+        "relation": {
+          "type": "related_to",
+          "target": "schop"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:40:41.953585"
       }
     ]
   },
@@ -33111,6 +34664,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:50:30.653209",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "spelen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:42:58.748581",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -33121,13 +34683,13 @@
     ],
     "metadata": {
       "created_at": "2026-07-31T05:07:59.947422",
-      "updated_at": "2026-10-20T17:50:30.692235",
+      "updated_at": "2026-11-04T18:42:58.825467",
       "sources": [
         "auto",
         "user"
       ],
-      "last_used_at": "2026-10-20T17:50:30.653222",
-      "usage_count": 4,
+      "last_used_at": "2026-11-04T18:42:58.748593",
+      "usage_count": 5,
       "confidence_history": [
         {
           "timestamp": "2026-07-31T05:07:59.948407",
@@ -33143,6 +34705,10 @@
         },
         {
           "timestamp": "2026-10-20T17:50:30.653222",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:58.748593",
           "confidence": 1.0
         }
       ]
@@ -33219,6 +34785,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:50:30.692244"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "partijtje#1",
+        "relation": {
+          "type": "related_to",
+          "target": "spelen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:58.748591"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "partijtje#1",
+        "relation": {
+          "type": "related_to",
+          "target": "spelen"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:42:58.825476"
       }
     ]
   },
@@ -34414,6 +36004,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "zuurstof",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "vorm",
             "confidence": 0.9,
@@ -35164,6 +36762,14 @@
           "Diep in het bos leefden herten en vossen."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "woud",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "naaldboom",
@@ -36528,6 +38134,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "plek",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "plek",
             "confidence": 0.8,
@@ -37181,6 +38795,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "blessure",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "vloer",
             "confidence": 0.9,
@@ -37758,6 +39380,14 @@
           "De auto reed over de snelweg."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "wagen",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "has_part",
             "target": "wiel",
@@ -39519,6 +41149,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "donder",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "part_of",
             "target": "onweer",
             "confidence": 1.0,
@@ -39892,6 +41530,22 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "ijs",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "causes",
+            "target": "bevriezen",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "winter",
             "confidence": 1.0,
@@ -40027,6 +41681,14 @@
           "In de winkel kopen we voedsel voor de hele week."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "voedingsmiddel",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "voedingsmiddel",
@@ -41471,6 +43133,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "bloedsuiker",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "voedingsmiddel",
             "confidence": 1.0,
@@ -42857,6 +44527,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "traan",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "gevoel",
             "confidence": 1.0,
@@ -43008,6 +44686,14 @@
           "Zijn angst was zichtbaar."
         ],
         "relations": [
+          {
+            "type": "causes",
+            "target": "zweet",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "is_a",
             "target": "gevoel",
@@ -43954,6 +45640,15 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:45:15.649697",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "slapen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:41:16.229426",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -43964,12 +45659,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T17:05:00.000000",
-      "updated_at": "2026-10-20T17:45:15.688556",
+      "updated_at": "2026-11-04T18:41:16.305574",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:45:15.649705",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:41:16.229438",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T17:05:00.000000",
@@ -43977,6 +45672,10 @@
         },
         {
           "timestamp": "2026-10-20T17:45:15.649705",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:41:16.229438",
           "confidence": 1.0
         }
       ]
@@ -44021,6 +45720,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:45:15.688567"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "bed#1",
+        "relation": {
+          "type": "related_to",
+          "target": "slapen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:41:16.229436"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "bed#1",
+        "relation": {
+          "type": "related_to",
+          "target": "slapen"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:41:16.305582"
       }
     ]
   },
@@ -44293,6 +46016,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "papa",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "ouder",
             "confidence": 1.0,
@@ -44397,6 +46128,14 @@
           "De moeder bracht haar zoon naar school."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "mama",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "is_a",
             "target": "ouder",
@@ -44535,6 +46274,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "grootvader",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "persoon",
             "confidence": 1.0,
@@ -44662,6 +46409,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "schoonmoeder",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:45:33.373687"
           }
         ],
         "source": "user",
@@ -44672,15 +46427,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T17:05:00.000000",
-      "updated_at": "2026-10-15T17:05:00.000000",
+      "updated_at": "2026-11-04T18:45:33.451896",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T17:05:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:45:33.373698",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T17:05:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:45:33.373698",
           "confidence": 1.0
         }
       ]
@@ -44701,6 +46460,30 @@
         "old_value": null,
         "new_value": "Een oma is de moeder van je vader of moeder.",
         "timestamp": "2026-10-15T17:05:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "oma#1",
+        "relation": {
+          "type": "related_to",
+          "target": "schoonmoeder",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:45:33.373696"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "oma#1",
+        "relation": {
+          "type": "related_to",
+          "target": "schoonmoeder"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:45:33.451908"
       }
     ]
   },
@@ -45058,6 +46841,14 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:59:30.544224",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "moederschap",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:42:17.503282"
           }
         ],
         "source": "user",
@@ -45068,12 +46859,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T17:05:00.000000",
-      "updated_at": "2026-10-20T17:59:30.584893",
+      "updated_at": "2026-11-04T18:42:17.581903",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:59:30.544234",
-      "usage_count": 2,
+      "last_used_at": "2026-11-04T18:42:17.503296",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T17:05:00.000000",
@@ -45085,6 +46876,10 @@
         },
         {
           "timestamp": "2026-10-20T17:59:30.544234",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:17.503296",
           "confidence": 1.0
         }
       ]
@@ -45153,6 +46948,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:59:30.584900"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "dochter#1",
+        "relation": {
+          "type": "related_to",
+          "target": "moederschap",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:17.503294"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "dochter#1",
+        "relation": {
+          "type": "related_to",
+          "target": "moederschap"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:42:17.581918"
       }
     ]
   },
@@ -45455,6 +47274,15 @@
             "status": "confirmed",
             "created_at": "2026-10-22T18:08:34.946548",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "stof",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:46:26.833417",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -45465,12 +47293,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-22T18:08:34.988702",
+      "updated_at": "2026-11-04T18:46:26.919807",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-22T18:08:34.946559",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:46:26.833426",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -45478,6 +47306,10 @@
         },
         {
           "timestamp": "2026-10-22T18:08:34.946559",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:46:26.833426",
           "confidence": 1.0
         }
       ]
@@ -45522,6 +47354,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-22T18:08:34.988710"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "kleren#1",
+        "relation": {
+          "type": "related_to",
+          "target": "stof",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:46:26.833424"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "kleren#1",
+        "relation": {
+          "type": "related_to",
+          "target": "stof"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:46:26.919818"
       }
     ]
   },
@@ -46738,6 +48594,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T19:40:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "lopen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:42:12.751545",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -46748,15 +48613,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-15T19:40:00.000000",
+      "updated_at": "2026-11-04T18:42:12.826690",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T19:40:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:42:12.751554",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:12.751554",
           "confidence": 1.0
         }
       ]
@@ -46777,6 +48646,30 @@
         "old_value": null,
         "new_value": "Een schoen is een stevig kledingstuk dat je om je voet draagt om te lopen.",
         "timestamp": "2026-10-15T19:40:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "schoen#1",
+        "relation": {
+          "type": "used_for",
+          "target": "lopen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:12.751551"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "schoen#1",
+        "relation": {
+          "type": "used_for",
+          "target": "lopen"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:42:12.826701"
       }
     ]
   },
@@ -46807,6 +48700,14 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:32:44.816328",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "schoppen",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:42:18.129047"
           }
         ],
         "source": "user",
@@ -46817,12 +48718,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-20T17:32:44.853319",
+      "updated_at": "2026-11-04T18:42:18.206251",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:32:44.816339",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:42:18.129059",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -46830,6 +48731,10 @@
         },
         {
           "timestamp": "2026-10-20T17:32:44.816339",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:18.129059",
           "confidence": 1.0
         }
       ]
@@ -46874,6 +48779,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:32:44.853326"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "laars#1",
+        "relation": {
+          "type": "related_to",
+          "target": "schoppen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:18.129057"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "laars#1",
+        "relation": {
+          "type": "related_to",
+          "target": "schoppen"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:42:18.206260"
       }
     ]
   },
@@ -50913,6 +52842,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "chauffeur",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "persoon",
             "confidence": 1.0,
@@ -53765,6 +55702,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-20T17:48:04.293873"
+          },
+          {
+            "type": "related_to",
+            "target": "schouderblad",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:44:57.868282"
           }
         ],
         "source": "user",
@@ -53775,12 +55720,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-20T17:48:04.339351",
+      "updated_at": "2026-11-04T18:44:57.944368",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:48:04.293885",
-      "usage_count": 2,
+      "last_used_at": "2026-11-04T18:44:57.868293",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -53792,6 +55737,10 @@
         },
         {
           "timestamp": "2026-10-20T17:48:04.293885",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:44:57.868293",
           "confidence": 1.0
         }
       ]
@@ -53860,6 +55809,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-20T17:48:04.339361"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "elleboog#1",
+        "relation": {
+          "type": "related_to",
+          "target": "schouderblad",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:44:57.868291"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "elleboog#1",
+        "relation": {
+          "type": "related_to",
+          "target": "schouderblad"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:44:57.944376"
       }
     ]
   },
@@ -55525,6 +57498,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "dij",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:40:42.341323"
           }
         ],
         "source": "user",
@@ -55535,12 +57516,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-22T18:06:23.546727",
+      "updated_at": "2026-11-04T18:40:42.417360",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-22T18:06:23.505861",
-      "usage_count": 2,
+      "last_used_at": "2026-11-04T18:40:42.341339",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -55552,6 +57533,10 @@
         },
         {
           "timestamp": "2026-10-22T18:06:23.505861",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:40:42.341339",
           "confidence": 1.0
         }
       ]
@@ -55620,6 +57605,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-22T18:06:23.546738"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "bekken#1",
+        "relation": {
+          "type": "related_to",
+          "target": "dij",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:40:42.341336"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "bekken#1",
+        "relation": {
+          "type": "related_to",
+          "target": "dij"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:40:42.417370"
       }
     ]
   },
@@ -56120,6 +58129,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-27T18:04:36.810142"
+          },
+          {
+            "type": "related_to",
+            "target": "teen",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:46:31.425778"
           }
         ],
         "source": "user",
@@ -56130,12 +58147,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-27T18:04:36.877734",
+      "updated_at": "2026-11-04T18:46:31.507905",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-27T18:04:36.810159",
-      "usage_count": 4,
+      "last_used_at": "2026-11-04T18:46:31.425788",
+      "usage_count": 5,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -56155,6 +58172,10 @@
         },
         {
           "timestamp": "2026-10-27T18:04:36.810159",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:46:31.425788",
           "confidence": 1.0
         }
       ]
@@ -56271,6 +58292,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-27T18:04:36.877745"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "enkel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "teen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:46:31.425785"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "enkel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "teen"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:46:31.507915"
       }
     ]
   },
@@ -56408,6 +58453,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T19:40:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "pols",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:44:57.561111"
           }
         ],
         "source": "user",
@@ -56418,15 +58471,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-15T19:40:00.000000",
+      "updated_at": "2026-11-04T18:44:57.639063",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T19:40:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:44:57.561123",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:44:57.561123",
           "confidence": 1.0
         }
       ]
@@ -56447,6 +58504,30 @@
         "old_value": null,
         "new_value": "De hiel is het achterste deel van de voet.",
         "timestamp": "2026-10-15T19:40:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "hiel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pols",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:44:57.561121"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "hiel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pols"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:44:57.639072"
       }
     ]
   },
@@ -57347,6 +59428,14 @@
           "Zonnebrand beschermt je huid tegen de zon."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "vel",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "has_part",
             "target": "opperhuid",
@@ -58725,6 +60814,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-31T20:07:51.309025"
+          },
+          {
+            "type": "related_to",
+            "target": "verloskundige",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:43:50.851999"
           }
         ],
         "source": "user",
@@ -58735,12 +60832,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-31T20:07:51.382654",
+      "updated_at": "2026-11-04T18:43:50.932045",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T20:07:51.309038",
-      "usage_count": 7,
+      "last_used_at": "2026-11-04T18:43:50.852014",
+      "usage_count": 8,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -58772,6 +60869,10 @@
         },
         {
           "timestamp": "2026-10-31T20:07:51.309038",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:50.852014",
           "confidence": 1.0
         }
       ]
@@ -58972,6 +61073,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-31T20:07:51.382664"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "baarmoeder#1",
+        "relation": {
+          "type": "related_to",
+          "target": "verloskundige",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:50.852011"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "baarmoeder#1",
+        "relation": {
+          "type": "related_to",
+          "target": "verloskundige"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:43:50.932058"
       }
     ]
   },
@@ -60696,6 +62821,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "docent",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "is_a",
             "target": "beroep",
             "confidence": 1.0,
@@ -61742,6 +63875,14 @@
           "Hij is chauffeur van een vrachtwagen."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "bestuurder",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "is_a",
             "target": "beroep",
@@ -64924,6 +67065,14 @@
           "Ik hang een nieuwe kalender op."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "agenda",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "datum",
@@ -69919,6 +72068,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-31T19:49:06.817798"
+          },
+          {
+            "type": "related_to",
+            "target": "scheenbeen",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:43:17.240168"
           }
         ],
         "source": "user",
@@ -69929,12 +72086,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-31T19:49:06.893425",
+      "updated_at": "2026-11-04T18:43:17.316038",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T19:49:06.817810",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:43:17.240181",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -69942,6 +72099,10 @@
         },
         {
           "timestamp": "2026-10-31T19:49:06.817810",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:17.240181",
           "confidence": 1.0
         }
       ]
@@ -69986,6 +72147,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-31T19:49:06.893436"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "kuitspier#1",
+        "relation": {
+          "type": "related_to",
+          "target": "scheenbeen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:17.240179"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "kuitspier#1",
+        "relation": {
+          "type": "related_to",
+          "target": "scheenbeen"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:43:17.316047"
       }
     ]
   },
@@ -71151,6 +73336,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-22T18:07:27.450397"
+          },
+          {
+            "type": "related_to",
+            "target": "traan",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:44:58.182278"
           }
         ],
         "source": "user",
@@ -71161,12 +73354,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-22T18:07:27.493103",
+      "updated_at": "2026-11-04T18:44:58.258600",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-22T18:07:27.450407",
-      "usage_count": 3,
+      "last_used_at": "2026-11-04T18:44:58.182293",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -71182,6 +73375,10 @@
         },
         {
           "timestamp": "2026-10-22T18:07:27.450407",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:44:58.182293",
           "confidence": 1.0
         }
       ]
@@ -71274,6 +73471,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-22T18:07:27.493111"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "hoornvlies#1",
+        "relation": {
+          "type": "related_to",
+          "target": "traan",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:44:58.182291"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "hoornvlies#1",
+        "relation": {
+          "type": "related_to",
+          "target": "traan"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:44:58.258609"
       }
     ]
   },
@@ -71666,6 +73887,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-22T18:08:46.223189"
+          },
+          {
+            "type": "related_to",
+            "target": "koptelefoon",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:42:17.818447"
           }
         ],
         "source": "user",
@@ -71676,12 +73905,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-22T18:08:46.265694",
+      "updated_at": "2026-11-04T18:42:17.893149",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-22T18:08:46.223198",
-      "usage_count": 4,
+      "last_used_at": "2026-11-04T18:42:17.818460",
+      "usage_count": 5,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -71701,6 +73930,10 @@
         },
         {
           "timestamp": "2026-10-22T18:08:46.223198",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:17.818460",
           "confidence": 1.0
         }
       ]
@@ -71817,6 +74050,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-22T18:08:46.265700"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "gehoorbeentje#1",
+        "relation": {
+          "type": "related_to",
+          "target": "koptelefoon",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:17.818458"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "gehoorbeentje#1",
+        "relation": {
+          "type": "related_to",
+          "target": "koptelefoon"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:42:17.893164"
       }
     ]
   },
@@ -71966,6 +74223,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "strottenhoofd",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:42:17.970358"
           }
         ],
         "source": "user",
@@ -71976,15 +74241,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-15T20:00:00.000000",
+      "updated_at": "2026-11-04T18:42:18.050323",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T20:00:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-04T18:42:17.970371",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:17.970371",
           "confidence": 1.0
         }
       ]
@@ -72005,6 +74274,30 @@
         "old_value": null,
         "new_value": "De neusholte is de ruimte achter de neus waar de lucht doorheen gaat.",
         "timestamp": "2026-10-15T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "neusholte#1",
+        "relation": {
+          "type": "related_to",
+          "target": "strottenhoofd",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:17.970369"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "neusholte#1",
+        "relation": {
+          "type": "related_to",
+          "target": "strottenhoofd"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:42:18.050332"
       }
     ]
   },
@@ -73385,6 +75678,14 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:29:59.026105",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "hartslag",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:45:33.220140"
           }
         ],
         "source": "user",
@@ -73395,12 +75696,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-20T17:29:59.073025",
+      "updated_at": "2026-11-04T18:45:33.298197",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:29:59.026118",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:45:33.220153",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -73408,6 +75709,10 @@
         },
         {
           "timestamp": "2026-10-20T17:29:59.026118",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:45:33.220153",
           "confidence": 1.0
         }
       ]
@@ -73452,6 +75757,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:29:59.073036"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "hartklep#1",
+        "relation": {
+          "type": "related_to",
+          "target": "hartslag",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:45:33.220151"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "hartklep#1",
+        "relation": {
+          "type": "related_to",
+          "target": "hartslag"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:45:33.298207"
       }
     ]
   },
@@ -73672,6 +76001,14 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:33:56.947859",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "endeldarm",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:46:32.218943"
           }
         ],
         "source": "user",
@@ -73682,12 +76019,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-20T17:33:56.984895",
+      "updated_at": "2026-11-04T18:46:32.298468",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:33:56.947871",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:46:32.218955",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -73695,6 +76032,10 @@
         },
         {
           "timestamp": "2026-10-20T17:33:56.947871",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:46:32.218955",
           "confidence": 1.0
         }
       ]
@@ -73739,6 +76080,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:33:56.984904"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "dunne darm#1",
+        "relation": {
+          "type": "related_to",
+          "target": "endeldarm",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:46:32.218952"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "dunne darm#1",
+        "relation": {
+          "type": "related_to",
+          "target": "endeldarm"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:46:32.298477"
       }
     ]
   },
@@ -77216,6 +79581,15 @@
             "status": "confirmed",
             "created_at": "2026-10-31T20:07:43.611490",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "voortplantingsstelsel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:44:46.786826",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -77226,12 +79600,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T20:00:00.000000",
-      "updated_at": "2026-10-31T20:07:43.688375",
+      "updated_at": "2026-11-04T18:44:46.863584",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T20:07:43.611499",
-      "usage_count": 4,
+      "last_used_at": "2026-11-04T18:44:46.786839",
+      "usage_count": 5,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T20:00:00.000000",
@@ -77251,6 +79625,10 @@
         },
         {
           "timestamp": "2026-10-31T20:07:43.611499",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:44:46.786839",
           "confidence": 1.0
         }
       ]
@@ -77367,6 +79745,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-31T20:07:43.688384"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "bevruchting#1",
+        "relation": {
+          "type": "related_to",
+          "target": "voortplantingsstelsel",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:44:46.786837"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "bevruchting#1",
+        "relation": {
+          "type": "related_to",
+          "target": "voortplantingsstelsel"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:44:46.863592"
       }
     ]
   },
@@ -78825,6 +81227,14 @@
           "Door adrenaline gaat je hart sneller kloppen."
         ],
         "relations": [
+          {
+            "type": "causes",
+            "target": "hartslag",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "is_a",
             "target": "hormoon",
@@ -81022,6 +83432,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T19:30:00.000000"
+          },
+          {
+            "type": "synonym",
+            "target": "stel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:40:34.211015",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -81032,16 +83451,20 @@
     ],
     "metadata": {
       "created_at": "2026-10-20T17:55:53.777980",
-      "updated_at": "2026-10-20T17:55:53.778290",
+      "updated_at": "2026-11-04T18:40:34.290127",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-10-20T17:55:53.778290",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:40:34.211024",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-20T17:55:53.778290",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-04T18:40:34.211024",
+          "confidence": 1.0
         }
       ]
     },
@@ -81061,6 +83484,30 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-10-20T17:55:53.778288"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "koppel#1",
+        "relation": {
+          "type": "synonym",
+          "target": "stel",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:40:34.211022"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "koppel#1",
+        "relation": {
+          "type": "synonym",
+          "target": "stel"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:40:34.290138"
       }
     ]
   },
@@ -82082,6 +84529,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-31T20:07:51.154425"
+          },
+          {
+            "type": "related_to",
+            "target": "oksel",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:41:38.226514"
           }
         ],
         "source": "user",
@@ -82092,12 +84547,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-31T20:07:51.231178",
+      "updated_at": "2026-11-04T18:41:38.302877",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T20:07:51.154439",
-      "usage_count": 5,
+      "last_used_at": "2026-11-04T18:41:38.226528",
+      "usage_count": 6,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
@@ -82117,6 +84572,10 @@
         },
         {
           "timestamp": "2026-10-31T20:07:51.154439",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:41:38.226528",
           "confidence": 1.0
         }
       ]
@@ -82233,6 +84692,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-31T20:07:51.231188"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "bekkenbodem#1",
+        "relation": {
+          "type": "related_to",
+          "target": "oksel",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:41:38.226526"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "bekkenbodem#1",
+        "relation": {
+          "type": "related_to",
+          "target": "oksel"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:41:38.302886"
       }
     ]
   },
@@ -83560,6 +86043,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "zus",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:44:57.402842"
           }
         ],
         "source": "user",
@@ -83570,15 +86061,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:44:57.483584",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:44:57.402851",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:44:57.402851",
           "confidence": 1.0
         }
       ]
@@ -83599,6 +86094,30 @@
         "old_value": null,
         "new_value": "Een nicht is de dochter van je oom of tante.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "nicht#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zus",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:44:57.402848"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "nicht#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zus"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:44:57.483592"
       }
     ]
   },
@@ -83636,6 +86155,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "opa",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:43:51.012663"
           }
         ],
         "source": "user",
@@ -83646,15 +86173,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:43:51.087135",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:43:51.012677",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:51.012677",
           "confidence": 1.0
         }
       ]
@@ -83675,6 +86206,30 @@
         "old_value": null,
         "new_value": "Een neef is de zoon van je oom of tante.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "neef#1",
+        "relation": {
+          "type": "related_to",
+          "target": "opa",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:51.012675"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "neef#1",
+        "relation": {
+          "type": "related_to",
+          "target": "opa"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:43:51.087145"
       }
     ]
   },
@@ -83721,6 +86276,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-31T19:50:17.878981"
+          },
+          {
+            "type": "related_to",
+            "target": "oom",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:46:31.589753"
           }
         ],
         "source": "user",
@@ -83731,12 +86294,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-31T19:50:17.957266",
+      "updated_at": "2026-11-04T18:46:31.670912",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T19:50:17.878994",
-      "usage_count": 3,
+      "last_used_at": "2026-11-04T18:46:31.589768",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
@@ -83748,6 +86311,10 @@
         },
         {
           "timestamp": "2026-10-31T19:50:17.878994",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:46:31.589768",
           "confidence": 1.0
         }
       ]
@@ -83816,6 +86383,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-31T19:50:17.957274"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "grootmoeder#1",
+        "relation": {
+          "type": "related_to",
+          "target": "oom",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:46:31.589766"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "grootmoeder#1",
+        "relation": {
+          "type": "related_to",
+          "target": "oom"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:46:31.670923"
       }
     ]
   },
@@ -84270,6 +86861,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "vrouw",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:42:58.442442",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -84280,15 +86880,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:42:58.521763",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:42:58.442450",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:58.442450",
           "confidence": 1.0
         }
       ]
@@ -84309,6 +86913,30 @@
         "old_value": null,
         "new_value": "Het geslacht van een mens of dier is of die mannelijk of vrouwelijk is.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "geslacht#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vrouw",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:58.442448"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "geslacht#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vrouw"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:42:58.521771"
       }
     ]
   },
@@ -87158,6 +89786,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "werkgeheugen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:42:58.598489",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -87168,15 +89805,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:42:58.674181",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:42:58.598501",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:58.598501",
           "confidence": 1.0
         }
       ]
@@ -87197,6 +89838,30 @@
         "old_value": null,
         "new_value": "Opslag is de ruimte waar een computer of apparaat bestanden en gegevens blijvend bewaart.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "opslag#1",
+        "relation": {
+          "type": "related_to",
+          "target": "werkgeheugen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:58.598499"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "opslag#1",
+        "relation": {
+          "type": "related_to",
+          "target": "werkgeheugen"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:42:58.674189"
       }
     ]
   },
@@ -87925,6 +90590,14 @@
         "relations": [
           {
             "type": "synonym",
+            "target": "mobiel",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "synonym",
             "target": "smartphone",
             "confidence": 1.0,
             "source": "user",
@@ -88114,6 +90787,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "computermuis",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:44:58.024244"
           }
         ],
         "source": "user",
@@ -88124,15 +90805,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:44:58.102558",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:44:58.024257",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:44:58.024257",
           "confidence": 1.0
         }
       ]
@@ -88153,6 +90838,30 @@
         "old_value": null,
         "new_value": "Een aanraakscherm is een scherm dat je bedient door het met je vinger aan te raken.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "aanraakscherm#1",
+        "relation": {
+          "type": "related_to",
+          "target": "computermuis",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:44:58.024255"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "aanraakscherm#1",
+        "relation": {
+          "type": "related_to",
+          "target": "computermuis"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:44:58.102569"
       }
     ]
   },
@@ -89949,6 +92658,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "smelten",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "kas",
             "confidence": 1.0,
@@ -90263,6 +92980,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "stopcontact",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:43:47.129613",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -90273,15 +92999,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:43:47.202404",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:43:47.129626",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:47.129626",
           "confidence": 1.0
         }
       ]
@@ -90302,6 +93032,30 @@
         "old_value": null,
         "new_value": "Een lader is een apparaatje met een kabel waarmee je een batterij of telefoon oplaadt.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "lader#1",
+        "relation": {
+          "type": "related_to",
+          "target": "stopcontact",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:47.129624"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "lader#1",
+        "relation": {
+          "type": "related_to",
+          "target": "stopcontact"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:43:47.202415"
       }
     ]
   },
@@ -90575,6 +93329,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "licht",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:43:46.986788",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -90585,15 +93348,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:43:47.057865",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:43:46.986799",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:46.986799",
           "confidence": 1.0
         }
       ]
@@ -90614,6 +93381,30 @@
         "old_value": null,
         "new_value": "Een gloeilamp is een lamp met een draadje dat gaat gloeien en zo licht geeft als er stroom doorheen loopt.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "gloeilamp#1",
+        "relation": {
+          "type": "related_to",
+          "target": "licht",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:46.986797"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "gloeilamp#1",
+        "relation": {
+          "type": "related_to",
+          "target": "licht"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:43:47.057875"
       }
     ]
   },
@@ -91215,6 +94006,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "trommelvlies",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:43:46.681121",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -91225,15 +94025,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:43:46.759075",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:43:46.681130",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:46.681130",
           "confidence": 1.0
         }
       ]
@@ -91254,6 +94058,30 @@
         "old_value": null,
         "new_value": "Een luidspreker is een apparaat dat elektrische signalen omzet in geluid dat je kunt horen.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "luidspreker#1",
+        "relation": {
+          "type": "related_to",
+          "target": "trommelvlies",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:46.681128"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "luidspreker#1",
+        "relation": {
+          "type": "related_to",
+          "target": "trommelvlies"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:43:46.759083"
       }
     ]
   },
@@ -91640,6 +94468,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "pan",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:46:31.750451"
           }
         ],
         "source": "user",
@@ -91650,15 +94486,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-04T18:46:31.827053",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:46:31.750465",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:46:31.750465",
           "confidence": 1.0
         }
       ]
@@ -91679,6 +94519,30 @@
         "old_value": null,
         "new_value": "Een oven is een gesloten ruimte in de keuken die heet wordt om eten in te bakken of te braden.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "oven#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pan",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:46:31.750463"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "oven#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pan"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:46:31.827062"
       }
     ]
   },
@@ -96727,6 +99591,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "wesp",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:45:33.685332"
           }
         ],
         "source": "user",
@@ -96737,15 +99609,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-04T18:45:33.760795",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:45:33.685343",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:45:33.685343",
           "confidence": 1.0
         }
       ]
@@ -96766,6 +99642,30 @@
         "old_value": null,
         "new_value": "Een lieveheersbeestje is een klein rood kevertje met zwarte stippen.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "lieveheersbeestje#1",
+        "relation": {
+          "type": "related_to",
+          "target": "wesp",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:45:33.685341"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "lieveheersbeestje#1",
+        "relation": {
+          "type": "related_to",
+          "target": "wesp"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:45:33.760804"
       }
     ]
   },
@@ -96803,6 +99703,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "vleermuis",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:44:46.627115",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -96813,15 +99722,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-04T18:44:46.707263",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:44:46.627125",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:44:46.627125",
           "confidence": 1.0
         }
       ]
@@ -96842,6 +99755,30 @@
         "old_value": null,
         "new_value": "Een libel is een insect met lange, doorzichtige vleugels dat bij water leeft.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "libel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vleermuis",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:44:46.627122"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "libel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vleermuis"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:44:46.707274"
       }
     ]
   },
@@ -97538,6 +100475,15 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-31T19:49:06.971150"
+          },
+          {
+            "type": "part_of",
+            "target": "koe",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:43:06.457363",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -97548,12 +100494,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-31T19:49:07.048267",
+      "updated_at": "2026-11-04T18:43:06.537251",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T19:49:06.971162",
-      "usage_count": 2,
+      "last_used_at": "2026-11-04T18:43:06.457374",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
@@ -97561,6 +100507,10 @@
         },
         {
           "timestamp": "2026-10-31T19:49:06.971162",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:06.457374",
           "confidence": 1.0
         }
       ]
@@ -97605,6 +100555,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-31T19:49:07.048277"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "hoef#1",
+        "relation": {
+          "type": "part_of",
+          "target": "koe",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:06.457372"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "hoef#1",
+        "relation": {
+          "type": "part_of",
+          "target": "koe"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:43:06.537261"
       }
     ]
   },
@@ -97634,6 +100608,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "nagel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:41:32.608884",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -97644,15 +100627,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-04T18:41:32.684825",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:41:32.608893",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:41:32.608893",
           "confidence": 1.0
         }
       ]
@@ -97673,6 +100660,30 @@
         "old_value": null,
         "new_value": "Een klauw is een scherpe, gebogen nagel aan de poot van een dier.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "klauw#1",
+        "relation": {
+          "type": "is_a",
+          "target": "nagel",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:41:32.608890"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "klauw#1",
+        "relation": {
+          "type": "is_a",
+          "target": "nagel"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:41:32.684834"
       }
     ]
   },
@@ -98642,6 +101653,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "stuifmeel",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:45:33.071220"
           }
         ],
         "source": "user",
@@ -98652,15 +101671,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-04T18:45:33.146722",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:45:33.071235",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:45:33.071235",
           "confidence": 1.0
         }
       ]
@@ -98681,6 +101704,30 @@
         "old_value": null,
         "new_value": "Honing is een zoete, plakkerige stof die bijen maken uit nectar.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "honing#1",
+        "relation": {
+          "type": "related_to",
+          "target": "stuifmeel",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:45:33.071232"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "honing#1",
+        "relation": {
+          "type": "related_to",
+          "target": "stuifmeel"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:45:33.146733"
       }
     ]
   },
@@ -99047,6 +102094,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "zoogdier",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:45:33.837090"
           }
         ],
         "source": "user",
@@ -99057,15 +102112,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-04T18:45:33.912937",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:45:33.837100",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:45:33.837100",
           "confidence": 1.0
         }
       ]
@@ -99086,6 +102145,30 @@
         "old_value": null,
         "new_value": "Een prooi is een dier dat door een ander dier wordt gejaagd en gegeten.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "prooi#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zoogdier",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:45:33.837098"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "prooi#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zoogdier"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:45:33.912945"
       }
     ]
   },
@@ -99463,6 +102546,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "vijver",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:46:32.061376"
           }
         ],
         "source": "user",
@@ -99473,15 +102564,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-04T18:46:32.143070",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:46:32.061390",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:46:32.061390",
           "confidence": 1.0
         }
       ]
@@ -99502,6 +102597,30 @@
         "old_value": null,
         "new_value": "Een beek is een kleine stroom water.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "beek#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vijver",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:46:32.061388"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "beek#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vijver"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:46:32.143079"
       }
     ]
   },
@@ -101926,6 +105045,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "zaadcel",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:41:37.918272"
           }
         ],
         "source": "user",
@@ -101936,15 +105063,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-04T18:41:37.995370",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:41:37.918284",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:41:37.918284",
           "confidence": 1.0
         }
       ]
@@ -101965,6 +105096,30 @@
         "old_value": null,
         "new_value": "Een zaad is het kleine deel van een plant waaruit een nieuwe plant kan groeien.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "zaad#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zaadcel",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:41:37.918281"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "zaad#1",
+        "relation": {
+          "type": "related_to",
+          "target": "zaadcel"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:41:37.995379"
       }
     ]
   },
@@ -102299,6 +105454,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "vorst",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:42:07.166275",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -102309,15 +105473,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-04T18:42:07.246737",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:42:07.166286",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:07.166286",
           "confidence": 1.0
         }
       ]
@@ -102338,6 +105506,30 @@
         "old_value": null,
         "new_value": "De temperatuur geeft aan hoe warm of koud iets is.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "temperatuur#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vorst",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:07.166283"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "temperatuur#1",
+        "relation": {
+          "type": "related_to",
+          "target": "vorst"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:42:07.246748"
       }
     ]
   },
@@ -103160,6 +106352,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-25T20:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "pitvrucht",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:41:38.071139"
           }
         ],
         "source": "user",
@@ -103170,15 +106370,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-25T20:30:00.000000",
+      "updated_at": "2026-11-04T18:41:38.147782",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-25T20:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:41:38.071151",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:41:38.071151",
           "confidence": 1.0
         }
       ]
@@ -103199,6 +106403,30 @@
         "old_value": null,
         "new_value": "Een eikel is de vrucht van een eik; het is een kleine noot in een napje.",
         "timestamp": "2026-10-25T20:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "eikel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pitvrucht",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:41:38.071148"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "eikel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pitvrucht"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:41:38.147794"
       }
     ]
   },
@@ -103262,6 +106490,14 @@
             "status": "confirmed",
             "created_at": "2026-10-31T20:02:19.719762",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "den",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:40:41.577467"
           }
         ],
         "source": "user",
@@ -103272,12 +106508,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-31T20:02:19.797437",
+      "updated_at": "2026-11-04T18:40:41.651913",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T20:02:19.719777",
-      "usage_count": 6,
+      "last_used_at": "2026-11-04T18:40:41.577481",
+      "usage_count": 7,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
@@ -103301,6 +106537,10 @@
         },
         {
           "timestamp": "2026-10-31T20:02:19.719777",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:40:41.577481",
           "confidence": 1.0
         }
       ]
@@ -103441,6 +106681,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-31T20:02:19.797448"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "beuk#1",
+        "relation": {
+          "type": "related_to",
+          "target": "den",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:40:41.577478"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "beuk#1",
+        "relation": {
+          "type": "related_to",
+          "target": "den"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:40:41.651922"
       }
     ]
   },
@@ -103496,6 +106760,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-31T20:02:31.179137"
+          },
+          {
+            "type": "related_to",
+            "target": "snoeien",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:41:37.764752"
           }
         ],
         "source": "user",
@@ -103506,12 +106778,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-31T20:02:31.257078",
+      "updated_at": "2026-11-04T18:41:37.841990",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T20:02:31.179151",
-      "usage_count": 4,
+      "last_used_at": "2026-11-04T18:41:37.764762",
+      "usage_count": 5,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
@@ -103527,6 +106799,10 @@
         },
         {
           "timestamp": "2026-10-31T20:02:31.179151",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:41:37.764762",
           "confidence": 1.0
         }
       ]
@@ -103619,6 +106895,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-31T20:02:31.257087"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "berk#1",
+        "relation": {
+          "type": "related_to",
+          "target": "snoeien",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:41:37.764759"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "berk#1",
+        "relation": {
+          "type": "related_to",
+          "target": "snoeien"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:41:37.841998"
       }
     ]
   },
@@ -103657,6 +106957,14 @@
             "status": "confirmed",
             "created_at": "2026-10-31T13:39:09.257553",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "pijnboom",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:40:41.424968"
           }
         ],
         "source": "user",
@@ -103667,12 +106975,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-31T13:39:09.325305",
+      "updated_at": "2026-11-04T18:40:41.501139",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T13:39:09.257569",
-      "usage_count": 2,
+      "last_used_at": "2026-11-04T18:40:41.424980",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
@@ -103680,6 +106988,10 @@
         },
         {
           "timestamp": "2026-10-31T13:39:09.257569",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:40:41.424980",
           "confidence": 1.0
         }
       ]
@@ -103724,6 +107036,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-31T13:39:09.325315"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "linde#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pijnboom",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:40:41.424976"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "linde#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pijnboom"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:40:41.501149"
       }
     ]
   },
@@ -104059,6 +107395,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-31T20:03:28.521009"
+          },
+          {
+            "type": "related_to",
+            "target": "pompoen",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:41:38.379144"
           }
         ],
         "source": "user",
@@ -104069,12 +107413,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-31T20:03:28.594971",
+      "updated_at": "2026-11-04T18:41:38.453293",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T20:03:28.521022",
-      "usage_count": 3,
+      "last_used_at": "2026-11-04T18:41:38.379161",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
@@ -104086,6 +107430,10 @@
         },
         {
           "timestamp": "2026-10-31T20:03:28.521022",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:41:38.379161",
           "confidence": 1.0
         }
       ]
@@ -104154,6 +107502,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-31T20:03:28.594981"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "dennenappel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pompoen",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:41:38.379159"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "dennenappel#1",
+        "relation": {
+          "type": "related_to",
+          "target": "pompoen"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:41:38.453303"
       }
     ]
   },
@@ -105570,6 +108942,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-25T20:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "bloemkool",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:42:17.663766"
           }
         ],
         "source": "user",
@@ -105580,15 +108960,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-25T20:30:00.000000",
+      "updated_at": "2026-11-04T18:42:17.740863",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-25T20:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:42:17.663780",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:17.663780",
           "confidence": 1.0
         }
       ]
@@ -105609,6 +108993,30 @@
         "old_value": null,
         "new_value": "Een bloemblad is een van de gekleurde bladeren van een bloem.",
         "timestamp": "2026-10-25T20:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "bloemblad#1",
+        "relation": {
+          "type": "related_to",
+          "target": "bloemkool",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:17.663778"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "bloemblad#1",
+        "relation": {
+          "type": "related_to",
+          "target": "bloemkool"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:42:17.740873"
       }
     ]
   },
@@ -105706,6 +109114,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-25T20:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "tak",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:44:57.717910"
           }
         ],
         "source": "user",
@@ -105716,15 +109132,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-25T20:30:00.000000",
+      "updated_at": "2026-11-04T18:44:57.793007",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-25T20:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:44:57.717921",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:44:57.717921",
           "confidence": 1.0
         }
       ]
@@ -105745,6 +109165,30 @@
         "old_value": null,
         "new_value": "Een doorn is een scherpe punt aan de stengel van sommige planten.",
         "timestamp": "2026-10-25T20:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "doorn#1",
+        "relation": {
+          "type": "related_to",
+          "target": "tak",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:44:57.717919"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "doorn#1",
+        "relation": {
+          "type": "related_to",
+          "target": "tak"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:44:57.793015"
       }
     ]
   },
@@ -107746,6 +111190,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-31T20:03:28.966557"
+          },
+          {
+            "type": "related_to",
+            "target": "madeliefje",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:43:17.090169"
           }
         ],
         "source": "user",
@@ -107756,12 +111208,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-31T20:03:29.043723",
+      "updated_at": "2026-11-04T18:43:17.165392",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T20:03:28.966569",
-      "usage_count": 3,
+      "last_used_at": "2026-11-04T18:43:17.090178",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
@@ -107773,6 +111225,10 @@
         },
         {
           "timestamp": "2026-10-31T20:03:28.966569",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:17.090178",
           "confidence": 1.0
         }
       ]
@@ -107841,6 +111297,30 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-31T20:03:29.043735"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "erwt#1",
+        "relation": {
+          "type": "related_to",
+          "target": "madeliefje",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:17.090176"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "erwt#1",
+        "relation": {
+          "type": "related_to",
+          "target": "madeliefje"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:43:17.165403"
       }
     ]
   },
@@ -108039,6 +111519,14 @@
             "status": "confirmed",
             "created_at": "2026-10-27T18:06:05.961275",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "related_to",
+            "target": "radijs",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:40:42.027425"
           }
         ],
         "source": "user",
@@ -108049,12 +111537,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-27T18:06:06.028733",
+      "updated_at": "2026-11-04T18:40:42.103880",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-27T18:06:05.961290",
-      "usage_count": 2,
+      "last_used_at": "2026-11-04T18:40:42.027439",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
@@ -108062,6 +111550,10 @@
         },
         {
           "timestamp": "2026-10-27T18:06:05.961290",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:40:42.027439",
           "confidence": 1.0
         }
       ]
@@ -108106,6 +111598,30 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-27T18:06:06.028746"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "aardbei#1",
+        "relation": {
+          "type": "related_to",
+          "target": "radijs",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:40:42.027436"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "aardbei#1",
+        "relation": {
+          "type": "related_to",
+          "target": "radijs"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:40:42.103890"
       }
     ]
   },
@@ -108404,6 +111920,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-25T20:30:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "vrucht",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T18:43:12.274856",
+            "oorspronkelijke_bron": "embedding"
           }
         ],
         "source": "user",
@@ -108414,15 +111939,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-25T20:30:00.000000",
+      "updated_at": "2026-11-04T18:43:12.358497",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-25T20:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:43:12.274870",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:43:12.274870",
           "confidence": 1.0
         }
       ]
@@ -108443,6 +111972,30 @@
         "old_value": null,
         "new_value": "Een pruim is een zachte, paarse vrucht met een pit.",
         "timestamp": "2026-10-25T20:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "pruim#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vrucht",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:43:12.274866"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "pruim#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vrucht"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.6,
+        "timestamp": "2026-11-04T18:43:12.358511"
       }
     ]
   },
@@ -110736,6 +114289,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "groeien",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "zaad",
             "confidence": 1.0,
@@ -111122,6 +114683,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-25T20:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "bloempot",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:45:32.912907"
           }
         ],
         "source": "user",
@@ -111132,15 +114701,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-25T20:30:00.000000",
-      "updated_at": "2026-10-25T20:30:00.000000",
+      "updated_at": "2026-11-04T18:45:32.992915",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-25T20:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:45:32.912915",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-25T20:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:45:32.912915",
           "confidence": 1.0
         }
       ]
@@ -111161,6 +114734,30 @@
         "old_value": null,
         "new_value": "Bloeien is bloemen krijgen en openen.",
         "timestamp": "2026-10-25T20:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "bloeien#1",
+        "relation": {
+          "type": "related_to",
+          "target": "bloempot",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:45:32.912913"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "bloeien#1",
+        "relation": {
+          "type": "related_to",
+          "target": "bloempot"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:45:32.992923"
       }
     ]
   },
@@ -113281,6 +116878,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "conditie",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "sport",
             "confidence": 1.0,
@@ -113372,6 +116977,14 @@
           "Doe deze oefening tien keer."
         ],
         "relations": [
+          {
+            "type": "causes",
+            "target": "conditie",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "training",
@@ -115249,6 +118862,14 @@
         ],
         "relations": [
           {
+            "type": "causes",
+            "target": "pijn",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "spier",
             "confidence": 1.0,
@@ -116330,6 +119951,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-26T20:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "waaien",
+            "confidence": 0.6,
+            "source": "embedding",
+            "status": "rejected",
+            "created_at": "2026-11-04T18:42:17.345828"
           }
         ],
         "source": "user",
@@ -116340,15 +119969,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-26T20:30:00.000000",
-      "updated_at": "2026-10-26T20:30:00.000000",
+      "updated_at": "2026-11-04T18:42:17.423661",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-26T20:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-04T18:42:17.345838",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-26T20:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-04T18:42:17.345838",
           "confidence": 1.0
         }
       ]
@@ -116369,6 +120002,30 @@
         "old_value": null,
         "new_value": "Vangen is iets dat door de lucht komt met je handen grijpen.",
         "timestamp": "2026-10-26T20:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "embedding",
+        "sense_id": "vangen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "waaien",
+          "confidence": 0.6
+        },
+        "timestamp": "2026-11-04T18:42:17.345835"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "vangen#1",
+        "relation": {
+          "type": "related_to",
+          "target": "waaien"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "gelijkenis-voorstel (embedding) afgewezen",
+        "timestamp": "2026-11-04T18:42:17.423673"
       }
     ]
   },
@@ -116776,6 +120433,14 @@
           "Ik koop een stel nieuwe sokken."
         ],
         "relations": [
+          {
+            "type": "synonym",
+            "target": "koppel",
+            "confidence": 0.9,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-04T20:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "partner",
