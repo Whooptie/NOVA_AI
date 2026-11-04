@@ -30,7 +30,8 @@ ALLE = [(pad.name, c) for pad in (VAST, BLIND) for c in _cases(pad)]
 
 def test_beide_bestanden_bestaan_en_hebben_cases():
     assert len(_cases(VAST)) >= 30
-    assert len(_cases(BLIND)) >= 15
+    # De blinde set mag leeg zijn: na blind_naar_vast.py begint hij weer vers.
+    assert len(_cases(BLIND)) >= 0
 
 
 def test_id_s_zijn_uniek_over_beide_sets():
@@ -135,3 +136,43 @@ def test_rapporteer_geeft_exitcode_0_bij_alleen_stilte(capsys):
 def test_rapporteer_zonder_taalmodus_blijft_zoals_voorheen(capsys):
     res = [_r("a", 5, "onzekerheid", "gefaald", "antwoord bevat verboden woord(en) ['ja']")]
     assert rb.rapporteer(res, True, 2, "vast") == 0
+
+
+# --- falen sorteren: taal, stilte, kennis (punt 62a ronde 2) -----------------
+
+@pytest.mark.parametrize("reden,verwacht", [
+    ("geen event uit ['intent_definition'] (kreeg: ['intent_fallback']); geen antwoord ontvangen", "taal"),
+    ("verboden event gezien: ['intent_wiki']", "taal"),
+    ("geen antwoord ontvangen", "stilte"),
+    ("antwoord mist een van ['wagen'] (antwoord: \"ik ken geen synoniemen van 'auto'.\")", "kennis"),
+    ("antwoord komt met geen van ['x'] overeen (antwoord: 'y')", "kennis"),
+    ("antwoord bevat verboden woord(en) ['ja'] (antwoord: 'ja')", "overig"),
+])
+def test_soort_falen(reden, verwacht):
+    assert rb.soort_falen(reden) == verwacht
+
+
+def test_falen_per_soort_telt_alleen_gefaalde():
+    res = [
+        ({"id": "a", "vraag": "q1"}, "geslaagd", ""),
+        ({"id": "b", "vraag": "q2"}, "gefaald", "geen event uit ['x'] (kreeg: [])"),
+        ({"id": "c", "vraag": "q3"}, "gefaald", "antwoord mist een van ['x'] (antwoord: 'y')"),
+        ({"id": "d", "vraag": "q4"}, "gefaald", "geen antwoord ontvangen"),
+    ]
+    f = rb.falen_per_soort(res)
+    assert [c["id"] for c, _ in f["taal"]] == ["b"]
+    assert [c["id"] for c, _ in f["kennis"]] == ["c"]
+    assert [c["id"] for c, _ in f["stilte"]] == ["d"]
+
+
+def test_print_falen_soorten_toont_taalscore(capsys):
+    res = [
+        ({"id": "a", "vraag": "q1"}, "geslaagd", ""),
+        ({"id": "b", "vraag": "q2"}, "gefaald", "geen event uit ['x'] (kreeg: [])"),
+        ({"id": "c", "vraag": "q3"}, "gefaald", "antwoord mist een van ['x'] (antwoord: 'y')"),
+        ({"id": "d", "vraag": "q4"}, "geslaagd", ""),
+    ]
+    rb.print_falen_soorten(res)
+    uit = capsys.readouterr().out
+    assert "Router begreep 3/4 zinnen (75%)" in uit
+    assert "[b] 'q2'" in uit

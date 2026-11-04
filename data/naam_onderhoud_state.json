@@ -51,6 +51,10 @@
     "activity_started:plex_gebruiken_gedetecteerd": {
       "reden": "activiteit_whitelist",
       "gemeld_op": 1793733250.9314394
+    },
+    "activity_started:nova_bestanden_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793733738.5912046
     }
   }
 }

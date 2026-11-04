@@ -500,3 +500,5 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 2, "variant_tekst": "Nog lang?", "entity": "coding", "response_style": null, "moment": "2026-11-03T19:42:58.258112", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1793731378.2578192, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793731378.2582443, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 2, "variant_tekst": "Ik ken '{entity}' als: {definition} Grappig genoeg komt dat bij jou vaak samen voor met '{associatie}'.", "entity": "hond", "response_style": "normaal", "moment": "2026-11-04T11:02:35.577380", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793786555.577604, "type": "sentiment_koppeling"}

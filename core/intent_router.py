@@ -11,6 +11,14 @@ try:
 except Exception:
     _GEDEELDE_STOPWOORDEN = frozenset()
 
+# Punt 62a (4 november 2026): omhulsels rond kennisvragen ("kun je me vertellen
+# wat een hond is") herschrijven naar de vorm die de detectors kennen. Defensief
+# geimporteerd: ontbreekt het bestand, dan werkt de router zoals voorheen.
+try:
+    from core.language_normalizer import normaliseer as _normaliseer_vraag
+except Exception:
+    _normaliseer_vraag = None
+
 # Bug #31 + punt 10 (25 oktober 2026): Nederlandse rekenzinnen ("wat is drie
 # plus vijf") vertalen naar een kale expressie voor math.py. Defensief
 # geimporteerd: ontbreekt het bestand, dan werkt detect_math() zoals voorheen.
@@ -2108,6 +2116,12 @@ class IntentRouter:
         "wat weet je ", "vertel me alles over ", "vertel alles over ",
         "wiki ", "leer wikipedia ", "zoek op ",
         "vergelijk ", "welke soorten ", "noem soorten ", "welke onderdelen ",
+        # Ronde 2 (4 nov 2026): kennisvragen over het woord "klok"/"tijd" in een
+        # inleiding of bijzin ("klopt het dat een klok tijd meet") zijn geen tijdsvraag.
+        "klopt het dat ", "is het waar dat ", "is het zo dat ",
+        "kun je zeggen wat ", "kun je vertellen wat ", "kun je uitleggen ",
+        "kan je zeggen wat ", "kan je vertellen wat ", "kan je uitleggen ",
+        "leg uit wat ", "leg eens uit wat ", "vertel me wat ",
     )
 
     _RELATIEVRAAG_LIDWOORD_RE = re.compile(r"^is\s+een\s+\w+\s+(?:een|onderdeel\s+van)\s+")
@@ -2583,6 +2597,9 @@ class IntentRouter:
         "alles", "iets", "niets", "niks", "wat", "wie",
         "dan", "nu", "ook", "nog", "wel", "niet", "toch", "zo",
         "nova",
+        # Punt 62a: vraagwoorden zijn nooit het onderwerp van een relatie
+        # ("waarom is een zebra een dier" gaf 'ken waarom niet').
+        "waarom", "hoe", "waar", "wanneer", "welk", "welke", "waardoor",
     })
 
     # Optioneel lidwoord vóór een woord, voor de vraagpatronen hieronder
@@ -2712,7 +2729,7 @@ class IntentRouter:
 
         # 2. "X is een Y"
         m = re.match(r"(\w+)\s+is\s+een\s+([\w\s]+)", t)
-        if m:
+        if m and m.group(1) not in self._GEEN_RELATIE_ONDERWERP:
             dbg(f"{C_BLUE}→ relation_check (patroon 'X is een Y'): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
             self.event_bus.publish("intent_relation_check", {
                 "source": m.group(1).strip(),
@@ -5410,6 +5427,28 @@ class IntentRouter:
 
         return True
 
+    def _normaliseer_omhulsel(self, text):
+        """
+        Punt 62a. Roept core/language_normalizer.py aan. Geeft de herschreven
+        zin terug, of de tekst ONGEWIJZIGD als er niets te herschrijven is,
+        als de module ontbreekt, of bij een fout (de routing mag hier nooit
+        op stuk gaan).
+        """
+        if _normaliseer_vraag is None:
+            return text
+        try:
+            nieuw, regel = _normaliseer_vraag(text)
+        except Exception as e:
+            dbg(f"{C_RED}taalnormalisatie fout: {e}{C_RESET}")
+            return text
+        if regel and nieuw != text:
+            dbg(f"{C_YELLOW}→ genormaliseerd ({regel}): '{text}' → '{nieuw}'{C_RESET}")
+            self.event_bus.publish("language_normalized", {
+                "origineel": text, "genormaliseerd": nieuw, "regel": regel,
+            })
+            return nieuw
+        return text
+
     def _verwerk_referentie(self, text):
         """
         Referentie-resolutie (idee 1). Wordt vroeg in route()
@@ -5774,6 +5813,13 @@ class IntentRouter:
         # meeste gevallen) -- enkel bij een ECHTE, niet-oplosbare
         # verwijzing geeft het None terug (Nova heeft dan al zelf een
         # tegenvraag gepubliceerd, route() moet meteen stoppen).
+        # 2E0 Taalnormalisatie (punt 62a, 4 november 2026) -- VOOR de
+        # referentie-resolutie: "kun je me vertellen wat dat is" wordt eerst
+        # "wat is dat", daarna lost 2E het verwijswoord op. De originele
+        # tekst is al als raw_user_message gepubliceerd; enkel de routing
+        # werkt met de herschreven zin.
+        text = self._normaliseer_omhulsel(text)
+
         text = self._verwerk_referentie(text)
         if text is None:
             return

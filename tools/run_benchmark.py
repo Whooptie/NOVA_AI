@@ -714,6 +714,58 @@ def niet_eerlijk_onzeker(resultaten):
     return [(c, r) for c, r in _onzekerheid_gefaald(resultaten) if "verboden woord" not in r]
 
 
+FALEN_NAMEN = {
+    "taal": "TAALGAT (verkeerd of geen event: de zin werd niet begrepen)",
+    "stilte": "STILTE (juiste event, maar geen antwoord; vaak netwerk uit of onbekend woord)",
+    "kennis": "KENNISGAT (juiste event, maar het verwachte woord staat niet in de kennisgraaf)",
+    "overig": "OVERIG (verboden woord, ongeldige regex, ...)",
+}
+
+
+def soort_falen(reden):
+    """Sorteert een mislukte case: taal | stilte | kennis | overig.
+
+    taal   = het verwachte event kwam niet (of een verboden event wel): de router begreep de zin niet.
+    stilte = event klopt, maar er kwam geen antwoord.
+    kennis = event klopt en er kwam een antwoord, maar het verwachte woord ontbreekt.
+    """
+    if "geen event uit" in reden or "verboden event" in reden:
+        return "taal"
+    if "verboden woord" in reden or "ongeldige reguliere" in reden:
+        return "overig"
+    if "geen antwoord ontvangen" in reden:
+        return "stilte"
+    if "antwoord mist" in reden or "komt met geen" in reden:
+        return "kennis"
+    return "overig"
+
+
+def falen_per_soort(resultaten):
+    """{'taal': [(case, reden)], 'stilte': [...], 'kennis': [...], 'overig': [...]}"""
+    uit = {k: [] for k in FALEN_NAMEN}
+    for c, s, r in resultaten:
+        if s == "gefaald":
+            uit[soort_falen(r)].append((c, r))
+    return uit
+
+
+def print_falen_soorten(resultaten):
+    meetbaar = sum(1 for _, s, _ in resultaten if s in ("geslaagd", "gefaald", "fout"))
+    falen = falen_per_soort(resultaten)
+    taal = len(falen["taal"])
+    print("\n--- WAAROM FAALT HET? (taal, stilte, kennis) ---")
+    for k, naam in FALEN_NAMEN.items():
+        print(f"  {len(falen[k]):>3}  {naam}")
+    if meetbaar:
+        begrepen = meetbaar - taal
+        print(f"  Router begreep {begrepen}/{meetbaar} zinnen ({round(100 * begrepen / meetbaar)}%): "
+              f"dit is de echte taalscore, los van wat er in de graaf staat.")
+    if falen["taal"]:
+        print("  Taalgaten (hier kunnen regels in de normalizer helpen):")
+        for c, _ in falen["taal"]:
+            print(f"    [{c['id']}] {c['vraag']!r}")
+
+
 def print_taaltabellen(resultaten):
     per_niv = tel_per(resultaten, "taalniveau")
     per_dim = tel_per(resultaten, "dimensie")
@@ -740,6 +792,7 @@ def print_taaltabellen(resultaten):
         print("  geen")
     for c, r in gat:
         print(f"  [{c['id']}] {c['vraag']!r}\n      {r}")
+    print_falen_soorten(resultaten)
 
 
 def rapporteer(resultaten, geen_opslaan, niveau, verzameling="vast", seed=None, modules_mislukt=None,
@@ -797,6 +850,7 @@ def rapporteer(resultaten, geen_opslaan, niveau, verzameling="vast", seed=None, 
             record["per_dimensie"] = tel_per(resultaten, "dimensie")
             record["onterecht"] = [c["id"] for c, _ in onterechte_antwoorden(resultaten)]
             record["niet_eerlijk_onzeker"] = [c["id"] for c, _ in niet_eerlijk_onzeker(resultaten)]
+            record["falen"] = {k: [c["id"] for c, _ in v] for k, v in falen_per_soort(resultaten).items()}
         if seed is not None:
             record["seed"] = seed
         if modules_mislukt:

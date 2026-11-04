@@ -2850,3 +2850,30 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Getest:** `tests/test_taalbenchmark.py` 76 groen; `python tools/run_benchmark.py --niveau 2` en `--niveau 3` onveranderd 29/29; live `--taal` en `--blind` op battleserver gaven dezelfde cijfers als de kloon.
 
 **Bewust niet gedaan:** de dimensie "concepten gevonden" (de runner ziet geen concepten, enkel events en tekst); geen verbeteringen aan Nova (dat is punt 62).
+
+## ✅ Punt 62a — omhulsels rond kennisvragen herkennen (4 november 2026)
+
+**Doel:** Nova moet dezelfde kennisvraag herkennen als Kevin hem anders formuleert ("kun je me vertellen wat een hond is", "klopt het dat een kat een zoogdier is", "welk woord betekent hetzelfde als zus"). Vastgesteld door benchmark 61: T2 (parafrases) was het grootste gat. 🟢 100% symbolisch, geen ML.
+
+**Aanpak:** één nieuw bestand `core/language_normalizer.py` met pure functies. `normaliseer(tekst)` strip aanhalingstekens, aanhef, vulwoorden en staartjes, en probeert daarna vaste zinsvormen (31 regels plus 1 voor zinnen met aanhalingstekens). De hele zin moet door één regel gedekt worden, anders blijft ze ongewijzigd. De uitkomst is de korte vorm die de bestaande detectoren al kennen. Alleen kennisvragen. Geen woordbetekenis, geen ML; een lijst voorbehouden woorden (je, ik, dit, wat, is, ...) voorkomt dat die als begrip worden gelezen. In `intent_router.py` een stap 2E0 vóór `_verwerk_referentie` die de module aanroept (bij fout of geen regel blijft de zin ongewijzigd) en het event `language_normalized` publiceert.
+
+**Kleine fixes in de router, onderweg gevonden:**
+- `_GEEN_RELATIE_ONDERWERP` kreeg "waarom", "hoe", "waar", "wanneer", "welk", "welke", "waardoor", en patroon 2 van `detect_relation_check` controleert dat nu. Zonder dit las Nova "waarom is een zebra een dier" als een relatie tussen "waarom" en "zebra een dier" ("Ik ken 'waarom' niet").
+- `_SEMANTISCHE_VRAAG_PREFIXEN` kreeg "klopt het dat ", "is het waar dat ", "is het zo dat ", "kun/kan je zeggen/vertellen wat ", "kun/kan je uitleggen ", "leg (eens) uit wat ", "vertel me wat ". De losse-woordcheck in `detect_time` zag "klok" of "tijd" ergens in de zin en antwoordde met de huidige tijd op "klopt het dat een klok tijd meet". Dat was een fout antwoord, geen gemiste intentie. Echte tijdsvragen (`hoe laat is het`, `wat is de tijd`, `klok`, `hoeveel tijd`) werken nog (4 tests).
+
+**Bugs tijdens bouwen:** (1) de bijzin-regel gebruikte hoofdzinvolgorde ("X is een Y") in plaats van werkwoord-laatst ("X een Y is"). (2) de kale regels (`definitie_kaal`, `relatie_kaal`) stonden vooraan en slokten specifiekere regels op (`oorzaak_noemen`, `gevolg_effect`, `synoniem_voor`, `antoniem_omgekeerd`); verplaatst naar het einde. (3) de aanhalingsregel `wat betekent "X"` stond voor de specifiekere regels en verpestte "het woord regen" en "hetzelfde als"; nu achteraan en alleen als er aanhalingstekens waren.
+
+**Benchmark-hulpmiddelen erbij:**
+- `tools/run_benchmark.py`: mislukte cases gesorteerd in taalgat / stilte / kennisgat, met `Router begreep X/Y zinnen`, en veld `falen` in de jsonl. Reden: een lage score vermengde een zin die Nova niet begreep met een zin waarvan het antwoord gewoon niet in `concepts.json` staat.
+- `tools/maak_blind_cases.py` (eigen zinnen naar blinde cases) en `tools/blind_naar_vast.py` (verbrande blinde cases naar de vaste set, id's doorgenummerd per niveau, dubbele zinnen overgeslagen, droog tenzij `--schrijf`).
+- `tests/test_taalbenchmark.py`: blinde set mag nu leeg zijn.
+
+**Meting:** zie `nova_state.md`, sectie Nova-benchmark ("Stand na punt 62a"). Samengevat: vaste set 41% naar 76%, echte blinde T2 maar 7% naar 20%; op 59 verse blinde zinnen begrijpt de router 68%, waarvan volledig goed 14%. Dat verschil is kennis (22 zinnen) en stilte door uitstaand netwerk (10), niet taal. 0 onterechte antwoorden. Oud technisch benchmark: niveau 2 en 3 elk 29/29.
+
+**Getest:** `test_language_normalizer.py` (112), `test_language_normalizer_ronde2.py` ([...]: elke ronde-2-regel een voorbeeld, idempotentie, 8 zinnen die ongewijzigd moeten blijven, 3 klok-zinnen, 4 echte tijdsvragen), `test_blind_naar_vast.py` (5), `test_taalbenchmark.py` ([...]). Volledige suite: [...] geslaagd. Live: "kun je me vertellen wat een hond is" en "waarom is een zebra een dier" werken.
+
+**Correctie, 4 november 2026:** in een eerste inschatting zei ik dat voor "hoort een X bij de Y" een nieuwe lemmatizer nodig was. Dat klopte niet: Nova heeft `_normalize_plural_if_noun` al (graafgecontroleerd) en `simplemma` in Layer 1. Ze wordt alleen niet aangeroepen op het relatiepad. Zie punt 70.
+
+**Bewust niet gedaan en vastgelegd als punt:** meervoud op het relatiepad en de regel "hoort X bij de Y" (70); bijzinvragen als `waardoor breekt een tak` (71); kennisgaten in de graaf, doel- en omgekeerde vragen (72); eerlijk "dat weet ik niet" bij Wikipedia zonder resultaat (69, aangevuld met de bevestiging van de netwerk-stilte); onderwerp onthouden voor "en een kat?" (62d, T4 blijft 12%).
+
+**Wat geleerd:** een hoge score op de vaste set meet vooral wat je er zelf op afstelde; de blinde set en het onderscheid taal/kennis/stilte zeggen veel meer. Beide blinde batches (69 en 59 zinnen) zijn na gebruik naar de vaste set verhuisd.

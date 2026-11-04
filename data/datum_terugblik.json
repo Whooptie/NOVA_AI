@@ -6,16 +6,16 @@
     "bank": "2026-11-02"
   },
   "laatste_analyse": {
-    "datum": "2026-11-03",
-    "actieve_dagen": 76,
+    "datum": "2026-11-04",
+    "actieve_dagen": 77,
     "reden": "geen enkele afstand haalt de drempel",
     "beste": null,
     "afgewezen": [
       "1 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "6 mnd: te weinig berichten rond 3 mei (0)",
-      "12 mnd: te weinig berichten rond 3 november (0)",
-      "24 mnd: te weinig berichten rond 3 november (0)"
+      "3 mnd: 1 gedeeld opvallend woord(en), score 1.9 (te laag)",
+      "6 mnd: te weinig berichten rond 4 mei (0)",
+      "12 mnd: te weinig berichten rond 4 november (0)",
+      "24 mnd: te weinig berichten rond 4 november (0)"
     ]
   }
 }

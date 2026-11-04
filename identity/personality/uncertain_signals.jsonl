@@ -1712,3 +1712,8 @@
 {"text": "verwijder definitief concept: kameel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:43:25.217440"}
 {"text": "verwijder definitief concept: walrus", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-03T19:43:30.909083"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-03T20:19:10.205992"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T10:18:35.276702"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T11:02:20.207417"}
+{"text": "kun je me vertellen wat een hond is", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0173, "bron": "model_fallback", "tijdstip": "2026-11-04T11:02:35.558044"}
+{"text": "waarom is een zebra een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.014, "bron": "model_fallback", "tijdstip": "2026-11-04T11:02:47.492016"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T11:34:15.657144"}

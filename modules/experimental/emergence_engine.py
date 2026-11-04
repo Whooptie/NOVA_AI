@@ -358,6 +358,7 @@ class EmergenceEngine:
         # activiteiten vallen terug op de kale naam (zie
         # _onderwerp_label()).
         self._activity_naam_labels = {
+            "nova_bestanden_gedetecteerd": "aan mijn bestanden werken",
             "plex_gebruiken_gedetecteerd": "Plex gebruiken",
             "server_beheren_gedetecteerd": "je server beheren",
             "coderen": "coderen",
@@ -391,6 +392,7 @@ class EmergenceEngine:
         # gevoelig) — "activity_started:*" moet Kevin zelf, per
         # activiteit, hieronder expliciet toevoegen.
         self.INSIGHT_WAARDIGE_ACTIVITEITEN = {
+            "nova_bestanden_gedetecteerd",
             "plex_gebruiken_gedetecteerd",
             "server_beheren_gedetecteerd",
             "coderen",

@@ -1,0 +1,59 @@
+definitie | hoe noem je een dier dat blaft | hond
+definitie | wat is de functie van een paraplu | regen, beschermen
+definitie | kun je zeggen wat een klok doet | tijd, meten
+definitie | wat is een vogel die niet vliegt | pinguïn, struisvogel
+definitie | leg uit wat een brug is | overgang, water, verbinden
+definitie | wat is het verschil tussen een beker en een glas | drinken, materiaal
+definitie | hoe zou je een berg beschrijven | hoog, rots, landschap
+definitie | wat is een instrument met snaren | gitaar, viool
+definitie | kun je uitleggen wat een sleutel is | openen, slot
+definitie | wat is een plek waar je boeken leent | bibliotheek
+relatie | is een pinguïn een vogel | ja
+relatie | hoort een gitaar bij de muziekinstrumenten | ja
+relatie | is een brug een soort constructie | ja
+relatie | klopt het dat een bibliotheek een gebouw is | ja
+relatie | is een sleutel iets om mee te openen | ja
+relatie | hoort een berg bij de landschappen | ja
+relatie | is een paraplu bedoeld tegen regen | ja
+relatie | klopt het dat een klok tijd meet | ja
+relatie | is een struisvogel een vogel | ja
+relatie | hoort een beker bij de drinkbekers | ja
+oorzaak | waardoor ontstaat een echo | geluid, weerkaatsing
+oorzaak | wat zorgt ervoor dat een ballon opstijgt | helium, gas
+oorzaak | waardoor wordt iemand verkouden | virus, kou
+oorzaak | wat maakt dat een kaars brandt | lont, vuur
+oorzaak | waardoor ontstaat mist | vocht, koude lucht
+oorzaak | wat zorgt voor een zonsverduistering | maan, zon
+oorzaak | waardoor breekt een tak | wind, gewicht
+oorzaak | wat veroorzaakt een blaar | wrijving, schoen
+oorzaak | waardoor wordt een plant geel | te weinig water, zon
+oorzaak | wat zorgt ervoor dat ijs smelt in de zon | warmte
+gevolg | wat gebeurt er als je een ballon loslaat | opstijgen, wegvliegen
+gevolg | wat is het resultaat van een zonsverduistering | donker, schaduw
+gevolg | wat komt er van te lang in de zon zitten | verbranding, rood
+gevolg | wat ontstaat er na een echo | herhaling, geluid
+gevolg | wat volgt er op een kaars aansteken | licht, warmte
+gevolg | wat gebeurt er als een plant geen water krijgt | verdorren, geel
+gevolg | wat is het gevolg van een blaar | pijn, vocht
+gevolg | wat komt er van mist | slecht zicht, nevel
+gevolg | wat ontstaat er als een tak breekt | vallen, geluid
+gevolg | wat gebeurt er als je een sleutel omdraait | openen, slot
+synoniem | welk woord betekent hetzelfde als "snel" | vlug, rap
+synoniem | wat is een ander woord voor "koud" | fris, koel
+synoniem | welk woord heeft dezelfde betekenis als "blij" | gelukkig, vrolijk
+synoniem | wat is een synoniem van "groot" | reusachtig, enorm
+synoniem | wat is een ander woord voor "eten" | voedsel, maaltijd
+synoniem | welk woord is hetzelfde als "huis" | woning, gebouw
+synoniem | wat betekent hetzelfde als "auto" | wagen, voertuig
+synoniem | welk woord is synoniem aan "kind" | jeugd, jongere
+synoniem | wat is een ander woord voor "water" | H2O, vloeistof
+onbekend | is een florbnix een instrument
+onbekend | wat is een krimzot
+onbekend | is een plonx een vogel
+onbekend | wat betekent "snorplex"
+onbekend | is een vrombel een berg
+onbekend | wat is een drimble
+onbekend | is een quaznik een soort brug
+onbekend | wat voor iets is een zxqfw
+onbekend | is een blorptang een sleutel
+onbekend | wat betekent het woord "flurble"
