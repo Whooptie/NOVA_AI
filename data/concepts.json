@@ -117496,5 +117496,149 @@
         "timestamp": "2026-11-03T12:27:10.309456"
       }
     ]
+  },
+  "gebeurt": {
+    "senses": [
+      {
+        "sense_id": "gebeurt#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T14:53:59.452824",
+      "updated_at": "2026-11-04T14:53:59.454495",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-04T14:53:59.454495",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T14:53:59.454495",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gebeurt"
+        },
+        "timestamp": "2026-11-04T14:53:59.452834"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "gebeurt#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-04T14:53:59.454493"
+      }
+    ]
+  },
+  "stopt": {
+    "senses": [
+      {
+        "sense_id": "stopt#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T15:13:48.863667",
+      "updated_at": "2026-11-04T15:13:48.865170",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-04T15:13:48.865170",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T15:13:48.865170",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "stopt"
+        },
+        "timestamp": "2026-11-04T15:13:48.863672"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "stopt#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-04T15:13:48.865167"
+      }
+    ]
+  },
+  "krijgt": {
+    "senses": [
+      {
+        "sense_id": "krijgt#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-04T15:13:55.669926",
+      "updated_at": "2026-11-04T15:13:55.670541",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-04T15:13:55.670541",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-04T15:13:55.670541",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "krijgt"
+        },
+        "timestamp": "2026-11-04T15:13:55.669939"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "krijgt#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-04T15:13:55.670539"
+      }
+    ]
   }
 }

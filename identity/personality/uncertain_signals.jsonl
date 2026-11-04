@@ -1725,3 +1725,18 @@
 {"text": "hoe koud wordt het morgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0507, "bron": "model_fallback", "tijdstip": "2026-11-04T14:17:56.782969"}
 {"text": "hoeveel is 5 plus 5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-11-04T14:20:31.209805"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T14:32:25.012589"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T14:41:52.243154"}
+{"text": "wat gebeurt er als ik je uitzet", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0244, "bron": "model_fallback", "tijdstip": "2026-11-04T15:53:59.409812"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-04T16:12:49.292866"}
+{"text": "wat gebeurt er als je een ballon loslaat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0282, "bron": "model_fallback", "tijdstip": "2026-11-04T16:12:58.496315"}
+{"text": "waardoor breekt een tak", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-04T16:13:09.851716"}
+{"text": "wat zorgt ervoor dat ijs smelt", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0193, "bron": "model_fallback", "tijdstip": "2026-11-04T16:13:18.556190"}
+{"text": "wat gebeurt er als het regent", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0525, "bron": "model_fallback", "tijdstip": "2026-11-04T16:13:28.310423"}
+{"text": "wat gebeurt er als ik je uitzet", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0244, "bron": "model_fallback", "tijdstip": "2026-11-04T16:13:41.828036"}
+{"text": "wat gebeurt er als je stopt", "signaal": "waardering", "model_signaal": "verwarring", "marge": 0.0042, "bron": "woordenlijst", "tijdstip": "2026-11-04T16:13:48.853192"}
+{"text": "wat gebeurt er als je een update krijgt", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0282, "bron": "model_fallback", "tijdstip": "2026-11-04T16:13:55.638057"}
+{"text": "wat is een hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-04T16:14:00.330948"}
+{"text": "waardoor ontstaat modder", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-04T16:14:09.040687"}
+{"text": "wat zijn de gevolgen van regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0575, "bron": "model_fallback", "tijdstip": "2026-11-04T16:14:15.112843"}
+{"text": "wat is een kat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-04T16:14:30.151659"}
+{"text": "en een hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-04T16:14:38.740601"}

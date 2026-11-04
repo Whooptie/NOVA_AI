@@ -337,3 +337,6 @@
 {"timestamp": "2026-11-03T18:41:21.116095", "event_type": "concept_created", "word": "kameel", "source": "system", "new_value": {"word": "kameel"}}
 {"timestamp": "2026-11-03T18:43:25.224364", "event_type": "concept_hard_deleted", "word": "kameel", "source": "user", "aantal_senses_verwijderd": 1}
 {"timestamp": "2026-11-03T18:43:30.915524", "event_type": "concept_hard_deleted", "word": "walrus", "source": "user", "aantal_senses_verwijderd": 1}
+{"timestamp": "2026-11-04T14:53:59.452838", "event_type": "concept_created", "word": "gebeurt", "source": "system", "new_value": {"word": "gebeurt"}}
+{"timestamp": "2026-11-04T15:13:48.863676", "event_type": "concept_created", "word": "stopt", "source": "system", "new_value": {"word": "stopt"}}
+{"timestamp": "2026-11-04T15:13:55.669944", "event_type": "concept_created", "word": "krijgt", "source": "system", "new_value": {"word": "krijgt"}}

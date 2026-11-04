@@ -22,9 +22,11 @@ OPLOSSING (100% symbolisch, geen ML)
 BEREIK EN GRENZEN (stand 4 november 2026, ronde 2)
     Wel: kennisvragen over een woord of een paar woorden (definitie, relatie,
     oorzaak, gevolg, synoniem, antoniem), ook met aanhalingstekens eromheen.
-    Niet: vragen met een hele bijzin als onderwerp ("waardoor wordt iemand
-    moe", "wat gebeurt er als ijs smelt"). Daarvoor bestaat in de kennisgraaf
-    geen concept; dat vraagt zinsontleding en valt buiten vaste regels.
+    Bijzinvragen ("waardoor wordt iemand moe", "wat gebeurt er als ijs smelt")
+    sinds punt 71 wel als VORM: de gebeurtenis wordt doorgegeven aan "wat zijn de
+    gevolgen van X" / "wat veroorzaakt X". De graaf heeft geen concept voor zo'n
+    gebeurtenis, dus het antwoord is bijna altijd een eerlijk "Ik ken geen ...".
+    Echt begrijpen vraagt zinsontleding en valt buiten vaste regels.
     Ook buiten bereik: meervoud naar enkelvoud ("hoort een hond bij de
     dieren").
 
@@ -168,6 +170,91 @@ def _b_antoniem(m):
         return None
     return "wat is het tegenovergestelde van " + m.group("x")
 
+# ---------------------------------------------------------------- bijzinvragen (punt 71)
+# "wat gebeurt er als je een ballon loslaat", "waardoor breekt een tak",
+# "wat zorgt ervoor dat ijs smelt". De graaf heeft geen concept voor zo'n hele
+# gebeurtenis ("een tak breekt"): dit is GEEN begrip van de gebeurtenis. De regel
+# herkent alleen de vorm en geeft de gebeurtenis door aan de bestaande vragen
+# "wat zijn de gevolgen van X" / "wat veroorzaakt X". Het antwoord is dus bijna
+# altijd een eerlijk "Ik ken geen gevolgen van 'tak breekt'".
+_GEB = rf"{_W}(?: {_W}){{1,6}}"
+
+# Woorden waaruit blijkt dat de vraag over Nova zelf gaat: die laten we ongemoeid
+# ("wat gebeurt er als ik je uitzet", "wat gebeurt er als je een update krijgt").
+_ZELF = frozenset({
+    "ik", "mij", "me", "mijn", "jij", "jou", "jouw", "jezelf", "mezelf", "u", "uw",
+    "nova", "wij", "we", "ons", "onze", "jullie",
+    "update", "herstart", "reboot", "opstart", "opstarten", "uitzet", "uitzetten",
+    "afsluit", "afsluiten", "uitgezet", "uitschakelt", "uitschakelen", "crasht",
+    "geheugen", "batterij", "stroom", "internet", "wifi", "server",
+})
+_ONBEPAALD_ONDERWERP = frozenset({"iemand", "niemand", "men", "iets", "alles"})
+# Werkwoorden die de bestaande oorzaakregels ("waardoor ontstaat X") al dekken.
+_OORZAAK_WERKWOORD = frozenset({"ontstaat", "ontstaan", "komt", "komen"})
+
+
+def _gebeurtenis_ok(woorden):
+    """
+    De gebeurtenis (2 tot 7 woorden) mag niet over Nova zelf gaan. Een beginnend
+    'je' is 'men' ("je een ballon loslaat") en valt weg; dan moeten er nog minstens
+    drie woorden volgen (anders is 'je stopt' of 'je gaat dood' waarschijnlijk een
+    vraag aan Nova). Geeft de gebeurtenis zonder 'je'/'men', of None.
+    """
+    w = woorden.split()
+    if w and w[0] in ("je", "men"):
+        w = w[1:]
+        if len(w) < 3:
+            return None
+    if not 2 <= len(w) <= 7:
+        return None
+    # "wat gebeurt er als dat gebeurt": een kale verwijzing is geen gebeurtenis.
+    if w[0] in ("dat", "dit", "die", "deze", "er", "hier", "daar"):
+        return None
+    for x in w:
+        if x in _ZELF or x in ("je", "wat", "wie", "waar", "waarom", "waardoor", "hoe", "welk", "welke"):
+            return None
+    return " ".join(w)
+
+
+def _b_gevolg_zin(m):
+    e = _gebeurtenis_ok(m.group("e"))
+    return None if e is None else "wat zijn de gevolgen van " + e
+
+
+def _b_oorzaak_zin(m):
+    e = _gebeurtenis_ok(m.group("e"))
+    return None if e is None else "wat veroorzaakt " + e
+
+
+def _b_oorzaak_maakt(m):
+    # "wat maakt dat huis zo bijzonder" is geen oorzaakvraag: 'dat' kan ook een
+    # aanwijzend woord zijn. Daarom hier enkel een gebeurtenis die met een lidwoord
+    # of 'je' begint ("wat maakt dat een kaars brandt").
+    if m.group("e").split()[0] not in ("een", "de", "het", "je", "men", "iemand"):
+        return None
+    return _b_oorzaak_zin(m)
+
+
+def _b_oorzaak_waardoor_zin(m):
+    """'waardoor breekt een tak' -> 'wat veroorzaakt een tak breekt' (werkwoord achteraan)."""
+    w = m.group("e").split()
+    if len(w) < 2 or w[0] in _OORZAAK_WERKWOORD:
+        return None
+    v = w[0]
+    if w[1] in ("een", "de", "het"):
+        if len(w) < 3:
+            return None
+        onderwerp, rest = w[1:3], w[3:]
+        kern = w[2]
+    else:
+        onderwerp, rest = w[1:2], w[2:]
+        kern = w[1]
+    if kern in _VERBODEN or kern in _STOPWOORDEN or kern.isdigit():
+        if kern not in _ONBEPAALD_ONDERWERP:
+            return None
+    e = _gebeurtenis_ok(" ".join(onderwerp + [v] + rest))
+    return None if e is None else "wat veroorzaakt " + e
+
 
 _ART = rf"(?:(?P<art>{_LID}) )?"
 _ARTX = rf"(?:(?P<artx>{_LID}) )?"
@@ -270,6 +357,19 @@ REGELS = [
     ("antoniem_omgekeerd",
      re.compile(rf"^(?:welk woord betekent het|wat is het) (?:tegenovergestelde|omgekeerde) van "
                 rf"{_ART}(?P<x>{_X})$"), _b_antoniem),
+
+    # F. Bijzinvragen (punt 71, 4 november 2026): gebeurtenis als onderwerp.
+    ("gevolg_als",
+     re.compile(rf"^wat (?:gebeurt|ontstaat|volgt|zou er gebeuren|zou er ontstaan) ?(?:er )?"
+                rf"(?:als|wanneer|zodra|nadat|indien) (?P<e>{_GEB})$"), _b_gevolg_zin),
+    ("gevolg_komt_zin",
+     re.compile(rf"^wat (?:komt|volgt) er (?:van|uit) (?P<e>{_GEB})$"), _b_gevolg_zin),
+    ("oorzaak_zorgt",
+     re.compile(rf"^wat (?:zorgt|zorgde) (?:ervoor|er voor) dat (?P<e>{_GEB})$"), _b_oorzaak_zin),
+    ("oorzaak_maakt",
+     re.compile(rf"^wat maakt dat (?P<e>{_GEB})$"), _b_oorzaak_maakt),
+    ("oorzaak_waardoor_zin",
+     re.compile(rf"^waardoor (?P<e>{_GEB})$"), _b_oorzaak_waardoor_zin),
 
     # E. De KALE vormen, bewust als LAATSTE: ze vangen alles wat met "wat is" of
     # "is" begint. Staan ze eerder, dan eten ze de specifieke regels hierboven op

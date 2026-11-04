@@ -48,8 +48,7 @@ def test_ronde2_idempotent(invoer, verwacht, regel):
 
 
 ONGEWIJZIGD = [
-    "wat gebeurt er als ijs smelt",       # bijzin als onderwerp: buiten bereik
-    "waardoor wordt iemand moe",          # idem
+    # bijzinvragen ("wat gebeurt er als ijs smelt") zijn sinds punt 71 wel herschreven: zie test_bijzinvragen71.py
     "hoort een hond bij de dieren",       # meervoud: lemmatizer nodig
     "wat betekent flurble",               # zonder aanhalingstekens: werkt al
     "wat is regen",

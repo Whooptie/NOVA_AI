@@ -2932,3 +2932,28 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
 **Bewust niet gedaan en vastgelegd:** "en dan?" en "en wat dan" (dubbelzinnig); beschrijvende verwijzingen ("dat ding", "dat orgaan"; kennis nodig, punt 72); "hoort die bij de zoogdieren" (punt 70); "is dat fruit" zonder lidwoord; "waardoor smelt dat" (punt 71); de meetregel voor vage vervolgzinnen (punt 75, nog niet aangepast).
 
 **Wat geleerd:** vaste vormen voor vervolgvragen zijn een loopband: elke batch toont nieuwe zinsvormen en verbrandt zichzelf. De grotere winst zit in bijzinvragen (punt 71), want de helft van de onbegrepen eerste vragen zat daar, en in kennis in `concepts.json`. Splits een lage score altijd in eerste vraag, vervolgzin en kennis voordat je regels bouwt.
+
+---
+
+## ✅ Punt 71 — vragen met een gebeurtenis als onderwerp (4 november 2026)
+
+**Aanleiding:** 11 zinnen in de blinde sets ("waardoor breekt een tak", "wat gebeurt er als je een ballon loslaat", "wat zorgt ervoor dat ijs smelt"). Samen de grootste groep eerste vragen die Nova niet begreep.
+
+**Wat er is gebouwd (`core/language_normalizer.py`, vijf regels in een nieuw blok F):**
+- `gevolg_als`: "wat gebeurt/ontstaat/volgt er (als/wanneer/zodra/nadat) …" en "wat zou er gebeuren als …" worden "wat zijn de gevolgen van …".
+- `gevolg_komt_zin`: "wat komt er van …" voor langere gebeurtenissen (de oude regel dekt maximaal drie woorden).
+- `oorzaak_zorgt`: "wat zorgt ervoor dat …" wordt "wat veroorzaakt …".
+- `oorzaak_maakt`: "wat maakt dat …", alleen als de gebeurtenis met een lidwoord begint ("wat maakt dat een kaars brandt"), anders kan "dat" ook aanwijzend zijn ("wat maakt dat huis zo bijzonder").
+- `oorzaak_waardoor_zin`: "waardoor breekt een tak" wordt "wat veroorzaakt een tak breekt" (werkwoord naar achteren).
+
+**Wat het NIET is:** geen begrip van de gebeurtenis. De graaf heeft geen concept "tak breekt", dus het antwoord is eerlijk "Ik ken geen oorzaken van 'tak breekt'". De taalscore stijgt, Nova's kennis niet. Echt antwoorden vraagt een gebeurtenisrepresentatie of zinsontleding (🔴).
+
+**Bescherming:** een gebeurtenis die over Nova zelf gaat (ik, mij, jij, nova, update, herstart, uitzetten, geheugen, stroom, enz.) wordt niet herschreven. Een beginnend "je" telt als "men" en dan moeten er minstens drie woorden volgen, anders is "wat gebeurt er als je stopt" waarschijnlijk een vraag aan Nova. Een kale verwijzing ("wat gebeurt er als dat gebeurt", "waardoor smelt dat") blijft ongemoeid.
+
+**Meting:** 11 van 11 zinnen uit de lijst geven nu een eerlijk antwoord in plaats van de fallback; 2 eigen zinnen ("wat gebeurt er als het regent", "wat gebeurt er als je te veel koffie drinkt") idem; "wat gebeurt er als ik je uitzet" blijft terecht ongemoeid. Niveau 1/2/3 bleven 100%, T2 16/16. Dit zijn zinnen waarop de regels zijn gebouwd, dus geen verse meting.
+
+**Getest:** `tests/test_bijzinvragen71.py` (34 tests, waaronder de bescherming voor Nova zelf, de oude regels die blijven winnen, idempotentie en een test door de echte router en chat). Twee zinnen in `test_language_normalizer_ronde2.py` verwachtten nog dat bijzinvragen onaangeroerd bleven en zijn aangepast.
+
+**Bewust niet gedaan:** "waarom smelt sneeuw" ("waarom"-vragen zijn dubbelzinnig met relatievragen), "wat maakt dat" zonder lidwoord ("wat maakt dat kaarsen branden"), en vragen over Nova zelf die toevallig niet in de lijst woorden staan ("wat gebeurt er als je een nieuwe functie krijgt" wordt nog herschreven). Een lidwoord vooraan verdwijnt in het antwoord ("het regent" wordt 'regent').
+
+**Wat geleerd:** de aanpak was klein omdat de bestaande vragen "gevolgen van X" en "wat veroorzaakt X" al een woord als tekst accepteren; de regel hoefde alleen de vorm te herkennen. Dezelfde route breekt als de gebeurtenis later een eigen concept krijgt.
