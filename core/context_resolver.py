@@ -32,6 +32,9 @@ _LID = r"(?:een|de|het)"
 # Een onderwerp: optioneel lidwoord + 1 of 2 woorden. Geen vraag- of functiewoorden.
 _NP = rf"(?:{_LID} )?{_W}(?: {_W})?"
 _NP_KAAL = rf"{_W}(?: {_W})?"
+# Punt 76 (5 november 2026): bij oorzaak- en gevolgvragen is het onderwerp vaak een hele
+# gebeurtenis ("te veel koffie drinkt", "te lang in de kou staat"): 1 tot 7 woorden.
+_EVENT = rf"{_W}(?: {_W}){{0,6}}"
 
 # Woorden die nooit een onderwerp zijn (anders zou "en dat?" of "en hoe?" een begrip lijken).
 _GEEN_ONDERWERP = {
@@ -47,6 +50,13 @@ _GEEN_ONDERWERP = {
 }
 
 _ARTIKEL = re.compile(rf"^{_LID} ")
+
+# Woorden die in een gebeurtenis nooit voorkomen: dan is het een verwijzing of een vraag aan
+# Nova zelf, geen gebeurtenis die we kunnen onthouden.
+_GEEN_GEBEURTENIS = frozenset({
+    "dat", "dit", "die", "deze", "wat", "wie", "waar", "wanneer", "waarom", "waardoor", "hoe",
+    "welk", "welke", "ik", "mij", "me", "u", "jij", "jou", "wij", "we", "nova",
+})
 
 
 def _schoon(tekst):
@@ -99,11 +109,31 @@ def _bouw_synoniem(m):
     return "wat is een synoniem van {x}", m.group("x"), "kaal"
 
 
+def _gebeurtenis_ok(x):
+    """True als 'x' een gebeurtenis van 2 tot 7 woorden is ("te veel koffie drinkt").
+
+    Strenger dan nodig is het niet: alleen verwijzingen en vraagwoorden vallen af, en de
+    gebeurtenis mag niet met een verwijswoord of bijwoord uit _GEEN_ONDERWERP beginnen.
+    Eén woord valt hier bewust af: dat gaat via _onderwerp_ok().
+    """
+    woorden = _kaal(x).split()
+    if not 2 <= len(woorden) <= 7:
+        return False
+    if woorden[0] in _GEEN_ONDERWERP:
+        return False
+    return not any(w in _GEEN_GEBEURTENIS for w in woorden)
+
+
 VRAAGVORMEN = [
     # Specifieke vormen eerst, de kale definitie als laatste.
     ("synoniem", re.compile(rf"^wat is een synoniem van (?P<x>{_NP_KAAL})$"), _bouw_synoniem),
-    ("gevolg", re.compile(rf"^wat zijn de gevolgen van (?P<x>{_NP_KAAL})$"), _bouw_gevolg),
-    ("oorzaak", re.compile(rf"^wat veroorzaakt (?P<x>{_NP_KAAL})$"), _bouw_oorzaak),
+    ("gevolg", re.compile(rf"^wat zijn de gevolgen van (?P<x>{_EVENT})$"), _bouw_gevolg),
+    # Punt 76: de normalizer laat "wat is het gevolg van roken" ongemoeid, dus onthouden we
+    # ook die vorm (en zijn varianten) onder hetzelfde sjabloon.
+    ("gevolg_enkelvoud",
+     re.compile(rf"^wat (?:is|zijn) (?:het gevolg|de gevolgen|het effect|de effecten|het resultaat|"
+                rf"de resultaten) van (?P<x>{_EVENT})$"), _bouw_gevolg),
+    ("oorzaak", re.compile(rf"^wat veroorzaakt (?P<x>{_EVENT})$"), _bouw_oorzaak),
     ("relatie", re.compile(rf"^is (?P<x>{_NP}) (?P<y>{_LID} {_W}(?: {_W})?)$"), _bouw_relatie),
     ("definitie", re.compile(rf"^wat is (?P<x>{_NP})$"), _bouw_definitie),
 ]
@@ -120,7 +150,8 @@ def herken_vraag(tekst):
         if not m:
             continue
         sjabloon, onderwerp, soort = bouwer(m)
-        if not _onderwerp_ok(onderwerp):
+        # Punt 76: een oorzaak- of gevolgvraag mag ook over een gebeurtenis gaan.
+        if not (_onderwerp_ok(onderwerp) or (soort == "kaal" and _gebeurtenis_ok(onderwerp))):
             return None
         # Bij een relatie moet ook het doel (y) een echt begrip zijn, niet "is dat een dier".
         if "y" in m.groupdict() and not _onderwerp_ok(m.group("y")):
@@ -150,10 +181,29 @@ _NP_ACHTER = rf"(?:{_LID} )?{_W_ZONDER_BIJWOORD}(?: {_W_ZONDER_BIJWOORD})?"
 _ELLIPS_ACHTER = re.compile(rf"^(?:en )?(?P<k>{_NP_ACHTER}) (?:ook nog|dan ook|ook|dan|wel|nog)$")
 # Vulwoorden aan het eind die niets veranderen: "hoe komt dat eigenlijk".
 _VUL_EIND = re.compile(r"\s+(?:eigenlijk|precies|nou|toch|even|trouwens)$")
-_NAAM = r"(?:dat|dit|die|deze|het)"
+# Punt 76: ook "zo'n ding", "dat ding" ("hoe ontstaat zo'n ding"). Langste vormen eerst.
+_NAAM = r"(?:zo'n ding|dat ding|dit ding|die ding|dat|dit|die|deze|het)"
+# Punt 76: het lidwoord van het doel mag ontbreken ("is dat fruit"). Dat is alleen veilig
+# als het doel een bekend concept is; zie de controle met 'is_concept' in los_op().
 _RELATIE_VERWIJZING = re.compile(
-    rf"^(?:en )?is {_NAAM} (?:dan )?(?:ook )?(?P<y>{_LID} {_W}(?: {_W})?)$"
+    rf"^(?:en )?is {_NAAM} (?:dan )?(?:ook )?(?P<y>(?:{_LID} )?{_W}(?: {_W})?)$"
 )
+# Punt 76: "waardoor smelt dat" / "waarom werkt dat": werkwoord + verwijzing. Het onderwerp
+# komt uit de laatste vraag ("ijs" -> "wat veroorzaakt ijs smelt").
+# Punt 72b: "wat doet zo'n ding" / "wat meet dat ding eigenlijk" / "wat doet dat orgaan" na een
+# definitievraag. Bewust een kleine vaste lijst verwijswoorden; het onderwerp is dat van de vorige vraag.
+_FUNCTIE_VERWIJZING = re.compile(
+    r"^(?:en )?wat (?:doet|meet|is de functie van) "
+    r"(?:zo'n ding|dat ding|dit ding|die ding|dat orgaan|dit orgaan|dat gereedschap|dit gereedschap|"
+    r"dat instrument|dit instrument|dat apparaat|dit apparaat|dat voorwerp|dit voorwerp|dat|dit|het)$"
+)
+_WERKWOORD_VERWIJZING = re.compile(rf"^(?:en )?(?:waardoor|waarom) (?P<v>{_W}) {_NAAM}$")
+# Koppel-, hulp- en modale werkwoorden zijn geen gebeurtenis ("waarom is dat zo").
+_GEEN_GEBEURTENIS_WERKWOORD = frozenset({
+    "is", "zijn", "ben", "bent", "was", "waren", "heb", "heeft", "hebt", "hebben", "had",
+    "kan", "kun", "kunt", "kunnen", "kon", "wil", "wilt", "willen", "moet", "moeten",
+    "mag", "mogen", "zal", "zullen", "zou", "zouden", "doe", "doet", "doen",
+})
 # "hoort die bij de zoogdieren" (punt 70): klasse in het meervoud, zoals in de normalizer.
 _HOORT_VERWIJZING = re.compile(
     rf"^(?:en )?(?:hoort|behoort|valt) {_NAAM} (?:dan )?(?:ook )?(?:bij|tot|onder) de (?P<y>{_W})$"
@@ -194,11 +244,15 @@ def _kaal(np):
     return _ARTIKEL.sub("", np)
 
 
-def los_op(tekst, sjabloon, onderwerp, soort):
+def los_op(tekst, sjabloon, onderwerp, soort, is_concept=None):
     """Probeert 'tekst' aan te vullen met de onthouden vraag.
 
     Geeft (nieuwe_tekst, regelnaam) of None als de zin in geen vervolgvorm past.
     Dit is bewust voorzichtig: een zin die ook maar een beetje afwijkt, blijft ongemoeid.
+
+    is_concept (punt 76): optionele functie woord -> True/False. Zonder die functie wordt
+    een doel zonder lidwoord ("is dat fruit") niet opgelost, want "is dat goed" mag nooit
+    "is een appel goed" worden. De router geeft hier store.has_concept mee.
     """
     if not sjabloon or not onderwerp:
         return None
@@ -212,6 +266,19 @@ def los_op(tekst, sjabloon, onderwerp, soort):
 
     if _SYNONIEM_VERWIJZING.match(t):
         return f"wat is een synoniem van {_kaal(onderwerp)}", "synoniem_verwijzing"
+
+    # Punt 72b: "wat doet zo'n ding" na "wat is een tang" -> "wat is een tang" (de definitie
+    # bevat meestal wat het ding doet). Alleen na een definitie- of relatievraag met een lidwoord.
+    if _FUNCTIE_VERWIJZING.match(t) and soort == "np":
+        return f"wat is {onderwerp}", "functie_verwijzing"
+
+    # Punt 76: "waardoor smelt dat" na "wat is ijs" -> "wat veroorzaakt ijs smelt".
+    # Zelfde vorm als de normalizer maakt van "waardoor smelt ijs" (onderwerp + werkwoord).
+    m = _WERKWOORD_VERWIJZING.match(t)
+    if m and soort in ("np", "kaal"):
+        v = m.group("v")
+        if v not in _GEEN_ONDERWERP and v not in _GEEN_GEBEURTENIS_WERKWOORD:
+            return f"wat veroorzaakt {_kaal(onderwerp)} {v}", "oorzaak_werkwoord_verwijzing"
 
     # "en een kat?" -> zelfde vraag, ander onderwerp.
     m = _ELLIPS.match(t)
@@ -233,6 +300,9 @@ def los_op(tekst, sjabloon, onderwerp, soort):
         y = m.group("y")
         if not _onderwerp_ok(y):
             return None
+        # Punt 76: zonder lidwoord ("is dat fruit") alleen als het doel een bekend concept is.
+        if not _ARTIKEL.match(y) and not (is_concept is not None and is_concept(y)):
+            return None
         return f"is {onderwerp} {y}", "relatie_verwijzing"
 
     m = _HOORT_VERWIJZING.match(t)
@@ -251,6 +321,11 @@ def is_verwijzing_zonder_onderwerp(tekst):
     De router gebruikt dit om zo'n zin NIET als onderwerp "ander woord voor" naar
     Wikipedia te sturen als er niets onthouden is (punt 74)."""
     t = _VUL_EIND.sub("", _TUSSENWERPSEL.sub("", _schoon(tekst)))
+    if _WERKWOORD_VERWIJZING.match(t):
+        v = _WERKWOORD_VERWIJZING.match(t).group("v")
+        if v not in _GEEN_ONDERWERP and v not in _GEEN_GEBEURTENIS_WERKWOORD:
+            return True
     return bool(
         _GEVOLG_VERWIJZING.match(t) or _OORZAAK_VERWIJZING.match(t) or _SYNONIEM_VERWIJZING.match(t)
+        or _FUNCTIE_VERWIJZING.match(t)
     )

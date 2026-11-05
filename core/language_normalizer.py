@@ -141,6 +141,32 @@ def _b_definitie(m):
     return "wat is " + _term(m.group("art"), m.group("x"))
 
 
+def _b_functie(m):
+    """Punt 72b: 'wat doet een klok' / 'wat is de functie van een klok' -> 'wat is een klok'.
+
+    Dit is GEEN aparte functie-kennis: een definitie bevat meestal zelf wat iets doet
+    ('thermometer: meet temperatuur'). Alleen voor een kort, concreet onderwerp, nooit over Nova."""
+    x = m.group("x")
+    if not _woord_ok(x) or len(x.split()) > 2:
+        return None
+    if any(w in _ZELF for w in x.split()):
+        return None
+    return "wat is " + _term(m.group("art"), x)
+
+
+_DOEL_KERN = rf"(?:om (?:mee )?te {_W}(?: {_W})?|tegen {_W}(?: {_W})?|voor {_W}(?: {_W})?)"
+
+
+def _b_doel(m):
+    """Punt 72c: 'is een boek iets om te lezen' -> 'wordt boek gebruikt om te lezen'."""
+    x = m.group("x")
+    if not _woord_ok(x) or len(x.split()) > 2:
+        return None
+    if any(w in _ZELF for w in x.split()):
+        return None
+    return f"wordt {x} gebruikt {m.group('d')}"
+
+
 def _b_relatie(m):
     if not (_woord_ok(m.group("x")) and _woord_ok(m.group("y"))):
         return None
@@ -273,6 +299,37 @@ def _b_oorzaak_waardoor_zin(m):
     return None if e is None else "wat veroorzaakt " + e
 
 
+# Punt 76 (5 november 2026), groep A: "waarom smelt sneeuw", "waarom gaat melk schiften".
+# Bij "waarom" + koppel-, hulp- of modaal werkwoord ("waarom is de lucht blauw",
+# "waarom kan een vogel vliegen") blijft alles zoals het was: dat is geen vraag naar de
+# oorzaak van een gebeurtenis maar naar een reden of een eigenschap.
+_WAAROM_GEEN_GEBEURTENIS = frozenset({
+    "is", "zijn", "ben", "bent", "was", "waren",
+    "heb", "heeft", "hebt", "hebben", "had", "hadden",
+    "kan", "kun", "kunt", "kunnen", "kon", "konden",
+    "wil", "wilt", "willen", "moet", "moeten", "mag", "mogen",
+    "zal", "zullen", "zou", "zouden",
+})
+
+
+def _b_oorzaak_waarom_zin(m):
+    """'waarom smelt sneeuw' -> 'wat veroorzaakt sneeuw smelt' (zelfde vorm als bij 'waardoor')."""
+    w = m.group("e").split()
+    if not w or w[0] in _WAAROM_GEEN_GEBEURTENIS:
+        return None
+    return _b_oorzaak_waardoor_zin(m)
+
+
+def _b_oorzaak_krijg(m):
+    """'waardoor krijg je een blaar' -> 'wat veroorzaakt blaar' ('krijg je X' is 'ontstaat X')."""
+    x = m.group("x")
+    if not _woord_ok(x):
+        return None
+    if any(w in _ZELF for w in x.split()):
+        return None
+    return "wat veroorzaakt " + x
+
+
 _ART = rf"(?:(?P<art>{_LID}) )?"
 _ARTX = rf"(?:(?P<artx>{_LID}) )?"
 
@@ -302,6 +359,30 @@ REGELS = [
     ("definitie_wat_voor",
      re.compile(rf"^wat voor (?:iets|ding|een ding|soort ding|soort iets) is {_ART}(?P<x>{_X})$"),
      _b_definitie),
+
+    # A2. Functievragen (punt 72b): een definitie vertelt meestal wat iets doet.
+    ("functie_doet",
+     re.compile(rf"^wat (?:doet|meet) {_ART}(?P<x>{_W}(?: {_W})?)$"), _b_functie),
+    ("functie_doet_achter",
+     re.compile(rf"^wat {_ART}(?P<x>{_W}(?: {_W})?) (?:doet|meet)$"), _b_functie),
+    ("functie_van",
+     re.compile(rf"^wat is de (?:functie|taak|werking) van {_ART}(?P<x>{_W}(?: {_W})?)$"), _b_functie),
+
+    # A3. Doelvragen (punt 72c): "is een boek iets om te lezen".
+    ("doel_iets",
+     re.compile(rf"^is {_ARTX}(?P<x>{_W}(?: {_W})?) (?:iets|een ding|een voorwerp|een middel|een gereedschap) "
+                rf"(?P<d>om (?:mee )?te {_W}(?: {_W})?)$"), _b_doel),
+    ("doel_bedoeld",
+     re.compile(rf"^(?:is|wordt) {_ARTX}(?P<x>{_W}(?: {_W})?) (?:bedoeld|gemaakt|bestemd|goed|handig|nuttig|geschikt) "
+                rf"(?P<d>{_DOEL_KERN})$"), _b_doel),
+    ("doel_gebruiken",
+     re.compile(rf"^(?:kun|kan|kunt) (?:je|jij|u|men) {_ARTX}(?P<x>{_W}(?: {_W})?) gebruiken "
+                rf"(?P<d>{_DOEL_KERN})$"), _b_doel),
+    ("doel_gebruik",
+     re.compile(rf"^(?:gebruik|gebruikt) (?:je|jij|u|men) {_ARTX}(?P<x>{_W}(?: {_W})?) "
+                rf"(?P<d>{_DOEL_KERN})$"), _b_doel),
+    ("doel_dient",
+     re.compile(rf"^dient {_ARTX}(?P<x>{_W}(?: {_W})?) (?P<d>{_DOEL_KERN})$"), _b_doel),
 
     # B. Relatievragen ("is een X een Y" in andere vormen)
     ("relatie_waarom",
@@ -389,8 +470,15 @@ REGELS = [
      re.compile(rf"^wat (?:zorgt|zorgde) (?:ervoor|er voor) dat (?P<e>{_GEB})$"), _b_oorzaak_zin),
     ("oorzaak_maakt",
      re.compile(rf"^wat maakt dat (?P<e>{_GEB})$"), _b_oorzaak_maakt),
+    # Punt 76, groep A. "oorzaak_krijg" MOET vóór "oorzaak_waardoor_zin" staan: die regel
+    # past ook op "waardoor krijg je een blaar", geeft dan None en laat de zin ongemoeid.
+    ("oorzaak_krijg",
+     re.compile(rf"^(?:waardoor|waarom) (?:krijg|krijgt|kreeg) (?:je|men|iemand) {_ART}(?P<x>{_X})$"),
+     _b_oorzaak_krijg),
     ("oorzaak_waardoor_zin",
      re.compile(rf"^waardoor (?P<e>{_GEB})$"), _b_oorzaak_waardoor_zin),
+    ("oorzaak_waarom_zin",
+     re.compile(rf"^waarom (?P<e>{_GEB})$"), _b_oorzaak_waarom_zin),
 
     # E. De KALE vormen, bewust als LAATSTE: ze vangen alles wat met "wat is" of
     # "is" begint. Staan ze eerder, dan eten ze de specifieke regels hierboven op

@@ -1782,10 +1782,19 @@ class IntentRouter:
     # client_server_control_roadmap.md) — 100% symbolisch: een woord
     # herkennen en doorsturen naar client_bridge.py. Geen ML.
     # ---------------------------------------------------------
+    # 5 november 2026: "open"/"start"/"sluit"/"stop" tellen alleen als BEVEL, dus aan het begin van
+    # de zin, eventueel na een aanhef of beleefdheidswoord. Voorheen zocht de regex het werkwoord
+    # ergens in de zin, waardoor "wat is het gevolg van een open deur" of "wat volgt er als een deur
+    # open gaat" een app-commando werd ("ik kan geen apps openen").
+    _BEVEL_VOORAF = (
+        r"^(?:(?:hey|hoi|hallo|h\u00e9|nova|ok|oke|ok\u00e9|even|nu|please|alsjeblieft|graag|en|dan|"
+        r"(?:kun|kan|kunt|wil|wilt|zou|zul)\s+(?:je|jij|u))[,\s]+)*"
+    )
+
     def detect_open_app(self, text):
         t = text.lower().strip().rstrip("?.!")
 
-        match = re.search(r"\b(?:open|start)\s+(?:mijn\s+|de\s+)?(\w+)", t)
+        match = re.search(self._BEVEL_VOORAF + r"(?:open|start)\s+(?:mijn\s+|de\s+)?(\w+)", t)
         if not match:
             return False
 
@@ -1841,7 +1850,7 @@ class IntentRouter:
     def detect_close_app(self, text):
         t = text.lower().strip().rstrip("?.!")
 
-        match = re.search(r"\b(?:sluit|stop|close)\s+(?:mijn\s+|de\s+)?(\w+)", t)
+        match = re.search(self._BEVEL_VOORAF + r"(?:sluit|stop|close)\s+(?:mijn\s+|de\s+)?(\w+)", t)
         if not match:
             return False
 
@@ -3064,6 +3073,31 @@ class IntentRouter:
             return True
 
         return False
+
+    # Punt 72c: doelvragen. De normalizer maakt van "is een boek iets om te lezen" de vorm
+    # "wordt boek gebruikt om te lezen". Hier wordt die vorm herkend en als relatiecheck verstuurd
+    # (met relatie="doel", zodat ChatModule.on_relation_check het naar de doel-afhandeling stuurt).
+    _DOEL_CHECK = re.compile(
+        r"^wordt (?P<x>[a-zà-ÿ\-]+(?: [a-zà-ÿ\-]+)?) gebruikt "
+        r"(?P<d>(?:om (?:mee )?te|tegen|voor) [a-zà-ÿ\-]+(?: [a-zà-ÿ\-]+)?)$"
+    )
+
+    def detect_doel_check(self, text):
+        t = text.lower().strip().rstrip("?.! ")
+        m = self._DOEL_CHECK.match(t)
+        if not m:
+            return False
+        source = m.group("x").strip()
+        if not source or source in self._GEEN_RELATIE_ONDERWERP:
+            return False
+        dbg(f"{C_BLUE}→ doel_check: '{source}' -> '{m.group('d')}'{C_RESET}")
+        self.event_bus.publish("intent_relation_check", {
+            "source": source,
+            "target": m.group("d"),
+            "relatie": "doel",
+        })
+        self._emit_topic("relation_check", bron="detect", concept=source)
+        return True
 
     # ---------------------------------------------------------
     # Temporal Semantics, Fase 9.1 -- ontstaansjaar van een woord.
@@ -5463,6 +5497,13 @@ class IntentRouter:
         })
         return None
 
+    def _is_concept(self, woord):
+        """Punt 76: is 'woord' een bekend concept? Voor vervolgzinnen als "is dat fruit"."""
+        try:
+            return bool(self.semantic and self.semantic.store.has_concept(woord))
+        except Exception:
+            return False
+
     def _verwerk_vervolgvraag(self, text):
         if _context_resolver is None:
             return text
@@ -5472,7 +5513,7 @@ class IntentRouter:
         try:
             vraag = last_ctx.get_vraag()
             if vraag:
-                opgelost = _context_resolver.los_op(text, *vraag)
+                opgelost = _context_resolver.los_op(text, *vraag, is_concept=self._is_concept)
                 if opgelost:
                     nieuw, regel = opgelost
                     dbg(f"{C_YELLOW}→ vervolgvraag ({regel}): '{text}' → '{nieuw}'{C_RESET}")
@@ -5894,6 +5935,11 @@ class IntentRouter:
         # vóór de intent-tabel hieronder staan, zie de uitleg bij
         # detect_causes_check(). Emit zelf al zijn eigen topic.
         if self.detect_causes_check(text):
+            return
+
+        # 2F2 Doelvraag (punt 72c) -- "wordt boek gebruikt om te lezen" (door de normalizer
+        # gemaakt van "is een boek iets om te lezen").
+        if self.detect_doel_check(text):
             return
 
         # 2G Temporal Semantics (Fase 9.1) -- ook vóór de intent-tabel:

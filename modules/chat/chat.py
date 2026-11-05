@@ -199,6 +199,11 @@ class ChatModule:
             })
             return
 
+        # Punt 72c: "is een boek iets om te lezen" -> geen is_a-vraag maar een doelvraag.
+        if data.get("relatie") == "doel":
+            self.on_doel_check(source, target)
+            return
+
         # 10 oktober 2026: "lidwoord" komt van intent_router.py -- False
         # als Kevin zelf geen "een" vóór X typte ("is wandelen een
         # activiteit"). Ontbreekt het veld (oudere patronen), dan True:
@@ -236,6 +241,36 @@ class ChatModule:
             msg = f"Nee, {een}{source} is geen {target}."
 
         self.event_bus.publish("layer4_response", {"text": msg})
+
+    # -------------------------
+    # Punt 72c: doelvragen + leren (punt 72c deel 3)
+    # -------------------------
+    def on_doel_check(self, source, doel_tekst):
+        """'is een boek iets om te lezen' / 'is een paraplu bedoeld tegen regen'.
+
+        doel_tekst is 'om te lezen', 'om mee te openen', 'tegen regen' of 'voor ...'.
+        Het antwoord komt uit de kennisgraaf of uit de definitie van het woord; er komt nooit
+        een stellig 'nee'. Is het een 'ja' op grond van de DEFINITIE en gaat het om een
+        werkwoord, dan vraag ik daarna of ik het mag onthouden (ja/nee, via de bestaande
+        relatie-bevestiging). Er wordt niets zonder jouw ja opgeslagen."""
+        source = self._enkelvoud(source).strip()
+        werkwoord = doel_tekst.startswith("om ")
+        kern = doel_tekst.split()[-1] if werkwoord else doel_tekst.split(" ", 1)[1]
+
+        if not (self.semantic and hasattr(self.semantic, "explain_used_for")):
+            self.event_bus.publish("layer4_response", {"text": "Daar kan ik nu niet over nadenken."})
+            return
+        tekst, soort = self.semantic.explain_used_for(source, kern)
+        self.event_bus.publish("layer4_response", {"text": tekst})
+
+        # Per gesprek hoogstens één keer dezelfde opslagvraag, ook na "nee" (de relatie-bevestiging
+        # onthoudt een "nee" niet zelf). Na een herstart kan Nova het dus opnieuw vragen.
+        gevraagd = self.__dict__.setdefault("_doel_leervragen", set())
+        if soort == "definitie" and werkwoord and (source, kern) not in gevraagd:
+            flow = getattr(self.semantic, "flow_engine", None)
+            if flow is not None:
+                gevraagd.add((source, kern))
+                flow.start_relation_flow(source, "used_for", kern)
 
     # -------------------------
     # 3B. Part-of check (nieuw, 11 juli 2026, analoog aan

@@ -10,7 +10,7 @@
   },
   "laatste_analyse": {
     "datum": "2026-11-05",
-    "actieve_dagen": 77,
+    "actieve_dagen": 78,
     "reden": null,
     "beste": {
       "afstand_maanden": 3,
@@ -19,7 +19,7 @@
         "hond",
         "werkt"
       ],
-      "score": 5.96
+      "score": 6.0
     },
     "afgewezen": [
       "1 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",

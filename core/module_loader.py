@@ -412,6 +412,8 @@ class ModuleLoader:
         if kandidaat_module is not None:
             kandidaat_module.kevin_profile = self.loaded_modules.get("kevin_profile")
             kandidaat_module.word_associations = self.loaded_modules.get("word_associations_learner")
+            # Punt 67: concept-filter (alleen bekende concepts worden voorgesteld)
+            kandidaat_module.semantic = sem
         
         # ----------------------------------------------------
         # 3D. MICROLEARNING (Layer 6, Fase 6 — Adaptive Learning)

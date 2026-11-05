@@ -524,3 +524,5 @@
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1793817330.2460952, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "onbekend", "gekozen_variant_index": 1, "variant_tekst": "Hmm… dat zegt me niets.", "entity": "allemaal zoogdieren", "response_style": "normaal", "moment": "2026-11-04T20:18:54.207165", "reactie_sentiment": null}
 {"sjabloon_naam": "onbekend", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1793819934.2074153, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "variant_tekst": "Met '{entity}' bedoel je waarschijnlijk: {definition} Ik zie dat woord bij jou trouwens vaak in de buurt van '{associatie}'.", "entity": "appel", "response_style": "uitgebreid", "moment": "2026-11-05T19:35:15.959583", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1793903715.9599175, "type": "sentiment_koppeling"}

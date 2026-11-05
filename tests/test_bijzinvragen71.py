@@ -57,8 +57,10 @@ def test_bijzinvraag_wordt_herschreven(zin, verwacht):
     "wat maakt dat zo mooi",
     # Eén woord is geen gebeurtenis.
     "wat gebeurt er als regen",
-    # Waarom-vragen zitten er bewust niet in.
-    "waarom smelt sneeuw",
+    # Waarom-vragen met een koppel- of modaal werkwoord zijn een reden, geen oorzaak van een
+    # gebeurtenis. ("waarom smelt sneeuw" is sinds punt 76 wel een oorzaakvraag.)
+    "waarom is de lucht blauw",
+    "waarom kan een vogel vliegen",
 ])
 def test_bijzinvraag_blijft_ongemoeid(zin):
     nieuw, regel = normaliseer(zin)

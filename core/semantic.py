@@ -1957,6 +1957,65 @@ class ReasoningEngine:
         eerste_alt = alternatieven[0]
         return sjabloon.format(source=source, target=target, alt=eerste_alt)
 
+    # ---------------------------------------------------------
+    # Punt 72c: doelvragen ("is een boek iets om te lezen", "is een paraplu bedoeld tegen regen")
+    # ---------------------------------------------------------
+    @staticmethod
+    def _zelfde_woord(a: str, b: str) -> bool:
+        """Grove vergelijking van twee woorden: gelijk, of (vanaf 4 letters) het ene begint met de
+        stam van het andere ('lezen'/'lees'/'gelezen' niet; 'openen'/'opent'/'open' wel;
+        'regen'/'regens' wel). Bewust simpel; het is geen echte taalkundige analyse."""
+        a, b = a.lower().strip(), b.lower().strip()
+        if a == b:
+            return True
+        kort, lang = (a, b) if len(a) <= len(b) else (b, a)
+        if len(kort) < 4:
+            return False
+        stam = kort[:-2] if kort.endswith("en") else kort[:-1] if kort.endswith(("t", "e", "s", "n")) else kort
+        return len(stam) >= 3 and lang.startswith(stam)
+
+    def _echte_definities(self, woord: str) -> list:
+        concept = self.store.get_concept(woord.lower().strip())
+        if not concept:
+            return []
+        return [
+            s["definition"] for s in concept.get("senses", [])
+            if s.get("definition") not in (None, "", "unknown") and s.get("status") != "rejected"
+        ]
+
+    def explain_used_for(self, source: str, doel: str) -> tuple:
+        """
+        Beantwoordt 'wordt <source> gebruikt voor <doel>' (doel = een werkwoord of zelfstandig naamwoord).
+        Geeft (tekst, soort) terug, soort is een van:
+          'graaf'      - het staat als used_for-relatie in de kennisgraaf
+          'definitie'  - het staat (als woord) in de definitie van source
+          'afgewezen'  - Kevin heeft dit eerder afgewezen
+          'onbekend'   - source is onbekend
+          'niets'      - niets in mijn kennis bevestigt het
+        Er komt NOOIT een stellig 'nee': dat iets er niet staat bewijst niet dat het niet klopt.
+        """
+        s = source.lower().strip()
+        d = doel.lower().strip()
+
+        if self.relation_engine.is_afgewezen(s, "used_for", d):
+            return f"Nee, dat heb je eerder afgewezen: {s} wordt niet gebruikt voor {d}.", "afgewezen"
+
+        gebruikt = self.relation_engine.get_used_for(s)
+        for g in gebruikt:
+            if self._zelfde_woord(g, d):
+                return f"Ja, {s} wordt gebruikt voor {g}.", "graaf"
+
+        if self._is_onbekend(s) and not gebruikt:
+            return f"Ik ken '{s}' niet, dus ik kan dat niet beoordelen.", "onbekend"
+
+        for definitie in self._echte_definities(s):
+            woorden = re.findall(r"[a-zà-ÿ]+", definitie.lower())
+            if any(self._zelfde_woord(w, d) for w in woorden):
+                return f"Ja, dat staat in mijn definitie van {s}: {definitie}", "definitie"
+
+        return (f"Dat staat niet in wat ik weet over '{s}'. Ik kan het dus niet bevestigen, "
+                f"maar ik kan het ook niet uitsluiten."), "niets"
+
     def explain_causes(self, source: str, target: str) -> str:
         """
         Geeft een leesbare uitleg van een oorzaak-keten.
@@ -3409,6 +3468,9 @@ class SemanticConceptsModule:
 
     def get_used_for(self, word):
         return self.relation_engine.get_used_for(word)
+
+    def explain_used_for(self, source, doel):
+        return self.reasoning_engine.explain_used_for(source, doel)
 
     def get_causes(self, word):
         return self.relation_engine.get_causes(word)

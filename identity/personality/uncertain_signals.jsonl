@@ -1782,3 +1782,14 @@
 {"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-04T20:19:09.754608"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-05T17:04:26.444807"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-05T17:04:45.990962"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-05T18:27:38.465318"}
+{"text": "onthoud: ik hou van koffie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0383, "bron": "model_fallback", "tijdstip": "2026-11-05T19:04:43.156287"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-05T19:31:46.425652"}
+{"text": "wat is een appel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-05T19:35:15.940646"}
+{"text": "is dat fruit", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0475, "bron": "model_fallback", "tijdstip": "2026-11-05T19:35:22.514736"}
+{"text": "Waarom smelt sneeuw?", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0082, "bron": "model_fallback", "tijdstip": "2026-11-05T19:35:31.126769"}
+{"text": "waardoor gebeurt dat", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0606, "bron": "model_fallback", "tijdstip": "2026-11-05T19:35:37.368268"}
+{"text": "Wat gebeurt er als je te weinig water drinkt?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0071, "bron": "model_fallback", "tijdstip": "2026-11-05T19:35:45.896476"}
+{"text": "gevolgen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-05T19:35:58.088009"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-05T20:05:13.519923"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-05T20:39:51.962784"}

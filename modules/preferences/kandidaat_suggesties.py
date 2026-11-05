@@ -40,6 +40,11 @@ nodig, Kevin kan de suggestie ook gewoon negeren.
 import os
 import json
 
+# Gedeelde stopwoordenlijst (core/nl_stopwoorden.py): Layer 1 filtert die al,
+# maar we controleren de kandidaat hier nog eens, voor het geval een woord
+# via een andere route (bv. een sense-sleutel) toch binnenkomt.
+from core.nl_stopwoorden import STOPWOORDEN
+
 
 class KandidaatSuggesties:
     # Minimale PMI-score (zie word_associations_learner.get_associations())
@@ -49,10 +54,32 @@ class KandidaatSuggesties:
     # dan ruis.
     MIN_PMI_DREMPEL = 0.4
 
-    def __init__(self, event_bus, kevin_profile=None, word_associations=None):
+    # Punt 67 (5 november 2026): woorden waarmee Kevin een VOORKEUR of een
+    # COMMANDO uitspreekt, maar die zelf nooit een voorkeur-onderwerp zijn.
+    # Layer 1 leert van alles wat Kevin typt, dus na "onthoud: ik hou van
+    # thee" stonden "thee" en "hou(den)" samen in dezelfde zin en stelde
+    # Nova "houden" voor. Idem "wis" uit "wis definitief: thee".
+    # Bewust hier en NIET in core/nl_stopwoorden.py: "houden" is in andere
+    # zinnen een zinvol woord voor Layer 1 en response_pipeline.py.
+    NEGEER_KANDIDATEN = frozenset({
+        "hou", "houd", "houden", "houdt",
+        "haat", "haten", "haatte",
+        "lust", "lusten",
+        "vind", "vinden", "vindt",
+        "wis", "wissen", "wist",
+        "onthouden", "vergeten", "verwijderen", "definitief",
+        "leuk", "favoriet", "favoriete", "liefst", "graag",
+    })
+
+    def __init__(self, event_bus, kevin_profile=None, word_associations=None,
+                 semantic=None):
         self.event_bus = event_bus
         self.kevin_profile = kevin_profile
         self.word_associations = word_associations
+        # Punt 67: alleen woorden die al een concept zijn worden voorgesteld.
+        # Zonder semantic (None) staat dit filter UIT, zodat de module dan
+        # werkt zoals voorheen.
+        self.semantic = semantic
 
         base = os.path.dirname(__file__)
         self._gesuggereerd_pad = os.path.join(base, "kandidaat_suggesties_gedaan.json")
@@ -144,6 +171,8 @@ class KandidaatSuggesties:
             return None, None
 
         for kandidaat, score in gerelateerd:
+            if not self._is_geschikte_kandidaat(kandidaat):
+                continue
             if self.kevin_profile.get_preference(kandidaat) is not None:
                 continue
             if (bron_woord, kandidaat) in self._al_gesuggereerd:
@@ -151,6 +180,37 @@ class KandidaatSuggesties:
             return kandidaat, score
 
         return None, None
+
+    def _is_geschikte_kandidaat(self, kandidaat):
+        """
+        Punt 67: filtert kandidaten die nooit een voorkeur-onderwerp kunnen
+        zijn. Twee lagen, puur opzoeking (geen ML):
+
+        1. Negeerlijst: stopwoorden en voorkeur-/commandowoorden
+           (NEGEER_KANDIDATEN), bv. "houden" en "wis".
+        2. Concept-filter: het woord moet al een concept zijn in
+           concepts.json. Werkwoorden en losse woorden staan daar normaal
+           niet in (response_pipeline.py laat enkel zelfstandige
+           naamwoorden als 'unknown'-concept toe). Staat er geen semantic-
+           module ingeprikt, dan slaan we deze laag over.
+
+        Layer 1 kan een sense-sleutel teruggeven ("python#2"); we toetsen
+        dan op het kale woord ("python").
+        """
+        woord = str(kandidaat).split("#", 1)[0].strip().lower()
+        if not woord:
+            return False
+        if woord in self.NEGEER_KANDIDATEN or woord in STOPWOORDEN:
+            return False
+
+        if self.semantic is not None:
+            try:
+                if not self.semantic.store.has_concept(woord):
+                    return False
+            except Exception:
+                return False
+
+        return True
 
     def _formuleer_suggestie(self, bron_woord, kandidaat):
         """
