@@ -1,4 +1,496 @@
 {
+  "vervoermiddel": {
+    "senses": [
+      {
+        "sense_id": "vervoermiddel#1",
+        "definition": "Een vervoermiddel is een voertuig of ander middel waarmee mensen of goederen worden vervoerd.",
+        "pos": "noun",
+        "examples": [
+          "De trein is een handig vervoermiddel.",
+          "Welk vervoermiddel neem je naar je werk?"
+        ],
+        "relations": [
+          {
+            "type": "synonym",
+            "target": "voertuig",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-05T17:00:00.000000",
+      "updated_at": "2026-11-05T17:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-05T17:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-05T17:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vervoermiddel"
+        },
+        "timestamp": "2026-11-05T17:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "vervoermiddel#1",
+        "old_value": null,
+        "new_value": "Een vervoermiddel is een voertuig of ander middel waarmee mensen of goederen worden vervoerd.",
+        "timestamp": "2026-11-05T17:00:00.000000"
+      }
+    ]
+  },
+  "tijdseenheid": {
+    "senses": [
+      {
+        "sense_id": "tijdseenheid#1",
+        "definition": "Een tijdseenheid is een vaste hoeveelheid tijd waarmee je tijd meet, zoals een seconde, minuut of uur.",
+        "pos": "noun",
+        "examples": [
+          "Een uur is een tijdseenheid van zestig minuten.",
+          "Seconde, minuut en uur zijn tijdseenheden."
+        ],
+        "relations": [
+          {
+            "type": "related_to",
+            "target": "tijd",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-05T17:00:00.000000",
+      "updated_at": "2026-11-05T17:00:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-05T17:00:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-05T17:00:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tijdseenheid"
+        },
+        "timestamp": "2026-11-05T17:00:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "tijdseenheid#1",
+        "old_value": null,
+        "new_value": "Een tijdseenheid is een vaste hoeveelheid tijd waarmee je tijd meet, zoals een seconde, minuut of uur.",
+        "timestamp": "2026-11-05T17:00:00.000000"
+      }
+    ]
+  },
+  "pinguïn": {
+    "senses": [
+      {
+        "sense_id": "pinguïn#1",
+        "definition": "Een pinguïn is een vogel die niet kan vliegen maar uitstekend kan zwemmen en vooral op het zuidelijk halfrond leeft.",
+        "pos": "noun",
+        "examples": [
+          "De pinguïn gleed op zijn buik over het ijs.",
+          "In de dierentuin zwemmen de pinguïns in een groot bassin."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vogel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "zwemmen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "ijs",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-05T14:30:00.000000",
+      "updated_at": "2026-11-05T14:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-05T14:30:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-05T14:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "pinguïn"
+        },
+        "timestamp": "2026-11-05T14:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "pinguïn#1",
+        "old_value": null,
+        "new_value": "Een pinguïn is een vogel die niet kan vliegen maar uitstekend kan zwemmen en vooral op het zuidelijk halfrond leeft.",
+        "timestamp": "2026-11-05T14:30:00.000000"
+      }
+    ]
+  },
+  "struisvogel": {
+    "senses": [
+      {
+        "sense_id": "struisvogel#1",
+        "definition": "Een struisvogel is de grootste levende vogel; hij kan niet vliegen maar wel heel snel lopen.",
+        "pos": "noun",
+        "examples": [
+          "De struisvogel rende over de vlakte.",
+          "Een struisvogel heeft lange poten en een lange hals."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "vogel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "veer",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-05T14:30:00.000000",
+      "updated_at": "2026-11-05T14:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-05T14:30:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-05T14:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "struisvogel"
+        },
+        "timestamp": "2026-11-05T14:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "struisvogel#1",
+        "old_value": null,
+        "new_value": "Een struisvogel is de grootste levende vogel; hij kan niet vliegen maar wel heel snel lopen.",
+        "timestamp": "2026-11-05T14:30:00.000000"
+      }
+    ]
+  },
+  "bibliotheek": {
+    "senses": [
+      {
+        "sense_id": "bibliotheek#1",
+        "definition": "Een bibliotheek is een gebouw waar boeken en andere media worden bewaard en uitgeleend.",
+        "pos": "noun",
+        "examples": [
+          "Ik leen elke week een boek in de bibliotheek.",
+          "De bibliotheek is op zaterdag open."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "gebouw",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "boek",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "lezen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-05T14:30:00.000000",
+      "updated_at": "2026-11-05T14:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-05T14:30:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-05T14:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bibliotheek"
+        },
+        "timestamp": "2026-11-05T14:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "bibliotheek#1",
+        "old_value": null,
+        "new_value": "Een bibliotheek is een gebouw waar boeken en andere media worden bewaard en uitgeleend.",
+        "timestamp": "2026-11-05T14:30:00.000000"
+      }
+    ]
+  },
+  "boter": {
+    "senses": [
+      {
+        "sense_id": "boter#1",
+        "definition": "Boter is een zacht, vet voedingsmiddel dat van room of melk wordt gemaakt en vaak op brood wordt gesmeerd.",
+        "pos": "noun",
+        "examples": [
+          "Ze smeerde boter op haar boterham.",
+          "Voor de koekjes heb je boter, suiker en bloem nodig."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "zuivelproduct",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "voedingsmiddel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "melk",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "brood",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-05T14:30:00.000000",
+      "updated_at": "2026-11-05T14:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-05T14:30:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-05T14:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "boter"
+        },
+        "timestamp": "2026-11-05T14:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "boter#1",
+        "old_value": null,
+        "new_value": "Boter is een zacht, vet voedingsmiddel dat van room of melk wordt gemaakt en vaak op brood wordt gesmeerd.",
+        "timestamp": "2026-11-05T14:30:00.000000"
+      }
+    ]
+  },
+  "zuivelproduct": {
+    "senses": [
+      {
+        "sense_id": "zuivelproduct#1",
+        "definition": "Een zuivelproduct is een voedingsmiddel dat van melk wordt gemaakt, zoals kaas, boter en yoghurt.",
+        "pos": "noun",
+        "examples": [
+          "Kaas en yoghurt zijn zuivelproducten.",
+          "Wie geen melk verdraagt, mijdt vaak zuivelproducten."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "voedingsmiddel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "related_to",
+            "target": "melk",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "audit_log": [],
+        "status": "confirmed"
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-05T14:30:00.000000",
+      "updated_at": "2026-11-05T14:30:00.000000",
+      "sources": [
+        "user"
+      ],
+      "last_used_at": "2026-11-05T14:30:00.000000",
+      "usage_count": 0,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-05T14:30:00.000000",
+          "confidence": 1.0
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zuivelproduct"
+        },
+        "timestamp": "2026-11-05T14:30:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "zuivelproduct#1",
+        "old_value": null,
+        "new_value": "Een zuivelproduct is een voedingsmiddel dat van melk wordt gemaakt, zoals kaas, boter en yoghurt.",
+        "timestamp": "2026-11-05T14:30:00.000000"
+      }
+    ]
+  },
   "wagen": {
     "senses": [
       {
@@ -17880,6 +18372,14 @@
         ],
         "relations": [
           {
+            "type": "synonym",
+            "target": "vervoermiddel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
+          {
             "type": "has_part",
             "target": "wiel",
             "confidence": 0.7,
@@ -26640,6 +27140,14 @@
         ],
         "relations": [
           {
+            "type": "is_a",
+            "target": "lichaamsdeel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
+          {
             "type": "part_of",
             "target": "skelet",
             "confidence": 1.0,
@@ -28945,6 +29453,14 @@
           "De kaas rijpte maandenlang in de kelder."
         ],
         "relations": [
+          {
+            "type": "is_a",
+            "target": "zuivelproduct",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T14:30:00.000000"
+          },
           {
             "type": "related_to",
             "target": "melk",
@@ -34432,6 +34948,14 @@
           "Over een uur vertrekt de trein."
         ],
         "relations": [
+          {
+            "type": "is_a",
+            "target": "tijdseenheid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
           {
             "type": "has_part",
             "target": "minuut",
@@ -53015,6 +53539,14 @@
         ],
         "relations": [
           {
+            "type": "is_a",
+            "target": "lichaamsdeel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
+          {
             "type": "part_of",
             "target": "lichaam",
             "confidence": 1.0,
@@ -65612,6 +66144,14 @@
         ],
         "relations": [
           {
+            "type": "is_a",
+            "target": "tijdseenheid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "tijd",
             "confidence": 1.0,
@@ -65800,6 +66340,14 @@
         ],
         "relations": [
           {
+            "type": "is_a",
+            "target": "tijdseenheid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
+          {
             "type": "related_to",
             "target": "jaar",
             "confidence": 1.0,
@@ -65875,6 +66423,14 @@
           "Volgende week heb ik vakantie."
         ],
         "relations": [
+          {
+            "type": "is_a",
+            "target": "tijdseenheid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "tijd",
@@ -66037,6 +66593,14 @@
         ],
         "relations": [
           {
+            "type": "is_a",
+            "target": "tijdseenheid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
+          {
             "type": "part_of",
             "target": "minuut",
             "confidence": 1.0,
@@ -66096,6 +66660,14 @@
           "Een uur heeft zestig minuten."
         ],
         "relations": [
+          {
+            "type": "is_a",
+            "target": "tijdseenheid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
           {
             "type": "part_of",
             "target": "uur",
@@ -104328,6 +104900,14 @@
           "Bijen vliegen van bloem naar bloem."
         ],
         "relations": [
+          {
+            "type": "part_of",
+            "target": "plant",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-05T17:00:00.000000"
+          },
           {
             "type": "related_to",
             "target": "linde",

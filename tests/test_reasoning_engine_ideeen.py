@@ -290,12 +290,15 @@ class TestPartOfContradictie:
         _voeg_relatie_toe(relation_engine, sense_engine, "snaar", "part_of", "gitaar")
         _voeg_relatie_toe(relation_engine, sense_engine, "gitaar", "part_of", "snaar")
 
-        conflicten = reasoning_engine.find_contradictions("snaar")
+        # Punt 68b: een cirkel wordt door het alfabetisch eerste woord gemeld
+        # ("gitaar" < "snaar"), het andere woord meldt hem niet nog eens.
+        conflicten = reasoning_engine.find_contradictions("gitaar")
 
         assert len(conflicten) == 1
         c = conflicten[0]
-        assert c["word"] == "snaar"
+        assert c["word"] == "gitaar"
         assert set(c["conflict"]) == {"gitaar", "snaar"}
+        assert reasoning_engine.find_contradictions("snaar") == []
 
     def test_indirecte_cirkel_via_keten_wordt_gevonden(self, engines):
         """a part_of b part_of c part_of a -- cirkel via 2 tussenstappen."""
@@ -334,14 +337,15 @@ class TestPartOfContradictie:
         _voeg_relatie_toe(relation_engine, sense_engine, "snaar", "part_of", "gitaar")
         _voeg_relatie_toe(relation_engine, sense_engine, "gitaar", "part_of", "snaar")
 
-        # Bevestig eerst dat de cirkel er is.
-        assert len(reasoning_engine.find_contradictions("snaar")) == 1
+        # Bevestig eerst dat de cirkel er is (punt 68b: gemeld door "gitaar",
+        # het alfabetisch eerste woord van de cirkel).
+        assert len(reasoning_engine.find_contradictions("gitaar")) == 1
 
         # Weerleg de foute relatie (gitaar part_of snaar).
         sense_id = sense_engine.get_senses("gitaar")[0]["sense_id"]
         relation_engine.reject_relation("gitaar", sense_id, "part_of", "snaar")
 
-        conflicten_na_weerleg = reasoning_engine.find_contradictions("snaar")
+        conflicten_na_weerleg = reasoning_engine.find_contradictions("gitaar")
         assert conflicten_na_weerleg == []
 
 

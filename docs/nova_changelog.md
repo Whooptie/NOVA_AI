@@ -3004,3 +3004,30 @@ Conclusie: de laptop gaat in Modern Standby (kort dichtklappen), een slapend app
   "ken/weet"); dat is een eigenschap van de generieke fallback, geen taalfout.
 - Meting in de testkopie (46 cases): standaard 91% / `--met-antwoordlaag` 98%, T5 8/8, 0 stilte.
 - Tests: tests/test_onbekend69.py (9).
+
+### 5 november 2026 — Punt 72d (samengestelde relatievraag) en punt 75 (meetregel vage vervolgvragen)
+- `modules/chat/chat.py`: `import re`, nieuwe `_splits_doel()` en een splitsing in `on_relation_check`: "is een kat een dier en een zoogdier" wordt per deel gecontroleerd; "Ja" alleen als alle delen kloppen.
+- `tools/maak_blind_cases.py`: `VAAG_WOORDEN` (ken/onbekend/weet/idee + snap, kom ik niet uit, geen antwoord, waar heb je het over) enkel voor `vaag`-cases; T5 ongewijzigd.
+- `tests/benchmark/benchmark_taalbegrip.json`: 10 cases rechtgezet (3 fout of te streng: t4-58, t2-82, t2-43; 7 vage vervolgvragen met het ruimere criterium).
+- Eerlijke bevinding: het criterium van punt 75 is gewijzigd NA het zien van de uitslag; van +11 goede antwoorden is er 1 echte verbetering, 10 zijn meetcorrecties.
+- Meting (vast, met `--met-antwoordlaag`): 130 naar 141 goed (54% naar 58%), kennisgaten 87 naar 76, Router begreep 217/242 (ongewijzigd).
+- Analyse kennisgaten: zie "Nova-benchmark, Stand na punt 69, 72d en 75".
+- Tests: `tests/test_samengestelde_doelen72d.py` (12), `tests/test_vaag_criterium75.py` (3).
+
+### 5 november 2026 — Punt 72a, stap 1: eerste kennis met de hand aangevuld
+- `data/concepts.json`: vijf nieuwe woorden (pinguïn, struisvogel, bibliotheek, boter, zuivelproduct) en `kaas is_a zuivelproduct`.
+- Meting (vast, met `--met-antwoordlaag`): 141 naar 145 goed (58% naar 60%), kennisgaten 76 naar 72, taalgaten 25 en Router begreep 217/242 ongewijzigd.
+- Eerlijk: dit zijn precies de woorden waar de benchmark om vroeg; de winst bewijst dat de aanvulling werkt, niet dat Nova breder kent. Het echte signaal komt uit `data/kennisgaten.jsonl` na echte gesprekken.
+
+### 5 november 2026 — Punt 72a, stap 2: bovenliggende woorden voor 10 woorden
+- `data/concepts.json`: twee nieuwe woorden (vervoermiddel, tijdseenheid) en verbanden: orgaan en bot zijn een lichaamsdeel, bloem is onderdeel van plant, voertuig is synoniem van vervoermiddel, seconde/minuut/uur/week/jaar/eeuw zijn een tijdseenheid.
+- Geen benchmarkwinst (145 goed, 72 kennisgaten ongewijzigd): deze stap maakt de graaf dieper, niet breder. Ongeveer 50 woorden krijgen via orgaan en bot de nieuwe voorouder lichaamsdeel (hart, oog, lever, long, …).
+- Bewust niet gedaan, met reden: `beroep is_a werk` (dan zou elk beroep, zoals arts en piloot, een activiteit worden); `dag` en `maand` als tijdseenheid (dan ook maandag en januari); `tuin is_a plaats` (plaats betekent hier dorp of stad); lichaam, apparaat, getal, tijd, gebouw, voedingsmiddel en gevoel blijven top-woorden.
+- Les: elke nieuwe `is_a` werkt door in alle woorden eronder. Vóór het plakken eerst controleren welke woorden er nieuwe voorouders door krijgen.
+
+### 5 november 2026 — Punt 68: lege invoer negeren en één melding per cirkel
+- `main.py` en `core/intent_router.py` (`route()`): een lege invoer (alleen Enter of enkel spaties) krijgt geen antwoord meer. Voorheen ging die naar de fallback en antwoordde Nova toch ("Nog lang?"). Een open pending-vraag blijft nu gewoon open.
+- `core/semantic.py` (`find_contradictions`): een `is_a`- of `part_of`-cirkel wordt nog maar gemeld door het alfabetisch eerste woord van de cirkel, niet meer door elk woord. Eén cirkel is nu één melding met één `weerleg:`-voorstel (zoals bij synoniem en antoniem). Een woord dat zijn eigen soort is, blijft gemeld.
+- Bestaande tests aangepast: `test_reasoning_engine_ideeen.py` (3) en `test_tegenstrijdigheden_60f.py` (2) vroegen de cirkel op bij een woord dat niet meer meldt (snaar i.p.v. gitaar, hond i.p.v. dier).
+- Nieuwe tests: `tests/test_lege_invoer_en_cirkels68.py` (17); 15 daarvan falen zonder de fix.
+- Beperking: de lus in `main.py` zelf is alleen met een broncontrole getest (die lus is niet los aan te roepen); het gedrag in de echte Nova is met de hand te controleren (Enter drukken).

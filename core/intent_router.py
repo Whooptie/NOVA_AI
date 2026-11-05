@@ -5612,6 +5612,13 @@ class IntentRouter:
     # MAIN ROUTER
     # ---------------------------------------------------------
     def route(self, data, event_type=None):
+        # Punt 68a (5 november 2026): een lege invoer (alleen Enter, of enkel
+        # spaties) wordt genegeerd. Voorheen ging die naar de fallback en gaf
+        # Nova toch een antwoord ("Nog lang?"). Ook een open pending-vraag
+        # blijft dan gewoon open staan.
+        if not str((data or {}).get("text") or "").strip():
+            return
+
         # Hypothetisch redeneren (idee 4): tijdelijke aannames zijn enkel
         # zichtbaar zolang DIT bericht verwerkt wordt. betreed_beurt()/
         # verlaat_beurt() markeren begin en einde (en sturen na afloop

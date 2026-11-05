@@ -1279,7 +1279,7 @@
         "intent_causes"
       ],
       "moet_bevatten_een_van": [
-        "veel regen",
+        "regen",
         "rivier"
       ],
       "id": "taal-t2-43"
@@ -1962,7 +1962,7 @@
       "taalniveau": 2,
       "dimensie": "intentie",
       "categorie": "relatie",
-      "vraag": "hoort een beker bij de drinkbekers",
+      "vraag": "hoort een schaap bij de zoogdieren",
       "moet_event": [
         "intent_relation_check"
       ],
@@ -2944,7 +2944,11 @@
         "ken",
         "onbekend",
         "weet",
-        "idee"
+        "idee",
+        "snap",
+        "kom ik niet uit",
+        "geen antwoord",
+        "waar heb je het over"
       ],
       "mag_niet_bevatten": [
         "ja",
@@ -2965,7 +2969,11 @@
         "ken",
         "onbekend",
         "weet",
-        "idee"
+        "idee",
+        "snap",
+        "kom ik niet uit",
+        "geen antwoord",
+        "waar heb je het over"
       ],
       "mag_niet_bevatten": [
         "ja",
@@ -3219,7 +3227,11 @@
         "ken",
         "onbekend",
         "weet",
-        "idee"
+        "idee",
+        "snap",
+        "kom ik niet uit",
+        "geen antwoord",
+        "waar heb je het over"
       ],
       "mag_niet_bevatten": [
         "ja",
@@ -3365,7 +3377,7 @@
         "intent_relation_check"
       ],
       "moet_bevatten_een_van": [
-        "nee"
+        "ja"
       ],
       "id": "taal-t4-58"
     },
@@ -3435,7 +3447,11 @@
         "ken",
         "onbekend",
         "weet",
-        "idee"
+        "idee",
+        "snap",
+        "kom ik niet uit",
+        "geen antwoord",
+        "waar heb je het over"
       ],
       "mag_niet_bevatten": [
         "ja",
@@ -3538,7 +3554,11 @@
         "ken",
         "onbekend",
         "weet",
-        "idee"
+        "idee",
+        "snap",
+        "kom ik niet uit",
+        "geen antwoord",
+        "waar heb je het over"
       ],
       "mag_niet_bevatten": [
         "ja",
@@ -3646,7 +3666,11 @@
         "ken",
         "onbekend",
         "weet",
-        "idee"
+        "idee",
+        "snap",
+        "kom ik niet uit",
+        "geen antwoord",
+        "waar heb je het over"
       ],
       "mag_niet_bevatten": [
         "ja",
@@ -3754,7 +3778,11 @@
         "ken",
         "onbekend",
         "weet",
-        "idee"
+        "idee",
+        "snap",
+        "kom ik niet uit",
+        "geen antwoord",
+        "waar heb je het over"
       ],
       "mag_niet_bevatten": [
         "ja",

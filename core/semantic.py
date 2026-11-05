@@ -1700,6 +1700,11 @@ class ReasoningEngine:
             terug_gevonden, terug_pad = self.part_of_chained(doel, word)
             if terug_gevonden:
                 volledige_cirkel = [word] + terug_pad
+                # Punt 68b: elke cirkel zit in elk van zijn woorden. Alleen het
+                # alfabetisch eerste woord van de cirkel meldt hem, zodat een
+                # cirkel 1 melding krijgt in plaats van 1 per woord.
+                if word != min(volledige_cirkel):
+                    continue
                 contradictions.append({
                     "word": word,
                     "type": "part_of_cirkel",
@@ -1731,6 +1736,9 @@ class ReasoningEngine:
             terug_gevonden, terug_pad = self.is_a_chained(doel, word)
             if terug_gevonden:
                 volledige_cirkel = [word] + terug_pad
+                # Punt 68b: zie hierboven bij part_of_cirkel.
+                if word != min(volledige_cirkel):
+                    continue
                 contradictions.append({
                     "word": word,
                     "type": "is_a_cirkel",

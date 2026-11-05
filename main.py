@@ -802,6 +802,11 @@ def main():
         # bij maak_invoer_veilig() bovenaan dit bestand.
         user_input = maak_invoer_veilig(user_input)
 
+        # Punt 68a (5 november 2026): alleen Enter (of enkel spaties) is geen
+        # bericht. Gewoon opnieuw wachten, zonder antwoord van Nova.
+        if not user_input.strip():
+            continue
+
         # Tijdstempel bij Kevin's eigen regel (30 sept 2026): de "Jij: "-
         # prompt verscheen al toen Nova klaar was met antwoorden -- dat
         # kan lang voor het typen zijn. Daarom herschrijven we de regel

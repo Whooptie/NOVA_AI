@@ -69,7 +69,8 @@ def test_part_of_cirkel_heeft_type(delen):
     _woorden(s, "snaar", "gitaar")
     r.add_relation("snaar", "part_of", "gitaar")
     r.add_relation("gitaar", "part_of", "snaar")
-    assert _types(rs.find_contradictions("snaar")) == ["part_of_cirkel"]
+    # Punt 68b: de cirkel wordt door het alfabetisch eerste woord gemeld.
+    assert _types(rs.find_contradictions("gitaar")) == ["part_of_cirkel"]
 
 
 # --- is_a-cirkels -----------------------------------------------------------
@@ -79,10 +80,12 @@ def test_is_a_cirkel_wordt_gevonden(delen):
     _woorden(s, "hond", "dier")
     r.add_relation("hond", "is_a", "dier")
     r.add_relation("dier", "is_a", "hond")
-    conflicten = rs.find_contradictions("hond")
+    # Punt 68b: de cirkel wordt door het alfabetisch eerste woord gemeld ("dier").
+    conflicten = rs.find_contradictions("dier")
     assert _types(conflicten) == ["is_a_cirkel"]
-    assert conflicten[0]["conflict"] == ["dier", "hond"]
-    assert "hond → dier → hond" in conflicten[0]["reason"]
+    assert sorted(conflicten[0]["conflict"]) == ["dier", "hond"]
+    assert "dier → hond → dier" in conflicten[0]["reason"]
+    assert rs.find_contradictions("hond") == []
 
 
 def test_is_a_cirkel_via_langere_keten(delen):

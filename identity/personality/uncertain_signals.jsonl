@@ -1780,3 +1780,5 @@
 {"text": "negeer 1 2 5 6 7 8", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-04T19:46:31.420306"}
 {"text": "wat zijn allemaal zoogdieren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0738, "bron": "model_fallback", "tijdstip": "2026-11-04T20:18:54.187451"}
 {"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-04T20:19:09.754608"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-05T17:04:26.444807"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-05T17:04:45.990962"}

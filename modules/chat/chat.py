@@ -1,5 +1,7 @@
 # modules/chat/chat.py
 
+import re
+
 from identity import self_query
 from identity import self_architecture
 from identity import self_uiterlijk
@@ -168,6 +170,23 @@ class ChatModule:
         except Exception:
             return term
 
+    def _splits_doel(self, target):
+        """
+        Splitst een doel als "dier en een zoogdier" in ["dier", "zoogdier"] (punt 72d).
+        Blijft heel (een lijst met 1 element) als de hele tekst zelf een bekend
+        concept is, of als een deel leeg of niet één woord is -- dan twijfelen we
+        liever dan dat we iets verkeerd opsplitsen.
+        """
+        try:
+            if self.semantic.teach_engine.store.has_concept(target):
+                return [target]
+        except Exception:
+            pass
+        delen = [d.strip() for d in re.split(r"\s+en\s+(?:een\s+|de\s+|het\s+)?", target.strip())]
+        if len(delen) < 2 or any((not d) or (" " in d) for d in delen):
+            return [target]
+        return delen
+
     def on_relation_check(self, data, event_type=None):
         # Let op: confirm-flow gebeurt nu in IntentRouter,
         # hier komen alleen definitieve checks terecht.
@@ -190,6 +209,23 @@ class ChatModule:
         # Punt 70: "is een hond een dieren" / "hoort een hond bij de dieren" ->
         # het meervoud van source en target eerst naar enkelvoud.
         source = self._enkelvoud(source)
+
+        # Punt 72d: "is een kat een dier en een zoogdier" -> het doel bestaat uit
+        # twee delen. Elk deel apart controleren; alleen "Ja" als ALLE delen kloppen.
+        delen = self._splits_doel(target)
+        if len(delen) > 1 and self.semantic and hasattr(self.semantic, "explain_is_a"):
+            antwoorden = [
+                self.semantic.explain_is_a(source, self._enkelvoud(deel), lidwoord=lidwoord)
+                for deel in delen
+            ]
+            if all(a.startswith("Ja") for a in antwoorden):
+                delen_tekst = " en ".join(f"een {self._enkelvoud(d)}" for d in delen)
+                msg = f"Ja, {een}{source} is {delen_tekst}."
+            else:
+                msg = " ".join(antwoorden)
+            self.event_bus.publish("layer4_response", {"text": msg})
+            return
+
         target = self._enkelvoud(target)
 
         if self.semantic and hasattr(self.semantic, "explain_is_a"):

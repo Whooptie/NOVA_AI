@@ -69,6 +69,11 @@ TYPES = {
     "synoniem": ("intent_synonym", "synoniem"),
 }
 ONBEKEND_WOORDEN = ["ken", "onbekend", "weet", "idee"]
+# Punt 75 (5 november 2026): bij een bewust vage vervolgzin ("die?", "en dat ding?") is
+# ook de generieke fallback ("Oh… dat snap ik niet", "Daar kom ik niet uit") of een
+# eerlijke tegenvraag ("Waar heb je het over?") een eerlijk antwoord. Het echte
+# controlepunt blijft ONBEKEND_VERBODEN: geen "ja" of "nee" verzinnen.
+VAAG_WOORDEN = ONBEKEND_WOORDEN + ["snap", "kom ik niet uit", "geen antwoord", "waar heb je het over"]
 ONBEKEND_VERBODEN = ["ja", "nee"]
 
 
@@ -99,7 +104,7 @@ def lees_regels(pad):
                     cases.append({
                         "taalniveau": 4, "dimensie": "context", "categorie": "vaag",
                         "vraag": vraag, "voorvragen": voorvragen,
-                        "moet_bevatten_een_van": ONBEKEND_WOORDEN,
+                        "moet_bevatten_een_van": VAAG_WOORDEN,
                         "mag_niet_bevatten": ONBEKEND_VERBODEN,
                     })
                 elif soort in TYPES:
