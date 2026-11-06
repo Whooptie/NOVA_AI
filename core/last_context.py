@@ -56,6 +56,9 @@ class LastContext:
         # Punt 62d: de vorm van de laatste kennisvraag, bv.
         # ("is {x} een dier", "een zebra", "np"). Zie core/context_resolver.py.
         self._vraag = None
+        # Punt 77: de gevolgen die Nova net noemde, zodat "en dan?" een niveau dieper kan.
+        # (bron, [{"woord","diepte","pad"}, ...], bereikte_diepte) of None.
+        self._gevolgen = None
 
     # ------------------------------------------------------------
     # Interne helper
@@ -84,6 +87,8 @@ class LastContext:
         self._concept = concept
         self._antwoord_type = antwoord_type
         self._opties = None
+        # Punt 77: een nieuw onderwerp maakt "en dan?" op de vorige gevolgen ongeldig.
+        self._gevolgen = None
         self._laatste_update = time.time()
 
     def set_vraag(self, sjabloon, onderwerp, soort):
@@ -103,6 +108,25 @@ class LastContext:
         if self._is_verlopen():
             return None
         return self._vraag
+
+    def set_gevolgen(self, bron, getoond, diepte):
+        """
+        Punt 77: onthoudt de gevolgen die Nova net noemde ('getoond' = lijst van
+        {"woord","diepte","pad"}, mag leeg zijn: dan kende Nova er geen) en tot welke
+        'diepte' ze al gekeken heeft. Zo kan "en dan?" alleen NIEUWE gevolgen noemen, of
+        eerlijk zeggen dat er niets is. Raakt concept en vraag niet aan.
+        """
+        if not bron:
+            return
+        self._gevolgen = (bron, list(getoond or []), int(diepte))
+        self._laatste_update = time.time()
+
+    def get_gevolgen(self):
+        """Geeft (bron, getoond, diepte) van het laatste gevolgen-antwoord,
+        of None als er geen is of het verlopen is."""
+        if self._is_verlopen():
+            return None
+        return self._gevolgen
 
     def set_opties(self, opties):
         """
@@ -165,6 +189,7 @@ class LastContext:
         self._antwoord_type = None
         self._opties = None
         self._vraag = None
+        self._gevolgen = None
         self._laatste_update = None
 
 

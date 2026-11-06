@@ -3329,6 +3329,41 @@ class SemanticConceptsModule:
         self._send_chat("\n".join(regels))
         return True
 
+    # Punt 73: woorden die in een antwoord op de keuzevraag niets zeggen ("ik bedoel het ...").
+    _KEUZE_VULWOORDEN = frozenset({
+        "bedoel", "bedoelde", "bedoelt", "bedoeld", "gewoon", "natuurlijk", "eigenlijk", "toch",
+        "dus", "nou", "ehm", "eerst", "juist", "graag", "liever", "meer", "vooral",
+    })
+
+    def _keuze_uit_woorden(self, user_input: str, senses: list):
+        """Zoekt welke aangeboden betekenis bij een antwoord in woorden past.
+
+        Geeft het nummer (1..N) als precies één betekenis past, 0 als meerdere passen,
+        en None als het geen antwoord op de keuzevraag lijkt (een vraag, een lange zin, of geen
+        enkel woord komt in een van de definities voor). Woordzoeken in de definities, geen begrip."""
+        if self._is_vraagzin(user_input):
+            return None
+        woorden = re.findall(r"[a-zà-ÿ][a-zà-ÿ\-]*", user_input.lower())
+        if not woorden or len(woorden) > 8:
+            return None
+        inhoud = [
+            w for w in woorden
+            if len(w) >= 3 and w not in STOPWOORDEN and w not in self._KEUZE_VULWOORDEN
+        ]
+        if not inhoud or len(inhoud) > 4:
+            return None
+
+        passend = []
+        for i, sense in enumerate(senses, start=1):
+            definitie_woorden = re.findall(
+                r"[a-zà-ÿ][a-zà-ÿ\-]*", (sense.get("definition") or "").lower()
+            )
+            if any(ReasoningEngine._zelfde_woord(w, d) for w in inhoud for d in definitie_woorden):
+                passend.append(i)
+        if not passend:
+            return None
+        return passend[0] if len(passend) == 1 else 0
+
     def handle_definitie_keuze(self, user_input: str) -> bool:
         """
         Verwerkt het antwoord op de keuzevraag. Geeft True terug als het
@@ -3352,9 +3387,23 @@ class SemanticConceptsModule:
             nummer = self._ORDINALEN.get(t)
 
         if nummer is None:
-            # Geen nummer: Kevin begon over iets anders -> vraag vervalt.
-            self.pending_definitie_keuze = None
-            return False
+            # Punt 73: geen nummer, maar misschien een antwoord in woorden ("ik bedoel het schaakstuk").
+            uitkomst = self._keuze_uit_woorden(user_input, pending["senses"])
+            if uitkomst is None:
+                # Geen nummer en geen antwoord in woorden: Kevin begon over iets anders -> vraag vervalt.
+                self.pending_definitie_keuze = None
+                return False
+            if uitkomst == 0:
+                # Past op meerdere betekenissen: één keer opnieuw vragen, daarna vervalt de vraag.
+                if pending.get("herhaald"):
+                    self.pending_definitie_keuze = None
+                    return False
+                pending["herhaald"] = True
+                self._send_chat(
+                    f"Dat kan ik niet uit je antwoord halen. Kies een nummer tussen 1 en {len(pending['senses'])}."
+                )
+                return True
+            nummer = uitkomst
 
         senses = pending["senses"]
         if nummer < 1 or nummer > len(senses):
@@ -3421,8 +3470,8 @@ class SemanticConceptsModule:
     def explain_causes(self, source, target):
         return self.reasoning_engine.explain_causes(source, target)
 
-    def get_all_effects(self, source):
-        return self.reasoning_engine.get_all_effects(source)
+    def get_all_effects(self, source, max_depth=None):
+        return self.reasoning_engine.get_all_effects(source, max_depth)
 
     def get_all_causes(self, target):
         return self.reasoning_engine.get_all_causes(target)

@@ -783,6 +783,11 @@ class ChatModule:
             self.event_bus.publish("layer4_response", {"text": "Welk woord bedoel je?"})
             return
 
+        if data.get("vervolg"):
+            self._on_effects_vervolg(word)
+            return
+
+        self._en_dan_terugval = None   # nieuwe gevolgvraag: de korte herhaling begint opnieuw
         gevolgen = []
         if self.semantic and hasattr(self.semantic, "get_all_effects"):
             try:
@@ -794,9 +799,75 @@ class ChatModule:
             self.event_bus.publish("layer4_response", {
                 "text": f"Gevolgen van '{word}': {self._formatteer_causale_lijst(gevolgen)}."
             })
+            # Punt 77: onthoud wat Nova net noemde, zodat "en dan?" kan voortbouwen.
+            last_ctx = self.event_bus.modules.get("last_context")
+            if last_ctx is not None and hasattr(last_ctx, "set_gevolgen"):
+                last_ctx.set_gevolgen(word, gevolgen, self._causale_basisdiepte())
         else:
             self.event_bus.publish("layer4_response", {
                 "text": f"Ik ken geen gevolgen van '{word}'."
+            })
+            # Ook "niets weten" onthouden: "en dan?" krijgt dan een eerlijk antwoord i.p.v. stilte.
+            last_ctx = self.event_bus.modules.get("last_context")
+            if last_ctx is not None and hasattr(last_ctx, "set_gevolgen"):
+                last_ctx.set_gevolgen(word, [], self._causale_basisdiepte())
+
+    # Punt 77 (6 november 2026): "en dan?" na een gevolgvraag.
+    # Het eerste antwoord loopt al tot MAX_DEPTH_CAUSAL (4) stappen diep. "En dan?" kijkt
+    # daarom een stap-blok verder (nog eens 4), met een harde bovengrens, en noemt ALLEEN wat
+    # nog niet gezegd was. Is er niets nieuws, dan zegt Nova dat eerlijk (terugval B).
+    EN_DAN_MAX_DIEPTE = 8
+    EN_DAN_KORT = "Nee, dat was het. Meer weet ik er niet van."
+    _en_dan_terugval = None
+
+    def _causale_basisdiepte(self):
+        engine = getattr(self.semantic, "reasoning_engine", None)
+        return getattr(engine, "MAX_DEPTH_CAUSAL", 4)
+
+    def _on_effects_vervolg(self, word):
+        last_ctx = self.event_bus.modules.get("last_context")
+        ctx = last_ctx.get_gevolgen() if last_ctx is not None and hasattr(last_ctx, "get_gevolgen") else None
+        if not ctx:
+            self.event_bus.publish("layer4_response", {
+                "text": "Waar wil je dat ik mee verder ga? Vraag eerst naar de gevolgen van iets."
+            })
+            return
+
+        bron, getoond, diepte = ctx
+        if not getoond:
+            if self._en_dan_terugval == (bron, 0):
+                self.event_bus.publish("layer4_response", {"text": self.EN_DAN_KORT})
+                return
+            self._en_dan_terugval = (bron, 0)
+            self.event_bus.publish("layer4_response", {
+                "text": f"Ik ken geen gevolgen van '{bron}', dus ook niets dat daarna komt."
+            })
+            return
+        al_genoemd = [i["woord"] for i in getoond]
+        nieuw = []
+        nieuwe_diepte = min(diepte + self._causale_basisdiepte(), self.EN_DAN_MAX_DIEPTE)
+        if nieuwe_diepte > diepte and self.semantic and hasattr(self.semantic, "get_all_effects"):
+            try:
+                alle = self.semantic.get_all_effects(bron, nieuwe_diepte)
+            except Exception:
+                alle = []
+            nieuw = [i for i in alle if i["woord"] not in al_genoemd]
+
+        if nieuw:
+            woorden = ", ".join(i["woord"] for i in nieuw)
+            self.event_bus.publish("layer4_response", {
+                "text": (f"Verder dan wat ik al noemde, volgt er bij '{bron}': {woorden}. "
+                         f"Hoe verder weg, hoe minder zeker dat is.")
+            })
+            last_ctx.set_gevolgen(bron, getoond + nieuw, nieuwe_diepte)
+        elif self._en_dan_terugval == (bron, len(al_genoemd)):
+            # Zelfde eerlijke antwoord al gegeven: nu kort.
+            self.event_bus.publish("layer4_response", {"text": self.EN_DAN_KORT})
+        else:
+            self._en_dan_terugval = (bron, len(al_genoemd))
+            self.event_bus.publish("layer4_response", {
+                "text": (f"Verder dan wat ik al noemde ken ik geen gevolgen van '{bron}'. "
+                         f"Dit noemde ik al: {', '.join(al_genoemd)}.")
             })
 
     # -------------------------

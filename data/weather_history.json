@@ -2,7 +2,8 @@
   "aartrijke": {
     "datum": "2026-11-04",
     "temp": 7.81,
-    "laatste_waarschuwing_tekst": null
+    "laatste_waarschuwing_tekst": "Let op: er wordt mist verwacht.",
+    "laatste_waarschuwing_datum": "2026-11-06"
   },
   "brugge": {
     "laatste_waarschuwing_tekst": null,

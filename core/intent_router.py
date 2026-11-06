@@ -5504,6 +5504,32 @@ class IntentRouter:
         except Exception:
             return False
 
+    def _verwerk_en_dan(self, text):
+        """Punt 77: "en dan?" / "en wat dan" na een gevolgvraag. Geeft True als de zin hier
+        is afgehandeld. Is er geen onthouden gevolgen-antwoord, dan blijft de zin ongemoeid."""
+        if _context_resolver is None or not hasattr(_context_resolver, "is_en_dan"):
+            return False
+        last_ctx = self.event_bus.modules.get("last_context")
+        if last_ctx is None or not hasattr(last_ctx, "get_gevolgen"):
+            return False
+        try:
+            if not _context_resolver.is_en_dan(text):
+                return False
+            ctx = last_ctx.get_gevolgen()
+            if not ctx:
+                return False
+            bron = ctx[0]
+            dbg(f"{C_YELLOW}→ en dan (gevolgen verder): '{text}' → gevolgen van '{bron}'{C_RESET}")
+            self.event_bus.publish("context_resolved", {
+                "origineel": text, "opgelost": f"wat volgt er verder bij {bron}", "regel": "en_dan_gevolg"
+            })
+            last_ctx.ververs_timestamp()
+            self.event_bus.publish("intent_effects", {"word": bron, "vervolg": True})
+            return True
+        except Exception as e:
+            dbg(f"{C_RED}en dan fout: {e}{C_RESET}")
+            return False
+
     def _verwerk_vervolgvraag(self, text):
         if _context_resolver is None:
             return text
@@ -5912,6 +5938,13 @@ class IntentRouter:
 
         text = self._verwerk_referentie(text)
         if text is None:
+            return
+
+        # 2E1a "En dan?" na een gevolgvraag (punt 77, 6 november 2026): Nova noemt de
+        # gevolgen die ze nog niet noemde, of zegt eerlijk dat er niets meer is. MOET vóór
+        # 2E1: anders leest de vervolgvraag-regel "en daarna" als onderwerp en "en wat
+        # gebeurt er daarna" als dezelfde gevolgvraag opnieuw.
+        if self._verwerk_en_dan(text):
             return
 
         # 2E1 Vervolgvraag op de laatste kennisvraag (punt 62d, 4 november 2026):

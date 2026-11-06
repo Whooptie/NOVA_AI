@@ -46,6 +46,7 @@ _GEEN_ONDERWERP = {
     # Ronde 2: bijwoorden en tussenwerpsels ("en nu?", "dan toch?", "ok dan") zijn geen begrip.
     "nu", "nog", "weer", "toch", "wel", "hier", "daar", "misschien", "alweer", "altijd", "nooit",
     "zeker", "ja", "nee", "ok", "oke", "oké", "okee", "nou", "maar", "hallo", "doei", "bedankt",
+    "daarna", "vervolgens", "daarop",
     "dankje", "dank", "idem", "ervoor", "daarvoor", "hiervoor", "daardoor", "hierdoor",
 }
 
@@ -312,6 +313,20 @@ def los_op(tekst, sjabloon, onderwerp, soort, is_concept=None):
             return f"is {onderwerp} een {y}", "hoort_verwijzing"
 
     return None
+
+
+# Punt 77: "en dan?" / "en wat dan" / "en wat gebeurt er daarna" -- zonder onderwerp erachter.
+# Een kaal "dan" of "verder" telt NIET (te vaag); er moet "en" of "wat" voor staan.
+_EN_DAN = re.compile(
+    r"^(?:en wat|en|wat) (?:gebeurt er )?(?:dan|daarna|vervolgens|daarop)$"
+)
+
+
+def is_en_dan(tekst):
+    """True als 'tekst' alleen "en dan?" (of een gelijkwaardige vorm) is: de vraag naar
+    wat er VERDER volgt. Zonder onthouden gevolgen doet de router er niets mee."""
+    t = _VUL_EIND.sub("", _TUSSENWERPSEL.sub("", _schoon(tekst)))
+    return bool(_EN_DAN.match(t))
 
 
 def is_verwijzing_zonder_onderwerp(tekst):

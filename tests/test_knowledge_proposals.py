@@ -1,6 +1,8 @@
 """Tests voor Semantic Fase 11.2 (knowledge_proposals)."""
 import time
 
+import pytest
+
 from modules.knowledge.knowledge_proposals import KnowledgeProposals
 
 

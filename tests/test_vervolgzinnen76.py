@@ -13,8 +13,8 @@ Uit de benchmark (13 cases met "waardoor gebeurt dat", "gevolgen", "is dat fruit
   C. core/context_resolver.py: "is dat fruit" (doel zonder lidwoord, alleen met een bekend
      concept), "waardoor smelt dat" (werkwoord + verwijzing) en "hoe ontstaat zo'n ding".
 
-Bewust NIET gebouwd (groep D): "en dan?" / "en wat dan" na een gevolgvraag. Dat zijn de
-gevolgen van de gevolgen en vraagt dat Nova haar vorige antwoord onthoudt.
+Groep D ("en dan?" / "en wat dan" na een gevolgvraag) was hier bewust niet gebouwd; dat
+kwam later in punt 77 (zie tests/test_en_dan77.py).
 
 Eerst pure tests op de twee modules, daarna een paar tests door de hele router heen op een
 tijdelijke concepts.json (tmp_path); je echte data wordt nooit aangeraakt.
@@ -256,8 +256,10 @@ def test_router_verwijzing_zonder_voorvraag_vraagt_terug(omgeving):
     assert not any(e == "intent_effects" for e, _ in events)
 
 
-def test_router_en_dan_blijft_ongewijzigd_groep_d_is_bewust_niet_gebouwd(omgeving):
-    # "en dan?" na een gevolgvraag zijn de gevolgen van de gevolgen (groep D, nog niet gebouwd).
-    # Deze test legt vast dat het niet stilletjes dezelfde gevolgen opnieuw geeft.
-    _, (events, _) = _stel(omgeving, "Wat is het gevolg van roken?", "en dan?")
-    assert not any(e == "intent_effects" for e, _ in events)
+def test_router_en_dan_geeft_niet_stilletjes_dezelfde_gevolgen_opnieuw(omgeving):
+    # Punt 77: "en dan?" na een gevolgvraag is nu gebouwd (tests/test_en_dan77.py). Hier blijft
+    # de eis staan dat het nooit stilletjes DEZELFDE gevolgen opnieuw geeft: in deze omgeving
+    # kent Nova geen gevolgen van roken, dus het antwoord is de eerlijke "niets dat daarna komt".
+    _, (events, tekst) = _stel(omgeving, "Wat is het gevolg van roken?", "en dan?")
+    assert tekst == "Ik ken geen gevolgen van 'roken', dus ook niets dat daarna komt."
+    assert not tekst.startswith("Gevolgen van")

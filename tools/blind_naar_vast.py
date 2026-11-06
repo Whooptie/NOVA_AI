@@ -32,7 +32,9 @@ BLIND_PAD = os.path.join(PROJECT_ROOT, "tests", "benchmark", "benchmark_taalbegr
 
 def _lees(pad):
     with open(pad, encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+    data.setdefault("cases", [])   # lege set zonder "cases"-sleutel mag
+    return data
 
 
 def _schrijf(pad, data):

@@ -526,3 +526,9 @@
 {"sjabloon_naam": "onbekend", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1793819934.2074153, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "variant_tekst": "Met '{entity}' bedoel je waarschijnlijk: {definition} Ik zie dat woord bij jou trouwens vaak in de buurt van '{associatie}'.", "entity": "appel", "response_style": "uitgebreid", "moment": "2026-11-05T19:35:15.959583", "reactie_sentiment": null}
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1793903715.9599175, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 2, "variant_tekst": "Ik ken '{entity}' als: {definition} Grappig genoeg komt dat bij jou vaak samen voor met '{associatie}'.", "entity": "appel", "response_style": "normaal", "moment": "2026-11-06T20:25:06.650268", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793993106.6504908, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "variant_tekst": "Wacht… nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-11-06T20:25:12.543781", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe gaat het?", "entity": "coding", "response_style": null, "moment": "2026-11-06T20:25:12.544255", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793993112.5439637, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1793993112.5444045, "type": "sentiment_koppeling"}

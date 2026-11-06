@@ -145,7 +145,9 @@ def lees_regels(pad):
 
 def _laad(pad):
     with open(pad, encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+    data.setdefault("cases", [])   # lege set zonder "cases"-sleutel mag
+    return data
 
 
 def _sleutel(case):

@@ -22,7 +22,8 @@ CONTROLE_SLEUTELS = ("moet_event", "mag_event_niet", "moet_bevatten_een_van", "m
 
 
 def _cases(pad):
-    return json.loads(pad.read_text(encoding="utf-8"))["cases"]
+    # Een lege of net geleegde set (zonder "cases"-sleutel) telt als 0 cases.
+    return json.loads(pad.read_text(encoding="utf-8")).get("cases", [])
 
 
 ALLE = [(pad.name, c) for pad in (VAST, BLIND) for c in _cases(pad)]

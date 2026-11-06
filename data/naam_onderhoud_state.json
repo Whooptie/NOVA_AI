@@ -55,6 +55,14 @@
     "activity_started:nova_bestanden_gedetecteerd": {
       "reden": "activiteit_whitelist",
       "gemeld_op": 1793733738.5912046
+    },
+    "activity_started:films_toevoegen_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793907780.297511
+    },
+    "activity_started:fotos_bekijken_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1793993246.2116556
     }
   }
 }

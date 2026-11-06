@@ -547,7 +547,7 @@ def toon_ontdek(case, events, fout, niveau=1):
 def laad_cases(pad, categorie):
     with open(pad, encoding="utf-8") as f:
         inhoud = json.load(f)
-    cases = inhoud["cases"] if isinstance(inhoud, dict) else inhoud
+    cases = inhoud.get("cases", []) if isinstance(inhoud, dict) else inhoud
     if categorie:
         cases = [c for c in cases if c.get("categorie") == categorie]
     return cases
