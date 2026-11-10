@@ -9,6 +9,7 @@ import threading
 import time
 from pathlib import Path
 
+from modules.chess import chess_uitleg
 from modules.paths import get_project_root
 
 PROJECT_ROOT = get_project_root(__file__)
@@ -81,6 +82,7 @@ class ChessModule:
         event_bus.subscribe("intent_chess_think_time", self.handle_think_time)
         event_bus.subscribe("intent_chess_stats", self.handle_stats)
         event_bus.subscribe("intent_chess_evaluation_query", self.handle_evaluation_query)
+        event_bus.subscribe("intent_chess_followup", self.handle_followup)
 
         # Sjablonen voor de meest terugkerende, tot nu toe vaste zinnen
         # (schaak-melding, zet-melding, spelverloop), nu ook opgebouwd
@@ -183,6 +185,13 @@ class ChessModule:
         # ("waarom was dat een blunder?") ze kan herhalen zonder
         # opnieuw te moeten berekenen.
         self.laatste_zet_evaluatie = None
+
+        # Punt 79: gespeelde zetten van DEZE sessie, voor doorvragen. Niet bewaard op schijf.
+        self.zetten_log = []
+        self.zet_cursor = None
+        self.zet_cursor_tijd = 0.0
+        self.laatste_schaak_activiteit = 0.0
+        self._laatste_analyse = None
 
         # ------------------------------------------------------------
         # Sjablonen als OPENING + MIDDEN + AFSLUITING, zelfde patroon
@@ -341,7 +350,19 @@ class ChessModule:
     # ----------------------------------------------------
     # Nieuwe partij starten
     # ----------------------------------------------------
+    # Punt 17 (10 november 2026): onthoud wat het gespreksonderwerp is, zodat een vervolgvraag
+    # als "wat is dat" na "bord" of een zet te beantwoorden is in plaats van "Waar heb je het
+    # over?". Zelfde patroon als de router voor kennisvragen: last_context.set_concept().
+    def _onthoud_onderwerp(self, concept):
+        last_ctx = getattr(self.event_bus, "modules", {}).get("last_context")
+        if last_ctx is not None and hasattr(last_ctx, "set_concept"):
+            last_ctx.set_concept(concept, antwoord_type="chess")
+
     def handle_new_game(self, data, event_type=None):
+        self._onthoud_onderwerp("schaken")
+        self._markeer_actief()
+        self.zetten_log = []
+        self.zet_cursor = None
         self.board = chess.Board()
         self.save_game()
         self.event_bus.publish("chat_response", {
@@ -352,6 +373,8 @@ class ChessModule:
     # Bord tonen (simpele tekstweergave)
     # ----------------------------------------------------
     def handle_show_board(self, data, event_type=None):
+        self._onthoud_onderwerp("schaakbord")
+        self._markeer_actief()
         # instant=True: bevat ANSI-kleurcodes + meerdere regels. Het
         # typewriter-effect zou elke escape-code letter voor letter
         # printen — traag én zichtbaar rommelig (rare tekens i.p.v.
@@ -622,6 +645,11 @@ class ChessModule:
             return None
 
         beste_zet_voor = info_voor.get("pv", [None])[0]
+        # Punt 79: bewaar de beste zet en de verwachte reactie voor latere doorvragen.
+        self._laatste_analyse = {
+            "beste_zet": beste_zet_voor,
+            "reactie": (info_na.get("pv") or [None])[0],
+        }
 
         mate_na = self._mate_in(info_na["score"], speler_kleur)
         if mate_na is not None and mate_na < 0:
@@ -723,6 +751,10 @@ class ChessModule:
     # Zet verwerken
     # ----------------------------------------------------
     def handle_move(self, data, event_type=None):
+        # Punt 79: na een zet moet "wat is dat" NIET meer een woordenboekdefinitie geven.
+        self._vergeet_onderwerp()
+        self._markeer_actief()
+        self._laatste_analyse = None
         move_text = data.get("move", "").strip()
         move = None
 
@@ -775,6 +807,7 @@ class ChessModule:
                 return
 
         # Speler zet uitvoeren
+        fen_voor_speler = self.board.fen()
         self.board.push(move)
         self.laatste_zet = move
         self.save_game()
@@ -802,6 +835,7 @@ class ChessModule:
         # blijft wél apart op chat_response, net als voorheen.
         speler_kleur = not self.board.turn  # de kleur die zonet zette
         evaluatie = self.evalueer_speler_zet(move, speler_kleur)
+        self._registreer_speler_zet(move, fen_voor_speler, evaluatie)
         if evaluatie is not None:
             self.laatste_zet_evaluatie = evaluatie
             categorie = evaluatie["categorie"]
@@ -840,9 +874,11 @@ class ChessModule:
             return
 
         self.engine.configure({"Skill Level": self.skill_level})
+        fen_voor_nova = self.board.fen()
         result = self.engine.play(self.board, chess.engine.Limit(time=self.think_time))
         self.board.push(result.move)
         self.laatste_zet = result.move
+        self._registreer_nova_zet(result.move, fen_voor_nova)
         self.save_game()
 
         nova_zet = self.uci_to_leesbaar(result.move)
@@ -1017,6 +1053,206 @@ class ChessModule:
             json.dump(self.stats, f, indent=2)
 
     # ----------------------------------------------------
+    # Punt 79 (10 november 2026): doorvragen over zetten
+    # ----------------------------------------------------
+    ZETTEN_LOG_MAX = 40
+    CURSOR_GELDIG_SECONDEN = 600
+    PARTIJ_ACTIEF_SECONDEN = 1800
+    GEEN_UITLEG_NOVA = ("Een duidelijke reden kan ik er niet bij geven; "
+                        "ik vond het gewoon de sterkste zet volgens Stockfish.")
+    GEEN_REDEN_SPELER = ("Een duidelijke reden kan ik je niet in één zin geven; "
+                         "Stockfish vindt de stelling na jouw zet gewoon slechter voor jou.")
+
+    def _vergeet_onderwerp(self):
+        last_ctx = getattr(self.event_bus, "modules", {}).get("last_context")
+        if last_ctx is not None and hasattr(last_ctx, "clear"):
+            last_ctx.clear()
+
+    def _markeer_actief(self):
+        self.laatste_schaak_activiteit = time.time()
+
+    def partij_bezig(self):
+        """True als er recent een schaakcommando was en de partij niet voorbij is. Zo pakt de
+        router "wie wint er" alleen op als je echt aan het schaken bent."""
+        if self.board.is_game_over():
+            return False
+        return (time.time() - self.laatste_schaak_activiteit) < self.PARTIJ_ACTIEF_SECONDEN
+
+    def cursor_actief(self):
+        return (
+            self.zet_cursor is not None
+            and (time.time() - self.zet_cursor_tijd) < self.CURSOR_GELDIG_SECONDEN
+        )
+
+    def _zet_cursor_op(self, entry):
+        self.zet_cursor = entry
+        self.zet_cursor_tijd = time.time()
+
+    def _voeg_zet_toe(self, entry):
+        self.zetten_log.append(entry)
+        del self.zetten_log[:-self.ZETTEN_LOG_MAX]
+
+    def _registreer_speler_zet(self, zet, fen_voor, evaluatie):
+        analyse = self._laatste_analyse or {}
+        self._laatste_analyse = None
+        categorie = (evaluatie or {}).get("categorie")
+        self._voeg_zet_toe({
+            "door": "speler", "zet": zet, "fen_voor": fen_voor, "fen_na": self.board.fen(),
+            "categorie": categorie, "eval_tekst": (evaluatie or {}).get("tekst"),
+            "beste_zet": analyse.get("beste_zet"), "reactie": analyse.get("reactie"),
+            "mat_dreigt": categorie == "mat_dreigt",
+        })
+
+    def _registreer_nova_zet(self, zet, fen_voor):
+        self._voeg_zet_toe({
+            "door": "nova", "zet": zet, "fen_voor": fen_voor, "fen_na": self.board.fen(),
+            "categorie": None, "eval_tekst": None, "beste_zet": None, "reactie": None,
+            "mat_dreigt": False,
+        })
+
+    def _laatste_entry(self, door):
+        for entry in reversed(self.zetten_log):
+            if entry["door"] == door:
+                return entry
+        return None
+
+    def _leg_uit(self, entry):
+        """Een feitelijke uitleg bij een onthouden zet: vaste zinnen + feiten uit python-chess
+        en Stockfish. Vindt Nova geen feit, dan zegt ze dat eerlijk."""
+        bord_voor = chess.Board(entry["fen_voor"])
+        leesbaar = self.uci_to_leesbaar(entry["zet"], bord=bord_voor)
+
+        if entry["door"] == "nova":
+            feiten = chess_uitleg.feiten_van_zet(bord_voor, entry["zet"], door_nova=True)
+            zin = chess_uitleg.zin_over_zet(feiten) or self.GEEN_UITLEG_NOVA
+            return f"Ik speelde {leesbaar}. {zin}"
+
+        delen = [f"Jij speelde {leesbaar}."]
+        if entry.get("eval_tekst"):
+            delen.append(entry["eval_tekst"])
+        if entry.get("categorie") in ("twijfelachtig", "blunder", "mat_dreigt"):
+            zinnen = chess_uitleg.gevaren_na_zet(
+                chess.Board(entry["fen_na"]), entry["zet"], entry.get("reactie"), entry.get("mat_dreigt", False)
+            )
+            delen.append(" ".join(zinnen) if zinnen else self.GEEN_REDEN_SPELER)
+        else:
+            zin = chess_uitleg.zin_over_zet(
+                chess_uitleg.feiten_van_zet(bord_voor, entry["zet"], door_nova=False)
+            )
+            if zin:
+                delen.append(zin)
+        return " ".join(delen)
+
+    def _zeg(self, tekst, instant=False):
+        data = {"text": tekst}
+        if instant:
+            data["instant"] = True
+            self.event_bus.publish("chat_response", data)
+        else:
+            self.event_bus.publish("layer4_response", data)
+
+    def handle_followup(self, data, event_type=None):
+        """Doorvragen over zetten (punt 79). 'soort' komt uit chess_uitleg.herken_doorvraag()."""
+        self._markeer_actief()
+        soort = data.get("soort")
+
+        if soort == "mogelijke_zetten":
+            if self.board.is_game_over():
+                self._zeg("De partij is afgelopen, dus er zijn geen zetten meer.")
+                return
+            self._zeg(chess_uitleg.mogelijke_zetten_tekst(self.board, data.get("stuk")), instant=True)
+            return
+
+        if soort == "beste_zet_vorige":
+            entry = self._laatste_entry("speler")
+            if entry is None:
+                self._zeg("Ik heb nog geen zet van jou onthouden. Speel eerst een zet.")
+                return
+            if entry.get("beste_zet") is None:
+                self._zeg("Daar heb ik geen analyse van (Stockfish was er toen niet, of de zet is van voor "
+                          "deze sessie).")
+                return
+            self._zet_cursor_op(entry)
+            bord_voor = chess.Board(entry["fen_voor"])
+            beste = self.uci_to_leesbaar(entry["beste_zet"], bord=bord_voor)
+            if entry["beste_zet"] == entry["zet"]:
+                self._zeg(f"Je speelde al de beste zet: {beste}.")
+            else:
+                jouw = self.uci_to_leesbaar(entry["zet"], bord=bord_voor)
+                self._zeg(f"Stockfish had {beste} gespeeld. Jij speelde {jouw}.")
+            return
+
+        if soort == "beste_zet_nu":
+            if self.board.is_game_over():
+                self._zeg("De partij is afgelopen.")
+                return
+            if not self.ensure_engine():
+                return
+            try:
+                info = self.engine.analyse(self.board, chess.engine.Limit(time=self.EVAL_ANALYSE_TIJD))
+                zet = (info.get("pv") or [None])[0]
+            except Exception as e:
+                dbg(f"{C_RED}Kon beste zet niet bepalen: {e}{C_RESET}")
+                zet = None
+            if zet is None:
+                self._zeg("Ik zie nu geen goede zet voor je.")
+            else:
+                self._zeg(f"Stockfish zou nu {self.uci_to_leesbaar(zet)} spelen.")
+            return
+
+        if soort == "waarom_nova":
+            entry = self._laatste_entry("nova")
+            if entry is None:
+                self._zeg("Ik heb in deze sessie nog geen zet gespeeld.")
+                return
+            self._zet_cursor_op(entry)
+            self._zeg(self._leg_uit(entry))
+            return
+
+        if soort == "stand":
+            materiaal = self.materiaal_balans()
+            if self.board.is_game_over():
+                self._zeg(f"De partij is afgelopen. {materiaal}")
+                return
+            if not self.ensure_engine():
+                self._zeg(f"Qua materiaal: {materiaal}")
+                return
+            try:
+                info = self.engine.analyse(self.board, chess.engine.Limit(time=self.EVAL_ANALYSE_TIJD))
+                cp = self._score_naar_cp(info["score"], chess.WHITE)
+                mat = self._mate_in(info["score"], chess.WHITE)
+                oordeel = chess_uitleg.beoordeel_stand(cp, mat)
+            except Exception as e:
+                dbg(f"{C_RED}Kon stand niet beoordelen: {e}{C_RESET}")
+                oordeel = ""
+            self._zeg(f"{oordeel} {materiaal}".strip())
+            return
+
+        if soort in ("terug", "mijn_zet", "jouw_zet"):
+            if not self.cursor_actief() or self.zet_cursor not in self.zetten_log:
+                self._zeg("Over welke zet gaat het? Vraag eerst iets over een zet, "
+                          "bijvoorbeeld \"waarom speelde je dat\" of \"wat was de beste zet\".")
+                return
+            idx = self.zetten_log.index(self.zet_cursor)
+            if soort == "terug":
+                if idx == 0:
+                    self._zeg("Dat was de eerste zet die ik me herinner; daarvoor is er niets.")
+                    return
+                entry = self.zetten_log[idx - 1]
+            else:
+                wie = "speler" if soort == "mijn_zet" else "nova"
+                kandidaten = [e for e in self.zetten_log[: idx + 1] if e["door"] == wie]
+                if not kandidaten:
+                    kandidaten = [e for e in self.zetten_log if e["door"] == wie]
+                if not kandidaten:
+                    self._zeg("Daar heb ik geen zet van onthouden.")
+                    return
+                entry = kandidaten[-1]
+            self._zet_cursor_op(entry)
+            self._zeg(self._leg_uit(entry))
+            return
+
+    # ----------------------------------------------------
     # Detail op vraag: laatste zet-evaluatie herhalen
     # ----------------------------------------------------
     def handle_evaluation_query(self, data, event_type=None):
@@ -1027,6 +1263,15 @@ class ChessModule:
         aanwezig) -- verzint GEEN nieuwe uitleg, dat is bewust
         (nog) niet gebouwd, zie toelichting bij evalueer_speler_zet().
         """
+        # Punt 79: staat er een geanalyseerde zet van jou klaar, dan komt er nu ook een
+        # concrete reden bij (zie _leg_uit()); anders blijft het de oude herhaling.
+        self._markeer_actief()
+        entry = self._laatste_entry("speler")
+        if entry is not None and entry.get("categorie") is not None:
+            self._zet_cursor_op(entry)
+            self.event_bus.publish("layer4_response", {"text": self._leg_uit(entry)})
+            return
+
         if self.laatste_zet_evaluatie is None:
             self.event_bus.publish("chat_response", {
                 "text": "Ik heb nog geen zet-evaluatie klaarstaan -- speel eerst een zet."

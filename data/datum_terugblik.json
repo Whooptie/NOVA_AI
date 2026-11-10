@@ -10,7 +10,7 @@
   },
   "laatste_analyse": {
     "datum": "2026-11-10",
-    "actieve_dagen": 79,
+    "actieve_dagen": 80,
     "reden": null,
     "beste": {
       "afstand_maanden": 1,
@@ -19,7 +19,7 @@
         "hoort",
         "dieren"
       ],
-      "score": 7.69
+      "score": 7.73
     },
     "afgewezen": [
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",

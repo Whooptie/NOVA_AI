@@ -2,6 +2,7 @@
 
 import random
 import re
+import time
 
 from core.nl_stopwoorden import STOPWOORDEN
 from identity.personality.personality_engine import PersonalityEngine
@@ -167,14 +168,34 @@ class ResponsePipeline:
     ]
     _laatste_welkom_vervolg = None
 
+    # Race (10 november 2026): de melding "laptop ontgrendeld" loopt soms een paar tellen
+    # achter op wat Kevin typt, dus de groet is er dan vóór het welkom. Verwacht Nova nog een
+    # welkom, dan wacht ze maximaal WELKOM_WACHT_SECONDEN (in stapjes) of het alsnog komt.
+    # Komt het niet (bv. Kevin typt via zijn gsm terwijl de laptop vergrendeld blijft), dan
+    # volgt gewoon de normale groet. _slaap is aanpasbaar zodat tests niet echt wachten.
+    WELKOM_WACHT_SECONDEN = 1.5
+    WELKOM_WACHT_STAP = 0.05
+    _slaap = staticmethod(time.sleep)
+
+    def _welkom_gezegd_of_komt_zo(self, afwezigheid):
+        if afwezigheid.welkom_net_gezegd():
+            return True
+        if not (hasattr(afwezigheid, "welkom_verwacht") and afwezigheid.welkom_verwacht()):
+            return False
+        for _ in range(int(self.WELKOM_WACHT_SECONDEN / self.WELKOM_WACHT_STAP)):
+            self._slaap(self.WELKOM_WACHT_STAP)
+            if afwezigheid.welkom_net_gezegd():
+                return True
+        return False
+
     def _vervolg_na_welkom(self):
-        """Geeft een korte vervolgzin als Nova net "welkom terug" zei, anders None.
-        Kiest nooit twee keer na elkaar dezelfde zin."""
+        """Geeft een korte vervolgzin als Nova net "welkom terug" zei (of dat zo meteen
+        doet), anders None. Kiest nooit twee keer na elkaar dezelfde zin."""
         afwezigheid = getattr(self.event_bus, "modules", {}).get("afwezigheid")
         if afwezigheid is None or not hasattr(afwezigheid, "welkom_net_gezegd"):
             return None
         try:
-            if not afwezigheid.welkom_net_gezegd():
+            if not self._welkom_gezegd_of_komt_zo(afwezigheid):
                 return None
         except Exception:
             return None

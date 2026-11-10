@@ -4035,3 +4035,18 @@ De kennisgraaf (`concepts.json`) wordt zichtbaar als interactieve 3D-pagina. **E
 - `modules/chat/response_pipeline.py`: `on_greeting` (het ene punt waar `detect_greeting` en de Intent Classifier samenkomen via `intent_greeting`) vraagt dat. Was er net een welkom, dan komt er een korte, bijdehande vervolgzin uit `WELKOM_VERVOLG_ZINNEN` (16 zinnen, nooit twee keer dezelfde na elkaar) in plaats van "Hey Kevin, leuk dat je er bent". Na 60 seconden, of zonder welkom (bv. kort weg), blijft de gewone groet.
 - Bekende beperking: komt de groet ooit vóór het welkom binnen (race), dan blijft het dubbel.
 - Tests: nieuw `tests/test_welkom_groet30.py` (12).
+- Race opgelost (10 november 2026, live gezien in Nova: de groet werd verwerkt vóór de ontgrendel-melding van de laptop, dus toch dubbel): `afwezigheid.welkom_verwacht()` (nog afwezig en 5+ minuten weg of bewaarde berichten) en in `response_pipeline.py` `_welkom_gezegd_of_komt_zo()`: verwacht Nova nog een welkom, dan wacht ze maximaal 1,5 s (stapjes van 0,05 s). Komt het niet (bv. gsm terwijl de laptop vergrendeld blijft), dan volgt de gewone groet. Tests: `test_welkom_groet30.py` nu 18 (race nagebootst met een aanpasbare `_slaap`).
+
+### 10 november 2026 — punt 17: schaakmodule koppelt aan last_context (ontdekt 9 september 2026, bijvangst van Bug #33)
+- Probleem: een schaakcommando ("bord", "nieuwe partij", een zet) riep nergens `last_context.set_concept()` aan, dus "wat is dat" na "bord" gaf "Waar heb je het over?".
+- `modules/chess/chess_engine.py`: `_onthoud_onderwerp()`; het bord tonen zet het onderwerp "schaakbord", een nieuwe partij en elke zet (ook een mislukte) zetten "schaken". Beide woorden staan in de graaf, dus "wat is dat" geeft de definitie.
+- Beperking: "wat is dat" legt het woord uit, niet Kevins lopende partij. Statistieken, moeilijkheid, denktijd en de evaluatievraag zetten (nog) geen onderwerp.
+- Tests: nieuw `tests/test_schaak_last_context17.py` (7); die slaat zichzelf over als de `chess`-bibliotheek ontbreekt en raakt je echte `data/` niet aan (PROJECT_ROOT naar tmp_path, geen Stockfish nodig).
+
+### 10 november 2026 – Punt 79: schaak-doorvragen
+- Nieuw `modules/chess/chess_uitleg.py`: zuivere functies (feiten uit python-chess, geen ML): `feiten_van_zet`, `zin_over_zet`, `gevaren_na_zet`, `mogelijke_zetten_tekst`, `beoordeel_stand`, `herken_doorvraag`.
+- `chess_engine.py`: onthoudt de zetten van de sessie (`zetten_log`, max 40, niet op schijf) + `handle_followup` voor 8 soorten: beste zet (vorige/nu), waarom speelde je dat, welke zetten kan ik doen (optioneel per stuk), wie staat er beter, en daarvoor / mijn zet / jouw zet.
+- "waarom was dat een blunder" geeft nu een concrete reden (stuk kon geslagen worden, niet gedekt, mat dreigt) i.p.v. alleen de herhaling.
+- Een zet wist het onderwerp: "wat is dat" na een zet geeft weer "Waar heb je het over?".
+- `intent_router.detect_chess`: doorvragen alleen herkend als er een partij bezig is (<30 min, niet afgelopen); "en daarvoor" alleen na een uitleg (<10 min).
+- Tests: tests/test_schaak_doorvragen.py (23), tests/test_schaak_last_context17.py bijgewerkt (7).

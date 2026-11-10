@@ -149,6 +149,19 @@ class AfwezigheidModule:
             return False
         return (self._klok() - tijd) <= binnen_seconden
 
+    def welkom_verwacht(self):
+        """Punt 30 (race): True als Kevin nog als afwezig geregistreerd staat EN het
+        "welkom terug" bij terugkomst gezegd zou worden (5+ minuten weg, of er liggen
+        bewaarde berichten klaar). De melding van de laptop loopt soms een paar tellen
+        achter op wat Kevin typt: de groet kan dus al binnen zijn vóór het welkom."""
+        with self._lock:
+            if self.afwezig_sinds is None:
+                return False
+            if self._bewaarde_berichten:
+                return True
+            minuten = (self._klok() - self.afwezig_sinds) / 60
+        return minuten >= self.MIN_MINUTEN_VOOR_WELKOM
+
     def aantal_bewaarde_berichten(self):
         with self._lock:
             return len(self._bewaarde_berichten)

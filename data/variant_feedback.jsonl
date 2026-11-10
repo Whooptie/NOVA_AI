@@ -532,3 +532,9 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe gaat het?", "entity": "coding", "response_style": null, "moment": "2026-11-06T20:25:12.544255", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1793993112.5439637, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1793993112.5444045, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 2, "variant_tekst": "Ik heb nu wat meer moeite om alles rustig te verwerken.", "entity": null, "response_style": null, "moment": "2026-11-10T22:08:25.189251", "reactie_sentiment": null}
+{"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe is het met jou?", "entity": null, "response_style": null, "moment": "2026-11-10T22:08:25.190492", "reactie_sentiment": null}
+{"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1794344905.1899726, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794344905.190677, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "variant_tekst": "Wacht… daar heb ik geen antwoord op.", "entity": null, "response_style": "normaal", "moment": "2026-11-10T22:13:30.748907", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1794345210.7491264, "type": "sentiment_koppeling"}

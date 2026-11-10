@@ -191,3 +191,5 @@
 {"tekst": "wat gebeurt er als je stopt", "hoogste_gok": "rain", "confidence": 0.1579, "tijdstip": "2026-11-04T16:13:48.863269"}
 {"tekst": "wat gebeurt er als je een update krijgt", "hoogste_gok": "identity", "confidence": 0.1419, "tijdstip": "2026-11-04T16:13:55.644415"}
 {"tekst": "en dan", "hoogste_gok": "thanks", "confidence": 0.2249, "tijdstip": "2026-11-06T20:25:12.510625"}
+{"tekst": "en daarvoor", "hoogste_gok": "thanks", "confidence": 0.1868, "tijdstip": "2026-11-10T22:08:25.161078"}
+{"tekst": "waarom", "hoogste_gok": "chess_evaluation", "confidence": 0.2445, "tijdstip": "2026-11-10T22:13:30.705092"}

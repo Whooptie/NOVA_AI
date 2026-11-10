@@ -19,6 +19,12 @@ try:
 except Exception:
     _normaliseer_vraag = None
 
+# Punt 79 (10 november 2026): schaak-doorvragen (zuivere herkenning, geen engine nodig).
+try:
+    from modules.chess import chess_uitleg
+except Exception:  # noqa: BLE001 -- zonder de module blijft schaken werken zoals voorheen
+    chess_uitleg = None
+
 # Punt 62d (4 november 2026): vervolgvragen op de laatste kennisvraag.
 try:
     from core import context_resolver as _context_resolver
@@ -2199,6 +2205,26 @@ class IntentRouter:
     # ---------------------------------------------------------
     def detect_chess(self, text):
         t = text.lower().strip().rstrip("?.")
+
+        # Punt 79: doorvragen over zetten. Staat VOOR de oude evaluatie-zinnen.
+        chess_engine = self.event_bus.modules.get("chess_engine")
+        if (
+            chess_uitleg is not None
+            and chess_engine is not None
+            and hasattr(chess_engine, "partij_bezig")
+        ):
+            herkend = chess_uitleg.herken_doorvraag(
+                t, chess_engine.partij_bezig(), chess_engine.cursor_actief()
+            )
+            if herkend:
+                soort, extra = herkend
+                dbg(f"{C_BLUE}→ chess_followup ({soort}){C_RESET}")
+                payload = {"soort": soort}
+                payload.update(extra or {})
+                self.event_bus.publish("intent_chess_followup", payload)
+                self._emit_topic("chess_followup", bron="detect")
+                self._topic_al_ge_emit = True
+                return True
 
         # Vraag naar detail van de laatste zet-evaluatie (nieuw).
         # Herhaalt enkel wat al berekend werd bij de zet zelf --
@@ -5644,6 +5670,12 @@ class IntentRouter:
         verwerk_memory_query_woord_antwoord().
         """
         if not self._pending_referentie_vraag:
+            return False
+
+        # Een commando ("/reboot") is nooit het antwoord op "Waar heb je het over?": de open
+        # vraag vervalt en het commando loopt gewoon door de routing.
+        if tekst.strip().startswith("/"):
+            self._pending_referentie_vraag = None
             return False
 
         oorspronkelijke_tekst = self._pending_referentie_vraag["oorspronkelijke_tekst"]

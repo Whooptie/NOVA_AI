@@ -125,6 +125,77 @@ def test_zonder_afwezigheid_module_blijft_de_groet_gewoon():
     assert _groet(bus, basis) == GEWONE_GROET
 
 
+# ---------------------------------------------------------------------------
+# De race: de groet is er vóór het welkom (melding van de laptop loopt achter)
+# ---------------------------------------------------------------------------
+def test_welkom_verwacht_alleen_als_afwezig_en_lang_genoeg(omgeving):
+    bus, afw, klok, *_ = omgeving
+    assert afw.welkom_verwacht() is False            # niet afwezig
+    bus.publish(VERTREK, {})
+    klok.t += 3 * 60
+    assert afw.welkom_verwacht() is False            # te kort weg
+    klok.t += 3 * 60
+    assert afw.welkom_verwacht() is True             # 6 minuten weg
+    bus.publish(TERUG, {})
+    assert afw.welkom_verwacht() is False            # weer terug
+
+
+def test_welkom_verwacht_bij_bewaarde_berichten_ook_na_korte_afwezigheid(omgeving):
+    bus, afw, klok, *_ = omgeving
+    bus.publish(VERTREK, {})
+    klok.t += 60
+    afw.onderschep_bericht({"text": "Let op: onweer"}, is_hoofdthread=False)
+    assert afw.welkom_verwacht() is True
+
+
+def test_race_welkom_komt_pas_tijdens_het_wachten(omgeving):
+    bus, _, klok, pipeline, basis = omgeving
+    bus.publish(VERTREK, {})
+    klok.t += 7 * 60                      # nog vergrendeld geregistreerd, 7 minuten weg
+    wacht = []
+
+    def slaap(s):
+        wacht.append(s)
+        if len(wacht) == 3:               # de ontgrendel-melding komt nu pas binnen
+            bus.publish(TERUG, {})
+
+    pipeline._slaap = slaap
+    zin = _groet(bus, basis)
+    assert zin in ResponsePipeline.WELKOM_VERVOLG_ZINNEN
+    assert len(wacht) == 3                # stopte meteen toen het welkom er was
+
+
+def test_race_welkom_komt_niet_dan_volgt_de_gewone_groet_na_het_wachten(omgeving):
+    # Kevin typt via zijn gsm terwijl de laptop vergrendeld blijft: er komt nooit een welkom.
+    bus, _, klok, pipeline, basis = omgeving
+    bus.publish(VERTREK, {})
+    klok.t += 7 * 60
+    wacht = []
+    pipeline._slaap = lambda s: wacht.append(s)
+    assert _groet(bus, basis) == GEWONE_GROET
+    assert len(wacht) == int(pipeline.WELKOM_WACHT_SECONDEN / pipeline.WELKOM_WACHT_STAP)
+
+
+def test_geen_wachttijd_als_er_geen_welkom_verwacht_wordt(omgeving):
+    bus, _, klok, pipeline, basis = omgeving
+    wacht = []
+    pipeline._slaap = lambda s: wacht.append(s)
+    assert _groet(bus, basis) == GEWONE_GROET        # Kevin was niet weg
+    bus.publish(VERTREK, {})
+    klok.t += 2 * 60
+    assert _groet(bus, basis) == GEWONE_GROET        # te kort weg voor een welkom
+    assert wacht == []
+
+
+def test_geen_wachttijd_als_het_welkom_er_al_is(omgeving):
+    bus, _, klok, pipeline, basis = omgeving
+    _weg_en_terug(bus, klok, 9)
+    wacht = []
+    pipeline._slaap = lambda s: wacht.append(s)
+    assert _groet(bus, basis) in ResponsePipeline.WELKOM_VERVOLG_ZINNEN
+    assert wacht == []
+
+
 def test_nooit_twee_keer_dezelfde_vervolgzin_na_elkaar(omgeving):
     bus, _, klok, _, basis = omgeving
     _weg_en_terug(bus, klok, 9)

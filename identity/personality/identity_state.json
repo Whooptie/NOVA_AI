@@ -7,7 +7,7 @@
   "mood_shift_tendency": "snel_met_herstel",
   "overstimulation_level": 1.0,
   "puberaal_traits_active": true,
-  "expressive_intensity": 0.08,
+  "expressive_intensity": 0.0,
   "impulsivity_modulation": 0.15,
   "dramatic_flair_state": 0.21,
   "context_flags": {

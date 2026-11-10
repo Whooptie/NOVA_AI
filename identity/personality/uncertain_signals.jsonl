@@ -1806,3 +1806,32 @@
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-10T19:24:53.313582"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-10T19:30:59.505409"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-10T19:31:05.827980"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-10T19:36:59.662142"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-10T19:44:48.501780"}
+{"text": "hhey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-10T19:45:00.111339"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-10T19:45:02.077951"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-10T19:45:06.331301"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-10T21:18:53.670203"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-10T22:05:59.322796"}
+{"text": "d2 naar d4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.084, "bron": "model_fallback", "tijdstip": "2026-11-10T22:06:21.111930"}
+{"text": "pion naar d4", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-11-10T22:06:32.434978"}
+{"text": "pion naar f3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-11-10T22:06:53.623289"}
+{"text": "pion naar c5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0939, "bron": "model_fallback", "tijdstip": "2026-11-10T22:07:04.940750"}
+{"text": "welke zetten kan ik doen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0464, "bron": "model_fallback", "tijdstip": "2026-11-10T22:07:42.993775"}
+{"text": "paard naar c3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.084, "bron": "model_fallback", "tijdstip": "2026-11-10T22:07:53.195897"}
+{"text": "wie staat er beter", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.005, "bron": "model_fallback", "tijdstip": "2026-11-10T22:08:13.016321"}
+{"text": "en daarvoor", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-10T22:08:25.151919"}
+{"text": "wat is dat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0232, "bron": "model_fallback", "tijdstip": "2026-11-10T22:08:35.362656"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-10T22:12:20.975204"}
+{"text": "wat is /reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0913, "bron": "model_fallback", "tijdstip": "2026-11-10T22:12:20.983684"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-10T22:12:29.406440"}
+{"text": "welke zetten kan ik doen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0464, "bron": "model_fallback", "tijdstip": "2026-11-10T22:13:10.411282"}
+{"text": "paard g1: h3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-10T22:13:25.908920"}
+{"text": "waarom", "signaal": "frustratie", "model_signaal": "frustratie", "marge": 0.0082, "bron": "model_fallback", "tijdstip": "2026-11-10T22:13:30.692014"}
+{"text": "dame d1: d7", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-10T22:14:00.080717"}
+{"text": "paard naar h3", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.084, "bron": "model_fallback", "tijdstip": "2026-11-10T22:14:46.026907"}
+{"text": "waarom speelde je dat", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0021, "bron": "model_fallback", "tijdstip": "2026-11-10T22:15:16.350684"}
+{"text": "wat was de beste zet", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0559, "bron": "model_fallback", "tijdstip": "2026-11-10T22:15:32.832473"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-10T22:22:34.764425"}
+{"text": "wat is dat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0232, "bron": "model_fallback", "tijdstip": "2026-11-10T22:23:03.023943"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-10T22:23:06.440937"}
