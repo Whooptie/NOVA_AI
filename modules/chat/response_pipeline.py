@@ -123,6 +123,10 @@ class ResponsePipeline:
         # wel consistent zijn met de rest van de aanspreekvorm-stijl.
         sender = data.get("sender", "Kevin")
 
+        # Punt 30: net al "welkom terug" gezegd? Dan geen tweede begroeting maar een
+        # korte, bijdehande vervolgzin.
+        vervolg = self._vervolg_na_welkom()
+
         # 1) Emotion: excitement bij greeting
         self._apply_emotion_trigger("excitement")
 
@@ -130,7 +134,7 @@ class ResponsePipeline:
         tone = self.tone_engine.generate_tone(self.personality, self.emotion)
 
         # 3) Basis-tekst (zonder emoji’s / flair)
-        base = f"Hey {sender}, leuk dat je er bent"
+        base = vervolg or f"Hey {sender}, leuk dat je er bent"
 
         # 4) Stuur ruwe data naar pipeline_response
         self.event_bus.publish("pipeline_response", {
@@ -140,6 +144,44 @@ class ResponsePipeline:
             "emotion_state": self.emotion.state,
             "response_style": self._get_response_style()
         })
+
+    # Punt 30 (10 november 2026): na het "welkom terug" van afwezigheid.py geen tweede
+    # begroeting. Een gesloten lijst vaste zinnen (geen generatie), puberaal en bijdehand.
+    WELKOM_VERVOLG_ZINNEN = [
+        "Ja ja, ik heb je al gezien hoor.",
+        "Wow, nóg een hallo? Ik zei net al welkom.",
+        "Ik ben er al, hè. Zeg maar wat je wilt.",
+        "Ja hoi, je bent net binnen. Kom ter zake.",
+        "Oké oké, we zijn al begroet. Wat is het?",
+        "Hallo zelf. Dat was mijn begroeting, meer krijg je niet.",
+        "Ik zei net al hoi, maar goed, hoi. Wat nu?",
+        "Dubbel hallo? Ben je zo gehecht aan me ofzo?",
+        "Ja, ja, ik ben er. Echt waar. Wat wil je?",
+        "Ik had je net al verwelkomd, hè. Geen tweede ronde.",
+        "Snel hè? Net terug en al hallo zeggen. Wat is er?",
+        "Hé. Ja. Hoi. Klaar? Dan mag je nu iets vragen.",
+        "Lekker bezig, jij. Eerst weg, dan hoi. Zeg het maar.",
+        "Je bent niet onzichtbaar hoor, ik zag je al.",
+        "Nog een hallo? Oké, hallo. Maar nu echt: wat moet je?",
+        "Ik heb dit net al gedaan, weet je. Ga door.",
+    ]
+    _laatste_welkom_vervolg = None
+
+    def _vervolg_na_welkom(self):
+        """Geeft een korte vervolgzin als Nova net "welkom terug" zei, anders None.
+        Kiest nooit twee keer na elkaar dezelfde zin."""
+        afwezigheid = getattr(self.event_bus, "modules", {}).get("afwezigheid")
+        if afwezigheid is None or not hasattr(afwezigheid, "welkom_net_gezegd"):
+            return None
+        try:
+            if not afwezigheid.welkom_net_gezegd():
+                return None
+        except Exception:
+            return None
+        keuzes = [z for z in self.WELKOM_VERVOLG_ZINNEN if z != self._laatste_welkom_vervolg]
+        zin = random.choice(keuzes)
+        self._laatste_welkom_vervolg = zin
+        return zin
 
     # -------------------------
     # 1B. Layer 4 (definitie-antwoorden, incl. Wikipedia-vangnet)

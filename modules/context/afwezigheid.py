@@ -115,6 +115,10 @@ class AfwezigheidModule:
         # Hoeveel berichten vielen weg door MAX_BEWAARDE_BERICHTEN?
         self._aantal_weggevallen = 0
 
+        # Punt 30: tijdstip waarop Nova voor het laatst "welkom terug" zei (None = nog
+        # nooit). Zo kan de groet-reactie een tweede, dubbele begroeting vermijden.
+        self._laatste_welkom = None
+
         # Wildcard, want event_bus.subscribe() kan niet op een prefix
         # filteren -- zelfde aanpak als session_watcher.py.
         event_bus.subscribe("*", self._on_any_event)
@@ -134,6 +138,16 @@ class AfwezigheidModule:
             if self.afwezig_sinds is None:
                 return None
             return (self._klok() - self.afwezig_sinds) / 60
+
+    def welkom_net_gezegd(self, binnen_seconden=60):
+        """Punt 30: True als Nova in de laatste 'binnen_seconden' een "welkom terug" zei.
+        De groet-reactie (response_pipeline.on_greeting) gebruikt dit om niet nog eens
+        'hey, leuk dat je er bent' te zeggen vlak nadat het welkom al klonk."""
+        with self._lock:
+            tijd = self._laatste_welkom
+        if tijd is None:
+            return False
+        return (self._klok() - tijd) <= binnen_seconden
 
     def aantal_bewaarde_berichten(self):
         with self._lock:
@@ -244,6 +258,9 @@ class AfwezigheidModule:
 
         tekst = self._formuleer_welkom(duur_minuten, berichten, weggevallen, nu)
         if tekst:
+            # Vóór het publiceren vastleggen (niet binnen de lock publiceren: deadlock-les).
+            with self._lock:
+                self._laatste_welkom = nu
             self.event_bus.publish("chat_response", {"text": tekst})
 
     def _on_user_message(self, data, event_type=None):

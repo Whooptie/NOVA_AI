@@ -4028,3 +4028,10 @@ De kennisgraaf (`concepts.json`) wordt zichtbaar als interactieve 3D-pagina. **E
 - `modules/chat/chat.py`: `on_effects` onthoudt wat genoemd is; `_on_effects_vervolg()`; `EN_DAN_MAX_DIEPTE = 8`.
 - Tests: nieuw `tests/test_en_dan77.py` (39); in `test_vervolgzinnen76.py` is de "bewust niet gebouwd"-test aangepast (zelfde eis, nieuw gedrag).
 - Benchmark `--taal --categorie vervolg_gevolg`: router begrijpt 10/10 (was 6/10); score 2/10 omdat de gevolgen ontbreken in de graaf in mijn controle-kopie (kennisgat).
+
+### 10 november 2026 — punt 30: geen dubbele begroeting na terugkomst (live gezien 3 oktober 2026)
+- Probleem: zegt Kevin "hey" net na het ontgrendelen, dan antwoordde Nova twee keer: het welkom van `afwezigheid.py` en meteen daarna de gewone groet.
+- `modules/context/afwezigheid.py`: onthoudt wanneer het "welkom terug" zei (`_laatste_welkom`, vastgelegd vóór het publiceren, buiten de lock: deadlock-les) en geeft dat via `welkom_net_gezegd(binnen_seconden=60)`.
+- `modules/chat/response_pipeline.py`: `on_greeting` (het ene punt waar `detect_greeting` en de Intent Classifier samenkomen via `intent_greeting`) vraagt dat. Was er net een welkom, dan komt er een korte, bijdehande vervolgzin uit `WELKOM_VERVOLG_ZINNEN` (16 zinnen, nooit twee keer dezelfde na elkaar) in plaats van "Hey Kevin, leuk dat je er bent". Na 60 seconden, of zonder welkom (bv. kort weg), blijft de gewone groet.
+- Bekende beperking: komt de groet ooit vóór het welkom binnen (race), dan blijft het dubbel.
+- Tests: nieuw `tests/test_welkom_groet30.py` (12).
