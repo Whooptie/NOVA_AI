@@ -4050,3 +4050,9 @@ De kennisgraaf (`concepts.json`) wordt zichtbaar als interactieve 3D-pagina. **E
 - Een zet wist het onderwerp: "wat is dat" na een zet geeft weer "Waar heb je het over?".
 - `intent_router.detect_chess`: doorvragen alleen herkend als er een partij bezig is (<30 min, niet afgelopen); "en daarvoor" alleen na een uitleg (<10 min).
 - Tests: tests/test_schaak_doorvragen.py (23), tests/test_schaak_last_context17.py bijgewerkt (7).
+
+### 11 november 2026 – Punt 29: sneller merken dat Kevin terug is
+- `main.py`: nieuwe `snelle_activiteit_loop()` (elke `ACTIVITEIT_SNEL_INTERVAL_SECONDEN` = 5 s, eigen daemon-thread) roept `detect_activity()` aan. De 60-secondenlus blijft ongewijzigd. `detect_activity()` publiceert alleen bij een echte wissel, dus er wordt niets dubbel geteld.
+- Resultaat: vergrendelen/ontgrendelen wordt na hooguit ~20 s opgemerkt (de laptop-client stuurt elke 15 s), voorheen tot ~75 s. De gemeten afwezigheidsduur valt daardoor ook minder te kort uit.
+- Tests: tests/test_snelle_activiteit29.py (5).
+

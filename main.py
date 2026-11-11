@@ -266,6 +266,14 @@ def on_chat_response(data, event_type=None):
 # 15 = elke 15 minuten, 1 = elke minuut).
 PRESENCE_CHECK_INTERVAL_MINUTEN = 5
 
+# Punt 29 (11 november 2026): hoe vaak (in SECONDEN) kijkt Nova of de laptop
+# vergrendeld/ontgrendeld is? De laptop-client stuurt zelf elke 15 seconden een
+# update (zie nova_client.py), dus vaker dan elke 5 seconden kijken heeft geen zin:
+# er komt dan toch niets nieuws binnen. Gevolg: "welkom terug" komt na hooguit
+# ~20 seconden in plaats van tot een minuut te laat.
+# LET OP: staat de client op een ander interval, pas dit dan mee aan.
+ACTIVITEIT_SNEL_INTERVAL_SECONDEN = 5
+
 # Hoe vaak Nova zelf het weer checkt voor een proactieve waarschuwing
 # (onweer/sneeuw/extreem/mist/hagel/harde wind) — zie weather.py's
 # check_proactieve_waarschuwing(). Net als bij PRESENCE hierboven: gewoon
@@ -517,6 +525,28 @@ def _layer5_ochtend_mag_spreken(loader):
     return 0 <= minuten <= OCHTEND_AANWEZIG_MAX_MINUTEN
 
 
+def snelle_activiteit_loop(loader, slaap=time.sleep, blijf_draaien=lambda: True):
+    """
+    Punt 29 (11 november 2026): kijkt elke ACTIVITEIT_SNEL_INTERVAL_SECONDEN seconden
+    of de activiteit (o.a. vergrendeld/ontgrendeld) gewisseld is, los van de trage
+    60-secondenlus hieronder. detect_activity() publiceert alleen bij een ECHTE
+    wissel en leest enkel het laatste bericht dat de laptop al stuurde: vaker aanroepen
+    kost dus niets extra en telt niets dubbel mee.
+
+    slaap/blijf_draaien bestaan zodat een test de lus kan stoppen zonder te wachten.
+    """
+    while blijf_draaien():
+        slaap(ACTIVITEIT_SNEL_INTERVAL_SECONDEN)
+        if not blijf_draaien():
+            break
+        activity_detector = loader.loaded_modules.get("activity_detector")
+        if activity_detector:
+            try:
+                activity_detector.detect_activity()
+            except Exception as e:
+                print(f"[Achtergrondthread] Fout in detect_activity() (snelle lus): {e}")
+
+
 def achtergrond_loop(loader):
     """
     Draait continu op de achtergrond, los van de input()-lus in main().
@@ -749,6 +779,10 @@ def main():
     # daemon=True zorgt dat deze thread automatisch stopt zodra Nova stopt.
     bg_thread = threading.Thread(target=achtergrond_loop, args=(loader,), daemon=True)
     bg_thread.start()
+
+    # Punt 29: aparte, snelle lus voor het vergrendelen/ontgrendelen (zie boven).
+    snelle_thread = threading.Thread(target=snelle_activiteit_loop, args=(loader,), daemon=True)
+    snelle_thread.start()
 
     # Tijdzone automatisch activeren
     zone = loader.event_bus.modules.get("zone")

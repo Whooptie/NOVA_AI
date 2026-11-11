@@ -22,3 +22,15 @@ Traceback (most recent call last):
                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
 IndexError: list index out of range
 
+[2026-11-11 18:52:26] event='intent_chess_move' handler=ChessModule.handle_move
+Traceback (most recent call last):
+  File "/app/core/event_bus.py", line 74, in _roep_aan
+    handler(data, event_type)
+  File "/app/modules/chess/chess_engine.py", line 837, in handle_move
+    evaluatie = self.evalueer_speler_zet(move, speler_kleur)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/modules/chess/chess_engine.py", line 647, in evalueer_speler_zet
+    beste_zet_voor = info_voor.get("pv", [None])[0]
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+

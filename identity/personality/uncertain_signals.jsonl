@@ -1837,3 +1837,12 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-10T22:23:06.440937"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-10T22:24:44.047196"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-10T22:24:46.355149"}
+{"text": ":REBOOT", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-11T14:42:06.704947"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-11T14:42:15.189226"}
+{"text": "wie ben je", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.004, "bron": "model_fallback", "tijdstip": "2026-11-11T14:42:26.816866"}
+{"text": "blablabla", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-11T14:42:43.471885"}
+{"text": "hoe werkt je geheugen", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0293, "bron": "woordenlijst", "tijdstip": "2026-11-11T18:44:06.047230"}
+{"text": "hoe oud ben je?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0018, "bron": "model_fallback", "tijdstip": "2026-11-11T18:45:35.334858"}
+{"text": "hoe oud ben je?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0018, "bron": "model_fallback", "tijdstip": "2026-11-11T18:45:43.991915"}
+{"text": "hoe zie je eruit", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-11-11T18:45:52.288442"}
+{"text": "hoe ziet je poep eruit?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-11-11T18:46:09.093449"}

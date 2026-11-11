@@ -538,3 +538,18 @@
 {"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794344905.190677, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "variant_tekst": "Wacht… daar heb ik geen antwoord op.", "entity": null, "response_style": "normaal", "moment": "2026-11-10T22:13:30.748907", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1794345210.7491264, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 2, "variant_tekst": "Ik heb nu wat meer moeite om alles rustig te verwerken.", "entity": null, "response_style": null, "moment": "2026-11-11T14:42:06.747311", "reactie_sentiment": null}
+{"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 2, "variant_tekst": "Hoe zit het bij jou?", "entity": null, "response_style": null, "moment": "2026-11-11T14:42:06.750328", "reactie_sentiment": null}
+{"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1794404526.7495155, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1794404526.750784, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "variant_tekst": "Hmm… dat ken ik niet.", "entity": null, "response_style": "normaal", "moment": "2026-11-11T14:42:43.527546", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1794404563.527785, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_opening", "gekozen_variant_index": 2, "variant_tekst": "Oh…", "entity": null, "response_style": null, "moment": "2026-11-11T18:45:52.296728", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_midden", "gekozen_variant_index": 2, "variant_tekst": "tenger, licht van huid, blauwe ogen en haar tot net aan mijn achterwerk.", "entity": null, "response_style": null, "moment": "2026-11-11T18:45:52.297429", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_slot", "gekozen_variant_index": 2, "variant_tekst": "…tja.", "entity": null, "response_style": null, "moment": "2026-11-11T18:45:52.297830", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_opening", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1794419152.2970145, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_midden", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1794419152.2975996, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_slot", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1794419152.297972, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 0, "variant_tekst": "Mijn billen…", "entity": null, "response_style": null, "moment": "2026-11-11T18:46:09.099456", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 4, "variant_tekst": "rond, licht.", "entity": null, "response_style": null, "moment": "2026-11-11T18:46:09.099988", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 2, "variant_tekst": "…", "entity": null, "response_style": null, "moment": "2026-11-11T18:46:09.100396", "reactie_sentiment": null}

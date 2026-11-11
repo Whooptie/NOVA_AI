@@ -193,3 +193,5 @@
 {"tekst": "en dan", "hoogste_gok": "thanks", "confidence": 0.2249, "tijdstip": "2026-11-06T20:25:12.510625"}
 {"tekst": "en daarvoor", "hoogste_gok": "thanks", "confidence": 0.1868, "tijdstip": "2026-11-10T22:08:25.161078"}
 {"tekst": "waarom", "hoogste_gok": "chess_evaluation", "confidence": 0.2445, "tijdstip": "2026-11-10T22:13:30.705092"}
+{"tekst": ":REBOOT", "hoogste_gok": "chess", "confidence": 0.1286, "tijdstip": "2026-11-11T14:42:06.719264"}
+{"tekst": "blablabla", "hoogste_gok": "rain", "confidence": 0.1088, "tijdstip": "2026-11-11T14:42:43.487046"}
