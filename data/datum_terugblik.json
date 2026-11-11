@@ -9,23 +9,16 @@
     "werk": "2026-11-04"
   },
   "laatste_analyse": {
-    "datum": "2026-11-10",
+    "datum": "2026-11-11",
     "actieve_dagen": 80,
-    "reden": null,
-    "beste": {
-      "afstand_maanden": 1,
-      "woorden": [
-        "tijd",
-        "hoort",
-        "dieren"
-      ],
-      "score": 7.73
-    },
+    "reden": "geen enkele afstand haalt de drempel",
+    "beste": null,
     "afgewezen": [
+      "1 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "6 mnd: te weinig berichten rond 10 mei (0)",
-      "12 mnd: te weinig berichten rond 10 november (0)",
-      "24 mnd: te weinig berichten rond 10 november (0)"
+      "6 mnd: te weinig berichten rond 11 mei (0)",
+      "12 mnd: te weinig berichten rond 11 november (0)",
+      "24 mnd: te weinig berichten rond 11 november (0)"
     ]
   }
 }

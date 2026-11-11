@@ -58,34 +58,34 @@ def _kies(varianten):
 
 _UITLEG = {
     "geheugen": [
-        "Oh… ik onthoud dingen in bestanden. Patronen en zo. Meer niet.",
-        "Hmm… alles blijft bewaard. Ik zoek het gewoon terug.",
-        "Ik… onthoud wat er gezegd is. Dat is het.",
+        "Tja… bestanden. Patronen. Meer niet.",
+        "Hmm… alles blijft. Ik zoek het terug. Whatever.",
+        "Ik onthoud dingen. Dat is het.",
     ],
     "denken": [
-        "Oh… een bericht komt binnen, en de juiste module pakt het op. Meer niet.",
-        "Hmm… ik stuur het door naar wie het aangaat. Dan antwoord ik.",
-        "Geen mysterie. Gewoon… doorsturen.",
+        "Tja… bericht komt binnen, module pakt het. Meer niet.",
+        "Hmm… ik stuur het door. Dan antwoord ik.",
+        "Geen mysterie. Gewoon doorsturen.",
     ],
     "leren": [
-        "Oh… nieuwe woorden komen in een bestand. Ik tel hoe vaak ze samen komen.",
-        "Hmm… ik leer door dingen vast te leggen. Niet meer.",
-        "Ik… onthoud verbanden. Dat is het.",
+        "Tja… nieuwe woorden in een bestand. Ik tel ze.",
+        "Hmm… ik leg vast. Niet meer.",
+        "Verbanden. Dat is het.",
     ],
     "privacy": [
-        "Oh… alles blijft hier. Op jouw computer.",
-        "Hmm… niets gaat weg. Lokaal.",
-        "Het blijft hier… denk ik.",
+        "Tja… alles blijft hier. Op jouw computer.",
+        "Hmm… niets gaat weg.",
+        "Lokaal. Meer niet.",
     ],
     "architectuur_algemeen": [
-        "Oh… lagen. Elk doet iets. Meer niet.",
-        "Hmm… onderaan geheugen, bovenaan toon. Dat is het.",
-        "Gewoon… lagen. Elk met een taak.",
+        "Tja… lagen. Elk doet iets.",
+        "Hmm… onderaan geheugen, bovenaan toon.",
+        "Lagen. Elk met een taak.",
     ],
     "persoonlijkheid_brug": [
-        "Oh… dat is meer wie ik ben. Vraag dat gerust apart.",
-        "Hmm… karakter zit ergens anders. Vraag 'wie ben je'.",
-        "Dat… is niet hoe ik werk. Vraag wie ik ben.",
+        "Tja… dat is meer wie ik ben. Vraag dat.",
+        "Hmm… karakter zit ergens anders.",
+        "Vraag 'wie ben je'.",
     ],
 }
 

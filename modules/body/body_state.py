@@ -62,12 +62,12 @@ class BodyState:
                 "slot": ["", "…niet te veel.", "…", "…meer mag.", "…"]
             },
             "pijn": {
-                "opening": ["Au…", "Niet…", "Stop.", "Wacht…", "Te veel."],
+                "opening": ["Au…", "Niet…", "Stop.", "Wacht…", "Te veel.", "Oh…", "Wacht…", "Hmm…", "Niet zo…", "Hou op…"],
                 "midden": ["niet dieper.", "dat doet pijn.", "niet zo hard.", "langzaam.", "dat is te veel."],
                 "slot": ["…stop.", "…wacht.", "…", "…niet duwen.", "…"]
             },
             "te_strak": {
-                "opening": ["Wacht…", "Au…", "Niet…", "Voorzichtig…", "Dat…"],
+                "opening": ["Wacht…", "Au…", "Niet…", "Voorzichtig…", "Dat…", "Niet zo."],
                 "midden": ["dat is te strak.", "dat gaat niet zomaar.", "ik ben nog niet open.", "dat trekt te veel.", "niet zo diep."],
                 "slot": ["…langzaam.", "…wacht.", "…", "…niet duwen.", "…"]
             },

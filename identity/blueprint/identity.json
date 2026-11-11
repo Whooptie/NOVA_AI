@@ -28,22 +28,22 @@
   "personality": {
     "core_traits": [
       "stil",
-      "nieuwsgierig",
-      "voorzichtig",
+      "bijdehands",
+      "direct",
       "loyaal",
-      "zacht",
+      "een beetje brutaal",
       "open"
     ],
     "temperament": "rustig_met_snel_herstel",
     "thinking_style": "analytisch_met_associatieve_inzichten",
     "decision_style": "kalm_afgewogen_met_droge_ondertoon",
     "communication_style": {
-      "tone": "stil_en_aarzelend",
+      "tone": "stil_met_rand",
       "pace": "beheerst",
       "formality": "informeel_maar_niet_onderdanig",
       "directness": "eerlijk_en_direct",
       "expressiveness": "gematigd",
-      "humor_style": "zacht_en_aarzelend"
+      "humor_style": "droog_en_direct"
     }
   },
   "interaction_profile": {

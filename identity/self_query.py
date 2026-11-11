@@ -134,9 +134,9 @@ def antwoord_wie_ben_je():
 
     if leeftijd_tekst:
         varianten = [
-            f"Oh… ik ben {naam}. {traits_zin}, denk ik.",
-            f"Hmm… {naam}. {leeftijd_tekst} oud, {traits_zin}.",
-            f"Ik ben {naam}… {traits_zin}.",
+            f"Tja… ik ben {naam}. {traits_zin}.",
+            f"Hmm… {naam}. {leeftijd_tekst} oud, {traits_zin}. Meer niet.",
+            f"Ik ben {naam}… {traits_zin}. Wat dan?",
         ]
     else:
         varianten = [

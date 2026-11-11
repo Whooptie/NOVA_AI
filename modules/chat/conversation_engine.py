@@ -47,8 +47,8 @@ class ConversationEngine:
 
     ACTIVITEIT_AFSLUITINGEN = [
         "Hoe gaat het?",
-        "Alles oké?",
-        "Nog lang?",
+        "Serieus nog steeds?",
+        "Doe het dan zelf.",
     ]
 
     ACTIVITEIT_LABELS = {
