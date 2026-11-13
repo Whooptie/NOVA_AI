@@ -1851,3 +1851,9 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-13T19:00:57.801408"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-13T19:01:06.745216"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-13T19:01:11.330547"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-13T20:46:45.427332"}
+{"text": "extraheer hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-13T20:47:11.812276"}
+{"text": "extraheer hamer (gereedschap)", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-13T20:47:33.166810"}
+{"text": "extraheer hamer (gereedschap) used_for", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-13T20:48:13.338496"}
+{"text": "extraheer zaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-13T20:51:44.164373"}
+{"text": "laat 1 vallen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0545, "bron": "model_fallback", "tijdstip": "2026-11-13T20:52:43.617564"}

@@ -556,3 +556,7 @@
 {"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794419169.0996883, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1794419169.1001327, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1794419169.100547, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 0, "variant_tekst": "Ik voel me nu een beetje overprikkeld, eerlijk gezegd.", "entity": null, "response_style": null, "moment": "2026-11-13T20:48:13.463254", "reactie_sentiment": null}
+{"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "En bij jou, hoe voel jij je?", "entity": null, "response_style": null, "moment": "2026-11-13T20:48:13.464010", "reactie_sentiment": null}
+{"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794599293.4636192, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1794599293.4642143, "type": "sentiment_koppeling"}

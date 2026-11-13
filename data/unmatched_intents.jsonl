@@ -195,3 +195,4 @@
 {"tekst": "waarom", "hoogste_gok": "chess_evaluation", "confidence": 0.2445, "tijdstip": "2026-11-10T22:13:30.705092"}
 {"tekst": ":REBOOT", "hoogste_gok": "chess", "confidence": 0.1286, "tijdstip": "2026-11-11T14:42:06.719264"}
 {"tekst": "blablabla", "hoogste_gok": "rain", "confidence": 0.1088, "tijdstip": "2026-11-11T14:42:43.487046"}
+{"tekst": "extraheer hamer (gereedschap) used_for", "hoogste_gok": "chess", "confidence": 0.136, "tijdstip": "2026-11-13T20:48:13.355141"}

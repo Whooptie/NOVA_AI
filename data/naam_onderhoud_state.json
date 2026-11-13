@@ -63,6 +63,18 @@
     "activity_started:fotos_bekijken_gedetecteerd": {
       "reden": "activiteit_whitelist",
       "gemeld_op": 1793993246.2116556
+    },
+    "activity_started:plex_beheren_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1794599396.4447408
+    },
+    "topic_detected:chess_followup": {
+      "reden": "topic_vertaling",
+      "gemeld_op": 1794599396.4447408
+    },
+    "activity_started:films_downloaden_gedetecteerd": {
+      "reden": "activiteit_whitelist",
+      "gemeld_op": 1794599396.4447408
     }
   }
 }

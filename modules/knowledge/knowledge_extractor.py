@@ -273,6 +273,50 @@ class KnowledgeExtractor:
     # Regels per relatietype
     # ------------------------------------------------------------------
 
+    def _onderwerp_ok(self, subj, zoek):
+        """Geeft de onderwerp-frase terug, of None als het onderwerp niet
+        bruikbaar is (bevat het zoekwoord niet, of is te vaag)."""
+        frase = self._onderwerp_frase(subj)
+        if zoek and zoek not in frase:
+            return None
+        if self._is_vaag(frase):
+            return None
+        return frase
+
+    @staticmethod
+    def _toegestane_lidwoorden(frase, zoek, de_toegestaan):
+        """'de/het' alleen in de eerste zin EN als het onderwerp precies
+        het opgezochte woord is; anders alleen 'een'."""
+        if de_toegestaan and zoek and frase == zoek:
+            return {"een", "de", "het"}
+        return {"een"}
+
+    @staticmethod
+    def _eerste_kind(tok, dep):
+        """Eerste kind met deze dep_ dat een naamwoord is, of None."""
+        for c in tok.children:
+            if c.dep_ == dep and c.pos_ in ("NOUN", "PROPN"):
+                return c
+        return None
+
+    @staticmethod
+    def _van_doelen(tok):
+        """Naamwoorden die met 'van' aan tok hangen ('onderdeel VAN de fiets')."""
+        return [c for c in tok.children
+                if c.dep_ in ("nmod", "obl") and c.pos_ in ("NOUN", "PROPN")
+                and KnowledgeExtractor._heeft_van(c)]
+
+    def _met_opsomming(self, sent, kernen):
+        """De kernen plus de woorden die er met 'en' of een komma aan vastzitten
+        ('A, B en C'), tenzij er een voorzetsel tussen zit. Volgorde: eerst
+        alle kernen, daarna de aanhangers."""
+        alle = list(kernen)
+        for k in kernen:
+            alle += [c for c in k.children
+                     if c.dep_ == "conj" and c.pos_ in ("NOUN", "PROPN")
+                     and not self._voorzetsel_ertussen(sent, k, c)]
+        return alle
+
     def _zoek_is_a(self, sent, zoek, de_toegestaan):
         """'X is een Y' -> (X, is_a, Y)."""
         out = []
@@ -292,18 +336,13 @@ class KnowledgeExtractor:
             if not cops or not subjs:
                 continue
 
-            frase = self._onderwerp_frase(subjs[0])
-            if zoek and zoek not in frase:
-                continue
-            if self._is_vaag(frase):
+            frase = self._onderwerp_ok(subjs[0], zoek)
+            if frase is None:
                 continue
 
             # 'de/het' alleen in de eerste zin EN als het onderwerp precies
             # het opgezochte woord is ("De hond is de ... van de wolf").
-            if de_toegestaan and zoek and frase == zoek:
-                toegestaan = {"een", "de", "het"}
-            else:
-                toegestaan = {"een"}
+            toegestaan = self._toegestane_lidwoorden(frase, zoek, de_toegestaan)
 
             doelen = [tok] + [
                 c for c in tok.children
@@ -370,30 +409,45 @@ class KnowledgeExtractor:
             subj = self._koppel_en_onderwerp(tok)
             if subj is None:
                 continue
-            frase = self._onderwerp_frase(subj)
-            if zoek and zoek not in frase:
+            frase = self._onderwerp_ok(subj, zoek)
+            if frase is None:
                 continue
-            if self._is_vaag(frase):
-                continue
-            if de_toegestaan and zoek and frase == zoek:
-                toegestaan = {"een", "de", "het"}
-            else:
-                toegestaan = {"een"}
+            toegestaan = self._toegestane_lidwoorden(frase, zoek, de_toegestaan)
             if not self._heeft_lidwoord(tok, toegestaan):
                 continue
-            doelen = [c for c in tok.children
-                      if c.dep_ in ("nmod", "obl") and c.pos_ in ("NOUN", "PROPN")
-                      and self._heeft_van(c)]
-            for d in list(doelen):
-                doelen += [c for c in d.children
-                           if c.dep_ == "conj" and c.pos_ in ("NOUN", "PROPN")
-                           and not self._voorzetsel_ertussen(sent, d, c)]
+            doelen = self._met_opsomming(sent, self._van_doelen(tok))
             for d in doelen:
                 doel = self._onderwerp_frase(d)
                 if self._is_vaag(doel) or doel == frase:
                     continue
                 out.append((frase, "is_a", doel, "is_a_ondersoort_van"))
         return out
+
+    def _po_onderdeel(self, tok):
+        """'Het stuur is een onderdeel/deel van de fiets.'
+        -> (deel, [gehelen]) of None."""
+        if not (tok.pos_ == "NOUN" and tok.lemma_ in DEEL_WOORDEN):
+            return None
+        if any(c.dep_ == "case" for c in tok.children):
+            return None
+        subj = self._koppel_en_onderwerp(tok)
+        if subj is None or not self._heeft_lidwoord(tok, {"een"}):
+            return None
+        return subj, self._van_doelen(tok)
+
+    def _po_uitmaken(self, tok):
+        """'De trapas maakt deel uit van de aandrijving.'
+        -> (deel, [gehelen]) of None."""
+        if not (tok.pos_ == "VERB" and tok.lemma_ == "uitmaken"
+                and self._is_tegenwoordig(tok)):
+            return None
+        if not any(c.dep_ == "obj" and c.text.lower() == "deel"
+                   for c in tok.children):
+            return None
+        subj = self._eerste_kind(tok, "nsubj")
+        if subj is None:
+            return None
+        return subj, self._van_doelen(tok)
 
     def _zoek_part_of(self, sent, zoek):
         """'X is een onderdeel/deel van Y' en 'X maakt deel uit van Y'
@@ -403,34 +457,10 @@ class KnowledgeExtractor:
         for tok in sent:
             if tok.dep_ != "ROOT":
                 continue
-            subj = None
-            doelen = []
-            if tok.pos_ == "NOUN" and tok.lemma_ in DEEL_WOORDEN:
-                # "Het stuur is een onderdeel van de fiets."
-                if any(c.dep_ == "case" for c in tok.children):
-                    continue
-                subj = self._koppel_en_onderwerp(tok)
-                if subj is None or not self._heeft_lidwoord(tok, {"een"}):
-                    continue
-                doelen = [c for c in tok.children
-                          if c.dep_ in ("nmod", "obl")
-                          and c.pos_ in ("NOUN", "PROPN") and self._heeft_van(c)]
-            elif (tok.pos_ == "VERB" and tok.lemma_ == "uitmaken"
-                  and self._is_tegenwoordig(tok)):
-                # "De trapas maakt deel uit van de aandrijving."
-                if not any(c.dep_ == "obj" and c.text.lower() == "deel"
-                           for c in tok.children):
-                    continue
-                subjs = [c for c in tok.children
-                         if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
-                if not subjs:
-                    continue
-                subj = subjs[0]
-                doelen = [c for c in tok.children
-                          if c.dep_ in ("obl", "nmod")
-                          and c.pos_ in ("NOUN", "PROPN") and self._heeft_van(c)]
-            if subj is None:
+            gevonden = self._po_onderdeel(tok) or self._po_uitmaken(tok)
+            if gevonden is None:
                 continue
+            subj, doelen = gevonden
             frase = self._onderwerp_frase(subj)
             if self._is_vaag(frase):
                 continue
@@ -443,6 +473,35 @@ class KnowledgeExtractor:
                 out.append((frase, "part_of", geheel, "part_of_onderdeel_van"))
         return out
 
+    def _ca_veroorzaakt(self, tok):
+        """'X veroorzaakt Y' -> ([oorzaken], [gevolgen], regel) of None."""
+        if tok.lemma_ != "veroorzaken":
+            return None
+        # spaCy labelt het onderwerp soms als 'obj' ("Een vulkaan
+        # veroorzaakt ..."), daarom kijken we naar de POSITIE:
+        # links van het werkwoord = oorzaak, rechts = gevolg.
+        oorzaken = [c for c in tok.children
+                    if c.dep_ in ("nsubj", "obj") and c.i < tok.i
+                    and c.pos_ in ("NOUN", "PROPN")]
+        # Alleen het lijdend voorwerp: een bijzin als "schade AAN
+        # gebouwen" mag 'gebouwen' niet tot zelfstandig gevolg maken.
+        gevolgen = [c for c in tok.children
+                    if c.dep_ == "obj" and c.i > tok.i
+                    and c.pos_ in ("NOUN", "PROPN")]
+        return oorzaken, gevolgen, "causes_veroorzaakt"
+
+    def _ca_leidt_tot(self, tok):
+        """'X leidt tot Y' -> ([oorzaken], [gevolgen], regel) of None."""
+        if tok.lemma_ != "leiden":
+            return None
+        oorzaken = [c for c in tok.children
+                    if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
+        gevolgen = [c for c in tok.children
+                    if c.dep_ == "obl" and c.pos_ in ("NOUN", "PROPN")
+                    and any(g.dep_ == "case" and g.text.lower() == "tot"
+                            for g in c.children)]
+        return oorzaken, gevolgen, "causes_leidt_tot"
+
     def _zoek_causes(self, sent, zoek):
         """'X veroorzaakt Y' en 'X leidt tot Y' -> (X, causes, Y).
         Alleen tegenwoordige tijd, alleen naamwoorden aan beide kanten.
@@ -451,40 +510,16 @@ class KnowledgeExtractor:
         for tok in sent:
             if tok.pos_ != "VERB" or not self._is_hoofdwerkwoord_nu(tok):
                 continue
-            if tok.lemma_ == "veroorzaken":
-                # spaCy labelt het onderwerp soms als 'obj' ("Een vulkaan
-                # veroorzaakt ..."), daarom kijken we naar de POSITIE:
-                # links van het werkwoord = oorzaak, rechts = gevolg.
-                oorzaken = [c for c in tok.children
-                            if c.dep_ in ("nsubj", "obj") and c.i < tok.i
-                            and c.pos_ in ("NOUN", "PROPN")]
-                # Alleen het lijdend voorwerp: een bijzin als "schade AAN
-                # gebouwen" mag 'gebouwen' niet tot zelfstandig gevolg maken.
-                gevolgen = [c for c in tok.children
-                            if c.dep_ == "obj" and c.i > tok.i
-                            and c.pos_ in ("NOUN", "PROPN")]
-                regel = "causes_veroorzaakt"
-            elif tok.lemma_ == "leiden":
-                oorzaken = [c for c in tok.children
-                            if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
-                gevolgen = [c for c in tok.children
-                            if c.dep_ == "obl" and c.pos_ in ("NOUN", "PROPN")
-                            and any(g.dep_ == "case" and g.text.lower() == "tot"
-                                    for g in c.children)]
-                regel = "causes_leidt_tot"
-            else:
+            gevonden = self._ca_veroorzaakt(tok) or self._ca_leidt_tot(tok)
+            if gevonden is None:
                 continue
+            oorzaken, gevolgen, regel = gevonden
             if len(oorzaken) != 1 or not gevolgen:
                 continue
             oorzaak = self._onderwerp_frase(oorzaken[0])
             if self._is_vaag(oorzaak):
                 continue
-            alle_gevolgen = list(gevolgen)
-            for g in gevolgen:
-                alle_gevolgen += [c for c in g.children
-                                  if c.dep_ == "conj" and c.pos_ in ("NOUN", "PROPN")
-                                  and not self._voorzetsel_ertussen(sent, g, c)]
-            for g in alle_gevolgen:
+            for g in self._met_opsomming(sent, gevolgen):
                 gevolg = self._onderwerp_frase(g)
                 if self._is_vaag(gevolg) or gevolg == oorzaak:
                     continue
@@ -557,6 +592,62 @@ class KnowledgeExtractor:
                 doelen += self._doel_frases_voor(c, sent)
         return doelen
 
+    def _uf_gebruikt(self, tok, sent):
+        """'Een hamer wordt gebruikt om ...' -> (onderwerp, doelen, regel)."""
+        if not (tok.dep_ == "ROOT" and tok.pos_ == "VERB"
+                and tok.lemma_ == "gebruiken"):
+            return None
+        if not any(c.dep_ == "aux:pass" and c.lemma_ == "worden"
+                   and self._is_tegenwoordig(c) for c in tok.children):
+            return None
+        subj = self._eerste_kind(tok, "nsubj:pass")
+        if subj is None:
+            return None
+        return subj, self._gebruiksdoelen(tok, sent), "used_for_gebruikt"
+
+    def _uf_relcl(self, tok, sent):
+        """'Een hamer is een gereedschap dat gebruikt wordt om ...'
+        -> (onderwerp, doelen, regel)."""
+        if not (tok.dep_ == "acl:relcl" and tok.pos_ == "VERB"
+                and tok.lemma_ == "gebruiken"
+                and tok.head.dep_ == "ROOT" and tok.head.pos_ == "NOUN"):
+            return None
+        kern = tok.head
+        if not (any(c.dep_ == "aux:pass" and c.lemma_ == "worden"
+                    and self._is_tegenwoordig(c) for c in tok.children)
+                and any(c.dep_ == "cop" and self._is_tegenwoordig(c)
+                        for c in kern.children)):
+            return None
+        subj = self._eerste_kind(kern, "nsubj")
+        if subj is None:
+            return None
+        return subj, self._gebruiksdoelen(tok, sent), "used_for_gebruikt"
+
+    def _uf_middel(self, tok, sent):
+        """'Een stuur is een middel om een voertuig te navigeren.'
+        -> (onderwerp, doelen, regel)."""
+        if not (tok.dep_ == "ROOT" and tok.pos_ == "NOUN"
+                and tok.lemma_ in GEBRUIKSMIDDEL_WOORDEN
+                and not any(c.dep_ == "case" for c in tok.children)):
+            return None
+        if not any(c.dep_ == "cop" and c.lemma_ == "zijn"
+                   and self._is_tegenwoordig(c) for c in tok.children):
+            return None
+        subj = self._eerste_kind(tok, "nsubj")
+        if subj is None:
+            return None
+        return subj, self._gebruiksdoelen(tok, sent), "used_for_middel_om"
+
+    def _uf_dient(self, tok, sent):
+        """'Een lamp dient voor verlichting.' -> (onderwerp, doelen, regel)."""
+        if not (tok.dep_ == "ROOT" and tok.pos_ == "VERB"
+                and tok.lemma_ == "dienen" and self._is_hoofdwerkwoord_nu(tok)):
+            return None
+        subj = self._eerste_kind(tok, "nsubj")
+        if subj is None:
+            return None
+        return subj, self._gebruiksdoelen(tok, sent), "used_for_dient"
+
     def _zoek_used_for(self, sent, zoek, de_toegestaan):
         """'X wordt gebruikt voor/om ...', 'X is een middel om te ...' en
         'X dient voor/om ...' -> (X, used_for, doel).
@@ -565,62 +656,21 @@ class KnowledgeExtractor:
         'gebruikt bij/in ...' (dat is een plek of situatie)."""
         out = []
         for tok in sent:
-            subj = None
-            if (tok.dep_ == "ROOT" and tok.pos_ == "VERB"
-                    and tok.lemma_ == "gebruiken"):
-                # "Een hamer wordt gebruikt om ..."
-                if any(c.dep_ == "aux:pass" and c.lemma_ == "worden"
-                       and self._is_tegenwoordig(c) for c in tok.children):
-                    subjs = [c for c in tok.children
-                             if c.dep_ == "nsubj:pass" and c.pos_ in ("NOUN", "PROPN")]
-                    subj = subjs[0] if subjs else None
-                    doelen = self._gebruiksdoelen(tok, sent)
-                    regel = "used_for_gebruikt"
-            elif (tok.dep_ == "acl:relcl" and tok.pos_ == "VERB"
-                  and tok.lemma_ == "gebruiken"
-                  and tok.head.dep_ == "ROOT" and tok.head.pos_ == "NOUN"):
-                # "Een hamer is een gereedschap dat gebruikt wordt om ..."
-                kern = tok.head
-                if (any(c.dep_ == "aux:pass" and c.lemma_ == "worden"
-                        and self._is_tegenwoordig(c) for c in tok.children)
-                        and any(c.dep_ == "cop" and self._is_tegenwoordig(c)
-                                for c in kern.children)):
-                    subjs = [c for c in kern.children
-                             if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
-                    subj = subjs[0] if subjs else None
-                    doelen = self._gebruiksdoelen(tok, sent)
-                    regel = "used_for_gebruikt"
-            elif (tok.dep_ == "ROOT" and tok.pos_ == "NOUN"
-                  and tok.lemma_ in GEBRUIKSMIDDEL_WOORDEN
-                  and not any(c.dep_ == "case" for c in tok.children)):
-                # "Een stuur is een middel om een voertuig te navigeren."
-                if any(c.dep_ == "cop" and c.lemma_ == "zijn"
-                       and self._is_tegenwoordig(c) for c in tok.children):
-                    subjs = [c for c in tok.children
-                             if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
-                    subj = subjs[0] if subjs else None
-                    doelen = self._gebruiksdoelen(tok, sent)
-                    regel = "used_for_middel_om"
-            elif (tok.dep_ == "ROOT" and tok.pos_ == "VERB"
-                  and tok.lemma_ == "dienen" and self._is_hoofdwerkwoord_nu(tok)):
-                # "Een lamp dient voor verlichting." / "... dient om te ..."
-                subjs = [c for c in tok.children
-                         if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
-                subj = subjs[0] if subjs else None
-                doelen = self._gebruiksdoelen(tok, sent)
-                regel = "used_for_dient"
-            if subj is None or not doelen:
+            # De vier patronen sluiten elkaar uit; het eerste dat past wint.
+            gevonden = (self._uf_gebruikt(tok, sent)
+                        or self._uf_relcl(tok, sent)
+                        or self._uf_middel(tok, sent)
+                        or self._uf_dient(tok, sent))
+            if gevonden is None:
+                continue
+            subj, doelen, regel = gevonden
+            if not doelen:
                 continue
 
-            frase = self._onderwerp_frase(subj)
-            if zoek and zoek not in frase:
+            frase = self._onderwerp_ok(subj, zoek)
+            if frase is None:
                 continue
-            if self._is_vaag(frase):
-                continue
-            if de_toegestaan and zoek and frase == zoek:
-                toegestaan = {"een", "de", "het"}
-            else:
-                toegestaan = {"een"}
+            toegestaan = self._toegestane_lidwoorden(frase, zoek, de_toegestaan)
             if not self._heeft_lidwoord(subj, toegestaan):
                 continue
 
@@ -642,10 +692,8 @@ class KnowledgeExtractor:
                      if c.dep_ == "nsubj" and c.pos_ in ("NOUN", "PROPN")]
             if not subjs:
                 continue
-            frase = self._onderwerp_frase(subjs[0])
-            if zoek and zoek not in frase:
-                continue
-            if self._is_vaag(frase):
+            frase = self._onderwerp_ok(subjs[0], zoek)
+            if frase is None:
                 continue
 
             for obl in [c for c in tok.children if c.dep_ == "obl"]:

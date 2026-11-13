@@ -4056,3 +4056,13 @@ De kennisgraaf (`concepts.json`) wordt zichtbaar als interactieve 3D-pagina. **E
 - Resultaat: vergrendelen/ontgrendelen wordt na hooguit ~20 s opgemerkt (de laptop-client stuurt elke 15 s), voorheen tot ~75 s. De gemeten afwezigheidsduur valt daardoor ook minder te kort uit.
 - Tests: tests/test_snelle_activiteit29.py (5).
 
+### 13 november 2026 – Code-opruiming na pyflakes en radon
+- Aanleiding: Kevin liet `pyflakes` en `radon` over de hele code draaien. pyflakes gaf 25 meldingen (geen echte fouten); radon vond 42 blokken met complexiteit D of erger (45 na de groei van die week).
+- **pyflakes nu schoon.** Ongebruikte imports weg (`os` in `memory.py` en `variant_feedback_logger.py`, de dubbele lokale `os` in `intent_classifier.py`, `Path` in `kevin_profile.py`, `chess_engine.py` en `weather.py`, `KLEUREN` in `graph_render_3d.py`), 11 f-strings zonder `{...}` gewoon strings gemaakt, ongebruikte variabelen weg (`aantal_voor` in `debug_commands.py`, `nieuwe_stats` in `migrate_trust_state.py`).
+- `math.py`: de tweede, letterlijk identieke `_dims_to_string` verwijderd (de eerste blijft) en het overbodige `nonlocal dims` weg (`factor` blijft nonlocal).
+- `chess_engine.py`: `HIGHLIGHT_BG` en `gemarkeerde_velden` in `bord_als_tekst()` verwijderd. De gele markering van de laatste zet was nooit aangesloten; wie dat wil, moet het opnieuw bouwen.
+- **`knowledge_extractor.py` opgesplitst, gedrag ongewijzigd.** Nieuwe hulpfuncties `_onderwerp_ok`, `_toegestane_lidwoorden`, `_eerste_kind`, `_van_doelen` en `_met_opsomming`. `_zoek_used_for` is nu een korte lus over `_uf_gebruikt`, `_uf_relcl`, `_uf_middel` en `_uf_dient`; `_zoek_part_of` over `_po_onderdeel` en `_po_uitmaken`; `_zoek_causes` over `_ca_veroorzaakt` en `_ca_leidt_tot`. Complexiteit: used_for F 64 -> C 14, causes E 37 -> C 15, part_of E 35 -> C 12, ondersoort D 27 -> C 13. Nog D: `_zoek_is_a` (25) en `_zoek_has_part` (22).
+- Controle: de oude versie (uit git) en de nieuwe extractor naast elkaar op 9147 teksten (alle definities en voorbeeldzinnen uit `concepts.json`, met en zonder zoekwoord, plus extra zinnen voor elk van de patronen): 0 verschillen. `tests/test_knowledge_extractor.py` en `tests/test_knowledge_proposals.py`: 111 geslaagd, ook op Kevins eigen machine.
+- Nog open (radon): `MathModule._eval` F (101), `IntentRouter._route_intern` F (68), `IntentRouter.detect_definition` F (60), `WikipediaTeacher._teach_word` F (47), `rain.py` (1194 regels, onderhoudbaarheid C). Werkwijze voor de volgende: eerst een vergelijkingstest oud-tegen-nieuw bouwen (zoals hierboven), pas daarna de functie opsplitsen.
+- Opgemerkt: de volledige testsuite wijzigt bij het draaien `identity/emotion/emotion_state.json` en `logs/handler_fouten.log`. Nog niet onderzocht of dat bedoeld is.
+

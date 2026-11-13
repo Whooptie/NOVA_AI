@@ -340,3 +340,5 @@
 {"timestamp": "2026-11-04T14:53:59.452838", "event_type": "concept_created", "word": "gebeurt", "source": "system", "new_value": {"word": "gebeurt"}}
 {"timestamp": "2026-11-04T15:13:48.863676", "event_type": "concept_created", "word": "stopt", "source": "system", "new_value": {"word": "stopt"}}
 {"timestamp": "2026-11-04T15:13:55.669944", "event_type": "concept_created", "word": "krijgt", "source": "system", "new_value": {"word": "krijgt"}}
+{"timestamp": "2026-11-13T19:48:13.382850", "event_type": "concept_created", "word": "extraheer", "source": "system", "new_value": {"word": "extraheer"}}
+{"timestamp": "2026-11-13T19:52:43.623591", "event_type": "concept_created", "word": "zaag", "source": "system", "new_value": {"word": "zaag"}}
