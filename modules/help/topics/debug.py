@@ -139,6 +139,18 @@ def get_help():
                                    bv. "audit event upgrade 14")
                                   Toont max. 25 regels, daarna "… en nog N meer".
 
+🩺 ZELFTEST (13 november 2026)
+  zelftest                       (Nova test zichzelf: pytest op een tijdelijke kopie, pyflakes,
+                                   radon, JSON-bestanden en databank, foutenlog. Duurt een halve
+                                   minuut of langer; het gesprek blijft vrij. Alleen lezen.)
+  zelftest snel                  (enkel pyflakes, data en foutenlog: enkele seconden)
+  zelftest status                (de laatste zelftest + de laatste vijf uitslagen)
+  test jezelf                    (zelfde als "zelftest")
+                                  Automatisch via .env: ZELFTEST_OPSTART=aan|uit (korte controle
+                                  3 minuten na het opstarten) en ZELFTEST_NACHT=03:30|uit
+                                  (volledige controle, 1x per dag; standaard uit). Een bericht
+                                  naar je gsm komt alleen als er echt iets mis is.
+
 🚨 FOUTENLOGBOEK (bug #46, 25 oktober 2026)
   laatste fouten                 (leest logs/handler_fouten.log en vat samen: aantal,
                                    laatste tijdstip, max. 5 verschillende fouten met

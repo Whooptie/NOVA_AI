@@ -1857,3 +1857,7 @@
 {"text": "extraheer hamer (gereedschap) used_for", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-13T20:48:13.338496"}
 {"text": "extraheer zaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-13T20:51:44.164373"}
 {"text": "laat 1 vallen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0545, "bron": "model_fallback", "tijdstip": "2026-11-13T20:52:43.617564"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-13T21:54:39.233117"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-13T22:12:07.716563"}
+{"text": "wis de fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0249, "bron": "model_fallback", "tijdstip": "2026-11-13T22:23:25.489784"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-13T22:23:30.117540"}

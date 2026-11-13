@@ -73,6 +73,7 @@ class DebugCommands:
             (lambda t: t == "label status", self._label_status),
             (lambda t: t.startswith("label signaal") or t.startswith("label sentiment"), self._label),
             (lambda t: t == "audit" or t.startswith("audit "), self._audit),
+            (lambda t: t == "zelftest" or t.startswith("zelftest ") or t == "test jezelf", self._zelftest),
         ]
 
         # Fase B (2 oktober 2026): welke twijfelzin er per soort laatst
@@ -517,6 +518,37 @@ class DebugCommands:
     # ------------------------------------------------------------------
     # Datum-terugblik (roadmap punt 8, modules/knowledge/datum_terugblik.py)
     # ------------------------------------------------------------------
+
+    def _zelftest(self, user_input):
+        """
+        Gebruik:
+          zelftest          -> volledige zelftest (pytest, pyflakes, radon, data, foutenlog)
+          zelftest snel     -> enkel pyflakes, data en foutenlog (enkele seconden)
+          zelftest status   -> de laatste zelftest + de laatste vijf uitslagen
+          test jezelf       -> zelfde als "zelftest"
+
+        Puur lezen: de logica zit in modules/diagnose/zelftest.py, dit is enkel de
+        bediening. De zelftest draait in een eigen thread, het gesprek blijft vrij.
+        """
+        module = self.loader.loaded_modules.get("zelftest")
+        if not module:
+            print(f"{C_RED}zelftest-module niet gevonden.{C_RESET}")
+            return
+
+        tekst = user_input.lower().strip()
+        argument = "" if tekst == "test jezelf" else tekst.replace("zelftest", "", 1).strip()
+
+        if argument == "status":
+            print(f"{C_CYAN}{module.status_tekst()}{C_RESET}")
+            return
+        if argument not in ("", "snel", "volledig"):
+            print(f"{C_RED}Onbekend argument. Gebruik: zelftest, zelftest snel of zelftest status.{C_RESET}")
+            return
+
+        def toon(bericht):
+            print(f"{C_CYAN}{bericht}{C_RESET}")
+
+        module.start_op_commando("snel" if argument == "snel" else "volledig", toon)
 
     def _datum_terugblik(self, user_input):
         """

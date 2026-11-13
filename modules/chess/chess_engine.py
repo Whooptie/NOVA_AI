@@ -637,7 +637,7 @@ class ChessModule:
             dbg(f"{C_RED}Kon zet niet evalueren: {e}{C_RESET}")
             return None
 
-        beste_zet_voor = info_voor.get("pv", [None])[0]
+        beste_zet_voor = (info_voor.get("pv") or [None])[0]
         # Punt 79: bewaar de beste zet en de verwachte reactie voor latere doorvragen.
         self._laatste_analyse = {
             "beste_zet": beste_zet_voor,

@@ -57,6 +57,8 @@ NOVA_AI/
 │   ├── paths.py
 │   ├── activity/
 │   │   └── session_watcher.py
+│   ├── diagnose/
+│   │   └── zelftest.py
 │   ├── time/
 │   │   ├── time.py
 │   │   ├── zone.py

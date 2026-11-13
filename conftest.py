@@ -43,3 +43,20 @@ def _session_watcher_state_in_tmp(tmp_path, monkeypatch):
         "HERKENNING_STATE_BESTAND",
         str(tmp_path / "session_watcher_state.json"),
     )
+
+
+# --- Foutenlogboek niet vervuilen (13 november 2026) ---
+@pytest.fixture(scope="session", autouse=True)
+def _handler_fouten_log_in_tmp(tmp_path_factory):
+    """
+    Als een handler tijdens een test een fout gooit, schrijft de EventBus
+    die naar logs/handler_fouten.log. Zonder deze fixture belandde dat in
+    het ECHTE logbestand, waardoor Nova (en de zelftest) dacht dat er in
+    het echte leven fouten waren. Nu gaan alle testfouten naar een
+    tijdelijk bestand dat na de testrun verdwijnt.
+    """
+    import core.event_bus as eb
+    origineel = eb._LOGBESTAND
+    eb._LOGBESTAND = tmp_path_factory.mktemp("logs") / "handler_fouten.log"
+    yield
+    eb._LOGBESTAND = origineel

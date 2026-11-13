@@ -1,0 +1,258 @@
+{
+ "versie": 1,
+ "runs": [
+  {
+   "tijd": "2026-11-13T22:12:22",
+   "modus": "snel",
+   "bron": "commando",
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 66,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 25,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 2,
+    "laatste": "ChessModule.handle_move: IndexError: list index out of range",
+    "reden": null
+   },
+   "duur": 2.9,
+   "status": "let_op",
+   "punten": [
+    "2 nieuwe fouten in het foutenlog (laatste 24 uur)"
+   ],
+   "vergelijking": [],
+   "vorige_tijd": null
+  },
+  {
+   "tijd": "2026-11-13T22:13:28",
+   "modus": "volledig",
+   "bron": "commando",
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 66,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "radon": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "functies": 1893,
+    "gemiddelde": 5.1,
+    "zwaar": 41,
+    "zwaarste": [
+     {
+      "score": 101,
+      "bestand": "modules/math/math.py",
+      "naam": "MathModule._eval"
+     },
+     {
+      "score": 68,
+      "bestand": "core/intent_router.py",
+      "naam": "IntentRouter._route_intern"
+     },
+     {
+      "score": 60,
+      "bestand": "core/intent_router.py",
+      "naam": "IntentRouter.detect_definition"
+     }
+    ],
+    "onleesbaar": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 26,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 2,
+    "laatste": "ChessModule.handle_move: IndexError: list index out of range",
+    "reden": null
+   },
+   "pytest": {
+    "gelukt": true,
+    "geslaagd": 4834,
+    "gefaald": 0,
+    "fouten": 0,
+    "overgeslagen": 1,
+    "mislukt": [],
+    "duur": 29.8,
+    "reden": null
+   },
+   "duur": 33.7,
+   "status": "let_op",
+   "punten": [
+    "2 nieuwe fouten in het foutenlog (laatste 24 uur)"
+   ],
+   "vergelijking": [],
+   "vorige_tijd": null
+  },
+  {
+   "tijd": "2026-11-13T22:15:09",
+   "modus": "snel",
+   "bron": "opstart",
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 66,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 26,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 2,
+    "laatste": "ChessModule.handle_move: IndexError: list index out of range",
+    "reden": null
+   },
+   "duur": 2.1,
+   "status": "let_op",
+   "punten": [
+    "2 nieuwe fouten in het foutenlog (laatste 24 uur)"
+   ],
+   "vergelijking": [],
+   "vorige_tijd": "2026-11-13T22:12:22"
+  },
+  {
+   "tijd": "2026-11-13T22:26:31",
+   "modus": "snel",
+   "bron": "opstart",
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 66,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 26,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 0,
+    "laatste": null,
+    "reden": null
+   },
+   "duur": 2.6,
+   "status": "ok",
+   "punten": [],
+   "vergelijking": [],
+   "vorige_tijd": "2026-11-13T22:15:09"
+  },
+  {
+   "tijd": "2026-11-13T22:27:25",
+   "modus": "snel",
+   "bron": "commando",
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 66,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 26,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 0,
+    "laatste": null,
+    "reden": null
+   },
+   "duur": 2.0,
+   "status": "ok",
+   "punten": [],
+   "vergelijking": [],
+   "vorige_tijd": "2026-11-13T22:26:31"
+  },
+  {
+   "tijd": "2026-11-13T22:27:33",
+   "modus": "volledig",
+   "bron": "commando",
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 66,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "radon": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "functies": 1893,
+    "gemiddelde": 5.1,
+    "zwaar": 41,
+    "zwaarste": [
+     {
+      "score": 101,
+      "bestand": "modules/math/math.py",
+      "naam": "MathModule._eval"
+     },
+     {
+      "score": 68,
+      "bestand": "core/intent_router.py",
+      "naam": "IntentRouter._route_intern"
+     },
+     {
+      "score": 60,
+      "bestand": "core/intent_router.py",
+      "naam": "IntentRouter.detect_definition"
+     }
+    ],
+    "onleesbaar": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 26,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 0,
+    "laatste": null,
+    "reden": null
+   },
+   "pytest": {
+    "gelukt": true,
+    "geslaagd": 4834,
+    "gefaald": 0,
+    "fouten": 0,
+    "overgeslagen": 1,
+    "mislukt": [],
+    "duur": 30.2,
+    "reden": null
+   },
+   "duur": 34.2,
+   "status": "ok",
+   "punten": [],
+   "vergelijking": [],
+   "vorige_tijd": "2026-11-13T22:13:28"
+  }
+ ],
+ "laatste_nacht_datum": "2026-11-13"
+}
