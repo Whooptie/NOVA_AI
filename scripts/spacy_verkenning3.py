@@ -202,7 +202,7 @@ def haal_wikipedia(woord):
             return pagina.get("extract", "")
         except urllib.error.HTTPError as e:
             if e.code == 429 and poging == 1:
-                print(f"  (429 te veel aanvragen, wacht 15 seconden en probeer opnieuw)")
+                print("  (429 te veel aanvragen, wacht 15 seconden en probeer opnieuw)")
                 time.sleep(15)
                 continue
             raise

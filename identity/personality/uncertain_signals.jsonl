@@ -1846,3 +1846,8 @@
 {"text": "hoe oud ben je?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0018, "bron": "model_fallback", "tijdstip": "2026-11-11T18:45:43.991915"}
 {"text": "hoe zie je eruit", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-11-11T18:45:52.288442"}
 {"text": "hoe ziet je poep eruit?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-11-11T18:46:09.093449"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-11T19:18:39.651774"}
+{"text": "gelijkenissen overlopen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-13T18:39:03.786579"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-13T19:00:57.801408"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-13T19:01:06.745216"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-13T19:01:11.330547"}

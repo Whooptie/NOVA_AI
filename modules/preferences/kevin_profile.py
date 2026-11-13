@@ -51,8 +51,6 @@ niet hier -- deze module doet enkel opslag en opvraging.
 
 import json
 from datetime import datetime, timedelta
-from pathlib import Path
-
 from modules.paths import get_project_root
 
 C_RESET = "\033[0m"

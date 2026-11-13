@@ -182,7 +182,6 @@ def main():
 
     oude_stats = tel_stats(oude_data)
     nieuwe_data, wijzigingen = migreer(oude_data)
-    nieuwe_stats = tel_stats(nieuwe_data)
 
     print(f"Bestand: {pad}")
     print(f"Concepten voor migratie:  {oude_stats['concepten']}")

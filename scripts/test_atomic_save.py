@@ -39,9 +39,9 @@ CORE_MAP = PROJECT_ROOT / "core"
 
 if not (CORE_MAP / "semantic.py").exists():
     print(f"FOUT: {CORE_MAP / 'semantic.py'} niet gevonden.")
-    print(f"Dit script verwacht te draaien vanuit Nova_AI/scripts/ met")
-    print(f"Nova_AI/core/semantic.py ernaast. Pas HUIDIGE_MAP/PROJECT_ROOT")
-    print(f"in dit script aan als jouw mapstructuur afwijkt.")
+    print("Dit script verwacht te draaien vanuit Nova_AI/scripts/ met")
+    print("Nova_AI/core/semantic.py ernaast. Pas HUIDIGE_MAP/PROJECT_ROOT")
+    print("in dit script aan als jouw mapstructuur afwijkt.")
     sys.exit(1)
 
 sys.path.insert(0, str(CORE_MAP))

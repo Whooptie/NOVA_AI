@@ -558,7 +558,6 @@ class IntentClassifier:
             return
 
         import json
-        import os
         from datetime import datetime
 
         pad = os.path.join("data", "layer0_gebruikt.jsonl")

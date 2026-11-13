@@ -553,3 +553,6 @@
 {"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 0, "variant_tekst": "Mijn billen…", "entity": null, "response_style": null, "moment": "2026-11-11T18:46:09.099456", "reactie_sentiment": null}
 {"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 4, "variant_tekst": "rond, licht.", "entity": null, "response_style": null, "moment": "2026-11-11T18:46:09.099988", "reactie_sentiment": null}
 {"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 2, "variant_tekst": "…", "entity": null, "response_style": null, "moment": "2026-11-11T18:46:09.100396", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794419169.0996883, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1794419169.1001327, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1794419169.100547, "type": "sentiment_koppeling"}

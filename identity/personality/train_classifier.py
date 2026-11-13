@@ -220,14 +220,14 @@ if __name__ == "__main__":
     if not resultaat["succes"]:
         print(f"❌ Training mislukt: {resultaat['reden']}")
     else:
-        print(f"✅ Training voltooid.")
+        print("✅ Training voltooid.")
         print(f"   Trainingsvoorbeelden: {resultaat['aantal_training_voorbeelden']} "
               f"(waarvan {resultaat['aantal_extra_uit_uncertain']} door jou gelabelde twijfelzinnen)")
         print(f"   Score nieuwe versie op ijkpunt: {resultaat['nieuwe_score']}")
         if resultaat["huidige_score"] is not None:
             print(f"   Score huidige actieve versie: {resultaat['huidige_score']}")
         else:
-            print(f"   Geen eerder actief model — dit wordt de allereerste versie.")
+            print("   Geen eerder actief model — dit wordt de allereerste versie.")
 
         if resultaat["wordt_actief"]:
             print("   → Nieuwe versie is minstens even goed: WORDT ACTIEF.")

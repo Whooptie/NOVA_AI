@@ -7,8 +7,6 @@ import os
 import random
 import threading
 import time
-from pathlib import Path
-
 from modules.chess import chess_uitleg
 from modules.paths import get_project_root
 
@@ -445,14 +443,9 @@ class ChessModule:
         ZWART = "\033[95m" # Huidig voor zwarte stukken
         RESET = "\033[0m"
         GRIJS = "\033[37m"
-        HIGHLIGHT_BG = "\033[43m"  # Gele achtergrond voor laatste zet
 
         zetnummer = self.board.fullmove_number
         header = f"{GRIJS}Zet {zetnummer}{RESET}\n"
-
-        gemarkeerde_velden = set()
-        if self.laatste_zet:
-            gemarkeerde_velden = {self.laatste_zet.from_square, self.laatste_zet.to_square}
 
         symbolen = {
             (chess.PAWN,   True):  "♙", (chess.PAWN,   False): "♟",
@@ -802,7 +795,7 @@ class ChessModule:
                     })
                 else:
                     self.event_bus.publish("chat_response", {
-                        "text": f"Die zet is niet mogelijk in deze stand. Probeer een andere zet."
+                        "text": "Die zet is niet mogelijk in deze stand. Probeer een andere zet."
                     })
                 return
 

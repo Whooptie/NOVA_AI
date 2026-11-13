@@ -2580,7 +2580,7 @@ class MathModule:
         factor = 1
 
         def apply(part, sign):
-            nonlocal dims, factor
+            nonlocal factor
             tokens = part.split('*')
             for t in tokens:
                 # t kan zijn: m, m^2, km, s^-1
@@ -2604,17 +2604,6 @@ class MathModule:
             apply(den, -1)
 
         return dims, factor
-
-    def _dims_to_string(self, dims):
-        if not dims:
-            return ""
-        parts = []
-        for unit, exp in dims.items():
-            if exp == 1:
-                parts.append(unit)
-            else:
-                parts.append(f"{unit}^{exp}")
-        return "·".join(parts)
 
     def _convert(self, uv: UnitValue, target_unit: str):
         # Normaliseer temperatuur-eenheden

@@ -4,7 +4,6 @@ import re
 import json
 import random
 import requests
-from pathlib import Path
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 

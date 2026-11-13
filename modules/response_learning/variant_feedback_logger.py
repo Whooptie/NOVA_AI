@@ -69,7 +69,6 @@ BELANGRIJKE, BEWUSTE KEUZES (afgesproken met Kevin, 20 augustus 2026):
 """
 
 import json
-import os
 import time
 from pathlib import Path
 from typing import Dict, List, Optional

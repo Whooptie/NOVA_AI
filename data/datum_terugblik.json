@@ -9,16 +9,16 @@
     "werk": "2026-11-04"
   },
   "laatste_analyse": {
-    "datum": "2026-11-11",
+    "datum": "2026-11-13",
     "actieve_dagen": 81,
     "reden": "geen enkele afstand haalt de drempel",
     "beste": null,
     "afgewezen": [
       "1 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "6 mnd: te weinig berichten rond 11 mei (0)",
-      "12 mnd: te weinig berichten rond 11 november (0)",
-      "24 mnd: te weinig berichten rond 11 november (0)"
+      "6 mnd: te weinig berichten rond 13 mei (0)",
+      "12 mnd: te weinig berichten rond 13 november (0)",
+      "24 mnd: te weinig berichten rond 13 november (0)"
     ]
   }
 }

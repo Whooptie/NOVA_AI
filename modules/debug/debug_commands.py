@@ -316,9 +316,9 @@ class DebugCommands:
     def _variant_debug_overzicht(self, module):
         if not module._scores:
             print(f"{C_CYAN}Nog geen enkele observatie met sentiment gelogd.{C_RESET}")
-            print(f"(Fase 1-logging zelf loopt al -- data/variant_feedback.jsonl "
-                  f"groeit bij elke variant-keuze, maar er is nog geen sentiment "
-                  f"gekoppeld aan een van die keuzes.)")
+            print("(Fase 1-logging zelf loopt al -- data/variant_feedback.jsonl "
+                  "groeit bij elke variant-keuze, maar er is nog geen sentiment "
+                  "gekoppeld aan een van die keuzes.)")
             return
 
         print(f"{C_CYAN}--- Response Variant Learning: overzicht per sjabloon ---{C_RESET}")
@@ -347,7 +347,7 @@ class DebugCommands:
         print(f"{C_CYAN}--- Response Variant Learning: '{sjabloon_naam}' ---{C_RESET}")
 
         if not per_variant:
-            print(f"(nog geen observaties met sentiment gelogd voor dit sjabloon)")
+            print("(nog geen observaties met sentiment gelogd voor dit sjabloon)")
             return
 
         for variant_index in sorted(per_variant.keys()):
@@ -616,9 +616,6 @@ class DebugCommands:
             return
 
         topic_naam = delen[2]
-        aantal_voor = len([
-            e for e in getattr(emergence, "_test_gepubliceerd", [])
-        ])  # geen ingebouwde telling beschikbaar, dus simpelweg aanroepen en toelichten
 
         emergence._on_elk_event({"bron": "debug"}, event_type=f"topic_detected:{topic_naam}")
         print(f"{C_CYAN}_on_elk_event() aangeroepen voor 'topic_detected:{topic_naam}'. "

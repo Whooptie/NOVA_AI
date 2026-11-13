@@ -30,10 +30,9 @@ import html as html_lib
 import json
 import os
 import re
-
 from modules.knowledge import graph_data
 from modules.knowledge.graph_render import (
-    INVERS_NL, KLEUREN, LABELS_NL, STANDAARD_MAP, veilige_bestandsnaam,
+    INVERS_NL, LABELS_NL, STANDAARD_MAP, veilige_bestandsnaam,
 )
 
 LIB_PAD = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vendor", "3d-force-graph.min.js")
