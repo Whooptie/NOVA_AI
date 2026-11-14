@@ -12,7 +12,7 @@
 #     rooktest     hoeveel procent van de vaste vragen goed beantwoord wordt
 #     dekking      hoeveel procent van de code door tests geraakt wordt
 #     tests        aantal geslaagde tests
-#     zware_functies, concepten, data_mb
+#     zware_functies, concepten, data_mb, rss_mb (geheugen van Nova), threads, antwoordtijd_ms
 #   Meerdere runs op een dag: de nieuwste waarde per getal wint, een 'snel' run vult
 #   dus enkel aan wat hij zelf meet.
 #
@@ -41,7 +41,8 @@ KOLOMMEN = (
     ("tests", "tests", ""),
     ("concepten", "concepten", ""),
 )
-SPARKLINES = (("taalbegrip", "Taalbegrip"), ("antwoorden", "Antwoorden"), ("concepten", "Concepten"))
+SPARKLINES = (("taalbegrip", "Taalbegrip"), ("antwoorden", "Antwoorden"), ("concepten", "Concepten"),
+              ("rss_mb", "Geheugen MB"), ("antwoordtijd_ms", "Antwoordtijd"))
 
 
 def _procent(goed, totaal):
@@ -64,24 +65,31 @@ def _bm_punten(benchmark):
     return punt
 
 
-def meetpunt(res):
-    """De getallen uit een zelftest-resultaat die in de trend horen. Alleen wat gemeten is."""
-    punt = _bm_punten(res.get("benchmark") or {})
-    tests = res.get("pytest") or {}
-    if tests.get("gelukt"):
-        punt["tests"] = tests["geslaagd"]
-    dekking = res.get("dekking") or {}
-    if dekking.get("gelukt"):
-        punt["dekking"] = dekking["procent"]
-    radon = res.get("radon") or {}
-    if radon.get("gelukt"):
-        punt["zware_functies"] = radon["zwaar"]
+def _gemeten(deel):
+    """Het stuk van een zelftest-resultaat als het gelukt is, anders een leeg woordenboek."""
+    return deel if isinstance(deel, dict) and deel.get("gelukt") else {}
+
+
+def _kleine_punten(res):
+    """De losse getallen uit de overige onderdelen (alleen wat gemeten is)."""
+    punt = {}
+    for sleutel, deel, veld in (("tests", "pytest", "geslaagd"), ("dekking", "dekking", "procent"),
+                                ("zware_functies", "radon", "zwaar"), ("data_mb", "schijf", "data_mb"),
+                                ("rss_mb", "gebruik", "rss_mb"), ("threads", "gebruik", "threads"),
+                                ("antwoordtijd_ms", "rommel", "mediaan_ms")):
+        waarde = _gemeten(res.get(deel)).get(veld)
+        if waarde is not None:
+            punt[sleutel] = waarde
     concepten = (res.get("consistentie") or {}).get("concepten")
     if concepten is not None:
         punt["concepten"] = concepten
-    schijf = res.get("schijf") or {}
-    if schijf.get("gelukt") and schijf.get("data_mb") is not None:
-        punt["data_mb"] = schijf["data_mb"]
+    return punt
+
+
+def meetpunt(res):
+    """De getallen uit een zelftest-resultaat die in de trend horen. Alleen wat gemeten is."""
+    punt = _bm_punten(res.get("benchmark") or {})
+    punt.update(_kleine_punten(res))
     return punt
 
 

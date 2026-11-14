@@ -20,6 +20,19 @@ try:
 except ImportError:
     SYMPY_BESCHIKBAAR = False
 
+# Bescherming tegen te grote machten (14 november 2026, gevonden door de rommel-invoertest).
+MAX_MACHT_BITS = 100_000
+
+
+def veilige_macht(basis, exponent):
+    """Zoals operator.pow, maar weigert een macht met een absurd groot geheel getal als uitkomst."""
+    if (isinstance(basis, (int, Fraction)) and isinstance(exponent, int)
+            and not isinstance(basis, bool) and not isinstance(exponent, bool) and exponent > 1):
+        bits = max(abs(basis.numerator).bit_length(), basis.denominator.bit_length())
+        if bits > 1 and exponent * bits > MAX_MACHT_BITS:
+            raise ValueError("Die macht levert een getal op dat veel te groot is om uit te rekenen.")
+    return operator.pow(basis, exponent)
+
 class UnitValue:
     def __init__(self, value, dims=None, label=None):
         self.value = value
@@ -135,7 +148,7 @@ class MathModule:
             ast.Sub: operator.sub,
             ast.Mult: operator.mul,
             ast.Div: operator.truediv,
-            ast.Pow: operator.pow,
+            ast.Pow: veilige_macht,
             ast.USub: operator.neg
         }
 

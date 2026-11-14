@@ -4078,3 +4078,10 @@ Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leef
 - Nieuw: commando's "zelftest trend" en "zelftest samenvatting"
 - Opgeruimd: onbereikbaar tweede blok in pattern_matcher.init_module (dode code = 0)
 - Tests: tests/test_zelftest_trend.py (35)
+
+## 2026-11-14 — Robuustheid: levenssignaal, meldingstest, rommeltest, terugzettest, gebruikstrend
+- Nieuw: modules/diagnose/watchdog.py (levenssignaal naar buiten, wekelijkse ntfy-testmelding; zelftest hartslag / zelftest meldingstest)
+- Nieuw: tools/run_rommeltest.py (rare invoer op een kopie van Nova) en controles gebruik, herstel, meldingen, rommel in modules/diagnose/controles_robuust.py
+- Gevonden en gefixt: "9**9**9" liet de rekenmodule vastlopen; machten met een absurd groot geheel getal worden nu geweigerd (veilige_macht)
+- Trend: geheugen, threads en antwoordtijd erbij
+- Tests: test_zelftest_robuust.py, test_watchdog.py, test_math_veilige_macht.py

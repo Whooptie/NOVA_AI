@@ -164,6 +164,8 @@ def get_help():
                                   ZELFTEST_PAKKETTEN=aan|uit (pip-audit bij "alles"; standaard
                                   uit want het heeft internet nodig). Een bericht naar je gsm
                                   komt alleen als er echt iets mis is.
+  zelftest hartslag
+  zelftest meldingstest
 
 🚨 FOUTENLOGBOEK (bug #46, 25 oktober 2026)
   laatste fouten                 (leest logs/handler_fouten.log en vat samen: aantal,

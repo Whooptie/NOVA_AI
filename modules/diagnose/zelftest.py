@@ -16,6 +16,11 @@
 #     - taalbegrip (taalbenchmark) en rooktest (vaste vragen op niveau 3)
 #     - alleen bij de volledige diagnose ('alles'): dekking (coverage), dode code (vulture),
 #       beveiliging (bandit) en, als je dat aanzet, kwetsbare pakketten (pip-audit)
+#   Sinds 14 november 2026 (tweede ronde) ook, zie modules/diagnose/controles_robuust.py:
+#     - gebruik   : geheugen, threads, open bestanden, uptime en opstarttijd van Nova zelf (altijd)
+#     - meldingen : komen het levenssignaal en de wekelijkse testmelding nog aan (altijd; zie watchdog.py)
+#     - herstel   : de nieuwste back-up echt terugzetten en doorlichten ('volledig' en 'alles')
+#     - rommel    : rare, lege, enorme en willekeurige invoer op Nova gooien ('alles')
 #   Elk resultaat wordt bewaard in data/zelftest_historie.json, zodat Nova kan
 #   zeggen wat er veranderd is sinds de vorige keer.
 #
@@ -45,6 +50,8 @@
 #   zelftest trend    taalbegrip, dekking, tests en concepten per dag, met sparklines en wat er
 #                     sinds een week veranderde (data/zelftest_trend.json, zie trend.py)
 #   zelftest samenvatting   de laatste zelftest in een paar korte zinnen (zie samenvatting.py)
+#   zelftest hartslag       stuurt nu een levenssignaal naar buiten (zie watchdog.py)
+#   zelftest meldingstest   stuurt nu een testmelding naar je gsm (zie watchdog.py)
 #   test jezelf       zelfde als "zelftest"
 #
 # AUTOMATISCH (aan/uit via .env):
@@ -78,6 +85,7 @@ from datetime import datetime, time as dagtijd, timedelta
 from pathlib import Path
 
 from modules.diagnose import controles, samenvatting, trend
+from modules.diagnose import controles_robuust as robuust
 
 # ----------------------------------------------------------------------------
 # Instellingen
@@ -87,6 +95,7 @@ ENV_GUARD = "NOVA_ZELFTEST_KIND"         # staat in de omgeving van het kind-pro
 PYTEST_TIMEOUT_STANDAARD = 600           # seconden
 TOOL_TIMEOUT = 180                       # seconden voor pyflakes, radon, vulture, bandit, pip-audit
 BENCHMARK_TIMEOUT = 300                  # seconden voor elke benchmark-run
+ROMMEL_TIMEOUT = 300                     # seconden voor de rommel-invoertest
 MAX_UITVOER = 4_000_000                  # we houden enkel het einde van lange uitvoer (radon geeft ~0,6 MB JSON)
 HISTORIE_MAX = 60                        # bewaarde runs
 OPSTART_VERTRAGING_STANDAARD = 180       # seconden na het opstarten
@@ -121,9 +130,10 @@ _MODUSNAAM = {"snel": "snel", "volledig": "volledig", "alles": "volledige diagno
 _ALLE = ("snel", "volledig", "alles")
 _VANAF_VOLLEDIG = ("volledig", "alles")
 _STAPPEN = (
-    ("pyflakes", _ALLE), ("radon", _VANAF_VOLLEDIG), ("data", _ALLE), ("log", _ALLE),
+    ("gebruik", _ALLE), ("pyflakes", _ALLE), ("radon", _VANAF_VOLLEDIG), ("data", _ALLE), ("log", _ALLE),
     ("backup", _ALLE), ("schijf", _ALLE), ("modules", _ALLE), ("consistentie", _ALLE),
-    ("docs", _ALLE), ("pytest", _VANAF_VOLLEDIG), ("benchmark", _VANAF_VOLLEDIG),
+    ("docs", _ALLE), ("meldingen", _ALLE), ("herstel", _VANAF_VOLLEDIG),
+    ("pytest", _VANAF_VOLLEDIG), ("benchmark", _VANAF_VOLLEDIG), ("rommel", ("alles",)),
     ("dode_code", ("alles",)), ("beveiliging", ("alles",)), ("pakketten", ("alles",)),
 )
 _VANGNET = {"data": {"json_gecontroleerd": 0, "json_stuk": [], "db": "niet gecontroleerd"}}
@@ -529,11 +539,13 @@ def _beoordeel_log(lg, vorig):
 
 
 _BEOORDELAARS = {"pytest": _beoordeel_pytest, "pyflakes": _beoordeel_pyflakes, "radon": _beoordeel_radon,
-                 "data": _beoordeel_data, "log": _beoordeel_log, **controles.BEOORDELAARS}
+                 "data": _beoordeel_data, "log": _beoordeel_log, **controles.BEOORDELAARS,
+                 **robuust.BEOORDELAARS}
 
 # In deze volgorde komen de onderdelen in het rapport en in de lijst met redenen.
-_VOLGORDE = ("pytest", "dekking", "benchmark", "pyflakes", "radon", "dode_code", "beveiliging",
-             "pakketten", "data", "consistentie", "docs", "backup", "schijf", "modules", "log")
+_VOLGORDE = ("pytest", "dekking", "benchmark", "rommel", "pyflakes", "radon", "dode_code", "beveiliging",
+             "pakketten", "data", "consistentie", "docs", "backup", "herstel", "schijf", "modules",
+             "meldingen", "gebruik", "log")
 
 
 def beoordeel(res, vorig=None):
@@ -621,7 +633,8 @@ def _rapport_log(lg):
 
 
 _RAPPORTEERDERS = {"pytest": _rapport_pytest, "pyflakes": _rapport_pyflakes, "radon": _rapport_radon,
-                   "data": _rapport_data, "log": _rapport_log, **controles.RAPPORTEERDERS}
+                   "data": _rapport_data, "log": _rapport_log, **controles.RAPPORTEERDERS,
+                   **robuust.RAPPORTEERDERS}
 
 
 def maak_rapport(res, vorig=None):
@@ -699,6 +712,7 @@ class Zelftest:
         self._thread = None
         self._laatste_bericht = 0.0           # tijdstip van het laatste bericht van Kevin
         self._historie = self._laad_historie()
+        self._opstart_s = self._meet_opstart()
         self._trend_pad = Path(trend_pad) if trend_pad else self.root / "data" / "zelftest_trend.json"
         self._trend = self._laad_trend()
 
@@ -785,11 +799,10 @@ class Zelftest:
         except OSError as e:
             self._print(f"[ZELFTEST] Historie niet bewaard: {e}")
 
-    def _vorige_run(self, modus):
-        for run in reversed(self._historie["runs"]):
-            if run.get("modus") == modus:
-                return run
-        return None
+    def _meet_opstart(self):
+        """Hoeveel seconden Nova al draait nu deze module laadt (= zoveel duurde het opstarten tot hier)."""
+        uptime = robuust.check_gebruik(nu=self._klok()).get("uptime_uur")
+        return round(uptime * 3600, 1) if uptime is not None else None
 
     def _laad_trend(self):
         """Leest de trend; bestaat die nog niet, dan bouwen we hem uit de bestaande historie."""
@@ -799,6 +812,12 @@ class Zelftest:
         trend.voeg_toe(self._trend, res.get("tijd"), trend.meetpunt(res))
         if not trend.bewaar(self._trend_pad, self._trend):
             self._print("[ZELFTEST] Trend niet bewaard.")
+
+    def _vorige_run(self, modus):
+        for run in reversed(self._historie["runs"]):
+            if run.get("modus") == modus:
+                return run
+        return None
 
     # -- de stappen ----------------------------------------------------------
 
@@ -880,6 +899,29 @@ class Zelftest:
 
     def _stap_docs(self):
         return controles.check_docs(self.root)
+
+    def _stap_gebruik(self):
+        return robuust.check_gebruik(nu=self._klok(), opstart_s=self._opstart_s)
+
+    def _stap_meldingen(self):
+        return robuust.check_meldingen(self.root, datetime.fromtimestamp(self._klok()))
+
+    def _stap_herstel(self):
+        return robuust.check_herstel(self.root)
+
+    def _stap_rommel(self):
+        """Start tools/run_rommeltest.py (dat zelf een kopie maakt en niets in je data wijzigt)."""
+        script = self.root / "tools" / "run_rommeltest.py"
+        if not script.is_file():
+            return {"beschikbaar": False, "gelukt": False, "reden": "tools/run_rommeltest.py niet gevonden"}
+        cmd = [sys.executable, str(script)]
+        if os.name == "posix" and shutil.which("nice"):
+            cmd = ["nice", "-n", "10"] + cmd
+        begin = time.monotonic()
+        rc, uit, te_laat = self._runner(cmd, self.root, ROMMEL_TIMEOUT, veilige_omgeving())
+        res = robuust.parse_rommel(uit, rc, te_laat)
+        res["duur"] = round(time.monotonic() - begin, 1)
+        return res
 
     def _draai_benchmark(self, argumenten):
         """Start tools/run_benchmark.py (dat zelf een kopie maakt en niets in je data wijzigt)."""

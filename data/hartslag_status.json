@@ -1,0 +1,21 @@
+{
+ "versie": 1,
+ "opgestart": "2026-11-14T17:28:54",
+ "bijgewerkt": "2026-11-14T21:08:08",
+ "hartslag": {
+  "aan": true,
+  "interval_min": 10,
+  "laatste_ok": "2026-11-14T21:08:08",
+  "laatste_poging": "2026-11-14T21:08:08",
+  "fouten_op_rij": 0,
+  "reden": null
+ },
+ "meldingstest": {
+  "aan": true,
+  "schema": "zondag 10:00",
+  "laatste_ok": "2026-11-14T17:29:07",
+  "laatste_poging": "2026-11-14T17:29:07",
+  "fouten_op_rij": 0,
+  "reden": null
+ }
+}

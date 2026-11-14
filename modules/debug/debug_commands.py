@@ -565,9 +565,18 @@ class DebugCommands:
         if argument == "samenvatting":
             print(f"{C_CYAN}{module.samenvatting_tekst()}{C_RESET}")
             return
+        if argument in ("hartslag", "meldingstest"):
+            watchdog = self.loader.loaded_modules.get("watchdog")
+            if not watchdog:
+                print(f"{C_RED}watchdog-module niet gevonden.{C_RESET}")
+                return
+            tekst = watchdog.ping_nu() if argument == "hartslag" else watchdog.meldingstest_nu()
+            print(f"{C_CYAN}{tekst}{C_RESET}")
+            return
         if argument not in ("", "snel", "volledig", "alles", "diagnose"):
             print(f"{C_RED}Onbekend argument. Gebruik: zelftest, zelftest snel, zelftest alles, "
-                  f"zelftest status, zelftest trend of zelftest samenvatting.{C_RESET}")
+                  f"zelftest status, zelftest trend, zelftest samenvatting, zelftest hartslag "
+                  f"of zelftest meldingstest.{C_RESET}")
             return
 
         def toon(bericht):
