@@ -448,7 +448,7 @@
 | 446 | 2 | Notification & Interrupts | notification_priority.py | modules/core/ | Centraal systeem dat bepaalt WELKE meldingen/gedachten Nova uitspreeekt en wanneer (voorkomen: te veel praten = irritant) | Nog niet gebouwd |
 | 447 | 2 | Notification & Interrupts | interrupt_timing_optimizer.py | modules/core/ | Bepaalt optimaal moment voor onderbreking (niet midden in Kevin's gedachtestroom, wel op natuurlijke pauzes) | Nog niet gebouwd |
 | 448 | 2 | Notification & Interrupts | do_not_disturb_manager.py | modules/core/ | Respecteert "stilte modus" períodes (werk, slaap, focus sessies) | Nog niet gebouwd |
-| 449 | 2 | Notification & Interrupts | relevance_scorer.py | modules/core/ | Scoort: "Hoe relevant is dit voor Kevin NU?" (0.0-1.0) om te filteren | Nog niet gebovered |
+| 449 | 2 | Notification & Interrupts | relevance_scorer.py | modules/core/ | Scoort: "Hoe relevant is dit voor Kevin NU?" (0.0-1.0) om te filteren | Nog niet gebouwd |
 | 450 | 3 | Conversation & Quality | conversation_quality_monitor.py | modules/learning/ | Monitort eigen prestatie: snapte Kevin me? Gaf ik bruikbare info? Feedback-loop voor verbetering | Nog niet gebouwd |
 | 451 | 3 | Conversation & Quality | response_accuracy_tracker.py | modules/learning/ | Logt wat Nova zei vs wat Kevin deed (was ik juist?). Confidence verhogen/verlagen | Nog niet gebouwd |
 | 452 | 3 | Conversation & Quality | error_recovery_engine.py | modules/core/ | Hoe reageert Nova gracefully op fouten? Excuses, herproberen, fallback. Met persoonlijkheid | Nog niet gebouwd |

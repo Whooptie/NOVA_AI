@@ -24,6 +24,14 @@ from modules.diagnose import zelftest as z
 # Hulpmiddelen
 # ----------------------------------------------------------------------------
 
+@pytest.fixture(autouse=True)
+def _geen_zelftest_instellingen_uit_de_omgeving(monkeypatch):
+    """Op de echte server staan ZELFTEST_* misschien in de omgeving (via .env); deze tests mogen daar niet van afhangen."""
+    for naam in list(os.environ):
+        if naam.startswith("ZELFTEST_"):
+            monkeypatch.delenv(naam, raising=False)
+
+
 class NepBus:
     def __init__(self):
         self.subs = {}

@@ -25,6 +25,10 @@ C_CYAN = "\033[96m"
 
 
 class DebugCommands:
+    # Zinnen waarmee je de volledige diagnose start (naast "zelftest alles").
+    ZELFTEST_ALLES_ZINNEN = ("start full diagnostic", "full diagnostic", "run full diagnostic",
+                             "start volledige diagnose", "volledige diagnose")
+
     def __init__(self, event_bus, loader):
         self.event_bus = event_bus
         self.loader = loader
@@ -73,7 +77,7 @@ class DebugCommands:
             (lambda t: t == "label status", self._label_status),
             (lambda t: t.startswith("label signaal") or t.startswith("label sentiment"), self._label),
             (lambda t: t == "audit" or t.startswith("audit "), self._audit),
-            (lambda t: t == "zelftest" or t.startswith("zelftest ") or t == "test jezelf", self._zelftest),
+            (self._is_zelftest, self._zelftest),
         ]
 
         # Fase B (2 oktober 2026): welke twijfelzin er per soort laatst
@@ -519,11 +523,20 @@ class DebugCommands:
     # Datum-terugblik (roadmap punt 8, modules/knowledge/datum_terugblik.py)
     # ------------------------------------------------------------------
 
+    def _is_zelftest(self, tekst):
+        """Herkent 'zelftest ...', 'test jezelf' en de zinnen voor de volledige diagnose."""
+        tekst = tekst.rstrip(".!? ")
+        return (tekst == "zelftest" or tekst.startswith("zelftest ") or tekst == "test jezelf"
+                or tekst in self.ZELFTEST_ALLES_ZINNEN)
+
     def _zelftest(self, user_input):
         """
         Gebruik:
-          zelftest          -> volledige zelftest (pytest, pyflakes, radon, data, foutenlog)
-          zelftest snel     -> enkel pyflakes, data en foutenlog (enkele seconden)
+          zelftest          -> volledige zelftest (tests, taalbegrip, rooktest, pyflakes, radon,
+                               data, back-up, schijf, modules, consistentie, documentatie)
+          zelftest snel     -> enkel pyflakes, data, foutenlog en de snelle gezondheidscontroles
+          zelftest alles    -> de VOLLEDIGE DIAGNOSE: alles van "zelftest" plus dekking, dode code
+                               en beveiliging (enkele minuten). Ook: "start full diagnostic".
           zelftest status   -> de laatste zelftest + de laatste vijf uitslagen
           test jezelf       -> zelfde als "zelftest"
 
@@ -535,20 +548,33 @@ class DebugCommands:
             print(f"{C_RED}zelftest-module niet gevonden.{C_RESET}")
             return
 
-        tekst = user_input.lower().strip()
-        argument = "" if tekst == "test jezelf" else tekst.replace("zelftest", "", 1).strip()
+        tekst = user_input.lower().strip().rstrip(".!? ")
+        if tekst in self.ZELFTEST_ALLES_ZINNEN:
+            argument = "alles"
+        elif tekst == "test jezelf":
+            argument = ""
+        else:
+            argument = tekst.replace("zelftest", "", 1).strip()
 
         if argument == "status":
             print(f"{C_CYAN}{module.status_tekst()}{C_RESET}")
             return
-        if argument not in ("", "snel", "volledig"):
-            print(f"{C_RED}Onbekend argument. Gebruik: zelftest, zelftest snel of zelftest status.{C_RESET}")
+        if argument in ("trend", "trends"):
+            print(f"{C_CYAN}{module.trend_tekst()}{C_RESET}")
+            return
+        if argument == "samenvatting":
+            print(f"{C_CYAN}{module.samenvatting_tekst()}{C_RESET}")
+            return
+        if argument not in ("", "snel", "volledig", "alles", "diagnose"):
+            print(f"{C_RED}Onbekend argument. Gebruik: zelftest, zelftest snel, zelftest alles, "
+                  f"zelftest status, zelftest trend of zelftest samenvatting.{C_RESET}")
             return
 
         def toon(bericht):
             print(f"{C_CYAN}{bericht}{C_RESET}")
 
-        module.start_op_commando("snel" if argument == "snel" else "volledig", toon)
+        modus = {"snel": "snel", "alles": "alles", "diagnose": "alles"}.get(argument, "volledig")
+        module.start_op_commando(modus, toon)
 
     def _datum_terugblik(self, user_input):
         """

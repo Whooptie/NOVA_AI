@@ -10,6 +10,12 @@
 #     - radon     : meet hoe ingewikkeld de functies zijn
 #     - data      : zijn alle JSON-bestanden in data/ nog geldig, is de databank ok
 #     - foutenlog : zijn er nieuwe fouten in logs/handler_fouten.log
+#   Sinds 14 november 2026 ook (zie modules/diagnose/controles.py):
+#     - back-up, schijfruimte, geladen modules, identity/concepts-consistentie,
+#       documentatie-sync (altijd, ook bij 'snel': duurt maar een fractie van een seconde)
+#     - taalbegrip (taalbenchmark) en rooktest (vaste vragen op niveau 3)
+#     - alleen bij de volledige diagnose ('alles'): dekking (coverage), dode code (vulture),
+#       beveiliging (bandit) en, als je dat aanzet, kwetsbare pakketten (pip-audit)
 #   Elk resultaat wordt bewaard in data/zelftest_historie.json, zodat Nova kan
 #   zeggen wat er veranderd is sinds de vorige keer.
 #
@@ -29,22 +35,33 @@
 #      iets mis is (status "fout"). "Alles ok" komt enkel in de console.
 #
 # COMMANDO'S (via modules/debug/debug_commands.py):
-#   zelftest          volledige zelftest (pytest, pyflakes, radon, data, foutenlog)
-#   zelftest snel     enkel pyflakes, data en foutenlog (enkele seconden)
+#   zelftest          volledige zelftest (tests, taalbegrip, rooktest, pyflakes, radon, data,
+#                     back-up, schijf, modules, consistentie, documentatie, foutenlog)
+#   zelftest snel     enkel pyflakes, data, foutenlog en de snelle gezondheidscontroles
+#   zelftest alles    de VOLLEDIGE DIAGNOSE: alles van 'volledig' plus dekking, dode code,
+#                     beveiliging (en pakketten als dat aanstaat). Duurt enkele minuten.
+#   start full diagnostic    zelfde als "zelftest alles" (ook: volledige diagnose)
 #   zelftest status   toont de laatste zelftest en de laatste vijf uitslagen
+#   zelftest trend    taalbegrip, dekking, tests en concepten per dag, met sparklines en wat er
+#                     sinds een week veranderde (data/zelftest_trend.json, zie trend.py)
+#   zelftest samenvatting   de laatste zelftest in een paar korte zinnen (zie samenvatting.py)
 #   test jezelf       zelfde als "zelftest"
 #
 # AUTOMATISCH (aan/uit via .env):
 #   ZELFTEST_OPSTART=aan|uit    korte controle ~3 minuten na het opstarten (standaard aan)
 #   ZELFTEST_NACHT=03:30|uit    volledige controle 's nachts, 1x per dag (standaard UIT;
 #                               zet hem pas aan nadat je "zelftest" op commando probeerde)
+#   ZELFTEST_NACHT_MODUS=volledig|alles   welke controle 's nachts draait (standaard volledig)
+#   ZELFTEST_PAKKETTEN=aan|uit  pip-audit meenemen bij 'alles' (standaard UIT: heeft internet
+#                               nodig en stuurt de namen van je pakketten naar een externe dienst)
 #   ZELFTEST_OPSTART_VERTRAGING seconden wachten na het opstarten (standaard 180)
 #   ZELFTEST_PYTEST_TIMEOUT     tijdslimiet voor pytest in seconden (standaard 600)
 #
 # AUTO-DISCOVERY: staat in modules/diagnose/ en heeft init_module(event_bus, sem).
 # module_loader.py vindt en laadt hem dus zelf; daar hoeft niets voor aangepast.
 #
-# TESTS: tests/test_zelftest.py (alles met een nep-runner, er wordt niets echt gestart).
+# TESTS: tests/test_zelftest.py en tests/test_zelftest_controles.py (alles met een nep-runner,
+# er wordt niets echt gestart).
 
 import importlib.util
 import json
@@ -60,13 +77,16 @@ import time
 from datetime import datetime, time as dagtijd, timedelta
 from pathlib import Path
 
+from modules.diagnose import controles, samenvatting, trend
+
 # ----------------------------------------------------------------------------
 # Instellingen
 # ----------------------------------------------------------------------------
 
 ENV_GUARD = "NOVA_ZELFTEST_KIND"         # staat in de omgeving van het kind-proces: nooit recursief starten
 PYTEST_TIMEOUT_STANDAARD = 600           # seconden
-TOOL_TIMEOUT = 180                       # seconden voor pyflakes en radon
+TOOL_TIMEOUT = 180                       # seconden voor pyflakes, radon, vulture, bandit, pip-audit
+BENCHMARK_TIMEOUT = 300                  # seconden voor elke benchmark-run
 MAX_UITVOER = 4_000_000                  # we houden enkel het einde van lange uitvoer (radon geeft ~0,6 MB JSON)
 HISTORIE_MAX = 60                        # bewaarde runs
 OPSTART_VERTRAGING_STANDAARD = 180       # seconden na het opstarten
@@ -78,6 +98,7 @@ CODE_MAPPEN = ("core", "modules", "identity", "tools", "scripts")
 CODE_BESTANDEN = ("main.py",)
 PYFLAKES_DOELEN = CODE_MAPPEN + ("tests",) + CODE_BESTANDEN
 RADON_DOELEN = CODE_MAPPEN + CODE_BESTANDEN        # tests tellen niet mee voor complexiteit
+DEKKING_DOELEN = ("core", "modules", "identity")       # waarvan we meten hoeveel de tests raken
 
 # Woorden in een pyflakes-melding die op een ECHTE fout wijzen (niet op opruimwerk).
 # Let op: "undefined name '" (met aanhalingsteken) en niet enkel "undefined name", want de
@@ -93,7 +114,19 @@ ALTIJD_NEGEREN = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", "venv",
 DB_EINDEN = (".db", ".db-wal", ".db-shm", ".db-journal")
 DATA_NEGEREN = {"backups", "models"}
 
-_MODI = ("snel", "volledig")
+_MODI = ("snel", "volledig", "alles")
+_MODUSNAAM = {"snel": "snel", "volledig": "volledig", "alles": "volledige diagnose"}
+
+# Welke stap draait in welke modus. De volgorde hier is ook de volgorde waarin ze draaien.
+_ALLE = ("snel", "volledig", "alles")
+_VANAF_VOLLEDIG = ("volledig", "alles")
+_STAPPEN = (
+    ("pyflakes", _ALLE), ("radon", _VANAF_VOLLEDIG), ("data", _ALLE), ("log", _ALLE),
+    ("backup", _ALLE), ("schijf", _ALLE), ("modules", _ALLE), ("consistentie", _ALLE),
+    ("docs", _ALLE), ("pytest", _VANAF_VOLLEDIG), ("benchmark", _VANAF_VOLLEDIG),
+    ("dode_code", ("alles",)), ("beveiliging", ("alles",)), ("pakketten", ("alles",)),
+)
+_VANGNET = {"data": {"json_gecontroleerd": 0, "json_stuk": [], "db": "niet gecontroleerd"}}
 
 
 # ----------------------------------------------------------------------------
@@ -495,8 +528,12 @@ def _beoordeel_log(lg, vorig):
     return [], opmerkingen, []
 
 
-_BEOORDELAARS = (("pytest", _beoordeel_pytest), ("pyflakes", _beoordeel_pyflakes),
-                 ("radon", _beoordeel_radon), ("data", _beoordeel_data), ("log", _beoordeel_log))
+_BEOORDELAARS = {"pytest": _beoordeel_pytest, "pyflakes": _beoordeel_pyflakes, "radon": _beoordeel_radon,
+                 "data": _beoordeel_data, "log": _beoordeel_log, **controles.BEOORDELAARS}
+
+# In deze volgorde komen de onderdelen in het rapport en in de lijst met redenen.
+_VOLGORDE = ("pytest", "dekking", "benchmark", "pyflakes", "radon", "dode_code", "beveiliging",
+             "pakketten", "data", "consistentie", "docs", "backup", "schijf", "modules", "log")
 
 
 def beoordeel(res, vorig=None):
@@ -508,11 +545,11 @@ def beoordeel(res, vorig=None):
     """
     vorig = vorig or {}
     fouten, opmerkingen, vergelijking = [], [], []
-    for sleutel, functie in _BEOORDELAARS:
+    for sleutel in _VOLGORDE:
         deel = res.get(sleutel)
         if deel is None:
             continue
-        f, o, v = functie(deel, vorig)
+        f, o, v = _BEOORDELAARS[sleutel](deel, vorig)
         fouten += f
         opmerkingen += o
         vergelijking += v
@@ -583,8 +620,8 @@ def _rapport_log(lg):
     return ["\u2022 Foutenlog: geen fouten in de laatste 24 uur."]
 
 
-_RAPPORTEERDERS = (("pytest", _rapport_pytest), ("pyflakes", _rapport_pyflakes),
-                   ("radon", _rapport_radon), ("data", _rapport_data), ("log", _rapport_log))
+_RAPPORTEERDERS = {"pytest": _rapport_pytest, "pyflakes": _rapport_pyflakes, "radon": _rapport_radon,
+                   "data": _rapport_data, "log": _rapport_log, **controles.RAPPORTEERDERS}
 
 
 def maak_rapport(res, vorig=None):
@@ -593,10 +630,11 @@ def maak_rapport(res, vorig=None):
            "fout": "er is iets mis"}.get(res.get("status"), "klaar")
     duur = res.get("duur")
     duurtekst = f" in {duur:.0f} s" if isinstance(duur, (int, float)) else ""
-    regels = [f"Zelftest ({res.get('modus', '?')}) klaar{duurtekst}: {kop}."]
-    for sleutel, functie in _RAPPORTEERDERS:
+    modus = _MODUSNAAM.get(res.get("modus"), res.get("modus", "?"))
+    regels = [f"Zelftest ({modus}) klaar{duurtekst}: {kop}."]
+    for sleutel in _VOLGORDE:
         if res.get(sleutel) is not None:
-            regels += functie(res[sleutel])
+            regels += _RAPPORTEERDERS[sleutel](res[sleutel])
     if res.get("status") != "ok" and res.get("punten"):
         regels.append("Let op: " + "; ".join(res["punten"]) + ".")
     if res.get("vergelijking"):
@@ -608,7 +646,7 @@ def maak_rapport(res, vorig=None):
 def maak_meldingtekst(res):
     """Korte tekst voor de gsm (alleen bij status 'fout')."""
     punten = res.get("punten") or ["er is iets mis"]
-    tekst = f"Zelftest ({res.get('modus', '?')}): " + "; ".join(punten[:2]) + "."
+    tekst = f"Zelftest ({_MODUSNAAM.get(res.get('modus'), res.get('modus', '?'))}): " + "; ".join(punten[:2]) + "."
     if len(punten) > 2:
         tekst += f" (en nog {len(punten) - 2})"
     return tekst + " Zeg 'zelftest status' voor details."
@@ -622,7 +660,7 @@ class Zelftest:
     def __init__(self, event_bus, project_root=None, historie_pad=None, logbestand=None,
                  runner=None, kopieer=None, tool_beschikbaar=None, klok=None,
                  opstart=None, nacht=None, opstart_vertraging=None, pytest_timeout=None,
-                 achtergrond=None, drukaf=None):
+                 achtergrond=None, drukaf=None, nacht_modus=None, pakketten=None, trend_pad=None):
         # Alles na event_bus bestaat vooral voor de tests (nep-runner, nep-klok,
         # tijdelijke paden). In Nova zelf wordt niets meegegeven: dan komt alles uit
         # .env en uit de plaats van dit bestand.
@@ -647,6 +685,10 @@ class Zelftest:
 
         self._opstart_aan = self._lees_opstart(opstart)
         self._nacht = self._lees_nacht(nacht)
+        self._nacht_modus = self._lees_nacht_modus(nacht_modus)
+        self._pakketten_aan = self._lees_pakketten(pakketten)
+        self._modus_nu = "volledig"           # de modus van de lopende run (voor _stap_pytest)
+        self._extra = {}                      # resultaten die een stap erbij levert (dekking)
         self._opstart_vertraging = self._lees_getal(
             opstart_vertraging, "ZELFTEST_OPSTART_VERTRAGING", OPSTART_VERTRAGING_STANDAARD, 0, 3600)
         self._pytest_timeout = self._lees_getal(
@@ -657,6 +699,8 @@ class Zelftest:
         self._thread = None
         self._laatste_bericht = 0.0           # tijdstip van het laatste bericht van Kevin
         self._historie = self._laad_historie()
+        self._trend_pad = Path(trend_pad) if trend_pad else self.root / "data" / "zelftest_trend.json"
+        self._trend = self._laad_trend()
 
         if event_bus is not None:
             event_bus.subscribe("raw_user_message", self._on_bericht)
@@ -693,6 +737,18 @@ class Zelftest:
         if waarde is not None:
             return waarde if isinstance(waarde, dagtijd) else parse_tijd(waarde)
         return parse_tijd(os.getenv("ZELFTEST_NACHT", "uit"))
+
+    @staticmethod
+    def _lees_nacht_modus(waarde):
+        ruw = (waarde if waarde is not None else os.getenv("ZELFTEST_NACHT_MODUS", "volledig"))
+        ruw = str(ruw).strip().lower()
+        return ruw if ruw in ("volledig", "alles") else "volledig"
+
+    @staticmethod
+    def _lees_pakketten(waarde):
+        if waarde is not None:
+            return bool(waarde)
+        return os.getenv("ZELFTEST_PAKKETTEN", "uit").strip().lower() in ("aan", "ja", "1", "true", "on")
 
     @staticmethod
     def _lees_getal(waarde, naam, standaard, minimum, maximum):
@@ -735,6 +791,15 @@ class Zelftest:
                 return run
         return None
 
+    def _laad_trend(self):
+        """Leest de trend; bestaat die nog niet, dan bouwen we hem uit de bestaande historie."""
+        return trend.laad(self._trend_pad) or trend.opbouw_uit_historie(self._historie["runs"])
+
+    def _bewaar_trend(self, res):
+        trend.voeg_toe(self._trend, res.get("tijd"), trend.meetpunt(res))
+        if not trend.bewaar(self._trend_pad, self._trend):
+            self._print("[ZELFTEST] Trend niet bewaard.")
+
     # -- de stappen ----------------------------------------------------------
 
     def _stap_pyflakes(self):
@@ -770,21 +835,89 @@ class Zelftest:
         if not (self.root / "tests").is_dir():
             return {"gelukt": False, "geslaagd": 0, "gefaald": 0, "fouten": 0, "overgeslagen": 0,
                     "mislukt": [], "duur": None, "reden": "er is geen tests-map"}
+        met_dekking = self._modus_nu == "alles" and self._tool_beschikbaar("coverage")
         tijdelijk = None
         try:
             tijdelijk, kopie = self._kopieer(self.root)
             cmd = [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider",
                    "--continue-on-collection-errors", "-rfE"]
+            if met_dekking:                                # dezelfde tests, maar onder 'coverage'
+                cmd = [sys.executable, "-m", "coverage", "run", "--source=" + ",".join(DEKKING_DOELEN),
+                       "-m", "pytest", "-q", "-p", "no:cacheprovider", "--continue-on-collection-errors", "-rfE"]
             if os.name == "posix" and shutil.which("nice"):
                 cmd = ["nice", "-n", "10"] + cmd          # laag in prioriteit: Nova en Kevin gaan voor
             rc, uit, te_laat = self._runner(cmd, kopie, self._pytest_timeout, veilige_omgeving())
-            return parse_pytest(uit, rc, te_laat)
+            resultaat = parse_pytest(uit, rc, te_laat)
+            if self._modus_nu == "alles":
+                self._extra["dekking"] = self._lees_dekking(kopie, met_dekking)
+            return resultaat
         except Exception as e:
             return {"gelukt": False, "geslaagd": 0, "gefaald": 0, "fouten": 0, "overgeslagen": 0,
                     "mislukt": [], "duur": None,
                     "reden": f"kon pytest niet voorbereiden ({type(e).__name__}: {e})"}
         finally:
             ruim_op(tijdelijk)
+
+    def _lees_dekking(self, kopie, gemeten):
+        """Leest de dekkingsgegevens die 'coverage run' in de testkopie achterliet."""
+        if not gemeten:
+            return {"beschikbaar": False, "gelukt": False, "reden": "niet geïnstalleerd"}
+        rc, uit, te_laat = self._runner([sys.executable, "-m", "coverage", "json", "-o", "-", "--ignore-errors"],
+                                        kopie, TOOL_TIMEOUT, veilige_omgeving(), False)
+        return controles.parse_coverage(uit, rc, te_laat)
+
+    def _stap_backup(self):
+        return controles.check_backup(self.root, datetime.fromtimestamp(self._klok()))
+
+    def _stap_schijf(self):
+        return controles.check_schijf(self.root)
+
+    def _stap_modules(self):
+        return controles.check_modules(self.event_bus, self.root)
+
+    def _stap_consistentie(self):
+        return controles.check_consistentie(self.root)
+
+    def _stap_docs(self):
+        return controles.check_docs(self.root)
+
+    def _draai_benchmark(self, argumenten):
+        """Start tools/run_benchmark.py (dat zelf een kopie maakt en niets in je data wijzigt)."""
+        script = self.root / "tools" / "run_benchmark.py"
+        if not script.is_file():
+            return {"beschikbaar": False, "gelukt": False, "reden": "tools/run_benchmark.py niet gevonden"}
+        cmd = [sys.executable, str(script), *argumenten, "--geen-opslaan"]
+        if os.name == "posix" and shutil.which("nice"):
+            cmd = ["nice", "-n", "10"] + cmd
+        begin = time.monotonic()
+        rc, uit, te_laat = self._runner(cmd, self.root, BENCHMARK_TIMEOUT, veilige_omgeving())
+        res = controles.parse_benchmark(uit, rc, te_laat)
+        res["duur"] = round(time.monotonic() - begin, 1)
+        return res
+
+    def _stap_benchmark(self):
+        return {"taal": self._draai_benchmark(["--taal"]), "rook": self._draai_benchmark(["--niveau", "3"])}
+
+    def _stap_extern(self, module, argumenten, parser, samenvoegen=True, timeout=TOOL_TIMEOUT):
+        """Gedeelde stap voor vulture, bandit en pip-audit: ontbreekt het programma, dan melden we dat."""
+        if not self._tool_beschikbaar(module):
+            return {"beschikbaar": False, "gelukt": False, "reden": "niet geïnstalleerd"}
+        rc, uit, te_laat = self._runner([sys.executable, "-m", module, *argumenten], self.root, timeout,
+                                        veilige_omgeving() if module == "pip_audit" else None, samenvoegen)
+        return parser(uit, rc, te_laat)
+
+    def _stap_dode_code(self):
+        doelen = [d for d in RADON_DOELEN if (self.root / d).exists()]
+        return self._stap_extern("vulture", [*doelen, "--min-confidence", "80"], controles.parse_vulture)
+
+    def _stap_beveiliging(self):
+        doelen = [d for d in RADON_DOELEN if (self.root / d).exists()]
+        return self._stap_extern("bandit", ["-r", *doelen, "-f", "json", "-q"], controles.parse_bandit,
+                                 samenvoegen=False)
+
+    def _stap_pakketten(self):
+        return self._stap_extern("pip_audit", ["-f", "json", "--progress-spinner", "off"],
+                                 controles.parse_pipaudit, samenvoegen=False)
 
     # -- een zelftest uitvoeren ---------------------------------------------
 
@@ -801,14 +934,11 @@ class Zelftest:
             begin = time.monotonic()
             res = {"tijd": datetime.fromtimestamp(self._klok()).isoformat(timespec="seconds"),
                    "modus": modus, "bron": bron}
-            res["pyflakes"] = self._veilig(self._stap_pyflakes, "pyflakes")
-            if modus == "volledig":
-                res["radon"] = self._veilig(self._stap_radon, "radon")
-            res["data"] = self._veilig(self._stap_data, "data",
-                                       {"json_gecontroleerd": 0, "json_stuk": [], "db": "niet gecontroleerd"})
-            res["log"] = self._veilig(self._stap_log, "log")
-            if modus == "volledig":
-                res["pytest"] = self._veilig(self._stap_pytest, "pytest")
+            self._modus_nu, self._extra = modus, {}
+            for sleutel, modi in _STAPPEN:
+                if modus in modi and (sleutel != "pakketten" or self._pakketten_aan):
+                    res[sleutel] = self._veilig(getattr(self, f"_stap_{sleutel}"), sleutel, _VANGNET.get(sleutel))
+            res.update(self._extra)
             res["duur"] = round(time.monotonic() - begin, 1)
 
             vorig = self._vorige_run(modus)
@@ -816,6 +946,7 @@ class Zelftest:
             res["vorige_tijd"] = (vorig or {}).get("tijd")
             self._historie["runs"].append(res)
             self._bewaar_historie()
+            self._bewaar_trend(res)
             return res
         finally:
             self._bezig.release()
@@ -833,7 +964,17 @@ class Zelftest:
     # -- tekst voor Kevin ------------------------------------------------------
 
     def rapport(self, res):
-        return maak_rapport(res, {"tijd": res.get("vorige_tijd")})
+        tekst = maak_rapport(res, {"tijd": res.get("vorige_tijd")})
+        if res.get("modus") == "alles":
+            tekst += "\n\nSamenvatting: " + samenvatting.maak_samenvatting(res)
+        return tekst
+
+    def trend_tekst(self):
+        return trend.trend_tekst(self._trend)
+
+    def samenvatting_tekst(self):
+        runs = self._historie["runs"]
+        return samenvatting.maak_samenvatting(runs[-1] if runs else None)
 
     def status_tekst(self):
         runs = self._historie["runs"]
@@ -858,8 +999,12 @@ class Zelftest:
         if self._bezig.locked():
             uitvoer("Er loopt al een zelftest. Even geduld.")
             return False
-        duur = "enkele seconden" if modus == "snel" else "een halve minuut tot enkele minuten"
-        uitvoer(f"Ik test mezelf ({modus}). Dat duurt {duur}; ik laat het weten als ik klaar ben.")
+        if modus == "alles":
+            uitvoer("Volledige diagnose gestart. Ik controleer mijn code, tests, taalbegrip, back-ups en "
+                    "geheugen. Dat duurt enkele minuten; ik laat het weten als ik klaar ben.")
+        else:
+            duur = "enkele seconden" if modus == "snel" else "een minuutje tot enkele minuten"
+            uitvoer(f"Ik test mezelf ({modus}). Dat duurt {duur}; ik laat het weten als ik klaar ben.")
 
         def werk():
             try:
@@ -909,7 +1054,7 @@ class Zelftest:
         # Eerst noteren, dan pas draaien: zo start een crash of herstart niet nog eens.
         self._historie["laatste_nacht_datum"] = vandaag
         self._bewaar_historie()
-        return self._run_automatisch("volledig", "nacht")
+        return self._run_automatisch(self._nacht_modus, "nacht")
 
     def _achtergrondlus(self):
         if self._opstart_aan:

@@ -1,0 +1,19 @@
+{
+ "dagen": {
+  "2026-11-13": {
+   "tests": 4834,
+   "zware_functies": 41
+  },
+  "2026-11-14": {
+   "antwoorden": 54.1,
+   "concepten": 1264,
+   "data_mb": 8412.2,
+   "dekking": 71.7,
+   "rooktest": 100.0,
+   "taalbegrip": 97.9,
+   "tests": 4931,
+   "zware_functies": 41
+  }
+ },
+ "versie": 1
+}

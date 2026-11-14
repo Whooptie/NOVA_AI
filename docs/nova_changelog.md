@@ -4067,5 +4067,14 @@ De kennisgraaf (`concepts.json`) wordt zichtbaar als interactieve 3D-pagina. **E
 - Opgemerkt: de volledige testsuite wijzigt bij het draaien `identity/emotion/emotion_state.json` en `logs/handler_fouten.log`. Nog niet onderzocht of dat bedoeld is.
 
 ## ✅ Punt 79 — zelftest: Nova test zichzelf (13 november 2026)
-
 Nieuwe module `modules/diagnose/zelftest.py` (auto-discovery, geen wijziging in module_loader). Op commando (`zelftest`, `zelftest snel`, `zelftest status`, `test jezelf`, via `debug_commands.py`) draait Nova pytest, pyflakes, radon, een JSON- en databankcontrole en leest ze het foutenlog; daarna vat ze het samen en vergelijkt ze met de vorige run van dezelfde soort (`data/zelftest_historie.json`, laatste 60). pytest draait in een apart proces op een tijdelijke kopie zonder echte databank, back-ups, logs, .env en zonder sleutels in de omgeving; de kopie wordt altijd gewist. Alleen lezen. Opstartcontrole (`ZELFTEST_OPSTART`, standaard aan, na 180 s) en nachtcontrole (`ZELFTEST_NACHT=03:30`, standaard uit); enkel bij status "fout" gaat een bericht via `layer4_response` (dus ook naar de gsm). Puur symbolisch: programma's starten en hun tekst ontleden. 84 tests in `tests/test_zelftest.py` (nep-runner, niets echt gestart).
+
+## 14 november 2026 — Zelftest uitgebreid tot “volledige diagnose”.
+Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leeftijd en leesbaarheid), schijfruimte en loggroei, geladen modules, consistentie (identity-schema en concepts-structuur), documentatie-sync, taalbegrip (taalbenchmark), rooktest (vaste vragen, niveau 3), dekking (coverage), dode code (vulture), beveiliging (bandit), kwetsbare pakketten (pip-audit, optioneel). Nieuwe modus zelftest alles / start full diagnostic; nachtmodus via ZELFTEST_NACHT_MODUS. 97 nieuwe tests.
+
+## 2026-11-14 — Zelftest: trend, samenvatting, opruiming
+- Nieuw: modules/diagnose/trend.py (1 meetpunt per dag in data/zelftest_trend.json, sparklines, vergelijking met een week eerder; eerste keer opgebouwd uit de bestaande historie)
+- Nieuw: modules/diagnose/samenvatting.py (filmstijl samenvatting als tekst, na "alles" en via "zelftest samenvatting")
+- Nieuw: commando's "zelftest trend" en "zelftest samenvatting"
+- Opgeruimd: onbereikbaar tweede blok in pattern_matcher.init_module (dode code = 0)
+- Tests: tests/test_zelftest_trend.py (35)

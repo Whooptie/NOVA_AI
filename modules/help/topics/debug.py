@@ -139,17 +139,31 @@ def get_help():
                                    bv. "audit event upgrade 14")
                                   Toont max. 25 regels, daarna "… en nog N meer".
 
-🩺 ZELFTEST (13 november 2026)
-  zelftest                       (Nova test zichzelf: pytest op een tijdelijke kopie, pyflakes,
-                                   radon, JSON-bestanden en databank, foutenlog. Duurt een halve
-                                   minuut of langer; het gesprek blijft vrij. Alleen lezen.)
-  zelftest snel                  (enkel pyflakes, data en foutenlog: enkele seconden)
+🩺 ZELFTEST (13 november 2026, uitgebreid op 14 november 2026)
+  zelftest                       (Nova test zichzelf: je tests op een tijdelijke kopie, taalbegrip,
+                                   rooktest, pyflakes, radon, JSON-bestanden en databank, back-up,
+                                   schijfruimte, geladen modules, identity/concepts, documentatie
+                                   en het foutenlog. Een minuutje of langer; het gesprek blijft
+                                   vrij. Alleen lezen.)
+  zelftest snel                  (pyflakes, data, foutenlog en de snelle gezondheidscontroles
+                                   (back-up, schijf, modules, consistentie, documentatie):
+                                   enkele seconden)
+  zelftest alles                 (de VOLLEDIGE DIAGNOSE: alles van "zelftest" plus dekking
+                                   (welk deel van de code raken je tests), dode code en
+                                   beveiliging. Enkele minuten.)
+  start full diagnostic          (zelfde als "zelftest alles"; ook "volledige diagnose")
   zelftest status                (de laatste zelftest + de laatste vijf uitslagen)
+  zelftest trend                 (taalbegrip, antwoorden, rooktest, dekking, tests en concepten
+                                   per dag, met sparklines en wat er sinds een week veranderde)
+  zelftest samenvatting          (de laatste zelftest in een paar korte zinnen)
   test jezelf                    (zelfde als "zelftest")
                                   Automatisch via .env: ZELFTEST_OPSTART=aan|uit (korte controle
-                                  3 minuten na het opstarten) en ZELFTEST_NACHT=03:30|uit
-                                  (volledige controle, 1x per dag; standaard uit). Een bericht
-                                  naar je gsm komt alleen als er echt iets mis is.
+                                  3 minuten na het opstarten), ZELFTEST_NACHT=03:30|uit
+                                  (controle 1x per dag; standaard uit), ZELFTEST_NACHT_MODUS=
+                                  volledig|alles (welke controle 's nachts draait) en
+                                  ZELFTEST_PAKKETTEN=aan|uit (pip-audit bij "alles"; standaard
+                                  uit want het heeft internet nodig). Een bericht naar je gsm
+                                  komt alleen als er echt iets mis is.
 
 🚨 FOUTENLOGBOEK (bug #46, 25 oktober 2026)
   laatste fouten                 (leest logs/handler_fouten.log en vat samen: aantal,

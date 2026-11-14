@@ -9,16 +9,23 @@
     "werk": "2026-11-04"
   },
   "laatste_analyse": {
-    "datum": "2026-11-13",
-    "actieve_dagen": 82,
-    "reden": "geen enkele afstand haalt de drempel",
-    "beste": null,
+    "datum": "2026-11-14",
+    "actieve_dagen": 83,
+    "reden": null,
+    "beste": {
+      "afstand_maanden": 1,
+      "woorden": [
+        "geheugen",
+        "semantic",
+        "werkt"
+      ],
+      "score": 6.36
+    },
     "afgewezen": [
-      "1 mnd: 1 gedeeld opvallend woord(en), score 2.0 (te laag)",
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "6 mnd: te weinig berichten rond 13 mei (0)",
-      "12 mnd: te weinig berichten rond 13 november (0)",
-      "24 mnd: te weinig berichten rond 13 november (0)"
+      "6 mnd: te weinig berichten rond 14 mei (0)",
+      "12 mnd: te weinig berichten rond 14 november (0)",
+      "24 mnd: te weinig berichten rond 14 november (0)"
     ]
   }
 }

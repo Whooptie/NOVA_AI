@@ -168,7 +168,7 @@ class EmbeddingSpecialist:
 
     @staticmethod
     def _hash(tekst, model_naam):
-        return hashlib.sha1(f"{model_naam}\n{tekst}".encode("utf-8")).hexdigest()
+        return hashlib.sha1(f"{model_naam}\n{tekst}".encode("utf-8"), usedforsecurity=False).hexdigest()
 
     def _lees_cache(self):
         if self._cache_geladen:

@@ -696,23 +696,3 @@ def init_module(event_bus, semantic_module=None):
     if event_bus is not None:
         event_bus.publish("module_loaded", {"name": "pattern_matcher"})
     return instance
-    """
-    Wordt aangeroepen door module_loader.py bij het opstarten van Nova.
-
-    Let op: module_loader.py roept dynamische modules altijd aan als
-    init_module(event_bus, sem) — waarbij "sem" de semantic-module
-    (Layer 3) is. Daarom accepteert deze functie een
-    "semantic_module"-parameter, net zoals word_associations_learner.py
-    dat ook al doet. We gebruiken semantic_module hier momenteel nog
-    niet.
-
-    LET OP: dit is Fase 1-2 van 5. Er wordt nog NIETS automatisch
-    opgeslagen naar schijf bij elk event — dat komt pas in Fase 5.
-    Herstart je Nova, dan is alles wat tot dan toe geleerd is, weer weg.
-    Dat is verwacht gedrag voor deze fase. Je kan wel manueel
-    save_to_disk() aanroepen om tussentijds te kijken wat er verzameld is.
-    """
-    instance = PatternMatcher(event_bus, semantic_module=semantic_module)
-    if event_bus is not None:
-        event_bus.publish("module_loaded", {"name": "pattern_matcher"})
-    return instance

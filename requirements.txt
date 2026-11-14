@@ -63,8 +63,12 @@ jsonpickle==4.1.4
 
 # --- Testing ---
 pytest>=8.2.0              # Unit tests
-pyflakes==4.1.0            # zelftest.py: zoekt slordigheden in de code
-radon==6.0.1               # zelftest.py: meet hoe ingewikkeld functies zijn
+pyflakes==4.1.0            # Zelftest: slordigheden in de code
+radon==6.0.1               # Zelftest: complexiteit
+coverage==7.17.3           # Zelftest: dekking
+vulture==2.16              # Zelftest: dode code
+bandit==1.9.4              # Zelftest: beveiliging
+pip-audit==2.10.1        # Optioneel, heeft internet nodig (ZELFTEST_PAKKETTEN=aan)
 
 # --- Standard library (no installation needed) ---
 # sqlite3      — Layer 0 memory (built into Python)
