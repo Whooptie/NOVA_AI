@@ -6,16 +6,16 @@
   },
   "2026-11-14": {
    "antwoorden": 54.1,
-   "antwoordtijd_ms": 23,
+   "antwoordtijd_ms": 21,
    "concepten": 1264,
-   "data_mb": 8413.3,
+   "data_mb": 8414.2,
    "dekking": 72.6,
    "rooktest": 100.0,
-   "rss_mb": 793.0,
+   "rss_mb": 816.0,
    "taalbegrip": 97.9,
-   "tests": 5070,
-   "threads": 42,
-   "zware_functies": 41
+   "tests": 5097,
+   "threads": 43,
+   "zware_functies": 40
   }
  },
  "versie": 1

@@ -57,3 +57,5 @@
 {"tekst": "wanneer gaat het regenen", "label": "rain", "gebruikt_bij_hertraining": "2026-10-24T14:32:54.585874"}
 {"tekst": "hey", "label": "greeting", "gebruikt_bij_hertraining": "2026-10-31T11:54:53.772503"}
 {"tekst": "gaat het vandaag regenen?", "label": "rain", "gebruikt_bij_hertraining": "2026-11-03T11:35:46.407681"}
+{"tekst": "9**9", "label": "math", "gebruikt_bij_hertraining": "2026-11-14T21:29:36.036747"}
+{"tekst": "9**9**9", "label": "math", "gebruikt_bij_hertraining": "2026-11-14T21:29:36.036747"}

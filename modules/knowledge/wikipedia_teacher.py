@@ -270,8 +270,20 @@ class WikipediaTeacher:
     # ---------------------------------------------------------
     # 4. Alles opslaan in Nova's woordenbrein
     # ---------------------------------------------------------
+    # Slotzinnen van de melding "had je eerder al afgewezen": per pad
+    # verschilt alleen hoe de zin eindigt.
+    _AFGEWEZEN_SLOT_BESTAAND = "deze Wikipedia-definitie is niet automatisch opnieuw opgeslagen."
+    _AFGEWEZEN_SLOT_BETEKENIS = "deze nieuwe Wikipedia-betekenis is dezelfde tekst, dus niet automatisch opgeslagen."
+    _AFGEWEZEN_SLOT_DEFINITIE = "deze Wikipedia-definitie is dezelfde tekst, dus niet automatisch opgeslagen."
+
+    @staticmethod
+    def _afgewezen_melding(word: str, sense: dict, slot: str) -> str:
+        return (
+            f"'{word}' → \"{sense.get('definition')}\" had je eerder "
+            f"al afgewezen — {slot}"
+        )
+
     def _teach_word(self, word: str, definition: str, relations: list, examples: list = None, voeg_toe: bool = False) -> str:
-        examples = examples or []
         """
         Slaat het woord op via de SemanticConceptsModule.
         Geeft een status-bericht terug.
@@ -286,7 +298,11 @@ class WikipediaTeacher:
         sense "Mercurius = Caduceus" bestaat). Het gewone pad (on_wiki(),
         voeg_toe=False) blijft ONGEWIJZIGD: overschrijft een bestaande
         wikipedia-sense, weigert bij een bestaande user-sense.
+
+        Deze functie is alleen nog de regisseur; het werk zit in
+        _wiki_bestaand_concept, _wiki_sla_sense_op en _wiki_sla_relaties_op.
         """
+        examples = examples or []
         if not self.semantic:
             return "Semantic module niet beschikbaar."
 
@@ -297,191 +313,221 @@ class WikipediaTeacher:
             # al kent met een echte definitie
             existing = self.semantic.export_concept(word)
             if existing:
-                for sense in existing.get("senses", []):
-                    if sense.get("definition", "unknown") != "unknown" and \
-                       sense.get("source") == "user":
-                        return f"Ik ken '{word}' al van jou — Wikipedia overschrijft dat niet."
+                melding = self._wiki_bestaand_concept(word, existing, definition, relations, examples)
+                if melding is not None:
+                    return melding
 
-                # Bestaande Wikipedia-sense overschrijven i.p.v. dupliceren
-                #
-                # Bug #32-VERVOLGFIX (8 augustus 2026): deze tak omzeilde
-                # add_sense()/upgrade_unknown_sense() volledig -- hij werkt
-                # rechtstreeks op de sense in concepts.json, dus de
-                # rejected-guard die daar zonet is toegevoegd (zie Bug
-                # #32-fix hierboven) werd hier nooit bereikt. Ontdekt
-                # tijdens live testen (8 augustus 2026, Kevin): een
-                # afgewezen Wikipedia-sense voor 'gitaar' kwam stilzwijgend
-                # terug ("Wikipedia-definitie van 'gitaar' bijgewerkt")
-                # zodra 'wiki gitaar' opnieuw werd aangeroepen -- exact
-                # hetzelfde bug-patroon als #32, maar via een ANDER pad.
-                # Nu wordt EERST gecontroleerd of de bestaande
-                # Wikipedia-sense rejected is; zo ja, dan gebeurt er
-                # helemaal niets aan die sense en komt er enkel een
-                # neutrale melding, net als bij add_sense()'s eigen guard.
-                for sense in existing.get("senses", []):
-                    if sense.get("source") == "wikipedia" and sense.get("status") == "rejected":
-                        return (
-                            f"'{word}' → \"{sense.get('definition')}\" had je eerder "
-                            f"al afgewezen — deze Wikipedia-definitie is niet "
-                            f"automatisch opnieuw opgeslagen."
-                        )
-
-                for sense in existing.get("senses", []):
-                    if sense.get("source") == "wikipedia":
-                        # Fase 11.3-fix (17 oktober 2026): een Wikipedia-sense die
-                        # Kevin zelf bevestigde (bv. na "sense_reactivated") wordt
-                        # niet stilzwijgend teruggezet naar unverified/0.8 of
-                        # van tekst veranderd.
-                        if sense.get("status") == "confirmed":
-                            return (f"'{word}' heb je zelf bevestigd — Wikipedia past "
-                                    f"die definitie niet aan.")
-                        concept = self.semantic.store.get_concept(word)
-                        for s in concept["senses"]:
-                            if s.get("sense_id") == sense.get("sense_id"):
-                                oude_definitie = s.get("definition")
-                                oude_status = s.get("status")
-                                s["definition"] = definition
-                                s["confidence"] = WIKI_CONFIDENCE
-                                # Trust state (punt 3, 6 augustus 2026): een
-                                # bijgewerkte Wikipedia-definitie blijft
-                                # bewust unverified -- de tekst kan
-                                # gewijzigd zijn, maar Kevin heeft ze nog
-                                # steeds niet zelf bevestigd.
-                                s["status"] = "unverified"
-                                # Fase 11.3-fix (17 oktober 2026): bestaande relaties
-                                # BLIJVEN staan (ook die Kevin bevestigde of via
-                                # "neem N over" opsloeg); nieuwe regex-relaties
-                                # komen er enkel bij als (type, doel) nog niet bestaat.
-                                bestaand = s.get("relations", [])
-                                bekend = {(r.get("type"), str(r.get("target", "")).lower())
-                                          for r in bestaand}
-                                nieuw = [r for r in (relations or [])
-                                         if (r.get("type"), str(r.get("target", "")).lower())
-                                         not in bekend]
-                                s["relations"] = bestaand + nieuw
-                                # Bug #48-fix (24 oktober 2026): elke refresh laat
-                                # een spoor na in de audit_log (voorheen geen):
-                                # wat de definitie en status eerst waren en welke
-                                # relaties erbij kwamen. Bestaande relaties
-                                # (ook rejected/confirmed) blijven ongemoeid.
-                                concept.setdefault("audit_log", []).append({
-                                    "event_type": "wikipedia_refresh",
-                                    "source": "wikipedia",
-                                    "sense_id": s.get("sense_id"),
-                                    "old_value": oude_definitie,
-                                    "new_value": definition,
-                                    "oude_status": oude_status,
-                                    "nieuwe_relaties": [
-                                        f"{r.get('type')}: {r.get('target')}" for r in nieuw
-                                    ],
-                                    "timestamp": datetime.utcnow().isoformat(),
-                                })
-                                # Voorbeeldzinnen: bestaande blijven staan, nieuwe komen erbij.
-                                oude_vb = s.get("examples", [])
-                                s["examples"] = oude_vb + [e for e in (examples or [])
-                                                           if e not in oude_vb]
-                                concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
-                        self.semantic.store.save()
-                        return f"Wikipedia-definitie van '{word}' bijgewerkt → {definition}"
-
-        # Definitie opslaan.
-        #
-        # Bug #32-fix (8 augustus 2026): dit pad liep vroeger via
-        # teach_engine.teach() (altijd source="user" intern) gevolgd
-        # door een achteraf-correctie die sense["source"] en de
-        # audit-trail handmatig terugzette naar "wikipedia". Dat werkte,
-        # maar had een verborgen probleem: teach()'s EIGEN dedup-check
-        # (add_sense(), zie semantic.py) zag de aanroep altijd als
-        # source="user" OP HET MOMENT ZELF -- een Wikipedia-herhaling
-        # van een eerder afgewezen (rejected) betekenis zou zich daardoor
-        # hebben voorgedaan als Kevin die zelf opnieuw bevestigde, met
-        # alle gevolgen van dien (zie bug #32 in nova_state.md).
-        #
-        # Nu roepen we (net als het voeg_toe=True-pad hierboven al
-        # deed) rechtstreeks upgrade_unknown_sense()/add_sense() aan met
-        # de ECHTE bron "wikipedia" — geen achteraf-correctie meer nodig,
-        # en add_sense()'s rejected-guard werkt meteen correct voor deze
-        # bron (meldt en negeert, vraagt nooit "ja/nee" zoals bij Kevin
-        # zelf).
         try:
-            if voeg_toe:
-                nieuwe_sense = self.semantic.sense_engine.add_sense(
-                    word=word,
-                    definition=definition,
-                    source="wikipedia",
-                    confidence=WIKI_CONFIDENCE,
-                    pos=None,
-                )
-                if isinstance(nieuwe_sense, dict) and nieuwe_sense.get("blocked") == "rejected":
-                    afgewezen = nieuwe_sense["sense"]
-                    return (
-                        f"'{word}' → \"{afgewezen.get('definition')}\" had je eerder "
-                        f"al afgewezen — deze nieuwe Wikipedia-betekenis is dezelfde "
-                        f"tekst, dus niet automatisch opgeslagen."
-                    )
-                sense_id_voor_relaties = nieuwe_sense.get("sense_id")
-                if examples:
-                    nieuwe_sense["examples"] = examples
-                    self.semantic.store.save()
-            else:
-                sense_id_voor_relaties = None
-
-                # Stap A: bestaat er al een "unknown"-sense om te
-                # upgraden? (analoog aan teach()'s eigen stap 3, maar nu
-                # rechtstreeks met de echte bron "wikipedia".)
-                upgraded = self.semantic.sense_engine.upgrade_unknown_sense(
-                    word, definition, source="wikipedia", confidence=WIKI_CONFIDENCE
-                )
-                # Bug #47-fix (24 oktober 2026): upgrade_unknown_sense()
-                # geeft nu ook een "blocked"-signaal bij een eerder
-                # afgewezen definitie. Zelfde melding als bij add_sense().
-                if isinstance(upgraded, dict) and upgraded.get("blocked") == "rejected":
-                    afgewezen = upgraded["sense"]
-                    return (
-                        f"'{word}' → \"{afgewezen.get('definition')}\" had je "
-                        f"eerder al afgewezen — deze Wikipedia-definitie is "
-                        f"dezelfde tekst, dus niet automatisch opgeslagen."
-                    )
-                if upgraded:
-                    sense_id_voor_relaties = upgraded.get("sense_id")
-                    if examples:
-                        upgraded["examples"] = examples
-                        self.semantic.store.save()
-                else:
-                    # Stap B: nieuwe sense aanmaken (of, indien de
-                    # definitie matcht met een eerder afgewezen sense,
-                    # het blocked-signaal terugkrijgen).
-                    nieuwe_sense = self.semantic.sense_engine.add_sense(
-                        word=word,
-                        definition=definition,
-                        source="wikipedia",
-                        confidence=WIKI_CONFIDENCE,
-                        pos=None,
-                    )
-                    if isinstance(nieuwe_sense, dict) and nieuwe_sense.get("blocked") == "rejected":
-                        afgewezen = nieuwe_sense["sense"]
-                        return (
-                            f"'{word}' → \"{afgewezen.get('definition')}\" had je "
-                            f"eerder al afgewezen — deze Wikipedia-definitie is "
-                            f"dezelfde tekst, dus niet automatisch opgeslagen."
-                        )
-                    sense_id_voor_relaties = nieuwe_sense.get("sense_id")
-                    if examples:
-                        nieuwe_sense["examples"] = examples
-                        self.semantic.store.save()
+            sense_id_voor_relaties, melding = self._wiki_sla_sense_op(
+                word, definition, examples, voeg_toe
+            )
         except Exception as e:
             return f"Fout bij opslaan van definitie: {e}"
+        if melding is not None:
+            return melding
 
-        # Relaties opslaan
+        relaties_geleerd = self._wiki_sla_relaties_op(word, relations, sense_id_voor_relaties)
+
+        # Samenvatting
+        if voeg_toe:
+            bericht = f"Nieuwe betekenis geleerd voor '{word}': {definition}"
+        else:
+            bericht = f"Wikipedia: '{word}' → {definition}"
+        if relaties_geleerd:
+            bericht += f" (relaties: {', '.join(relaties_geleerd)})"
+
+        return bericht
+
+    # ---------------------------------------------------------
+    # _teach_word: het woord bestaat al (alleen het gewone pad)
+    # ---------------------------------------------------------
+    def _wiki_bestaand_concept(self, word, existing, definition, relations, examples):
+        """Geeft een melding terug als er niets meer opgeslagen moet worden
+        (user-sense, afgewezen of bevestigde Wikipedia-sense) of als de
+        bestaande Wikipedia-sense is ververst; anders None."""
+        for sense in existing.get("senses", []):
+            if sense.get("definition", "unknown") != "unknown" and \
+               sense.get("source") == "user":
+                return f"Ik ken '{word}' al van jou — Wikipedia overschrijft dat niet."
+
+        # Bestaande Wikipedia-sense overschrijven i.p.v. dupliceren
         #
-        # Bugfix, meegenomen bij deze wijziging: de oude code pakte
-        # altijd concept["senses"][0] (de EERSTE sense) om relaties aan
-        # te hangen — bij meerdere senses (zoals nu met voeg_toe=True
-        # mogelijk wordt) zou dat relaties van sense #2 ten onrechte op
-        # sense #1 plakken. Nu wordt de sense opgezocht op basis van
-        # sense_id_voor_relaties (de sense die we net daadwerkelijk
-        # aangemaakt/bijgewerkt hebben), met een fallback naar de eerste
-        # sense voor het geval sense_id_voor_relaties onbekend bleef.
+        # Bug #32-VERVOLGFIX (8 augustus 2026): deze tak omzeilde
+        # add_sense()/upgrade_unknown_sense() volledig -- hij werkt
+        # rechtstreeks op de sense in concepts.json, dus de
+        # rejected-guard die daar zonet is toegevoegd (zie Bug
+        # #32-fix hierboven) werd hier nooit bereikt. Ontdekt
+        # tijdens live testen (8 augustus 2026, Kevin): een
+        # afgewezen Wikipedia-sense voor 'gitaar' kwam stilzwijgend
+        # terug ("Wikipedia-definitie van 'gitaar' bijgewerkt")
+        # zodra 'wiki gitaar' opnieuw werd aangeroepen -- exact
+        # hetzelfde bug-patroon als #32, maar via een ANDER pad.
+        # Nu wordt EERST gecontroleerd of de bestaande
+        # Wikipedia-sense rejected is; zo ja, dan gebeurt er
+        # helemaal niets aan die sense en komt er enkel een
+        # neutrale melding, net als bij add_sense()'s eigen guard.
+        for sense in existing.get("senses", []):
+            if sense.get("source") == "wikipedia" and sense.get("status") == "rejected":
+                return self._afgewezen_melding(word, sense, self._AFGEWEZEN_SLOT_BESTAAND)
+
+        for sense in existing.get("senses", []):
+            if sense.get("source") == "wikipedia":
+                # Fase 11.3-fix (17 oktober 2026): een Wikipedia-sense die
+                # Kevin zelf bevestigde (bv. na "sense_reactivated") wordt
+                # niet stilzwijgend teruggezet naar unverified/0.8 of
+                # van tekst veranderd.
+                if sense.get("status") == "confirmed":
+                    return (f"'{word}' heb je zelf bevestigd — Wikipedia past "
+                            f"die definitie niet aan.")
+                concept = self.semantic.store.get_concept(word)
+                for s in concept["senses"]:
+                    if s.get("sense_id") == sense.get("sense_id"):
+                        self._wiki_ververs_sense(concept, s, definition, relations, examples)
+                self.semantic.store.save()
+                return f"Wikipedia-definitie van '{word}' bijgewerkt → {definition}"
+
+        return None
+
+    def _wiki_ververs_sense(self, concept, s, definition, relations, examples):
+        """Werkt een bestaande Wikipedia-sense bij met de nieuwe definitie."""
+        oude_definitie = s.get("definition")
+        oude_status = s.get("status")
+        s["definition"] = definition
+        s["confidence"] = WIKI_CONFIDENCE
+        # Trust state (punt 3, 6 augustus 2026): een
+        # bijgewerkte Wikipedia-definitie blijft
+        # bewust unverified -- de tekst kan
+        # gewijzigd zijn, maar Kevin heeft ze nog
+        # steeds niet zelf bevestigd.
+        s["status"] = "unverified"
+        # Fase 11.3-fix (17 oktober 2026): bestaande relaties
+        # BLIJVEN staan (ook die Kevin bevestigde of via
+        # "neem N over" opsloeg); nieuwe regex-relaties
+        # komen er enkel bij als (type, doel) nog niet bestaat.
+        bestaand = s.get("relations", [])
+        bekend = {(r.get("type"), str(r.get("target", "")).lower())
+                  for r in bestaand}
+        nieuw = [r for r in (relations or [])
+                 if (r.get("type"), str(r.get("target", "")).lower())
+                 not in bekend]
+        s["relations"] = bestaand + nieuw
+        # Bug #48-fix (24 oktober 2026): elke refresh laat
+        # een spoor na in de audit_log (voorheen geen):
+        # wat de definitie en status eerst waren en welke
+        # relaties erbij kwamen. Bestaande relaties
+        # (ook rejected/confirmed) blijven ongemoeid.
+        concept.setdefault("audit_log", []).append({
+            "event_type": "wikipedia_refresh",
+            "source": "wikipedia",
+            "sense_id": s.get("sense_id"),
+            "old_value": oude_definitie,
+            "new_value": definition,
+            "oude_status": oude_status,
+            "nieuwe_relaties": [
+                f"{r.get('type')}: {r.get('target')}" for r in nieuw
+            ],
+            "timestamp": datetime.utcnow().isoformat(),
+        })
+        # Voorbeeldzinnen: bestaande blijven staan, nieuwe komen erbij.
+        oude_vb = s.get("examples", [])
+        s["examples"] = oude_vb + [e for e in (examples or [])
+                                   if e not in oude_vb]
+        concept["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+
+    # ---------------------------------------------------------
+    # _teach_word: een nieuwe sense opslaan
+    # ---------------------------------------------------------
+    def _wiki_bewaar_voorbeelden(self, sense, examples):
+        if examples:
+            sense["examples"] = examples
+            self.semantic.store.save()
+
+    def _wiki_sla_sense_op(self, word, definition, examples, voeg_toe):
+        """Slaat de definitie op als sense met de echte bron "wikipedia".
+        Geeft (sense_id, melding) terug; melding is niet None als de
+        definitie een eerder afgewezen definitie is en niets is opgeslagen.
+
+        Bug #32-fix (8 augustus 2026): dit pad liep vroeger via
+        teach_engine.teach() (altijd source="user" intern) gevolgd
+        door een achteraf-correctie die sense["source"] en de
+        audit-trail handmatig terugzette naar "wikipedia". Dat werkte,
+        maar had een verborgen probleem: teach()'s EIGEN dedup-check
+        (add_sense(), zie semantic.py) zag de aanroep altijd als
+        source="user" OP HET MOMENT ZELF -- een Wikipedia-herhaling
+        van een eerder afgewezen (rejected) betekenis zou zich daardoor
+        hebben voorgedaan als Kevin die zelf opnieuw bevestigde, met
+        alle gevolgen van dien (zie bug #32 in nova_state.md).
+
+        Nu roepen we rechtstreeks upgrade_unknown_sense()/add_sense() aan
+        met de ECHTE bron "wikipedia" — geen achteraf-correctie meer nodig,
+        en add_sense()'s rejected-guard werkt meteen correct voor deze
+        bron (meldt en negeert, vraagt nooit "ja/nee" zoals bij Kevin
+        zelf).
+        """
+        if voeg_toe:
+            nieuwe_sense = self.semantic.sense_engine.add_sense(
+                word=word,
+                definition=definition,
+                source="wikipedia",
+                confidence=WIKI_CONFIDENCE,
+                pos=None,
+            )
+            if isinstance(nieuwe_sense, dict) and nieuwe_sense.get("blocked") == "rejected":
+                return None, self._afgewezen_melding(
+                    word, nieuwe_sense["sense"], self._AFGEWEZEN_SLOT_BETEKENIS)
+            sense_id = nieuwe_sense.get("sense_id")
+            self._wiki_bewaar_voorbeelden(nieuwe_sense, examples)
+            return sense_id, None
+
+        # Stap A: bestaat er al een "unknown"-sense om te
+        # upgraden? (analoog aan teach()'s eigen stap 3, maar nu
+        # rechtstreeks met de echte bron "wikipedia".)
+        upgraded = self.semantic.sense_engine.upgrade_unknown_sense(
+            word, definition, source="wikipedia", confidence=WIKI_CONFIDENCE
+        )
+        # Bug #47-fix (24 oktober 2026): upgrade_unknown_sense()
+        # geeft nu ook een "blocked"-signaal bij een eerder
+        # afgewezen definitie. Zelfde melding als bij add_sense().
+        if isinstance(upgraded, dict) and upgraded.get("blocked") == "rejected":
+            return None, self._afgewezen_melding(
+                word, upgraded["sense"], self._AFGEWEZEN_SLOT_DEFINITIE)
+        if upgraded:
+            sense_id = upgraded.get("sense_id")
+            self._wiki_bewaar_voorbeelden(upgraded, examples)
+            return sense_id, None
+
+        # Stap B: nieuwe sense aanmaken (of, indien de
+        # definitie matcht met een eerder afgewezen sense,
+        # het blocked-signaal terugkrijgen).
+        nieuwe_sense = self.semantic.sense_engine.add_sense(
+            word=word,
+            definition=definition,
+            source="wikipedia",
+            confidence=WIKI_CONFIDENCE,
+            pos=None,
+        )
+        if isinstance(nieuwe_sense, dict) and nieuwe_sense.get("blocked") == "rejected":
+            return None, self._afgewezen_melding(
+                word, nieuwe_sense["sense"], self._AFGEWEZEN_SLOT_DEFINITIE)
+        sense_id = nieuwe_sense.get("sense_id")
+        self._wiki_bewaar_voorbeelden(nieuwe_sense, examples)
+        return sense_id, None
+
+    # ---------------------------------------------------------
+    # _teach_word: relaties opslaan
+    # ---------------------------------------------------------
+    def _wiki_sla_relaties_op(self, word, relations, sense_id_voor_relaties):
+        """Hangt de relaties aan de sense die we net aanmaakten of
+        bijwerkten. Geeft de lijst "type: doel" van echt toegevoegde
+        relaties terug.
+
+        Bugfix, meegenomen bij de voeg_toe-wijziging: de oude code pakte
+        altijd concept["senses"][0] (de EERSTE sense) om relaties aan
+        te hangen — bij meerdere senses zou dat relaties van sense #2
+        ten onrechte op sense #1 plakken. Nu wordt de sense opgezocht op
+        basis van sense_id_voor_relaties, met een fallback naar de eerste
+        sense voor het geval die onbekend bleef.
+        """
         relaties_geleerd = []
         for rel in relations:
             try:
@@ -503,16 +549,7 @@ class WikipediaTeacher:
                         relaties_geleerd.append(f"{rel['type']}: {rel['target']}")
             except Exception:
                 pass
-
-        # Samenvatting
-        if voeg_toe:
-            bericht = f"Nieuwe betekenis geleerd voor '{word}': {definition}"
-        else:
-            bericht = f"Wikipedia: '{word}' → {definition}"
-        if relaties_geleerd:
-            bericht += f" (relaties: {', '.join(relaties_geleerd)})"
-
-        return bericht
+        return relaties_geleerd
 
     # ---------------------------------------------------------
     # 5. Hoofd-handler

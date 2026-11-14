@@ -560,3 +560,8 @@
 {"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "En bij jou, hoe voel jij je?", "entity": null, "response_style": null, "moment": "2026-11-13T20:48:13.464010", "reactie_sentiment": null}
 {"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794599293.4636192, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1794599293.4642143, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 0, "variant_tekst": "{entity} betekent: {definition} Trouwens, dat woord duikt bij jou vaak op samen met '{associatie}'.", "entity": "hamer", "response_style": "normaal", "moment": "2026-11-14T21:53:08.798763", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794689588.7990408, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "variant_tekst": "Hmm… dat ken ik niet.", "entity": null, "response_style": "normaal", "moment": "2026-11-14T21:53:53.429147", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1794689633.4293823, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Tja… geen idee.", "entity": null, "response_style": "normaal", "moment": "2026-11-14T21:54:32.866516", "reactie_sentiment": null}

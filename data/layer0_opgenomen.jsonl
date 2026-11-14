@@ -57,3 +57,5 @@
 {"tekst": "wanneer gaat het regenen", "label": "rain"}
 {"tekst": "hey", "label": "greeting"}
 {"tekst": "gaat het vandaag regenen?", "label": "rain"}
+{"tekst": "9**9", "label": "math"}
+{"tekst": "9**9**9", "label": "math"}

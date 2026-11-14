@@ -1196,150 +1196,140 @@ class IntentRouter:
                 return kandidaat
         return word
 
+    # Eenvoudige definitie-achtige vragen: (prefixen, lidwoord strippen?,
+    # label voor de debugregel, event, topic-voorvoegsel of None).
+    # De volgorde is de volgorde waarin ze vroeger na elkaar gecontroleerd
+    # werden; de eerste treffer wint.
+    #
+    # Wat zijn de oorzaken/gevolgen van X (Fase 8.1, 11 oktober 2026):
+    # vroeger gaf "wat veroorzaakt X" de GEVOLGEN terug (verkeerde richting),
+    # zie on_causes() in chat.py. Die twee hebben een Layer 2-topic per woord
+    # (zelfde patroon als "definitie_<woord>"); de vlag _topic_al_ge_emit
+    # voorkomt dat route() hierna ook nog het verouderde definitie-topic emit.
+    _DEFINITIE_TAKKEN = [
+        (["wat zijn synoniemen van ", "wat is een synoniem van ", "synoniemen van ",
+          "wat is het synoniem van ", "wat is een ander woord voor ", "ander woord voor "],
+         False, "synoniem", "intent_synonym", None),
+        (["wat is het tegenovergestelde van ", "wat zijn antoniemen van ", "tegendeel van "],
+         False, "antoniem", "intent_antonym", None),
+        (["waarvoor gebruik je ", "waarvoor is ", "waarvoor dient "],
+         True, "used_for", "intent_used_for", None),
+        (["wat veroorzaakt ", "wat zorgt voor ", "wat leidt tot "],
+         True, "causes = oorzaken van", "intent_causes", "oorzaken"),
+        (["wat zijn de gevolgen van ", "wat zijn gevolgen van ",
+          "wat is het gevolg van ", "waartoe leidt ", "waartoe leiden "],
+         True, "effects = gevolgen van", "intent_effects", "gevolgen"),
+        (["wat zijn eigenschappen van ", "wat zijn kenmerken van "],
+         False, "properties", "intent_properties", None),
+        (["waarop lijkt ", "waar lijkt ", "wat lijkt op ", "wat hoort bij "],
+         True, "related_to", "intent_related_to", None),
+        (["wiki ", "leer wikipedia ", "zoek op "],
+         True, "wiki opzoeken", "intent_wiki", None),
+    ]
+
+    # Andere/aanvullende betekenis opvragen (vervolgpunt uit bug #27,
+    # 31 juli 2026): een natuurlijke vervolgzin op een eerdere "wat
+    # is X"-vraag, geen los commando. STARTSWITH-matching op een kernzin
+    # (bugfix bij live-testen, 31 juli 2026), met het woord ERNA optioneel
+    # (na "van "/"voor "). Als het woord expliciet genoemd wordt, heeft dat
+    # voorrang op _laatste_definitie_woord.
+    _ANDERE_BETEKENIS_KERNZINNEN = [
+        "zijn er nog andere betekenissen",
+        "zijn er andere betekenissen",
+        "zijn er nog betekenissen",
+        "zijn er betekenissen",
+        "heeft dat nog andere betekenissen",
+        "heeft het nog andere betekenissen",
+        "andere betekenissen",
+        "andere betekenis",
+        "nog andere betekenissen",
+        "nog betekenissen",
+        "wat betekent het nog meer",
+        "wat betekent dat nog meer",
+        "wat betekent het nog",
+        "wat betekend het nog",
+    ]
+
+    # "Wat weet je allemaal over X" (1 augustus 2026): overzicht van ALLE
+    # bestaande kennis over een woord.
+    _OVERVIEW_PREFIXEN = [
+        "wat weet je allemaal over ",
+        "wat weet je over ",
+        "wat weet je van ",
+        "vertel me alles over ",
+        "vertel alles over ",
+    ]
+    # Vragen over Kevin of Nova zelf zijn geen woord-opzoeking:
+    # "wat weet je over mij" hoort bij detect_preference_query().
+    _PERSOONLIJKE_WOORDEN = {"mij", "me", "kevin", "jezelf", "jou", "jouzelf", "ons"}
+
+    # Definitievragen
+    _DEFINITIE_PREFIXEN = [
+        "wat is ",
+        "wat zijn ",
+        "wat betekent ",
+        "wat betekend ",
+        "betekent ",
+        "betekend ",
+        "definieer ",
+        "definieer: ",
+        "definitie van ",
+    ]
+
+    @staticmethod
+    def _rest_na_prefix(t, prefixen):
+        """Geeft de tekst na het eerste prefix dat past (zonder "?."
+        achteraan), of None als er geen enkel prefix past."""
+        for p in prefixen:
+            if t.startswith(p):
+                return t[len(p):].strip().rstrip("?.")
+        return None
+
+    @staticmethod
+    def _zonder_lidwoord(word):
+        for art in ["de ", "het ", "een "]:
+            if word.startswith(art):
+                return word[len(art):].strip()
+        return word
+
     def detect_definition(self, text):
         t = text.lower().strip()
 
-        # Synoniemen
-        for p in ["wat zijn synoniemen van ", "wat is een synoniem van ", "synoniemen van ",
-                  "wat is het synoniem van ", "wat is een ander woord voor ", "ander woord voor "]:
-            if t.startswith(p):
-                word = t[len(p):].strip().rstrip("?.")
-                dbg(f"{C_BLUE}→ definition (synoniem): '{word}'{C_RESET}")
-                self.event_bus.publish("intent_synonym", {"word": word})
-                return True
+        for stap in (self._def_eenvoudig, self._def_andere_betekenis,
+                     self._def_overzicht, self._def_vergelijking,
+                     self._def_definitievraag):
+            resultaat = stap(t, text)
+            if resultaat is not None:
+                return resultaat
+        return False
 
-        # Antoniemen
-        for p in ["wat is het tegenovergestelde van ", "wat zijn antoniemen van ", "tegendeel van "]:
-            if t.startswith(p):
-                word = t[len(p):].strip().rstrip("?.")
-                dbg(f"{C_BLUE}→ definition (antoniem): '{word}'{C_RESET}")
-                self.event_bus.publish("intent_antonym", {"word": word})
-                return True
+    # Elke _def_*-stap geeft True (afgehandeld), False (meteen False teruggeven)
+    # of None (past niet, probeer de volgende stap).
 
-        # Waarvoor gebruik je X
-        for p in ["waarvoor gebruik je ", "waarvoor is ", "waarvoor dient "]:
-            if t.startswith(p):
-                word = t[len(p):].strip().rstrip("?.")
-                for art in ["de ", "het ", "een "]:
-                    if word.startswith(art):
-                        word = word[len(art):].strip()
-                        break
-                dbg(f"{C_BLUE}→ definition (used_for): '{word}'{C_RESET}")
-                self.event_bus.publish("intent_used_for", {"word": word})
-                return True
-
-        # Wat veroorzaakt X / wat zorgt voor X / wat leidt tot X
-        # -> de OORZAKEN van X (Fase 8.1, 11 oktober 2026). Vroeger gaf
-        # dit de GEVOLGEN van X terug (verkeerde richting), zie
-        # on_causes() in chat.py. Layer 2-topic per woord, zelfde
-        # patroon als "definitie_<woord>" -- de vlag voorkomt dat
-        # route() hierna ook nog het verouderde definitie-topic emit.
-        for p in ["wat veroorzaakt ", "wat zorgt voor ", "wat leidt tot "]:
-            if t.startswith(p):
-                word = t[len(p):].strip().rstrip("?.")
-                for art in ["de ", "het ", "een "]:
-                    if word.startswith(art):
-                        word = word[len(art):].strip()
-                        break
-                dbg(f"{C_BLUE}→ definition (causes = oorzaken van): '{word}'{C_RESET}")
-                self._emit_topic(f"oorzaken_{word}" if word else "oorzaken", bron="detect", concept=word or None)
+    def _def_eenvoudig(self, t, text):
+        for prefixen, lidwoord, label, event, topic in self._DEFINITIE_TAKKEN:
+            word = self._rest_na_prefix(t, prefixen)
+            if word is None:
+                continue
+            if lidwoord:
+                word = self._zonder_lidwoord(word)
+            dbg(f"{C_BLUE}→ definition ({label}): '{word}'{C_RESET}")
+            if topic:
+                self._emit_topic(f"{topic}_{word}" if word else topic, bron="detect", concept=word or None)
                 self._topic_al_ge_emit = True
-                self.event_bus.publish("intent_causes", {"word": word})
-                return True
+            self.event_bus.publish(event, {"word": word})
+            return True
+        return None
 
-        # Wat zijn de gevolgen van X -> de GEVOLGEN van X (Fase 8.1)
-        for p in [
-            "wat zijn de gevolgen van ", "wat zijn gevolgen van ",
-            "wat is het gevolg van ", "waartoe leidt ", "waartoe leiden ",
-        ]:
-            if t.startswith(p):
-                word = t[len(p):].strip().rstrip("?.")
-                for art in ["de ", "het ", "een "]:
-                    if word.startswith(art):
-                        word = word[len(art):].strip()
-                        break
-                dbg(f"{C_BLUE}→ definition (effects = gevolgen van): '{word}'{C_RESET}")
-                self._emit_topic(f"gevolgen_{word}" if word else "gevolgen", bron="detect", concept=word or None)
-                self._topic_al_ge_emit = True
-                self.event_bus.publish("intent_effects", {"word": word})
-                return True
-
-        # Wat zijn eigenschappen van X
-        for p in ["wat zijn eigenschappen van ", "wat zijn kenmerken van "]:
-            if t.startswith(p):
-                word = t[len(p):].strip().rstrip("?.")
-                dbg(f"{C_BLUE}→ definition (properties): '{word}'{C_RESET}")
-                self.event_bus.publish("intent_properties", {"word": word})
-                return True
-            
-        # Waarop lijkt X (related_to)
-        for p in ["waarop lijkt ", "waar lijkt ", "wat lijkt op ", "wat hoort bij "]:
-            if t.startswith(p):
-                word = t[len(p):].strip().rstrip("?.")
-                for art in ["de ", "het ", "een "]:
-                    if word.startswith(art):
-                        word = word[len(art):].strip()
-                        break
-                dbg(f"{C_BLUE}→ definition (related_to): '{word}'{C_RESET}")
-                self.event_bus.publish("intent_related_to", {"word": word})
-                return True
-
-        # Wikipedia opzoeken
-        for p in ["wiki ", "leer wikipedia ", "zoek op "]:
-            if t.startswith(p):
-                word = t[len(p):].strip().rstrip("?.")
-                for art in ["de ", "het ", "een "]:
-                    if word.startswith(art):
-                        word = word[len(art):].strip()
-                        break
-                dbg(f"{C_BLUE}→ definition (wiki opzoeken): '{word}'{C_RESET}")
-                self.event_bus.publish("intent_wiki", {"word": word})
-                return True
-
-        # Andere/aanvullende betekenis opvragen (vervolgpunt uit bug #27,
-        # 31 juli 2026): een natuurlijke vervolgzin op een eerdere "wat
-        # is X"-vraag, geen los commando.
-        #
-        # Bugfix bij live-testen (31 juli 2026): de eerste versie
-        # gebruikte EXACTE zin-gelijkheid (t in [...]), waardoor zelfs
-        # een kleine, heel natuurlijke variatie als "zijn er nog andere
-        # betekenissen VAN FYSICA" al niet matchte en gewoon in de
-        # fallback-intent belandde. Nu: STARTSWITH-matching op een
-        # kernzin, met het woord ERNA optioneel (na "van "/"voor ").
-        # Als het woord expliciet genoemd wordt, heeft dat voorrang op
-        # _laatste_definitie_woord (bv. als iemand na een tijdje toch
-        # nog een ANDER woord noemt dan het laatst opgezochte).
-        andere_betekenis_kernzinnen = [
-            "zijn er nog andere betekenissen",
-            "zijn er andere betekenissen",
-            "zijn er nog betekenissen",
-            "zijn er betekenissen",
-            "heeft dat nog andere betekenissen",
-            "heeft het nog andere betekenissen",
-            "andere betekenissen",
-            "andere betekenis",
-            "nog andere betekenissen",
-            "nog betekenissen",
-            "wat betekent het nog meer",
-            "wat betekent dat nog meer",
-            "wat betekent het nog",
-            "wat betekend het nog",
-        ]
-        for kernzin in andere_betekenis_kernzinnen:
+    def _def_andere_betekenis(self, t, text):
+        for kernzin in self._ANDERE_BETEKENIS_KERNZINNEN:
             if t == kernzin or t.startswith(kernzin):
                 rest = t[len(kernzin):].strip().rstrip("?.")
                 woord = None
-                # Bugfix (8 augustus 2026, live ontdekt door Kevin): rest
-                # is hierboven al .strip()'t, dus een eventuele voorloop-
-                # spatie is er al af. De oude check zocht nog op " van "/
-                # " voor " MET voorloop-spatie, wat daardoor NOOIT kon
-                # matchen -- "zijn er nog andere betekenissen van fysica"
-                # gaf dus altijd rest == "van fysica" (geen spatie vooraan),
-                # de koppel-check faalde altijd, en het woord viel stil
-                # terug op _laatste_definitie_woord (mogelijk een ouder,
-                # niet meer relevant woord) i.p.v. het net genoemde woord
-                # zelf te gebruiken. Nu zonder voorloop-spatie gecheckt --
-                # rest begint dan gewoon direct met "van "/"voor ".
+                # Bugfix (8 augustus 2026, live ontdekt door Kevin): rest is
+                # al .strip()'t, dus "van "/"voor " moet ZONDER voorloop-
+                # spatie gecheckt worden; anders viel het woord altijd stil
+                # terug op _laatste_definitie_woord.
                 for koppel in ["van ", "voor "]:
                     if rest.startswith(koppel):
                         woord = rest[len(koppel):].strip()
@@ -1355,66 +1345,38 @@ class IntentRouter:
                     })
                     return True
 
-                # Eigen, herkenbaar Layer 2-topic (1 augustus 2026), i.p.v.
-                # mee te liften op het topic van de vorige, gewone
-                # definitievraag -- "zijn er nog andere betekenissen" is
-                # een ANDER, onderscheiden gedragspatroon (bv. Kevin die
-                # 's avonds graag dieper op een woord doorvraagt), dat
-                # zonder eigen topic onzichtbaar zou blijven voor Layer 2.
-                # Zelfde vlag-patroon als detect_chess()'s
-                # chess_evaluation-tak hierboven: voorkomt dat route()'s
-                # stap 8 hierna ALSNOG het generieke "definitie_<woord>"
-                # emit (zie ook de bijbehorende aanpassing daar).
+                # Eigen Layer 2-topic (1 augustus 2026): "zijn er nog andere
+                # betekenissen" is een eigen gedragspatroon; de vlag
+                # voorkomt dat route() ALSNOG het generieke
+                # "definitie_<woord>" emit.
                 dbg(f"{C_BLUE}→ definition (andere_betekenis): '{woord}'{C_RESET}")
                 self._emit_topic(f"andere_betekenis_{woord}", bron="detect", concept=woord)
                 self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_wiki_andere_betekenis", {"word": woord})
                 return True
+        return None
 
-        # "Wat weet je allemaal over X" -- nieuwe module concept_overview.py
-        # (1 augustus 2026): toont een kort overzicht van ALLE bestaande
-        # kennis over een woord (alle senses, relaties, voorbeelden),
-        # met een pending-vervolgvraag voor wie meer detail wil. In
-        # tegenstelling tot de andere detecties hierboven werkt dit
-        # woord ALTIJD expliciet genoemd (geen zinvolle "vorig woord"-
-        # fallback hier, want dit gaat niet per se over het laatst
-        # opgezochte woord).
-        overview_prefixes = [
-            "wat weet je allemaal over ",
-            "wat weet je over ",
-            "wat weet je van ",
-            "vertel me alles over ",
-            "vertel alles over ",
-        ]
-        # Vragen over Kevin of Nova zelf zijn geen woord-opzoeking:
-        # "wat weet je over mij" hoort bij detect_preference_query().
-        persoonlijke_woorden = {"mij", "me", "kevin", "jezelf", "jou", "jouzelf", "ons"}
-        for p in overview_prefixes:
+    def _def_overzicht(self, t, text):
+        for p in self._OVERVIEW_PREFIXEN:
             if t.startswith(p):
-                woord = t[len(p):].strip().rstrip("?.")
-                for art in ["de ", "het ", "een "]:
-                    if woord.startswith(art):
-                        woord = woord[len(art):].strip()
-                        break
-                if woord in persoonlijke_woorden:
+                woord = self._zonder_lidwoord(t[len(p):].strip().rstrip("?."))
+                if woord in self._PERSOONLIJKE_WOORDEN:
                     continue
                 # Eigen Layer 2-topic (1 augustus 2026), zelfde redenering
-                # als bij de andere-betekenis-tak hierboven -- "wat weet
-                # je allemaal over X" is een apart, herkenbaar
-                # gedragspatroon, geen gewone definitievraag.
+                # als bij de andere-betekenis-tak.
                 dbg(f"{C_BLUE}→ definition (concept_overview): '{woord}'{C_RESET}")
                 self._emit_topic(f"concept_overview_{woord}" if woord else "concept_overview", bron="detect", concept=woord or None)
                 self._topic_al_ge_emit = True
                 self.event_bus.publish("intent_concept_overview", {"word": woord})
                 return True
+        return None
 
-       # Vergelijking ("wat is het verschil tussen X en Y") — idee #6
-        # uit reasoning_engine_ideeen_roadmap.md. MOET vóór de brede
-        # "wat is "-prefixlijst hieronder staan, anders zou die de zin
-        # al afvangen en er "het verschil tussen gitaar en schaak" van
-        # maken als op te zoeken woord (live ontdekt 8 augustus 2026).
-        # Zelfde voorrang-patroon als de overview_prefixes-tak
-        # hierboven.
+    def _def_vergelijking(self, t, text):
+        # MOETEN vóór de brede "wat is "-prefixlijst staan, anders vangt
+        # die de zin al af (live ontdekt 8 augustus 2026).
+        #
+        # Vergelijking ("wat is het verschil tussen X en Y") — idee #6 uit
+        # reasoning_engine_ideeen_roadmap.md.
         m = re.match(r"wat\s+is\s+het\s+verschil\s+tussen\s+(\w+)\s+en\s+([\w\s]+)", t)
         if m:
             dbg(f"{C_BLUE}→ definition (compare_concepts): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
@@ -1425,14 +1387,10 @@ class IntentRouter:
             return True
 
         # Bruggen-woorden ("wat hebben X en Y gemeen") — Layer 1
-        # find_bridge(), gekoppeld 9 augustus 2026. Zelfde voorrang-
-        # reden als de compare_concepts-tak hierboven: dit begint met
-        # "wat", dus moet vóór de brede "wat is "-prefixlijst staan.
-        # BEWUST GEEN duplicaat van compare_concepts hierboven: dat
-        # vergelijkt FORMELE semantic-kennis (is_a/part_of/...), dit
-        # hier vergelijkt STATISTISCHE co-occurrence uit Layer 1 (zie
-        # nova_state.md, punt 6b) — daarom een aparte trigger-zin i.p.v.
-        # hergebruik van "vergelijk"/"verschil".
+        # find_bridge(), gekoppeld 9 augustus 2026. BEWUST GEEN duplicaat
+        # van compare_concepts: dat vergelijkt FORMELE semantic-kennis
+        # (is_a/part_of/...), dit STATISTISCHE co-occurrence uit Layer 1
+        # (zie nova_state.md, punt 6b).
         m = re.match(r"wat\s+hebben\s+(\w+)\s+en\s+([\w\s]+?)\s+gemeen", t)
         if m:
             dbg(f"{C_BLUE}→ definition (bridge_query): '{m.group(1).strip()}' -> '{m.group(2).strip()}'{C_RESET}")
@@ -1441,29 +1399,15 @@ class IntentRouter:
                 "word_b": m.group(2).strip()
             })
             return True
+        return None
 
-        # Definitievragen (crashfix: woord veilig ophalen)
-        prefixes = [
-            "wat is ",
-            "wat zijn ",
-            "wat betekent ",
-            "wat betekend ",
-            "betekent ",
-            "betekend ",
-            "definieer ",
-            "definieer: ",
-            "definitie van "
-        ]
-        for p in prefixes:
+    def _def_definitievraag(self, t, text):
+        for p in self._DEFINITIE_PREFIXEN:
             if t.startswith(p):
                 word = t[len(p):].strip().rstrip("?.")
                 if not word:
                     return False
-                # Lidwoorden strippen
-                for art in ["de ", "het ", "een "]:
-                    if word.startswith(art):
-                        word = word[len(art):].strip()
-                        break
+                word = self._zonder_lidwoord(word)
 
                 # Context achter het woord ("kraan lekken", "kraan in de
                 # keuken"): het woord zelf bepalen, de rest van de zin
@@ -1471,92 +1415,16 @@ class IntentRouter:
                 # signaalwoorden van meerduidige woorden.
                 word = self._kap_definitie_woord(word)
 
-                # Per-woord-timing (Layer 2-koppeling, uitbreiding op de
-                # bewust generieke "definitie"-topic uit Fase 7): het
-                # herkende woord hier bewaren als instance-attribuut,
-                # zodat route() straks (na deze aanroep) een woord-
-                # specifiek topic kan publiceren i.p.v. het vaste
-                # "definitie". Alleen HIER, in de definitie-tak, gezet --
-                # blijft None/ongewijzigd voor alle andere intents.
+                # Per-woord-timing (Layer 2-koppeling): het herkende woord
+                # bewaren, zodat route() straks een woord-specifiek topic
+                # kan publiceren i.p.v. het vaste "definitie". Alleen HIER
+                # gezet, ongewijzigd voor alle andere intents.
                 self._laatste_definitie_woord = word
 
-                # Layer 4 (response_engine) EERST proberen: die combineert
-                # semantic + word_associations + pattern_matcher tot één
-                # antwoord. Alleen als Layer 4 zelf geen definitie/relatie
-                # vond (confidence <= 0.2, dat is zijn "weet ik niet"-geval,
-                # zie response_engine.py), vallen we terug op de oude route
-                # via chat.py's intent_definition — want DIE heeft nog de
-                # automatische Wikipedia-fallback die Layer 4 niet heeft.
-                # LET OP (Fase 7): we publiceren "layer4_response" i.p.v.
-                # rechtstreeks "chat_response" — zo loopt de tekst nog
-                # door response_pipeline.py's tone-keten (emotie/tone/
-                # expression_injector), net als greeting/fallback al
-                # deden. response_pipeline.py verzint daarbij GEEN nieuwe
-                # tekst, het voegt enkel Nova's stemming/expressie toe.
-                # Meerduidig woord (30 oktober 2026): heeft het woord meerdere
-                # betekenissen en geeft de zin geen aanwijzing, dan slaan we
-                # Layer 4 over en laat ChatModule vragen welke betekenis
-                # bedoeld is. We sturen WEL intent_definition, met de extra
-                # aanduiding "betekenis_keuze".
-                keuzes = None
-                if self.semantic and hasattr(self.semantic, "get_betekenis_keuzes"):
-                    try:
-                        keuzes = self.semantic.get_betekenis_keuzes(word, t.split())
-                    except Exception:
-                        keuzes = None
-                if isinstance(keuzes, tuple):
-                    dbg(f"{C_BLUE}→ definition (meerduidig, keuzevraag): '{word}'{C_RESET}")
-                    self.event_bus.publish("intent_definition", {
-                        "text": text,
-                        "word": word,
-                        "betekenis_keuze": True
-                    })
+                if self._def_betekenis_keuze(word, t, text):
                     return True
-
-                response_engine = self.event_bus.modules.get("response_engine")
-
-                if response_engine is not None:
-                    # Bug #10-fix: de volledige vraagzin (t) meegeven als
-                    # context, zodat response_engine (via semantic.
-                    # detect_sense()) bij meerduidige woorden (python,
-                    # hart, ...) de juiste sense kan herkennen i.p.v.
-                    # altijd de sense met hoogste confidence te tonen.
-                    context_words = t.split()
-
-                    # Werkpunt 9.5 (27 juli 2026): response_style
-                    # opvragen bij Layer 5 (context_manager) en
-                    # doorgeven aan generate(), zodat "kort" nu ook
-                    # de INHOUD verkort (Layer 1-associatie + Layer 2-
-                    # timing-hint overslaan), niet enkel de toon
-                    # achteraf (dat laatste deed expression_injector.py
-                    # al). Zelfde try/except-veiligheid en dezelfde
-                    # manier van opvragen als response_pipeline.py's
-                    # _get_response_style() — context_manager wordt
-                    # nooit als argument doorgegeven aan IntentRouter,
-                    # dus we halen het op via event_bus.modules, met
-                    # "normaal" als veilige standaardwaarde als Layer 5
-                    # nog niet geladen is of er iets misgaat.
-                    response_style = "normaal"
-                    try:
-                        ctx_mgr = self.event_bus.modules.get("context_manager")
-                        if ctx_mgr is not None:
-                            ctx = ctx_mgr.get_current()
-                            response_style = ctx.get("response_style", "normaal")
-                    except Exception:
-                        response_style = "normaal"
-
-                    resultaat = response_engine.generate(
-                        word, context_words, response_style=response_style
-                    )
-
-                    if resultaat.get("confidence", 0.0) > 0.2:
-                        dbg(f"{C_BLUE}→ definition (layer4, confidence={resultaat.get('confidence', 0.0):.2f}): '{word}'{C_RESET}")
-                        self.event_bus.publish("layer4_response", {
-                            "text": resultaat["text"]
-                        })
-                        return True
-                    # confidence <= 0.2 -> Layer 4 wist het niet, val
-                    # door naar de oude route hieronder (met Wikipedia).
+                if self._def_layer4(word, t):
+                    return True
 
                 dbg(f"{C_BLUE}→ definition (oude route/wikipedia-fallback): '{word}'{C_RESET}")
                 self.event_bus.publish("intent_definition", {
@@ -1564,7 +1432,67 @@ class IntentRouter:
                     "word": word
                 })
                 return True
+        return None
 
+    def _def_betekenis_keuze(self, word, t, text):
+        """Meerduidig woord (30 oktober 2026): heeft het woord meerdere
+        betekenissen en geeft de zin geen aanwijzing, dan slaan we Layer 4
+        over en laat ChatModule vragen welke betekenis bedoeld is. We sturen
+        WEL intent_definition, met de extra aanduiding "betekenis_keuze"."""
+        keuzes = None
+        if self.semantic and hasattr(self.semantic, "get_betekenis_keuzes"):
+            try:
+                keuzes = self.semantic.get_betekenis_keuzes(word, t.split())
+            except Exception:
+                keuzes = None
+        if isinstance(keuzes, tuple):
+            dbg(f"{C_BLUE}→ definition (meerduidig, keuzevraag): '{word}'{C_RESET}")
+            self.event_bus.publish("intent_definition", {
+                "text": text,
+                "word": word,
+                "betekenis_keuze": True
+            })
+            return True
+        return False
+
+    def _def_response_style(self):
+        """Werkpunt 9.5 (27 juli 2026): response_style opvragen bij Layer 5
+        (context_manager), met "normaal" als veilige standaardwaarde als
+        Layer 5 nog niet geladen is of er iets misgaat. context_manager wordt
+        nooit als argument doorgegeven aan IntentRouter, dus we halen het
+        op via event_bus.modules."""
+        try:
+            ctx_mgr = self.event_bus.modules.get("context_manager")
+            if ctx_mgr is not None:
+                return ctx_mgr.get_current().get("response_style", "normaal")
+        except Exception:
+            pass
+        return "normaal"
+
+    def _def_layer4(self, word, t):
+        """Layer 4 (response_engine) EERST proberen: die combineert semantic
+        + word_associations + pattern_matcher tot één antwoord. Alleen als
+        Layer 4 zelf niets vond (confidence <= 0.2, zijn "weet ik niet"-
+        geval) vallen we terug op de oude route via chat.py's
+        intent_definition, want DIE heeft nog de automatische Wikipedia-
+        fallback die Layer 4 niet heeft.
+        LET OP (Fase 7): we publiceren "layer4_response" i.p.v. rechtstreeks
+        "chat_response", zodat de tekst nog door response_pipeline.py's
+        tone-keten loopt (emotie/tone/expression_injector)."""
+        response_engine = self.event_bus.modules.get("response_engine")
+        if response_engine is None:
+            return False
+        # Bug #10-fix: de volledige vraagzin (t) meegeven als context, zodat
+        # response_engine bij meerduidige woorden de juiste sense herkent.
+        resultaat = response_engine.generate(
+            word, t.split(), response_style=self._def_response_style()
+        )
+        if resultaat.get("confidence", 0.0) > 0.2:
+            dbg(f"{C_BLUE}→ definition (layer4, confidence={resultaat.get('confidence', 0.0):.2f}): '{word}'{C_RESET}")
+            self.event_bus.publish("layer4_response", {
+                "text": resultaat["text"]
+            })
+            return True
         return False
 
     # ---------------------------------------------------------

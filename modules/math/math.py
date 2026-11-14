@@ -2296,6 +2296,20 @@ class MathModule:
         dims, factor = self.units[unit_name]
         return UnitValue(number * factor, dims.copy(), label=unit_name).bind_math(self)
 
+    # Functies die een VRIJE EXPRESSIE als eerste argument krijgen
+    # (zie _eval_expressiefunctie, _eval_expressiefunctie_xy en
+    # _eval_symbolische_functie hieronder).
+    _EXPR_FUNCS = {
+        "newton", "nulpunt", "polyeval", "bereken", "extremum", "minmax",
+        "afgeleide", "integraal", "limiet",
+        "sigma",  # Fase 5, punt 19 — Reeksen/rijen: sigma(x^2, 1, 5)
+    }
+    _EXPR_FUNCS_XY = {"dv_euler", "dv_rk4", "dv"}
+    _EXPR_FUNCS_SYMBOLISCH = {
+        "differentiate", "integrate_sym", "simplify_sym",
+        "expand_sym", "factor_sym",
+    }
+
     def _eval(self, node, variables=None):
         # NIEUW (Fase 3, Algebra-module): optioneel 'variables'-dict
         # (bv. {"x": 2.5}) waarmee newton()/polyeval()/extremum() een
@@ -2304,19 +2318,18 @@ class MathModule:
         # deze parameter niet, dan gedraagt _eval() zich exact zoals
         # voorheen (100% backward compatible, geen enkele bestaande
         # aanroep hoeft aangepast te worden).
+        #
+        # Deze functie is alleen nog de VERDELER: per soort knoop in de
+        # boom wordt hier doorverwezen naar een eigen kleine functie.
 
         # getallen
         if isinstance(node, ast.Num):          # <3.8
             return node.n
         if isinstance(node, ast.Constant):     # 3.8+
             return node.value
-    
-        # vectoren (lijsten)
-        if isinstance(node, ast.List):
-            return [self._eval(e, variables) for e in node.elts]
 
-        # tuples (functie-argumenten)
-        if isinstance(node, ast.Tuple):
+        # vectoren (lijsten) en tuples (functie-argumenten)
+        if isinstance(node, (ast.List, ast.Tuple)):
             return [self._eval(e, variables) for e in node.elts]
 
         # NIEUW (Fase 5, punt 15 — CS-algoritmes): dictionaries, nodig om
@@ -2330,140 +2343,18 @@ class MathModule:
 
         # namen (constanten + eenheden)
         if isinstance(node, ast.Name):
-            name = node.id
+            return self._eval_naam(node, variables)
 
-            # NIEUW: los variabele-symbool (bv. "x") tijdens newton/
-            # polyeval/extremum — heeft voorrang op eenheden/constanten,
-            # want binnen zo'n expressie ís x de bedoelde variabele.
-            if variables is not None and name in variables:
-                return variables[name]
-
-            # temperatuur-eenheden altijd via _make_unitvalue verwerken
-            if name in ("degC", "degF"):
-                return ("TEMP", name)
-
-            # BUGFIX (1 aug 2026): kale "C" is dubbelzinnig — kan coulomb
-            # (SI-ladingseenheid, staat in self.units) of Celsius betekenen.
-            # Zonder deze check werd "0C" stilzwijgend als coulomb gelezen
-            # (0 A·s). We raden hier bewust NIET welke bedoeld is — dat zou
-            # in de helft van de gevallen alsnog fout gokken. In plaats
-            # daarvan een duidelijke fout die om het gradenteken vraagt.
-            if name == "C":
-                raise ValueError(
-                    "Dubbelzinnige eenheid 'C': bedoel je graden Celsius (°C) "
-                    "of coulomb (elektrische lading)? Typ het gradenteken erbij "
-                    "voor Celsius, bv. 0°C."
-                )
-
-            # constante?
-            if name in self.consts:
-                return self.consts[name]
-
-            # eenheid?
-            if name in self.units:
-                dims, factor = self.units[name]
-                return UnitValue(factor, dims.copy()).bind_math(self)
-
-            raise ValueError(f"Onbekende naam of eenheid: {name}")
-
-        # binaire operatoren
         # binaire operatoren
         if isinstance(node, ast.BinOp):
-            left = self._eval(node.left, variables)
-            right = self._eval(node.right, variables)
-            op = self.ops[type(node.op)]
-
-            # temperatuur-markers: forceer _make_unitvalue
-            if isinstance(right, tuple) and right[0] == "TEMP":
-                return self._make_unitvalue(left, right[1])
-
-            if isinstance(left, tuple) and left[0] == "TEMP":
-                return self._make_unitvalue(right, left[1])
-
-            # -----------------------------------------
-            # 1. matrix * vector  (MOET EERST!)
-            # -----------------------------------------
-            if isinstance(left, list) and isinstance(right, list):
-                # check matrix × vector
-                if all(isinstance(row, list) for row in left) and all(isinstance(x, (int, float)) for x in right):
-                    if any(len(row) != len(right) for row in left):
-                        raise ValueError("matrix × vector: dimensies komen niet overeen")
-                    return [sum(a*b for a, b in zip(row, right)) for row in left]
-
-            # -----------------------------------------
-            # matrix + matrix  /  matrix - matrix
-            # -----------------------------------------
-            if isinstance(left, list) and isinstance(right, list) and op in (operator.add, operator.sub):
-                if all(isinstance(row, list) for row in left) and all(isinstance(row, list) for row in right):
-                    if len(left) != len(right) or any(len(a) != len(b) for a, b in zip(left, right)):
-                        raise ValueError("matrix + matrix: dimensies komen niet overeen")
-                    return [[op(a, b) for a, b in zip(rowA, rowB)] for rowA, rowB in zip(left, right)]
-
-            # -----------------------------------------
-            # 2. matrix * matrix
-            # -----------------------------------------
-            if isinstance(left, list) and isinstance(right, list):
-                # check of beide matrices zijn
-                if all(isinstance(row, list) for row in left) and all(isinstance(row, list) for row in right):
-                    # dimensies
-                    rows_A = len(left)
-                    cols_A = len(left[0])
-                    rows_B = len(right)
-                    cols_B = len(right[0])
-
-                    if cols_A != rows_B:
-                        raise ValueError("matrix × matrix: dimensies komen niet overeen")
-
-                    # matrixvermenigvuldiging
-                    result = []
-                    for i in range(rows_A):
-                        row = []
-                        for j in range(cols_B):
-                            val = sum(left[i][k] * right[k][j] for k in range(cols_A))
-                            row.append(val)
-                        result.append(row)
-                    return result
-
-            # -----------------------------------------
-            # scalar * matrix  of  matrix * scalar
-            # -----------------------------------------
-            if isinstance(left, (int, float)) and isinstance(right, list):
-                if all(isinstance(row, list) for row in right):
-                    return [[left * x for x in row] for row in right]
-
-            if isinstance(right, (int, float)) and isinstance(left, list):
-                if all(isinstance(row, list) for row in left):
-                    return [[x * right for x in row] for row in left]
-
-            # -----------------------------------------
-            # 3. vector + vector / vector - vector
-            # -----------------------------------------
-            if isinstance(left, list) and isinstance(right, list):
-                if len(left) != len(right):
-                    raise ValueError("Vectoren moeten even lang zijn")
-                return [op(a, b) for a, b in zip(left, right)]
-
-            # -----------------------------------------
-            # 4. scalar * vector of vector * scalar
-            # -----------------------------------------
-            if isinstance(left, list) and isinstance(right, (int, float)):
-                return [op(a, right) for a in left]
-            if isinstance(right, list) and isinstance(left, (int, float)):
-                return [op(left, b) for b in right]
-
-            # 5. UnitValue-ondersteuning
-            if isinstance(left, UnitValue) or isinstance(right, UnitValue):
-                return op(left, right)
-
-            # 6. gewone scalars
-            return op(left, right)
+            return self._eval_binop(node, variables)
 
         # unair (bv. -5)
         if isinstance(node, ast.UnaryOp):
             op = self.ops[type(node.op)]
             return op(self._eval(node.operand, variables))
 
-        # ⭐ 1. attribute access
+        # attribute access
         if isinstance(node, ast.Attribute):
             obj = self._eval(node.value, variables)
             attr = node.attr
@@ -2471,112 +2362,260 @@ class MathModule:
                 return getattr(obj, attr)
             raise ValueError(f"Onbekende methode: {attr}")
 
-        # functie‑aanroepen
+        # functie-aanroepen
         if isinstance(node, ast.Call):
-
-            # method call: x.to(...)
-            if isinstance(node.func, ast.Attribute):
-                obj = self._eval(node.func.value)
-                method = node.func.attr
-
-                # BUGFIX (1 aug 2026): bij .to(cm) werd "cm" eerst via
-                # _eval() omgezet naar een UnitValue (0.01 m), omdat een
-                # los symbool normaal als eenheid-waarde wordt opgelost.
-                # _convert() verwacht de eenheid echter als STRING ("cm"),
-                # niet als UnitValue — dat gaf een verwarrende foutmelding
-                # ("Onbekende eenheid: 0.01 m" i.p.v. "cm"). Voor .to()
-                # specifiek gebruiken we daarom de kale naam als string
-                # wanneer het argument een simpele naam is (bv. cm, degF).
-                if method == "to" and len(node.args) == 1 and isinstance(node.args[0], ast.Name):
-                    args = [node.args[0].id]
-                else:
-                    args = [self._eval(a) for a in node.args]
-
-                if hasattr(obj, method):
-                    return getattr(obj, method)(*args)
-                raise ValueError(f"Onbekende methode: {method}")
-                
-            if not isinstance(node.func, ast.Name):
-                raise ValueError("Ongeldige functie‑aanroep")
-
-            fname = node.func.id
-            if fname not in self.funcs:
-                raise ValueError(f"Onbekende functie: {fname}")
-
-            # NIEUW (Fase 3, Algebra-module + Calculus-module): sommige
-            # functies werken met een VRIJE EXPRESSIE als eerste argument
-            # (bv. "x^2 - 4"), i.p.v. een kant-en-klare waarde. Normaal
-            # evalueert _eval() elk functie-argument meteen tot een
-            # getal — dat kan hier niet, want "x" (en bij de DV-functies
-            # ook "y") heeft nog geen waarde. In plaats daarvan geven we
-            # deze functies een klein Python-functie-object mee (f) dat,
-            # ZODRA zij zelf waarden kiezen, die expressie alsnog
-            # symbolisch evalueert via _eval(node, {...}). Alle overige
-            # functies (sqrt, sin, det, ...) blijven ongewijzigd werken
-            # zoals voorheen.
-
-            # Groep 1: expressie met enkel x, bv. "x^2 - 4"
-            EXPR_FUNCS = {
-                "newton", "nulpunt", "polyeval", "bereken", "extremum", "minmax",
-                "afgeleide", "integraal", "limiet",
-                "sigma",  # Fase 5, punt 19 — Reeksen/rijen: sigma(x^2, 1, 5)
-            }
-            if fname in EXPR_FUNCS:
-                if len(node.args) < 1:
-                    raise ValueError(f"{fname}: eerste argument moet een expressie met x zijn, bv. \"x^2 - 4\"")
-
-                expr_node = node.args[0]
-
-                def f(x_waarde, _expr_node=expr_node):
-                    return self._eval(_expr_node, {"x": x_waarde})
-
-                overige_args = [self._eval(a, variables) for a in node.args[1:]]
-                return self.funcs[fname](f, *overige_args)
-
-            # Groep 2: expressie met x ÉN y samen, bv. "x - y" voor
-            # differentiaalvergelijkingen dy/dx = f(x, y)
-            EXPR_FUNCS_XY = {"dv_euler", "dv_rk4", "dv"}
-            if fname in EXPR_FUNCS_XY:
-                if len(node.args) < 1:
-                    raise ValueError(f"{fname}: eerste argument moet een expressie met x en y zijn, bv. \"x - y\"")
-
-                expr_node = node.args[0]
-
-                def f_xy(x_waarde, y_waarde, _expr_node=expr_node):
-                    return self._eval(_expr_node, {"x": x_waarde, "y": y_waarde})
-
-                overige_args = [self._eval(a, variables) for a in node.args[1:]]
-                return self.funcs[fname](f_xy, *overige_args)
-
-            # Groep 3 (Fase 4, punt 10 — Symbolische algebra): deze
-            # functies geven zelf een FORMULE terug (geen getal), en
-            # verwachten daarom hun argument als STRING, niet als
-            # geëvalueerde waarde of als Python-functie-object zoals
-            # groep 1/2 hierboven. We gebruiken ast.unparse() om de
-            # AST-node terug te vertalen naar de tekst zoals ze er
-            # (na preprocess()) al stond, en geven die string door —
-            # de functies zelf parsen die daarna opnieuw, veilig, via
-            # _sympy_parse() (zie de uitleg daar).
-            EXPR_FUNCS_SYMBOLISCH = {
-                "differentiate", "integrate_sym", "simplify_sym",
-                "expand_sym", "factor_sym",
-            }
-            if fname in EXPR_FUNCS_SYMBOLISCH:
-                if len(node.args) < 1:
-                    raise ValueError(f"{fname}: eerste argument moet een expressie met x zijn, bv. \"x^2 - 4\"")
-
-                if len(node.args) > 1:
-                    tweede = node.args[1]
-                    if not (isinstance(tweede, ast.Name) and tweede.id == "x"):
-                        raise ValueError(f"{fname}: enkel de variabele x wordt ondersteund")
-
-                expr_str = ast.unparse(node.args[0])
-                return self.funcs[fname](expr_str)
-
-            args = [self._eval(a, variables) for a in node.args]
-            return self.funcs[fname](*args)
+            return self._eval_aanroep(node, variables)
 
         raise ValueError("Ongeldige expressie")
+
+    # ------------------------------------------------------------------
+    # _eval: namen (constanten + eenheden)
+    # ------------------------------------------------------------------
+    def _eval_naam(self, node, variables):
+        name = node.id
+
+        # NIEUW: los variabele-symbool (bv. "x") tijdens newton/
+        # polyeval/extremum — heeft voorrang op eenheden/constanten,
+        # want binnen zo'n expressie ís x de bedoelde variabele.
+        if variables is not None and name in variables:
+            return variables[name]
+
+        # temperatuur-eenheden altijd via _make_unitvalue verwerken
+        if name in ("degC", "degF"):
+            return ("TEMP", name)
+
+        # BUGFIX (1 aug 2026): kale "C" is dubbelzinnig — kan coulomb
+        # (SI-ladingseenheid, staat in self.units) of Celsius betekenen.
+        # Zonder deze check werd "0C" stilzwijgend als coulomb gelezen
+        # (0 A·s). We raden hier bewust NIET welke bedoeld is — dat zou
+        # in de helft van de gevallen alsnog fout gokken. In plaats
+        # daarvan een duidelijke fout die om het gradenteken vraagt.
+        if name == "C":
+            raise ValueError(
+                "Dubbelzinnige eenheid 'C': bedoel je graden Celsius (°C) "
+                "of coulomb (elektrische lading)? Typ het gradenteken erbij "
+                "voor Celsius, bv. 0°C."
+            )
+
+        # constante?
+        if name in self.consts:
+            return self.consts[name]
+
+        # eenheid?
+        if name in self.units:
+            dims, factor = self.units[name]
+            return UnitValue(factor, dims.copy()).bind_math(self)
+
+        raise ValueError(f"Onbekende naam of eenheid: {name}")
+
+    # ------------------------------------------------------------------
+    # _eval: binaire operatoren (getallen, eenheden, vectoren, matrices)
+    # ------------------------------------------------------------------
+    def _eval_binop(self, node, variables):
+        left = self._eval(node.left, variables)
+        right = self._eval(node.right, variables)
+        op = self.ops[type(node.op)]
+
+        # temperatuur-markers: forceer _make_unitvalue
+        if isinstance(right, tuple) and right[0] == "TEMP":
+            return self._make_unitvalue(left, right[1])
+
+        if isinstance(left, tuple) and left[0] == "TEMP":
+            return self._make_unitvalue(right, left[1])
+
+        # vectoren en matrices hebben hun eigen regels
+        if isinstance(left, list) or isinstance(right, list):
+            return self._binop_met_lijst(left, right, op)
+
+        # UnitValue-ondersteuning en gewone scalars: dezelfde bewerking
+        return op(left, right)
+
+    def _binop_met_lijst(self, left, right, op):
+        """Binaire bewerking waarbij minstens een kant een lijst is."""
+        if isinstance(left, list) and isinstance(right, list):
+            return self._binop_lijst_lijst(left, right, op)
+
+        # Precies een kant is een lijst; de andere kant is een scalar of iets anders.
+        links_scalar = isinstance(left, (int, float))
+        rechts_scalar = isinstance(right, (int, float))
+
+        # getal en matrix: elementsgewijs, zoals bij vectoren. Dat kan voor
+        # +, - en * (en matrix / getal); getal / matrix en machten niet.
+        if links_scalar and right and all(isinstance(row, list) for row in right):
+            if op not in (operator.add, operator.sub, operator.mul):
+                raise ValueError(self._matrix_fout("getal en matrix", op))
+            return [[op(left, x) for x in row] for row in right]
+        if rechts_scalar and left and all(isinstance(row, list) for row in left):
+            if op not in (operator.add, operator.sub, operator.mul, operator.truediv):
+                raise ValueError(self._matrix_fout("matrix en getal", op))
+            return [[op(x, right) for x in row] for row in left]
+
+        # scalar * vector of vector * scalar
+        if rechts_scalar:
+            return [op(a, right) for a in left]
+        if links_scalar:
+            return [op(left, b) for b in right]
+
+        # lijst met een UnitValue of iets anders
+        return op(left, right)
+
+    def _binop_lijst_lijst(self, left, right, op):
+        """Binaire bewerking tussen twee lijsten (vector of matrix)."""
+        # 1. matrix * vector  (MOET EERST!)
+        if all(isinstance(row, list) for row in left) and all(isinstance(x, (int, float)) for x in right):
+            if left and op is not operator.mul:
+                raise ValueError(self._matrix_fout("matrix en vector", op))
+            if any(len(row) != len(right) for row in left):
+                raise ValueError("matrix × vector: dimensies komen niet overeen")
+            return [sum(a*b for a, b in zip(row, right)) for row in left]
+
+        beide_matrix = (all(isinstance(row, list) for row in left)
+                        and all(isinstance(row, list) for row in right))
+
+        # 2. matrix + matrix  /  matrix - matrix
+        if beide_matrix and op in (operator.add, operator.sub):
+            if len(left) != len(right) or any(len(a) != len(b) for a, b in zip(left, right)):
+                raise ValueError("matrix + matrix: dimensies komen niet overeen")
+            return [[op(a, b) for a, b in zip(rowA, rowB)] for rowA, rowB in zip(left, right)]
+
+        # 3. matrix * matrix
+        if beide_matrix:
+            if op is not operator.mul:
+                raise ValueError(self._matrix_fout("matrix en matrix", op))
+            return self._matrix_product(left, right)
+
+        # 4. vector + vector / vector - vector
+        if len(left) != len(right):
+            raise ValueError("Vectoren moeten even lang zijn")
+        return [op(a, b) for a, b in zip(left, right)]
+
+    @staticmethod
+    def _matrix_fout(soort, op):
+        symbolen = {operator.add: "+", operator.sub: "-", operator.mul: "*",
+                    operator.truediv: "/"}
+        symbool = symbolen.get(op, "^")
+        return f"{soort}: de bewerking '{symbool}' wordt niet ondersteund"
+
+    def _matrix_product(self, left, right):
+        rows_A = len(left)
+        cols_A = len(left[0])
+        rows_B = len(right)
+        cols_B = len(right[0])
+
+        if cols_A != rows_B:
+            raise ValueError("matrix × matrix: dimensies komen niet overeen")
+
+        # matrixvermenigvuldiging
+        result = []
+        for i in range(rows_A):
+            row = []
+            for j in range(cols_B):
+                val = sum(left[i][k] * right[k][j] for k in range(cols_A))
+                row.append(val)
+            result.append(row)
+        return result
+
+    # ------------------------------------------------------------------
+    # _eval: functie-aanroepen
+    # ------------------------------------------------------------------
+    def _eval_aanroep(self, node, variables):
+        # method call: x.to(...)
+        if isinstance(node.func, ast.Attribute):
+            return self._eval_methodeaanroep(node, variables)
+
+        if not isinstance(node.func, ast.Name):
+            raise ValueError("Ongeldige functie\u2011aanroep")
+
+        fname = node.func.id
+        if fname not in self.funcs:
+            raise ValueError(f"Onbekende functie: {fname}")
+
+        # NIEUW (Fase 3, Algebra-module + Calculus-module): sommige
+        # functies werken met een VRIJE EXPRESSIE als eerste argument
+        # (bv. "x^2 - 4"), i.p.v. een kant-en-klare waarde. Normaal
+        # evalueert _eval() elk functie-argument meteen tot een
+        # getal — dat kan hier niet, want "x" (en bij de DV-functies
+        # ook "y") heeft nog geen waarde. In plaats daarvan geven we
+        # deze functies een klein Python-functie-object mee dat,
+        # ZODRA zij zelf waarden kiezen, die expressie alsnog
+        # symbolisch evalueert via _eval(node, {...}). Alle overige
+        # functies (sqrt, sin, det, ...) blijven ongewijzigd werken
+        # zoals voorheen.
+        if fname in self._EXPR_FUNCS:
+            return self._eval_expressiefunctie(node, fname, variables)
+        if fname in self._EXPR_FUNCS_XY:
+            return self._eval_expressiefunctie_xy(node, fname, variables)
+        if fname in self._EXPR_FUNCS_SYMBOLISCH:
+            return self._eval_symbolische_functie(node, fname)
+
+        args = [self._eval(a, variables) for a in node.args]
+        return self.funcs[fname](*args)
+
+    def _eval_methodeaanroep(self, node, variables):
+        """x.methode(...), bv. (5*kg).to(g)."""
+        obj = self._eval(node.func.value, variables)
+        method = node.func.attr
+
+        # BUGFIX (1 aug 2026): bij .to(cm) werd "cm" eerst via
+        # _eval() omgezet naar een UnitValue (0.01 m), omdat een
+        # los symbool normaal als eenheid-waarde wordt opgelost.
+        # _convert() verwacht de eenheid echter als STRING ("cm"),
+        # niet als UnitValue — dat gaf een verwarrende foutmelding
+        # ("Onbekende eenheid: 0.01 m" i.p.v. "cm"). Voor .to()
+        # specifiek gebruiken we daarom de kale naam als string
+        # wanneer het argument een simpele naam is (bv. cm, degF).
+        if method == "to" and len(node.args) == 1 and isinstance(node.args[0], ast.Name):
+            args = [node.args[0].id]
+        else:
+            args = [self._eval(a, variables) for a in node.args]
+
+        if hasattr(obj, method):
+            return getattr(obj, method)(*args)
+        raise ValueError(f"Onbekende methode: {method}")
+
+    def _eval_expressiefunctie(self, node, fname, variables):
+        """Groep 1: expressie met enkel x, bv. "x^2 - 4"."""
+        if len(node.args) < 1:
+            raise ValueError(f"{fname}: eerste argument moet een expressie met x zijn, bv. \"x^2 - 4\"")
+
+        expr_node = node.args[0]
+
+        def f(x_waarde, _expr_node=expr_node):
+            return self._eval(_expr_node, {"x": x_waarde})
+
+        overige_args = [self._eval(a, variables) for a in node.args[1:]]
+        return self.funcs[fname](f, *overige_args)
+
+    def _eval_expressiefunctie_xy(self, node, fname, variables):
+        """Groep 2: expressie met x ÉN y samen, bv. "x - y" voor
+        differentiaalvergelijkingen dy/dx = f(x, y)."""
+        if len(node.args) < 1:
+            raise ValueError(f"{fname}: eerste argument moet een expressie met x en y zijn, bv. \"x - y\"")
+
+        expr_node = node.args[0]
+
+        def f_xy(x_waarde, y_waarde, _expr_node=expr_node):
+            return self._eval(_expr_node, {"x": x_waarde, "y": y_waarde})
+
+        overige_args = [self._eval(a, variables) for a in node.args[1:]]
+        return self.funcs[fname](f_xy, *overige_args)
+
+    def _eval_symbolische_functie(self, node, fname):
+        """Groep 3 (Fase 4, punt 10 — Symbolische algebra): deze functies
+        geven zelf een FORMULE terug (geen getal), en verwachten daarom
+        hun argument als STRING. We gebruiken ast.unparse() om de AST-node
+        terug te vertalen naar tekst; de functies parsen die daarna zelf
+        opnieuw, veilig, via _sympy_parse()."""
+        if len(node.args) < 1:
+            raise ValueError(f"{fname}: eerste argument moet een expressie met x zijn, bv. \"x^2 - 4\"")
+
+        if len(node.args) > 1:
+            tweede = node.args[1]
+            if not (isinstance(tweede, ast.Name) and tweede.id == "x"):
+                raise ValueError(f"{fname}: enkel de variabele x wordt ondersteund")
+
+        expr_str = ast.unparse(node.args[0])
+        return self.funcs[fname](expr_str)
 
     def _parse_unit_string(self, unit_str):
         # simpele parser: check of unit exact bestaat

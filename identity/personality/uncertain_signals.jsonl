@@ -1871,3 +1871,12 @@
 {"text": "9**9**9", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-14T17:23:49.073817"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-14T17:27:20.451930"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-14T17:28:53.094472"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-14T21:14:21.549803"}
+{"text": "zijn er fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.053, "bron": "model_fallback", "tijdstip": "2026-11-14T21:23:45.754135"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-14T21:33:18.132831"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-14T21:52:53.186299"}
+{"text": "wat is een hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-14T21:53:08.774539"}
+{"text": "waarvoor dient dat", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0606, "bron": "model_fallback", "tijdstip": "2026-11-14T21:53:20.853001"}
+{"text": "waarvoor dient een hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-14T21:53:33.325748"}
+{"text": "een hamer is gerelateerd aan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0344, "bron": "model_fallback", "tijdstip": "2026-11-14T21:53:53.380392"}
+{"text": "waat bestaat een hamer uit?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0471, "bron": "model_fallback", "tijdstip": "2026-11-14T21:54:32.846069"}
