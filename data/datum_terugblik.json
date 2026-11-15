@@ -10,7 +10,7 @@
   },
   "laatste_analyse": {
     "datum": "2026-11-15",
-    "actieve_dagen": 83,
+    "actieve_dagen": 84,
     "reden": null,
     "beste": {
       "afstand_maanden": 1,
@@ -19,7 +19,7 @@
         "semantic",
         "werkt"
       ],
-      "score": 6.27
+      "score": 6.31
     },
     "afgewezen": [
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",

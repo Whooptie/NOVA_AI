@@ -9,6 +9,7 @@ import json
 import os
 import sqlite3
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import pytest
 
@@ -107,7 +108,7 @@ def test_gebruik_rapport():
     tekst = r.rapport_gebruik({"beschikbaar": True, "gelukt": True, "rss_mb": 312.4, "threads": 1, "fds": 58,
                                "uptime_uur": 5.0, "opstart_s": 38.2})[0]
     assert tekst == ("• Gebruik: 312.4 MB geheugen, 1 thread, 58 open bestanden, draait al 5 uur, "
-                     "opstarten duurde 38 s.")
+                     "opstarten duurde 38.2 s.")
     assert "kon niet meten" in r.rapport_gebruik({"gelukt": False, "reden": "x"})[0]
 
 
@@ -488,3 +489,54 @@ def test_opstarttijd_wordt_onthouden(tmp_path):
 
 def test_hulpbestand_is_geen_module():
     assert not hasattr(r, "init_module")
+
+
+# ---------------------------------------------------------------------------
+# Echte opstarttijd (core/opstarttijd.py + meet_opstart_s)
+# ---------------------------------------------------------------------------
+
+def _nep_proc(tmp_path, boot, start_ticks):
+    """Maakt een nep-/proc met een bekend opstartmoment en procesbegin (klokticks = 100/s)."""
+    (tmp_path / "self").mkdir(exist_ok=True)
+    velden = ["S"] + ["0"] * 18 + [str(start_ticks)] + ["0"] * 5
+    (tmp_path / "self" / "stat").write_text("1 (nova ai) " + " ".join(velden), encoding="utf-8")
+    (tmp_path / "stat").write_text(f"cpu 1 2 3\nbtime {boot}\n", encoding="utf-8")
+    return str(tmp_path)
+
+
+def test_meet_opstart_klaar_onbekend_geeft_none(tmp_path):
+    assert r.meet_opstart_s(None, proc_root=_nep_proc(tmp_path, 1000, 500)) is None
+
+
+def test_meet_opstart_rekent_vanaf_procesbegin(tmp_path, monkeypatch):
+    monkeypatch.setattr(r.os, "sysconf", lambda naam: 100)
+    proc = _nep_proc(tmp_path, 1000, 500)            # proces start op 1000 + 5 s
+    assert r.meet_opstart_s(1043.4, proc_root=proc) == 38.4
+
+
+def test_meet_opstart_zonder_proc_geeft_none(tmp_path):
+    assert r.meet_opstart_s(123.0, proc_root=str(tmp_path / "bestaat_niet")) is None
+
+
+def test_meet_opstart_onmogelijk_geeft_none(tmp_path, monkeypatch):
+    monkeypatch.setattr(r.os, "sysconf", lambda naam: 100)
+    proc = _nep_proc(tmp_path, 1000, 500)
+    assert r.meet_opstart_s(900.0, proc_root=proc) is None
+
+
+def test_markeer_klaar_alleen_eerste_keer(monkeypatch):
+    from core import opstarttijd
+    monkeypatch.setattr(opstarttijd, "_klaar", None)
+    assert opstarttijd.klaar_tijdstip() is None
+    assert opstarttijd.markeer_klaar(50.0) == 50.0
+    assert opstarttijd.markeer_klaar(99.0) == 50.0
+    assert opstarttijd.klaar_tijdstip() == 50.0
+
+
+def test_zelftest_toont_echte_opstarttijd(monkeypatch):
+    from core import opstarttijd
+    start = r._proces_start(Path("/proc/self"), "/proc", os.sysconf("SC_CLK_TCK"))
+    if start is None:
+        pytest.skip("geen /proc")
+    monkeypatch.setattr(opstarttijd, "_klaar", start + 12.3)
+    assert r.meet_opstart_s(opstarttijd.klaar_tijdstip()) == pytest.approx(12.3, abs=0.1)

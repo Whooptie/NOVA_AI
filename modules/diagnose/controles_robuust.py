@@ -96,6 +96,24 @@ def _proces_start(proc_map, proc_root, klok_ticks):
         return None
 
 
+def meet_opstart_s(klaar, proc_root="/proc"):
+    """
+    Echte opstarttijd: seconden tussen het starten van het proces en het moment ('klaar',
+    epoch-seconden) waarop Nova alle modules geladen had. None als dat niet te meten is
+    (nog niet klaar, geen /proc, of een onmogelijke uitkomst).
+    """
+    if klaar is None:
+        return None
+    try:
+        ticks = os.sysconf("SC_CLK_TCK")
+    except (AttributeError, ValueError, OSError):
+        ticks = 100
+    start = _proces_start(Path(proc_root) / "self", proc_root, ticks)
+    if start is None or klaar < start:
+        return None
+    return round(klaar - start, 1)
+
+
 def check_gebruik(nu=None, opstart_s=None, proc_root="/proc"):
     """
     Meet Nova's eigen proces. 'nu' is een tijdstip (epoch-seconden). Op een systeem zonder /proc
@@ -188,7 +206,7 @@ def rapport_gebruik(g):
     if g.get("uptime_uur") is not None:
         delen.append(f"draait al {_tijdsduur(g['uptime_uur'])}")
     if g.get("opstart_s") is not None:
-        delen.append(f"opstarten duurde {g['opstart_s']:.0f} s")
+        delen.append(f"opstarten duurde {g['opstart_s']:.1f} s")
     return ["• Gebruik: " + ", ".join(delen) + "."]
 
 

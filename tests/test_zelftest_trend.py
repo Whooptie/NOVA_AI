@@ -182,7 +182,7 @@ def test_trend_tekst_toont_maximaal_het_gevraagde_aantal_dagen():
 def test_trend_tekst_ontbrekende_waarden_worden_streepjes():
     data = t.opbouw_uit_historie([{"tijd": "2026-11-14T10:00:00", "consistentie": {"concepten": 7}}])
     rij = t.trend_tekst(data).splitlines()[2]
-    assert rij.split()[1:] == ["-", "-", "-", "-", "-", "7"]
+    assert rij.split()[1:] == ["-", "-", "-", "-", "-", "7", "-"]
 
 
 # ----------------------------------------------------------------------------
@@ -367,3 +367,27 @@ def test_debug_onbekend_argument_noemt_trend_en_samenvatting(capsys):
     maak_debug().handle_debug_command({"text": "zelftest raar"})
     uit = capsys.readouterr().out
     assert "zelftest trend" in uit and "zelftest samenvatting" in uit
+
+
+# ---------------------------------------------------------------------------
+# Opstarttijd in de trend
+# ---------------------------------------------------------------------------
+
+def test_meetpunt_bevat_opstarttijd():
+    res = {"gebruik": {"gelukt": True, "rss_mb": 700.0, "threads": 40, "opstart_s": 4.0}}
+    assert t.meetpunt(res)["opstart_s"] == 4.0
+
+
+def test_meetpunt_slaat_onmeetbare_opstarttijd_over():
+    for waarde in (0.0, None):
+        res = {"gebruik": {"gelukt": True, "rss_mb": 700.0, "threads": 40, "opstart_s": waarde}}
+        assert "opstart_s" not in t.meetpunt(res)
+
+
+def test_trend_tekst_toont_opstarttijd_sparkline():
+    data = t.leeg()
+    for dag, secs in (("2026-11-14T10:00:00", 4.0), ("2026-11-15T10:00:00", 6.0)):
+        t.voeg_toe(data, dag, {"opstart_s": secs, "tests": 100})
+    tekst = t.trend_tekst(data)
+    regel = [r for r in tekst.splitlines() if r.strip().startswith("Opstarttijd")]
+    assert len(regel) == 1 and "(nu 6)" in regel[0]

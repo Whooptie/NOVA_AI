@@ -84,6 +84,7 @@ import time
 from datetime import datetime, time as dagtijd, timedelta
 from pathlib import Path
 
+from core import opstarttijd
 from modules.diagnose import controles, samenvatting, trend
 from modules.diagnose import controles_robuust as robuust
 
@@ -712,7 +713,6 @@ class Zelftest:
         self._thread = None
         self._laatste_bericht = 0.0           # tijdstip van het laatste bericht van Kevin
         self._historie = self._laad_historie()
-        self._opstart_s = self._meet_opstart()
         self._trend_pad = Path(trend_pad) if trend_pad else self.root / "data" / "zelftest_trend.json"
         self._trend = self._laad_trend()
 
@@ -800,9 +800,12 @@ class Zelftest:
             self._print(f"[ZELFTEST] Historie niet bewaard: {e}")
 
     def _meet_opstart(self):
-        """Hoeveel seconden Nova al draait nu deze module laadt (= zoveel duurde het opstarten tot hier)."""
-        uptime = robuust.check_gebruik(nu=self._klok()).get("uptime_uur")
-        return round(uptime * 3600, 1) if uptime is not None else None
+        """Echte opstarttijd: van het starten van het proces tot main.py alle modules geladen had."""
+        return robuust.meet_opstart_s(opstarttijd.klaar_tijdstip())
+
+    @property
+    def _opstart_s(self):
+        return self._meet_opstart()
 
     def _laad_trend(self):
         """Leest de trend; bestaat die nog niet, dan bouwen we hem uit de bestaande historie."""

@@ -1881,3 +1881,8 @@
 {"text": "een hamer is gerelateerd aan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0344, "bron": "model_fallback", "tijdstip": "2026-11-14T21:53:53.380392"}
 {"text": "waat bestaat een hamer uit?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0471, "bron": "model_fallback", "tijdstip": "2026-11-14T21:54:32.846069"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T13:11:47.884395"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T13:23:20.288384"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T13:27:03.728689"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T13:31:49.136863"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T13:35:14.268988"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T13:38:05.029221"}

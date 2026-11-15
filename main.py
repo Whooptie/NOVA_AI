@@ -40,6 +40,7 @@ if os.name == "nt":
 
 from core.event_bus import EventBus
 from core.module_loader import ModuleLoader
+from core import opstarttijd
 
 # ANSI kleurcodes
 GREEN = "\033[92m"
@@ -387,6 +388,23 @@ def sluit_modules_netjes_af(loaded_modules):
             afsluiten_memory()
         except Exception as e:
             print(f"[Afsluiten] Fout bij memory._on_shutdown(): {e}")
+
+
+def opstarttijd_regel():
+    """
+    Tekst voor de opstartbanner: hoe lang Nova erover deed om op te starten
+    (van het starten van het proces tot alle modules geladen zijn).
+    Geeft None als dat niet te meten is (bv. op Windows, zonder /proc): dan
+    toont de banner gewoon niets extra.
+    """
+    try:
+        from modules.diagnose.controles_robuust import meet_opstart_s
+        seconden = meet_opstart_s(opstarttijd.klaar_tijdstip())
+    except Exception:
+        return None
+    if seconden is None:
+        return None
+    return f" Opgestart in {seconden:.1f} s"
 
 
 def installeer_stopsignaal(loader):
@@ -789,14 +807,17 @@ def main():
     if zone:
         zone.enable_auto_timezone()
 
+    # Alles geladen en gestart: vanaf hier staat Nova klaar (voor de opstarttijd).
+    opstarttijd.markeer_klaar()
+
     # Boot banner
     print(MAGENTA + r"""
     ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗ 
     ████╗  ██║██╔═══██╗██║   ██║██╔══██╗
     ██╔██╗ ██║██║   ██║██║   ██║███████║
-    ██║╚██╗██║██║   ██║██║   ██║██╔══██║
-    ██║ ╚████║╚██████╔╝╚██████╔╝██║  ██║
-    ╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+    ██║╚██╗██║██║   ██║╚██╗ ██╔╝██╔══██║
+    ██║ ╚████║╚██████╔╝ ╚████╔╝ ██║  ██║
+    ╚═╝  ╚═══╝ ╚═════╝   ╚═══╝  ╚═╝  ╚═╝
     """ + RESET)
 
     print(CYAN + "        N O V A   S Y S T E M   B O O T" + RESET)
@@ -815,6 +836,9 @@ def main():
                 print(f"{GREEN}[ OK ]{RESET}   {name:<15}")
 
     print(CYAN + "───────────────────────────────────────────────" + RESET)
+    opstart_regel = opstarttijd_regel()
+    if opstart_regel:
+        print(CYAN + opstart_regel + RESET)
     print(GREEN + " SYSTEM READY — Awaiting input..." + RESET + "\n")
 
     print("Nova is gestart. Typ een bericht (of 'exit' om te stoppen).")

@@ -12,7 +12,8 @@
 #     rooktest     hoeveel procent van de vaste vragen goed beantwoord wordt
 #     dekking      hoeveel procent van de code door tests geraakt wordt
 #     tests        aantal geslaagde tests
-#     zware_functies, concepten, data_mb, rss_mb (geheugen van Nova), threads, antwoordtijd_ms
+#     zware_functies, concepten, data_mb, rss_mb (geheugen van Nova), threads, antwoordtijd_ms,
+#     opstart_s    hoeveel seconden Nova nodig had om op te starten
 #   Meerdere runs op een dag: de nieuwste waarde per getal wint, een 'snel' run vult
 #   dus enkel aan wat hij zelf meet.
 #
@@ -40,9 +41,10 @@ KOLOMMEN = (
     ("dekking", "dekking", "%"),
     ("tests", "tests", ""),
     ("concepten", "concepten", ""),
+    ("opstart_s", "Opstarttijd", "s"),
 )
 SPARKLINES = (("taalbegrip", "Taalbegrip"), ("antwoorden", "Antwoorden"), ("concepten", "Concepten"),
-              ("rss_mb", "Geheugen MB"), ("antwoordtijd_ms", "Antwoordtijd"))
+              ("rss_mb", "Geheugen MB"), ("antwoordtijd_ms", "Antwoordtijd"), ("opstart_s", "Opstarttijd"))
 
 
 def _procent(goed, totaal):
@@ -76,8 +78,11 @@ def _kleine_punten(res):
     for sleutel, deel, veld in (("tests", "pytest", "geslaagd"), ("dekking", "dekking", "procent"),
                                 ("zware_functies", "radon", "zwaar"), ("data_mb", "schijf", "data_mb"),
                                 ("rss_mb", "gebruik", "rss_mb"), ("threads", "gebruik", "threads"),
-                                ("antwoordtijd_ms", "rommel", "mediaan_ms")):
+                                ("antwoordtijd_ms", "rommel", "mediaan_ms"),
+                                ("opstart_s", "gebruik", "opstart_s")):
         waarde = _gemeten(res.get(deel)).get(veld)
+        if sleutel == "opstart_s" and not waarde:
+            continue                         # oude runs bewaarden hier 0.0 (onmeetbaar): niet in de trend
         if waarde is not None:
             punt[sleutel] = waarde
     concepten = (res.get("consistentie") or {}).get("concepten")
@@ -215,7 +220,7 @@ def trend_tekst(trend_data, max_dagen=8):
     for sleutel, naam in SPARKLINES:
         lijn = sparkline([dagen[d].get(sleutel) for d in datums[-30:]])
         if lijn:
-            regels.append(f"  {naam:<11}{lijn}  (nu {_fmt(dagen[datums[-1]].get(sleutel))})")
+            regels.append(f"  {naam:<13}{lijn}  (nu {_fmt(dagen[datums[-1]].get(sleutel))})")
     if len(datums) < 2:
         regels.append("Nog maar één meetdag; vanaf morgen zie ik hier de groei.")
     else:
