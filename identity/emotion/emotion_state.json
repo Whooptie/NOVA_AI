@@ -6,9 +6,9 @@
     "warmte": 0.6,
     "spanning": 0.3
   },
-  "last_trigger": "kilte",
-  "last_reaction": "neutrale_blik",
-  "last_recovery_hint": "even_afstand_nemen",
+  "last_trigger": "confusion",
+  "last_reaction": "korte_denkpauze_vragen_stellen",
+  "last_recovery_hint": "even_herkaderen",
   "stability": 0.6,
   "volatility": 0.7,
   "regulation": {
@@ -17,11 +17,11 @@
     "cooldown_timer": 0
   },
   "overstimulation": {
-    "level": 0.578878485163053,
+    "level": 0.0,
     "threshold": 0.75,
     "signs_active": [],
     "last_overflow_behavior": "iets_sneller_pratend",
-    "last_trigger_timestamp": 1794753465.2318735,
+    "last_trigger_timestamp": 1794765852.6581018,
     "decay_per_minute": 0.05
   },
   "sync": {

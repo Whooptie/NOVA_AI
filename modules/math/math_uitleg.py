@@ -842,6 +842,117 @@ bij 5 kaarten trekken uit een spel van 52 (met 4 azen)
 - kans(minstens 1 aas) = 1 - 0.6588 ≈ 0.3412 → zo'n 34.1% kans om
   minstens 1 aas te trekken bij 5 kaarten.
 """.strip(),
+
+    # -----------------------------------------------------------------
+    # Kracht, energie en arbeid: vier aparte uitleggen (kracht(),
+    # energie_kinetisch(), energie_potentieel() en arbeid() in math.py)
+    # -----------------------------------------------------------------
+    "kracht": """
+⚙️ Kracht — kracht(massa, versnelling) — F = m·a (Newtons tweede wet)
+
+De dagelijkse vergelijking: je duwt een winkelkar. Een lege kar komt
+met een kleine duw al snel op gang. Een volle kar heeft veel méér duw
+nodig om net zo snel te versnellen. Hoe zwaarder iets is en hoe harder
+je het wil laten versnellen, hoe meer kracht je nodig hebt.
+Daarom: kracht = massa × versnelling.
+- massa in kilogram (kg)
+- versnelling in meter per seconde per seconde (m/s²): hoeveel de
+  snelheid per seconde toeneemt
+- het antwoord komt in newton (N)
+
+Waar je op moet letten: massa moet groter zijn dan 0, anders krijg je
+een foutmelding (bv. kracht(0, 3)).
+
+Doorgerekend voorbeeld: kracht(1000, 3) — een auto van 1000 kg die met
+3 m/s² optrekt
+- kracht = 1000 × 3 = 3000 N
+
+Doorgerekend voorbeeld: kracht(70, 9.81) — het gewicht van iemand van
+70 kg. Zwaartekracht laat alles met 9,81 m/s² versnellen.
+- kracht = 70 × 9,81 = 686,7 N
+
+Zie ook: arbeid (wat een kracht over een afstand doet) en
+energie_kinetisch.
+""".strip(),
+
+    "energie_kinetisch": """
+⚙️ Kinetische energie — energie_kinetisch(massa, snelheid) — E = ½·m·v²
+
+Kinetisch betekent "van beweging". Alles wat beweegt heeft
+bewegingsenergie: een fietser, een bal, een auto.
+De dagelijkse vergelijking: een tennisbal die je zacht tegen je hand
+gooit doet niets, maar dezelfde bal met honderd kilometer per uur doet
+pijn. Het zit hem vooral in de snelheid: die staat in de formule in het
+KWADRAAT. Rijd je twee keer zo snel, dan heb je vier keer zoveel
+bewegingsenergie, en moet je remmen dus ook vier keer zoveel energie
+kwijt.
+- massa in kg, snelheid in meter per seconde (m/s)
+- het antwoord komt in joule (J)
+
+Waar je op moet letten: massa moet groter zijn dan 0, anders krijg je
+een foutmelding.
+
+Doorgerekend voorbeeld: energie_kinetisch(5, 10) — een bal van 5 kg
+met 10 m/s
+- energie = ½ × 5 × 10² = ½ × 5 × 100 = 250 J
+- Dubbele snelheid: energie_kinetisch(5, 20) = ½ × 5 × 400 = 1000 J,
+  dus vier keer zoveel
+
+Zie ook: kracht en arbeid (arbeid verandert bewegingsenergie).
+""".strip(),
+
+    "energie_potentieel": """
+⚙️ Zwaarte-energie — energie_potentieel(massa, hoogte) — E = m·g·h
+
+Potentieel betekent "opgeslagen". Een boek op de bovenste plank heeft
+opgeslagen energie: valt het, dan wordt die energie bewegingsenergie.
+Hoe zwaarder het boek en hoe hoger de plank, hoe meer er opgeslagen zit.
+- massa in kg, hoogte in meter (m)
+- g is de valversnelling van de aarde: 9,81 m/s². Die vul ik zelf in.
+- Wil je een andere plek (bv. de maan, g = 1,62), dan geef je g als
+  derde getal mee: energie_potentieel(2, 10, 1.62)
+- het antwoord komt in joule (J)
+
+Waar je op moet letten: massa moet groter zijn dan 0, anders krijg je
+een foutmelding.
+
+Doorgerekend voorbeeld: energie_potentieel(2, 10) — 2 kg op 10 meter
+hoogte
+- energie = 2 × 9,81 × 10 = 196,2 J
+- Op de maan: energie_potentieel(2, 10, 1.62) = 2 × 1,62 × 10 = 32,4 J
+
+Zie ook: energie_kinetisch (de energie die overblijft als het valt) en
+arbeid (iets omhoog tillen kost arbeid).
+""".strip(),
+
+    "arbeid": """
+⚙️ Arbeid — arbeid(kracht, afstand) — W = F·d
+
+In de natuurkunde is arbeid het werk dat een kracht verricht: de kracht
+maal de afstand waarover je die kracht uitoefent.
+De dagelijkse vergelijking: een kist van A naar B schuiven. Duw je
+harder of verder, dan lever je meer arbeid. Belangrijk: het gaat om de
+kracht IN de richting waarin het ding beweegt. Staat er geen beweging
+tegenover (je duwt tegen een muur), dan is de afstand 0 en dus de arbeid
+ook 0.
+- kracht in newton (N), afstand in meter (m)
+- het antwoord komt in joule (J): 1 joule is 1 newton over 1 meter
+
+Waar je op moet letten: de functies kunnen niet in elkaar.
+arbeid(kracht(1000, 3), 20) werkt niet. Reken eerst de kracht uit en
+vul dan dat getal in: arbeid(3000, 20).
+
+Doorgerekend voorbeeld: arbeid(50, 3) — 50 N over 3 meter
+- arbeid = 50 × 3 = 150 J
+
+Doorgerekend voorbeeld: een auto van 1000 kg trekt met 3 m/s² op over
+20 meter
+- kracht(1000, 3) = 3000 N
+- arbeid(3000, 20) = 3000 × 20 = 60000 J geleverd door de motor
+
+Zie ook: kracht, energie_kinetisch en energie_potentieel (arbeid
+verandert energie).
+""".strip(),
 }
 
 # Alias-tabel: verschillende manieren waarop Kevin naar dezelfde
@@ -915,6 +1026,23 @@ UITLEG_ALIASSEN = {
     "kans_kaart": "kans_dobbelsteen_kaart",
     "kans dobbelsteen": "kans_dobbelsteen_kaart",
     "kans kaart": "kans_dobbelsteen_kaart",
+
+    "kracht": "kracht",
+    "newtons tweede wet": "kracht",
+    "tweede wet van newton": "kracht",
+
+    "energie_kinetisch": "energie_kinetisch",
+    "kinetische energie": "energie_kinetisch",
+    "energie kinetisch": "energie_kinetisch",
+    "bewegingsenergie": "energie_kinetisch",
+
+    "energie_potentieel": "energie_potentieel",
+    "potentiële energie": "energie_potentieel",
+    "potentiele energie": "energie_potentieel",
+    "energie potentieel": "energie_potentieel",
+    "zwaarte-energie": "energie_potentieel",
+
+    "arbeid": "arbeid",
 }
 
 
@@ -1190,6 +1318,10 @@ WEERGAVENAAM = {
     "wortel": "wortel",
     "det_inverse": "det/inverse",
     "kans_dobbelsteen_kaart": "kans_dobbelsteen/kans_kaart",
+    "kracht": "kracht",
+    "energie_kinetisch": "energie_kinetisch",
+    "energie_potentieel": "energie_potentieel",
+    "arbeid": "arbeid",
 }
 
 

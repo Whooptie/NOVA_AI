@@ -2754,179 +2754,185 @@ class MathModule:
 
         return s
 
+    # Foutmeldingen van de rekenfuncties zelf zijn al volledig leesbaar
+    # Nederlands (Fase 3): die tonen we rechtstreeks, zonder het technische
+    # "Er ging iets mis:"-voorvoegsel.
+    _EIGEN_FOUTPREFIXEN = (
+        "solveQuadratic:", "newton:", "polyeval:", "extremum:",
+        "afgeleide:", "integraal:", "limiet:", "dv_euler:", "dv_rk4:",
+        "gemiddelde:", "mediaan:", "modus:", "variantie:", "stdafwijking:",
+        "regressie:", "correlatie:", "faculteit:", "combinaties:",
+        "permutaties:", "binomiaal:", "normaal:",
+        "differentiate:", "integrate_sym:", "simplify_sym:",
+        "expand_sym:", "factor_sym:", "solve_sym:", "solve_stelsel:",
+        "kracht:", "energie_kinetisch:", "energie_potentieel:",
+        "arbeid:", "snelheid_na:", "afstand_na:", "projectiel:",
+        "val_met_weerstand:",
+        "is_priem:", "priemgetallen:", "ggd:", "kgv:", "modulo:",
+        "naar_binair:", "naar_octaal:", "naar_hex:", "vanuit_talstelsel:",
+        "binary_search:", "bubble_sort:", "quick_sort:",
+        "bfs:", "dfs:", "dijkstra:", "levenshtein:",
+        "significante_cijfers:", "stel_precisie_in:",
+        "breuk:", "som_reeks:", "sigma:", "meetkundige_reeks:",
+        "kans_dobbelsteen:", "kans_kaart:",
+    )
+
+    # Overige bekende fouten: (stuk van de technische foutmelding, melding).
+    _FOUTMELDINGEN = [
+        # matrix/vector mismatch
+        ("Vectoren moeten even lang zijn",
+         "Je probeert twee vectoren te combineren met verschillende lengtes."),
+        ("dimensies komen niet overeen",
+         "De dimensies van de matrix of vector passen niet bij elkaar."),
+        ("division by zero", "Je deelt door nul — dat kan niet."),
+        ("was never closed", "Je expressie bevat een fout: een haakje werd niet gesloten."),
+        # syntaxfout
+        ("invalid syntax", "Ik begrijp deze expressie niet. Controleer je haakjes en operatoren."),
+        # wiskundige domeinfout
+        ("math domain error",
+         "Je probeert een ongeldige wiskundige operatie uit te voeren (bv. wortel van een negatief getal)."),
+    ]
+
+    _RE_IS_PRIEM = re.compile(r"^is_priem\s*\(")
+    _RE_SYMBOLISCH = re.compile(
+        r"^(differentiate|integrate_sym|simplify_sym|expand_sym|factor_sym|solve_sym|solve_stelsel)\s*\(")
+    _RE_KANS = re.compile(r"^(binomiaal|normaal|kans_dobbelsteen|kans_kaart)\s*\(")
+
     def on_math(self, data, event_type=None):
         origineel = data.get("expr", "")
         expr = self.preprocess(origineel)
 
         try:
             result = self.eval_expr(expr)
-            # BUGFIX (1 aug 2026): het bericht toonde voorheen de intern
-            # voorbewerkte expressie (met toegevoegde haakjes en *, bv.
-            # "(1*kg).to(g)"), wat er technisch/programmeur-achtig uitzag.
-            # We tonen nu de originele, door de gebruiker getypte tekst
-            # ("1kg.to(g)") — de berekening zelf blijft de voorbewerkte
-            # versie gebruiken, alleen de weergave verandert.
-
-            # NIEUW (Fase 3): extremum() geeft een dict {"min": {...},
-            # "max": {...}} terug — die rauw tonen ("{'min': {'x': ...") is
-            # niet leesbaar. Hier bouwen we er een nette Nederlandse zin
-            # van, gebruikmakend van de bestaande _format_value() voor
-            # nette getalnotatie.
-            if isinstance(result, dict) and "min" in result and "max" in result:
-                mn, mx = result["min"], result["max"]
-                msg = (
-                    f"{origineel} → "
-                    f"minimum {self._format_value(mn['waarde'])} bij x={self._format_value(mn['x'])}, "
-                    f"maximum {self._format_value(mx['waarde'])} bij x={self._format_value(mx['x'])}"
-                )
-            # NIEUW (Fase 3, punt 9): regressie() geeft een dict
-            # {"helling": ..., "snijpunt": ...} terug — ook hier bouwen
-            # we een leesbare Nederlandse zin i.p.v. de rauwe dict te tonen.
-            elif isinstance(result, dict) and "helling" in result and "snijpunt" in result:
-                msg = (
-                    f"{origineel} → "
-                    f"y = {self._format_value(result['helling'])}x "
-                    f"{'+' if result['snijpunt'] >= 0 else '-'} {self._format_value(abs(result['snijpunt']))} "
-                    f"(helling={self._format_value(result['helling'])}, snijpunt={self._format_value(result['snijpunt'])})"
-                )
-            # NIEUW (Fase 4, punt 11): projectiel() geeft een dict met
-            # bereik/max_hoogte/vluchttijd terug — nette Nederlandse zin
-            # i.p.v. de rauwe dict.
-            elif isinstance(result, dict) and "bereik" in result and "max_hoogte" in result:
-                msg = (
-                    f"{origineel} → "
-                    f"bereik {result['bereik']}, "
-                    f"max. hoogte {result['max_hoogte']}, "
-                    f"vluchttijd {result['vluchttijd']}"
-                )
-            # NIEUW (Fase 4, punt 11): val_met_weerstand() geeft een dict
-            # met valtijd/eindsnelheid terug.
-            elif isinstance(result, dict) and "valtijd" in result and "eindsnelheid" in result:
-                msg = (
-                    f"{origineel} → "
-                    f"valtijd {result['valtijd']}, "
-                    f"eindsnelheid {result['eindsnelheid']}"
-                )
-            elif isinstance(result, UnitValue):
-                msg = f"{origineel} = {result}"
-            # NIEUW: is_priem() geeft standaard True/False terug, wat kaal
-            # aanvoelt in een gesprek. We bouwen er een natuurlijke
-            # Nederlandse zin van, met het getal zelf uit de expressie
-            # gehaald (bv. "is_priem(17)" -> "17 is een priemgetal").
-            elif isinstance(result, bool) and re.match(r"^is_priem\s*\(", origineel.strip()):
-                getal_match = re.search(r"is_priem\s*\(\s*(-?\d+)", origineel)
-                getal_str = getal_match.group(1) if getal_match else "dat getal"
-                if result:
-                    msg = f"Ja, {getal_str} is een priemgetal!"
-                else:
-                    msg = f"Nee, {getal_str} is geen priemgetal."
-            # NIEUW (Fase 4, punt 10): de symbolische algebra-functies
-            # geven zelf al een volledige, leesbare string terug (bv.
-            # "x = 2 of x = 3" voor solve_sym, of "3x^2 + 2" voor
-            # differentiate). Die tonen we met een pijl i.p.v. "=", zodat
-            # solve_sym niet als "... = x = 2 of x = 3" verschijnt.
-            elif isinstance(result, str) and re.match(
-                r"^(differentiate|integrate_sym|simplify_sym|expand_sym|factor_sym|solve_sym|solve_stelsel)\s*\(",
-                origineel.strip(),
-            ):
-                msg = f"{origineel} → {result}"
-            # NIEUW (Fase 5, punt 13): complexe getallen krijgen hun
-            # eigen, nettere notatie (bv. "3 + 4i" i.p.v. Python's
-            # "(3+4j)") via _format_value()/_format_complex().
-            elif isinstance(result, complex):
-                msg = f"{origineel} = {self._format_value(result)}"
-            # NIEUW (Fase 5, punt 13): ook een LIJST met (mogelijk)
-            # complexe getallen — bv. solveQuadratic() bij een negatieve
-            # discriminant — moet elk element netjes formatteren i.p.v.
-            # Python's rauwe "[-1j, 1j]" te tonen.
-            elif isinstance(result, list) and any(isinstance(v, complex) for v in result):
-                opgemaakt = ", ".join(self._format_value(v) for v in result)
-                msg = f"{origineel} = [{opgemaakt}]"
-            # NIEUW: kansberekening-functies (binomiaal, normaal,
-            # kans_dobbelsteen, kans_kaart) geven intern nog steeds een
-            # decimaal getal terug (bv. 0.166667) — dat blijft zo voor
-            # eventuele verdere rekenkundige bewerkingen — maar we tonen
-            # het resultaat als PERCENTAGE, wat leesbaarder is dan een
-            # decimaal getal (bv. "16.6667%" i.p.v. "0.166667").
-            elif isinstance(result, float) and re.match(
-                r"^(binomiaal|normaal|kans_dobbelsteen|kans_kaart)\s*\(",
-                origineel.strip(),
-            ):
-                percentage = round(result * 100, 4)
-                msg = f"{origineel} = {self._format_value(percentage)}%"
-            # NIEUW (Fase 5, punt 16 — Afronding & precisie): een kaal
-            # float-resultaat (het meest voorkomende basisgeval, bv.
-            # "1/3") moet via _format_value() lopen, niet via Python's
-            # rauwe str() — anders wordt een ingestelde sessie_precisie
-            # (stel_precisie_in()) genegeerd voor alle gewone berekeningen.
-            elif isinstance(result, float):
-                msg = f"{origineel} = {self._format_value(result)}"
-            else:
-                msg = f"{origineel} = {result}"
-
+            msg = self._math_opmaak(origineel, result)
         except Exception as e:
-            err = str(e)
-
-            # --- 1. dimensie-fouten ---
-            if "verschillende dimensies" in err:
-                msg = "Je probeert grootheden met verschillende dimensies te combineren — dat kan niet."
-
-            # --- 2. onbekende eenheid ---
-            elif "Onbekende naam of eenheid" in err:
-                unit = err.split(":")[-1].strip()
-                msg = f"Ik ken de eenheid ‘{unit}’ niet. Controleer op typfouten."
-
-            # --- 3. matrix/vector mismatch ---
-            elif "Vectoren moeten even lang zijn" in err:
-                msg = "Je probeert twee vectoren te combineren met verschillende lengtes."
-
-            elif "dimensies komen niet overeen" in err:
-                msg = "De dimensies van de matrix of vector passen niet bij elkaar."
-
-            elif "division by zero" in err:
-                msg = "Je deelt door nul — dat kan niet."
-
-            elif "was never closed" in err:
-                msg = "Je expressie bevat een fout: een haakje werd niet gesloten."
-
-            # --- 4. syntaxfout ---
-            elif "invalid syntax" in err:
-                msg = "Ik begrijp deze expressie niet. Controleer je haakjes en operatoren."
-
-            # --- 5. wiskundige domeinfout ---
-            elif "math domain error" in err:
-                msg = "Je probeert een ongeldige wiskundige operatie uit te voeren (bv. wortel van een negatief getal)."
-
-            # --- 6. Fase 3 algebra-functies: eigen foutmeldingen zijn
-            #        al volledig leesbaar Nederlands, dus die tonen we
-            #        rechtstreeks zonder het technische "Er ging iets
-            #        mis:"-voorvoegsel.
-            elif err.startswith((
-                "solveQuadratic:", "newton:", "polyeval:", "extremum:",
-                "afgeleide:", "integraal:", "limiet:", "dv_euler:", "dv_rk4:",
-                "gemiddelde:", "mediaan:", "modus:", "variantie:", "stdafwijking:",
-                "regressie:", "correlatie:", "faculteit:", "combinaties:",
-                "permutaties:", "binomiaal:", "normaal:",
-                "differentiate:", "integrate_sym:", "simplify_sym:",
-                "expand_sym:", "factor_sym:", "solve_sym:", "solve_stelsel:",
-                "kracht:", "energie_kinetisch:", "energie_potentieel:",
-                "arbeid:", "snelheid_na:", "afstand_na:", "projectiel:",
-                "val_met_weerstand:",
-                "is_priem:", "priemgetallen:", "ggd:", "kgv:", "modulo:",
-                "naar_binair:", "naar_octaal:", "naar_hex:", "vanuit_talstelsel:",
-                "binary_search:", "bubble_sort:", "quick_sort:",
-                "bfs:", "dfs:", "dijkstra:", "levenshtein:",
-                "significante_cijfers:", "stel_precisie_in:",
-                "breuk:", "som_reeks:", "sigma:", "meetkundige_reeks:",
-                "kans_dobbelsteen:", "kans_kaart:",
-            )):
-                msg = err
-
-            # --- 7. fallback ---
-            else:
-                msg = f"Er ging iets mis: {err}"
+            msg = self._math_foutmelding(str(e))
 
         self.event_bus.publish("layer4_response", {"text": msg})
+
+    def _math_opmaak(self, origineel, result):
+        """Maakt van de uitkomst een nette Nederlandse zin.
+
+        BUGFIX (1 aug 2026): het bericht toonde voorheen de intern
+        voorbewerkte expressie (met toegevoegde haakjes en *, bv.
+        "(1*kg).to(g)"). We tonen de originele, door de gebruiker getypte
+        tekst ("1kg.to(g)"); de berekening zelf gebruikt de voorbewerkte
+        versie, alleen de weergave verandert.
+
+        De volgorde van de controles is belangrijk: de eerste die past wint."""
+        # Een dict (extremum, regressie, projectiel, val_met_weerstand) krijgt
+        # een eigen zin i.p.v. de rauwe dict.
+        if isinstance(result, dict):
+            zin = self._math_opmaak_dict(origineel, result)
+            if zin is not None:
+                return zin
+        if isinstance(result, UnitValue):
+            return f"{origineel} = {result}"
+        # NIEUW: is_priem() geeft standaard True/False terug, wat kaal
+        # aanvoelt in een gesprek ("is_priem(17)" -> "17 is een priemgetal").
+        if isinstance(result, bool) and self._RE_IS_PRIEM.match(origineel.strip()):
+            return self._math_opmaak_priem(origineel, result)
+        # NIEUW (Fase 4, punt 10): de symbolische algebra-functies geven zelf
+        # al een volledige, leesbare string terug (bv. "x = 2 of x = 3").
+        # Die tonen we met een pijl i.p.v. "=", zodat solve_sym niet als
+        # "... = x = 2 of x = 3" verschijnt.
+        if isinstance(result, str) and self._RE_SYMBOLISCH.match(origineel.strip()):
+            return f"{origineel} → {result}"
+        # NIEUW (Fase 5, punt 13): complexe getallen krijgen hun eigen,
+        # nettere notatie (bv. "3 + 4i" i.p.v. Python's "(3+4j)") via
+        # _format_value()/_format_complex().
+        if isinstance(result, complex):
+            return f"{origineel} = {self._format_value(result)}"
+        # NIEUW (Fase 5, punt 13): ook een LIJST met (mogelijk) complexe
+        # getallen -- bv. solveQuadratic() bij een negatieve discriminant --
+        # moet elk element netjes formatteren i.p.v. Python's rauwe
+        # "[-1j, 1j]" te tonen.
+        if isinstance(result, list) and any(isinstance(v, complex) for v in result):
+            opgemaakt = ", ".join(self._format_value(v) for v in result)
+            return f"{origineel} = [{opgemaakt}]"
+        # NIEUW: kansberekening-functies (binomiaal, normaal, kans_dobbelsteen,
+        # kans_kaart) geven intern een decimaal getal terug (bv. 0.166667) --
+        # dat blijft zo voor verdere bewerkingen -- maar we tonen het als
+        # PERCENTAGE ("16.6667%" i.p.v. "0.166667").
+        if isinstance(result, float) and self._RE_KANS.match(origineel.strip()):
+            percentage = round(result * 100, 4)
+            return f"{origineel} = {self._format_value(percentage)}%"
+        # NIEUW (Fase 5, punt 16 -- Afronding & precisie): een kaal
+        # float-resultaat (het meest voorkomende basisgeval, bv. "1/3") moet
+        # via _format_value() lopen, niet via Python's rauwe str() -- anders
+        # wordt een ingestelde sessie_precisie (stel_precisie_in())
+        # genegeerd voor alle gewone berekeningen.
+        if isinstance(result, float):
+            return f"{origineel} = {self._format_value(result)}"
+        return f"{origineel} = {result}"
+
+    def _math_opmaak_dict(self, origineel, result):
+        """Zin voor de functies die een dict teruggeven, of None als de dict
+        bij geen enkele functie past."""
+        # Fase 3: extremum() geeft {"min": {...}, "max": {...}} -- die rauw
+        # tonen is niet leesbaar; _format_value() zorgt voor nette getallen.
+        if "min" in result and "max" in result:
+            mn, mx = result["min"], result["max"]
+            return (
+                f"{origineel} → "
+                f"minimum {self._format_value(mn['waarde'])} bij x={self._format_value(mn['x'])}, "
+                f"maximum {self._format_value(mx['waarde'])} bij x={self._format_value(mx['x'])}"
+            )
+        # Fase 3, punt 9: regressie() geeft {"helling": ..., "snijpunt": ...}.
+        if "helling" in result and "snijpunt" in result:
+            return (
+                f"{origineel} → "
+                f"y = {self._format_value(result['helling'])}x "
+                f"{'+' if result['snijpunt'] >= 0 else '-'} {self._format_value(abs(result['snijpunt']))} "
+                f"(helling={self._format_value(result['helling'])}, snijpunt={self._format_value(result['snijpunt'])})"
+            )
+        # Fase 4, punt 11: projectiel() geeft bereik/max_hoogte/vluchttijd.
+        if "bereik" in result and "max_hoogte" in result:
+            return (
+                f"{origineel} → "
+                f"bereik {result['bereik']}, "
+                f"max. hoogte {result['max_hoogte']}, "
+                f"vluchttijd {result['vluchttijd']}"
+            )
+        # Fase 4, punt 11: val_met_weerstand() geeft valtijd/eindsnelheid.
+        if "valtijd" in result and "eindsnelheid" in result:
+            return (
+                f"{origineel} → "
+                f"valtijd {result['valtijd']}, "
+                f"eindsnelheid {result['eindsnelheid']}"
+            )
+        return None
+
+    def _math_opmaak_priem(self, origineel, result):
+        # Het getal zelf uit de expressie halen (bv. "is_priem(17)" -> "17").
+        getal_match = re.search(r"is_priem\s*\(\s*(-?\d+)", origineel)
+        getal_str = getal_match.group(1) if getal_match else "dat getal"
+        if result:
+            return f"Ja, {getal_str} is een priemgetal!"
+        return f"Nee, {getal_str} is geen priemgetal."
+
+    def _math_foutmelding(self, err):
+        """Vertaalt een technische foutmelding naar leesbaar Nederlands."""
+        # 1. dimensie-fouten
+        if "verschillende dimensies" in err:
+            return "Je probeert grootheden met verschillende dimensies te combineren — dat kan niet."
+
+        # 2. onbekende eenheid
+        if "Onbekende naam of eenheid" in err:
+            unit = err.split(":")[-1].strip()
+            return f"Ik ken de eenheid ‘{unit}’ niet. Controleer op typfouten."
+
+        # 3. t/m 5. matrix/vector, delen door nul, haakjes, syntax, domein
+        for deel, melding in self._FOUTMELDINGEN:
+            if deel in err:
+                return melding
+
+        # 6. Fase 3 algebra-functies e.d.: eigen, al leesbare foutmeldingen
+        if err.startswith(self._EIGEN_FOUTPREFIXEN):
+            return err
+
+        # 7. fallback
+        return f"Er ging iets mis: {err}"
 
 def init_module(event_bus, semantic_module=None):
     mod = MathModule(event_bus)

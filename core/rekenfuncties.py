@@ -121,82 +121,102 @@ def _formule(s, eis_var=False):
         return None
     raw = _voeg_komma_getallen_samen(raw)
 
+    items = _formule_items(raw)
+    if not items or not _formule_volgorde_ok(items):
+        return None
+    if eis_var and not any(soort == "VAR" for soort, _ in items):
+        return None
+    return _formule_opschrijven(items)
+
+
+def _stuk_naar_items(stuk, items):
+    """Zet een stuk gewone tokens (getallen, bewerkingen, haakjes) om in
+    items en leegt het stuk. False bij iets onbekends (bv. 'en', 'komma',
+    'de som van')."""
+    if not stuk:
+        return True
+    toks = _bouw_tokens(stuk)
+    stuk.clear()
+    if toks is None:
+        return False
+    for naam, waarde, _ in toks:
+        if naam == "NUM":
+            items.append(("NUM", waarde))
+        elif naam in _OPS:
+            items.append(("OP", _OPS[naam]))
+        elif naam == "POST":
+            items.append(("OP", "^"))
+            items.append(("NUM", str(waarde)))
+        elif naam == "LP":
+            items.append(("LP", "("))
+        elif naam == "RP":
+            items.append(("RP", ")"))
+        else:
+            return False
+    return True
+
+
+def _formule_items(raw):
+    """Tokens -> lijst items (soort, tekst), of None als er iets niet te
+    lezen is. Variabelen en functienamen worden hier herkend."""
     items = []          # (soort, tekst)
     stuk = []
-
-    def leeg_stuk():
-        if not stuk:
-            return True
-        toks = _bouw_tokens(stuk)
-        stuk.clear()
-        if toks is None:
-            return False
-        for naam, waarde, _ in toks:
-            if naam == "NUM":
-                items.append(("NUM", waarde))
-            elif naam in _OPS:
-                items.append(("OP", _OPS[naam]))
-            elif naam == "POST":
-                items.append(("OP", "^"))
-                items.append(("NUM", str(waarde)))
-            elif naam == "LP":
-                items.append(("LP", "("))
-            elif naam == "RP":
-                items.append(("RP", ")"))
-            else:
-                return False          # bv. 'en', 'komma', 'de som van'
-        return True
-
     for tok in raw:
         soort, tekst, _ = tok
         if soort == "WORD" and tekst in _VARS:
-            if not leeg_stuk():
+            if not _stuk_naar_items(stuk, items):
                 return None
             items.append(("VAR", tekst))
         elif soort == "WORD" and tekst in _FUNCS:
-            if not leeg_stuk():
+            if not _stuk_naar_items(stuk, items):
                 return None
             items.append(("FUNC", tekst))
         else:
             stuk.append(tok)
-    if not leeg_stuk() or not items:
+    if not _stuk_naar_items(stuk, items):
         return None
+    return items
 
-    # --- controle van de volgorde ---
+
+# Welk soort item er NIET direct na een ander soort mag staan.
+_NIET_NA = {
+    "LP": ("NUM", "VAR", "RP"),
+    "NUM": ("NUM", "VAR", "RP"),
+    "VAR": ("VAR", "RP"),
+    "FUNC": ("NUM", "VAR", "RP"),
+}
+
+
+def _formule_volgorde_ok(items):
+    """Controleert de volgorde (haakjes in evenwicht, geen twee getallen
+    achter elkaar, bewerking tussen twee waarden, functie gevolgd door een
+    haakje, ...). Een min vooraan of na een haakje wordt hier in de lijst
+    omgezet naar een UMIN (min-teken voor een getal)."""
     diepte = 0
     vorige = None
     for i, (soort, tekst) in enumerate(items):
+        if soort in _NIET_NA and vorige in _NIET_NA[soort]:
+            return False
         if soort == "LP":
-            if vorige in ("NUM", "VAR", "RP"):
-                return None
             diepte += 1
         elif soort == "RP":
             diepte -= 1
             if diepte < 0 or vorige in (None, "OP", "UMIN", "LP", "FUNC"):
-                return None
+                return False
         elif soort == "OP":
             if tekst == "-" and vorige in (None, "LP"):
                 items[i] = ("UMIN", "-")
                 soort = "UMIN"
             elif vorige not in ("NUM", "VAR", "RP"):
-                return None
-        elif soort == "NUM":
-            if vorige in ("NUM", "VAR", "RP"):
-                return None
-        elif soort == "VAR":
-            if vorige in ("VAR", "RP"):
-                return None
+                return False
         elif soort == "FUNC":
-            if vorige in ("NUM", "VAR", "RP"):
-                return None
             if i + 1 >= len(items) or items[i + 1][0] != "LP":
-                return None
+                return False
         vorige = soort
-    if diepte != 0 or vorige not in ("NUM", "VAR", "RP"):
-        return None
-    if eis_var and not any(soort == "VAR" for soort, _ in items):
-        return None
+    return diepte == 0 and vorige in ("NUM", "VAR", "RP")
 
+
+def _formule_opschrijven(items):
     uit = ""
     for soort, tekst in items:
         if soort == "OP":

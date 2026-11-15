@@ -372,7 +372,10 @@ def test_achtergrondthread_start_alleen_als_er_iets_aan_staat(tmp_path):
     assert uit._thread is None
 
 
-def test_init_module_conventie(tmp_path):
+def test_init_module_conventie(tmp_path, monkeypatch):
+    # init_module kent geen project_root: zonder dit schreef de test in het
+    # ECHTE data/hartslag_status.json.
+    monkeypatch.setattr("modules.paths.get_project_root", lambda *a, **k: tmp_path)
     bus = NepBus()
     instance = w.init_module(bus)
     assert isinstance(instance, w.Watchdog) and ("module_loaded", {"name": "watchdog"}) in bus.gepubliceerd

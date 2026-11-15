@@ -1912,3 +1912,21 @@
 {"text": "wat weet je over mij", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0442, "bron": "model_fallback", "tijdstip": "2026-11-15T15:37:00.236968"}
 {"text": "wat hebben gitaar en schaak gemeen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0757, "bron": "model_fallback", "tijdstip": "2026-11-15T15:37:25.460173"}
 {"text": "wiki zaag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-11-15T15:37:36.741404"}
+{"text": "extraheer vervoermiddel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T15:48:17.006832"}
+{"text": "neem 1 over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-11-15T15:48:28.266956"}
+{"text": "extraheer tijdseenheid", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T15:48:41.650939"}
+{"text": "extraheer pinguïn", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T15:48:56.618677"}
+{"text": "extraheer struisvogel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T15:56:42.608017"}
+{"text": "neem 1 over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-11-15T15:56:51.053647"}
+{"text": "extraheer bibliotheek", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T15:57:08.556479"}
+{"text": "extraheer boter", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T16:00:15.476562"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T16:01:49.288198"}
+{"text": "extraheer zuivelproduct", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T16:02:06.800378"}
+{"text": "extraheer wagen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T16:02:16.440462"}
+{"text": "neem 1 over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-11-15T16:02:23.692872"}
+{"text": "extraheer rijwiel", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T16:08:06.994574"}
+{"text": "extraheer woning", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T16:08:18.254308"}
+{"text": "extraheer mama", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-15T16:08:31.191252"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T19:02:38.993350"}
+{"text": "leg uit kracht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0036, "bron": "model_fallback", "tijdstip": "2026-11-15T19:02:50.503349"}
+{"text": "hoe werkt kinetische energie", "signaal": "verwarring", "model_signaal": "interesse", "marge": 0.0264, "bron": "woordenlijst", "tijdstip": "2026-11-15T19:04:12.646318"}

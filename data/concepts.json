@@ -17,6 +17,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-05T17:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "mensen transporteren",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-15T14:48:28.274485",
+            "oorspronkelijke_bron": "wikipedia"
           }
         ],
         "source": "user",
@@ -27,15 +36,19 @@
     ],
     "metadata": {
       "created_at": "2026-11-05T17:00:00.000000",
-      "updated_at": "2026-11-05T17:00:00.000000",
+      "updated_at": "2026-11-15T14:48:28.355714",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-11-05T17:00:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-15T14:48:28.274501",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-11-05T17:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-15T14:48:28.274501",
           "confidence": 1.0
         }
       ]
@@ -56,6 +69,30 @@
         "old_value": null,
         "new_value": "Een vervoermiddel is een voertuig of ander middel waarmee mensen of goederen worden vervoerd.",
         "timestamp": "2026-11-05T17:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "vervoermiddel#1",
+        "relation": {
+          "type": "used_for",
+          "target": "mensen transporteren",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-11-15T14:48:28.274496"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "vervoermiddel#1",
+        "relation": {
+          "type": "used_for",
+          "target": "mensen transporteren"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-11-15T14:48:28.355723"
       }
     ]
   },
@@ -221,6 +258,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-05T14:30:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "loopvogel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-15T14:56:51.061052",
+            "oorspronkelijke_bron": "wikipedia"
           }
         ],
         "source": "user",
@@ -231,15 +277,19 @@
     ],
     "metadata": {
       "created_at": "2026-11-05T14:30:00.000000",
-      "updated_at": "2026-11-05T14:30:00.000000",
+      "updated_at": "2026-11-15T14:56:51.142802",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-11-05T14:30:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-15T14:56:51.061063",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-11-05T14:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-15T14:56:51.061063",
           "confidence": 1.0
         }
       ]
@@ -260,6 +310,30 @@
         "old_value": null,
         "new_value": "Een struisvogel is de grootste levende vogel; hij kan niet vliegen maar wel heel snel lopen.",
         "timestamp": "2026-11-05T14:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "struisvogel#1",
+        "relation": {
+          "type": "is_a",
+          "target": "loopvogel",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-11-15T14:56:51.061060"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "struisvogel#1",
+        "relation": {
+          "type": "is_a",
+          "target": "loopvogel"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-11-15T14:56:51.142812"
       }
     ]
   },
@@ -517,6 +591,15 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-04T20:00:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "vervoermiddel",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-15T15:02:23.701278",
+            "oorspronkelijke_bron": "wikipedia"
           }
         ],
         "source": "user",
@@ -527,15 +610,19 @@
     ],
     "metadata": {
       "created_at": "2026-11-04T20:00:00.000000",
-      "updated_at": "2026-11-04T20:00:00.000000",
+      "updated_at": "2026-11-15T15:02:23.781805",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-11-04T20:00:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-15T15:02:23.701288",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-11-04T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-15T15:02:23.701288",
           "confidence": 1.0
         }
       ]
@@ -556,6 +643,30 @@
         "old_value": null,
         "new_value": "Een wagen is een ander woord voor een auto: een voertuig met wielen en een motor.",
         "timestamp": "2026-11-04T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "wagen#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vervoermiddel",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-11-15T15:02:23.701285"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "wagen#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vervoermiddel"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-11-15T15:02:23.781815"
       }
     ]
   },

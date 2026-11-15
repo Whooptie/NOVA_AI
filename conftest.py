@@ -60,3 +60,32 @@ def _handler_fouten_log_in_tmp(tmp_path_factory):
     eb._LOGBESTAND = tmp_path_factory.mktemp("logs") / "handler_fouten.log"
     yield
     eb._LOGBESTAND = origineel
+
+
+# --- Emotie- en identiteitsstaat niet overschrijven (15 november 2026) ---
+@pytest.fixture(autouse=True)
+def _identiteitsstaat_in_tmp(tmp_path, monkeypatch):
+    """
+    EmotionEngine en PersonalityEngine bewaren hun staat in
+    identity/emotion/emotion_state.json en identity/personality/identity_state.json.
+    Tests die een ResponsePipeline bouwen schreven daar testwaarden in
+    (overprikkeling 1.0, trigger "excitement") en overschreven zo Nova's
+    echte staat. Nu krijgt elke engine een tijdelijke kopie.
+    """
+    import shutil
+    from identity.emotion.emotion_engine import EmotionEngine
+    from identity.personality.personality_engine import PersonalityEngine
+
+    def omleiden(klasse, bestandsnaam):
+        origineel = klasse.__init__
+
+        def nieuw(self, *args, **kwargs):
+            origineel(self, *args, **kwargs)
+            kopie = tmp_path / bestandsnaam
+            shutil.copy(self._state_path, kopie)
+            self._state_path = str(kopie)
+
+        monkeypatch.setattr(klasse, "__init__", nieuw)
+
+    omleiden(EmotionEngine, "emotion_state.json")
+    omleiden(PersonalityEngine, "identity_state.json")
