@@ -565,3 +565,4 @@
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "variant_tekst": "Hmm… dat ken ik niet.", "entity": null, "response_style": "normaal", "moment": "2026-11-14T21:53:53.429147", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1794689633.4293823, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Tja… geen idee.", "entity": null, "response_style": "normaal", "moment": "2026-11-14T21:54:32.866516", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794689672.8667047, "type": "sentiment_koppeling"}

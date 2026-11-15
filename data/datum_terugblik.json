@@ -9,7 +9,7 @@
     "werk": "2026-11-04"
   },
   "laatste_analyse": {
-    "datum": "2026-11-14",
+    "datum": "2026-11-15",
     "actieve_dagen": 83,
     "reden": null,
     "beste": {
@@ -19,13 +19,13 @@
         "semantic",
         "werkt"
       ],
-      "score": 6.36
+      "score": 6.27
     },
     "afgewezen": [
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "6 mnd: te weinig berichten rond 14 mei (0)",
-      "12 mnd: te weinig berichten rond 14 november (0)",
-      "24 mnd: te weinig berichten rond 14 november (0)"
+      "6 mnd: te weinig berichten rond 15 mei (0)",
+      "12 mnd: te weinig berichten rond 15 november (0)",
+      "24 mnd: te weinig berichten rond 15 november (0)"
     ]
   }
 }

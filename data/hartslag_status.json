@@ -1,20 +1,20 @@
 {
  "versie": 1,
- "opgestart": "2026-11-14T21:52:55",
- "bijgewerkt": "2026-11-14T21:52:55",
+ "opgestart": "2026-11-15T13:11:49",
+ "bijgewerkt": "2026-11-15T13:13:29",
  "hartslag": {
   "aan": true,
   "interval_min": 10,
-  "laatste_ok": "2026-11-14T21:52:40",
-  "laatste_poging": "2026-11-14T21:52:40",
+  "laatste_ok": "2026-11-15T13:13:29",
+  "laatste_poging": "2026-11-15T13:13:29",
   "fouten_op_rij": 0,
   "reden": null
  },
  "meldingstest": {
   "aan": true,
   "schema": "zondag 10:00",
-  "laatste_ok": "2026-11-14T17:29:07",
-  "laatste_poging": "2026-11-14T17:29:07",
+  "laatste_ok": "2026-11-15T10:00:19",
+  "laatste_poging": "2026-11-15T10:00:19",
   "fouten_op_rij": 0,
   "reden": null
  }

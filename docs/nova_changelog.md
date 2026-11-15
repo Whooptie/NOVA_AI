@@ -4105,3 +4105,9 @@ Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leef
 - Gevonden en gefixt: "9**9**9" liet de rekenmodule vastlopen; machten met een absurd groot geheel getal worden nu geweigerd (veilige_macht)
 - Trend: geheugen, threads en antwoordtijd erbij
 - Tests: test_zelftest_robuust.py, test_watchdog.py, test_math_veilige_macht.py
+
+## 15 nov 2026 — Back-up overleeft herstarts
+- Probleem: de 6-uurlijkse onderhoudstimer begon bij elke start van Nova opnieuw te tellen. Bij vaker herstarten (14 nov: 3×) kwam er uren geen back-up; de zelftest meldde "back-up 10,6 uur oud".
+- Fix (core/memory.py): _seconden_tot_eerste_onderhoud() rekent vanaf de nieuwste back-up. Te oud → eerste ronde na 2 min; anders de rest van het interval; geen back-ups → volle interval.
+- Tests: tests/test_memory_backup_opstart.py (10).
+- Live bevestigd: back-ups op 03:53 en 09:53 = exact 6 u na herstart van 21:55 (oorzaak klopte).

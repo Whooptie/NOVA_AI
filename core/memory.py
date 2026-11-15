@@ -925,13 +925,52 @@ class MemoryModule:
         except Exception as e:
             print("Memory run_maintenance error:", e)
 
-    def start_maintenance(self):
-        """Start de achtergrond-timer die elke 'maintenance_interval_hours' draait."""
+    # Na een herstart wachten we minstens zo lang voor de eerste ronde, zodat
+    # het opstarten zelf niet vertraagt door een VACUUM + back-up.
+    onderhoud_opstart_wacht_seconden = 120
+
+    def _seconden_tot_eerste_onderhoud(self):
+        """
+        Hoeveel seconden wachten tot de EERSTE onderhoudsronde na een start.
+
+        Vroeger was dat altijd het volle interval (6 uur) vanaf de start. Wie
+        Nova vaker herstartte dan elke 6 uur, kreeg daardoor nooit een
+        back-up (gebeurd op 14-15 nov 2026: nieuwste back-up 10,6 uur oud).
+
+        Nu rekenen we vanaf het tijdstip van de nieuwste back-up:
+        - nieuwste back-up is jonger dan het interval -> de rest van het
+          interval wachten (minimaal 'onderhoud_opstart_wacht_seconden');
+        - nieuwste back-up is te oud -> snel een ronde draaien;
+        - er is nog GEEN back-up (nieuwe installatie, testmap) -> gewoon het
+          volle interval, zoals vroeger.
+        """
+        interval = self.maintenance_interval_hours * 3600
+        try:
+            back_ups = list(self.backup_dir.glob("interactions_*.db"))
+            if not back_ups:
+                return interval
+            leeftijd = time.time() - max(b.stat().st_mtime for b in back_ups)
+        except Exception as e:
+            print("Memory _seconden_tot_eerste_onderhoud error:", e)
+            return interval
+        rest = interval - max(0.0, leeftijd)
+        return max(self.onderhoud_opstart_wacht_seconden, min(interval, rest))
+
+    def start_maintenance(self, eerste=True):
+        """Start de achtergrond-timer die elke 'maintenance_interval_hours' draait.
+
+        eerste=True (bij het opstarten): de wachttijd houdt rekening met hoe
+        oud de nieuwste back-up is. De volgende rondes (via _tick) wachten
+        gewoon het volle interval.
+        """
         def _tick():
             self.run_maintenance()
-            self.start_maintenance()  # plan de volgende ronde in
+            self.start_maintenance(eerste=False)  # plan de volgende ronde in
 
-        interval_seconds = self.maintenance_interval_hours * 3600
+        if eerste:
+            interval_seconds = self._seconden_tot_eerste_onderhoud()
+        else:
+            interval_seconds = self.maintenance_interval_hours * 3600
         self.maintenance_timer = threading.Timer(interval_seconds, _tick)
         self.maintenance_timer.daemon = True  # stopt automatisch als Nova stopt
         self.maintenance_timer.start()

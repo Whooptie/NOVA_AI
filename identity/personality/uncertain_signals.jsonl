@@ -1880,3 +1880,4 @@
 {"text": "waarvoor dient een hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-14T21:53:33.325748"}
 {"text": "een hamer is gerelateerd aan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0344, "bron": "model_fallback", "tijdstip": "2026-11-14T21:53:53.380392"}
 {"text": "waat bestaat een hamer uit?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0471, "bron": "model_fallback", "tijdstip": "2026-11-14T21:54:32.846069"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-15T13:11:47.884395"}
