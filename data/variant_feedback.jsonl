@@ -566,3 +566,15 @@
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1794689633.4293823, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Tja… geen idee.", "entity": null, "response_style": "normaal", "moment": "2026-11-14T21:54:32.866516", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794689672.8667047, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 0, "variant_tekst": "Ik voel me nu een beetje overprikkeld, eerlijk gezegd.", "entity": null, "response_style": null, "moment": "2026-11-15T15:32:22.628927", "reactie_sentiment": null}
+{"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "En bij jou, hoe voel jij je?", "entity": null, "response_style": null, "moment": "2026-11-15T15:32:22.629824", "reactie_sentiment": null}
+{"sjabloon_naam": "mood_overprikkeld_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794753142.629508, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "mood_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1794753142.6300113, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 4, "variant_tekst": "Wat ik weet over '{entity}': {definition} Bij jou hoort daar meestal ook '{associatie}' bij.", "entity": "hond", "response_style": "normaal", "moment": "2026-11-15T15:32:41.482161", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1794753161.482392, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 0, "variant_tekst": "{entity} betekent: {definition} Trouwens, dat woord duikt bij jou vaak op samen met '{associatie}'.", "entity": "kat", "response_style": "normaal", "moment": "2026-11-15T15:32:49.911535", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794753169.9117422, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 3, "variant_tekst": "{entity}, dat is: {definition} Dat associeer je hier trouwens opvallend vaak met '{associatie}'.", "entity": "kat", "response_style": "normaal", "moment": "2026-11-15T15:32:56.279037", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1794753176.2793186, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "variant_tekst": "Whatever. Geen idee.", "entity": null, "response_style": "normaal", "moment": "2026-11-15T15:33:15.878256", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1794753195.8784213, "type": "sentiment_koppeling"}

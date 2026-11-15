@@ -5669,6 +5669,29 @@ class IntentRouter:
                     dbg(f"{C_RED}beurt-module fout: {e}{C_RESET}")
 
     def _route_intern(self, data, event_type=None):
+        """Verdeler: probeert de stappen hieronder in vaste volgorde. De
+        eerste stap die het bericht afhandelt wint; daarna wordt er niets
+        meer gecontroleerd. Elke _route_*-stap geeft True terug als het
+        bericht is afgehandeld."""
+        text = self._route_voorbewerking(data)
+
+        if self._route_pending(text):
+            return
+        if self._route_commando(text):
+            return
+
+        text = self._route_herschrijf(text)
+        if text is None:
+            return
+
+        for stap in (self._route_detectors, self._route_tabel_deel1,
+                     self._route_kennisvragen, self._route_tabel_deel2):
+            if stap(text):
+                return
+
+        self._route_afronding(text)
+
+    def _route_voorbewerking(self, data):
         text = data.get("text", "").strip()
         superscripts = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹⁻", "0123456789-")
         text = text.translate(superscripts)
@@ -5688,13 +5711,18 @@ class IntentRouter:
         # niets aan de bestaande routing hieronder.
         if text:
             self.event_bus.publish("raw_user_message", {"text": text})
+        return text
 
+    # ---------------------------------------------------------
+    # Stap 1: openstaande vragen en vervolgantwoorden (-1 t/m -1B)
+    # ---------------------------------------------------------
+    def _route_pending(self, text):
         # -1 Pending question (nieuw) -- MOET voor ALLES anders
         # gecontroleerd worden, zelfs voor reboot: als Nova net een
         # vraag stelde en Kevin antwoordt "ja", mag dat nooit als een
         # gewoon, los bericht door de rest van de routing lopen.
         if self._verwerk_pending_antwoord(text):
-            return
+            return True
 
         # -1A Contextuele oplos-suggestie na "leg uit X" (nova_state.md
         # punt 24, 5 aug 2026) -- MOET na de generieke pending-check
@@ -5705,7 +5733,7 @@ class IntentRouter:
         # door detect_math() verwerkt worden (dat zou een dubbel
         # antwoord geven).
         if self._check_uitleg_vervolg_bewerking(text):
-            return
+            return True
 
         # -1C Pending Wikipedia-disambiguatie-keuze (31 juli 2026, Bug
         # #8-vervolg) -- zelfde voorrang-redenering als hierboven en als
@@ -5717,14 +5745,14 @@ class IntentRouter:
         # voor Wikipedia-disambiguatie) -- vandaar VÓÓR die check.
         wiki_teacher = self.event_bus.modules.get("wikipedia_teacher")
         if wiki_teacher is not None and wiki_teacher.verwerk_wiki_keuze(text):
-            return
+            return True
 
         # -1C3 Aanbod "wil je de voorstellen uit de inleiding zien?" (Semantic
         # Fase 11.3) -- na een geslaagde "wiki X". Alleen een "ja" wordt hier
         # afgevangen; elk ander bericht laat het aanbod vervallen en loopt
         # gewoon door de routing (daarom bewust geen pending_question).
         if wiki_teacher is not None and wiki_teacher.verwerk_voorstel_antwoord(text):
-            return
+            return True
 
         # -1C2 On This Day-vervolgvraag (Onderdeel 5, 26 september
         # 2026) -- zelfde voorrang-redenering als -1C hierboven: als
@@ -5740,7 +5768,7 @@ class IntentRouter:
         # vervolg op een vraag die al als "on_this_day" geteld werd.
         on_this_day = self.event_bus.modules.get("on_this_day")
         if on_this_day is not None and on_this_day.verwerk_vervolg(text):
-            return
+            return True
 
         # -1D Pending "wat weet je over X"-vervolgantwoord (1 augustus
         # 2026, nieuwe module concept_overview.py) -- zelfde voorrang-
@@ -5750,7 +5778,7 @@ class IntentRouter:
         # worden.
         concept_overview = self.event_bus.modules.get("concept_overview")
         if concept_overview is not None and concept_overview.verwerk_overview_antwoord(text):
-            return
+            return True
 
         # -1E Pending preference-woord-vervolgantwoord (4 augustus
         # 2026) -- zelfde voorrang-redenering als -1D hierboven: als
@@ -5760,7 +5788,7 @@ class IntentRouter:
         # opgevangen worden. Eigen methode op IntentRouter zelf, geen
         # aparte module dus geen modules.get() nodig.
         if self.verwerk_preference_woord_antwoord(text):
-            return
+            return True
 
         # -1F.5 Pending memory_query-woord-vervolgantwoord (6 augustus
         # 2026) -- zelfde voorrang-redenering als -1E hierboven: als
@@ -5769,7 +5797,7 @@ class IntentRouter:
         # _actie_memory_query_classifier), mag dat antwoord nooit door
         # een andere, generieke intent opgevangen worden.
         if self.verwerk_memory_query_woord_antwoord(text):
-            return
+            return True
 
         # -1F Pending sense-reactivatie (Bug #32-fix, 8 augustus 2026)
         # -- als Kevin net gevraagd is of hij een eerder AFGEWEZEN
@@ -5784,7 +5812,7 @@ class IntentRouter:
         # -1C/-1D/-1E hierboven.
         if self.semantic and self.semantic.pending_reactivation:
             self.semantic.handle_reactivation_confirm(text)
-            return
+            return True
 
         # -1F2 Pending betekenis-keuze bij een meerduidig woord (30 oktober
         # 2026) -- zelfde voorrang-redenering als -1F hierboven: een "2" als
@@ -5795,7 +5823,7 @@ class IntentRouter:
         if self.semantic:
             pending_keuze = getattr(self.semantic, "pending_definitie_keuze", None)
             if isinstance(pending_keuze, dict) and self.semantic.handle_definitie_keuze(text):
-                return
+                return True
 
         # -1G Pending referentie-vraag (Taal & Redeneerlimieten, idee
         # 1+2, zie taal_en_redeneerlimieten_roadmap.md) -- als Nova net
@@ -5804,7 +5832,7 @@ class IntentRouter:
         # generieke intent opgevangen worden. Zelfde voorrang-
         # redenering als -1D/-1E hierboven.
         if self.verwerk_referentie_antwoord(text):
-            return
+            return True
 
         # -1B Pending sense-voorkeur (Bug #10-fix, stap 7) -- zelfde
         # voorrang-redenering als hierboven: als Kevin net gevraagd is
@@ -5813,24 +5841,29 @@ class IntentRouter:
         # routing lopen (bv. per ongeluk als math-expressie "2"
         # herkend worden).
         if self._verwerk_pending_sense_voorkeur(text):
-            return
+            return True
+        return False
 
+    # ---------------------------------------------------------
+    # Stap 2: expliciete commando's (0 t/m 2D)
+    # ---------------------------------------------------------
+    def _route_commando(self, text):
         # 0 Reboot (altijd als allereerste gecontroleerd, voorrang op alles)
         if self.detect_reboot(text):
-            return
+            return True
 
         # 0B Foutenlogboek (25 oktober 2026) -- "laatste fouten". Strikte,
         # korte zinnen, dus vroeg in de keten veilig.
         if self.detect_handler_fouten(text):
-            return
-        
+            return True
+
         # 1 Teach
         if self.handle_teach(text):
-            return
+            return True
 
         # 1B Example
         if self.handle_example(text):
-            return
+            return True
 
         # 1C Weerleg (punt 1, verwijderpad concepts.json, 6 augustus
         # 2026) -- MOET voor handle_preference() gecontroleerd worden
@@ -5838,7 +5871,7 @@ class IntentRouter:
         # maar zelfde volgorde-principe: expliciete kennis-commando's
         # gaan voor de generieke fallback-routing).
         if self.handle_weerleg(text):
-            return
+            return True
 
         # 2A Sense-voorkeur commando (Bug #10-fix, stap 7) -- MOET voor
         # handle_preference() gecontroleerd worden: "onthoud sense X"
@@ -5847,11 +5880,11 @@ class IntentRouter:
         # worden afgevangen (met een verwarrende foutmelding), nog
         # vóór dit commando de kans krijgt.
         if self.handle_sense_voorkeur(text):
-            return
+            return True
 
         # 2B Preferences (Fase 2: expliciet 'onthoud:'/'vergeet:'-commando)
         if self.handle_preference(text):
-            return
+            return True
 
         # 2C Help (5 aug 2026) -- verhuisd uit de generieke intent-
         # tabel naar hier, ZELFDE reden en patroon als de definition-
@@ -5864,7 +5897,7 @@ class IntentRouter:
         if self.detect_help(text):
             topic = getattr(self, "_laatste_help_topic", None)
             self._emit_topic(f"help_{topic}" if topic else "help", bron="detect")
-            return
+            return True
 
         # 2D Uitleg (5 aug 2026) -- zelfde reden/patroon als 2C
         # hierboven: detect_uitleg() bewaart de CANONIEKE functienaam
@@ -5878,7 +5911,14 @@ class IntentRouter:
         if self.detect_uitleg(text):
             naam = getattr(self, "_laatste_uitleg_naam", None)
             self._emit_topic(f"uitleg_{naam}" if naam else "uitleg", bron="detect")
-            return
+            return True
+        return False
+
+    # ---------------------------------------------------------
+    # Stap 3: de tekst herschrijven (2E t/m 2E1). Geeft de (eventueel
+    # herschreven) tekst terug, of None als de routing hier stopt.
+    # ---------------------------------------------------------
+    def _route_herschrijf(self, text):
         # 2E Referentie-resolutie (Taal & Redeneerlimieten, idee 1+2)
         # -- MOET hier staan: na alle bovenstaande pending-checks (een
         # openstaande vraag heeft altijd voorrang), maar VOOR de
@@ -5898,77 +5938,82 @@ class IntentRouter:
 
         text = self._verwerk_referentie(text)
         if text is None:
-            return
+            return None
 
         # 2E1a "En dan?" na een gevolgvraag (punt 77, 6 november 2026): Nova noemt de
         # gevolgen die ze nog niet noemde, of zegt eerlijk dat er niets meer is. MOET vóór
         # 2E1: anders leest de vervolgvraag-regel "en daarna" als onderwerp en "en wat
         # gebeurt er daarna" als dezelfde gevolgvraag opnieuw.
         if self._verwerk_en_dan(text):
-            return
+            return None
 
         # 2E1 Vervolgvraag op de laatste kennisvraag (punt 62d, 4 november 2026):
         # "en een kat?" na "wat is een hond" wordt "wat is een kat". Past de zin in
         # geen vaste vorm, of is er geen onthouden vraag, dan blijft ze ongewijzigd.
-        text = self._verwerk_vervolgvraag(text)
-        if text is None:
-            return
+        return self._verwerk_vervolgvraag(text)
 
+    # ---------------------------------------------------------
+    # Stap 4: de vroege detectors die voor de intent-tabel moeten (2E2 t/m 2K)
+    # ---------------------------------------------------------
+    def _route_detectors(self, text):
         # 2E2 Hypothetisch redeneren (idee 4) -- na referentie, vóór de
         # kennisvragen, zodat "stel dat ..." niet als gewone zin wordt gelezen.
         if self.detect_hypothese(text):
-            return
+            return True
 
         # 2E3 Terugblikken (case-based, idee 3) -- "heb ik dit al eens
         # gevraagd", "wanneer vroeg ik dat laatst", aan/uit-commando.
         if self.detect_case_herinnering(text):
-            return
+            return True
 
         # 2F Causale check (Semantic Fase 8.2, 11 oktober 2026) -- MOET
         # vóór de intent-tabel hieronder staan, zie de uitleg bij
         # detect_causes_check(). Emit zelf al zijn eigen topic.
         if self.detect_causes_check(text):
-            return
+            return True
 
         # 2F2 Doelvraag (punt 72c) -- "wordt boek gebruikt om te lezen" (door de normalizer
         # gemaakt van "is een boek iets om te lezen").
         if self.detect_doel_check(text):
-            return
+            return True
 
         # 2G Temporal Semantics (Fase 9.1) -- ook vóór de intent-tabel:
         # "wanneer ontstond python" mag niet door detect_holiday/
         # detect_calendar opgevangen worden, en "python bestaat sinds
         # 1991" niet door semantic._detect_relation() (stap 9).
         if self.detect_temporal(text):
-            return
+            return True
 
         # 2H Zekerheidsvraag (Fase 10.1) -- "hoe zeker ben je dat ..."
         if (self.detect_uncertainty(text) or self.detect_uncertainty_lijst(text)
                 or self.detect_uncertainty_keuze(text)):
-            return
+            return True
 
         # 2I Kennis uit Wikipedia voorstellen (Semantic Fase 11.2) --
         # "extraheer fiets" / "neem 2 over" / "laat 2 vallen". Voor de
         # intent-tabel, zodat "neem ... over" niet door een andere intent
         # opgevangen wordt.
         if self.detect_kennis_extractie(text) or self.detect_kennis_keuze(text):
-            return
+            return True
 
         # 2J Gelijkenis-voorstellen via embeddings (Semantic Fase 12, stap 2)
         # -- "zoek gelijkenissen voor fiets" / "koppel 2" / "negeer 2".
         if (self.detect_gelijkenis_zoek(text) or self.detect_gelijkenis_overloop(text)
                 or self.detect_gelijkenis_keuze(text)
                 or self.detect_gelijkenis_ongedaan(text)):
-            return
+            return True
 
         # 2K Kennisgraaf (Semantic Fase 13.3) -- "toon graaf van fiets" /
         # "hoe zijn fiets en auto verbonden" / "graaf statistieken". MOET
         # vóór de intent-tabel en vóór stap 9 staan: "hoe zijn X en Y
         # verbonden" bevat " zijn ", en semantic._detect_relation() zou dat
         # als een is_a-uitspraak lezen (zelfde probleem als bij 7B).
-        if self.detect_graaf(text):
-            return
+        return bool(self.detect_graaf(text))
 
+    # ---------------------------------------------------------
+    # Stap 5: de eerste intent-tabel (3 t/m 7)
+    # ---------------------------------------------------------
+    def _route_tabel_deel1(self, text):
         # 3 t/m 7 -- via de intent-tabel (zie _build_intent_tabel_deel1()).
         # Zelfde volgorde, zelfde detect_*()-functies als voorheen --
         # enkel de manier waarop ze doorlopen worden is veranderd.
@@ -5983,13 +6028,18 @@ class IntentRouter:
                 # Layer 0-koppeling.
                 if self._topic_al_ge_emit:
                     self._topic_al_ge_emit = False
-                    return
+                    return True
                 # Fase 6: expliciet bron="detect" -- dit is een
                 # betrouwbare match van een bestaande detect_*(),
                 # geschikt als toekomstig trainingsvoorbeeld.
                 self._emit_topic(topic_naam, bron="detect")
-                return
+                return True
+        return False
 
+    # ---------------------------------------------------------
+    # Stap 6: kennisvragen (7B, 8 en 9)
+    # ---------------------------------------------------------
+    def _route_kennisvragen(self, text):
         # 7B Multi-hop: onderdelen met een eigenschap (idee #4 uit
         # reasoning_engine_ideeen_roadmap.md) -- MOET hier, VOOR stap 9
         # (semantic._detect_relation()) staan: die herkent het woord
@@ -6006,48 +6056,55 @@ class IntentRouter:
         # stap 2C/2D (detect_help/detect_uitleg) hierboven.
         if self.detect_memory_query(text):
             self._emit_topic("memory_query", bron="detect")
-            return
+            return True
 
         if self.detect_parts_with_property(text):
             self._emit_topic("parts_with_property", bron="detect")
-            return
+            return True
 
         # 8 Definition
         if self.detect_definition(text):
-            # Bugfix (1 augustus 2026): detect_definition() dekt sinds
-            # bug #27 ook de "andere betekenissen"- en "concept
-            # overview"-vragen, die nu ZELF al hun eigen, specifiekere
-            # topic emitten (zie de _topic_al_ge_emit-vlag daar, zelfde
-            # patroon als detect_chess()'s chess_evaluation-tak). Zonder
-            # deze check zou zo'n bericht DUBBEL meetellen: eenmaal
-            # correct onder zijn eigen topic, en eenmaal hier onder het
-            # verkeerde, misleidende "definitie_<woord>" (het topic van
-            # de VORIGE, gewone definitievraag, want deze takken laten
-            # _laatste_definitie_woord ongewijzigd).
-            if self._topic_al_ge_emit:
-                self._topic_al_ge_emit = False
-                return
-
-            # Per-woord-timing: gebruik het specifieke woord als het
-            # beschikbaar is (gezet in detect_definition() hierboven),
-            # met het oude, generieke "definitie" als veilige terugval
-            # -- zo kan dit nooit stil breken als _laatste_definitie_woord
-            # om een onverwachte reden leeg zou zijn.
-            woord = getattr(self, "_laatste_definitie_woord", None)
-            # Taal & Redeneerlimieten (idee 1+2): dit is de belangrijkste,
-            # meest voorkomende plek waar Kevin een concept expliciet
-            # noemt ("wat is python") -- vult last_context zodat een
-            # latere kale verwijzing ("en wat kan je ermee?", "wat is
-            # dat?") hierop kan terugvallen.
-            self._emit_topic(f"definitie_{woord}" if woord else "definitie", concept=woord)
-            return
+            self._route_definitie_topic()
+            return True
 
         # 9 Relation-flow (eerst! anders pikt relation-check het op
         # dat via de tabel hieronder loopt) -- geen _emit_topic hier,
         # geen vaste topic-vorm, dus past niet in de tabel.
-        if self.semantic and self.semantic._detect_relation(text):
+        return bool(self.semantic and self.semantic._detect_relation(text))
+
+    def _route_definitie_topic(self):
+        """Het Layer 2-topic na een herkende definitievraag."""
+        # Bugfix (1 augustus 2026): detect_definition() dekt sinds
+        # bug #27 ook de "andere betekenissen"- en "concept
+        # overview"-vragen, die nu ZELF al hun eigen, specifiekere
+        # topic emitten (zie de _topic_al_ge_emit-vlag daar, zelfde
+        # patroon als detect_chess()'s chess_evaluation-tak). Zonder
+        # deze check zou zo'n bericht DUBBEL meetellen: eenmaal
+        # correct onder zijn eigen topic, en eenmaal hier onder het
+        # verkeerde, misleidende "definitie_<woord>" (het topic van
+        # de VORIGE, gewone definitievraag, want deze takken laten
+        # _laatste_definitie_woord ongewijzigd).
+        if self._topic_al_ge_emit:
+            self._topic_al_ge_emit = False
             return
 
+        # Per-woord-timing: gebruik het specifieke woord als het
+        # beschikbaar is (gezet in detect_definition() hierboven),
+        # met het oude, generieke "definitie" als veilige terugval
+        # -- zo kan dit nooit stil breken als _laatste_definitie_woord
+        # om een onverwachte reden leeg zou zijn.
+        woord = getattr(self, "_laatste_definitie_woord", None)
+        # Taal & Redeneerlimieten (idee 1+2): dit is de belangrijkste,
+        # meest voorkomende plek waar Kevin een concept expliciet
+        # noemt ("wat is python") -- vult last_context zodat een
+        # latere kale verwijzing ("en wat kan je ermee?", "wat is
+        # dat?") hierop kan terugvallen.
+        self._emit_topic(f"definitie_{woord}" if woord else "definitie", concept=woord)
+
+    # ---------------------------------------------------------
+    # Stap 7: de tweede intent-tabel (10 t/m 10d)
+    # ---------------------------------------------------------
+    def _route_tabel_deel2(self, text):
         # 10 t/m 10d -- via de intent-tabel (zie
         # _build_intent_tabel_deel2()). Zelfde volgorde als voorheen.
         for topic_naam, detect_functie in self._intent_tabel_deel2:
@@ -6058,7 +6115,7 @@ class IntentRouter:
                 if self._topic_al_ge_emit:
                     self._topic_al_ge_emit = False
                     self._laatste_concept_kandidaat = None
-                    return
+                    return True
                 # Taal & Redeneerlimieten (idee 1+2): geeft het concept
                 # door dat de detect_*()-methode hierboven eventueel op
                 # self._laatste_concept_kandidaat zette (relation_check,
@@ -6075,8 +6132,13 @@ class IntentRouter:
                 # Fase 6: expliciet bron="detect", zelfde reden als
                 # bij _intent_tabel_deel1 hierboven.
                 self._emit_topic(topic_naam, bron="detect", concept=concept)
-                return
+                return True
+        return False
 
+    # ---------------------------------------------------------
+    # Stap 8: wat overblijft (sense-keuze, ja/nee, classifier, fallback)
+    # ---------------------------------------------------------
+    def _route_afronding(self, text):
         # Sense-choice (antwoord met nummer)
         if text.isdigit():
             if self.semantic:

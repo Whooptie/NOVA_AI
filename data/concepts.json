@@ -35844,7 +35844,7 @@
     ],
     "metadata": {
       "created_at": "2026-08-01T08:37:03.097171",
-      "updated_at": "2026-08-01T08:37:03.098166",
+      "updated_at": "2026-11-15T14:34:31.709205",
       "sources": [
         "user"
       ],
@@ -35873,6 +35873,16 @@
         "old_value": null,
         "new_value": "Mercurius is de planeet in het zonnestelsel met de kleinste en snelste baan om de zon. Het is de kleinste van de acht planeten, nauwelijks groter dan de Maan.",
         "timestamp": "2026-08-01T08:37:03.098166"
+      },
+      {
+        "event_type": "wikipedia_refresh",
+        "source": "wikipedia",
+        "sense_id": "mercurius#1",
+        "old_value": "Mercurius is de planeet in het zonnestelsel met de kleinste en snelste baan om de zon. Het is de kleinste van de acht planeten, nauwelijks groter dan de Maan.",
+        "new_value": "Mercurius is de planeet in het zonnestelsel met de kleinste en snelste baan om de zon. Het is de kleinste van de acht planeten, nauwelijks groter dan de Maan.",
+        "oude_status": "unverified",
+        "nieuwe_relaties": [],
+        "timestamp": "2026-11-15T14:34:31.709195"
       }
     ]
   },
@@ -121938,9 +121948,11 @@
     "senses": [
       {
         "sense_id": "zaag#1",
-        "definition": "unknown",
+        "definition": "Een zaag is een stuk gereedschap of een machine (werktuigmachine) om materialen van bijvoorbeeld hout, natuursteen of metaal te bewerken. Dat wordt zagen genoemd.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "In veel beroepen, van timmerman tot chirurg wordt een zaag gebruikt."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -121949,22 +121961,30 @@
             "source": "wikipedia",
             "status": "rejected",
             "created_at": "2026-11-13T19:52:43.704950"
+          },
+          {
+            "type": "is_a",
+            "target": "stuk",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "unverified",
+            "created_at": "2026-11-15T14:37:37.745864"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
+        "source": "wikipedia",
+        "confidence": 0.8,
         "status": "unverified",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-13T19:52:43.623581",
-      "updated_at": "2026-11-13T19:52:43.789213",
+      "updated_at": "2026-11-15T14:37:37.909110",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-13T19:52:43.704969",
-      "usage_count": 2,
+      "last_used_at": "2026-11-15T14:37:37.745896",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-13T19:52:43.623828",
@@ -121973,6 +121993,10 @@
         {
           "timestamp": "2026-11-13T19:52:43.704969",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-15T14:37:37.745896",
+          "confidence": 0.8
         }
       ]
     },
@@ -122016,6 +122040,73 @@
         "new_value": "rejected",
         "reason": "voorstel uit Wikipedia afgewezen",
         "timestamp": "2026-11-13T19:52:43.789222"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "wikipedia",
+        "sense_id": "zaag#1",
+        "old_value": "unknown",
+        "new_value": "Een zaag is een stuk gereedschap of een machine (werktuigmachine) om materialen van bijvoorbeeld hout, natuursteen of metaal te bewerken. Dat wordt zagen genoemd.",
+        "timestamp": "2026-11-15T14:37:37.745894"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "zaag#1",
+        "relation": {
+          "type": "is_a",
+          "target": "stuk",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-11-15T14:37:37.909120"
+      }
+    ]
+  },
+  "leg": {
+    "senses": [
+      {
+        "sense_id": "leg#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-15T14:32:22.547675",
+      "updated_at": "2026-11-15T14:32:22.549071",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-15T14:32:22.549071",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-15T14:32:22.549071",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "leg"
+        },
+        "timestamp": "2026-11-15T14:32:22.547685"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "leg#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-15T14:32:22.549068"
       }
     ]
   }
