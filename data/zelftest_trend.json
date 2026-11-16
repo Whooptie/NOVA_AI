@@ -20,14 +20,26 @@
   "2026-11-15": {
    "antwoorden": 54.1,
    "concepten": 1265,
-   "data_mb": 8419.4,
-   "opstart_s": 4.1,
+   "data_mb": 8419.7,
+   "opstart_s": 4.2,
    "rooktest": 100.0,
-   "rss_mb": 798.4,
+   "rss_mb": 798.3,
    "taalbegrip": 97.9,
    "tests": 5097,
    "threads": 42,
    "zware_functies": 40
+  },
+  "2026-11-16": {
+   "antwoorden": 54.1,
+   "concepten": 1265,
+   "data_mb": 8424.0,
+   "opstart_s": 4.0,
+   "rooktest": 100.0,
+   "rss_mb": 792.9,
+   "taalbegrip": 97.9,
+   "tests": 5246,
+   "threads": 42,
+   "zware_functies": 37
   }
  },
  "versie": 1

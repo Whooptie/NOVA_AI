@@ -3,11 +3,64 @@ import importlib
 import pkgutil
 import modules
 import time
+import traceback
 
 class ModuleLoader:
     def __init__(self, event_bus):
         self.event_bus = event_bus
         self.loaded_modules = {}
+        # Modules uit de automatische scan die NIET konden laden: {naam: korte reden}.
+        # Nova start dan toch op (zie _probeer_te_laden); main.py toont ze rood in de
+        # banner en stuurt een melding naar de gsm.
+        self.mislukte_modules = {}
+
+    def _meld_mislukt(self, naam, fout):
+        """Onthoudt dat een module niet kon laden en zet de volledige foutmelding in het log."""
+        reden = " ".join(f"{type(fout).__name__}: {fout}".split())[:150]
+        self.mislukte_modules[naam] = reden
+        print(f"[MODULE_LOADER] FOUT: module '{naam}' kon niet laden en wordt overgeslagen: {reden}")
+        print("".join(traceback.format_exception(type(fout), fout, fout.__traceback__)))
+
+    def _probeer_te_laden(self, full_name, group, mod, sem):
+        """
+        Laadt één module uit de automatische scan. Gaat er iets mis, dan blijft Nova
+        gewoon doorlopen zonder deze module (zacht falen), maar de fout wordt wel
+        onthouden en gemeld. Geeft True als de module geladen is of bewust
+        overgeslagen werd, False als het mislukte.
+
+        Geldt ALLEEN voor de automatisch gevonden modules. De kernonderdelen die
+        hierboven en hieronder met de hand geladen worden (memory, semantic,
+        context_manager, intent_router, ...) blijven bewust fataal: zonder die
+        heeft doorlopen geen zin.
+        """
+        try:
+            self._laad_dynamische_module(full_name, group, mod, sem)
+            return True
+        except Exception as e:  # SystemExit/Ctrl+C vallen hier bewust NIET onder
+            self._meld_mislukt(mod, e)
+            return False
+
+    def _laad_dynamische_module(self, full_name, group, mod, sem):
+        module = importlib.import_module(full_name)
+
+        # Sla over als er geen init_module is (bv. subpackages zoals topics)
+        if not hasattr(module, "init_module"):
+            return
+
+        # Chat krijgt semantic mee
+        if group == "chat":
+            start = time.time()
+            instance = module.init_module(self.event_bus, sem)
+            instance.__load_time_ms__ = int((time.time() - start) * 1000)
+        else:
+            start = time.time()
+            try:
+                instance = module.init_module(self.event_bus, sem)
+            except TypeError:
+                instance = module.init_module(self.event_bus)
+        instance.__load_time_ms__ = int((time.time() - start) * 1000)
+        self.loaded_modules[mod] = instance
+        self.event_bus.register_module(mod, instance)
 
     def discover_and_load(self):
         
@@ -212,26 +265,9 @@ class ModuleLoader:
             if mod == "variant_feedback_logger":
                 continue
 
-            module = importlib.import_module(full_name)
-
-            # Sla over als er geen init_module is (bv. subpackages zoals topics)
-            if not hasattr(module, "init_module"):
-                continue
-
-            # Chat krijgt semantic mee
-            if group == "chat":
-                start = time.time()
-                instance = module.init_module(self.event_bus, sem)
-                instance.__load_time_ms__ = int((time.time() - start) * 1000)
-            else:
-                start = time.time()
-                try:
-                    instance = module.init_module(self.event_bus, sem)
-                except TypeError:
-                    instance = module.init_module(self.event_bus)
-            instance.__load_time_ms__ = int((time.time() - start) * 1000)
-            self.loaded_modules[mod] = instance
-            self.event_bus.register_module(mod, instance)
+            # Zacht falen: een kapotte module mag Nova niet meer plat leggen (zie
+            # _probeer_te_laden). De fout komt in de banner, het log en op de gsm.
+            self._probeer_te_laden(full_name, group, mod, sem)
 
         # ----------------------------------------------------
         # 3B. RESPONSE ENGINE (Layer 4)

@@ -407,6 +407,34 @@ def opstarttijd_regel():
     return f" Opgestart in {seconden:.1f} s"
 
 
+def mislukte_modules_regels(loader):
+    """Rode banner-regels voor modules die niet konden laden (leeg als alles goed ging)."""
+    mislukt = getattr(loader, "mislukte_modules", None) or {}
+    return [f"{RED}[ FAIL ]{RESET} {naam:<15} ({reden})" for naam, reden in sorted(mislukt.items())]
+
+
+def meld_mislukte_modules(loader):
+    """
+    Stuurt een melding naar de gsm als er modules niet konden laden. Geeft True als de
+    melding verstuurd is. Gooit nooit een fout: de melding mag het opstarten niet storen.
+    """
+    mislukt = getattr(loader, "mislukte_modules", None) or {}
+    if not mislukt:
+        return False
+    namen = ", ".join(sorted(mislukt))
+    tekst = (f"Nova is gestart, maar {len(mislukt)} module(s) konden niet laden: {namen}. "
+             "De rest draait gewoon. Bekijk het log voor de reden.")
+    try:
+        ntfy = loader.loaded_modules.get("ntfy_meldingen")
+        if ntfy is None:
+            print("[MODULE_LOADER] Kon geen gsm-melding sturen: ntfy_meldingen is niet geladen.")
+            return False
+        return bool(ntfy._verstuur(tekst, meld_fout=False))
+    except Exception as e:
+        print(f"[MODULE_LOADER] Kon geen gsm-melding sturen: {e}")
+        return False
+
+
 def installeer_stopsignaal(loader):
     """
     Bug #47-vervolg (5 okt 2026): wat doet Nova als Docker/Unraid de
@@ -835,11 +863,18 @@ def main():
             else:
                 print(f"{GREEN}[ OK ]{RESET}   {name:<15}")
 
+    for fail_regel in mislukte_modules_regels(loader):
+        print(fail_regel)
+
     print(CYAN + "───────────────────────────────────────────────" + RESET)
     opstart_regel = opstarttijd_regel()
     if opstart_regel:
         print(CYAN + opstart_regel + RESET)
     print(GREEN + " SYSTEM READY — Awaiting input..." + RESET + "\n")
+
+    if getattr(loader, "mislukte_modules", None):
+        # In een eigen draadje: een trage gsm-server mag het opstarten niet ophouden.
+        threading.Thread(target=meld_mislukte_modules, args=(loader,), daemon=True).start()
 
     print("Nova is gestart. Typ een bericht (of 'exit' om te stoppen).")
     print("Gebruik 'teach <woord> <betekenis>' om Nova iets expliciet te leren.")
