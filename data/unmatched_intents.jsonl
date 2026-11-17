@@ -200,3 +200,6 @@
 {"tekst": "waat bestaat een hamer uit?", "hoogste_gok": "rain", "confidence": 0.1216, "tijdstip": "2026-11-14T21:54:32.855555"}
 {"tekst": "leg kracht uit", "hoogste_gok": "math", "confidence": 0.1377, "tijdstip": "2026-11-15T15:32:22.520671"}
 {"tekst": "en dan", "hoogste_gok": "thanks", "confidence": 0.224, "tijdstip": "2026-11-15T15:33:15.839202"}
+{"tekst": "een hamer wordt gebruikt om spijkers in te slaan", "hoogste_gok": "chess", "confidence": 0.1173, "tijdstip": "2026-11-17T20:22:00.567547"}
+{"tekst": "een hamer wordt gebruikt om spijkers in te slaan", "hoogste_gok": "chess", "confidence": 0.1173, "tijdstip": "2026-11-17T20:22:03.609970"}
+{"tekst": "aja", "hoogste_gok": "rain", "confidence": 0.1182, "tijdstip": "2026-11-17T20:27:48.113641"}

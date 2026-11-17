@@ -1934,3 +1934,74 @@
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-15T20:51:16.440624"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-16T16:49:51.338048"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-16T16:52:23.803898"}
+{"text": "/reboor", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-16T16:59:04.985194"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-16T16:59:14.421302"}
+{"text": "extraheer hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:19:13.045920"}
+{"text": "extraheer hamer (gereedschap)", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:19:30.637224"}
+{"text": "extraheer aardbeving", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:19:49.928978"}
+{"text": "zoek gelijkenissen voor hamer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.01, "bron": "model_fallback", "tijdstip": "2026-11-17T20:20:57.979770"}
+{"text": "een hamer wordt gebruikt om spijkers in te slaan", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0035, "bron": "model_fallback", "tijdstip": "2026-11-17T20:22:00.549993"}
+{"text": "een hamer wordt gebruikt om spijkers in te slaan", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0035, "bron": "model_fallback", "tijdstip": "2026-11-17T20:22:03.603128"}
+{"text": "een hamer wordt gebruikt voor timmeren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:24:18.222618"}
+{"text": "een aardbeving veroorzaakt een tsunami", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:24:25.791066"}
+{"text": "een zaag wordt gebruikt voor zagen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:25:03.282895"}
+{"text": "een schaar wordt gebruikt voor knippen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:25:10.087097"}
+{"text": "een schroevendraaier wordt gebruikt voor schroeven", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:25:18.400668"}
+{"text": "een tang wordt gebruikt voor vastklemmen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:25:27.233029"}
+{"text": "een boor wordt gebruikt voor boren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:25:34.712130"}
+{"text": "een naald wordt gebruikt voor naaien", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:25:45.839283"}
+{"text": "een kompas wordt gebruikt voor navigeren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:25:52.782967"}
+{"text": "een microscoop wordt gebruikt voor vergroten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:26:00.963870"}
+{"text": "een telescoop wordt gebruikt voor sterren bekijken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:26:09.386911"}
+{"text": "een thermometer wordt gebruikt voor temperatuur meten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:26:16.489101"}
+{"text": "een paraplu wordt gebruikt voor regen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:26:26.573222"}
+{"text": "een magneet wordt gebruikt voor ijzer aantrekken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:26:33.126082"}
+{"text": "een kachel wordt gebruikt voor verwarmen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:26:40.321240"}
+{"text": "een weegschaal wordt gebruikt voor wegen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:26:47.180097"}
+{"text": "een storm veroorzaakt schade", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:27:20.809810"}
+{"text": "een overstroming veroorzaakt schade", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:27:27.457204"}
+{"text": "een droogte veroorzaakt misoogst", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:27:34.246606"}
+{"text": "erosie veroorzaakt bodemverlies", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:27:44.476653"}
+{"text": "aja", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:27:48.104504"}
+{"text": "erosie veroorzaakt bodemverlies", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:27:50.725069"}
+{"text": "griep veroorzaakt koorts", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:27:57.840180"}
+{"text": "een infectie veroorzaakt ontsteking", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:28:06.365277"}
+{"text": "een brand veroorzaakt rook", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:28:13.521274"}
+{"text": "vocht veroorzaakt roest", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:28:20.341550"}
+{"text": "een lawine veroorzaakt schade", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:28:27.607530"}
+{"text": "wrijving veroorzaakt warmte", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:28:38.764192"}
+{"text": "luchtvervuiling veroorzaakt smog", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:28:46.679108"}
+{"text": "een tsunami veroorzaakt overstroming", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:28:53.364951"}
+{"text": "een vulkaanuitbarsting veroorzaakt asregen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:29:03.535840"}
+{"text": "een thermometer wordt gebruikt voor meten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:30:12.714871"}
+{"text": "een kaars wordt gebruikt voor verlichten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:33:39.500036"}
+{"text": "een lamp wordt gebruikt voor verlichten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:33:46.179987"}
+{"text": "een radio wordt gebruikt voor luisteren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:33:54.052939"}
+{"text": "een telefoon wordt gebruikt voor bellen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:34:00.825501"}
+{"text": "een batterij wordt gebruikt voor stroom", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:34:07.445142"}
+{"text": "een koelkast wordt gebruikt voor koelen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:34:20.147480"}
+{"text": "een bril wordt gebruikt voor zien", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0264, "bron": "model_fallback", "tijdstip": "2026-11-17T20:34:28.917569"}
+{"text": "een verrekijker wordt gebruikt voor kijken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:34:37.006076"}
+{"text": "een liniaal wordt gebruikt voor meten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:34:44.048809"}
+{"text": "een zeef wordt gebruikt voor zeven", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:34:51.014973"}
+{"text": "een trechter wordt gebruikt voor gieten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:34:57.746215"}
+{"text": "een potlood wordt gebruikt voor tekenen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:35:06.543737"}
+{"text": "een oven wordt gebruikt voor bakken", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:35:13.797369"}
+{"text": "een stofzuiger wordt gebruikt voor stofzuigen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:35:21.456206"}
+{"text": "een wasmachine wordt gebruikt voor wassen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:35:29.617913"}
+{"text": "een tandenborstel wordt gebruikt voor poetsen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-17T20:35:36.789195"}
+{"text": "roken veroorzaakt kanker", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:35:45.052146"}
+{"text": "slaaptekort veroorzaakt vermoeidheid", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:35:52.766748"}
+{"text": "alcohol veroorzaakt dronkenschap", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:35:59.503264"}
+{"text": "ontbossing veroorzaakt erosie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:36:06.077174"}
+{"text": "een virus veroorzaakt een ziekte", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:36:12.743974"}
+{"text": "vuur veroorzaakt brandwonden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:36:18.949843"}
+{"text": "een trilling veroorzaakt geluid", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:36:30.528732"}
+{"text": "verbranding veroorzaakt warmte", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:36:45.266687"}
+{"text": "een botsing veroorzaakt schade", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:36:57.670256"}
+{"text": "zuur veroorzaakt corrosie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:37:10.584969"}
+{"text": "zonlicht veroorzaakt zonnebrand", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:37:23.530538"}
+{"text": "zout veroorzaakt dorst", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:37:34.537707"}
+{"text": "een kortsluiting veroorzaakt brand", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:37:50.291287"}
+{"text": "een aardbeving veroorzaakt schade", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:38:02.057667"}
+{"text": "weerleg concept: aja", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:40:49.564078"}

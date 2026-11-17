@@ -7820,6 +7820,14 @@
             "status": "confirmed",
             "created_at": "2026-10-31T19:22:12.473765",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "used_for",
+            "target": "meten",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:30:14.760938"
           }
         ],
         "source": "user",
@@ -7830,12 +7838,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:30:00.000000",
-      "updated_at": "2026-10-31T19:22:12.549167",
+      "updated_at": "2026-11-17T19:30:14.760948",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T19:22:12.473778",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:30:14.760948",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:30:00.000000",
@@ -7843,6 +7851,10 @@
         },
         {
           "timestamp": "2026-10-31T19:22:12.473778",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:30:14.760948",
           "confidence": 1.0
         }
       ]
@@ -7887,6 +7899,17 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-31T19:22:12.549176"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "thermometer#1",
+        "relation": {
+          "type": "used_for",
+          "target": "meten",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:30:14.760945"
       }
     ]
   },
@@ -8024,6 +8047,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-31T15:30:00.000000"
+          },
+          {
+            "type": "causes",
+            "target": "misoogst",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:27:36.207018"
           }
         ],
         "source": "user",
@@ -8034,15 +8065,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:30:00.000000",
-      "updated_at": "2026-10-31T15:30:00.000000",
+      "updated_at": "2026-11-17T19:27:36.207028",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T15:30:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-17T19:27:36.207028",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:27:36.207028",
           "confidence": 1.0
         }
       ]
@@ -8063,6 +8098,17 @@
         "old_value": null,
         "new_value": "Droogte is een lange periode met weinig of geen regen.",
         "timestamp": "2026-10-31T15:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "droogte#1",
+        "relation": {
+          "type": "causes",
+          "target": "misoogst",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:27:36.207025"
       }
     ]
   },
@@ -8108,6 +8154,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-31T15:30:00.000000"
+          },
+          {
+            "type": "causes",
+            "target": "schade",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:27:29.327042"
           }
         ],
         "source": "user",
@@ -8118,15 +8172,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-31T15:30:00.000000",
-      "updated_at": "2026-10-31T15:30:00.000000",
+      "updated_at": "2026-11-17T19:27:29.327052",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T15:30:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-17T19:27:29.327052",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-31T15:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:27:29.327052",
           "confidence": 1.0
         }
       ]
@@ -8147,6 +8205,17 @@
         "old_value": null,
         "new_value": "Een overstroming is een gebeurtenis waarbij water over land stroomt dat normaal droog is.",
         "timestamp": "2026-10-31T15:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "overstroming#1",
+        "relation": {
+          "type": "causes",
+          "target": "schade",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:27:29.327049"
       }
     ]
   },
@@ -20637,7 +20706,16 @@
           "Geluid ontstaat door een trilling in de lucht.",
           "De snaar van de gitaar maakte een trilling."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "geluid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:36:32.947017"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -20646,15 +20724,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-11-17T19:36:32.947026",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:36:32.947026",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:36:32.947026",
           "confidence": 1.0
         }
       ]
@@ -20675,6 +20757,17 @@
         "old_value": null,
         "new_value": "Een trilling is een herhalende beweging heen en weer rond een rustpunt, bijvoorbeeld van lucht bij geluid.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "trilling#1",
+        "relation": {
+          "type": "causes",
+          "target": "geluid",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:36:32.947024"
       }
     ]
   },
@@ -27509,6 +27602,14 @@
             "source": "user",
             "created_at": "2026-07-05T00:00:00.000000",
             "status": "confirmed"
+          },
+          {
+            "type": "used_for",
+            "target": "tekenen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:35:08.751969"
           }
         ],
         "source": "user",
@@ -27519,15 +27620,19 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-11-17T19:35:08.751979",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:35:08.751979",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:35:08.751979",
           "confidence": 1.0
         }
       ]
@@ -27548,6 +27653,17 @@
         "old_value": null,
         "new_value": "Een potlood is een schrijf- of tekengereedschap met een houten omhulsel rond een kern van grafiet.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "potlood#1",
+        "relation": {
+          "type": "used_for",
+          "target": "tekenen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:35:08.751977"
       }
     ]
   },
@@ -34965,6 +35081,14 @@
             "status": "confirmed",
             "created_at": "2026-10-20T17:45:15.804242",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "used_for",
+            "target": "regen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:26:28.692603"
           }
         ],
         "source": "user",
@@ -34975,13 +35099,13 @@
     ],
     "metadata": {
       "created_at": "2026-07-31T04:49:50.843632",
-      "updated_at": "2026-10-20T17:45:15.842339",
+      "updated_at": "2026-11-17T19:26:28.692612",
       "sources": [
         "auto",
         "user"
       ],
-      "last_used_at": "2026-10-20T17:45:15.804252",
-      "usage_count": 3,
+      "last_used_at": "2026-11-17T19:26:28.692612",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-07-31T04:49:50.844632",
@@ -34993,6 +35117,10 @@
         },
         {
           "timestamp": "2026-10-20T17:45:15.804252",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:26:28.692612",
           "confidence": 1.0
         }
       ]
@@ -35045,6 +35173,17 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-20T17:45:15.842347"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "paraplu#1",
+        "relation": {
+          "type": "used_for",
+          "target": "regen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:26:28.692610"
       }
     ]
   },
@@ -38294,6 +38433,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "verlichten",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:33:48.869464"
           }
         ],
         "source": "user",
@@ -38304,13 +38451,13 @@
     ],
     "metadata": {
       "created_at": "2026-10-05T18:26:18.356653",
-      "updated_at": "2026-10-09T18:35:00.000000",
+      "updated_at": "2026-11-17T19:33:48.869473",
       "sources": [
         "auto",
         "user"
       ],
-      "last_used_at": "2026-10-09T18:35:00.000000",
-      "usage_count": 2,
+      "last_used_at": "2026-11-17T19:33:48.869473",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-05T18:26:18.358170",
@@ -38318,6 +38465,10 @@
         },
         {
           "timestamp": "2026-10-09T18:35:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:33:48.869473",
           "confidence": 1.0
         }
       ]
@@ -38346,6 +38497,17 @@
         "old_value": "unknown",
         "new_value": "Een lamp is een apparaat dat licht geeft, meestal met behulp van elektriciteit.",
         "timestamp": "2026-10-09T18:35:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "lamp#1",
+        "relation": {
+          "type": "used_for",
+          "target": "verlichten",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:33:48.869470"
       }
     ]
   },
@@ -41619,6 +41781,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T16:45:00.000000"
+          },
+          {
+            "type": "causes",
+            "target": "schade",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:27:22.860296"
           }
         ],
         "source": "user",
@@ -41629,15 +41799,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T16:45:00.000000",
-      "updated_at": "2026-10-15T16:45:00.000000",
+      "updated_at": "2026-11-17T19:27:22.860306",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T16:45:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-17T19:27:22.860306",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T16:45:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:27:22.860306",
           "confidence": 1.0
         }
       ]
@@ -41658,6 +41832,17 @@
         "old_value": null,
         "new_value": "Een storm is zeer harde wind, vaak samen met regen.",
         "timestamp": "2026-10-15T16:45:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "storm#1",
+        "relation": {
+          "type": "causes",
+          "target": "schade",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:27:22.860304"
       }
     ]
   },
@@ -43852,6 +44037,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T17:05:00.000000"
+          },
+          {
+            "type": "causes",
+            "target": "dorst",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:37:40.847659"
           }
         ],
         "source": "user",
@@ -43862,15 +44055,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T17:05:00.000000",
-      "updated_at": "2026-10-15T17:05:00.000000",
+      "updated_at": "2026-11-17T19:37:40.847669",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T17:05:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-17T19:37:40.847669",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T17:05:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:37:40.847669",
           "confidence": 1.0
         }
       ]
@@ -43891,6 +44088,17 @@
         "old_value": null,
         "new_value": "Zout is een witte stof die je aan eten toevoegt om meer smaak te geven.",
         "timestamp": "2026-10-15T17:05:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "zout#1",
+        "relation": {
+          "type": "causes",
+          "target": "dorst",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:37:40.847666"
       }
     ]
   },
@@ -49962,6 +50170,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-15T19:40:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "zien",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:34:31.253973"
           }
         ],
         "source": "user",
@@ -49972,15 +50188,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-15T19:40:00.000000",
+      "updated_at": "2026-11-17T19:34:31.253982",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T19:40:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-17T19:34:31.253982",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:34:31.253982",
           "confidence": 1.0
         }
       ]
@@ -50001,6 +50221,17 @@
         "old_value": null,
         "new_value": "Een bril is een voorwerp met twee glazen dat je voor je ogen draagt om beter te zien.",
         "timestamp": "2026-10-15T19:40:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "bril#1",
+        "relation": {
+          "type": "used_for",
+          "target": "zien",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:34:31.253980"
       }
     ]
   },
@@ -83953,6 +84184,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-18T22:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "timmeren",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:24:21.310404"
           }
         ],
         "source": "user",
@@ -83963,15 +84202,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-18T22:00:00.000000",
-      "updated_at": "2026-10-18T22:00:00.000000",
+      "updated_at": "2026-11-17T19:24:21.310414",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-18T22:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:24:21.310414",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-18T22:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:24:21.310414",
           "confidence": 1.0
         }
       ]
@@ -83992,6 +84235,17 @@
         "old_value": null,
         "new_value": "Een hamer is een gereedschap met een zwaar hoofd aan een steel, waarmee je spijkers inslaat of dingen kapotslaat.",
         "timestamp": "2026-10-18T22:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "hamer#1",
+        "relation": {
+          "type": "used_for",
+          "target": "timmeren",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:24:21.310411"
       }
     ]
   },
@@ -91080,6 +91334,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "bellen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:34:02.861810"
           }
         ],
         "source": "user",
@@ -91090,15 +91352,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-17T19:34:02.861820",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:34:02.861820",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:34:02.861820",
           "confidence": 1.0
         }
       ]
@@ -91119,6 +91385,17 @@
         "old_value": null,
         "new_value": "Een telefoon is een apparaat waarmee je kunt praten met iemand die ver weg is.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "telefoon#1",
+        "relation": {
+          "type": "used_for",
+          "target": "bellen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:34:02.861818"
       }
     ]
   },
@@ -93589,6 +93866,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "stroom",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:34:09.967570"
           }
         ],
         "source": "user",
@@ -93599,15 +93884,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-17T19:34:09.967580",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:34:09.967580",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:34:09.967580",
           "confidence": 1.0
         }
       ]
@@ -93628,6 +93917,17 @@
         "old_value": null,
         "new_value": "Een batterij is een klein apparaat dat elektrische energie bewaart en afgeeft, bijvoorbeeld voor een afstandsbediening of speelgoed.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "batterij#1",
+        "relation": {
+          "type": "used_for",
+          "target": "stroom",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:34:09.967578"
       }
     ]
   },
@@ -94591,6 +94891,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "luisteren",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:33:56.113446"
           }
         ],
         "source": "user",
@@ -94601,15 +94909,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-17T19:33:56.113455",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:33:56.113455",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:33:56.113455",
           "confidence": 1.0
         }
       ]
@@ -94630,6 +94942,17 @@
         "old_value": null,
         "new_value": "Een radio is een apparaat waarmee je muziek, nieuws en andere uitzendingen hoort die via radiogolven worden verzonden.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "radio#1",
+        "relation": {
+          "type": "used_for",
+          "target": "luisteren",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:33:56.113453"
       }
     ]
   },
@@ -95009,6 +95332,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "koelen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:34:22.838490"
           }
         ],
         "source": "user",
@@ -95019,15 +95350,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-17T19:34:22.838498",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:34:22.838498",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:34:22.838498",
           "confidence": 1.0
         }
       ]
@@ -95048,6 +95383,17 @@
         "old_value": null,
         "new_value": "Een koelkast is een elektrisch apparaat in de keuken waarin je eten en drinken koud en vers houdt.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "koelkast#1",
+        "relation": {
+          "type": "used_for",
+          "target": "koelen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:34:22.838496"
       }
     ]
   },
@@ -95085,6 +95431,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "wassen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:35:31.802051"
           }
         ],
         "source": "user",
@@ -95095,15 +95449,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-17T19:35:31.802060",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:35:31.802060",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:35:31.802060",
           "confidence": 1.0
         }
       ]
@@ -95124,6 +95482,17 @@
         "old_value": null,
         "new_value": "Een wasmachine is een apparaat waarmee je kleren met water en zeep wast.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "wasmachine#1",
+        "relation": {
+          "type": "used_for",
+          "target": "wassen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:35:31.802058"
       }
     ]
   },
@@ -95169,6 +95538,14 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-11-04T18:46:31.750451"
+          },
+          {
+            "type": "used_for",
+            "target": "bakken",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:35:16.024063"
           }
         ],
         "source": "user",
@@ -95179,12 +95556,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-11-04T18:46:31.827053",
+      "updated_at": "2026-11-17T19:35:16.024080",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-11-04T18:46:31.750465",
-      "usage_count": 2,
+      "last_used_at": "2026-11-17T19:35:16.024080",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
@@ -95192,6 +95569,10 @@
         },
         {
           "timestamp": "2026-11-04T18:46:31.750465",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:35:16.024080",
           "confidence": 1.0
         }
       ]
@@ -95236,6 +95617,17 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-11-04T18:46:31.827062"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "oven#1",
+        "relation": {
+          "type": "used_for",
+          "target": "bakken",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:35:16.024076"
       }
     ]
   },
@@ -95341,6 +95733,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-23T20:00:00.000000"
+          },
+          {
+            "type": "used_for",
+            "target": "stofzuigen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:35:23.720429"
           }
         ],
         "source": "user",
@@ -95351,15 +95751,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-23T20:00:00.000000",
-      "updated_at": "2026-10-23T20:00:00.000000",
+      "updated_at": "2026-11-17T19:35:23.720440",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-23T20:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:35:23.720440",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-23T20:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:35:23.720440",
           "confidence": 1.0
         }
       ]
@@ -95380,6 +95784,17 @@
         "old_value": null,
         "new_value": "Een stofzuiger is een elektrisch apparaat dat stof en vuil van de vloer zuigt.",
         "timestamp": "2026-10-23T20:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "stofzuiger#1",
+        "relation": {
+          "type": "used_for",
+          "target": "stofzuigen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:35:23.720437"
       }
     ]
   },
@@ -106079,6 +106494,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "causes",
+            "target": "brandwonden",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:36:21.102169"
           }
         ],
         "source": "user",
@@ -106089,15 +106512,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-17T19:36:21.102178",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-17T19:36:21.102178",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-17T19:36:21.102178",
           "confidence": 1.0
         }
       ]
@@ -106118,6 +106545,17 @@
         "old_value": null,
         "new_value": "Vuur is de hete, lichtgevende vlam die ontstaat als iets brandt.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vuur#1",
+        "relation": {
+          "type": "causes",
+          "target": "brandwonden",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:36:21.102176"
       }
     ]
   },
@@ -122080,6 +122518,14 @@
             "source": "wikipedia",
             "status": "unverified",
             "created_at": "2026-11-15T14:37:37.745864"
+          },
+          {
+            "type": "used_for",
+            "target": "zagen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:25:05.267733"
           }
         ],
         "source": "wikipedia",
@@ -122090,12 +122536,12 @@
     ],
     "metadata": {
       "created_at": "2026-11-13T19:52:43.623581",
-      "updated_at": "2026-11-15T14:37:37.909110",
+      "updated_at": "2026-11-17T19:25:05.267744",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-15T14:37:37.745896",
-      "usage_count": 3,
+      "last_used_at": "2026-11-17T19:25:05.267744",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-11-13T19:52:43.623828",
@@ -122107,6 +122553,10 @@
         },
         {
           "timestamp": "2026-11-15T14:37:37.745896",
+          "confidence": 0.8
+        },
+        {
+          "timestamp": "2026-11-17T19:25:05.267744",
           "confidence": 0.8
         }
       ]
@@ -122170,6 +122620,17 @@
           "confidence": 0.8
         },
         "timestamp": "2026-11-15T14:37:37.909120"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "zaag#1",
+        "relation": {
+          "type": "used_for",
+          "target": "zagen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:25:05.267741"
       }
     ]
   },
@@ -122218,6 +122679,4645 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-15T14:32:22.549068"
+      }
+    ]
+  },
+  "spijkers": {
+    "senses": [
+      {
+        "sense_id": "spijkers#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:22:00.592462",
+      "updated_at": "2026-11-17T19:22:00.594212",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:22:00.594212",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:22:00.594212",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "spijkers"
+        },
+        "timestamp": "2026-11-17T19:22:00.592472"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "spijkers#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:22:00.594210"
+      }
+    ]
+  },
+  "slaan": {
+    "senses": [
+      {
+        "sense_id": "slaan#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:22:00.673838",
+      "updated_at": "2026-11-17T19:22:00.674188",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:22:00.674188",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:22:00.674188",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "slaan"
+        },
+        "timestamp": "2026-11-17T19:22:00.673851"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "slaan#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:22:00.674186"
+      }
+    ]
+  },
+  "timmeren": {
+    "senses": [
+      {
+        "sense_id": "timmeren#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:24:18.230033",
+      "updated_at": "2026-11-17T19:24:18.230367",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:24:18.230367",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:24:18.230367",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "timmeren"
+        },
+        "timestamp": "2026-11-17T19:24:18.230039"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "timmeren#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:24:18.230365"
+      }
+    ]
+  },
+  "aardbeving": {
+    "senses": [
+      {
+        "sense_id": "aardbeving#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "tsunami",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:24:27.751521"
+          },
+          {
+            "type": "causes",
+            "target": "schade",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:38:43.503956"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:24:25.799244",
+      "updated_at": "2026-11-17T19:38:43.503966",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:38:43.503966",
+      "usage_count": 3,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:24:25.799576",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:24:27.751532",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:38:43.503966",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "aardbeving"
+        },
+        "timestamp": "2026-11-17T19:24:25.799250"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "aardbeving#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:24:25.799574"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "aardbeving#1",
+        "relation": {
+          "type": "causes",
+          "target": "tsunami",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:24:27.751529"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "aardbeving#1",
+        "relation": {
+          "type": "causes",
+          "target": "schade",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:38:43.503963"
+      }
+    ]
+  },
+  "tsunami": {
+    "senses": [
+      {
+        "sense_id": "tsunami#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "overstroming",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:28:55.412347"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:24:25.883096",
+      "updated_at": "2026-11-17T19:28:55.412358",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:55.412358",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:24:25.883438",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:28:55.412358",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tsunami"
+        },
+        "timestamp": "2026-11-17T19:24:25.883107"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "tsunami#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:24:25.883435"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "tsunami#1",
+        "relation": {
+          "type": "causes",
+          "target": "overstroming",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:28:55.412356"
+      }
+    ]
+  },
+  "zagen": {
+    "senses": [
+      {
+        "sense_id": "zagen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:03.293136",
+      "updated_at": "2026-11-17T19:25:03.293459",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:03.293459",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:03.293459",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zagen"
+        },
+        "timestamp": "2026-11-17T19:25:03.293143"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "zagen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:03.293456"
+      }
+    ]
+  },
+  "schaar": {
+    "senses": [
+      {
+        "sense_id": "schaar#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "knippen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:25:12.146172"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:10.095633",
+      "updated_at": "2026-11-17T19:25:12.146182",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:12.146182",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:10.095903",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:25:12.146182",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schaar"
+        },
+        "timestamp": "2026-11-17T19:25:10.095639"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "schaar#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:10.095901"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "schaar#1",
+        "relation": {
+          "type": "used_for",
+          "target": "knippen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:25:12.146179"
+      }
+    ]
+  },
+  "knippen": {
+    "senses": [
+      {
+        "sense_id": "knippen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:10.174833",
+      "updated_at": "2026-11-17T19:25:10.175332",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:10.175332",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:10.175332",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "knippen"
+        },
+        "timestamp": "2026-11-17T19:25:10.174843"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "knippen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:10.175330"
+      }
+    ]
+  },
+  "schroevendraaier": {
+    "senses": [
+      {
+        "sense_id": "schroevendraaier#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "schroeven",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:25:21.042068"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:18.408754",
+      "updated_at": "2026-11-17T19:25:21.042079",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:21.042079",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:18.409043",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:25:21.042079",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schroevendraaier"
+        },
+        "timestamp": "2026-11-17T19:25:18.408759"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "schroevendraaier#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:18.409041"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "schroevendraaier#1",
+        "relation": {
+          "type": "used_for",
+          "target": "schroeven",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:25:21.042076"
+      }
+    ]
+  },
+  "schroeven": {
+    "senses": [
+      {
+        "sense_id": "schroeven#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:18.490729",
+      "updated_at": "2026-11-17T19:25:18.490991",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:18.490991",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:18.490991",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schroeven"
+        },
+        "timestamp": "2026-11-17T19:25:18.490739"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "schroeven#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:18.490989"
+      }
+    ]
+  },
+  "tang": {
+    "senses": [
+      {
+        "sense_id": "tang#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "vastklemmen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:25:29.428386"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:27.239402",
+      "updated_at": "2026-11-17T19:25:29.428395",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:29.428395",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:27.239670",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:25:29.428395",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tang"
+        },
+        "timestamp": "2026-11-17T19:25:27.239408"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "tang#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:27.239668"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "tang#1",
+        "relation": {
+          "type": "used_for",
+          "target": "vastklemmen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:25:29.428392"
+      }
+    ]
+  },
+  "vastklemmen": {
+    "senses": [
+      {
+        "sense_id": "vastklemmen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:27.322793",
+      "updated_at": "2026-11-17T19:25:27.323067",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:27.323067",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:27.323067",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vastklemmen"
+        },
+        "timestamp": "2026-11-17T19:25:27.322806"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vastklemmen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:27.323065"
+      }
+    ]
+  },
+  "boor": {
+    "senses": [
+      {
+        "sense_id": "boor#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "boren",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:25:40.062789"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:34.719542",
+      "updated_at": "2026-11-17T19:25:40.062799",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:40.062799",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:34.719794",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:25:40.062799",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "boor"
+        },
+        "timestamp": "2026-11-17T19:25:34.719548"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "boor#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:34.719792"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "boor#1",
+        "relation": {
+          "type": "used_for",
+          "target": "boren",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:25:40.062797"
+      }
+    ]
+  },
+  "boren": {
+    "senses": [
+      {
+        "sense_id": "boren#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:34.804789",
+      "updated_at": "2026-11-17T19:25:34.805135",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:34.805135",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:34.805135",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "boren"
+        },
+        "timestamp": "2026-11-17T19:25:34.804801"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "boren#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:34.805133"
+      }
+    ]
+  },
+  "naald": {
+    "senses": [
+      {
+        "sense_id": "naald#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "naaien",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:25:47.924811"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:45.848169",
+      "updated_at": "2026-11-17T19:25:47.924823",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:47.924823",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:45.848399",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:25:47.924823",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "naald"
+        },
+        "timestamp": "2026-11-17T19:25:45.848174"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "naald#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:45.848397"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "naald#1",
+        "relation": {
+          "type": "used_for",
+          "target": "naaien",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:25:47.924820"
+      }
+    ]
+  },
+  "naaien": {
+    "senses": [
+      {
+        "sense_id": "naaien#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:45.930828",
+      "updated_at": "2026-11-17T19:25:45.931045",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:45.931045",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:45.931045",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "naaien"
+        },
+        "timestamp": "2026-11-17T19:25:45.930840"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "naaien#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:45.931043"
+      }
+    ]
+  },
+  "kompas": {
+    "senses": [
+      {
+        "sense_id": "kompas#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "navigeren",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:25:55.063676"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:52.792334",
+      "updated_at": "2026-11-17T19:25:55.063686",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:55.063686",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:52.792555",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:25:55.063686",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kompas"
+        },
+        "timestamp": "2026-11-17T19:25:52.792340"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kompas#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:52.792553"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "kompas#1",
+        "relation": {
+          "type": "used_for",
+          "target": "navigeren",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:25:55.063684"
+      }
+    ]
+  },
+  "navigeren": {
+    "senses": [
+      {
+        "sense_id": "navigeren#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:25:52.872003",
+      "updated_at": "2026-11-17T19:25:52.872291",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:25:52.872291",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:25:52.872291",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "navigeren"
+        },
+        "timestamp": "2026-11-17T19:25:52.872014"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "navigeren#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:25:52.872288"
+      }
+    ]
+  },
+  "microscoop": {
+    "senses": [
+      {
+        "sense_id": "microscoop#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "vergroten",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:26:03.438851"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:00.972831",
+      "updated_at": "2026-11-17T19:26:03.438861",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:03.438861",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:00.973126",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:26:03.438861",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "microscoop"
+        },
+        "timestamp": "2026-11-17T19:26:00.972837"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "microscoop#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:00.973123"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "microscoop#1",
+        "relation": {
+          "type": "used_for",
+          "target": "vergroten",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:26:03.438859"
+      }
+    ]
+  },
+  "vergroten": {
+    "senses": [
+      {
+        "sense_id": "vergroten#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:01.057754",
+      "updated_at": "2026-11-17T19:26:01.058013",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:01.058013",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:01.058013",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vergroten"
+        },
+        "timestamp": "2026-11-17T19:26:01.057766"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vergroten#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:01.058011"
+      }
+    ]
+  },
+  "telescoop": {
+    "senses": [
+      {
+        "sense_id": "telescoop#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "sterren bekijken",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:26:11.998460"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:09.395196",
+      "updated_at": "2026-11-17T19:26:11.998470",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:11.998470",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:09.395394",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:26:11.998470",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "telescoop"
+        },
+        "timestamp": "2026-11-17T19:26:09.395204"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "telescoop#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:09.395391"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "telescoop#1",
+        "relation": {
+          "type": "used_for",
+          "target": "sterren bekijken",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:26:11.998468"
+      }
+    ]
+  },
+  "sterren bekijken": {
+    "senses": [
+      {
+        "sense_id": "sterren bekijken#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:09.475367",
+      "updated_at": "2026-11-17T19:26:09.475621",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:09.475621",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:09.475621",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "sterren bekijken"
+        },
+        "timestamp": "2026-11-17T19:26:09.475379"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "sterren bekijken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:09.475619"
+      }
+    ]
+  },
+  "magneet": {
+    "senses": [
+      {
+        "sense_id": "magneet#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "ijzer aantrekken",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:26:35.436336"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:33.133535",
+      "updated_at": "2026-11-17T19:26:35.436346",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:35.436346",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:33.133832",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:26:35.436346",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "magneet"
+        },
+        "timestamp": "2026-11-17T19:26:33.133540"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "magneet#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:33.133830"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "magneet#1",
+        "relation": {
+          "type": "used_for",
+          "target": "ijzer aantrekken",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:26:35.436343"
+      }
+    ]
+  },
+  "ijzer aantrekken": {
+    "senses": [
+      {
+        "sense_id": "ijzer aantrekken#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:33.214834",
+      "updated_at": "2026-11-17T19:26:33.215063",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:33.215063",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:33.215063",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ijzer aantrekken"
+        },
+        "timestamp": "2026-11-17T19:26:33.214845"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "ijzer aantrekken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:33.215061"
+      }
+    ]
+  },
+  "kachel": {
+    "senses": [
+      {
+        "sense_id": "kachel#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "verwarmen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:26:42.852987"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:40.329120",
+      "updated_at": "2026-11-17T19:26:42.852997",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:42.852997",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:40.329419",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:26:42.852997",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kachel"
+        },
+        "timestamp": "2026-11-17T19:26:40.329129"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kachel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:40.329417"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "kachel#1",
+        "relation": {
+          "type": "used_for",
+          "target": "verwarmen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:26:42.852995"
+      }
+    ]
+  },
+  "verwarmen": {
+    "senses": [
+      {
+        "sense_id": "verwarmen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:40.415882",
+      "updated_at": "2026-11-17T19:26:40.416113",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:40.416113",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:40.416113",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "verwarmen"
+        },
+        "timestamp": "2026-11-17T19:26:40.415894"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "verwarmen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:40.416110"
+      }
+    ]
+  },
+  "weegschaal": {
+    "senses": [
+      {
+        "sense_id": "weegschaal#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "wegen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:26:50.727967"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:47.188585",
+      "updated_at": "2026-11-17T19:26:50.727978",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:50.727978",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:47.188864",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:26:50.727978",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "weegschaal"
+        },
+        "timestamp": "2026-11-17T19:26:47.188590"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "weegschaal#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:47.188862"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "weegschaal#1",
+        "relation": {
+          "type": "used_for",
+          "target": "wegen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:26:50.727975"
+      }
+    ]
+  },
+  "wegen": {
+    "senses": [
+      {
+        "sense_id": "wegen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:26:47.270539",
+      "updated_at": "2026-11-17T19:26:47.270901",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:26:47.270901",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:26:47.270901",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wegen"
+        },
+        "timestamp": "2026-11-17T19:26:47.270551"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "wegen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:26:47.270898"
+      }
+    ]
+  },
+  "schade": {
+    "senses": [
+      {
+        "sense_id": "schade#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:27:20.817639",
+      "updated_at": "2026-11-17T19:27:20.818008",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:27:20.818008",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:27:20.818008",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schade"
+        },
+        "timestamp": "2026-11-17T19:27:20.817644"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "schade#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:27:20.818006"
+      }
+    ]
+  },
+  "misoogst": {
+    "senses": [
+      {
+        "sense_id": "misoogst#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:27:34.256384",
+      "updated_at": "2026-11-17T19:27:34.256638",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:27:34.256638",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:27:34.256638",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "misoogst"
+        },
+        "timestamp": "2026-11-17T19:27:34.256389"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "misoogst#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:27:34.256636"
+      }
+    ]
+  },
+  "erosie": {
+    "senses": [
+      {
+        "sense_id": "erosie#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "bodemverlies",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:27:52.916671"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:27:44.484936",
+      "updated_at": "2026-11-17T19:27:52.916687",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:27:52.916687",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:27:44.485222",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:27:52.916687",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "erosie"
+        },
+        "timestamp": "2026-11-17T19:27:44.484942"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "erosie#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:27:44.485220"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "erosie#1",
+        "relation": {
+          "type": "causes",
+          "target": "bodemverlies",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:27:52.916682"
+      }
+    ]
+  },
+  "bodemverlies": {
+    "senses": [
+      {
+        "sense_id": "bodemverlies#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:27:44.564664",
+      "updated_at": "2026-11-17T19:27:44.564961",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:27:44.564961",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:27:44.564961",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bodemverlies"
+        },
+        "timestamp": "2026-11-17T19:27:44.564677"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "bodemverlies#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:27:44.564959"
+      }
+    ]
+  },
+  "aja": {
+    "senses": [
+      {
+        "sense_id": "aja#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "rejected",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:27:48.138137",
+      "updated_at": "2026-11-17T19:40:49.572650",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:27:48.139049",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:27:48.139049",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "aja"
+        },
+        "timestamp": "2026-11-17T19:27:48.138146"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "aja#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:27:48.139046"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "aja#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-11-17T19:40:49.572645"
+      }
+    ]
+  },
+  "griep": {
+    "senses": [
+      {
+        "sense_id": "griep#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "koorts",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:28:00.249751"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:27:57.849529",
+      "updated_at": "2026-11-17T19:28:00.249761",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:00.249761",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:27:57.849752",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:28:00.249761",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "griep"
+        },
+        "timestamp": "2026-11-17T19:27:57.849534"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "griep#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:27:57.849750"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "griep#1",
+        "relation": {
+          "type": "causes",
+          "target": "koorts",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:28:00.249759"
+      }
+    ]
+  },
+  "koorts": {
+    "senses": [
+      {
+        "sense_id": "koorts#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:27:57.934276",
+      "updated_at": "2026-11-17T19:27:57.934532",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:27:57.934532",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:27:57.934532",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "koorts"
+        },
+        "timestamp": "2026-11-17T19:27:57.934286"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "koorts#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:27:57.934530"
+      }
+    ]
+  },
+  "infectie": {
+    "senses": [
+      {
+        "sense_id": "infectie#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "ontsteking",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:28:08.619939"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:06.373910",
+      "updated_at": "2026-11-17T19:28:08.619949",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:08.619949",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:06.374213",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:28:08.619949",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "infectie"
+        },
+        "timestamp": "2026-11-17T19:28:06.373917"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "infectie#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:06.374211"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "infectie#1",
+        "relation": {
+          "type": "causes",
+          "target": "ontsteking",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:28:08.619946"
+      }
+    ]
+  },
+  "ontsteking": {
+    "senses": [
+      {
+        "sense_id": "ontsteking#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:06.456654",
+      "updated_at": "2026-11-17T19:28:06.456978",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:06.456978",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:06.456978",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ontsteking"
+        },
+        "timestamp": "2026-11-17T19:28:06.456665"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "ontsteking#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:06.456976"
+      }
+    ]
+  },
+  "brand": {
+    "senses": [
+      {
+        "sense_id": "brand#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "rook",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:28:15.474759"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:13.533152",
+      "updated_at": "2026-11-17T19:28:15.474768",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:15.474768",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:13.533447",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:28:15.474768",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "brand"
+        },
+        "timestamp": "2026-11-17T19:28:13.533167"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "brand#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:13.533444"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "brand#1",
+        "relation": {
+          "type": "causes",
+          "target": "rook",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:28:15.474766"
+      }
+    ]
+  },
+  "rook": {
+    "senses": [
+      {
+        "sense_id": "rook#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:13.616024",
+      "updated_at": "2026-11-17T19:28:13.616264",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:13.616264",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:13.616264",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "rook"
+        },
+        "timestamp": "2026-11-17T19:28:13.616032"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "rook#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:13.616262"
+      }
+    ]
+  },
+  "vocht": {
+    "senses": [
+      {
+        "sense_id": "vocht#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "roest",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:28:22.798425"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:20.350360",
+      "updated_at": "2026-11-17T19:28:22.798435",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:22.798435",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:20.350550",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:28:22.798435",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vocht"
+        },
+        "timestamp": "2026-11-17T19:28:20.350367"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vocht#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:20.350548"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vocht#1",
+        "relation": {
+          "type": "causes",
+          "target": "roest",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:28:22.798432"
+      }
+    ]
+  },
+  "roest": {
+    "senses": [
+      {
+        "sense_id": "roest#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:20.433841",
+      "updated_at": "2026-11-17T19:28:20.434149",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:20.434149",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:20.434149",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "roest"
+        },
+        "timestamp": "2026-11-17T19:28:20.433853"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "roest#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:20.434147"
+      }
+    ]
+  },
+  "lawine": {
+    "senses": [
+      {
+        "sense_id": "lawine#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "schade",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:28:29.538630"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:27.616459",
+      "updated_at": "2026-11-17T19:28:29.538639",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:29.538639",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:27.616741",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:28:29.538639",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "lawine"
+        },
+        "timestamp": "2026-11-17T19:28:27.616465"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "lawine#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:27.616739"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "lawine#1",
+        "relation": {
+          "type": "causes",
+          "target": "schade",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:28:29.538637"
+      }
+    ]
+  },
+  "wrijving": {
+    "senses": [
+      {
+        "sense_id": "wrijving#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "warmte",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:28:40.744078"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:38.772963",
+      "updated_at": "2026-11-17T19:28:40.744087",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:40.744087",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:38.773243",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:28:40.744087",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "wrijving"
+        },
+        "timestamp": "2026-11-17T19:28:38.772969"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "wrijving#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:38.773241"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "wrijving#1",
+        "relation": {
+          "type": "causes",
+          "target": "warmte",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:28:40.744085"
+      }
+    ]
+  },
+  "luchtvervuiling": {
+    "senses": [
+      {
+        "sense_id": "luchtvervuiling#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "smog",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:28:48.936484"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:46.686921",
+      "updated_at": "2026-11-17T19:28:48.936493",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:48.936493",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:46.687243",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:28:48.936493",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "luchtvervuiling"
+        },
+        "timestamp": "2026-11-17T19:28:46.686926"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "luchtvervuiling#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:46.687240"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "luchtvervuiling#1",
+        "relation": {
+          "type": "causes",
+          "target": "smog",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:28:48.936490"
+      }
+    ]
+  },
+  "smog": {
+    "senses": [
+      {
+        "sense_id": "smog#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:28:46.767527",
+      "updated_at": "2026-11-17T19:28:46.767802",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:28:46.767802",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:28:46.767802",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "smog"
+        },
+        "timestamp": "2026-11-17T19:28:46.767539"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "smog#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:28:46.767799"
+      }
+    ]
+  },
+  "vulkaanuitbarsting": {
+    "senses": [
+      {
+        "sense_id": "vulkaanuitbarsting#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "asregen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:29:07.002859"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:29:03.544566",
+      "updated_at": "2026-11-17T19:29:07.002869",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:29:07.002869",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:29:03.544878",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:29:07.002869",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vulkaanuitbarsting"
+        },
+        "timestamp": "2026-11-17T19:29:03.544572"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vulkaanuitbarsting#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:29:03.544876"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vulkaanuitbarsting#1",
+        "relation": {
+          "type": "causes",
+          "target": "asregen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:29:07.002867"
+      }
+    ]
+  },
+  "asregen": {
+    "senses": [
+      {
+        "sense_id": "asregen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:29:03.625666",
+      "updated_at": "2026-11-17T19:29:03.625963",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:29:03.625963",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:29:03.625963",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "asregen"
+        },
+        "timestamp": "2026-11-17T19:29:03.625677"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "asregen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:29:03.625961"
+      }
+    ]
+  },
+  "meten": {
+    "senses": [
+      {
+        "sense_id": "meten#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:30:12.723605",
+      "updated_at": "2026-11-17T19:30:12.723876",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:30:12.723876",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:30:12.723876",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "meten"
+        },
+        "timestamp": "2026-11-17T19:30:12.723611"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "meten#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:30:12.723874"
+      }
+    ]
+  },
+  "kaars": {
+    "senses": [
+      {
+        "sense_id": "kaars#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "verlichten",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:33:41.712263"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:33:39.507764",
+      "updated_at": "2026-11-17T19:33:41.712272",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:33:41.712272",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:33:39.508073",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:33:41.712272",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kaars"
+        },
+        "timestamp": "2026-11-17T19:33:39.507770"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kaars#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:33:39.508071"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "kaars#1",
+        "relation": {
+          "type": "used_for",
+          "target": "verlichten",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:33:41.712270"
+      }
+    ]
+  },
+  "verlichten": {
+    "senses": [
+      {
+        "sense_id": "verlichten#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:33:39.586171",
+      "updated_at": "2026-11-17T19:33:39.586608",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:33:39.586608",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:33:39.586608",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "verlichten"
+        },
+        "timestamp": "2026-11-17T19:33:39.586182"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "verlichten#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:33:39.586606"
+      }
+    ]
+  },
+  "koelen": {
+    "senses": [
+      {
+        "sense_id": "koelen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:34:20.154692",
+      "updated_at": "2026-11-17T19:34:20.154941",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:34:20.154941",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:34:20.154941",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "koelen"
+        },
+        "timestamp": "2026-11-17T19:34:20.154698"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "koelen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:34:20.154940"
+      }
+    ]
+  },
+  "verrekijker": {
+    "senses": [
+      {
+        "sense_id": "verrekijker#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "kijken",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:34:39.258617"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:34:37.014450",
+      "updated_at": "2026-11-17T19:34:39.258628",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:34:39.258628",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:34:37.014716",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:34:39.258628",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "verrekijker"
+        },
+        "timestamp": "2026-11-17T19:34:37.014456"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "verrekijker#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:34:37.014714"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "verrekijker#1",
+        "relation": {
+          "type": "used_for",
+          "target": "kijken",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:34:39.258626"
+      }
+    ]
+  },
+  "liniaal": {
+    "senses": [
+      {
+        "sense_id": "liniaal#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "meten",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:34:46.115684"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:34:44.060928",
+      "updated_at": "2026-11-17T19:34:46.115694",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:34:46.115694",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:34:44.061240",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:34:46.115694",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "liniaal"
+        },
+        "timestamp": "2026-11-17T19:34:44.060934"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "liniaal#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:34:44.061238"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "liniaal#1",
+        "relation": {
+          "type": "used_for",
+          "target": "meten",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:34:46.115691"
+      }
+    ]
+  },
+  "zeef": {
+    "senses": [
+      {
+        "sense_id": "zeef#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "zeven",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:34:53.232224"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:34:51.024470",
+      "updated_at": "2026-11-17T19:34:53.232234",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:34:53.232234",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:34:51.024726",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:34:53.232234",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zeef"
+        },
+        "timestamp": "2026-11-17T19:34:51.024476"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "zeef#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:34:51.024724"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "zeef#1",
+        "relation": {
+          "type": "used_for",
+          "target": "zeven",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:34:53.232231"
+      }
+    ]
+  },
+  "trechter": {
+    "senses": [
+      {
+        "sense_id": "trechter#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "gieten",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:35:00.008293"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:34:57.754653",
+      "updated_at": "2026-11-17T19:35:00.008303",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:00.008303",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:34:57.754876",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:35:00.008303",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "trechter"
+        },
+        "timestamp": "2026-11-17T19:34:57.754658"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "trechter#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:34:57.754874"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "trechter#1",
+        "relation": {
+          "type": "used_for",
+          "target": "gieten",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:35:00.008301"
+      }
+    ]
+  },
+  "gieten": {
+    "senses": [
+      {
+        "sense_id": "gieten#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:34:57.839406",
+      "updated_at": "2026-11-17T19:34:57.839631",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:34:57.839631",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:34:57.839631",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "gieten"
+        },
+        "timestamp": "2026-11-17T19:34:57.839418"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "gieten#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:34:57.839629"
+      }
+    ]
+  },
+  "tekenen": {
+    "senses": [
+      {
+        "sense_id": "tekenen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:06.551752",
+      "updated_at": "2026-11-17T19:35:06.551988",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:06.551988",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:06.551988",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tekenen"
+        },
+        "timestamp": "2026-11-17T19:35:06.551759"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "tekenen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:06.551986"
+      }
+    ]
+  },
+  "bakken": {
+    "senses": [
+      {
+        "sense_id": "bakken#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:13.805461",
+      "updated_at": "2026-11-17T19:35:13.805740",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:13.805740",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:13.805740",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "bakken"
+        },
+        "timestamp": "2026-11-17T19:35:13.805466"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "bakken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:13.805738"
+      }
+    ]
+  },
+  "stofzuigen": {
+    "senses": [
+      {
+        "sense_id": "stofzuigen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:21.463728",
+      "updated_at": "2026-11-17T19:35:21.463994",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:21.463994",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:21.463994",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "stofzuigen"
+        },
+        "timestamp": "2026-11-17T19:35:21.463735"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "stofzuigen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:21.463992"
+      }
+    ]
+  },
+  "tandenborstel": {
+    "senses": [
+      {
+        "sense_id": "tandenborstel#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "used_for",
+            "target": "poetsen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:35:39.808690"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:36.797288",
+      "updated_at": "2026-11-17T19:35:39.808699",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:39.808699",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:36.797519",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:35:39.808699",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "tandenborstel"
+        },
+        "timestamp": "2026-11-17T19:35:36.797293"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "tandenborstel#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:36.797517"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "tandenborstel#1",
+        "relation": {
+          "type": "used_for",
+          "target": "poetsen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:35:39.808697"
+      }
+    ]
+  },
+  "roken": {
+    "senses": [
+      {
+        "sense_id": "roken#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "kanker",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:35:47.028557"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:45.059370",
+      "updated_at": "2026-11-17T19:35:47.028566",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:47.028566",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:45.059672",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:35:47.028566",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "roken"
+        },
+        "timestamp": "2026-11-17T19:35:45.059374"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "roken#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:45.059670"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "roken#1",
+        "relation": {
+          "type": "causes",
+          "target": "kanker",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:35:47.028564"
+      }
+    ]
+  },
+  "kanker": {
+    "senses": [
+      {
+        "sense_id": "kanker#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:45.140360",
+      "updated_at": "2026-11-17T19:35:45.140657",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:45.140657",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:45.140657",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kanker"
+        },
+        "timestamp": "2026-11-17T19:35:45.140369"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kanker#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:45.140655"
+      }
+    ]
+  },
+  "slaaptekort": {
+    "senses": [
+      {
+        "sense_id": "slaaptekort#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "vermoeidheid",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:35:54.994865"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:52.775135",
+      "updated_at": "2026-11-17T19:35:54.994874",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:54.994874",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:52.775390",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:35:54.994874",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "slaaptekort"
+        },
+        "timestamp": "2026-11-17T19:35:52.775141"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "slaaptekort#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:52.775388"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "slaaptekort#1",
+        "relation": {
+          "type": "causes",
+          "target": "vermoeidheid",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:35:54.994871"
+      }
+    ]
+  },
+  "vermoeidheid": {
+    "senses": [
+      {
+        "sense_id": "vermoeidheid#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:52.859826",
+      "updated_at": "2026-11-17T19:35:52.860190",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:52.860190",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:52.860190",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vermoeidheid"
+        },
+        "timestamp": "2026-11-17T19:35:52.859836"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vermoeidheid#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:52.860188"
+      }
+    ]
+  },
+  "alcohol": {
+    "senses": [
+      {
+        "sense_id": "alcohol#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "dronkenschap",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:36:01.654795"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:59.512196",
+      "updated_at": "2026-11-17T19:36:01.654806",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:36:01.654806",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:59.512429",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:36:01.654806",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "alcohol"
+        },
+        "timestamp": "2026-11-17T19:35:59.512201"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "alcohol#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:59.512427"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "alcohol#1",
+        "relation": {
+          "type": "causes",
+          "target": "dronkenschap",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:36:01.654803"
+      }
+    ]
+  },
+  "dronkenschap": {
+    "senses": [
+      {
+        "sense_id": "dronkenschap#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:35:59.595842",
+      "updated_at": "2026-11-17T19:35:59.596286",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:35:59.596286",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:35:59.596286",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "dronkenschap"
+        },
+        "timestamp": "2026-11-17T19:35:59.595854"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "dronkenschap#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:35:59.596284"
+      }
+    ]
+  },
+  "ontbossing": {
+    "senses": [
+      {
+        "sense_id": "ontbossing#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "erosie",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:36:08.187962"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:36:06.085708",
+      "updated_at": "2026-11-17T19:36:08.187975",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:36:08.187975",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:36:06.085995",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:36:08.187975",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ontbossing"
+        },
+        "timestamp": "2026-11-17T19:36:06.085713"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "ontbossing#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:36:06.085993"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "ontbossing#1",
+        "relation": {
+          "type": "causes",
+          "target": "erosie",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:36:08.187972"
+      }
+    ]
+  },
+  "virus": {
+    "senses": [
+      {
+        "sense_id": "virus#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "ziekte",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:36:14.747111"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:36:12.751346",
+      "updated_at": "2026-11-17T19:36:14.747120",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:36:14.747120",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:36:12.751555",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:36:14.747120",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "virus"
+        },
+        "timestamp": "2026-11-17T19:36:12.751354"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "virus#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:36:12.751553"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "virus#1",
+        "relation": {
+          "type": "causes",
+          "target": "ziekte",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:36:14.747117"
+      }
+    ]
+  },
+  "ziekte": {
+    "senses": [
+      {
+        "sense_id": "ziekte#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:36:12.845652",
+      "updated_at": "2026-11-17T19:36:12.845954",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:36:12.845954",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:36:12.845954",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "ziekte"
+        },
+        "timestamp": "2026-11-17T19:36:12.845663"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "ziekte#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:36:12.845952"
+      }
+    ]
+  },
+  "brandwonden": {
+    "senses": [
+      {
+        "sense_id": "brandwonden#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:36:18.958018",
+      "updated_at": "2026-11-17T19:36:18.958297",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:36:18.958297",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:36:18.958297",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "brandwonden"
+        },
+        "timestamp": "2026-11-17T19:36:18.958024"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "brandwonden#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:36:18.958295"
+      }
+    ]
+  },
+  "verbranding": {
+    "senses": [
+      {
+        "sense_id": "verbranding#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "warmte",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:36:48.833883"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:36:45.277957",
+      "updated_at": "2026-11-17T19:36:48.833893",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:36:48.833893",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:36:45.278241",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:36:48.833893",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "verbranding"
+        },
+        "timestamp": "2026-11-17T19:36:45.277964"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "verbranding#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:36:45.278239"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "verbranding#1",
+        "relation": {
+          "type": "causes",
+          "target": "warmte",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:36:48.833890"
+      }
+    ]
+  },
+  "botsing": {
+    "senses": [
+      {
+        "sense_id": "botsing#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "schade",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:37:01.022793"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:36:57.680657",
+      "updated_at": "2026-11-17T19:37:01.022803",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:37:01.022803",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:36:57.680958",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:37:01.022803",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "botsing"
+        },
+        "timestamp": "2026-11-17T19:36:57.680664"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "botsing#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:36:57.680956"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "botsing#1",
+        "relation": {
+          "type": "causes",
+          "target": "schade",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:37:01.022800"
+      }
+    ]
+  },
+  "zuur": {
+    "senses": [
+      {
+        "sense_id": "zuur#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "corrosie",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:37:14.133011"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:37:10.593108",
+      "updated_at": "2026-11-17T19:37:14.133020",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:37:14.133020",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:37:10.593437",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:37:14.133020",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zuur"
+        },
+        "timestamp": "2026-11-17T19:37:10.593113"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "zuur#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:37:10.593435"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "zuur#1",
+        "relation": {
+          "type": "causes",
+          "target": "corrosie",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:37:14.133017"
+      }
+    ]
+  },
+  "corrosie": {
+    "senses": [
+      {
+        "sense_id": "corrosie#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:37:10.676894",
+      "updated_at": "2026-11-17T19:37:10.677117",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:37:10.677117",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:37:10.677117",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "corrosie"
+        },
+        "timestamp": "2026-11-17T19:37:10.676904"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "corrosie#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:37:10.677115"
+      }
+    ]
+  },
+  "zonlicht": {
+    "senses": [
+      {
+        "sense_id": "zonlicht#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "zonnebrand",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:37:27.444843"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:37:23.539146",
+      "updated_at": "2026-11-17T19:37:27.444851",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:37:27.444851",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:37:23.539396",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:37:27.444851",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zonlicht"
+        },
+        "timestamp": "2026-11-17T19:37:23.539151"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "zonlicht#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:37:23.539394"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "zonlicht#1",
+        "relation": {
+          "type": "causes",
+          "target": "zonnebrand",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:37:27.444848"
+      }
+    ]
+  },
+  "zonnebrand": {
+    "senses": [
+      {
+        "sense_id": "zonnebrand#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:37:23.620259",
+      "updated_at": "2026-11-17T19:37:23.620495",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:37:23.620495",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:37:23.620495",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "zonnebrand"
+        },
+        "timestamp": "2026-11-17T19:37:23.620270"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "zonnebrand#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:37:23.620493"
+      }
+    ]
+  },
+  "kortsluiting": {
+    "senses": [
+      {
+        "sense_id": "kortsluiting#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [
+          {
+            "type": "causes",
+            "target": "brand",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-17T19:37:54.087163"
+          }
+        ],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-17T19:37:50.298516",
+      "updated_at": "2026-11-17T19:37:54.087175",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-17T19:37:54.087175",
+      "usage_count": 2,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-17T19:37:50.298783",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-17T19:37:54.087175",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "kortsluiting"
+        },
+        "timestamp": "2026-11-17T19:37:50.298522"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "kortsluiting#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-17T19:37:50.298781"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "kortsluiting#1",
+        "relation": {
+          "type": "causes",
+          "target": "brand",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-17T19:37:54.087173"
       }
     ]
   }

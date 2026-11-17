@@ -4163,3 +4163,12 @@ Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leef
 - Fix (core/memory.py): _seconden_tot_eerste_onderhoud() rekent vanaf de nieuwste back-up. Te oud → eerste ronde na 2 min; anders de rest van het interval; geen back-ups → volle interval.
 - Tests: tests/test_memory_backup_opstart.py (10).
 - Live bevestigd: back-ups op 03:53 en 09:53 = exact 6 u na herstart van 21:55 (oorzaak klopte).
+
+## 17 nov 2026 — Punt 42: woordenboek vullen, eerste batch
+- Aanleiding: punt 42 (woordenboek dichter maken), vooral `causes` en `used_for`, waarvan er weinig waren.
+- Meting vooraf (repo, 16 nov): 1265 concepten; `causes` 24, `used_for` 22, `is_a` 704, `related_to` 2918 (zonder afgewezen relaties). 28 concepten zonder relatie.
+- Bevinding 1: `extraheer X` geeft voor `causes`/`used_for` bijna niets, want Wikipedia-inleidingen zijn definities en bevatten zelden "veroorzaakt" of "wordt gebruikt om/voor" (hamer (gereedschap): 0 nieuw, aardbeving: 0).
+- Bevinding 2: `zoek gelijkenissen voor hamer` toonde enkel andere gereedschappen (schop, zaag, hark), geen doelen; `koppel ... als gebruikt voor` past daar niet.
+- Bevinding 3 (werkende route): relatiezinnen typen en `ja` zeggen. `een hamer wordt gebruikt voor timmeren` en `een aardbeving veroorzaakt een tsunami` werken. Met "om ... in te slaan" gebeurde niets (fallback). `een thermometer wordt gebruikt voor temperatuur meten` ging naar de weermodule door het woord "temperatuur" (`detect_weather` zoekt los "weer", "weerbericht" en "temperatuur" in elke zin).
+- Resultaat na 2 batches (56 zinnen): concepten 1342 (+77, allemaal `unverified`), `causes` 52 (+28), `used_for` 53 (+31); andere types ongewijzigd (gemeten op de server, 17 november 2026). Alle 59 nieuwe relaties staan als `confirmed`. Drie ongewenste concepten (`aja`, `slaan`, `spijkers`) ontstonden als bijproduct.
+- Nog open: volgende batch; `zaag` mist `is_a gereedschap`; de zwakte "temperatuur/weer in een leerzin" is niet opgelost, enkel omzeild.

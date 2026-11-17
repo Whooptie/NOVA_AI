@@ -92,3 +92,6 @@
 {"text": "extraheer zaag", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-13T20:51:44.162328"}
 {"text": "waarvoor dient dat", "categorie": "negatief", "marge": 0.0497, "grof_sentiment_regex": null, "tijdstip": "2026-11-14T21:53:20.850858"}
 {"text": "laatste fouten", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-15T15:33:23.425868"}
+{"text": "een hamer wordt gebruikt om spijkers in te slaan", "categorie": "neutraal_gemengd", "marge": 0.0193, "grof_sentiment_regex": null, "tijdstip": "2026-11-17T20:22:03.599655"}
+{"text": "een hamer wordt gebruikt voor timmeren", "categorie": "negatief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-11-17T20:24:18.219777"}
+{"text": "erosie veroorzaakt bodemverlies", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-17T20:27:50.722738"}

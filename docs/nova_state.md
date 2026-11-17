@@ -1,6 +1,6 @@
 # 🧠 Nova — State of the Project
 
-> Laatste update: 6 november 2026
+> Laatste update: 17 november 2026
 > Doel van dit bestand: altijd als eerste uploaden in een nieuw Claude-gesprek zodat context volledig is.
 
 ---
@@ -495,7 +495,7 @@ Alles zit in `ReasoningEngine` (`semantic.py`), met een doorverwijzing in de `Se
 **Tests:** `test_reasoning_engine_ideeen.py` (33), `test_causal_reasoning.py` (38), `test_causal_check.py` (49), `test_emergence_causal_labels.py` (5).
 
 **Nog open:**
-- Bug #49 (valse bevestiging in `handle_confirm()`): de return van `add_relation()` wordt nog steeds niet gelezen.
+- Bug #49 (valse bevestiging in `handle_confirm()`): opgelost op 24 oktober 2026 (zie `nova_changelog.md`, "Bug #47, #48 en #49").
 
 ---
 
@@ -1118,8 +1118,8 @@ Meet wat Nova echt doet met een vraag, los van de pytest-suite. pytest bewijst d
     └── (d) **Eerst één situatie laten werken, niet alles.** Voorstel: "Kevin klapt zijn laptop dicht" of "Kevin vertrekt" (de bouwstenen bestaan al: `afwezigheid.py`, `context_manager.py`, Layer 2-vertrektijd). Bouwen volgens je vaste werkwijze: ontwerpgesprek, pytest groen, live testen. Open ontwerpvragen: aparte module of uitbreiding van `semantic.py`, hoe de toestand bijgehouden wordt, wat een regel voor Kevin makkelijk invoerbaar maakt (zin, commando of bestand), en hoe regels en feiten in `help semantic` komen. Hangt samen met punt 3 (tegenspreken met feiten), 21 (smart home) en 22 (persoonlijke datums).
 42. 🟢 **Het woordenboek dichter en betrouwbaarder maken** (ondersteunend aan 49; zelfde aanleiding). Een motor heeft weinig aan een dunne graaf, en een bulkimport weinig aan een kennisbank waar een weerlegde fout terug kan komen.
     ├── (a) **Eerst meten** (5 minuten): `docker exec nova-ai python -c "import json;d=json.load(open('/app/data/concepts.json'));r=[len(s['relations']) for c in d.values() for s in c['senses'] if s.get('status')!='rejected'];print(len(d),sum(r))"`. De Atlas-telling van eind september was 299 concepten met 258 relaties; daarna een streefgetal kiezen.
-    ├── (b) **Eerst bug #47, #48 en #49 oplossen** (weerleg-omweg via placeholder, Wikipedia-refresh wist afwijzingen, valse bevestiging), vóór `neem alles over` of de import uit punt 43 veel invoegt.
-    ├── (c) **Vullen via de bestaande routes:** `extraheer X` + `neem N over` (Fase 11), vooral voor `causes`, `used_for` en `part_of`, waarvan er weinig zijn. Een kleine vaste routine, geen nieuwe module.
+    ├── (b) **Klaar:** bug #47, #48 en #49 zijn opgelost (24 oktober 2026), dus `neem alles over` en de import uit punt 43 mogen veel invoegen.
+    ├── (c) **Vullen, stand 17 november 2026 (eerste batch klaar).** Meting op de server vóór/na 2 batches (56 zinnen): concepten 1265 -> 1342, `causes` 24 -> 52, `used_for` 22 -> 53 (zonder afgewezen relaties geteld). **Vaste routine:** typ per feit één zin en antwoord `ja`: `X wordt gebruikt voor Y` (met "voor"; "om ..." wordt NIET herkend en valt in de fallback) en `X veroorzaakt Y` (ook `zorgt voor`, `leidt tot`). Doel of gevolg liefst één woord. **`extraheer X` levert voor `causes` en `used_for` zelden iets:** de extractor zoekt enkel "veroorzaakt/leidt tot" en "wordt gebruikt om/voor", en Wikipedia-inleidingen zijn definities (getest: `extraheer hamer (gereedschap)` en `extraheer aardbeving` gaven 0). Voor `is_a`, `has_part` en `part_of` werkt `extraheer` wel goed. **Valkuilen:** een zin met het losse woord `temperatuur`, `weer` of `weerbericht` gaat naar de weermodule (`detect_weather`) en leert niets; bij een doorverwijspagina kies je de variant tussen haakjes (`extraheer hamer (gereedschap)`); `koppel N als gebruikt voor` werkt enkel als het doelwoord in Nova's lijst staat. Streefgetal (voorstel, nog niet vastgesteld door Kevin): ±100 per type. **Nog te doen:** volgende batch; `zaag` mist `is_a gereedschap` (de definitie zegt "stuk gereedschap" en `stuk` is een vaag woord; `is_a machine` is weerlegd); 28 concepten zonder relatie, deels rommel (`ken`, `gebeurt`, `vogelµ`).
     └── (d) **Kennis naar de lagen erboven:** (1) Layer 7-insight "je noemt X de laatste tijd vaak" (`get_trending()` + een bestaand concept; formuleer eerlijk als frequentie, niet als interesse); (2) case-based reasoning (zie ook `datum_terugblik.py`/`case_herinnering.py`, `memory.search()` met trefwoorden; `find_similar()` is spellingsgelijkenis, geen betekenis); (3) in Layer 4 één oorzaak-gevolg-zin bij een definitie (enkel `confirmed` relaties, niet bij `kort`, enkel in de `detect_definition()`-route), pas zinvol als er causale relaties zijn. Geen van de drie vraagt ML.
 43. 🟢 **Semantic koppelen aan bestaande modules** (hoort bij 49/50; ontstaan 19 oktober 2026). Probleem: semantic wordt nu enkel door de kennisvraag-route gebruikt, terwijl meerdere modules op losse tekst of eigen lijsten werken. Geordend naar nut:
     ├── (a) **Activiteitsnamen samenvoegen.** `coding_gedetecteerd`, `werken_aan_nova_gedetecteerd` en `coderen` zijn voor Nova aparte namen, waardoor `interruption_tracker.py` (en Layer 2) data over drie namen verspreidt en nergens genoeg observaties haalt (zie logs van 17 oktober: 7 vragen, 0 antwoorden). Idee: `is_a`-relaties in `concepts.json` (de technische namen eindigen op `_gedetecteerd` en zijn geen woorden, dus er is een alias- of mapping-laag nodig), en de tracker/Layer 2 tellen via de keten samen. Kevin bepaalt zelf wat als "dezelfde activiteit" geldt. Oude tellingen onder `coderen`/`gamen`/`lezen` blijven apart bestaan.

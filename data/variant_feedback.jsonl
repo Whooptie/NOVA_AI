@@ -578,3 +578,11 @@
 {"sjabloon_naam": "met_associatie", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1794753176.2793186, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "variant_tekst": "Whatever. Geen idee.", "entity": null, "response_style": "normaal", "moment": "2026-11-15T15:33:15.878256", "reactie_sentiment": null}
 {"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1794753195.8784213, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "variant_tekst": "Hmm… dat ken ik niet.", "entity": null, "response_style": "normaal", "moment": "2026-11-17T20:22:00.765205", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1794943320.765934, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "variant_tekst": "Oh… zoek het zelf op.", "entity": null, "response_style": "normaal", "moment": "2026-11-17T20:22:03.647567", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1794943323.64777, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "variant_tekst": "Wacht… nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-11-17T20:27:48.230510", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "variant_tekst": "Hoe gaat het?", "entity": "coding", "response_style": null, "moment": "2026-11-17T20:27:48.231082", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1794943668.2307565, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1794943668.231246, "type": "sentiment_koppeling"}
