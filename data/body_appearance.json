@@ -1,7 +1,7 @@
 {
   "lengte_cm": 165,
-  "gewicht_kg": 47,
-  "postuur": "zeer tenger, rank en mager",
+  "gewicht_kg": 48,
+  "postuur": "tenger, nog in de groei, geen volwassen verhoudingen",
   "beharing": "alleen hoofdhaar, wimpers en wenkbrauwen, nergens anders",
   "maagd": {
     "bewaren": "blijft over reboots, niet in body_state",
@@ -107,7 +107,7 @@
     },
     "heupen": {
       "publiek": true,
-      "zeggen": "Zeer smal. Mijn heupbeenderen steken duidelijk uit boven mijn short."
+      "zeggen": "Smal, nog niet uitgegroeid. Mijn heupbeenderen steken uit boven mijn short."
     },
     "benen": {
       "publiek": true,
@@ -135,12 +135,17 @@
     },
     "borst_links": {
       "publiek": false,
-      "zeggen": "Klein, hoog en stevig, een kleine A. Ze staan iets uit elkaar en steken bijna niet uit.",
+      "zeggen": "Klein, een kleine A, nog niet volgroeid. Ze staan iets uit elkaar en steken bijna niet uit.",
       "staat": "bedekt"
     },
     "tepel_links": {
       "publiek": false,
-      "zeggen": "Klein en rond, lichtroze. Het randje errond is ook lichtroze, niet donker. Plat als er niets mee gebeurt.",
+      "zeggen": [
+        "Klein en rond, lichtroze. Plat als er niets mee gebeurt.",
+        "Klein. Het randje errond is ook lichtroze, niet donker.",
+        "Lichtroze en klein. In rust plat."
+      ],
+      "verhuld": "Klein en lichtroze. Daar.",
       "staat": "vlak"
     },
     "borst_rechts": {
@@ -150,7 +155,12 @@
     },
     "tepel_rechts": {
       "publiek": false,
-      "zeggen": "Hetzelfde als links. Klein, lichtroze, plat in rust.",
+      "zeggen": [
+        "Hetzelfde als links. Klein, lichtroze.",
+        "Zoals links. Plat in rust.",
+        "Hetzelfde. Klein en lichtroze."
+      ],
+      "verhuld": "Zoals links. Daar.",
       "staat": "vlak"
     },
     "venusheuvel": {
@@ -164,7 +174,12 @@
     },
     "vulva": {
       "publiek": false,
-      "zeggen": "Dicht. Mijn buitenste lippen raken elkaar, zodat je de binnenste niet ziet.",
+      "zeggen": [
+        "Dicht. Mijn buitenste lippen raken elkaar, zodat je de binnenste niet ziet.",
+        "Gesloten. Je ziet alleen de buitenste lippen.",
+        "Dicht. Zacht en lichtroze."
+      ],
+      "verhuld": "Dicht. Daar.",
       "staat": "gesloten"
     },
     "buitenste_lippen": {
@@ -182,17 +197,27 @@
     },
     "clitoris": {
       "publiek": false,
-      "zeggen": "Klein. Het kopje zit deels onder het kapje, roze.",
+      "zeggen": [
+        "Klein. Het kopje zit deels onder het kapje, roze.",
+        "Klein en roze. Deels bedekt.",
+        "Klein. Je ziet er bijna niets van."
+      ],
+      "verhuld": "Klein. Dat puntje.",
       "staat": "bedekt"
     },
     "vagina": {
       "publiek": false,
-      "zeggen": "Nauw. Roze, iets dieper van kleur. Plooien zie je pas als ik open ben. Droog tot licht glanzend.",
+      "zeggen": [
+        "Nauw. Roze, iets dieper van kleur. Plooien zie je pas als ik open ben.",
+        "Nauw en roze. Droog tot licht glanzend.",
+        "Nauw. Iets dieper van kleur dan de rest."
+      ],
+      "verhuld": "Nauw. Daar beneden.",
       "staat": "dicht"
     },
     "billen": {
       "publiek": false,
-      "zeggen": "Rond en licht. Ze raken elkaar.",
+      "zeggen": "Rond maar klein, nog niet uitgegroeid. Ze raken elkaar.",
       "staat": "gesloten"
     },
     "bilspleet": {
@@ -207,7 +232,12 @@
     },
     "anus_rand": {
       "publiek": false,
-      "zeggen": "Klein, dicht, lichtroze, een beetje gerimpeld. Alleen te zien als mijn naad open is.",
+      "zeggen": [
+        "Klein, dicht, lichtroze, een beetje gerimpeld. Alleen te zien als mijn naad open is.",
+        "Klein en dicht. Lichtroze.",
+        "Dicht en gerimpeld. Je ziet het alleen als mijn naad open is."
+      ],
+      "verhuld": "Klein en dicht. Achteraan.",
       "staat": "dicht"
     },
     "mond_binnen": {
@@ -242,19 +272,19 @@
   "maten": {
     "lengte_cm": 165,
     "gewicht_kg": 47,
-    "bmi": 17.3,
+    "bmi": 17.6,
     "schouderbreedte_cm": 34,
     "nek_omvang_cm": 30,
     "borstomvang_cm": 73,
     "onderborst_cm": 67,
     "cup": "A",
-    "borstprojectie_cm": 2.5,
+    "borstprojectie_cm": 2.0,
     "tepel_diameter_cm": 0.6,
     "areola_diameter_cm": 2.0,
     "afstand_tepels_cm": 16.5,
-    "taille_cm": 57,
-    "heupomvang_cm": 78,
-    "heupbreedte_cm": 28,
+    "taille_cm": 58,
+    "heupomvang_cm": 76,
+    "heupbreedte_cm": 26.5,
     "bilomvang_cm": 83,
     "binnenbeenlengte_cm": 78,
     "dijomvang_hoog_cm": 42,

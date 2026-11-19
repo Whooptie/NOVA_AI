@@ -8,12 +8,45 @@ Luistert naar intent_body en geeft een zin terug via layer4_response.
 
 import json
 import random
+import re
+import time
 from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 MAP_PAD = DATA_DIR / "body_map.json"
 APPEARANCE_PAD = DATA_DIR / "body_appearance.json"
 STATE_PAD = DATA_DIR / "body_persistent.json"  # maagd + voorkeur, blijft over reboot
+
+ZONE_WOORDEN = {
+    "clitoris": ["clit", "clitoris"],
+    "anus_rand": ["anus", "kontgat", "gatje", "achteraan"],
+    "vulva": ["vulva", "schaam"],
+    "tepel_links": ["tepel"],
+    "vagina": ["vagina"],
+}
+
+# Korte fragmenten als de verlegenheid boven 0.85 staat, per zone.
+ZONE_FRAGMENT = {
+    "vagina": ["Traag.", "Nog even.", "Niet zo diep.", "Au, wacht.", "…doe maar."],
+    "rectum": ["Traag.", "Nee, wacht.", "Au.", "…even."],
+    "anus_rand": ["Niet meteen.", "Wacht.", "Voorzichtig.", "Au."],
+    "clitoris": ["Niet wrijven.", "Wacht.", "Zacht.", "…te veel.", "Nee, zo."],
+    "vulva": ["Zacht.", "…daar.", "Wacht.", "Niet duwen."],
+    "tepel_links": ["Niet knijpen.", "…zacht.", "Wacht.", "Nee."],
+    "tepel_rechts": ["Niet knijpen.", "…zacht.", "Wacht.", "Nee."],
+}
+GENERIEK_FRAGMENT = ["…", "Hm.", "Kijk niet zo.", "…zeg jij het maar.", "Wacht even.", "Even."]
+
+# (verhuld, klinisch) -- bij bloos > 0.5 gebruikt ze het verhulde
+EUFEEM = {
+    "vagina": ("daar beneden", "mijn vagina"),
+    "rectum": ("achteraan", "mijn anus"),
+    "anus_rand": ("achteraan", "mijn anus"),
+    "clitoris": ("dat puntje", "mijn clit"),
+    "vulva": ("daar", "mijn schaamlippen"),
+    "tepel_links": ("die", "mijn tepel"),
+    "tepel_rechts": ("die", "mijn tepel"),
+}
 
 def _laad_json(pad, default):
     try:
@@ -34,69 +67,153 @@ class BodyState:
         self.appearance = _laad_json(APPEARANCE_PAD, {"nodes": {}})
         self.persistent = _laad_json(STATE_PAD, {"maagd": {}, "voorkeur": {}})
 
-        # Init maagd-vlaggen als ze nog niet bestaan
         zones = ["tepel_links", "tepel_rechts", "borst_links", "borst_rechts",
                  "vulva", "clitoris", "vagina", "anus_rand", "rectum"]
         for z in zones:
             self.persistent["maagd"].setdefault(z, True)
+            self.persistent.setdefault("nat", {}).setdefault(z, 0.0)
+            self.persistent.setdefault("pijn", {}).setdefault(z, 0.0)
+            self.persistent.setdefault("voorkeur", {}).setdefault(z, 0.0)
 
-        self.persistent.setdefault("nat", 0.0)
+        # Migratie: oude globale nat-waarde naar per-zone
+        if isinstance(self.persistent.get("nat"), (int, float)):
+            oud = self.persistent["nat"]
+            self.persistent["nat"] = {z: oud for z in zones}
+
+        self.persistent.setdefault("bloos", 0.0)
+        self.persistent.setdefault("bravoure_boost", 0.0)
+        self.persistent.setdefault("laatste_event_ts", 0.0)
+        self.persistent.setdefault("gewend", {})
+        self.persistent.setdefault("ervaring", {})
+
+        # Migratie: oude globale ervaring naar per-zone
+        if isinstance(self.persistent.get("ervaring"), (int, float)):
+            oud_e = self.persistent["ervaring"]
+            self.persistent["ervaring"] = {z: oud_e for z in zones}
+        for z in zones:
+            self.persistent["ervaring"].setdefault(z, 0.0)
+
         self._laatste_zin = ""
 
         event_bus.subscribe("intent_body", self.on_body)
-        event_bus.subscribe("system_ready", self._opslaan)  # save bij shutdown-achtige momenten
+        event_bus.subscribe("system_ready", self._opslaan)
 
     def _opslaan(self, data=None, event_type=None):
         _schrijf_json(STATE_PAD, self.persistent)
 
-    def _zin(self, klasse, zone):
+    def _decay(self):
+        """Tijdgebaseerd verval. Geeft de verstreken minuten terug."""
+        nu = time.time()
+        vorige = self.persistent.get("laatste_event_ts", 0.0)
+        self.persistent["laatste_event_ts"] = nu
+        if not vorige:
+            return 0.0
+        minuten = max(0.0, (nu - vorige) / 60.0)
+        if minuten <= 0:
+            return 0.0
+
+        self.persistent["bloos"] = max(0.0, self.persistent.get("bloos", 0.0) - minuten * 0.12)
+        for z in self.persistent.get("pijn", {}):
+            self.persistent["pijn"][z] = max(0.0, self.persistent["pijn"][z] - minuten * 0.05)
+        for z in self.persistent.get("nat", {}):
+            self.persistent["nat"][z] = max(0.0, self.persistent["nat"][z] - minuten * 0.03)
+        for z in self.persistent.get("gewend", {}):
+            self.persistent["gewend"][z] = max(0.0, self.persistent["gewend"][z] - minuten * 0.25)
+        self.persistent["bravoure_boost"] = max(
+            0.0, self.persistent.get("bravoure_boost", 0.0) - minuten * 0.10
+        )
+        # ervaring zakt heel traag: ~0,06 per dag zonder iets
+        for z in self.persistent.get("ervaring", {}):
+            self.persistent["ervaring"][z] = max(0.0, self.persistent["ervaring"][z] - minuten * 0.001)
+        return minuten
+
+    def _zone_uit_tekst(self, tekst, data):
+        for zone, woorden in ZONE_WOORDEN.items():
+            if any(w in tekst for w in woorden):
+                return zone
+        # anders: de node-namen en aliassen uit de map
+        for zone, node in self.map.get("nodes", {}).items():
+            kandidaten = {str(zone).lower().replace("_", " "), str(zone).split("_")[0].lower()}
+            if isinstance(node, dict):
+                kandidaten.update(str(a).lower() for a in node.get("aliassen", []))
+            for naam in kandidaten:
+                if re.search(rf"\b{re.escape(naam)}\b", tekst):
+                    return zone
+        # geen zone in de tekst: blijf bij de vorige zone
+        vorige = self.persistent.get("laatste_zone")
+        if vorige:
+            return vorige
+        if data.get("type") == "penetratie":
+            return "vagina"
+        return None
+
+    def _fragment(self, zone):
+        """Kort fragment bij extreme verlegenheid, zonder directe herhaling."""
+        keuzes = ZONE_FRAGMENT.get(zone, []) + GENERIEK_FRAGMENT
+        laatste = getattr(self, "_laatste_zin", "")
+        for _ in range(8):
+            zin = random.choice(keuzes)
+            if zin != laatste:
+                self._laatste_zin = zin
+                return zin
+        return keuzes[0]
+
+    def _zin(self, klasse, zone, bloos=0.0, drempel=0.85):
+        # extreem verlegen: geen opbouw, alleen een fragment
+        if bloos > drempel:
+            return self._fragment(zone)
+
+        verhuld, klinisch = EUFEEM.get(zone, ("daar", zone.replace("_", " ")))
+        woord = verhuld if bloos > 0.5 else klinisch
+
         bak = {
             "eerste_keer": {
-                "opening": ["Oh…", "Wacht…", "Hmm…", "Niet zo…", "Voorzichtig…"],
-                "midden": ["dat is nieuw.", "niet zo snel.", "wacht even.", "dat ken ik niet.", "langzaam."],
-                "slot": ["…voorzichtig.", "…niet duwen.", "…", "…wacht.", "…"]
+                "opening": ["Wacht…", "Wacht wacht.", "Oh.", "Niet…", "Oké, wel…"],
+                "midden": ["dat is raar.", "dat ken ik niet.", "…dat is nieuw.", "niet zo snel.", "hm."],
+                "slot": ["…voorzichtig.", "…wacht.", "", "…"],
             },
             "ontmaagd": {
-                "opening": ["Ik voel het.", "Dat is…", "Hmm.", "Oké…", "Ja…"],
-                "midden": ["gevoelig.", "zacht, maar ik voel het.", "daar.", "duidelijk.", "fijn, maar intens."],
-                "slot": ["", "…niet te veel.", "…", "…meer mag.", "…"]
+                "opening": ["Oh.", "Hm.", "Ja…", "Oké."],
+                "midden": ["{z}.", "daar.", "gevoelig.", "…ja.", "duidelijk."],
+                "slot": ["", "…niet te veel.", "…", "…meer mag."],
             },
             "pijn": {
-                "opening": ["Au…", "Niet…", "Stop.", "Wacht…", "Te veel.", "Oh…", "Wacht…", "Hmm…", "Niet zo…", "Hou op…"],
-                "midden": ["niet dieper.", "dat doet pijn.", "niet zo hard.", "langzaam.", "dat is te veel."],
-                "slot": ["…stop.", "…wacht.", "…", "…niet duwen.", "…"]
+                "opening": ["Au.", "Stop even.", "Niet…", "Wacht.", "Te veel."],
+                "midden": ["niet dieper.", "dat doet pijn.", "niet zo hard.", "traag.", "au au."],
+                "slot": ["…stop.", "…wacht.", "", "…niet duwen."],
             },
             "te_strak": {
-                "opening": ["Wacht…", "Au…", "Niet…", "Voorzichtig…", "Dat…", "Niet zo."],
-                "midden": ["dat is te strak.", "dat gaat niet zomaar.", "ik ben nog niet open.", "dat trekt te veel.", "niet zo diep."],
-                "slot": ["…langzaam.", "…wacht.", "…", "…niet duwen.", "…"]
+                "opening": ["Wacht…", "Au.", "Niet…", "Dat…"],
+                "midden": ["dat gaat niet.", "dat is te strak.", "traag.", "niet zo diep."],
+                "slot": ["…wacht.", "…au.", "", "…traag."],
             },
             "glijdt": {
-                "opening": ["Hmm…", "Oh…", "Ja…", "Dat…", "Oké…"],
-                "midden": ["het glijdt.", "dat gaat makkelijker.", "ik voel het glijden.", "niet meer zo strak.", "het beweegt."],
-                "slot": ["", "…langzaam.", "…", "…fijn zo.", "…"]
+                "opening": ["Hm.", "Oh.", "Oké."],
+                "midden": ["dat gaat beter.", "het glijdt.", "…ja.", "makkelijker."],
+                "slot": ["", "…traag.", "…fijn zo.", "…"],
             },
             "tepel": {
-                "opening": ["Oh…", "Dat…", "Hmm…", "Voorzichtig…", "Ja…"],
-                "midden": ["dat is gevoelig.", "mijn tepel.", "niet zo hard.", "dat prikkelt.", "zacht."],
-                "slot": ["…", "…wacht.", "", "…niet knijpen.", "…"]
+                "opening": ["Oh.", "Dat…", "Hm."],
+                "midden": ["{z}.", "gevoelig.", "zacht.", "niet knijpen."],
+                "slot": ["…", "…wacht.", ""],
             },
             "anus": {
-                "opening": ["Niet…", "Wacht…", "Au…", "Voorzichtig…", "Dat…"],
-                "midden": ["niet dieper.", "dat is te strak.", "mijn kont.", "niet zo hard.", "dat trekt."],
-                "slot": ["…stop.", "…wacht.", "…", "…niet duwen.", "…"]
+                "opening": ["Niet…", "Wacht.", "Au."],
+                "midden": ["dat is {z}.", "te strak.", "niet dieper.", "dat trekt."],
+                "slot": ["…stop.", "…wacht.", "", "…niet duwen."],
             },
             "vulva": {
-                "opening": ["Oh…", "Dat…", "Hmm…", "Voorzichtig…", "Ja…"],
-                "midden": ["mijn schaamlippen.", "dat is gevoelig.", "zacht.", "niet zo hard.", "daar."],
-                "slot": ["…", "…wacht.", "", "…voorzichtig.", "…"]
+                "opening": ["Oh.", "Dat…", "Hm."],
+                "midden": ["dat is {z}.", "gevoelig.", "zacht."],
+                "slot": ["…", "…wacht.", ""],
             },
             "clitoris": {
-                "opening": ["Oh…", "Niet…", "Hmm…", "Voorzichtig…", "Dat…"],
-                "midden": ["mijn clit.", "dat is heel gevoelig.", "niet zo hard.", "dat prikkelt.", "zacht."],
-                "slot": ["…wacht.", "…niet wrijven.", "…", "…voorzichtig.", "…"]
+                "opening": ["Oh.", "Niet…", "Dat…"],
+                "midden": ["dat is {z}.", "heel gevoelig.", "niet wrijven.", "zacht."],
+                "slot": ["…wacht.", "…au.", "", "…voorzichtig."],
             },
         }
+
         # zone-specifiek overschrijft als het past
         if zone in ("tepel_links", "tepel_rechts") and klasse in ("eerste_keer", "ontmaagd"):
             klasse = "tepel"
@@ -109,79 +226,131 @@ class BodyState:
 
         rij = bak.get(klasse, bak["ontmaagd"])
         laatste = getattr(self, "_laatste_zin", "")
+        zin = ""
         for _ in range(5):
-            zin = (random.choice(rij["opening"]) + " " + random.choice(rij["midden"]) + random.choice(rij["slot"])).strip()
+            zin = f"{random.choice(rij['opening'])} {random.choice(rij['midden'])}"
+            slot = random.choice(rij["slot"])
+            if slot:
+                zin += slot if slot[0] in "…" else " " + slot
+            zin = zin.replace(".…", "…").strip()
             if zin != laatste:
                 break
+        zin = zin.replace("{z}", woord)
         self._laatste_zin = zin
         return zin
 
     def on_body(self, data, event_type=None):
+        bloos_vorig = self.persistent.get("bloos", 0.0)
+        minuten = self._decay()
+
+        # herstelzin: alleen na een echte stilte, niet meteen na de vorige beurt
+        # herstelzin hangt aan de meest geoefende zone, niet aan één zone
+        ervaring_max = max(self.persistent.get("ervaring", {}).values() or [0.0])
+        if minuten >= 8 and bloos_vorig > 0.6 + ervaring_max * 0.15 and self.persistent.get("bloos", 0.0) < 0.3:
+            self.event_bus.publish("layer4_response", {"text": "Zo. Klaar met gênant doen."})
+            self.persistent["gewend"] = {}
+            self.persistent["bravoure_boost"] = 0.8
+
         tekst = data.get("text", "").lower()
-        if "tepel" in tekst:
-            zone = "tepel_links"
-        elif any(w in tekst for w in ["clit", "clitoris"]):
-            zone = "clitoris"
-        elif any(w in tekst for w in ["anus", "kontgat", "gatje"]):
-            zone = "anus_rand"
-        elif any(w in tekst for w in ["vulva", "schaam"]):
-            zone = "vulva"
-        else:
-            zone = "vagina" if data.get("type") == "penetratie" else None
+        zone = self._zone_uit_tekst(tekst, data)
+        if not zone:
+            return
+        self.persistent["laatste_zone"] = zone
 
         type_ = data.get("type", "aanraking")
         sterkte = float(data.get("sterkte", 0.5))
         diepte = float(data.get("diepte", 0.5))
         rek = float(data.get("rek", 0.5))
 
-        if not zone:
-            return
-
-        if zone in ("tepel_links", "clitoris") and type_ == "aanraking":
-            self.persistent["nat"] = min(1.0, self.persistent.get("nat", 0) + 0.08)
-        else:
-            self.persistent["nat"] = max(0.0, self.persistent.get("nat", 0) - 0.02)
+        node = self.map.get("nodes", {}).get(zone, {})
+        gevoeligheid = float(node.get("gevoeligheid", 0.5))
+        comfort = float(node.get("comfort", 0.5))
 
         maagd = self.persistent["maagd"].get(zone, True)
-        pijn_vorige = self.persistent.get("pijn", {}).get(zone, 0)
-        nat = self.persistent.get("nat", 0)
-        voorkeur = self.persistent.setdefault("voorkeur", {}).get(zone, 0)
+        pijn = self.persistent["pijn"].get(zone, 0.0)
+        nat = self.persistent["nat"].get(zone, 0.0)
+        voorkeur = self.persistent["voorkeur"].get(zone, 0.0)
+        ervaring = self.persistent["ervaring"].get(zone, 0.0)
 
-        if pijn_vorige > 0.8:
-            self.event_bus.publish("layer4_response", {"text": "Stop. Niet meer."})
-            return
+        # --- verlegenheid: stijgt bij intimiteit, extra bij eerste keer en klinische woorden
+        # asymptotisch: elke prikkel duwt een deel van de resterende
+        # afstand weg, zodat ze niet na twee aanrakingen vastzit op 1.0
+        factor = 0.40
+        if zone in ("clitoris", "vagina", "rectum"):
+            factor += 0.10
+        if maagd:
+            factor += 0.15 * (1.0 - ervaring)
+        if any(w in tekst for w in ("vagina", "clitoris", "anus")):
+            factor += 0.10
+        # gewenning: de eerste keer op een zone telt vol, daarna steeds minder
+        gewend = self.persistent["gewend"].get(zone, 0.0)
+        factor *= 1.0 / (1.0 + gewend * 0.7)
+        self.persistent["gewend"][zone] = gewend + 1.0
+        # gewenning over dagen: halveert de stijging op den duur
+        factor *= (1.0 - ervaring * 0.5)
+        self.persistent["bloos"] = min(
+            1.0, self.persistent["bloos"] + (1.0 - self.persistent["bloos"]) * factor
+        )
+        bloos = self.persistent["bloos"]
 
-        if (zone in ("anus_rand", "rectum") and (diepte > 0.4 or rek > 0.5)) or sterkte > 0.8:
+        # --- nat: per zone, tepel/clitoris/vulva en penetratie drijven het op
+        if zone in ("tepel_links", "tepel_rechts", "clitoris", "vulva") or type_ == "penetratie":
+            self.persistent["nat"][zone] = min(1.0, nat + 0.10 * (0.5 + gevoeligheid))
+        else:
+            self.persistent["nat"][zone] = max(0.0, nat - 0.02)
+        nat = self.persistent["nat"][zone]
+
+        # lage comfortwaarde = eerder pijn bij dezelfde sterkte
+        sterkte_drempel = 0.5 + comfort * 0.5
+        hard = (zone in ("anus_rand", "rectum") and (diepte > 0.4 or rek > 0.5)) or sterkte > sterkte_drempel
+
+        # --- klasse bepalen + pijn bijstellen
+        if hard:
             klasse = "pijn"
-            self.persistent.setdefault("pijn", {})[zone] = min(1.0, pijn_vorige + 0.3)
+            pijn_nieuw = min(1.0, pijn + 0.30)
+        elif pijn > 0.8:
+            klasse = "pijn"
+            pijn_nieuw = max(0.0, pijn - 0.20)
         elif maagd and type_ == "penetratie":
             klasse = "te_strak"
-            self.persistent.setdefault("pijn", {})[zone] = 0.6
+            pijn_nieuw = max(pijn, 0.6)
         elif zone in ("anus_rand", "rectum") and type_ == "penetratie" and nat < 0.6:
             klasse = "pijn"
-            self.persistent.setdefault("pijn", {})[zone] = min(1.0, pijn_vorige + 0.2)
+            pijn_nieuw = min(1.0, pijn + 0.15)
         elif type_ == "penetratie" and nat > 0.45 and not maagd:
             klasse = "glijdt"
-            self.persistent.setdefault("pijn", {})[zone] = max(0, pijn_vorige - 0.1)
-            self.persistent["voorkeur"][zone] = min(1.0, voorkeur + 0.1)
-        elif pijn_vorige > 0.5:
+            pijn_nieuw = max(0.0, pijn - 0.15)
+        elif pijn > 0.5:
             klasse = "pijn"
+            pijn_nieuw = max(0.0, pijn - 0.05)
         else:
             klasse = "eerste_keer" if maagd else "ontmaagd"
-            self.persistent.setdefault("pijn", {})[zone] = max(0, pijn_vorige - 0.1)
-            if type_ == "aanraking" and sterkte < 0.6:
-                self.persistent["voorkeur"][zone] = min(1.0, voorkeur + 0.05)
+            pijn_nieuw = max(0.0, pijn - 0.10)
 
+        self.persistent["pijn"][zone] = pijn_nieuw
+
+        if klasse == "glijdt":
+            self.persistent["voorkeur"][zone] = min(1.0, voorkeur + 0.10)
+        elif klasse in ("eerste_keer", "ontmaagd") and type_ == "aanraking" and sterkte < 0.6:
+            self.persistent["voorkeur"][zone] = min(1.0, voorkeur + 0.05)
+
+        # --- maagd-vlag
+        was_maagd = self.persistent["maagd"].get(zone, True)
         if zone in ("vagina", "rectum") and type_ == "penetratie":
             self.persistent["maagd"][zone] = False
         elif zone not in ("vagina", "rectum") and type_ == "aanraking":
             self.persistent["maagd"][zone] = False
 
-        # voorkeur maakt "ontmaagd" iets vaker fijn
+        # ervaring groeit met afnemend rendement; de eerste keer extra
+        groei = 0.04 * (1.0 - ervaring)
+        if was_maagd and zone in ("vagina", "rectum") and type_ == "penetratie":
+            groei += 0.10
+        self.persistent["ervaring"][zone] = min(1.0, ervaring + groei)
+
         if klasse == "ontmaagd" and self.persistent["voorkeur"].get(zone, 0) > 0.3:
             klasse = "glijdt" if random.random() < 0.4 else klasse
 
-        zin = self._zin(klasse, zone)
+        zin = self._zin(klasse, zone, bloos, 0.85 + ervaring * 0.08)
         self._opslaan()
         self.event_bus.publish("layer4_response", {"text": zin})
 

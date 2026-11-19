@@ -420,3 +420,6 @@
 {"timestamp": "2026-11-17T19:37:23.539154", "event_type": "concept_created", "word": "zonlicht", "source": "system", "new_value": {"word": "zonlicht"}}
 {"timestamp": "2026-11-17T19:37:23.620274", "event_type": "concept_created", "word": "zonnebrand", "source": "system", "new_value": {"word": "zonnebrand"}}
 {"timestamp": "2026-11-17T19:37:50.298525", "event_type": "concept_created", "word": "kortsluiting", "source": "system", "new_value": {"word": "kortsluiting"}}
+{"timestamp": "2026-11-19T18:58:32.432191", "event_type": "concept_created", "word": "harder", "source": "system", "new_value": {"word": "harder"}}
+{"timestamp": "2026-11-19T19:11:26.553930", "event_type": "concept_created", "word": "steek", "source": "system", "new_value": {"word": "steek"}}
+{"timestamp": "2026-11-19T19:12:09.238875", "event_type": "concept_created", "word": "diep", "source": "system", "new_value": {"word": "diep"}}

@@ -98,9 +98,10 @@ def test_herken_vraag_nee(pad, zin):
 
 
 def test_herken_vraag_onbekend_deel_geeft_none(pad):
-    # Een deel dat NIET in de JSON staat: wel herkend als uiterlijkvraag,
-    # maar deel=None -> neutrale afwijzing.
-    assert self_uiterlijk.herken_vraag("hoe ziet jouw buik eruit", pad) == (True, None)
+    # Een deel dat in GEEN van beide bronnen staat (niet in uiterlijk.json,
+    # niet in body_appearance.json): wel herkend als uiterlijkvraag, maar
+    # deel=None -> neutrale afwijzing.
+    assert self_uiterlijk.herken_vraag("hoe ziet jouw pols eruit", pad) == (True, None)
 
 
 # ---------------- get_beschrijving ----------------
@@ -120,8 +121,15 @@ def test_beschrijving_alle_combinaties_mogelijk(pad):
 
 
 def test_onbekend_deel_geeft_afwijzing(pad):
-    tekst = self_uiterlijk.get_beschrijving("buik", pad=pad)
+    tekst = self_uiterlijk.get_beschrijving("pols", pad=pad)
     assert tekst in self_uiterlijk._ONBEKEND
+
+
+def test_valt_terug_op_body_appearance(pad):
+    # Staat een deel niet in uiterlijk.json maar wel in body_appearance.json,
+    # dan gebruikt Nova de "zeggen"-tekst daaruit.
+    tekst = self_uiterlijk.get_beschrijving("buik", pad=pad)
+    assert tekst and tekst not in self_uiterlijk._ONBEKEND
 
 
 def test_none_geeft_afwijzing(pad):
@@ -130,11 +138,14 @@ def test_none_geeft_afwijzing(pad):
 
 def test_ontbrekend_bestand_crasht_niet(tmp_path):
     pad = tmp_path / "bestaat_niet.json"
-    assert self_uiterlijk.get_beschrijving("haar", pad=pad) in self_uiterlijk._ONBEKEND
-    # Zonder JSON kent Nova geen enkel deel: een duidelijke uiterlijkvraag
-    # krijgt dan de neutrale afwijzing (deel=None), geen crash.
-    assert self_uiterlijk.herken_vraag("hoe ziet je haar eruit", pad) == (True, None)
+    # Een deel dat in geen van beide bronnen staat: neutrale afwijzing, geen crash.
+    assert self_uiterlijk.get_beschrijving("pols", pad=pad) in self_uiterlijk._ONBEKEND
+    assert self_uiterlijk.herken_vraag("hoe ziet je pols eruit", pad) == (True, None)
     assert self_uiterlijk.herken_vraag("hoe laat is het", pad) == (False, None)
+    # Zonder uiterlijk.json blijft de fallback naar body_appearance.json werken.
+    assert self_uiterlijk.herken_vraag("hoe ziet je haar eruit", pad) == (True, "haar")
+    tekst = self_uiterlijk.get_beschrijving("haar", pad=pad)
+    assert tekst and tekst not in self_uiterlijk._ONBEKEND
 
 
 def test_publiceert_variant_gekozen_via_kiezer(pad):

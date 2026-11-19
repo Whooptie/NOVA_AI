@@ -87,7 +87,7 @@ class EmotionEngine:
             # VERVANG DOOR:
             self.state["overstimulation"]["last_overflow_behavior"] = rule["overflow_behavior"]
             self.state["overstimulation"]["level"] = self._clamp(
-                self.state["overstimulation"]["level"] + 0.06
+                self.state["overstimulation"]["level"] + 0.09
             )
         else:
             # Trigger zonder overflow_behavior (bv. confusion, focus
@@ -172,7 +172,7 @@ class EmotionEngine:
         # karakterherziening): een kalmere, zelfregulerende Nova
         # herstelt ook sneller tijdens stiltes, i.p.v. even traag
         # als de oude hyperactieve versie.
-        decay_per_minuut = self.state["overstimulation"].get("decay_per_minute", 0.10)
+        decay_per_minuut = self.state["overstimulation"].get("decay_per_minute", 0.07)
 
         daling = verstreken_minuten * decay_per_minuut
         if daling <= 0:

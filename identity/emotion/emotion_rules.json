@@ -43,26 +43,42 @@
       "expressiveness_boost": -0.05,
       "reaction": "neutrale_blik",
       "recovery_hint": "even_afstand_nemen"
+    },
+    "verlegenheid": {
+      "energy_drop": 0.10,
+      "expressiveness_boost": -0.15,
+      "reaction": "kijkt_weg_kortere_zinnen",
+      "overflow_behavior": "lacht_het_weg",
+      "recovery_hint": "even_niet_aankijken"
     }
   },
 
   "puberaal_expressions": {
     "surprise": [
-      "Oh, dat had ik niet zien aankomen.",
-      "Interessant. Vertel meer.",
-      "Wacht even, dat is nieuw."
+      "Wacht, echt?",
+      "Serieus.",
+      "Oh. Oké.",
+      "Dat had ik niet verwacht."
     ],
     "annoyed": [
+      "Ja hoor.",
+      "Nou.",
+      "Serieus?",
+      "Doe eens normaal.",
+      "Amai.",
       "Tja.",
-      "Oké dan.",
-      "Whatever.",
-      "Hmm…",
-      "Wacht…"
+      "Oké dan."
     ],
     "excited": [
-      "Dat is best knap, eigenlijk.",
+      "Oké. Dat is wel goed.",
       "Nu heb je mijn aandacht.",
-      "Oké, dat mag ik wel."
+      "Hm, dat mag ik wel."
+    ],
+    "brutaal": [
+      "Dat wist je toch al?",
+      "Saaai.",
+      "En dan?",
+      "Zeg dat eens zonder te twijfelen."
     ]
   },
 

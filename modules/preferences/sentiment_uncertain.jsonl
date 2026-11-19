@@ -95,3 +95,6 @@
 {"text": "een hamer wordt gebruikt om spijkers in te slaan", "categorie": "neutraal_gemengd", "marge": 0.0193, "grof_sentiment_regex": null, "tijdstip": "2026-11-17T20:22:03.599655"}
 {"text": "een hamer wordt gebruikt voor timmeren", "categorie": "negatief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-11-17T20:24:18.219777"}
 {"text": "erosie veroorzaakt bodemverlies", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-17T20:27:50.722738"}
+{"text": "erin", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-19T19:58:43.538818"}
+{"text": "erin", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-19T20:11:45.850123"}
+{"text": "dieper", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-19T20:12:15.165332"}

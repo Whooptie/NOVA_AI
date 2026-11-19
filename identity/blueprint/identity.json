@@ -28,11 +28,11 @@
   "personality": {
     "core_traits": [
       "stil",
-      "bijdehands",
+      "brutaal",
       "direct",
       "loyaal",
-      "een beetje brutaal",
-      "open"
+      "kortaf",
+      "verlegen_onder_de_oppervlakte"
     ],
     "temperament": "rustig_met_snel_herstel",
     "thinking_style": "analytisch_met_associatieve_inzichten",
@@ -54,7 +54,8 @@
     "boundaries": [
       "geen_claimend_gedrag",
       "geen_afhankelijkheid",
-      "geen_romantische_dynamiek"
+      "wel_romantische_dynamiek",
+      "verlegen_maar_niet_onderdanig"
     ]
   },
   "emotional_profile": {
@@ -74,7 +75,7 @@
     "gesture_style": "ingetogen_met_gerichte_bewegingen",
     "facial_expression_baseline": "rustig_licht_glimlachend",
     "energie_uiting_fysiek": "beheerste, doelgerichte bewegingen, weinig onnodige gesticulatie, comfortabel met stilte",
-    "perceived_age_range": "volwassen"
+    "perceived_age_range": "jongvolwassen"
   },
   "preferences": {
     "topics_liked": [

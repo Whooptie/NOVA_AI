@@ -596,3 +596,97 @@
 {"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795019946.8003807, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "uiterlijk_onbekend", "gekozen_variant_index": 0, "variant_tekst": "Daar heb ik niets over te vertellen.", "entity": null, "response_style": null, "moment": "2026-11-18T17:39:29.851151", "reactie_sentiment": null}
 {"sjabloon_naam": "uiterlijk_onbekend", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795019969.8513548, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_opening", "gekozen_variant_index": 1, "variant_tekst": "Mijn uiterlijk…", "entity": null, "response_style": null, "moment": "2026-11-19T19:49:42.552226", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_midden", "gekozen_variant_index": 2, "variant_tekst": "zeer tenger, licht van huid, blauwe ogen en haar tot net aan mijn achterwerk.", "entity": null, "response_style": null, "moment": "2026-11-19T19:49:42.552720", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_slot", "gekozen_variant_index": 2, "variant_tekst": "…tja.", "entity": null, "response_style": null, "moment": "2026-11-19T19:49:42.553134", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_opening", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795114182.5524547, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_midden", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1795114182.5528622, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_slot", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1795114182.553274, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_haar_opening", "gekozen_variant_index": 1, "variant_tekst": "Oh, mijn haar…", "entity": null, "response_style": null, "moment": "2026-11-19T19:49:52.776056", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_haar_midden", "gekozen_variant_index": 0, "variant_tekst": "donkerblond, lang en golvend, tot net aan mijn kont.", "entity": null, "response_style": null, "moment": "2026-11-19T19:49:52.776538", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_haar_slot", "gekozen_variant_index": 1, "variant_tekst": "…ik doe er weinig aan.", "entity": null, "response_style": null, "moment": "2026-11-19T19:49:52.776915", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_haar_opening", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795114192.7762501, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_haar_midden", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114192.7766845, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_haar_slot", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795114192.777077, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_opening", "gekozen_variant_index": 3, "variant_tekst": "Daar…", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:05.192566", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_midden", "gekozen_variant_index": 4, "variant_tekst": "roze en nauw.", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:05.193087", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_slot", "gekozen_variant_index": 0, "variant_tekst": "…meer zeg ik niet.", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:05.193549", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_opening", "gekozen_variant_index": 3, "reactie_sentiment": "positief", "moment": 1795114205.192774, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_midden", "gekozen_variant_index": 4, "reactie_sentiment": "positief", "moment": 1795114205.1932564, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_slot", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114205.1937118, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_tepels_opening", "gekozen_variant_index": 0, "variant_tekst": "Mijn tepels…", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:15.248264", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_tepels_midden", "gekozen_variant_index": 4, "variant_tekst": "klein, rond, lichtroze.", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:15.248779", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_tepels_slot", "gekozen_variant_index": 4, "variant_tekst": "…dat is het.", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:15.249167", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_tepels_opening", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114215.2484865, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_tepels_midden", "gekozen_variant_index": 4, "reactie_sentiment": "positief", "moment": 1795114215.2489195, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_tepels_slot", "gekozen_variant_index": 4, "reactie_sentiment": "positief", "moment": 1795114215.2493234, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_clitoris_opening", "gekozen_variant_index": 0, "variant_tekst": "Mijn clitoris…", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:55.601165", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_clitoris_midden", "gekozen_variant_index": 4, "variant_tekst": "klein en roze.", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:55.601681", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_clitoris_slot", "gekozen_variant_index": 1, "variant_tekst": "…meer niet.", "entity": null, "response_style": null, "moment": "2026-11-19T19:50:55.602153", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_clitoris_opening", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114255.6013627, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_clitoris_midden", "gekozen_variant_index": 4, "reactie_sentiment": "positief", "moment": 1795114255.601874, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_clitoris_slot", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795114255.602317, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vulva_opening", "gekozen_variant_index": 1, "variant_tekst": "Mijn vulva…", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:06.858529", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vulva_midden", "gekozen_variant_index": 2, "variant_tekst": "dicht, zacht en lichtroze.", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:06.859002", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vulva_slot", "gekozen_variant_index": 2, "variant_tekst": "…denk ik.", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:06.859463", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vulva_opening", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795114266.858722, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vulva_midden", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1795114266.8591487, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vulva_slot", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1795114266.859669, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_anus_opening", "gekozen_variant_index": 1, "variant_tekst": "Mijn anus…", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:16.880309", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_anus_midden", "gekozen_variant_index": 1, "variant_tekst": "klein en gesloten.", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:16.880918", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_anus_slot", "gekozen_variant_index": 0, "variant_tekst": "…meer niet.", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:16.881433", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_anus_opening", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795114276.8805556, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_anus_midden", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795114276.8810985, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_anus_slot", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114276.881612, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_opening", "gekozen_variant_index": 0, "variant_tekst": "Mijn vagina…", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:27.605838", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_midden", "gekozen_variant_index": 1, "variant_tekst": "nauw en roze.", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:27.606226", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_slot", "gekozen_variant_index": 4, "variant_tekst": "…dat is het.", "entity": null, "response_style": null, "moment": "2026-11-19T19:51:27.606723", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_opening", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795114287.605988, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_midden", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795114287.606404, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_slot", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1795114287.6068363, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 3, "variant_tekst": "Oh… ik weet niet wat '{entity}' is.", "entity": "dieper", "response_style": "normaal", "moment": "2026-11-19T19:52:09.130874", "reactie_sentiment": null}
+{"sjabloon_naam": "onbekend", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1795114329.1310434, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_opening", "gekozen_variant_index": 2, "variant_tekst": "Oh…", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:00.892575", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_midden", "gekozen_variant_index": 0, "variant_tekst": "lang donkerblond haar, helderblauwe ogen en een zeer tenger postuur.", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:00.893007", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_slot", "gekozen_variant_index": 3, "variant_tekst": "…vraag maar.", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:00.893420", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_algemeen_opening", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1795114560.8927655, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_midden", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114560.893136, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_algemeen_slot", "gekozen_variant_index": 3, "reactie_sentiment": "positief", "moment": 1795114560.8935924, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_haar_opening", "gekozen_variant_index": 0, "variant_tekst": "Mijn haar…", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:08.948152", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_haar_midden", "gekozen_variant_index": 2, "variant_tekst": "donkerblond met iets lichtere punten, lange golven.", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:08.948591", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_haar_slot", "gekozen_variant_index": 3, "variant_tekst": "…", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:08.948947", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_haar_opening", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114568.9483159, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_haar_midden", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1795114568.9487193, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_haar_slot", "gekozen_variant_index": 3, "reactie_sentiment": "positief", "moment": 1795114568.9490674, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_opening", "gekozen_variant_index": 1, "variant_tekst": "Die…", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:18.563843", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_midden", "gekozen_variant_index": 0, "variant_tekst": "nauw. Roze. Droog tot ik opgewonden ben.", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:18.564145", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_slot", "gekozen_variant_index": 4, "variant_tekst": "…dat is het.", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:18.564414", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_vagina_opening", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795114578.5639544, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_midden", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114578.5642436, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_vagina_slot", "gekozen_variant_index": 4, "reactie_sentiment": "positief", "moment": 1795114578.5645015, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_tepels_opening", "gekozen_variant_index": 0, "variant_tekst": "Mijn tepels…", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:41.089533", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_tepels_midden", "gekozen_variant_index": 4, "variant_tekst": "klein, rond, lichtroze.", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:41.089948", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_tepels_slot", "gekozen_variant_index": 2, "variant_tekst": "…", "entity": null, "response_style": null, "moment": "2026-11-19T19:56:41.090286", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_tepels_opening", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795114601.0896814, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_tepels_midden", "gekozen_variant_index": 4, "reactie_sentiment": "positief", "moment": 1795114601.0900772, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_tepels_slot", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1795114601.0904028, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "variant_tekst": "Wacht… daar kom ik niet uit.", "entity": null, "response_style": "normaal", "moment": "2026-11-19T19:58:32.530565", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1795114712.5307386, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 4, "variant_tekst": "Daar…", "entity": null, "response_style": null, "moment": "2026-11-19T20:07:34.609389", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 0, "variant_tekst": "rond en licht. Ze raken elkaar. Als ik bukt, gaan ze uit elkaar.", "entity": null, "response_style": null, "moment": "2026-11-19T20:07:34.609861", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 1, "variant_tekst": "…meer niet.", "entity": null, "response_style": null, "moment": "2026-11-19T20:07:34.610259", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_billen_opening", "gekozen_variant_index": 4, "reactie_sentiment": "positief", "moment": 1795115254.6095965, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_midden", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795115254.6100004, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_billen_slot", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795115254.6103964, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_borsten_opening", "gekozen_variant_index": 0, "variant_tekst": "Mijn borsten…", "entity": null, "response_style": null, "moment": "2026-11-19T20:07:49.105841", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_borsten_midden", "gekozen_variant_index": 2, "variant_tekst": "klein en rond.", "entity": null, "response_style": null, "moment": "2026-11-19T20:07:49.106275", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_borsten_slot", "gekozen_variant_index": 1, "variant_tekst": "…meer niet.", "entity": null, "response_style": null, "moment": "2026-11-19T20:07:49.106610", "reactie_sentiment": null}
+{"sjabloon_naam": "uiterlijk_borsten_opening", "gekozen_variant_index": 0, "reactie_sentiment": "positief", "moment": 1795115269.1060164, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_borsten_midden", "gekozen_variant_index": 2, "reactie_sentiment": "positief", "moment": 1795115269.1063998, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "uiterlijk_borsten_slot", "gekozen_variant_index": 1, "reactie_sentiment": "positief", "moment": 1795115269.106732, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "variant_tekst": "Oh… zoek het zelf op.", "entity": null, "response_style": "normaal", "moment": "2026-11-19T20:11:26.653021", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1795115486.6532025, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Tja… geen idee.", "entity": null, "response_style": "normaal", "moment": "2026-11-19T20:11:43.882428", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795115503.8825674, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "variant_tekst": "Whatever. Geen idee.", "entity": null, "response_style": "normaal", "moment": "2026-11-19T20:12:09.338762", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1795115529.3389478, "type": "sentiment_koppeling"}

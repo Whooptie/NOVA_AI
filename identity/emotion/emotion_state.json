@@ -22,7 +22,7 @@
     "signs_active": [],
     "last_overflow_behavior": "iets_sneller_pratend",
     "last_trigger_timestamp": 1794944323.50298,
-    "decay_per_minute": 0.05
+    "decay_per_minute": 0.07
   },
   "sync": {
     "sync_with_kevin": 0.55,

@@ -62,6 +62,37 @@ _ONBEKEND = [
     "Dat is niet iets wat ik beschrijf. Over mijn gezicht of mijn haar praat ik wel.",
 ]
 
+# Korte aarzelzin achter een beschrijving als de verlegenheid hoog staat.
+AARZEL = ["…", "Ja.", "Nou ja.", "Kijk niet zo.", "Zeg jij het maar.",
+          "Hm.", "Even.", "Niet lachen."]
+KORTE_AARZEL = ["…", "Ja.", "Nou ja.", "Hm."]
+_laatste_aarzel = ""
+
+
+def _aarzel(kort=False):
+    global _laatste_aarzel
+    keuzes = KORTE_AARZEL if kort else AARZEL
+    for _ in range(6):
+        zin = random.choice(keuzes)
+        if zin != _laatste_aarzel:
+            _laatste_aarzel = zin
+            return zin
+    return keuzes[0]
+
+# De router en uiterlijk.json gebruiken soms meervoud/volkstaal;
+# die moeten naar de node in body_appearance.json wijzen.
+DEEL_ALIAS = {
+    "tepels": "tepel_links",
+    "tepel": "tepel_links",
+    "borsten": "borst_links",
+    "borst": "borst_links",
+    "anus": "anus_rand",
+    "kontgat": "anus_rand",
+    "schaamlippen": "vulva",
+    "clit": "clitoris",
+    "achterwerk": "billen",
+}
+
 # Bestand-cache: pad -> (laatste wijzigingstijd, inhoud). Zo lezen we het
 # JSON-bestand enkel opnieuw in als het echt veranderd is.
 _cache = {}
@@ -105,6 +136,83 @@ def _schoon(tekst):
     return re.sub(r"\s+", " ", t)
 
 
+_APP_CACHE = {}
+
+
+def _laad_appearance():
+    """Zelfde mtime-cache als _laad(), maar voor body_appearance.json."""
+    pad = Path(__file__).resolve().parent.parent / "data" / "body_appearance.json"
+    try:
+        mtime = pad.stat().st_mtime_ns
+    except OSError:
+        return {}
+    ingang = _APP_CACHE.get(pad)
+    if ingang and ingang[0] == mtime:
+        return ingang[1]
+    try:
+        with open(pad, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        nodes = data.get("nodes", {})
+        if not isinstance(nodes, dict):
+            nodes = {}
+    except (OSError, ValueError):
+        return ingang[1] if ingang else {}
+    _APP_CACHE[pad] = (mtime, nodes)
+    return nodes
+
+
+def _body_module(event_bus):
+    if event_bus is None:
+        return None
+    modules = getattr(event_bus, "modules", {}) or {}
+    return modules.get("body_state") or modules.get("body")
+
+
+def _ervaring(event_bus, deel):
+    body = _body_module(event_bus)
+    if body is None:
+        return 0.0
+    zone = DEEL_ALIAS.get(str(deel).lower(), deel) if deel else None
+    if not zone:
+        return 0.0
+    try:
+        return float(body.persistent.get("ervaring", {}).get(zone, 0.0))
+    except Exception:
+        return 0.0
+
+
+def _bloos(event_bus):
+    body = _body_module(event_bus)
+    if body is None:
+        return 0.0
+    try:
+        return float(body.persistent.get("bloos", 0.0))
+    except Exception:
+        return 0.0
+
+
+def _bloos_bump(event_bus, factor):
+    body = _body_module(event_bus)
+    if body is None:
+        return
+    try:
+        huidig = float(body.persistent.get("bloos", 0.0))
+        body.persistent["bloos"] = min(1.0, huidig + (1.0 - huidig) * factor)
+        body._opslaan()
+    except Exception:
+        pass
+
+
+def _node_voor(deel):
+    if not deel:
+        return None
+    nodes = _laad_appearance()
+    for naam in (deel, DEEL_ALIAS.get(str(deel).lower())):
+        if naam and isinstance(nodes.get(naam), dict):
+            return nodes[naam]
+    return None
+
+
 def vind_deel(tekst, pad=None):
     """
     Zoekt welk lichaamsdeel in 'tekst' genoemd wordt.
@@ -122,19 +230,18 @@ def vind_deel(tekst, pad=None):
             if len(naam) > beste_lengte and re.search(rf"\b{re.escape(naam)}\b", t):
                 beste, beste_lengte = deel, len(naam)
 
-    # 2) body_appearance.json nodes (als nog niets gevonden)
+    # 2) body_appearance.json nodes (als nog niets gevonden).
+    # Ook het eerste segment ("tepel" uit "tepel_links") telt als naam,
+    # anders zijn de suffix-nodes onbereikbaar met hun korte naam.
     if beste is None:
-        appearance_pad = Path(__file__).resolve().parent.parent / "data" / "body_appearance.json"
-        try:
-            with open(appearance_pad, "r", encoding="utf-8") as f:
-                app = json.load(f)
-            nodes = app.get("nodes", {})
-            for node_naam in nodes:
-                naam = str(node_naam).lower().replace("_", " ")
+        for node_naam, node in _laad_appearance().items():
+            kandidaten = {str(node_naam).lower().replace("_", " ")}
+            kandidaten.add(str(node_naam).split("_")[0].lower())
+            if isinstance(node, dict):
+                kandidaten.update(str(a).lower() for a in node.get("aliassen", []))
+            for naam in kandidaten:
                 if len(naam) > beste_lengte and re.search(rf"\b{re.escape(naam)}\b", t):
                     beste, beste_lengte = node_naam, len(naam)
-        except (OSError, ValueError):
-            pass
 
     return beste
 
@@ -211,9 +318,31 @@ def _kies(varianten, sjabloon_naam, event_bus=None, feedback_logger=None):
 def get_beschrijving(deel, event_bus=None, feedback_logger=None, pad=None):
     """
     Bouwt het antwoord voor een lichaamsdeel.
-    Eerst uit uiterlijk.json (5x5x5). Als dat deel daar niet staat,
-    valt het terug op de "zeggen"-tekst uit body_appearance.json.
+
+    Bij een intiem deel (publiek: false) wint de verlegenheid van de
+    ingestudeerde beschrijving: boven 0.5 komt de "verhuld"-tekst in
+    plaats van de volledige uitleg, boven 0.85 valt de beschrijving
+    helemaal weg en blijft er alleen een aarzelzin over.
+    Daaronder: uiterlijk.json (5x5x5), dan "zeggen" uit body_appearance.json.
     """
+    node = _node_voor(deel)
+    intiem = isinstance(node, dict) and not node.get("publiek", True)
+
+    bloos = _bloos(event_bus)
+    ervaring = _ervaring(event_bus, deel)
+    if intiem:
+        _bloos_bump(event_bus, 0.22 * (1.0 - ervaring * 0.5))
+        bloos = _bloos(event_bus)
+
+    # extreem verlegen: de voorbereide tekst valt weg
+    if intiem and bloos > 0.85 + ervaring * 0.08:
+        return _aarzel()
+
+    # verlegen: verhulde tekst in plaats van de volledige beschrijving
+    if intiem and bloos > 0.5 + ervaring * 0.1 and node.get("verhuld"):
+        return node["verhuld"] + " " + _aarzel(kort=True)
+
+    # normale weg
     blok = _laad(pad).get(deel) if deel else None
     zinsdelen = blok.get("zinsdelen", {}) if isinstance(blok, dict) else {}
 
@@ -224,19 +353,18 @@ def get_beschrijving(deel, event_bus=None, feedback_logger=None, pad=None):
             stukken.append(_kies(varianten, f"uiterlijk_{deel}_{rij}", event_bus, feedback_logger))
 
     if stukken:
-        return " ".join(stukken)
+        tekst = " ".join(stukken)
+        if intiem and bloos > 0.3:
+            tekst += " " + _aarzel(kort=True)
+        return tekst
 
-    # Fallback: body_appearance.json "zeggen"
-    appearance_pad = Path(__file__).resolve().parent.parent / "data" / "body_appearance.json"
-    try:
-        with open(appearance_pad, "r", encoding="utf-8") as f:
-            app = json.load(f)
-        nodes = app.get("nodes", {})
-        if deel and deel in nodes and isinstance(nodes[deel], dict):
-            zeggen = nodes[deel].get("zeggen")
+    if isinstance(node, dict):
+        zeggen = node.get("zeggen")
+        if isinstance(zeggen, list):
+            zeggen = [z for z in zeggen if z]
             if zeggen:
-                return zeggen
-    except (OSError, ValueError):
-        pass
+                return _kies(zeggen, f"uiterlijk_{deel}_zeggen", event_bus, feedback_logger)
+        elif zeggen:
+            return zeggen
 
     return _kies(_ONBEKEND, "uiterlijk_onbekend", event_bus, feedback_logger)

@@ -127320,5 +127320,149 @@
         "timestamp": "2026-11-17T19:37:54.087173"
       }
     ]
+  },
+  "harder": {
+    "senses": [
+      {
+        "sense_id": "harder#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-19T18:58:32.432178",
+      "updated_at": "2026-11-19T18:58:32.432899",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-19T18:58:32.432899",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-19T18:58:32.432899",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "harder"
+        },
+        "timestamp": "2026-11-19T18:58:32.432187"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "harder#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-19T18:58:32.432896"
+      }
+    ]
+  },
+  "steek": {
+    "senses": [
+      {
+        "sense_id": "steek#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-19T19:11:26.553915",
+      "updated_at": "2026-11-19T19:11:26.556777",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-19T19:11:26.556777",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-19T19:11:26.556777",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "steek"
+        },
+        "timestamp": "2026-11-19T19:11:26.553926"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "steek#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-19T19:11:26.556774"
+      }
+    ]
+  },
+  "diep": {
+    "senses": [
+      {
+        "sense_id": "diep#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-19T19:12:09.238865",
+      "updated_at": "2026-11-19T19:12:09.239099",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-19T19:12:09.239099",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-19T19:12:09.239099",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "diep"
+        },
+        "timestamp": "2026-11-19T19:12:09.238871"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "diep#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-19T19:12:09.239097"
+      }
+    ]
   }
 }

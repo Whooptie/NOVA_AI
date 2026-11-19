@@ -277,5 +277,50 @@
     "filler_words": ["geef me even"],
     "emoji_style": [],
     "gesture_profile": "minimal"
+  },
+  "brutaal_normaal": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "kort_afgebeten",
+    "intonation": "droog_uitdagend",
+    "filler_words": ["serieus", "ja hoor"],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+  "brutaal_snel": {
+    "pitch": "medium",
+    "volume": "medium",
+    "pacing_variation": "levendig",
+    "intonation": "droog_uitdagend",
+    "filler_words": ["nou", "amai"],
+    "emoji_style": ["😏"],
+    "gesture_profile": "soft_small"
+  },
+  "verlegen_normaal": {
+    "pitch": "medium",
+    "volume": "zacht",
+    "pacing_variation": "kort",
+    "intonation": "vlak_wegvallend",
+    "filler_words": ["hm", "ja"],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+  "verlegen_traag": {
+    "pitch": "laag",
+    "volume": "zacht",
+    "pacing_variation": "haperend",
+    "intonation": "dalend",
+    "filler_words": ["wacht"],
+    "emoji_style": [],
+    "gesture_profile": "minimal"
+  },
+  "verlegen_stil": {
+    "pitch": "medium",
+    "volume": "zacht",
+    "pacing_variation": "fragmentarisch",
+    "intonation": "vlak",
+    "filler_words": ["…"],
+    "emoji_style": [],
+    "gesture_profile": "none"
   }
 }

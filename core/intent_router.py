@@ -150,10 +150,17 @@ class IntentRouter:
         # in "draai". Aanraking-woorden moeten aan het BEGIN van een woord
         # staan (raakt, aait, wrijft blijven werken); penetratie-woorden
         # moeten hele woorden zijn.
-        aanraking = re.search(r"\b(?:raak|aai|wrijf|vrijf|streel|aanraken)", t) is not None
-        penetratie = re.search(r"\b(?:erin|dieper|stop mijn|schuif in)\b", t) is not None
+        if re.match(r"^(wat|hoe|waarom|wanneer|welke|leg uit|wat is)\b", t):
+            return False
+        aanraking = re.search(r"\b(?:raak|aai|wrijf|vrijf|streel|aanraken|steek)", t) is not None
+        penetratie = re.search(r"\b(?:erin|dieper|diep|stop mijn|schuif in)\b", t) is not None
+        intensiteit = re.search(r"\b(?:harder|hard|zachter|sneller|trager)\b", t) is not None
 
-        if not (aanraking or penetratie):
+        # "in" samen met een zonennaam is een penetratie
+        if not penetratie and re.search(r"\b(?:vagina|clitoris|clit|vulva|tepel|anus|kontgat)\b", t) and re.search(r"\bin\b", t):
+            penetratie = True
+
+        if not (aanraking or penetratie or intensiteit):
             return False
 
         diepte = 0.8 if any(w in t for w in ["dieper", "harder", "diep"]) else 0.4
@@ -4461,7 +4468,6 @@ class IntentRouter:
         vóór memory/self_architecture/identity/conversie/math).
         """
         return [
-            ("body", self.detect_body),
             ("greeting",         self.detect_greeting),
             ("thanks",           self.detect_thanks),
             ("on_this_day",      self.detect_on_this_day),
@@ -4493,6 +4499,7 @@ class IntentRouter:
             # eventueel al op een andere manier oppikt
             ("conversie",        self.detect_conversie),
             ("math",             self.detect_math),
+            ("body",             self.detect_body),
         ]
 
     def _build_intent_tabel_deel2(self):

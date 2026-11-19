@@ -1,5 +1,7 @@
 # modules/chat/expression_injector.py
 
+import random
+
 class ExpressionInjector:
     """
     Zet tone + gestures + personality flair om naar expressieve tekst.
@@ -11,6 +13,28 @@ class ExpressionInjector:
 
         # Luistert naar ChatResponseEngine output
         event_bus.subscribe("expression_inject", self.on_expression_inject)
+
+    def _boost(self) -> float:
+        """Nasleep-brutaliteit na een verlegen piek."""
+        modules = getattr(self.event_bus, "modules", {}) or {}
+        body = modules.get("body_state") or modules.get("body")
+        if body is None:
+            return 0.0
+        try:
+            return float(body.persistent.get("bravoure_boost", 0.0))
+        except Exception:
+            return 0.0
+
+    def _bloos(self) -> float:
+        """Verlegenheidsniveau uit body_state; 0.0 als die module er niet is."""
+        modules = getattr(self.event_bus, "modules", {}) or {}
+        body = modules.get("body_state") or modules.get("body")
+        if body is None:
+            return 0.0
+        try:
+            return float(body.persistent.get("bloos", 0.0))
+        except Exception:
+            return 0.0
 
     # ---------------------------------------------------------
     # 1. Emoji-injectie
@@ -150,6 +174,24 @@ class ExpressionInjector:
                 "response_style": response_style
             })
             return
+
+        # Verlegen: geen flair, geen gebaar, geen emoji. Een "*kleine
+        # glimlach* 🙂" achter "…" haalt het effect er anders weer af.
+        if self._bloos() > 0.45:
+            self.event_bus.publish("chat_response", {
+                "text": text,
+                "tone": tone,
+                "personality": personality,
+                "emotion": emotion,
+                "response_style": response_style
+            })
+            return
+
+        # Nasleep: na een verlegen piek even extra brutaal
+        if self._boost() > 0.3:
+            text = text.rstrip("!.") + " " + random.choice(
+                ["Zo.", "Klaar.", "En nu verder.", "Niet meer over beginnen."]
+            )
 
         # 1) Puberale flair (nu ook Layer 6-bewust via personality)
         text = self._inject_puberal(text, tone, personality)
