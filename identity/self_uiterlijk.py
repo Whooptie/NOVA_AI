@@ -107,13 +107,13 @@ def _schoon(tekst):
 
 def vind_deel(tekst, pad=None):
     """
-    Zoekt welk lichaamsdeel uit uiterlijk.json in 'tekst' genoemd wordt
-    (op basis van de 'namen' per deel; hele woorden, dus 'kin' matcht
-    niet in 'kind'). Bij meerdere treffers wint de langste naam.
-    Geeft de sleutel (bv. "ogen") of None.
+    Zoekt welk lichaamsdeel in 'tekst' genoemd wordt.
+    Eerst in uiterlijk.json (namen), daarna in body_appearance.json (node-namen).
     """
     t = _schoon(tekst)
     beste, beste_lengte = None, 0
+
+    # 1) uiterlijk.json
     for deel, blok in _laad(pad).items():
         if not isinstance(blok, dict):
             continue
@@ -121,6 +121,21 @@ def vind_deel(tekst, pad=None):
             naam = str(naam).lower()
             if len(naam) > beste_lengte and re.search(rf"\b{re.escape(naam)}\b", t):
                 beste, beste_lengte = deel, len(naam)
+
+    # 2) body_appearance.json nodes (als nog niets gevonden)
+    if beste is None:
+        appearance_pad = Path(__file__).resolve().parent.parent / "data" / "body_appearance.json"
+        try:
+            with open(appearance_pad, "r", encoding="utf-8") as f:
+                app = json.load(f)
+            nodes = app.get("nodes", {})
+            for node_naam in nodes:
+                naam = str(node_naam).lower().replace("_", " ")
+                if len(naam) > beste_lengte and re.search(rf"\b{re.escape(naam)}\b", t):
+                    beste, beste_lengte = node_naam, len(naam)
+        except (OSError, ValueError):
+            pass
+
     return beste
 
 
@@ -195,12 +210,9 @@ def _kies(varianten, sjabloon_naam, event_bus=None, feedback_logger=None):
 
 def get_beschrijving(deel, event_bus=None, feedback_logger=None, pad=None):
     """
-    Bouwt het antwoord voor een lichaamsdeel: één opening, één midden en
-    één slot uit uiterlijk.json, met een spatie ertussen.
-
-    deel: sleutel uit uiterlijk.json ("ogen", "haar", "algemeen", ...)
-          of None.
-    Een onbekend deel (of None) geeft een neutrale afwijzing, geen crash.
+    Bouwt het antwoord voor een lichaamsdeel.
+    Eerst uit uiterlijk.json (5x5x5). Als dat deel daar niet staat,
+    valt het terug op de "zeggen"-tekst uit body_appearance.json.
     """
     blok = _laad(pad).get(deel) if deel else None
     zinsdelen = blok.get("zinsdelen", {}) if isinstance(blok, dict) else {}
@@ -211,7 +223,20 @@ def get_beschrijving(deel, event_bus=None, feedback_logger=None, pad=None):
         if varianten:
             stukken.append(_kies(varianten, f"uiterlijk_{deel}_{rij}", event_bus, feedback_logger))
 
-    if not stukken:
-        return _kies(_ONBEKEND, "uiterlijk_onbekend", event_bus, feedback_logger)
+    if stukken:
+        return " ".join(stukken)
 
-    return " ".join(stukken)
+    # Fallback: body_appearance.json "zeggen"
+    appearance_pad = Path(__file__).resolve().parent.parent / "data" / "body_appearance.json"
+    try:
+        with open(appearance_pad, "r", encoding="utf-8") as f:
+            app = json.load(f)
+        nodes = app.get("nodes", {})
+        if deel and deel in nodes and isinstance(nodes[deel], dict):
+            zeggen = nodes[deel].get("zeggen")
+            if zeggen:
+                return zeggen
+    except (OSError, ValueError):
+        pass
+
+    return _kies(_ONBEKEND, "uiterlijk_onbekend", event_bus, feedback_logger)

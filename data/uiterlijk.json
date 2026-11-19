@@ -7,9 +7,9 @@
       "zinsdelen": {
         "opening": ["Hoe ik eruitzie…", "Mijn uiterlijk…", "Oh…", "Kijk maar…", "Dat is…"],
         "midden": [
-          "lang donkerblond haar, helderblauwe ogen en een tenger postuur.",
+          "lang donkerblond haar, helderblauwe ogen en een zeer tenger postuur.",
           "helderblauwe ogen, lang golvend haar tot aan mijn kont.",
-          "tenger, licht van huid, blauwe ogen en haar tot net aan mijn achterwerk.",
+          "zeer tenger, licht van huid, blauwe ogen en haar tot net aan mijn achterwerk.",
           "donkerblond haar, helderblauwe ogen, een zacht ovaal gezicht.",
           "lang golvend donkerblond haar en helderblauwe ogen."
         ],
@@ -77,11 +77,11 @@
       "zinsdelen": {
         "opening": ["Mijn buik…", "Die…", "Oh…", "Dat…", "Kijk…"],
         "midden": [
-          "plat en zacht.",
+          "plat en zacht. Geen spieren.",
           "licht, niet gespierd.",
           "zacht, met een kleine navel.",
-          "plat.",
-          "zacht en licht."
+          "plat en zacht.",
+          "zacht en licht, zonder zichtbare spieren."
         ],
         "slot": ["…denk ik.", "…meer niet.", "…", "…oké.", "…dat is het."]
       }
@@ -91,11 +91,11 @@
       "zinsdelen": {
         "opening": ["Mijn benen…", "Die…", "Oh…", "Dat…", "Kijk…"],
         "midden": [
-          "slank en licht.",
-          "lang, niet te dik.",
-          "zacht, lichte huid.",
-          "slank.",
-          "licht en slank."
+          "klein, hoog, een kleine A. Ze staan een beetje uit elkaar.",
+          "een kleine A, hoog en stevig.",
+          "klein en hoog.",
+          "hoog, klein.",
+          "ze zijn klein, hoog en een kleine A."
         ],
         "slot": ["…denk ik.", "…meer niet.", "…", "…oké.", "…dat is het."]
       }

@@ -2005,3 +2005,11 @@
 {"text": "een kortsluiting veroorzaakt brand", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:37:50.291287"}
 {"text": "een aardbeving veroorzaakt schade", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0321, "bron": "model_fallback", "tijdstip": "2026-11-17T20:38:02.057667"}
 {"text": "weerleg concept: aja", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-17T20:40:49.564078"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-18T17:32:52.111226"}
+{"text": "hoe ziet je perineum eruit?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-11-18T17:33:20.805955"}
+{"text": "hoe ziet je poep eruit", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-11-18T17:39:06.792708"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-18T17:39:14.108178"}
+{"text": "hoe ziet je perineum eruit?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-11-18T17:39:29.841315"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-18T17:42:14.980681"}
+{"text": "hoe ziet je perineum eruit?", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0297, "bron": "model_fallback", "tijdstip": "2026-11-18T17:42:32.416868"}
+{"text": "toon fouten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-19T07:46:17.566216"}

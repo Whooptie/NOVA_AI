@@ -9,23 +9,23 @@
     "werk": "2026-11-04"
   },
   "laatste_analyse": {
-    "datum": "2026-11-17",
-    "actieve_dagen": 85,
+    "datum": "2026-11-19",
+    "actieve_dagen": 88,
     "reden": null,
     "beste": {
       "afstand_maanden": 1,
       "woorden": [
         "neem",
-        "gerelateerd",
-        "semantic"
+        "semantic",
+        "werkt"
       ],
-      "score": 9.54
+      "score": 7.0
     },
     "afgewezen": [
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "6 mnd: te weinig berichten rond 17 mei (0)",
-      "12 mnd: te weinig berichten rond 17 november (0)",
-      "24 mnd: te weinig berichten rond 17 november (0)"
+      "6 mnd: te weinig berichten rond 19 mei (0)",
+      "12 mnd: te weinig berichten rond 19 november (0)",
+      "24 mnd: te weinig berichten rond 19 november (0)"
     ]
   }
 }

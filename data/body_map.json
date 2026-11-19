@@ -1,6 +1,5 @@
 {
-  "leeftijd": 18,
-  "ervaring": "laag",
+  "ervaring": "zeer laag",
   "maagd": {
     "bewaren_over_reboot": true,
     "vagina_ontmaagd_bij": "penetratie",
@@ -140,6 +139,111 @@
       "comfort": 0.22,
       "kanalen": ["druk", "diepte", "rek"],
       "oorzaak_event": "gebaar.rectum"
+    },
+    "nek": {
+      "parent": "hoofd",
+      "gevoeligheid": 0.55,
+      "comfort": 0.7,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.nek"
+    },
+    "dij_binnen": {
+      "parent": "benen",
+      "gevoeligheid": 0.65,
+      "comfort": 0.6,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.dij_binnen"
+    },
+    "tong": {
+      "parent": "lippen",
+      "gevoeligheid": 0.85,
+      "comfort": 0.5,
+      "kanalen": ["druk", "warmte", "textuur", "wrijving"],
+      "oorzaak_event": "gebaar.tong"
+    },
+    "perineum": {
+      "parent": "bekken",
+      "gevoeligheid": 0.7,
+      "comfort": 0.4,
+      "kanalen": ["druk", "warmte", "wrijving"],
+      "oorzaak_event": "gebaar.perineum"
+    },
+    "oren": {
+      "parent": "hoofd",
+      "gevoeligheid": 0.5,
+      "comfort": 0.65,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.oren"
+    },
+    "knieen": {
+      "parent": "benen",
+      "gevoeligheid": 0.4,
+      "comfort": 0.7,
+      "kanalen": ["druk", "warmte"],
+      "oorzaak_event": "gebaar.knieen"
+    },
+    "kuiten": {
+      "parent": "benen",
+      "gevoeligheid": 0.35,
+      "comfort": 0.75,
+      "kanalen": ["druk", "textuur"],
+      "oorzaak_event": "gebaar.kuiten"
+    },
+    "enkels": {
+      "parent": "benen",
+      "gevoeligheid": 0.45,
+      "comfort": 0.7,
+      "kanalen": ["druk", "warmte"],
+      "oorzaak_event": "gebaar.enkels"
+    },
+    "elleboog_binnen": {
+      "parent": "armen",
+      "gevoeligheid": 0.55,
+      "comfort": 0.6,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.elleboog_binnen"
+    },
+    "schaambeen": {
+      "parent": "bekken",
+      "gevoeligheid": 0.5,
+      "comfort": 0.65,
+      "kanalen": ["druk", "warmte"],
+      "oorzaak_event": "gebaar.schaambeen"
+    },
+    "staartbeen": {
+      "parent": "rug",
+      "gevoeligheid": 0.45,
+      "comfort": 0.6,
+      "kanalen": ["druk", "textuur"],
+      "oorzaak_event": "gebaar.staartbeen"
+    },
+    "billen_onder": {
+      "parent": "billen",
+      "gevoeligheid": 0.55,
+      "comfort": 0.6,
+      "kanalen": ["druk", "textuur", "warmte"],
+      "oorzaak_event": "gebaar.billen_onder"
+    },
+    "mondhoeken": {
+      "parent": "lippen",
+      "gevoeligheid": 0.6,
+      "comfort": 0.55,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.mondhoeken"
+    },
+    "wangen_binnen": {
+      "parent": "wangen",
+      "gevoeligheid": 0.65,
+      "comfort": 0.5,
+      "kanalen": ["druk", "warmte", "textuur", "wrijving"],
+      "oorzaak_event": "gebaar.wangen_binnen"
+    },
+    "borst_onder": {
+      "parent": "borst_links",
+      "gevoeligheid": 0.6,
+      "comfort": 0.6,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.borst_onder"
     }
   },
   "regels": {

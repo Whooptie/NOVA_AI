@@ -52,6 +52,29 @@
    "tests": 5264,
    "threads": 42,
    "zware_functies": 37
+  },
+  "2026-11-18": {
+   "antwoorden": 55.8,
+   "concepten": 1342,
+   "data_mb": 8435.6,
+   "opstart_s": 4.1,
+   "rooktest": 100.0,
+   "rss_mb": 800.3,
+   "taalbegrip": 97.9,
+   "tests": 5264,
+   "threads": 42,
+   "zware_functies": 37
+  },
+  "2026-11-19": {
+   "antwoorden": 55.8,
+   "concepten": 1342,
+   "data_mb": 8441.9,
+   "opstart_s": 4.1,
+   "rooktest": 100.0,
+   "rss_mb": 627.8,
+   "taalbegrip": 97.9,
+   "threads": 42,
+   "zware_functies": 37
   }
  },
  "versie": 1
