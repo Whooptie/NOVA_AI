@@ -428,3 +428,37 @@
 {"timestamp": "2026-11-21T18:35:32.358686", "event_type": "concept_created", "word": "vorm van het aardoppervlak", "source": "system", "new_value": {"word": "vorm van het aardoppervlak"}}
 {"timestamp": "2026-11-21T18:36:53.643024", "event_type": "concept_created", "word": "organisme", "source": "system", "new_value": {"word": "organisme"}}
 {"timestamp": "2026-11-21T18:37:31.645465", "event_type": "concept_created", "word": "schepen waarschuwen", "source": "system", "new_value": {"word": "schepen waarschuwen"}}
+{"timestamp": "2026-11-21T18:50:18.637893", "event_type": "concept_created", "word": "lepel", "source": "system", "new_value": {"word": "lepel"}}
+{"timestamp": "2026-11-21T18:50:25.858633", "event_type": "concept_created", "word": "vork", "source": "system", "new_value": {"word": "vork"}}
+{"timestamp": "2026-11-21T18:50:32.879634", "event_type": "concept_created", "word": "kam", "source": "system", "new_value": {"word": "kam"}}
+{"timestamp": "2026-11-21T18:50:32.960946", "event_type": "concept_created", "word": "kammen", "source": "system", "new_value": {"word": "kammen"}}
+{"timestamp": "2026-11-21T18:50:40.086534", "event_type": "concept_created", "word": "zitten", "source": "system", "new_value": {"word": "zitten"}}
+{"timestamp": "2026-11-21T18:51:01.205502", "event_type": "concept_created", "word": "opbergen", "source": "system", "new_value": {"word": "opbergen"}}
+{"timestamp": "2026-11-21T18:51:08.743725", "event_type": "concept_created", "word": "tas", "source": "system", "new_value": {"word": "tas"}}
+{"timestamp": "2026-11-21T18:51:08.828853", "event_type": "concept_created", "word": "dragen", "source": "system", "new_value": {"word": "dragen"}}
+{"timestamp": "2026-11-21T18:51:23.549624", "event_type": "concept_created", "word": "beschermen", "source": "system", "new_value": {"word": "beschermen"}}
+{"timestamp": "2026-11-21T18:51:37.556173", "event_type": "concept_created", "word": "helm", "source": "system", "new_value": {"word": "helm"}}
+{"timestamp": "2026-11-21T18:51:45.323019", "event_type": "concept_created", "word": "zeep", "source": "system", "new_value": {"word": "zeep"}}
+{"timestamp": "2026-11-21T18:52:50.985482", "event_type": "concept_created", "word": "handdoek", "source": "system", "new_value": {"word": "handdoek"}}
+{"timestamp": "2026-11-21T18:52:51.075690", "event_type": "concept_created", "word": "afdrogen", "source": "system", "new_value": {"word": "afdrogen"}}
+{"timestamp": "2026-11-21T18:53:00.024173", "event_type": "concept_created", "word": "wekken", "source": "system", "new_value": {"word": "wekken"}}
+{"timestamp": "2026-11-21T18:53:06.822590", "event_type": "concept_created", "word": "ladder", "source": "system", "new_value": {"word": "ladder"}}
+{"timestamp": "2026-11-21T18:53:06.906591", "event_type": "concept_created", "word": "klimmen", "source": "system", "new_value": {"word": "klimmen"}}
+{"timestamp": "2026-11-21T18:53:19.668997", "event_type": "concept_created", "word": "verplaatsen", "source": "system", "new_value": {"word": "verplaatsen"}}
+{"timestamp": "2026-11-21T18:53:28.458966", "event_type": "concept_created", "word": "begieten", "source": "system", "new_value": {"word": "begieten"}}
+{"timestamp": "2026-11-21T18:53:38.392965", "event_type": "concept_created", "word": "naaimachine", "source": "system", "new_value": {"word": "naaimachine"}}
+{"timestamp": "2026-11-21T18:54:04.278745", "event_type": "concept_created", "word": "slecht zicht", "source": "system", "new_value": {"word": "slecht zicht"}}
+{"timestamp": "2026-11-21T18:54:17.013670", "event_type": "concept_created", "word": "gladheid", "source": "system", "new_value": {"word": "gladheid"}}
+{"timestamp": "2026-11-21T18:54:33.973608", "event_type": "concept_created", "word": "vallen", "source": "system", "new_value": {"word": "vallen"}}
+{"timestamp": "2026-11-21T18:54:43.068747", "event_type": "concept_created", "word": "kou", "source": "system", "new_value": {"word": "kou"}}
+{"timestamp": "2026-11-21T18:54:43.157307", "event_type": "concept_created", "word": "rillingen", "source": "system", "new_value": {"word": "rillingen"}}
+{"timestamp": "2026-11-21T18:54:52.576735", "event_type": "concept_created", "word": "hitte", "source": "system", "new_value": {"word": "hitte"}}
+{"timestamp": "2026-11-21T18:54:52.666804", "event_type": "concept_created", "word": "zweten", "source": "system", "new_value": {"word": "zweten"}}
+{"timestamp": "2026-11-21T18:55:00.602799", "event_type": "concept_created", "word": "verkeer", "source": "system", "new_value": {"word": "verkeer"}}
+{"timestamp": "2026-11-21T18:55:09.614584", "event_type": "concept_created", "word": "bacterie", "source": "system", "new_value": {"word": "bacterie"}}
+{"timestamp": "2026-11-21T18:55:17.485911", "event_type": "concept_created", "word": "snee", "source": "system", "new_value": {"word": "snee"}}
+{"timestamp": "2026-11-21T18:55:17.570728", "event_type": "concept_created", "word": "bloeding", "source": "system", "new_value": {"word": "bloeding"}}
+{"timestamp": "2026-11-21T18:55:25.384379", "event_type": "concept_created", "word": "bosbrand", "source": "system", "new_value": {"word": "bosbrand"}}
+{"timestamp": "2026-11-21T18:55:57.131053", "event_type": "concept_created", "word": "lawaai", "source": "system", "new_value": {"word": "lawaai"}}
+{"timestamp": "2026-11-21T18:55:57.213970", "event_type": "concept_created", "word": "gehoorschade", "source": "system", "new_value": {"word": "gehoorschade"}}
+{"timestamp": "2026-11-21T18:56:04.450491", "event_type": "concept_created", "word": "golven", "source": "system", "new_value": {"word": "golven"}}

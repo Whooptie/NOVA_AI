@@ -4179,3 +4179,4 @@ Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leef
 - Aangevuld met zinnen + `ja`: `een sieraad is een voorwerp`, `een sieraad wordt gebruikt voor versieren`, `een levend wezen is een organisme`, `een vuurtoren is een gebouw`, `een vuurtoren wordt gebruikt voor schepen waarschuwen`, en `heuvel`/`vallei`/`eiland`/`duin`/`grot is een landvorm`.
 - Les: een zin met "X is een vorm van Y" maakt van "vorm van Y" één nieuw concept; die vraag met `nee` beantwoorden en de zin korter maken.
 - Stand na de push (21 nov, 19:38): concepten 1350; `is_a` 713, `used_for` 55, `causes` 52.
+- Opruiming (21 nov 2026, 19:48): `extraheer`, `leg`, `krijgt`, `stopt`, `gebeurt`, `spijkers` en `slaan` weerlegd met `weerleg concept:` (geen inkomende relaties, dus niets raakte los). `zaag` kreeg `is_a gereedschap`. Stand: concepten 1350, `is_a` 714, `used_for` 55, `causes` 52.
