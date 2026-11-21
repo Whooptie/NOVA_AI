@@ -2109,3 +2109,11 @@
 {"text": "extraheer vuurtoren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:37:09.241460"}
 {"text": "een vuurtoren is een gebouw", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:37:18.219013"}
 {"text": "een vuurtoren wordt gebruikt voor schepen waarschuwen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-21T19:37:31.636304"}
+{"text": "een zaag is een gereedschap", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:45:12.616869"}
+{"text": "weerleg concept: extraheer", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:46:21.569938"}
+{"text": "weerleg concept: leg", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.021, "bron": "model_fallback", "tijdstip": "2026-11-21T19:46:30.014899"}
+{"text": "weerleg concept: krijgt", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:46:38.166421"}
+{"text": "weerleg concept: stopt", "signaal": "waardering", "model_signaal": "neutraal", "marge": 0.0368, "bron": "woordenlijst", "tijdstip": "2026-11-21T19:46:43.833042"}
+{"text": "weerleg concept: gebeurt", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:46:48.919419"}
+{"text": "weerleg concept: spijkers", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:46:54.733351"}
+{"text": "weerleg concept: slaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:47:26.914076"}

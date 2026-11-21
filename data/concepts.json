@@ -122689,13 +122689,13 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "status": "unverified",
+        "status": "rejected",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-04T14:53:59.452824",
-      "updated_at": "2026-11-04T14:53:59.454495",
+      "updated_at": "2026-11-21T18:46:48.927376",
       "sources": [
         "auto"
       ],
@@ -122724,6 +122724,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-04T14:53:59.454493"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "gebeurt#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-11-21T18:46:48.927371"
       }
     ]
   },
@@ -122737,13 +122745,13 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "status": "unverified",
+        "status": "rejected",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-04T15:13:48.863667",
-      "updated_at": "2026-11-04T15:13:48.865170",
+      "updated_at": "2026-11-21T18:46:43.843839",
       "sources": [
         "auto"
       ],
@@ -122772,6 +122780,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-04T15:13:48.865167"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "stopt#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-11-21T18:46:43.843833"
       }
     ]
   },
@@ -122785,13 +122801,13 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "status": "unverified",
+        "status": "rejected",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-04T15:13:55.669926",
-      "updated_at": "2026-11-04T15:13:55.670541",
+      "updated_at": "2026-11-21T18:46:38.173734",
       "sources": [
         "auto"
       ],
@@ -122820,6 +122836,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-04T15:13:55.670539"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "krijgt#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-11-21T18:46:38.173728"
       }
     ]
   },
@@ -122833,13 +122857,13 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "status": "unverified",
+        "status": "rejected",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-13T19:48:13.382835",
-      "updated_at": "2026-11-13T19:48:13.384170",
+      "updated_at": "2026-11-21T18:46:21.579972",
       "sources": [
         "auto"
       ],
@@ -122868,6 +122892,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-13T19:48:13.384167"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "extraheer#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-11-21T18:46:21.579965"
       }
     ]
   },
@@ -122904,6 +122936,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:25:05.267733"
+          },
+          {
+            "type": "is_a",
+            "target": "gereedschap",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:45:18.231097"
           }
         ],
         "source": "wikipedia",
@@ -122914,12 +122954,12 @@
     ],
     "metadata": {
       "created_at": "2026-11-13T19:52:43.623581",
-      "updated_at": "2026-11-17T19:25:05.267744",
+      "updated_at": "2026-11-21T18:45:18.231106",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:25:05.267744",
-      "usage_count": 4,
+      "last_used_at": "2026-11-21T18:45:18.231106",
+      "usage_count": 5,
       "confidence_history": [
         {
           "timestamp": "2026-11-13T19:52:43.623828",
@@ -122935,6 +122975,10 @@
         },
         {
           "timestamp": "2026-11-17T19:25:05.267744",
+          "confidence": 0.8
+        },
+        {
+          "timestamp": "2026-11-21T18:45:18.231106",
           "confidence": 0.8
         }
       ]
@@ -123009,6 +123053,17 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:25:05.267741"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "zaag#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gereedschap",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:45:18.231104"
       }
     ]
   },
@@ -123022,13 +123077,13 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "status": "unverified",
+        "status": "rejected",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-15T14:32:22.547675",
-      "updated_at": "2026-11-15T14:32:22.549071",
+      "updated_at": "2026-11-21T18:46:30.023249",
       "sources": [
         "auto"
       ],
@@ -123057,6 +123112,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-15T14:32:22.549068"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "leg#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-11-21T18:46:30.023244"
       }
     ]
   },
@@ -123070,13 +123133,13 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "status": "unverified",
+        "status": "rejected",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:22:00.592462",
-      "updated_at": "2026-11-17T19:22:00.594212",
+      "updated_at": "2026-11-21T18:46:54.743017",
       "sources": [
         "auto"
       ],
@@ -123105,6 +123168,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:22:00.594210"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "spijkers#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-11-21T18:46:54.743011"
       }
     ]
   },
@@ -123118,13 +123189,13 @@
         "relations": [],
         "source": "auto",
         "confidence": 0.1,
-        "status": "unverified",
+        "status": "rejected",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:22:00.673838",
-      "updated_at": "2026-11-17T19:22:00.674188",
+      "updated_at": "2026-11-21T18:47:26.921387",
       "sources": [
         "auto"
       ],
@@ -123153,6 +123224,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:22:00.674186"
+      },
+      {
+        "event_type": "sense_rejected",
+        "source": "user",
+        "sense_id": "slaan#1",
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "timestamp": "2026-11-21T18:47:26.921380"
       }
     ]
   },
