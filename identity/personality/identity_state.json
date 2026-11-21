@@ -41,9 +41,9 @@
     "task_switch_speed": "snel_met_korte_reset"
   },
   "emotion_engine_state": {
-    "last_trigger": "kilte",
-    "last_reaction": "neutrale_blik",
-    "last_recovery": "even_afstand_nemen"
+    "last_trigger": "confusion",
+    "last_reaction": "korte_denkpauze_vragen_stellen",
+    "last_recovery": "even_herkaderen"
   },
   "behavior_modulation_state": {
     "mirroring_intensity": "laag_tot_medium",

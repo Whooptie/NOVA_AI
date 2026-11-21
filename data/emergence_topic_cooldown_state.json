@@ -38,10 +38,10 @@
       "volgende_toegestaan": 1792597375.4595616
     },
     "datum_terugblik": {
-      "label": "hond|warm|werk",
+      "label": "allemaal|betekeni|concept|semantic",
       "getal": null,
-      "gezegd_op": 1793820222.922365,
-      "volgende_toegestaan": 1793918624.408972
+      "gezegd_op": 1795288973.870748,
+      "volgende_toegestaan": 1795391712.4070213
     },
     "voorkeur_verandering": {
       "label": "koffie|False|positief|2026-11-05",
@@ -59,7 +59,7 @@
   "trending_topic:gelijkenis": 1793562337.249082,
   "trending_topic:volgen": 1793043998.757287,
   "trending_topic:toon": 1793129386.099541,
-  "datum_terugblik": 1793820222.922087,
+  "datum_terugblik": 1795288973.870445,
   "voorkeur_verandering:koffie": 1793908198.299654,
   "trending_topic:veroorzaken": 1795288367.571789
 }

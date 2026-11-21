@@ -123976,7 +123976,7 @@
       {
         "sense_id": "timmeren#1",
         "definition": "Timmeren is met een hamer spijkers in hout slaan om iets te bouwen of te herstellen.",
-        "pos": null,
+        "pos": "verb",
         "examples": [
           "Hij is aan het timmeren in de garage."
         ],
@@ -123989,7 +123989,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:24:18.230033",
-      "updated_at": "2026-11-21T19:16:42.671147",
+      "updated_at": "2026-11-21T19:19:30.222832",
       "sources": [
         "auto"
       ],
@@ -124275,9 +124275,12 @@
     "senses": [
       {
         "sense_id": "schaar#1",
-        "definition": "unknown",
+        "definition": "Een schaar is een gereedschap met twee scherpe bladen die langs elkaar bewegen, waarmee je papier, stof of haar knipt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij knipte het papier door met een schaar.",
+          "De schaar ligt in de la."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -124286,22 +124289,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:25:12.146172"
+          },
+          {
+            "type": "is_a",
+            "target": "gereedschap",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:20:16.138795"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:10.095633",
-      "updated_at": "2026-11-17T19:25:12.146182",
+      "updated_at": "2026-11-21T19:20:31.249340",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:25:12.146182",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:20:16.051080",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:25:10.095903",
@@ -124310,6 +124321,10 @@
         {
           "timestamp": "2026-11-17T19:25:12.146182",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:20:16.051080",
+          "confidence": 1.0
         }
       ]
     },
@@ -124340,6 +124355,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:25:12.146179"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "schaar#1",
+        "old_value": "unknown",
+        "new_value": "Een schaar is een gereedschap met twee scherpe bladen die langs elkaar bewegen, waarmee je papier, stof of haar knipt.",
+        "timestamp": "2026-11-21T19:20:16.051076"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "schaar#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gereedschap",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:20:16.138812"
       }
     ]
   },
@@ -124395,9 +124429,12 @@
     "senses": [
       {
         "sense_id": "schroevendraaier#1",
-        "definition": "unknown",
+        "definition": "Een schroevendraaier is een gereedschap met een steel en een platte of kruisvormige punt, waarmee je schroeven vast- of losdraait.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij draaide de schroef los met een schroevendraaier.",
+          "De schroevendraaier ligt in de gereedschapskist."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -124406,22 +124443,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:25:21.042068"
+          },
+          {
+            "type": "is_a",
+            "target": "gereedschap",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:25:13.800345"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:18.408754",
-      "updated_at": "2026-11-17T19:25:21.042079",
+      "updated_at": "2026-11-21T19:25:24.545380",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:25:21.042079",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:25:13.714878",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:25:18.409043",
@@ -124430,6 +124475,10 @@
         {
           "timestamp": "2026-11-17T19:25:21.042079",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:25:13.714878",
+          "confidence": 1.0
         }
       ]
     },
@@ -124460,6 +124509,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:25:21.042076"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "schroevendraaier#1",
+        "old_value": "unknown",
+        "new_value": "Een schroevendraaier is een gereedschap met een steel en een platte of kruisvormige punt, waarmee je schroeven vast- of losdraait.",
+        "timestamp": "2026-11-21T19:25:13.714876"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "schroevendraaier#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gereedschap",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:25:13.800360"
       }
     ]
   },
@@ -124515,9 +124583,12 @@
     "senses": [
       {
         "sense_id": "tang#1",
-        "definition": "unknown",
+        "definition": "Een tang is een gereedschap met twee armen, waarmee je iets stevig vastpakt, vasthoudt of doorknipt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij trok de spijker met een tang uit de plank.",
+          "Pak de moer vast met de tang."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -124526,22 +124597,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:25:29.428386"
+          },
+          {
+            "type": "is_a",
+            "target": "gereedschap",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:20:37.533829"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:27.239402",
-      "updated_at": "2026-11-17T19:25:29.428395",
+      "updated_at": "2026-11-21T19:20:48.210883",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:25:29.428395",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:20:37.446872",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:25:27.239670",
@@ -124550,6 +124629,10 @@
         {
           "timestamp": "2026-11-17T19:25:29.428395",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:20:37.446872",
+          "confidence": 1.0
         }
       ]
     },
@@ -124580,6 +124663,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:25:29.428392"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "tang#1",
+        "old_value": "unknown",
+        "new_value": "Een tang is een gereedschap met twee armen, waarmee je iets stevig vastpakt, vasthoudt of doorknipt.",
+        "timestamp": "2026-11-21T19:20:37.446870"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "tang#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gereedschap",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:20:37.533846"
       }
     ]
   },
@@ -124635,9 +124737,12 @@
     "senses": [
       {
         "sense_id": "boor#1",
-        "definition": "unknown",
+        "definition": "Een boor is een gereedschap met een scherpe, draaiende punt, waarmee je gaten maakt in hout, steen of metaal.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij zette een boor in de machine.",
+          "Met deze boor maak je een gat in de muur."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -124646,22 +124751,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:25:40.062789"
+          },
+          {
+            "type": "is_a",
+            "target": "gereedschap",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:20:56.443767"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:34.719542",
-      "updated_at": "2026-11-17T19:25:40.062799",
+      "updated_at": "2026-11-21T19:21:07.545148",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:25:40.062799",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:20:56.356568",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:25:34.719794",
@@ -124670,6 +124783,10 @@
         {
           "timestamp": "2026-11-17T19:25:40.062799",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:20:56.356568",
+          "confidence": 1.0
         }
       ]
     },
@@ -124700,6 +124817,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:25:40.062797"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "boor#1",
+        "old_value": "unknown",
+        "new_value": "Een boor is een gereedschap met een scherpe, draaiende punt, waarmee je gaten maakt in hout, steen of metaal.",
+        "timestamp": "2026-11-21T19:20:56.356566"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "boor#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gereedschap",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:20:56.443786"
       }
     ]
   },
@@ -124755,9 +124891,12 @@
     "senses": [
       {
         "sense_id": "naald#1",
-        "definition": "unknown",
+        "definition": "Een naald is een dun, puntig voorwerp met een oog, waarmee je draad door stof trekt om te naaien.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Ze rijgde de draad door het oog van de naald.",
+          "Hij prikte zich aan een naald."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -124768,20 +124907,20 @@
             "created_at": "2026-11-17T19:25:47.924811"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:45.848169",
-      "updated_at": "2026-11-17T19:25:47.924823",
+      "updated_at": "2026-11-21T19:21:29.479641",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:25:47.924823",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:21:14.111854",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:25:45.848399",
@@ -124790,6 +124929,10 @@
         {
           "timestamp": "2026-11-17T19:25:47.924823",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:21:14.111854",
+          "confidence": 1.0
         }
       ]
     },
@@ -124820,6 +124963,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:25:47.924820"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "naald#1",
+        "old_value": "unknown",
+        "new_value": "Een naald is een dun, puntig voorwerp met een oog, waarmee je draad door stof trekt om te naaien.",
+        "timestamp": "2026-11-21T19:21:14.111852"
       }
     ]
   },
@@ -124875,9 +125026,12 @@
     "senses": [
       {
         "sense_id": "kompas#1",
-        "definition": "unknown",
+        "definition": "Een kompas is een instrument met een magnetische naald die naar het noorden wijst, waarmee je de richting bepaalt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "De wandelaar keek op zijn kompas.",
+          "Zonder kompas raakten ze verdwaald in het bos."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -124886,22 +125040,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:25:55.063676"
+          },
+          {
+            "type": "is_a",
+            "target": "instrument",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:21:36.265350"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:52.792334",
-      "updated_at": "2026-11-17T19:25:55.063686",
+      "updated_at": "2026-11-21T19:21:46.004890",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:25:55.063686",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:21:36.175878",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:25:52.792555",
@@ -124910,6 +125072,10 @@
         {
           "timestamp": "2026-11-17T19:25:55.063686",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:21:36.175878",
+          "confidence": 1.0
         }
       ]
     },
@@ -124940,6 +125106,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:25:55.063684"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kompas#1",
+        "old_value": "unknown",
+        "new_value": "Een kompas is een instrument met een magnetische naald die naar het noorden wijst, waarmee je de richting bepaalt.",
+        "timestamp": "2026-11-21T19:21:36.175876"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "kompas#1",
+        "relation": {
+          "type": "is_a",
+          "target": "instrument",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:21:36.265366"
       }
     ]
   },
@@ -124995,9 +125180,12 @@
     "senses": [
       {
         "sense_id": "microscoop#1",
-        "definition": "unknown",
+        "definition": "Een microscoop is een instrument waarmee je heel kleine dingen sterk uitvergroot kunt bekijken.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Onder de microscoop zagen we de cellen.",
+          "De leraar stelde de microscoop scherp."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -125006,22 +125194,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:26:03.438851"
+          },
+          {
+            "type": "is_a",
+            "target": "instrument",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:21:50.734745"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:00.972831",
-      "updated_at": "2026-11-17T19:26:03.438861",
+      "updated_at": "2026-11-21T19:22:01.904103",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:26:03.438861",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:21:50.645482",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:26:00.973126",
@@ -125030,6 +125226,10 @@
         {
           "timestamp": "2026-11-17T19:26:03.438861",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:21:50.645482",
+          "confidence": 1.0
         }
       ]
     },
@@ -125060,6 +125260,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:26:03.438859"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "microscoop#1",
+        "old_value": "unknown",
+        "new_value": "Een microscoop is een instrument waarmee je heel kleine dingen sterk uitvergroot kunt bekijken.",
+        "timestamp": "2026-11-21T19:21:50.645479"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "microscoop#1",
+        "relation": {
+          "type": "is_a",
+          "target": "instrument",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:21:50.734765"
       }
     ]
   },
@@ -125115,9 +125334,12 @@
     "senses": [
       {
         "sense_id": "telescoop#1",
-        "definition": "unknown",
+        "definition": "Een telescoop is een instrument waarmee je ver verwijderde dingen, zoals sterren en planeten, groter en scherper ziet.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij keek door de telescoop naar de maan.",
+          "De sterrenkundige richtte de telescoop op Jupiter."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -125126,22 +125348,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:26:11.998460"
+          },
+          {
+            "type": "is_a",
+            "target": "instrument",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:22:08.908788"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:09.395196",
-      "updated_at": "2026-11-17T19:26:11.998470",
+      "updated_at": "2026-11-21T19:22:18.750205",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:26:11.998470",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:22:08.817455",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:26:09.395394",
@@ -125150,6 +125380,10 @@
         {
           "timestamp": "2026-11-17T19:26:11.998470",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:22:08.817455",
+          "confidence": 1.0
         }
       ]
     },
@@ -125180,6 +125414,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:26:11.998468"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "telescoop#1",
+        "old_value": "unknown",
+        "new_value": "Een telescoop is een instrument waarmee je ver verwijderde dingen, zoals sterren en planeten, groter en scherper ziet.",
+        "timestamp": "2026-11-21T19:22:08.817453"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "telescoop#1",
+        "relation": {
+          "type": "is_a",
+          "target": "instrument",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:22:08.908807"
       }
     ]
   },
@@ -125235,9 +125488,12 @@
     "senses": [
       {
         "sense_id": "magneet#1",
-        "definition": "unknown",
+        "definition": "Een magneet is een voorwerp dat ijzer en sommige andere metalen aantrekt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "De magneet bleef aan de koelkast hangen.",
+          "Met een magneet raap je spijkers op."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -125246,22 +125502,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:26:35.436336"
+          },
+          {
+            "type": "is_a",
+            "target": "voorwerp",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:22:25.589175"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:33.133535",
-      "updated_at": "2026-11-17T19:26:35.436346",
+      "updated_at": "2026-11-21T19:22:36.918069",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:26:35.436346",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:22:25.502485",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:26:33.133832",
@@ -125270,6 +125534,10 @@
         {
           "timestamp": "2026-11-17T19:26:35.436346",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:22:25.502485",
+          "confidence": 1.0
         }
       ]
     },
@@ -125300,6 +125568,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:26:35.436343"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "magneet#1",
+        "old_value": "unknown",
+        "new_value": "Een magneet is een voorwerp dat ijzer en sommige andere metalen aantrekt.",
+        "timestamp": "2026-11-21T19:22:25.502483"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "magneet#1",
+        "relation": {
+          "type": "is_a",
+          "target": "voorwerp",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:22:25.589191"
       }
     ]
   },
@@ -125355,9 +125642,12 @@
     "senses": [
       {
         "sense_id": "kachel#1",
-        "definition": "unknown",
+        "definition": "Een kachel is een toestel dat een ruimte verwarmt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "De kachel staat aan in de woonkamer.",
+          "Ze zette de kachel hoger."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -125366,22 +125656,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:26:42.852987"
+          },
+          {
+            "type": "is_a",
+            "target": "toestel",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:22:41.876884"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:40.329120",
-      "updated_at": "2026-11-17T19:26:42.852997",
+      "updated_at": "2026-11-21T19:22:51.660329",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:26:42.852997",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:22:41.788608",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:26:40.329419",
@@ -125390,6 +125688,10 @@
         {
           "timestamp": "2026-11-17T19:26:42.852997",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:22:41.788608",
+          "confidence": 1.0
         }
       ]
     },
@@ -125420,6 +125722,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:26:42.852995"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kachel#1",
+        "old_value": "unknown",
+        "new_value": "Een kachel is een toestel dat een ruimte verwarmt.",
+        "timestamp": "2026-11-21T19:22:41.788606"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "kachel#1",
+        "relation": {
+          "type": "is_a",
+          "target": "toestel",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:22:41.876898"
       }
     ]
   },
@@ -125475,9 +125796,12 @@
     "senses": [
       {
         "sense_id": "weegschaal#1",
-        "definition": "unknown",
+        "definition": "Een weegschaal is een toestel waarmee je het gewicht van iets bepaalt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Ze woog de bloem af op de weegschaal.",
+          "De pakketjes lagen op de weegschaal."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -125486,22 +125810,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:26:50.727967"
+          },
+          {
+            "type": "is_a",
+            "target": "toestel",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:23:10.055464"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:47.188585",
-      "updated_at": "2026-11-17T19:26:50.727978",
+      "updated_at": "2026-11-21T19:23:20.363278",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:26:50.727978",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:23:09.968958",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:26:47.188864",
@@ -125510,6 +125842,10 @@
         {
           "timestamp": "2026-11-17T19:26:50.727978",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:23:09.968958",
+          "confidence": 1.0
         }
       ]
     },
@@ -125540,6 +125876,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:26:50.727975"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "weegschaal#1",
+        "old_value": "unknown",
+        "new_value": "Een weegschaal is een toestel waarmee je het gewicht van iets bepaalt.",
+        "timestamp": "2026-11-21T19:23:09.968956"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "weegschaal#1",
+        "relation": {
+          "type": "is_a",
+          "target": "toestel",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:23:10.055478"
       }
     ]
   },
@@ -125596,7 +125951,7 @@
       {
         "sense_id": "schade#1",
         "definition": "Schade is het nadeel of de beschadiging die iets of iemand oploopt door een gebeurtenis, zoals een storm of een ongeluk.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "De storm veroorzaakte veel schade aan de daken."
         ],
@@ -125609,7 +125964,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:27:20.817639",
-      "updated_at": "2026-11-21T19:16:29.198761",
+      "updated_at": "2026-11-21T19:19:25.955822",
       "sources": [
         "auto"
       ],
@@ -126863,9 +127218,12 @@
     "senses": [
       {
         "sense_id": "kaars#1",
-        "definition": "unknown",
+        "definition": "Een kaars is een staafje was met een lont dat brandt en licht geeft.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Ze stak een kaars aan op tafel.",
+          "De kaars brandde langzaam op."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -126876,20 +127234,20 @@
             "created_at": "2026-11-17T19:33:41.712263"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:33:39.507764",
-      "updated_at": "2026-11-17T19:33:41.712272",
+      "updated_at": "2026-11-21T19:23:35.926170",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:33:41.712272",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:23:26.368653",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:33:39.508073",
@@ -126898,6 +127256,10 @@
         {
           "timestamp": "2026-11-17T19:33:41.712272",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:23:26.368653",
+          "confidence": 1.0
         }
       ]
     },
@@ -126928,6 +127290,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:33:41.712270"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kaars#1",
+        "old_value": "unknown",
+        "new_value": "Een kaars is een staafje was met een lont dat brandt en licht geeft.",
+        "timestamp": "2026-11-21T19:23:26.368651"
       }
     ]
   },
@@ -127031,9 +127401,12 @@
     "senses": [
       {
         "sense_id": "verrekijker#1",
-        "definition": "unknown",
+        "definition": "Een verrekijker is een instrument met twee lenzen waarmee je ver weg gelegen dingen dichterbij ziet.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij bekeek de vogels door de verrekijker.",
+          "Neem de verrekijker mee naar het strand."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -127042,22 +127415,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:34:39.258617"
+          },
+          {
+            "type": "is_a",
+            "target": "instrument",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:23:41.585992"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:34:37.014450",
-      "updated_at": "2026-11-17T19:34:39.258628",
+      "updated_at": "2026-11-21T19:23:54.063423",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:34:39.258628",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:23:41.494501",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:34:37.014716",
@@ -127066,6 +127447,10 @@
         {
           "timestamp": "2026-11-17T19:34:39.258628",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:23:41.494501",
+          "confidence": 1.0
         }
       ]
     },
@@ -127096,6 +127481,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:34:39.258626"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "verrekijker#1",
+        "old_value": "unknown",
+        "new_value": "Een verrekijker is een instrument met twee lenzen waarmee je ver weg gelegen dingen dichterbij ziet.",
+        "timestamp": "2026-11-21T19:23:41.494497"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "verrekijker#1",
+        "relation": {
+          "type": "is_a",
+          "target": "instrument",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:23:41.586009"
       }
     ]
   },
@@ -127103,9 +127507,12 @@
     "senses": [
       {
         "sense_id": "liniaal#1",
-        "definition": "unknown",
+        "definition": "Een liniaal is een lange, rechte lat met streepjes, waarmee je lijnen trekt en lengtes meet.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij trok een rechte lijn met de liniaal.",
+          "De liniaal is dertig centimeter lang."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -127116,20 +127523,20 @@
             "created_at": "2026-11-17T19:34:46.115684"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:34:44.060928",
-      "updated_at": "2026-11-17T19:34:46.115694",
+      "updated_at": "2026-11-21T19:24:11.201922",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:34:46.115694",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:23:59.588146",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:34:44.061240",
@@ -127138,6 +127545,10 @@
         {
           "timestamp": "2026-11-17T19:34:46.115694",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:23:59.588146",
+          "confidence": 1.0
         }
       ]
     },
@@ -127168,6 +127579,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:34:46.115691"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "liniaal#1",
+        "old_value": "unknown",
+        "new_value": "Een liniaal is een lange, rechte lat met streepjes, waarmee je lijnen trekt en lengtes meet.",
+        "timestamp": "2026-11-21T19:23:59.588143"
       }
     ]
   },
@@ -127175,9 +127594,12 @@
     "senses": [
       {
         "sense_id": "zeef#1",
-        "definition": "unknown",
+        "definition": "Een zeef is een schaal met kleine gaatjes, waarmee je vloeistof van vaste stof scheidt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Ze goot de pasta door een zeef.",
+          "Met een zeef haalde hij de stukjes uit de soep."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -127186,22 +127608,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:34:53.232224"
+          },
+          {
+            "type": "is_a",
+            "target": "schaal",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:24:15.654749"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:34:51.024470",
-      "updated_at": "2026-11-17T19:34:53.232234",
+      "updated_at": "2026-11-21T19:24:34.095759",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:34:53.232234",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:24:15.561571",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:34:51.024726",
@@ -127210,6 +127640,10 @@
         {
           "timestamp": "2026-11-17T19:34:53.232234",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:24:15.561571",
+          "confidence": 1.0
         }
       ]
     },
@@ -127240,6 +127674,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:34:53.232231"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "zeef#1",
+        "old_value": "unknown",
+        "new_value": "Een zeef is een schaal met kleine gaatjes, waarmee je vloeistof van vaste stof scheidt.",
+        "timestamp": "2026-11-21T19:24:15.561569"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "zeef#1",
+        "relation": {
+          "type": "is_a",
+          "target": "schaal",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:24:15.654764"
       }
     ]
   },
@@ -127247,9 +127700,12 @@
     "senses": [
       {
         "sense_id": "trechter#1",
-        "definition": "unknown",
+        "definition": "Een trechter is een kegelvormig voorwerp waarmee je vloeistof in een smalle opening giet.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij goot de olie met een trechter in de fles.",
+          "De trechter paste precies in de opening."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -127260,20 +127716,20 @@
             "created_at": "2026-11-17T19:35:00.008293"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:34:57.754653",
-      "updated_at": "2026-11-17T19:35:00.008303",
+      "updated_at": "2026-11-21T19:24:51.081111",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:35:00.008303",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:24:40.162323",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:34:57.754876",
@@ -127282,6 +127738,10 @@
         {
           "timestamp": "2026-11-17T19:35:00.008303",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:24:40.162323",
+          "confidence": 1.0
         }
       ]
     },
@@ -127312,6 +127772,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:35:00.008301"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "trechter#1",
+        "old_value": "unknown",
+        "new_value": "Een trechter is een kegelvormig voorwerp waarmee je vloeistof in een smalle opening giet.",
+        "timestamp": "2026-11-21T19:24:40.162320"
       }
     ]
   },
@@ -127511,9 +127979,12 @@
     "senses": [
       {
         "sense_id": "tandenborstel#1",
-        "definition": "unknown",
+        "definition": "Een tandenborstel is een kleine borstel met een steel, waarmee je je tanden poetst.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Ze poetste haar tanden met een zachte tandenborstel.",
+          "Vergeet je tandenborstel niet."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -127524,20 +127995,20 @@
             "created_at": "2026-11-17T19:35:39.808690"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:35:36.797288",
-      "updated_at": "2026-11-17T19:35:39.808699",
+      "updated_at": "2026-11-21T19:25:07.969457",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:35:39.808699",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:24:55.515085",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:35:36.797519",
@@ -127546,6 +128017,10 @@
         {
           "timestamp": "2026-11-17T19:35:39.808699",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:24:55.515085",
+          "confidence": 1.0
         }
       ]
     },
@@ -127576,6 +128051,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:35:39.808697"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "tandenborstel#1",
+        "old_value": "unknown",
+        "new_value": "Een tandenborstel is een kleine borstel met een steel, waarmee je je tanden poetst.",
+        "timestamp": "2026-11-21T19:24:55.515083"
       }
     ]
   },
@@ -129048,7 +129531,7 @@
       {
         "sense_id": "lepel#1",
         "definition": "Een lepel is een eetgerei met een kleine kom aan een steel, waarmee je soep en andere zachte of vloeibare gerechten eet.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij roerde de soep met een lepel.",
           "Ze at de yoghurt met een kleine lepel."
@@ -129079,7 +129562,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-21T18:50:18.637882",
-      "updated_at": "2026-11-21T19:16:11.965553",
+      "updated_at": "2026-11-21T19:19:12.622559",
       "sources": [
         "auto"
       ],
@@ -129153,9 +129636,12 @@
     "senses": [
       {
         "sense_id": "vork#1",
-        "definition": "unknown",
+        "definition": "Een vork is een eetgerei met een steel en meerdere punten, waarmee je voedsel prikt en naar je mond brengt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij prikte een stuk vlees aan zijn vork.",
+          "De vork lag naast het bord."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -129164,22 +129650,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T18:50:27.916804"
+          },
+          {
+            "type": "is_a",
+            "target": "eetgerei",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:19:39.700389"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:50:25.858624",
-      "updated_at": "2026-11-21T18:50:27.916813",
+      "updated_at": "2026-11-21T19:19:54.001377",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:50:27.916813",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:19:39.613264",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:50:25.858915",
@@ -129188,6 +129682,10 @@
         {
           "timestamp": "2026-11-21T18:50:27.916813",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:19:39.613264",
+          "confidence": 1.0
         }
       ]
     },
@@ -129218,6 +129716,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:50:27.916811"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "vork#1",
+        "old_value": "unknown",
+        "new_value": "Een vork is een eetgerei met een steel en meerdere punten, waarmee je voedsel prikt en naar je mond brengt.",
+        "timestamp": "2026-11-21T19:19:39.613262"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "vork#1",
+        "relation": {
+          "type": "is_a",
+          "target": "eetgerei",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:19:39.700404"
       }
     ]
   },
@@ -129225,9 +129742,12 @@
     "senses": [
       {
         "sense_id": "kam#1",
-        "definition": "unknown",
+        "definition": "Een kam is een plat voorwerp met een rij tanden, waarmee je je haar ontward en in model brengt.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Ze haalde een kam door haar haar.",
+          "Mijn kam ligt op de wastafel."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -129238,20 +129758,20 @@
             "created_at": "2026-11-21T18:50:35.273314"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:50:32.879623",
-      "updated_at": "2026-11-21T18:50:35.273323",
+      "updated_at": "2026-11-21T19:20:10.126321",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:50:35.273323",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:19:58.959934",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:50:32.879932",
@@ -129260,6 +129780,10 @@
         {
           "timestamp": "2026-11-21T18:50:35.273323",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:19:58.959934",
+          "confidence": 1.0
         }
       ]
     },
@@ -129290,6 +129814,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:50:35.273321"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kam#1",
+        "old_value": "unknown",
+        "new_value": "Een kam is een plat voorwerp met een rij tanden, waarmee je je haar ontward en in model brengt.",
+        "timestamp": "2026-11-21T19:19:58.959932"
       }
     ]
   },
@@ -132105,9 +132637,12 @@
     "senses": [
       {
         "sense_id": "tent#1",
-        "definition": "unknown",
+        "definition": "Een tent is een onderkomen van doek dat je opzet om buiten in te slapen.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "We zetten onze tent op bij het meer.",
+          "In de tent bleef het droog."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -132116,22 +132651,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:02:34.505557"
+          },
+          {
+            "type": "is_a",
+            "target": "onderkomen",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:25:31.764144"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:02:32.249762",
-      "updated_at": "2026-11-21T19:02:34.505567",
+      "updated_at": "2026-11-21T19:25:41.576766",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:02:34.505567",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:25:31.673512",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:02:32.250083",
@@ -132140,6 +132683,10 @@
         {
           "timestamp": "2026-11-21T19:02:34.505567",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:25:31.673512",
+          "confidence": 1.0
         }
       ]
     },
@@ -132170,6 +132717,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:02:34.505565"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "tent#1",
+        "old_value": "unknown",
+        "new_value": "Een tent is een onderkomen van doek dat je opzet om buiten in te slapen.",
+        "timestamp": "2026-11-21T19:25:31.673510"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "tent#1",
+        "relation": {
+          "type": "is_a",
+          "target": "onderkomen",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:25:31.764165"
       }
     ]
   },

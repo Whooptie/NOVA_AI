@@ -1,12 +1,16 @@
 {
-  "laatst_gemeld_datum": "2026-11-04",
+  "laatst_gemeld_datum": "2026-11-21",
   "gemeld": {
     "levenshtein": "2026-11-02",
     "plu": "2026-11-02",
     "bank": "2026-11-02",
     "warm": "2026-11-04",
     "hond": "2026-11-04",
-    "werk": "2026-11-04"
+    "werk": "2026-11-04",
+    "allemaal": "2026-11-21",
+    "concept": "2026-11-21",
+    "betekeni": "2026-11-21",
+    "semantic": "2026-11-21"
   },
   "laatste_analyse": {
     "datum": "2026-11-21",
