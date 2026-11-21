@@ -123975,28 +123975,34 @@
     "senses": [
       {
         "sense_id": "timmeren#1",
-        "definition": "unknown",
+        "definition": "Timmeren is met een hamer spijkers in hout slaan om iets te bouwen of te herstellen.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij is aan het timmeren in de garage."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:24:18.230033",
-      "updated_at": "2026-11-17T19:24:18.230367",
+      "updated_at": "2026-11-21T19:16:42.671147",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:24:18.230367",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T19:16:36.572666",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:24:18.230367",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:16:36.572666",
+          "confidence": 1.0
         }
       ]
     },
@@ -124016,6 +124022,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:24:18.230365"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "timmeren#1",
+        "old_value": "unknown",
+        "new_value": "Timmeren is met een hamer spijkers in hout slaan om iets te bouwen of te herstellen.",
+        "timestamp": "2026-11-21T19:16:36.572664"
       }
     ]
   },
@@ -125581,28 +125595,34 @@
     "senses": [
       {
         "sense_id": "schade#1",
-        "definition": "unknown",
+        "definition": "Schade is het nadeel of de beschadiging die iets of iemand oploopt door een gebeurtenis, zoals een storm of een ongeluk.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "De storm veroorzaakte veel schade aan de daken."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:27:20.817639",
-      "updated_at": "2026-11-17T19:27:20.818008",
+      "updated_at": "2026-11-21T19:16:29.198761",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:27:20.818008",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T19:16:20.560023",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:27:20.818008",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:16:20.560023",
+          "confidence": 1.0
         }
       ]
     },
@@ -125622,6 +125642,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:27:20.818006"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "schade#1",
+        "old_value": "unknown",
+        "new_value": "Schade is het nadeel of de beschadiging die iets of iemand oploopt door een gebeurtenis, zoals een storm of een ongeluk.",
+        "timestamp": "2026-11-21T19:16:20.560021"
       }
     ]
   },
@@ -129019,9 +129047,12 @@
     "senses": [
       {
         "sense_id": "lepel#1",
-        "definition": "unknown",
+        "definition": "Een lepel is een eetgerei met een kleine kom aan een steel, waarmee je soep en andere zachte of vloeibare gerechten eet.",
         "pos": null,
-        "examples": [],
+        "examples": [
+          "Hij roerde de soep met een lepel.",
+          "Ze at de yoghurt met een kleine lepel."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -129030,22 +129061,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T18:50:20.769282"
+          },
+          {
+            "type": "is_a",
+            "target": "eetgerei",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-21T19:15:35.201689"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:50:18.637882",
-      "updated_at": "2026-11-21T18:50:20.769291",
+      "updated_at": "2026-11-21T19:16:11.965553",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:50:20.769291",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T19:15:35.113593",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:50:18.638214",
@@ -129054,6 +129093,10 @@
         {
           "timestamp": "2026-11-21T18:50:20.769291",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T19:15:35.113593",
+          "confidence": 1.0
         }
       ]
     },
@@ -129084,6 +129127,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:50:20.769288"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "lepel#1",
+        "old_value": "unknown",
+        "new_value": "Een lepel is een eetgerei met een kleine kom aan een steel, waarmee je soep en andere zachte of vloeibare gerechten eet.",
+        "timestamp": "2026-11-21T19:15:35.113591"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "lepel#1",
+        "relation": {
+          "type": "is_a",
+          "target": "eetgerei",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-21T19:15:35.201704"
       }
     ]
   },
