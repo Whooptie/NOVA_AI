@@ -15151,7 +15151,16 @@
         "examples": [
           "Een plant is ook een levend wezen."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "organisme",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:36:56.329356"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -15160,16 +15169,20 @@
     ],
     "metadata": {
       "created_at": "2026-06-29T17:37:48.295379",
-      "updated_at": "2026-06-29T17:37:48.296467",
+      "updated_at": "2026-11-21T18:36:56.329365",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-06-29T17:37:48.296467",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T18:36:56.329365",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-06-29T17:37:48.296467",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T18:36:56.329365",
+          "confidence": 1.0
         }
       ]
     },
@@ -15189,6 +15202,17 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-06-29T17:37:48.296467"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "levend wezen#1",
+        "relation": {
+          "type": "is_a",
+          "target": "organisme",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:36:56.329363"
       }
     ]
   },
@@ -19400,7 +19424,33 @@
           "De aarde en de maan zijn beide een hemellichaam.",
           "'s Nachts waren er veel hemellichamen zichtbaar aan de sterrenhemel."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "voorwerp",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:32:53.845079",
+            "oorspronkelijke_bron": "wikipedia"
+          },
+          {
+            "type": "is_a",
+            "target": "structuur",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "rejected",
+            "created_at": "2026-11-21T18:32:59.267439"
+          },
+          {
+            "type": "is_a",
+            "target": "geheel",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "rejected",
+            "created_at": "2026-11-21T18:33:05.795242"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -19409,15 +19459,27 @@
     ],
     "metadata": {
       "created_at": "2026-07-05T00:00:00.000000",
-      "updated_at": "2026-07-05T00:00:00.000000",
+      "updated_at": "2026-11-21T18:33:05.879503",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-07-05T00:00:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T18:33:05.795258",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-07-05T00:00:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:32:53.845090",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:32:59.267453",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:33:05.795258",
           "confidence": 1.0
         }
       ]
@@ -19438,6 +19500,78 @@
         "old_value": null,
         "new_value": "Een hemellichaam is een natuurlijk object in de ruimte, zoals een planeet, ster of maan.",
         "timestamp": "2026-07-05T00:00:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "hemellichaam#1",
+        "relation": {
+          "type": "is_a",
+          "target": "voorwerp",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-11-21T18:32:53.845087"
+      },
+      {
+        "event_type": "relation_confirmed",
+        "source": "user",
+        "sense_id": "hemellichaam#1",
+        "relation": {
+          "type": "is_a",
+          "target": "voorwerp"
+        },
+        "old_value": "unverified",
+        "new_value": "confirmed",
+        "old_confidence": 0.8,
+        "timestamp": "2026-11-21T18:32:53.931796"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "hemellichaam#1",
+        "relation": {
+          "type": "is_a",
+          "target": "structuur",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-11-21T18:32:59.267449"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "hemellichaam#1",
+        "relation": {
+          "type": "is_a",
+          "target": "structuur"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "voorstel uit Wikipedia afgewezen",
+        "timestamp": "2026-11-21T18:32:59.355426"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "hemellichaam#1",
+        "relation": {
+          "type": "is_a",
+          "target": "geheel",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-11-21T18:33:05.795253"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "hemellichaam#1",
+        "relation": {
+          "type": "is_a",
+          "target": "geheel"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "voorstel uit Wikipedia afgewezen",
+        "timestamp": "2026-11-21T18:33:05.879514"
       }
     ]
   },
@@ -40453,7 +40587,16 @@
           "Een berg is een landvorm.",
           "Rivieren veranderen de landvormen in een gebied."
         ],
-        "relations": [],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "aardoppervlak",
+            "confidence": 0.8,
+            "source": "wikipedia",
+            "status": "rejected",
+            "created_at": "2026-11-21T18:34:32.413454"
+          }
+        ],
         "source": "user",
         "confidence": 1.0,
         "audit_log": [],
@@ -40462,15 +40605,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-14T18:30:00.000000",
-      "updated_at": "2026-10-14T18:30:00.000000",
+      "updated_at": "2026-11-21T18:34:32.499344",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-14T18:30:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-21T18:34:32.413465",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-14T18:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:34:32.413465",
           "confidence": 1.0
         }
       ]
@@ -40491,6 +40638,30 @@
         "old_value": null,
         "new_value": "Een landvorm is een natuurlijke vorm van het aardoppervlak, zoals een berg, vallei of eiland.",
         "timestamp": "2026-10-14T18:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "wikipedia",
+        "sense_id": "landvorm#1",
+        "relation": {
+          "type": "is_a",
+          "target": "aardoppervlak",
+          "confidence": 0.8
+        },
+        "timestamp": "2026-11-21T18:34:32.413461"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "landvorm#1",
+        "relation": {
+          "type": "is_a",
+          "target": "aardoppervlak"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "voorstel uit Wikipedia afgewezen",
+        "timestamp": "2026-11-21T18:34:32.499354"
       }
     ]
   },
@@ -40997,6 +41168,22 @@
             "source": "embedding",
             "status": "rejected",
             "created_at": "2026-10-20T17:51:58.835203"
+          },
+          {
+            "type": "is_a",
+            "target": "voorwerp",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:33:29.256279"
+          },
+          {
+            "type": "used_for",
+            "target": "versieren",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:33:49.500331"
           }
         ],
         "source": "user",
@@ -41007,12 +41194,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T12:00:00.000000",
-      "updated_at": "2026-10-20T17:51:58.874047",
+      "updated_at": "2026-11-21T18:33:49.500342",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-20T17:51:58.835214",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T18:33:49.500342",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T12:00:00.000000",
@@ -41020,6 +41207,14 @@
         },
         {
           "timestamp": "2026-10-20T17:51:58.835214",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:33:29.256294",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:33:49.500342",
           "confidence": 1.0
         }
       ]
@@ -41064,6 +41259,28 @@
         "new_value": "rejected",
         "reason": "gelijkenis-voorstel (embedding) afgewezen",
         "timestamp": "2026-10-20T17:51:58.874055"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "sieraad#1",
+        "relation": {
+          "type": "is_a",
+          "target": "voorwerp",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:33:29.256291"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "sieraad#1",
+        "relation": {
+          "type": "used_for",
+          "target": "versieren",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:33:49.500339"
       }
     ]
   },
@@ -104095,6 +104312,14 @@
             "status": "confirmed",
             "created_at": "2026-10-31T19:50:13.309650",
             "oorspronkelijke_bron": "embedding"
+          },
+          {
+            "type": "is_a",
+            "target": "landvorm",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:35:16.573212"
           }
         ],
         "source": "user",
@@ -104105,12 +104330,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-31T19:50:13.384366",
+      "updated_at": "2026-11-21T18:35:16.573222",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-31T19:50:13.309665",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T18:35:16.573222",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
@@ -104118,6 +104343,10 @@
         },
         {
           "timestamp": "2026-10-31T19:50:13.309665",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:35:16.573222",
           "confidence": 1.0
         }
       ]
@@ -104162,6 +104391,17 @@
         "new_value": "confirmed",
         "old_confidence": 0.6,
         "timestamp": "2026-10-31T19:50:13.384375"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "duin#1",
+        "relation": {
+          "type": "is_a",
+          "target": "landvorm",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:35:16.573220"
       }
     ]
   },
@@ -104191,6 +104431,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "landvorm",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:35:00.129439"
           }
         ],
         "source": "user",
@@ -104201,15 +104449,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-21T18:35:00.129454",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T18:35:00.129454",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:35:00.129454",
           "confidence": 1.0
         }
       ]
@@ -104230,6 +104482,17 @@
         "old_value": null,
         "new_value": "Een eiland is een stuk land dat helemaal door water omgeven is.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "eiland#1",
+        "relation": {
+          "type": "is_a",
+          "target": "landvorm",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:35:00.129450"
       }
     ]
   },
@@ -104267,6 +104530,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "landvorm",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:34:40.481677"
           }
         ],
         "source": "user",
@@ -104277,15 +104548,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-21T18:34:40.481688",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T18:34:40.481688",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:34:40.481688",
           "confidence": 1.0
         }
       ]
@@ -104306,6 +104581,17 @@
         "old_value": null,
         "new_value": "Een heuvel is een lage, ronde verhoging in het landschap.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "heuvel#1",
+        "relation": {
+          "type": "is_a",
+          "target": "landvorm",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:34:40.481684"
       }
     ]
   },
@@ -104411,6 +104697,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "landvorm",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:34:49.785231"
           }
         ],
         "source": "user",
@@ -104421,15 +104715,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-21T18:34:49.785241",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T18:34:49.785241",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:34:49.785241",
           "confidence": 1.0
         }
       ]
@@ -104450,6 +104748,17 @@
         "old_value": null,
         "new_value": "Een vallei is een dal.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vallei#1",
+        "relation": {
+          "type": "is_a",
+          "target": "landvorm",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:34:49.785238"
       }
     ]
   },
@@ -104479,6 +104788,14 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-10-24T21:30:00.000000"
+          },
+          {
+            "type": "is_a",
+            "target": "landvorm",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:35:25.594533"
           }
         ],
         "source": "user",
@@ -104489,15 +104806,19 @@
     ],
     "metadata": {
       "created_at": "2026-10-24T21:30:00.000000",
-      "updated_at": "2026-10-24T21:30:00.000000",
+      "updated_at": "2026-11-21T18:35:25.594549",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-24T21:30:00.000000",
-      "usage_count": 1,
+      "last_used_at": "2026-11-21T18:35:25.594549",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-24T21:30:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T18:35:25.594549",
           "confidence": 1.0
         }
       ]
@@ -104518,6 +104839,17 @@
         "old_value": null,
         "new_value": "Een grot is een holle ruimte in een berg of rots.",
         "timestamp": "2026-10-24T21:30:00.000000"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "grot#1",
+        "relation": {
+          "type": "is_a",
+          "target": "landvorm",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:35:25.594545"
       }
     ]
   },
@@ -122135,6 +122467,22 @@
             "source": "user",
             "status": "rejected",
             "created_at": "2026-11-03T11:40:16.672884"
+          },
+          {
+            "type": "is_a",
+            "target": "gebouw",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:37:20.972829"
+          },
+          {
+            "type": "used_for",
+            "target": "schepen waarschuwen",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T18:37:35.255769"
           }
         ],
         "source": "auto",
@@ -122145,12 +122493,12 @@
     ],
     "metadata": {
       "created_at": "2026-11-03T11:38:41.500128",
-      "updated_at": "2026-11-03T12:01:06.100902",
+      "updated_at": "2026-11-21T18:37:35.255779",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-03T11:40:16.672895",
-      "usage_count": 2,
+      "last_used_at": "2026-11-21T18:37:35.255779",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-11-03T11:38:41.501013",
@@ -122158,6 +122506,14 @@
         },
         {
           "timestamp": "2026-11-03T11:40:16.672895",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T18:37:20.972839",
+          "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-21T18:37:35.255779",
           "confidence": 0.1
         }
       ]
@@ -122202,6 +122558,28 @@
         "new_value": "rejected",
         "reason": "testje",
         "timestamp": "2026-11-03T12:01:06.100912"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vuurtoren#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gebouw",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:37:20.972836"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "vuurtoren#1",
+        "relation": {
+          "type": "used_for",
+          "target": "schepen waarschuwen",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T18:37:35.255776"
       }
     ]
   },
@@ -127462,6 +127840,246 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-19T19:12:09.239097"
+      }
+    ]
+  },
+  "voorwerp": {
+    "senses": [
+      {
+        "sense_id": "voorwerp#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-21T18:33:26.236517",
+      "updated_at": "2026-11-21T18:33:26.237432",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-21T18:33:26.237432",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-21T18:33:26.237432",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "voorwerp"
+        },
+        "timestamp": "2026-11-21T18:33:26.236524"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "voorwerp#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-21T18:33:26.237429"
+      }
+    ]
+  },
+  "versieren": {
+    "senses": [
+      {
+        "sense_id": "versieren#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-21T18:33:44.334951",
+      "updated_at": "2026-11-21T18:33:44.335774",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-21T18:33:44.335774",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-21T18:33:44.335774",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "versieren"
+        },
+        "timestamp": "2026-11-21T18:33:44.334957"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "versieren#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-21T18:33:44.335772"
+      }
+    ]
+  },
+  "vorm van het aardoppervlak": {
+    "senses": [
+      {
+        "sense_id": "vorm van het aardoppervlak#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-21T18:35:32.358676",
+      "updated_at": "2026-11-21T18:35:32.359607",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-21T18:35:32.359607",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-21T18:35:32.359607",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "vorm van het aardoppervlak"
+        },
+        "timestamp": "2026-11-21T18:35:32.358682"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "vorm van het aardoppervlak#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-21T18:35:32.359605"
+      }
+    ]
+  },
+  "organisme": {
+    "senses": [
+      {
+        "sense_id": "organisme#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-21T18:36:53.643011",
+      "updated_at": "2026-11-21T18:36:53.643321",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-21T18:36:53.643321",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-21T18:36:53.643321",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "organisme"
+        },
+        "timestamp": "2026-11-21T18:36:53.643019"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "organisme#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-21T18:36:53.643319"
+      }
+    ]
+  },
+  "schepen waarschuwen": {
+    "senses": [
+      {
+        "sense_id": "schepen waarschuwen#1",
+        "definition": "unknown",
+        "pos": null,
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-21T18:37:31.645454",
+      "updated_at": "2026-11-21T18:37:31.645785",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-21T18:37:31.645785",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-21T18:37:31.645785",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "schepen waarschuwen"
+        },
+        "timestamp": "2026-11-21T18:37:31.645461"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "schepen waarschuwen#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-21T18:37:31.645782"
       }
     ]
   }

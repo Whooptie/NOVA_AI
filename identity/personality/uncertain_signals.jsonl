@@ -2087,3 +2087,25 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-21T10:47:30.536766"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-21T10:57:15.161038"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-21T16:01:53.008432"}
+{"text": "extraheer sieraad", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:32:10.374482"}
+{"text": "extraheer hemellichaam", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:32:19.756182"}
+{"text": "neem 1 over", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-11-21T19:32:53.835447"}
+{"text": "laat 2 vallen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0545, "bron": "model_fallback", "tijdstip": "2026-11-21T19:32:59.258906"}
+{"text": "laat 3 vallen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0545, "bron": "model_fallback", "tijdstip": "2026-11-21T19:33:05.785692"}
+{"text": "een sieraad is een voorwerp", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:33:26.221925"}
+{"text": "een ring is een sieraad", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:33:35.697230"}
+{"text": "een sieraad wordt gebruikt voor versieren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-21T19:33:44.325922"}
+{"text": "extraheer landvorm", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:34:09.801588"}
+{"text": "laat 1 vallen", "signaal": "kilte", "model_signaal": "kilte", "marge": 0.0545, "bron": "model_fallback", "tijdstip": "2026-11-21T19:34:32.405080"}
+{"text": "een heuvel is een landvorm", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:34:38.209506"}
+{"text": "een vallei is een landvorm", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:34:47.374498"}
+{"text": "een eiland is een landvorm", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:34:57.205345"}
+{"text": "een duin is een landvorm", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:35:13.989442"}
+{"text": "een grot is een landvorm", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:35:22.728427"}
+{"text": "een landvorm is een vorm van het aardoppervlak", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0271, "bron": "model_fallback", "tijdstip": "2026-11-21T19:35:32.349767"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:35:50.526475"}
+{"text": "extraheer levend wezen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:36:21.398037"}
+{"text": "een levend wezen is een organisme", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:36:53.633707"}
+{"text": "extraheer vuurtoren", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-21T19:37:09.241460"}
+{"text": "een vuurtoren is een gebouw", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0443, "bron": "model_fallback", "tijdstip": "2026-11-21T19:37:18.219013"}
+{"text": "een vuurtoren wordt gebruikt voor schepen waarschuwen", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0389, "bron": "model_fallback", "tijdstip": "2026-11-21T19:37:31.636304"}
