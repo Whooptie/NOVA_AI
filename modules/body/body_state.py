@@ -55,6 +55,10 @@ EUFEEM = {
     "benen": ("mijn benen", "mijn benen"),
 }
 
+# Zones die wel meetellen in de toestand, maar geen seksuele opbouw krijgen:
+# geen maagd-flip, geen voorkeur, nauwelijks ervaring.
+RUSTIG = {"benen"}
+
 def _laad_json(pad, default):
     try:
         with open(pad, "r", encoding="utf-8") as f:
@@ -75,7 +79,7 @@ class BodyState:
         self.persistent = _laad_json(STATE_PAD, {"maagd": {}, "voorkeur": {}})
 
         zones = ["tepel_links", "tepel_rechts", "borst_links", "borst_rechts",
-                 "vulva", "clitoris", "vagina", "anus_rand", "rectum"]
+                 "vulva", "clitoris", "vagina", "anus_rand", "rectum", "benen"]
         for z in zones:
             self.persistent["maagd"].setdefault(z, True)
             self.persistent.setdefault("nat", {}).setdefault(z, 0.0)
@@ -136,7 +140,7 @@ class BodyState:
         for z in self.persistent.get("gewend", {}):
             self.persistent["gewend"][z] = max(0.0, self.persistent["gewend"][z] - minuten * 0.25)
         self.persistent["bravoure_boost"] = max(
-            0.0, self.persistent.get("bravoure_boost", 0.0) - minuten * 0.10
+            0.0, self.persistent.get("bravoure_boost", 0.0) - minuten * 0.20
         )
         # ervaring zakt heel traag: ~0,06 per dag zonder iets (0,06/1440)
         for z in self.persistent.get("ervaring", {}):
@@ -302,7 +306,7 @@ class BodyState:
         factor = max(0.10, min(0.45, 0.40 - (comfort - 0.30) * 0.5))
         if zone in ("clitoris", "vagina", "rectum"):
             factor += 0.10
-        if maagd:
+        if maagd and zone not in RUSTIG:
             factor += 0.15 * (1.0 - ervaring)
         if any(w in tekst for w in ("vagina", "clitoris", "anus")):
             factor += 0.10
@@ -364,18 +368,19 @@ class BodyState:
 
         if klasse == "glijdt":
             self.persistent["voorkeur"][zone] = min(1.0, voorkeur + 0.10)
-        elif klasse in ("eerste_keer", "ontmaagd") and type_ == "aanraking" and sterkte < 0.6:
+        elif (klasse in ("eerste_keer", "ontmaagd") and type_ == "aanraking"
+              and sterkte < 0.6 and zone not in RUSTIG):
             self.persistent["voorkeur"][zone] = min(1.0, voorkeur + 0.05)
 
         # --- maagd-vlag
         was_maagd = self.persistent["maagd"].get(zone, True)
         if zone in ("vagina", "rectum") and type_ == "penetratie":
             self.persistent["maagd"][zone] = False
-        elif zone not in ("vagina", "rectum") and type_ == "aanraking":
+        elif zone not in ("vagina", "rectum") and zone not in RUSTIG and type_ == "aanraking":
             self.persistent["maagd"][zone] = False
 
         # ervaring groeit met afnemend rendement; de eerste keer extra
-        groei = 0.04 * (1.0 - ervaring)
+        groei = (0.01 if zone in RUSTIG else 0.04) * (1.0 - ervaring)
         if was_maagd and zone in ("vagina", "rectum") and type_ == "penetratie":
             groei += 0.10
         self.persistent["ervaring"][zone] = min(1.0, ervaring + groei)
