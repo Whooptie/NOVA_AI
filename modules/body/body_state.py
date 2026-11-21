@@ -20,8 +20,10 @@ STATE_PAD = DATA_DIR / "body_persistent.json"  # maagd + voorkeur, blijft over r
 ZONE_WOORDEN = {
     "clitoris": ["clit", "clitoris"],
     "anus_rand": ["anus", "kontgat", "gatje", "achteraan"],
+    "rectum": ["rectum"],
     "vulva": ["vulva", "schaam"],
-    "tepel_links": ["tepel"],
+    "tepel_rechts": ["rechtertepel", "tepel rechts"],
+    "tepel_links": ["linkertepel", "tepel links", "tepel"],
     "vagina": ["vagina"],
 }
 
@@ -46,6 +48,8 @@ EUFEEM = {
     "vulva": ("daar", "mijn schaamlippen"),
     "tepel_links": ("die", "mijn tepel"),
     "tepel_rechts": ("die", "mijn tepel"),
+    "borst_links": ("die", "mijn borst"),
+    "borst_rechts": ("die", "mijn borst"),
 }
 
 def _laad_json(pad, default):
@@ -101,6 +105,15 @@ class BodyState:
     def _opslaan(self, data=None, event_type=None):
         _schrijf_json(STATE_PAD, self.persistent)
 
+    def huidige_bloos(self) -> float:
+        return float(self.persistent.get("bloos", 0.0))
+
+    def verhoog_bloos(self, factor: float) -> float:
+        huidig = self.huidige_bloos()
+        self.persistent["bloos"] = min(1.0, huidig + (1.0 - huidig) * factor)
+        self._opslaan()
+        return self.persistent["bloos"]
+
     def _decay(self):
         """Tijdgebaseerd verval. Geeft de verstreken minuten terug."""
         nu = time.time()
@@ -122,9 +135,9 @@ class BodyState:
         self.persistent["bravoure_boost"] = max(
             0.0, self.persistent.get("bravoure_boost", 0.0) - minuten * 0.10
         )
-        # ervaring zakt heel traag: ~0,06 per dag zonder iets
+        # ervaring zakt heel traag: ~0,06 per dag zonder iets (0,06/1440)
         for z in self.persistent.get("ervaring", {}):
-            self.persistent["ervaring"][z] = max(0.0, self.persistent["ervaring"][z] - minuten * 0.001)
+            self.persistent["ervaring"][z] = max(0.0, self.persistent["ervaring"][z] - minuten * 0.00004)
         return minuten
 
     def _zone_uit_tekst(self, tekst, data):
@@ -159,8 +172,9 @@ class BodyState:
         return keuzes[0]
 
     def _zin(self, klasse, zone, bloos=0.0, drempel=0.85):
-        # extreem verlegen: geen opbouw, alleen een fragment
-        if bloos > drempel:
+        # extreem verlegen: geen opbouw, alleen een fragment.
+        # Pijn is objectief en wint altijd van verlegenheid.
+        if bloos > drempel and klasse not in ("pijn", "te_strak"):
             return self._fragment(zone)
 
         verhuld, klinisch = EUFEEM.get(zone, ("daar", zone.replace("_", " ")))
@@ -246,10 +260,12 @@ class BodyState:
         # herstelzin: alleen na een echte stilte, niet meteen na de vorige beurt
         # herstelzin hangt aan de meest geoefende zone, niet aan één zone
         ervaring_max = max(self.persistent.get("ervaring", {}).values() or [0.0])
+        herstel = False
         if minuten >= 8 and bloos_vorig > 0.6 + ervaring_max * 0.15 and self.persistent.get("bloos", 0.0) < 0.3:
             self.event_bus.publish("layer4_response", {"text": "Zo. Klaar met gênant doen."})
             self.persistent["gewend"] = {}
             self.persistent["bravoure_boost"] = 0.8
+            herstel = True
 
         tekst = data.get("text", "").lower()
         zone = self._zone_uit_tekst(tekst, data)
@@ -275,13 +291,19 @@ class BodyState:
         # --- verlegenheid: stijgt bij intimiteit, extra bij eerste keer en klinische woorden
         # asymptotisch: elke prikkel duwt een deel van de resterende
         # afstand weg, zodat ze niet na twee aanrakingen vastzit op 1.0
-        factor = 0.40
+        # lage comfortwaarde = intiemer = sneller verlegen
+        factor = max(0.10, min(0.45, 0.40 - (comfort - 0.30) * 0.5))
         if zone in ("clitoris", "vagina", "rectum"):
             factor += 0.10
         if maagd:
             factor += 0.15 * (1.0 - ervaring)
         if any(w in tekst for w in ("vagina", "clitoris", "anus")):
             factor += 0.10
+        # net hersteld: deze beurt maar een derde stijging, anders spreekt
+        # de herstelzin zichzelf meteen tegen
+        if herstel:
+            factor *= 0.35
+
         # gewenning: de eerste keer op een zone telt vol, daarna steeds minder
         gewend = self.persistent["gewend"].get(zone, 0.0)
         factor *= 1.0 / (1.0 + gewend * 0.7)
@@ -292,6 +314,10 @@ class BodyState:
             1.0, self.persistent["bloos"] + (1.0 - self.persistent["bloos"]) * factor
         )
         bloos = self.persistent["bloos"]
+
+        # bij het overschrijden van de grens de emotie echt triggeren
+        if bloos_vorig <= 0.7 < bloos:
+            self.event_bus.publish("emotion_trigger", {"trigger": "verlegenheid"})
 
         # --- nat: per zone, tepel/clitoris/vulva en penetratie drijven het op
         if zone in ("tepel_links", "tepel_rechts", "clitoris", "vulva") or type_ == "penetratie":

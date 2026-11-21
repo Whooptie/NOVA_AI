@@ -186,6 +186,8 @@ def _bloos(event_bus):
     if body is None:
         return 0.0
     try:
+        if hasattr(body, "huidige_bloos"):
+            return body.huidige_bloos()
         return float(body.persistent.get("bloos", 0.0))
     except Exception:
         return 0.0
@@ -196,6 +198,9 @@ def _bloos_bump(event_bus, factor):
     if body is None:
         return
     try:
+        if hasattr(body, "verhoog_bloos"):
+            body.verhoog_bloos(factor)
+            return
         huidig = float(body.persistent.get("bloos", 0.0))
         body.persistent["bloos"] = min(1.0, huidig + (1.0 - huidig) * factor)
         body._opslaan()

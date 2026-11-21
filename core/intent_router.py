@@ -166,9 +166,16 @@ class IntentRouter:
         diepte = 0.8 if any(w in t for w in ["dieper", "harder", "diep"]) else 0.4
         rek = 0.7 if "harder" in t else 0.4
 
+        if any(w in t for w in ("harder", "hard")):
+            sterkte = 0.8
+        elif any(w in t for w in ("zachter", "zacht", "traag", "langzaam")):
+            sterkte = 0.25
+        else:
+            sterkte = 0.5
+
         self.event_bus.publish("intent_body", {
             "type": "penetratie" if penetratie else "aanraking",
-            "sterkte": 0.8 if "harder" in t else 0.5,
+            "sterkte": sterkte,
             "diepte": diepte,
             "rek": rek,
             "text": text,
