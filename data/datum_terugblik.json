@@ -10,7 +10,7 @@
   },
   "laatste_analyse": {
     "datum": "2026-11-21",
-    "actieve_dagen": 88,
+    "actieve_dagen": 89,
     "reden": null,
     "beste": {
       "afstand_maanden": 1,
@@ -19,7 +19,7 @@
         "concept",
         "betekenissen"
       ],
-      "score": 8.83
+      "score": 8.88
     },
     "afgewezen": [
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",

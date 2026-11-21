@@ -175,6 +175,13 @@
       "kanalen": ["druk", "warmte", "textuur"],
       "oorzaak_event": "gebaar.oren"
     },
+    "benen": {
+      "parent": null,
+      "gevoeligheid": 0.45,
+      "comfort": 0.7,
+      "kanalen": ["druk", "warmte", "textuur"],
+      "oorzaak_event": "gebaar.benen"
+    },
     "knieen": {
       "parent": "benen",
       "gevoeligheid": 0.4,

@@ -93,3 +93,13 @@ def test_geen_dubbele_zin(state):
     zinnen = [d["text"] for e, d in bus.events if e == "layer4_response"]
     for a, b in zip(zinnen, zinnen[1:]):
         assert a != b
+
+
+def test_fragmenten_herhalen_niet(state):
+    s, bus = state
+    for _ in range(10):
+        s.persistent["bloos"] = 0.95
+        s.on_body({"text": "clitoris", "type": "aanraking", "sterkte": 0.4})
+    zinnen = [d["text"] for e, d in bus.events if e == "layer4_response"]
+    for a, b in zip(zinnen, zinnen[1:]):
+        assert a != b

@@ -25,6 +25,7 @@ ZONE_WOORDEN = {
     "tepel_rechts": ["rechtertepel", "tepel rechts"],
     "tepel_links": ["linkertepel", "tepel links", "tepel"],
     "vagina": ["vagina"],
+    "benen": ["benen", "dijen", "bovenbeen", "bovenbenen"],
 }
 
 # Korte fragmenten als de verlegenheid boven 0.85 staat, per zone.
@@ -36,6 +37,7 @@ ZONE_FRAGMENT = {
     "vulva": ["Zacht.", "…daar.", "Wacht.", "Niet duwen."],
     "tepel_links": ["Niet knijpen.", "…zacht.", "Wacht.", "Nee."],
     "tepel_rechts": ["Niet knijpen.", "…zacht.", "Wacht.", "Nee."],
+    "benen": ["Wacht.", "…hoger.", "Niet zo hard.", "…daar."],
 }
 GENERIEK_FRAGMENT = ["…", "Hm.", "Kijk niet zo.", "…zeg jij het maar.", "Wacht even.", "Even.", "Awel…"]
 
@@ -50,6 +52,7 @@ EUFEEM = {
     "tepel_rechts": ("die", "mijn tepel"),
     "borst_links": ("die", "mijn borst"),
     "borst_rechts": ("die", "mijn borst"),
+    "benen": ("mijn benen", "mijn benen"),
 }
 
 def _laad_json(pad, default):
@@ -261,10 +264,14 @@ class BodyState:
         # herstelzin hangt aan de meest geoefende zone, niet aan één zone
         ervaring_max = max(self.persistent.get("ervaring", {}).values() or [0.0])
         herstel = False
-        if minuten >= 8 and bloos_vorig > 0.6 + ervaring_max * 0.15 and self.persistent.get("bloos", 0.0) < 0.3:
+        verval = minuten * 0.12  # zelfde tempo als in _decay
+        if minuten >= 8 and bloos_vorig > 0.6 + ervaring_max * 0.15 and bloos_vorig - verval < 0.3:
             self.event_bus.publish("layer4_response", {"text": "Zo. Klaar met gênant doen."})
-            self.persistent["gewend"] = {}
-            self.persistent["bravoure_boost"] = 0.8
+            # halveren, niet wissen: gewenning van andere zones blijft staan
+            for _z in self.persistent.get("gewend", {}):
+                self.persistent["gewend"][_z] *= 0.5
+            self.persistent["telling"] = {}
+            self.persistent["bravoure_boost"] = 0.4
             herstel = True
 
         tekst = data.get("text", "").lower()
@@ -377,13 +384,16 @@ class BodyState:
             klasse = "glijdt" if random.random() < 0.4 else klasse
 
         zin = self._zin(klasse, zone, bloos, 0.85 + ervaring * 0.08)
-        self._opslaan()
-        self.event_bus.publish("layer4_response", {"text": zin})
 
+        # derde aanraking op dezelfde zone: één keer een extra zin, maar
+        # in hetzelfde bericht in plaats van een tweede bubbel
         telling = self.persistent.setdefault("telling", {}).get(zone, 0) + 1
         self.persistent["telling"][zone] = telling
         if telling == 3 and self.persistent.get("pijn", {}).get(zone, 0) < 0.4:
-            self.event_bus.publish("layer4_response", {"text": "Nog eens… maar zacht."})
+            zin = zin.rstrip() + " Nog eens… maar zacht."
+
+        self._opslaan()
+        self.event_bus.publish("layer4_response", {"text": zin})
 
 def init_module(event_bus, sem=None):
     return BodyState(event_bus)

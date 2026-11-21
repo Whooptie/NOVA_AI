@@ -2083,3 +2083,5 @@
 {"text": "hoe zien je benen eruit?", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.003, "bron": "model_fallback", "tijdstip": "2026-11-21T10:26:18.351604"}
 {"text": "wrijf over tepel", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.0044, "bron": "model_fallback", "tijdstip": "2026-11-21T10:26:41.081761"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-21T10:27:34.245702"}
+{"text": "hoelaat is het?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0925, "bron": "model_fallback", "tijdstip": "2026-11-21T10:36:53.594178"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-21T10:47:30.536766"}
