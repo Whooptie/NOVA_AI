@@ -91,10 +91,10 @@
   "2026-11-21": {
    "antwoorden": 55.8,
    "concepten": 1345,
-   "data_mb": 8447.6,
-   "opstart_s": 4.1,
+   "data_mb": 8447.7,
+   "opstart_s": 4.2,
    "rooktest": 100.0,
-   "rss_mb": 786.5,
+   "rss_mb": 796.5,
    "taalbegrip": 97.9,
    "tests": 5272,
    "threads": 42,
