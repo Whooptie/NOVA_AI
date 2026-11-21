@@ -67,6 +67,7 @@ class ResponsePipeline:
         event_bus.subscribe("intent_greeting", self.on_greeting)
         event_bus.subscribe("intent_fallback", self.on_fallback)
         event_bus.subscribe("layer4_response", self.on_layer4_response)
+        event_bus.subscribe("emotion_trigger", self.on_emotion_trigger)
 
         # Sjablonen voor de generieke fallback ("ik snap dat niet").
         # Puur string-combinatie via random.choice(), geen generatie --
@@ -223,6 +224,14 @@ class ResponsePipeline:
         if not base:
             return
 
+        # af en toe een puberaal slotje als de stemming past
+        if self.emotion.state.get("current_mood") in ("annoyed", "excited"):
+            pub = self.emotion.rules.get("puberaal_expressions", {}).get(
+                "annoyed" if "annoy" in str(self.emotion.state.get("current_mood")) else "excited", []
+            )
+            if pub and random.random() < 0.25:
+                base += " " + random.choice(pub)
+
         # Geen vaste emotion-trigger hier (zoals "excitement" bij
         # greeting) — Layer 4-antwoorden zijn informatief van aard,
         # dus we laten Nova's HUIDIGE emotionele staat gewoon meespelen
@@ -236,6 +245,11 @@ class ResponsePipeline:
             "emotion_state": self.emotion.state,
             "response_style": self._get_response_style()
         })
+
+    def on_emotion_trigger(self, data, event_type=None):
+        trigger = (data or {}).get("trigger")
+        if trigger:
+            self._apply_emotion_trigger(trigger)
 
     # -------------------------
     # 2. Fallback

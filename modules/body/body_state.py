@@ -248,7 +248,7 @@ class BodyState:
         rij = bak.get(klasse, bak["ontmaagd"])
         laatste = getattr(self, "_laatste_zin", "")
         zin = ""
-        for _ in range(5):
+        for _ in range(12):
             zin = f"{random.choice(rij['opening'])} {random.choice(rij['midden'])}"
             slot = random.choice(rij["slot"])
             if slot:
@@ -366,6 +366,9 @@ class BodyState:
 
         self.persistent["pijn"][zone] = pijn_nieuw
 
+        if klasse == "pijn" and pijn_nieuw > 0.6:
+            self.event_bus.publish("emotion_trigger", {"trigger": "frustration"})
+
         if klasse == "glijdt":
             self.persistent["voorkeur"][zone] = min(1.0, voorkeur + 0.10)
         elif (klasse in ("eerste_keer", "ontmaagd") and type_ == "aanraking"
@@ -397,6 +400,7 @@ class BodyState:
         if telling == 3 and self.persistent.get("pijn", {}).get(zone, 0) < 0.4:
             zin = zin.rstrip() + " Nog eens… maar zacht."
 
+        self._laatste_zin = zin  # ook de uiteindelijke zin onthouden
         self._opslaan()
         self.event_bus.publish("layer4_response", {"text": zin})
 
