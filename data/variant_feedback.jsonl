@@ -702,3 +702,7 @@
 {"sjabloon_naam": "uiterlijk_benen_opening", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795253178.3603895, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "uiterlijk_benen_midden", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795253178.360793, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "uiterlijk_benen_slot", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1795253178.3611681, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "variant_tekst": "Hmm… al {duur} aan het {activiteit}.", "entity": "coding", "response_style": null, "moment": "2026-11-21T20:02:50.318441", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Serieus nog steeds?", "entity": "coding", "response_style": null, "moment": "2026-11-21T20:02:50.319332", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795287770.3189952, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795287770.3194597, "type": "sentiment_koppeling"}

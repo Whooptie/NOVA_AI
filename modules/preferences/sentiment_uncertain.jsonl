@@ -98,3 +98,4 @@
 {"text": "erin", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-19T19:58:43.538818"}
 {"text": "erin", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-19T20:11:45.850123"}
 {"text": "dieper", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-19T20:12:15.165332"}
+{"text": "een rugzak wordt gebruikt voor dragen", "categorie": "negatief", "marge": 0.0258, "grof_sentiment_regex": null, "tijdstip": "2026-11-21T20:02:53.339686"}

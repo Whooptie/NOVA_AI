@@ -1,6 +1,6 @@
 {
   "kennisdichtheid": 1792088050.865194,
-  "personality_drift": 1790792458.600563,
+  "personality_drift": 1795287760.781962,
   "trending_topic:weer": 1793386914.620338,
   "scherm_focus": 1789498308.476603,
   "trending_topic:gebeurd": 1789843351.832547,
@@ -9,9 +9,9 @@
   "_periodiek": {
     "personality_drift": {
       "label": "expressiveness",
-      "getal": 23,
-      "gezegd_op": 1790792458.600768,
-      "volgende_toegestaan": 1790859688.5405424
+      "getal": 30,
+      "gezegd_op": 1795287760.782329,
+      "volgende_toegestaan": 1795367634.2032037
     },
     "trending_topic": {
       "label": "gelijkenis",

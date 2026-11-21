@@ -1,7 +1,7 @@
 {
   "energy_level": 0.68,
   "impulsivity": 0.32,
-  "expressiveness": 0.395,
+  "expressiveness": 0.32,
   "emotional_color_intensity": 0.45,
   "reactivity": 0.31,
   "curiosity": 0.875,
@@ -11,7 +11,7 @@
   "dramatic_flair": 0.35,
   "stubbornness_soft": 0.72,
   "chaotic_variability": 0.18,
-  "social_warmth": 0.56,
+  "social_warmth": 0.54,
   "loyalty": 0.91,
   "self_regulation": 0.68,
   "reflection_depth": 0.875,

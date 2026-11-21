@@ -4180,3 +4180,8 @@ Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leef
 - Les: een zin met "X is een vorm van Y" maakt van "vorm van Y" één nieuw concept; die vraag met `nee` beantwoorden en de zin korter maken.
 - Stand na de push (21 nov, 19:38): concepten 1350; `is_a` 713, `used_for` 55, `causes` 52.
 - Opruiming (21 nov 2026, 19:48): `extraheer`, `leg`, `krijgt`, `stopt`, `gebeurt`, `spijkers` en `slaan` weerlegd met `weerleg concept:` (geen inkomende relaties, dus niets raakte los). `zaag` kreeg `is_a gereedschap`. Stand: concepten 1350, `is_a` 714, `used_for` 55, `causes` 52.
+
+## 21 nov 2026 — Punt 42: derde batch causes/used_for
+- 30 zinnen (16 used_for, 14 causes) met `ja` bevestigd; 29 opgeslagen, `naaimachine` bleef open omdat het `ja` ontbrak.
+- Stand (GitHub 21 nov, 19:56): concepten 1384, `used_for` 70, `causes` 66 (begin punt 42c op 16 nov: 22 en 24). Andere types ongewijzigd. Alle nieuwe relaties `confirmed`; geen rommelwoorden.
+- Opgemerkt: Nova vraagt zelf om de betekenis bij een dubbelzinnig doelwoord (`schimmel`: organisme of paard).
