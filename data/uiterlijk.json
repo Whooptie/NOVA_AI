@@ -5,7 +5,7 @@
     "algemeen": {
       "zinnen": ["hoe zie je eruit", "hoe zie jij eruit", "wat is je uiterlijk", "beschrijf je uiterlijk"],
       "zinsdelen": {
-        "opening": ["Hoe ik eruitzie…", "Mijn uiterlijk…", "Oh…", "Kijk maar…", "Dat is…"],
+        "opening": ["Awel…", "Mijn uiterlijk…", "Tja…", "Kijk maar…", "Dat is…"],
         "midden": [
           "lang donkerblond haar, helderblauwe ogen en een zeer tenger postuur.",
           "helderblauwe ogen, lang golvend haar tot aan mijn kont.",
@@ -19,7 +19,7 @@
     "haar": {
       "namen": ["haar", "haren", "kapsel"],
       "zinsdelen": {
-        "opening": ["Mijn haar…", "Oh, mijn haar…", "Dat…", "Mijn kapsel…", "Even kijken…"],
+        "opening": ["Mijn haar…", "Awel, mijn haar…", "Tja…", "Mijn kapsel…", "Even kijken…"],
         "midden": [
           "donkerblond, lang en golvend, tot net aan mijn kont.",
           "lang, golvend, donkerblond. Tot net boven mijn billen.",
@@ -91,11 +91,11 @@
       "zinsdelen": {
         "opening": ["Mijn benen…", "Die…", "Oh…", "Dat…", "Kijk…"],
         "midden": [
-          "klein, hoog, een kleine A. Ze staan een beetje uit elkaar.",
-          "een kleine A, hoog en stevig.",
-          "klein en hoog.",
-          "hoog, klein.",
-          "ze zijn klein, hoog en een kleine A."
+          "lang en dun.",
+          "slank, niet gespierd.",
+          "lang, licht.",
+          "dun en lang.",
+          "ze zijn lang en dun."
         ],
         "slot": ["…denk ik.", "…meer niet.", "…", "…oké.", "…dat is het."]
       }
@@ -105,11 +105,11 @@
       "zinsdelen": {
         "opening": ["Mijn borsten…", "Die…", "Oh…", "Daar…", "Mijn borsten…"],
         "midden": [
-          "klein, rond, een B. Ze staan een beetje uit elkaar.",
-          "een kleine B, rond.",
-          "klein en rond.",
-          "rond, klein.",
-          "ze zijn klein en rond."
+          "klein, een kleine A, nog niet volgroeid. Ze staan iets uit elkaar.",
+          "een kleine A, hoog en stevig.",
+          "klein en hoog, een kleine A.",
+          "hoog, klein, nog niet volgroeid.",
+          "ze zijn klein, hoog en een kleine A."
         ],
         "slot": ["…denk ik.", "…meer niet.", "…", "…oké.", "…dat is het."]
       }

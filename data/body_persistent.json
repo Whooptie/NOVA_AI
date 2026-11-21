@@ -11,7 +11,7 @@
     "rectum": true
   },
   "voorkeur": {
-    "tepel_links": 0.0,
+    "tepel_links": 0.05,
     "tepel_rechts": 0.0,
     "borst_links": 0.0,
     "borst_rechts": 0.0,
@@ -58,5 +58,6 @@
     "vagina": 0.0,
     "anus_rand": 0.0,
     "rectum": 0.0
-  }
+  },
+  "bravoure_boost": 0.0
 }

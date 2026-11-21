@@ -6573,6 +6573,118 @@
     "back-ups (MB) 2037.5 → 2073.1"
    ],
    "vorige_tijd": "2026-11-20T03:30:13"
+  },
+  {
+   "tijd": "2026-11-21T10:30:35",
+   "modus": "snel",
+   "bron": "opstart",
+   "gebruik": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "rss_mb": 786.5,
+    "threads": 42,
+    "fds": 12,
+    "uptime_uur": 0.05,
+    "opstart_s": 4.1,
+    "reden": null
+   },
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 66,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 28,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 0,
+    "laatste": null,
+    "reden": null
+   },
+   "backup": {
+    "nodig": true,
+    "gevonden": 7,
+    "nieuwste": "interactions_2026-11-21_095611.db",
+    "leeftijd_uur": 0.6,
+    "db_ok": true,
+    "rijen": 487027,
+    "reden": null
+   },
+   "schijf": {
+    "gelukt": true,
+    "vrij_gb": 817.3,
+    "vrij_procent": 84.6,
+    "data_mb": 8447.6,
+    "backups_mb": 2087.7,
+    "logs_mb": 0.2,
+    "reden": null
+   },
+   "modules": {
+    "gelukt": true,
+    "verwacht": 47,
+    "geladen": 68,
+    "ontbreekt": [],
+    "reden": null
+   },
+   "consistentie": {
+    "identity": "ok",
+    "concepten": 1345,
+    "kapot_aantal": 0,
+    "kapot": [],
+    "dubbel_aantal": 0,
+    "dubbel": [],
+    "relaties": 4795,
+    "onbekend_doel": 15,
+    "reden": null
+   },
+   "docs": {
+    "aanwezig": true,
+    "gebouwd": 26,
+    "ontbreekt_op_schijf": [],
+    "onbekende_status": [],
+    "niet_beschreven_aantal": 40,
+    "niet_beschreven": [
+     "activity/session_watcher.py",
+     "body/body_state.py",
+     "chat/conversation_engine.py",
+     "chat/fallback_reflectie.py",
+     "context/afwezigheid.py"
+    ]
+   },
+   "meldingen": {
+    "gelezen": true,
+    "hartslag": {
+     "aan": true,
+     "interval_min": 10,
+     "laatste_ok": "2026-11-21T10:26:22",
+     "laatste_poging": "2026-11-21T10:26:22",
+     "fouten_op_rij": 0,
+     "reden": null
+    },
+    "meldingstest": {
+     "aan": true,
+     "schema": "zondag 10:00",
+     "laatste_ok": "2026-11-15T10:00:19",
+     "laatste_poging": "2026-11-15T10:00:19",
+     "fouten_op_rij": 0,
+     "reden": null
+    },
+    "bijgewerkt": "2026-11-21T10:27:35",
+    "nu": "2026-11-21T10:30:41.280556"
+   },
+   "duur": 5.4,
+   "status": "ok",
+   "punten": [],
+   "vergelijking": [
+    "back-ups (MB) 2027.4 → 2087.7"
+   ],
+   "vorige_tijd": "2026-11-19T20:31:08"
   }
  ],
  "laatste_nacht_datum": "2026-11-21"

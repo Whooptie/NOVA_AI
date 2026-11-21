@@ -37,7 +37,7 @@ ZONE_FRAGMENT = {
     "tepel_links": ["Niet knijpen.", "…zacht.", "Wacht.", "Nee."],
     "tepel_rechts": ["Niet knijpen.", "…zacht.", "Wacht.", "Nee."],
 }
-GENERIEK_FRAGMENT = ["…", "Hm.", "Kijk niet zo.", "…zeg jij het maar.", "Wacht even.", "Even."]
+GENERIEK_FRAGMENT = ["…", "Hm.", "Kijk niet zo.", "…zeg jij het maar.", "Wacht even.", "Even.", "Awel…"]
 
 # (verhuld, klinisch) -- bij bloos > 0.5 gebruikt ze het verhulde
 EUFEEM = {
@@ -182,7 +182,7 @@ class BodyState:
 
         bak = {
             "eerste_keer": {
-                "opening": ["Wacht…", "Wacht wacht.", "Oh.", "Niet…", "Oké, wel…"],
+                "opening": ["Awel…", "Wacht wacht.", "Oh.", "Niet…", "Oké, wel…"],
                 "midden": ["dat is raar.", "dat ken ik niet.", "…dat is nieuw.", "niet zo snel.", "hm."],
                 "slot": ["…voorzichtig.", "…wacht.", "", "…"],
             },
@@ -192,7 +192,7 @@ class BodyState:
                 "slot": ["", "…niet te veel.", "…", "…meer mag."],
             },
             "pijn": {
-                "opening": ["Au.", "Stop even.", "Niet…", "Wacht.", "Te veel."],
+                "opening": ["Au.", "Stop even.", "Niet…", "Wacht.", "Te veel.", "Awel…"],
                 "midden": ["niet dieper.", "dat doet pijn.", "niet zo hard.", "traag.", "au au."],
                 "slot": ["…stop.", "…wacht.", "", "…niet duwen."],
             },

@@ -74,8 +74,8 @@ class ResponsePipeline:
         # chess_engine.py. De "je zei: '...'"-toevoeging blijft apart
         # bestaan (zie on_fallback()), dit varieert enkel de kernzin.
         self._sjablonen_fallback = [
-            "Tja… geen idee.",
-            "Hmm… dat ken ik niet.",
+            "Awel… geen idee.",
+            "Tja… dat ken ik niet.",
             "Wacht… daar kom ik niet uit.",
             "Oh… zoek het zelf op.",
             "Whatever. Geen idee.",

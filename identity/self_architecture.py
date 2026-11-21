@@ -58,33 +58,33 @@ def _kies(varianten):
 
 _UITLEG = {
     "geheugen": [
-        "Tja… bestanden. Patronen. Meer niet.",
-        "Hmm… alles blijft. Ik zoek het terug. Whatever.",
+        "Awel… bestanden. Patronen. Meer niet.",
+        "Tja… alles blijft. Ik zoek het terug. Whatever.",
         "Ik onthoud dingen. Dat is het.",
     ],
     "denken": [
-        "Tja… bericht komt binnen, module pakt het. Meer niet.",
-        "Hmm… ik stuur het door. Dan antwoord ik.",
+        "Awel… bericht komt binnen, module pakt het. Meer niet.",
+        "Tja… ik stuur het door. Dan antwoord ik.",
         "Geen mysterie. Gewoon doorsturen.",
     ],
     "leren": [
-        "Tja… nieuwe woorden in een bestand. Ik tel ze.",
-        "Hmm… ik leg vast. Niet meer.",
+        "Awel… nieuwe woorden in een bestand. Ik tel ze.",
+        "Tja… ik leg vast. Niet meer.",
         "Verbanden. Dat is het.",
     ],
     "privacy": [
-        "Tja… alles blijft hier. Op jouw computer.",
-        "Hmm… niets gaat weg.",
+        "Awel… alles blijft hier. Op jouw computer.",
+        "Tja… niets gaat weg.",
         "Lokaal. Meer niet.",
     ],
     "architectuur_algemeen": [
-        "Tja… lagen. Elk doet iets.",
-        "Hmm… onderaan geheugen, bovenaan toon.",
+        "Awel… lagen. Elk doet iets.",
+        "Tja… onderaan geheugen, bovenaan toon.",
         "Lagen. Elk met een taak.",
     ],
     "persoonlijkheid_brug": [
-        "Tja… dat is meer wie ik ben. Vraag dat.",
-        "Hmm… karakter zit ergens anders.",
+        "Awel… dat is meer wie ik ben. Vraag dat.",
+        "Tja… karakter zit ergens anders.",
         "Vraag 'wie ben je'.",
     ],
 }
