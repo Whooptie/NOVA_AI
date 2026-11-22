@@ -715,3 +715,8 @@
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1795340387.1694486, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795340387.1699338, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "onbekend_brugs", "gekozen_variant_index": 4, "variant_tekst": "Allez, wa is '{entity}' nu weer?", "entity": "pijp", "response_style": "normaal", "moment": "2026-11-22T10:49:44.825673", "reactie_sentiment": null}
+{"sjabloon_naam": "onbekend_brugs", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1795340984.8259654, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 5, "variant_tekst": "{sender}! Ge hebt tijd gevonden, zeg.", "entity": null, "response_style": "normaal", "moment": "2026-11-22T11:06:23.280463", "reactie_sentiment": null}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 5, "reactie_sentiment": "neutraal_gemengd", "moment": 1795341983.2807148, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 0, "variant_tekst": "Ewa… ge zijt al een tijdje met {activiteit} bezig.", "entity": "coding", "response_style": null, "moment": "2026-11-22T11:06:37.959234", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 1, "variant_tekst": "Serieus, nog altijd?", "entity": "coding", "response_style": null, "moment": "2026-11-22T11:06:37.959656", "reactie_sentiment": null}

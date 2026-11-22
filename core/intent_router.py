@@ -1594,9 +1594,19 @@ class IntentRouter:
         gebruiken.
         """
         from modules.response_learning.variant_kiezer import kies_variant
+        # Brugse stijl ("brugs aan"): eigen lijst en eigen leernaam ("thanks_brugs").
+        thanks_varianten, thanks_naam = self._THANKS_ANTWOORDEN, "thanks"
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is not None and getattr(brugs, "aan", False) is True:
+            try:
+                brugse = brugs.varianten("thanks")
+            except Exception:
+                brugse = None
+            if isinstance(brugse, list) and brugse:
+                thanks_varianten, thanks_naam = brugse, "thanks_brugs"
         tekst = kies_variant(
-            varianten=self._THANKS_ANTWOORDEN,
-            sjabloon_naam="thanks",
+            varianten=thanks_varianten,
+            sjabloon_naam=thanks_naam,
             event_bus=self.event_bus,
             variant_feedback_logger=self.event_bus.modules.get("variant_feedback_logger"),
         )

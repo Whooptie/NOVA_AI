@@ -1,6 +1,8 @@
 # tests/test_brugs_filter.py
 import random
 
+import pytest
+
 from modules.chat.brugs_filter import BrugsFilter
 
 
@@ -21,14 +23,14 @@ def test_standaard_uit_laat_tekst_ongemoeid():
 
 def test_woorden_worden_vervangen_met_hoofdletter_behoud():
     f = _filter()
-    assert f.pas_toe("Dat is niet waar.") == "Da is nie woar."
+    assert f.pas_toe("Dat is niet waar.") == "Da's nie woar."
     assert f.pas_toe("wat gaat dat snel") == "wa goat da rap"
 
 
 def test_hele_woorden_enkel():
     f = _filter()
-    # "jaar" bevat "ja", "natuurlijk" bevat "nu"-achtige delen: mogen niet geraakt worden
-    assert f.pas_toe("Het jaar is mooi.") == "Het jaar is schoon."
+    # "jasje" begint met "ja" en "dagelijks" bevat "dag"-achtige delen: mogen niet geraakt worden
+    assert f.pas_toe("Het jasje is mooi.") == "Het jasje is schoon."
 
 
 def test_citaten_en_plaatshouders_blijven_staan():
@@ -79,3 +81,33 @@ def test_modus_in_geheugen_aan_en_uit():
     assert f.aan is True
     f.zet_modus(False)
     assert f.aan is False
+
+# ---------------------------------------------------------------------------
+# Woordenboek: vaste voorbeelden + vangnet tegen slordige vervangingen
+# ---------------------------------------------------------------------------
+import json as _json
+
+from modules.chat.brugs_filter import REGELS_PAD
+
+
+@pytest.mark.parametrize("invoer,verwacht", [
+    ("Ik zie jou en jouw hond.", "Ik zie u en uw hond."),
+    ("Ik heb geen tijd, jullie wel.", "Ik heb gien tijd, gullie wel."),
+    ("Daar gaan we naartoe.", "Doar goan we naartoe."),
+    ("Ben je klaar? Het jaar is bijna om.", "Ben je kloar? Het joar is bijna om."),
+    ("We praten altijd over iets.", "We proaten altied over iet."),
+    ("Wat is dat? Dat is een kat.", "Wa's da? Da's een kat."),
+    ("Laat maar, we laten het.", "Loat moar, we loaten het."),
+])
+def test_woordenboek_voorbeelden(invoer, verwacht):
+    assert _filter().pas_toe(invoer) == verwacht
+
+
+def test_woordenboek_is_netjes():
+    woorden = _json.load(open(REGELS_PAD, encoding="utf-8"))["woorden"]
+    for sleutel, nieuw in woorden.items():
+        assert sleutel == sleutel.lower() and sleutel.strip() == sleutel
+        assert nieuw == nieuw.lower() and nieuw.strip() == nieuw and nieuw
+        assert sleutel != nieuw
+        # een vervanging mag zelf geen nieuwe sleutel zijn (anders hangt de uitkomst van de volgorde af)
+        assert nieuw not in woorden

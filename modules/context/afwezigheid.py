@@ -309,7 +309,16 @@ class AfwezigheidModule:
         if not lijst and duur_minuten < self.MIN_MINUTEN_VOOR_WELKOM:
             return None
 
-        delen = [random.choice(self._WELKOM_OPENINGEN)]
+        openingen = self._WELKOM_OPENINGEN
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is not None and getattr(brugs, "aan", False) is True:
+            try:
+                brugse = brugs.varianten("welkom_opening")
+            except Exception:
+                brugse = None
+            if isinstance(brugse, list) and brugse:
+                openingen = brugse
+        delen = [random.choice(openingen)]
 
         if duur_minuten >= self.MIN_MINUTEN_VOOR_WELKOM:
             delen.append(f"Je was {self._duur_tekst(duur_minuten)} weg.")

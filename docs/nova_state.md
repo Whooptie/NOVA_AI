@@ -1,6 +1,6 @@
 # 🧠 Nova — State of the Project
 
-> Laatste update: 17 november 2026
+> Laatste update: 22 november 2026
 > Doel van dit bestand: altijd als eerste uploaden in een nieuw Claude-gesprek zodat context volledig is.
 
 ---
@@ -79,6 +79,7 @@ NOVA_AI/
 │   │   ├── conversation_engine.py
 │   │   ├── fallback_reflectie.py
 │   │   ├── chat_response_engine.py
+│   │   ├── brugs_filter.py           # Brugse stijl (woordkleur + vaste zinnen), standaard UIT, 22 nov 2026
 │   │   └── expression_injector.py
 │   ├── chess/
 │   │   └── chess_engine.py
@@ -175,6 +176,8 @@ NOVA_AI/
 │   └── expression/
 │       ├── tone_engine.py
 │       ├── style_profiles.json
+│       ├── brugs_regels.json         # woordenboek Brugse woordkleur (22 nov 2026)
+│       ├── brugs_sjablonen.json      # Brugse varianten van vaste zinnen (22 nov 2026)
 │       └── gesture_profiles.json
 ├── data/
 │   ├── backups/                      # periodieke kopieën van interactions.db/.jsonl
@@ -184,6 +187,7 @@ NOVA_AI/
 │   ├── chess_stats.json
 │   ├── concepts.json
 │   ├── context_log.jsonl
+│   ├── brugs_modus.json              # stand van `brugs aan/uit` (niet committen)
 │   ├── contradiction_state.json
 │   ├── conversation_state.json
 │   ├── emergence_topic_cooldown_state.json
@@ -283,6 +287,7 @@ NOVA_AI/
 
 | Module | Status | Opmerkingen |
 | --- | --- | --- |
+| brugs_filter.py | ✅ Klaar en getest (nieuw, 22 november 2026) | `modules/chat/`. Brutale West-Vlaamse stijl: `pas_toe()` (woordkleur uit `brugs_regels.json`, af en toe opener/slotwoord), `varianten(naam)` en `onderdelen(naam)` (Brugse vaste zinnen uit `brugs_sjablonen.json`). Standaard UIT; `brugs aan/uit/status`, stand in `data/brugs_modus.json`. Aangesloten via `expression_injector._brugs()` en de `_brugs_of_gewoon()`-helpers. Details: sectie "🗣️ Brugse stijl". Tests: `test_brugs_filter.py`, `test_brugs_sjablonen.py`, `test_stemmingen.py`. |
 | time.py | ✅ Klaar | Zone-aware tijdsvraag |
 | zone.py | ✅ Klaar | Auto-timezone via IP, fallback naar OS |
 | calendar.py | ✅ Klaar (nieuw, 16 september 2026; datumrekenen 17 september; feestdag-koppeling 18 september 2026) | Dag/datum/maand/jaar/week + algemeen overzicht ("wat is het vandaag"). Zelfde patroon als time.py: gebruikt `zone.now_local()` indien beschikbaar, antwoordt via `layer4_response`. Eigen vaste `DAGNAMEN`/`MAANDNAMEN`-tabellen i.p.v. `locale.setlocale()`/`strftime` (de Nederlandse locale is in de Docker-container niet gegarandeerd). Gerichte vragen geven een kort, specifiek antwoord; enkel de algemene vraag geeft het volledige overzicht. `detect_calendar()` in `_build_intent_tabel_deel1()`, vóór `time`. **Datumrekenen** (date_calendar_roadmap.md Onderdeel 1): `dagen_tot()`/`dag_van_de_week()`/`datum_plus()` + eigen `_parse_datum()` voor "morgen"/"overmorgen"/"vandaag", weekdagnamen (eerstvolgende gelegenheid, nooit vandaag zelf, zoals weather.py), "over N dagen/weken", cijfernotatie (`15/08`, `15-08-2027`) en dag+maandnaam (`15 augustus`, met jaarsprong als die datum dit jaar al voorbij is; vandaag zelf telt niet als voorbij). Bewust GEEN hergebruik van weather.py's weekdaglogica (op uitdrukkelijk verzoek): de 7 weekdagnamen staan daardoor op meerdere ongekoppelde plekken (bekende, geaccepteerde duplicatie). **Feestdag-koppeling (Onderdeel 2):** `_parse_datum()` herkent feestdagnamen ("kerst", "pasen", ...) via een lazy import van `holidays.py`: optioneel (`None` als `holidays.py` ontbreekt) en circulair-import-veilig (beide importeren elkaars namen alleen binnen functies). De weekdag-detectie gebruikt een woordgrens (`\b`), anders matchte "maandag" binnen "pinkstermaandag" (regressietest `test_calendar_holidays_koppeling.py`). **Bekende, geaccepteerde beperking:** "dag (naam)" (bv. "dag Nova") wordt door de losse-woordherkenning als kalendervraag gelezen i.p.v. als groet (`detect_greeting()` deed al alleen een exacte-zin-match); Kevin gebruikt die groetvorm niet. |
@@ -1066,6 +1071,28 @@ Meet wat Nova echt doet met een vraag, los van de pytest-suite. pytest bewijst d
 **Stand na punt 72b en 72c (5 november 2026).** Functievragen en doelvragen, met leren. Vaste set (242 zinnen), `--met-antwoordlaag`, `concepts.json` na stap 2: totaal 147 (61%) naar 153 (63%), Router begreep 226/242 (93%) naar 233/242 (96%), taalgaten 16 naar 9, kennisgaten 79 naar 80, 0 onterechte antwoorden, T5 32/32. **Eerlijk: 7 cases werden groen (`t2-32`, `t2-64`, `t2-65`, `t2-77`, `t2-79`, `t4-45`, `t4-63`), 1 case viel om (`t4-50`).** `t4-50` ("Wat doet een hamer?" en dan "die ook?") slaagde eerst omdat Nova de voorvraag niet begreep en dus "waar heb je het over" zei; nu begrijpt ze de voorvraag en herhaalt ze de definitie van hamer. Dat is verdedigbaar maar geen verbetering. Niet opgelost, en niet oplosbaar zonder nieuwe kennis of een ander soort redeneren: `t2-80` (klok "meet" tijd; de definitie zegt "geeft de tijd aan"), `t2-63` ("een dier dat blaft" vraagt om zoeken op eigenschap) en `t4-39` (`tang` is geen concept). **Deze oplossing is op de zichtbare cases afgesteld; een nieuwe blinde set moet laten zien hoe breed ze werkt.**
 
 **Beperkingen:** `weather` blijft op alle niveaus event-only (het antwoord vraagt netwerk). `onb-01` (flurbo) gaat naar `intent_wiki` (Wikipedia, netwerk staat uit). Een score op niveau 1 zegt weinig: routing is het makkelijke deel. Een 100% betekent alleen dat de gekozen vragen kloppen: de ongeziene set en de willekeurige ketens zijn er om dat te blijven testen, en nieuwe vragen moeten er na elke ronde bijkomen.
+
+---
+
+## 🗣️ Brugse stijl — `brugs_filter.py` (nieuw, 22 november 2026)
+
+Nova kan brutaal en Brugs praten. **Standaard UIT**; `brugs aan` / `brugs uit` / `brugs status` (debug-commando's; de stand blijft bewaard in `data/brugs_modus.json`, niet committen). Karakter: brutale jongvolwassen Bruggeling, geen tiener en geen leeftijdsclaim (`identity.json` blijft "jongvolwassen"; `self_uiterlijk` niet aangeraakt).
+
+| Onderdeel | Bestand | Wat |
+| --- | --- | --- |
+| Filter + modus | `modules/chat/brugs_filter.py` | `pas_toe()` (woordkleur + af en toe opener/slotwoord), `varianten(naam)`, `onderdelen(naam)`, `zet_modus()`. Registreert zich als `event_bus.modules["brugs_filter"]`. Bij een fout: originele tekst. |
+| Woordenboek | `identity/expression/brugs_regels.json` | 41 hele-woord-vervangingen, openers, slotwoorden. |
+| Brugse zinnen | `identity/expression/brugs_sjablonen.json` | Brugse varianten per sjabloon; `_plaatshouders` beschrijft de invulplekken (tests bewaken dat). |
+| Woordkleur | `expression_injector._brugs()` | Eerste stap in `on_expression_inject`, vóór uitroep/gebaar/emoji. Aanhalingstekens, `code`, {plaatshouders} en URL's blijven onaangeroerd. |
+| Stemmingen | `tone_engine.py`, `style_profiles.json` | `kilte` -> "verveeld", `frustration` -> "gepikeerd" (600 s, bravoure >= 0.65). |
+
+**Nieuwe Brugse zinnenlijst toevoegen:** (1) lijst in `brugs_sjablonen.json` onder dezelfde naam als het origineel, zelfde plaatshouders, registreer in `_plaatshouders`; (2) aanroeper vraagt `brugs.varianten(naam)` als `getattr(brugs, "aan", False) is True` en geeft `naam + "_brugs"` door aan `kies_variant()`; (3) test in `tests/test_brugs_sjablonen.py`. Voorbeeld: `response_pipeline._brugs_of_gewoon()`.
+
+**Aangesloten:** response_engine (7 sjablonen), groet + fallback (response_pipeline), conversation_engine, wikipedia_teacher, bedankt (intent_router), welkom (afwezigheid), pauzemelding (session_watcher), fallback_reflectie.
+**Nog niet (enkel woordkleur):** weer, schaken, emergence-inzichten, body_state, profiel-match in session_watcher.
+**Bewust niet:** korte antwoorden als standaard (`response_style` "kort" = Kevin codeert).
+**Let op:** `emotion_engine.current_mood` verandert in de praktijk niet, dus stemmingen zijn afgeleid van `last_trigger`.
+**Tests:** `test_brugs_filter.py`, `test_brugs_sjablonen.py`, `test_stemmingen.py`.
 
 ---
 

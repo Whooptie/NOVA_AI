@@ -95,6 +95,22 @@ class BrugsFilter:
             return list(lijst)
         return None
 
+    def onderdelen(self, sjabloon_naam: str):
+        """
+        Voor sjablonen die uit losse delen bestaan (opening/midden/afsluiting):
+        een dict {"opening": [...], "midden": [...], "afsluiting": [...]}, of None
+        als de modus UIT staat of er geen (volledige) Brugse versie is.
+        """
+        if not self.aan:
+            return None
+        delen = self.sjablonen.get(sjabloon_naam)
+        if not isinstance(delen, dict) or not delen:
+            return None
+        for lijst in delen.values():
+            if not (isinstance(lijst, list) and lijst and all(isinstance(z, str) for z in lijst)):
+                return None
+        return {k: list(v) for k, v in delen.items()}
+
     def _laad_modus(self) -> bool:
         if not self.bewaar:
             return False

@@ -209,3 +209,4 @@
 {"tekst": "diep", "hoogste_gok": "chess_evaluation", "confidence": 0.1933, "tijdstip": "2026-11-19T20:12:09.238410"}
 {"tekst": "j", "hoogste_gok": "identity", "confidence": 0.2146, "tijdstip": "2026-11-21T20:02:50.284567"}
 {"tekst": "blablabla", "hoogste_gok": "math", "confidence": 0.1184, "tijdstip": "2026-11-22T10:39:47.135082"}
+{"tekst": "boe", "hoogste_gok": "chess", "confidence": 0.1857, "tijdstip": "2026-11-22T11:06:37.924103"}

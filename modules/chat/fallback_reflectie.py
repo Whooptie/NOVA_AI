@@ -211,9 +211,10 @@ class FallbackReflectie:
                 continue
 
             variant_logger = self.event_bus.modules.get("variant_feedback_logger")
+            gekozen_varianten, gekozen_naam = self._brugs_of_gewoon(varianten, sjabloon_naam)
             sjabloon = kies_variant(
-                varianten=varianten,
-                sjabloon_naam=sjabloon_naam,
+                varianten=gekozen_varianten,
+                sjabloon_naam=gekozen_naam,
                 event_bus=self.event_bus,
                 variant_feedback_logger=variant_logger,
             )
@@ -236,15 +237,29 @@ class FallbackReflectie:
         return None
 
     # ------------------------------------------------------------
+    def _brugs_of_gewoon(self, gewone_varianten, sjabloon_naam):
+        """Brugse varianten onder dezelfde sjabloon_naam als "brugs aan" staat, anders de gewone."""
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is not None and getattr(brugs, "aan", False) is True:
+            try:
+                brugse = brugs.varianten(sjabloon_naam)
+            except Exception:
+                brugse = None
+            if isinstance(brugse, list) and brugse:
+                return brugse, sjabloon_naam + "_brugs"
+        return gewone_varianten, sjabloon_naam
+
+    # ------------------------------------------------------------
     def _probeer_keyword_reflectie(self, tekst_klein: str) -> Optional[str]:
         woorden = {w.strip(".,!?;:") for w in tekst_klein.split()}
 
         for trefwoorden, sjabloon_naam, varianten in self._keyword_groepen:
             if woorden & trefwoorden:
                 variant_logger = self.event_bus.modules.get("variant_feedback_logger")
+                gekozen_varianten, gekozen_naam = self._brugs_of_gewoon(varianten, sjabloon_naam)
                 return kies_variant(
-                    varianten=varianten,
-                    sjabloon_naam=sjabloon_naam,
+                    varianten=gekozen_varianten,
+                    sjabloon_naam=gekozen_naam,
                     event_bus=self.event_bus,
                     variant_feedback_logger=variant_logger,
                 )

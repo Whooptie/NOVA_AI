@@ -42,7 +42,57 @@
     "wiki_keuze_slot": [],
     "wiki_niets_gevonden": [
       "word"
-    ]
+    ],
+    "interruption_vraag": [],
+    "interruption_ga_door": [],
+    "thanks": [],
+    "welkom_opening": [],
+    "reflectie_voel_me": [
+      "1"
+    ],
+    "reflectie_ben": [
+      "1"
+    ],
+    "reflectie_heb": [
+      "1"
+    ],
+    "reflectie_wil": [
+      "1"
+    ],
+    "reflectie_denk_dat": [
+      "1"
+    ],
+    "reflectie_vind": [
+      "1"
+    ],
+    "reflectie_had_moeten": [
+      "1",
+      "2"
+    ],
+    "reflectie_werk": [
+      "1"
+    ],
+    "reflectie_vind_haar": [
+      "1"
+    ],
+    "reflectie_kw_moe": [],
+    "reflectie_kw_druk": [],
+    "reflectie_kw_blij": [],
+    "reflectie_kw_boos": [],
+    "reflectie_kw_dank": [],
+    "reflectie_kw_frustratie_technisch": [],
+    "reflectie_kw_geduld": [],
+    "reflectie_kw_werk": [],
+    "reflectie_kw_alleen": [],
+    "reflectie_kw_zenuwen": [],
+    "reflectie_kw_leuk": [],
+    "reflectie_kw_lichaam": [],
+    "reflectie_kw_twijfel": [],
+    "pauze_melding": {
+      "midden": [
+        "minuten"
+      ]
+    }
   },
   "groet": [
     "Ewa {sender}, ge zijt der weer.",
@@ -146,5 +196,165 @@
     "Ik vond niks bruikbaars voor '{word}' op Wikipedia. Leer het me met: teach {word} <betekenis>",
     "Pff, '{word}' staat er nie echt op Wikipedia. Leer het me met: teach {word} <betekenis>",
     "Doar vind ik niks over '{word}'. Leer het me moar met: teach {word} <betekenis>"
-  ]
+  ],
+  "interruption_vraag": [
+    "Mag ik u storen?",
+    "Hebt ge efkes?",
+    "Stoor ik als ik nu iets zeg?",
+    "Ee, efkes een momentje?",
+    "Kan ik u efkes onderbreken?",
+    "Hebt ge een minuutje?",
+    "Is da een goed moment?",
+    "Zeg het moar als het nie past, moar hebt ge efkes?"
+  ],
+  "interruption_ga_door": [
+    "Lukt het? Kan ik helpen?",
+    "Hoe goat het ermee?",
+    "Alles onder controle?",
+    "Komt ge der goe uit?",
+    "Nog altijd lekker bezig?",
+    "Hoe staat het ervoor?",
+    "Alles naar wens?"
+  ],
+  "thanks": [
+    "Graag gedaan, zeg!",
+    "Geen probleem, ee.",
+    "Altijd, Kevin.",
+    "Graag gedaan. Zeg het moar als ge nog iets nodig hebt.",
+    "Met plezier!"
+  ],
+  "welkom_opening": [
+    "Ewa, ge zijt der weer!",
+    "Allez, zie ge u hier weer!",
+    "Seg, ge zijt terug, zeg!"
+  ],
+  "reflectie_voel_me": [
+    "Ewa… sinds wanneer voelt ge u {1}?",
+    "Wacht… wa maakt da ge u {1} voelt?",
+    "Hmm… hoe komt het da ge u {1} voelt?",
+    "Ewa… voelt ge u vaker {1}?"
+  ],
+  "reflectie_ben": [
+    "Ewa… sinds wanneer zijt ge {1}?",
+    "Wacht… wa maakt da ge {1} zijt?",
+    "Hmm… hoe komt het da ge {1} zijt?"
+  ],
+  "reflectie_heb": [
+    "Ewa… sinds wanneer hebt ge {1}?",
+    "Wacht… hoe komt da, da ge {1} hebt?",
+    "Hmm… hoe voelt het om {1} te hebben?"
+  ],
+  "reflectie_wil": [
+    "Ewa… wa zou het betekenen als ge {1}?",
+    "Wacht… wa houdt u tegen om {1}?",
+    "Hmm… hoe belangrijk is het om {1}?"
+  ],
+  "reflectie_denk_dat": [
+    "Ewa… wa maakt da ge denkt da {1}?",
+    "Wacht… hoe zeker zijt ge da {1}?",
+    "Hmm… woar komt da vandaan, da {1}?"
+  ],
+  "reflectie_vind": [
+    "Ewa… wa maakt da ge {1} vindt?",
+    "Wacht… hoe komt ge doarbij, da {1}?",
+    "Hmm… vindt ge da altijd al, da {1}?"
+  ],
+  "reflectie_had_moeten": [
+    "Ewa… wa maakt da ge denkt da ge {1} had moeten {2}?",
+    "Wacht… woarom twijfelt ge of ge {1} had moeten {2}?",
+    "Hmm… hoe had ge het liever anders gedaan?"
+  ],
+  "reflectie_werk": [
+    "Ewa… ge werkt {1}… hoe komt da?",
+    "Wacht… {1}… te veel?",
+    "Hmm… wa maakt da ge {1} werkt?"
+  ],
+  "reflectie_vind_haar": [
+    "Ewa… ge vindt heur {1}?",
+    "Wacht… {1}… hoe lang al?",
+    "Hmm… wa maakt da ge heur {1} vindt?"
+  ],
+  "reflectie_kw_moe": [
+    "Ewa… ge klinkt moe. Wilt ge er iets over zeggen?",
+    "Hmm… al lang zo moe?",
+    "Tja… moe. Wa dan?"
+  ],
+  "reflectie_kw_druk": [
+    "Ewa… klinkt druk. Wa is er?",
+    "Wacht… wa maakt het nu zo druk?"
+  ],
+  "reflectie_kw_blij": [
+    "Ewa… schoon. Wa maakt u blij?",
+    "Hmm… wa is er gebeurd?"
+  ],
+  "reflectie_kw_boos": [
+    "Ewa… da klinkt nie plezant. Wa is er gebeurd?",
+    "Wacht… woar zit het in?"
+  ],
+  "reflectie_kw_dank": [
+    "Graag gedaan, zeg…",
+    "Ewa… geen probleem.",
+    "Hmm… altijd."
+  ],
+  "reflectie_kw_frustratie_technisch": [
+    "Ewa… vervelend. Wa loopt er mis?",
+    "Wacht… wa werkt er nie?"
+  ],
+  "reflectie_kw_geduld": [
+    "Ewa… uw geduld… wa speelt er?",
+    "Hmm… wa test het zo?"
+  ],
+  "reflectie_kw_werk": [
+    "Ewa… te veel werk? Wa speelt er?",
+    "Wacht… geen tijd… hoe komt da?",
+    "Hmm… achter… wa houdt u tegen?"
+  ],
+  "reflectie_kw_alleen": [
+    "Ewa… alleen… wilt ge er iets over zeggen?",
+    "Wacht… niemand… hoe komt da?",
+    "Hmm… ge mist iemand?"
+  ],
+  "reflectie_kw_zenuwen": [
+    "Ewa… zenuwachtig… woarvoor?",
+    "Wacht… bang… wa is er?",
+    "Hmm… spannend… wilt ge erover praten?"
+  ],
+  "reflectie_kw_leuk": [
+    "Ewa… ge vindt heur plezant?",
+    "Wacht… verliefd… op heur?",
+    "Hmm… ge denkt aan heur?"
+  ],
+  "reflectie_kw_lichaam": [
+    "Ewa… pijn… woar?",
+    "Wacht… ziek… al lang?",
+    "Hmm… nie kunnen slapen… hoe komt da?"
+  ],
+  "reflectie_kw_twijfel": [
+    "Ewa… ge weet het nie… woarover?",
+    "Wacht… twijfel… wa houdt u tegen?",
+    "Hmm… ge snapt het nie… wa precies?"
+  ],
+  "pauze_melding": {
+    "opening": [
+      "Ewa Kevin,",
+      "Allez,",
+      "Seg,",
+      "Kevin,",
+      "Efkes iets:"
+    ],
+    "midden": [
+      "we zijn nu al {minuten} minuten bezig",
+      "ge zit al {minuten} minuten aan een stuk hierop",
+      "da loopt nu al {minuten} minuten door",
+      "{minuten} minuten verder zonder pauze",
+      "al {minuten} minuten non-stop"
+    ],
+    "afsluiting": [
+      "— misschien efkes pauzeren?",
+      "— tijd voor een korte onderbreking?",
+      "— goat ge er efkes tussenuit?",
+      "— rek uw benen efkes?",
+      "— goed moment om efkes te stoppen?"
+    ]
+  }
 }

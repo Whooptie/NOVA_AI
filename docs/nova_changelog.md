@@ -4185,3 +4185,12 @@ Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leef
 - 30 zinnen (16 used_for, 14 causes) met `ja` bevestigd; 29 opgeslagen, `naaimachine` bleef open omdat het `ja` ontbrak.
 - Stand (GitHub 21 nov, 19:56): concepten 1384, `used_for` 70, `causes` 66 (begin punt 42c op 16 nov: 22 en 24). Andere types ongewijzigd. Alle nieuwe relaties `confirmed`; geen rommelwoorden.
 - Opgemerkt: Nova vraagt zelf om de betekenis bij een dubbelzinnig doelwoord (`schimmel`: organisme of paard).
+
+## 22 nov 2026 — Brugse modus (brutale West-Vlaamse stijl, `brugs aan`)
+- Aanleiding: `identity.json` had al `brugse_tiener`/`brutaal_brugs`, maar in de uitvoer zat niets: `expression_injector.py` plakte enkel uitroep/emoji/gebaar achter de tekst en de `brutaal_*`-profielen werden nooit gekozen.
+- Nieuw: `brugs_filter.py`, `brugs_regels.json`, `brugs_sjablonen.json`; debug-commando's `brugs aan/uit/status` + hulptekst in help debug. Standaard UIT, stand in `data/brugs_modus.json`.
+- Aangesloten met eigen `sjabloon_naam` (`..._brugs`), zodat de leerstatistieken apart blijven: response_engine, response_pipeline, conversation_engine, wikipedia_teacher, intent_router (bedankt), afwezigheid, session_watcher (pauze), fallback_reflectie (bij moe/alleen/bang/ziek bewust zacht).
+- Stemmingen in `tone_engine.py` (+ 4 profielen in `style_profiles.json`); `bravoure >= 0.65` maakt van "neutraal" nu "brutaal".
+- Traits: impulsivity 0.32 -> 0.42, expressiveness 0.32 -> 0.5, reactivity 0.31 -> 0.42.
+- Bewust niet: korte antwoorden als standaard. Nog zonder Brugse zinnen: weer, schaken, emergence, body_state, profiel-match.
+- Tests: `test_brugs_filter.py` (18), `test_brugs_sjablonen.py` (68), `test_stemmingen.py` (9). Suite op de server: 5368 geslaagd, 1 overgeslagen.

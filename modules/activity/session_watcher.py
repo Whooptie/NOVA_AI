@@ -771,9 +771,18 @@ class SessionWatcher:
         Puur string-formatting op vaste tekstlijsten -- geen generatie,
         zelfde principe als emergence_engine.py's _formuleer_*()-methodes.
         """
-        opening = random.choice(self._sjablonen_pauze["opening"])
-        midden = random.choice(self._sjablonen_pauze["midden"]).format(minuten=minuten)
-        afsluiting = random.choice(self._sjablonen_pauze["afsluiting"])
+        sjabloon = self._sjablonen_pauze
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is not None and getattr(brugs, "aan", False) is True:
+            try:
+                brugse = brugs.onderdelen("pauze_melding")
+            except Exception:
+                brugse = None
+            if brugse:
+                sjabloon = brugse
+        opening = random.choice(sjabloon["opening"])
+        midden = random.choice(sjabloon["midden"]).format(minuten=minuten)
+        afsluiting = random.choice(sjabloon["afsluiting"])
 
         return f"{opening} {midden} {afsluiting}"
 

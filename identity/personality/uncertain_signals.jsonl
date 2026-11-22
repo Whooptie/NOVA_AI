@@ -2327,3 +2327,8 @@
 {"text": "blablabla", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T10:39:47.125112"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-22T10:49:33.602173"}
 {"text": "wat is een pijp", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-22T10:49:44.803450"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:16.982084"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:23.265442"}
+{"text": "laat me", "signaal": "focus", "model_signaal": "focus", "marge": 0.0856, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:29.707903"}
+{"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:32.864838"}
+{"text": "boe", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:37.911445"}

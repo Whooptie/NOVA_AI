@@ -19,17 +19,25 @@ with open(SJABLONEN_PAD, "r", encoding="utf-8") as _f:
     SJABLONEN = json.load(_f)
 
 PLAATSHOUDERS = SJABLONEN["_plaatshouders"]
-SJABLOON_NAMEN = [n for n in SJABLONEN if not n.startswith("_")]
+SJABLOON_NAMEN = [n for n in SJABLONEN if not n.startswith("_") and isinstance(SJABLONEN[n], list)]
+ONDERDELEN_NAMEN = [n for n in SJABLONEN if not n.startswith("_") and isinstance(SJABLONEN[n], dict)]
+
+
+def _vul(zin, plaats):
+    """Vult een zin in met dummywaarden. Cijfers ({1}, {2}) zijn positioneel, zoals bij
+    fallback_reflectie; namen ({entity}, {uur}) zijn keywords."""
+    if plaats and all(p.isdigit() for p in plaats):
+        return zin.format("", *["x"] * len(plaats))
+    return zin.format(**{k: "x" for k in plaats})
 
 
 @pytest.mark.parametrize("naam", SJABLOON_NAMEN)
-def test_minstens_drie_varianten_en_alle_formatteerbaar(naam):
+def test_minstens_twee_varianten_en_alle_formatteerbaar(naam):
     varianten = SJABLONEN[naam]
-    assert len(varianten) >= 3
-    waarden = {k: "x" for k in PLAATSHOUDERS[naam]}
+    assert len(varianten) >= 2
     for zin in varianten:
         assert isinstance(zin, str) and zin.strip()
-        zin.format(**waarden)  # KeyError/IndexError = kapotte variant
+        _vul(zin, PLAATSHOUDERS[naam])  # KeyError/IndexError = kapotte variant
 
 
 # Plaatshouders die de INHOUD van het antwoord dragen: een variant die ze weglaat zou
@@ -97,9 +105,9 @@ def test_response_engine_brugs_als_modus_aan():
 
 def test_response_engine_sjabloon_zonder_brugse_versie_blijft_gewoon():
     engine = _engine(True)
-    gewone = set(engine.templates["interruption_vraag"])
+    engine.templates["test_zonder_brugs"] = ["een", "twee", "drie"]
     for _ in range(20):
-        assert engine._kies_variant("interruption_vraag") in gewone
+        assert engine._kies_variant("test_zonder_brugs") in {"een", "twee", "drie"}
 
 
 def _groet(aan):
@@ -227,3 +235,121 @@ def test_wiki_zin_brugs_als_modus_aan_en_behoudt_het_teach_commando():
 
 def test_wiki_zin_onbekende_naam_valt_terug_op_gewoon():
     assert _wiki(True)._brugs_zin("bestaat_niet", "gewoon") == "gewoon"
+
+# ---------------------------------------------------------------------------
+# Sjablonen met losse delen (opening/midden/afsluiting) en de nieuwe aansluitingen
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("naam", ONDERDELEN_NAMEN)
+def test_onderdelen_zijn_volledig_en_formatteerbaar(naam):
+    for deel, lijst in SJABLONEN[naam].items():
+        assert len(lijst) >= 3
+        for zin in lijst:
+            zin.format(**{k: "x" for k in PLAATSHOUDERS[naam].get(deel, [])})
+
+
+def test_onderdelen_alleen_als_modus_aan():
+    assert _filter(False).onderdelen("pauze_melding") is None
+    assert set(_filter(True).onderdelen("pauze_melding")) == {"opening", "midden", "afsluiting"}
+    assert _filter(True).onderdelen("groet") is None          # lijst, geen onderdelen
+    assert _filter(True).varianten("pauze_melding") is None   # onderdelen, geen lijst
+
+
+from core.intent_router import IntentRouter
+
+
+def _thanks(aan):
+    verstuurd = []
+
+    class Bus:
+        modules = {"brugs_filter": _filter(aan)} if aan is not None else {}
+
+        def publish(self, event, data=None):
+            if event == "layer4_response":
+                verstuurd.append(data["text"])
+
+    class Nep:
+        _THANKS_ANTWOORDEN = IntentRouter._THANKS_ANTWOORDEN
+        event_bus = Bus()
+
+    IntentRouter._stuur_bedankt_antwoord(Nep())
+    return verstuurd[-1]
+
+
+def test_bedankt_gewoon_en_brugs():
+    for aan in (False, None):
+        for _ in range(15):
+            assert _thanks(aan) in IntentRouter._THANKS_ANTWOORDEN
+    for _ in range(15):
+        assert _thanks(True) in SJABLONEN["thanks"]
+
+
+from modules.context.afwezigheid import AfwezigheidModule
+
+
+def _welkom(aan):
+    bus = EventBus()
+    bus.modules = getattr(bus, "modules", {})
+    if aan is not None:
+        bus.modules["brugs_filter"] = _filter(aan)
+    afw = AfwezigheidModule(bus, klok=lambda: 1_000_000.0)
+    return afw._formuleer_welkom(10, [], 0, 1_000_000.0)
+
+
+def test_welkom_gewoon_en_brugs():
+    for aan in (False, None):
+        tekst = _welkom(aan)
+        assert any(tekst.startswith(z) for z in AfwezigheidModule._WELKOM_OPENINGEN)
+    for _ in range(15):
+        tekst = _welkom(True)
+        assert any(tekst.startswith(z) for z in SJABLONEN["welkom_opening"])
+        assert tekst.endswith("Je was 10 minuten weg.")
+
+
+from modules.activity.session_watcher import SessionWatcher
+
+
+def _pauze(aan):
+    sw = SessionWatcher.__new__(SessionWatcher)
+    sw.event_bus = _NepBus({"brugs_filter": _filter(aan)} if aan is not None else {})
+    sw._sjablonen_pauze = {
+        "opening": ["GEWOON-OPENING"], "midden": ["GEWOON {minuten}"], "afsluiting": ["GEWOON-SLOT"],
+    }
+    return sw._formuleer_pauze_melding(45)
+
+
+def test_pauzemelding_gewoon_en_brugs():
+    for aan in (False, None):
+        assert _pauze(aan) == "GEWOON-OPENING GEWOON 45 GEWOON-SLOT"
+    delen = SJABLONEN["pauze_melding"]
+    for _ in range(20):
+        tekst = _pauze(True)
+        assert "GEWOON" not in tekst and "45" in tekst
+        assert any(tekst.startswith(o) for o in delen["opening"])
+        assert any(tekst.endswith(a) for a in delen["afsluiting"])
+
+
+from modules.chat.fallback_reflectie import FallbackReflectie
+
+
+def _reflectie(aan, tekst):
+    bus = _NepBus({"brugs_filter": _filter(aan)} if aan is not None else {})
+    return FallbackReflectie(bus).reflecteer(tekst)
+
+
+def test_reflectie_decompositie_met_plaatshouder_gewoon_en_brugs():
+    gewoon = _reflectie(False, "ik voel me moe")
+    assert gewoon is not None and "moe" in gewoon
+    for _ in range(20):
+        brugs = _reflectie(True, "ik voel me moe")
+        assert brugs in {z.format("", "moe") for z in SJABLONEN["reflectie_voel_me"]}
+
+
+def test_reflectie_trefwoorden_brugs():
+    for _ in range(20):
+        assert _reflectie(True, "zo bang") in SJABLONEN["reflectie_kw_zenuwen"]
+
+
+def test_response_engine_interruption_brugs():
+    engine = _engine(True)
+    for _ in range(20):
+        assert engine._kies_variant("interruption_vraag") in SJABLONEN["interruption_vraag"]

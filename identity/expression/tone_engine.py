@@ -1,6 +1,7 @@
 # identity/expression/tone_engine.py
 import json
 import os
+import time
 
 # Debug-print van de gekozen stijl-sleutel (bv. "STYLE KEY: warm_normaal")
 # bij ELK antwoord. Stond vroeger altijd aan en verscheen daardoor ook
@@ -53,6 +54,11 @@ class ToneEngine:
         # PERSONALITY MODIFIERS
         # -----------------------------
         tone = self._apply_personality_modifiers(tone, traits)
+
+        # -----------------------------
+        # STEMMING NA EEN TRIGGER (verveeld / gepikeerd)
+        # -----------------------------
+        tone = self._apply_stemming_na_trigger(tone, emotion_engine.state, traits)
 
         # -----------------------------
         # DRAMATIC FLAIR
@@ -121,6 +127,46 @@ class ToneEngine:
         if tone["tone"] == "neutraal" and traits.get("bravoure", 0.5) >= 0.65:
             tone["tone"] = "brutaal"
 
+        return tone
+
+    # ---------------------------------------------------------
+    #  STEMMING NA EEN TRIGGER (verveeld / gepikeerd)
+    # ---------------------------------------------------------
+    STEMMING_DUUR_SECONDEN = 600
+    TRIGGER_NAAR_STEMMING = {
+        "kilte": "verveeld",         # Kevin klinkt koud/kortaf -> Nova haakt af
+        "frustration": "gepikeerd",  # frustratie-signaal -> Nova wordt bits
+    }
+    STEMMING_RESPECTEERT = ("kortaf", "geïrriteerd")
+
+    def _apply_stemming_na_trigger(self, tone, emotion_state, traits):
+        """
+        De laatste emotie-trigger bepaalt, zolang hij recent is, of Nova "verveeld"
+        of "gepikeerd" klinkt. Enkel bij een brutale Nova (bravoure) en nooit boven
+        focus/irritatie. Overprikkeling wint nog steeds van alles.
+        """
+        if traits.get("bravoure", 0.5) < 0.65:
+            return tone
+
+        stemming = self.TRIGGER_NAAR_STEMMING.get(emotion_state.get("last_trigger"))
+        if stemming is None:
+            return tone
+
+        tijdstip = (emotion_state.get("overstimulation") or {}).get("last_trigger_timestamp")
+        if not isinstance(tijdstip, (int, float)):
+            return tone
+        if time.time() - tijdstip > self.STEMMING_DUUR_SECONDEN:
+            return tone
+
+        if tone.get("tone") in self.STEMMING_RESPECTEERT:
+            return tone
+
+        tone["tone"] = stemming
+        if stemming == "verveeld":
+            tone["pace"] = "traag"
+            tone["expressiveness"] = min(tone.get("expressiveness", 0.5), 0.35)
+        else:
+            tone["expressiveness"] = max(tone.get("expressiveness", 0.5), 0.7)
         return tone
 
     # ---------------------------------------------------------
