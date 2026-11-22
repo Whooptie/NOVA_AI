@@ -4194,3 +4194,10 @@ Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leef
 - Traits: impulsivity 0.32 -> 0.42, expressiveness 0.32 -> 0.5, reactivity 0.31 -> 0.42.
 - Bewust niet: korte antwoorden als standaard. Nog zonder Brugse zinnen: weer, schaken, emergence, body_state, profiel-match.
 - Tests: `test_brugs_filter.py` (18), `test_brugs_sjablonen.py` (68), `test_stemmingen.py` (9). Suite op de server: 5368 geslaagd, 1 overgeslagen.
+
+## 22 nov 2026 — Sentinel rond inhoud, lek in `_brugs()` gedicht
+
+- `response_engine.generate()` wikkelt nu ook `entity`, `parent` en `associatie` in `⟦ ⟧`, niet enkel `definition`. De entity blijft daarbuiten ongemoeid omdat hij ook naar `_sterkste_associatie()` en de topic-naam `definitie_<entity>` gaat — anders breken de geleerde Layer 2-patronen.
+- **Lek gedicht:** `expression_injector._brugs()` gaf de tekst ongewijzigd terug zodra de `brugs_filter`-module ontbrak, waardoor `⟦ ⟧` letterlijk in het antwoord kon belanden. De strip staat nu buiten die early return.
+- `data/brugs_modus.json` uit de index gehaald en in `.gitignore`, naast `data/interactions.jsonl`.
+- Tests: `tests/test_sentinel_inhoud.py` (3) en één lek-test in `test_expression_injector_uitroep.py`. Suite: 5377 geslaagd, 1 overgeslagen.

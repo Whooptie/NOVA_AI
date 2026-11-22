@@ -487,6 +487,7 @@
 | 485 | 2 | System & Control | response_pipeline.py | modules/chat/ | Stuurt greeting + fallback door personality/tone pipeline. | Gebouwd |
 | 486 | 2 | System & Control | chat_response_engine.py | modules/chat/ | Stuurt pipeline_response door naar expression_inject. | Gebouwd |
 | 487 | 2 | System & Control | expression_injector.py | modules/chat/ | Injecteert tone/expressie in chatresponses. | Gebouwd |
+| 487b | 2 | System & Control | brugs_filter.py | modules/chat/ | Optionele Brugse stijl-laag: woordkleur, opener en slotwoord; beschermt inhoud tussen ⟦ ⟧, citaten, `{plaatsplaats}`-houders, URL's en getallen. | Gebouwd |
 | 488 | 3 | Games & Play | chess_engine.py | modules/chess/ | Schaakmodule met Stockfish (symbolisch), natuurlijke taal zetten (NL), gekleurd bord, moeilijkheidsgraad, win/verlies-stats. | Gebouwd |
 | 489 | 2 | System & Control | help.py | modules/help/ | Centrale help-module. | Gebouwd |
 | 490 | 2 | System & Control | algemeen.py | modules/help/topics/ | Help-topic: algemene commando's. | Gebouwd |
