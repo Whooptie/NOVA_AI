@@ -14,10 +14,10 @@
       "volgende_toegestaan": 1795367634.2032037
     },
     "trending_topic": {
-      "label": "veroorzaken",
+      "label": "waarmee",
       "getal": null,
-      "gezegd_op": 1795288367.572122,
-      "volgende_toegestaan": 1795369849.2226355
+      "gezegd_op": 1795375033.995483,
+      "volgende_toegestaan": 1795464154.817329
     },
     "woordverband": {
       "label": "nieuw|partij",
@@ -61,5 +61,6 @@
   "trending_topic:toon": 1793129386.099541,
   "datum_terugblik": 1795288973.870445,
   "voorkeur_verandering:koffie": 1793908198.299654,
-  "trending_topic:veroorzaken": 1795288367.571789
+  "trending_topic:veroorzaken": 1795288367.571789,
+  "trending_topic:waarmee": 1795375033.9952
 }

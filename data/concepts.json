@@ -130009,9 +130009,12 @@
     "senses": [
       {
         "sense_id": "tas#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een tas is een zak of hoes met een hengsel, waarin je spullen draagt.",
+        "pos": "noun",
+        "examples": [
+          "Ze zette haar tas op de stoel.",
+          "Hij droeg zijn boodschappen in een tas."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -130022,20 +130025,20 @@
             "created_at": "2026-11-21T18:51:11.765812"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:51:08.743716",
-      "updated_at": "2026-11-21T18:51:11.765821",
+      "updated_at": "2026-11-22T19:17:10.245895",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:51:11.765821",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:14:37.605029",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:51:08.743998",
@@ -130044,6 +130047,10 @@
         {
           "timestamp": "2026-11-21T18:51:11.765821",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:14:37.605029",
+          "confidence": 1.0
         }
       ]
     },
@@ -130074,6 +130081,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:51:11.765819"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "tas#1",
+        "old_value": "unknown",
+        "new_value": "Een tas is een zak of hoes met een hengsel, waarin je spullen draagt.",
+        "timestamp": "2026-11-22T19:14:37.605027"
       }
     ]
   },
@@ -130177,9 +130192,12 @@
     "senses": [
       {
         "sense_id": "helm#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een helm is een harde bescherming voor je hoofd, bijvoorbeeld bij het fietsen of op een bouwplaats.",
+        "pos": "noun",
+        "examples": [
+          "De fietser droeg een helm.",
+          "Op de bouwplaats is een helm verplicht."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -130190,20 +130208,20 @@
             "created_at": "2026-11-21T18:51:39.804579"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:51:37.556164",
-      "updated_at": "2026-11-21T18:51:39.804588",
+      "updated_at": "2026-11-22T19:16:18.735775",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:51:39.804588",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:11:17.166482",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:51:37.556459",
@@ -130212,6 +130230,10 @@
         {
           "timestamp": "2026-11-21T18:51:39.804588",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:11:17.166482",
+          "confidence": 1.0
         }
       ]
     },
@@ -130242,6 +130264,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:51:39.804586"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "helm#1",
+        "old_value": "unknown",
+        "new_value": "Een helm is een harde bescherming voor je hoofd, bijvoorbeeld bij het fietsen of op een bouwplaats.",
+        "timestamp": "2026-11-22T19:11:17.166479"
       }
     ]
   },
@@ -130249,9 +130279,12 @@
     "senses": [
       {
         "sense_id": "zeep#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Zeep is een stof waarmee je iets wast, meestal in de vorm van een stuk of een vloeistof.",
+        "pos": "noun",
+        "examples": [
+          "Hij waste zijn handen met zeep.",
+          "De zeep ligt in het zeepbakje."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -130260,22 +130293,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T18:51:54.107301"
+          },
+          {
+            "type": "is_a",
+            "target": "stof",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:15:20.038296"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:51:45.323010",
-      "updated_at": "2026-11-21T18:51:54.107311",
+      "updated_at": "2026-11-22T19:17:47.845064",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:51:54.107311",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:15:19.946556",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:51:45.323330",
@@ -130284,6 +130325,10 @@
         {
           "timestamp": "2026-11-21T18:51:54.107311",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:15:19.946556",
+          "confidence": 1.0
         }
       ]
     },
@@ -130314,6 +130359,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:51:54.107308"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "zeep#1",
+        "old_value": "unknown",
+        "new_value": "Zeep is een stof waarmee je iets wast, meestal in de vorm van een stuk of een vloeistof.",
+        "timestamp": "2026-11-22T19:15:19.946555"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "zeep#1",
+        "relation": {
+          "type": "is_a",
+          "target": "stof",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:15:20.038312"
       }
     ]
   },
@@ -130321,9 +130385,12 @@
     "senses": [
       {
         "sense_id": "handdoek#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een handdoek is een zachte doek waarmee je je lichaam of je handen afdroogt.",
+        "pos": "noun",
+        "examples": [
+          "Na het zwemmen wikkelde hij zich in een handdoek.",
+          "Hang de natte handdoek op."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -130334,20 +130401,20 @@
             "created_at": "2026-11-21T18:52:53.623144"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:52:50.985474",
-      "updated_at": "2026-11-21T18:52:53.623153",
+      "updated_at": "2026-11-22T19:16:14.239303",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:52:53.623153",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:10:58.923470",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:52:50.985776",
@@ -130356,6 +130423,10 @@
         {
           "timestamp": "2026-11-21T18:52:53.623153",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:10:58.923470",
+          "confidence": 1.0
         }
       ]
     },
@@ -130386,6 +130457,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:52:53.623151"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "handdoek#1",
+        "old_value": "unknown",
+        "new_value": "Een handdoek is een zachte doek waarmee je je lichaam of je handen afdroogt.",
+        "timestamp": "2026-11-22T19:10:58.923467"
       }
     ]
   },
@@ -130489,9 +130568,12 @@
     "senses": [
       {
         "sense_id": "ladder#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een ladder is een toestel met sporten tussen twee stijlen, waarmee je omhoog en omlaag klimt.",
+        "pos": "noun",
+        "examples": [
+          "Hij klom op de ladder om de lamp te vervangen.",
+          "Zet de ladder tegen de muur."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -130500,22 +130582,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T18:53:09.136815"
+          },
+          {
+            "type": "is_a",
+            "target": "toestel",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:12:05.480261"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:53:06.822581",
-      "updated_at": "2026-11-21T18:53:09.136824",
+      "updated_at": "2026-11-22T19:16:27.203041",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:53:09.136824",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:12:05.388311",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:53:06.822906",
@@ -130524,6 +130614,10 @@
         {
           "timestamp": "2026-11-21T18:53:09.136824",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:12:05.388311",
+          "confidence": 1.0
         }
       ]
     },
@@ -130554,6 +130648,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:53:09.136822"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "ladder#1",
+        "old_value": "unknown",
+        "new_value": "Een ladder is een toestel met sporten tussen twee stijlen, waarmee je omhoog en omlaag klimt.",
+        "timestamp": "2026-11-22T19:12:05.388308"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "ladder#1",
+        "relation": {
+          "type": "is_a",
+          "target": "toestel",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:12:05.480280"
       }
     ]
   },
@@ -130705,9 +130818,12 @@
     "senses": [
       {
         "sense_id": "naaimachine#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een naaimachine is een toestel met een naald en draad, waarmee je stof sneller aan elkaar naait.",
+        "pos": "noun",
+        "examples": [
+          "Ze zette de zoom vast met de naaimachine.",
+          "De naaimachine staat op de tafel."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -130716,22 +130832,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T18:57:09.153553"
+          },
+          {
+            "type": "is_a",
+            "target": "toestel",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:13:06.402591"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:53:38.392956",
-      "updated_at": "2026-11-21T18:57:09.153568",
+      "updated_at": "2026-11-22T19:16:44.414109",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:57:09.153568",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:13:06.309227",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:53:38.393242",
@@ -130740,6 +130864,10 @@
         {
           "timestamp": "2026-11-21T18:57:09.153568",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:13:06.309227",
+          "confidence": 1.0
         }
       ]
     },
@@ -130770,6 +130898,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:57:09.153564"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "naaimachine#1",
+        "old_value": "unknown",
+        "new_value": "Een naaimachine is een toestel met een naald en draad, waarmee je stof sneller aan elkaar naait.",
+        "timestamp": "2026-11-22T19:13:06.309224"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "naaimachine#1",
+        "relation": {
+          "type": "is_a",
+          "target": "toestel",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:13:06.402608"
       }
     ]
   },
@@ -131641,9 +131788,12 @@
     "senses": [
       {
         "sense_id": "spade#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een spade is een gereedschap met een brede, platte metalen schep aan een steel, waarmee je de grond omwerkt.",
+        "pos": "noun",
+        "examples": [
+          "Hij stak de spade in de grond.",
+          "Met de spade groef hij een kuil."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -131652,22 +131802,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:00:29.460514"
+          },
+          {
+            "type": "is_a",
+            "target": "gereedschap",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:13:37.485015"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:00:27.140828",
-      "updated_at": "2026-11-21T19:00:29.460524",
+      "updated_at": "2026-11-22T19:16:52.979999",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:00:29.460524",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:13:37.393041",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:00:27.141110",
@@ -131676,6 +131834,10 @@
         {
           "timestamp": "2026-11-21T19:00:29.460524",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:13:37.393041",
+          "confidence": 1.0
         }
       ]
     },
@@ -131706,6 +131868,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:00:29.460521"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "spade#1",
+        "old_value": "unknown",
+        "new_value": "Een spade is een gereedschap met een brede, platte metalen schep aan een steel, waarmee je de grond omwerkt.",
+        "timestamp": "2026-11-22T19:13:37.393038"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "spade#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gereedschap",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:13:37.485036"
       }
     ]
   },
@@ -131833,9 +132014,12 @@
     "senses": [
       {
         "sense_id": "balpen#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een balpen is een schrijfinstrument met een klein kogeltje aan de punt, waarmee je met inkt schrijft.",
+        "pos": "noun",
+        "examples": [
+          "Ze zette haar handtekening met een balpen.",
+          "Mijn balpen is bijna leeg."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -131844,22 +132028,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:00:53.885092"
+          },
+          {
+            "type": "is_a",
+            "target": "schrijfinstrument",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:08:14.275658"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:00:51.515052",
-      "updated_at": "2026-11-21T19:00:53.885101",
+      "updated_at": "2026-11-22T19:15:50.780586",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:00:53.885101",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:08:14.183216",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:00:51.515398",
@@ -131868,6 +132060,10 @@
         {
           "timestamp": "2026-11-21T19:00:53.885101",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:08:14.183216",
+          "confidence": 1.0
         }
       ]
     },
@@ -131898,6 +132094,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:00:53.885099"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "balpen#1",
+        "old_value": "unknown",
+        "new_value": "Een balpen is een schrijfinstrument met een klein kogeltje aan de punt, waarmee je met inkt schrijft.",
+        "timestamp": "2026-11-22T19:08:14.183213"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "balpen#1",
+        "relation": {
+          "type": "is_a",
+          "target": "schrijfinstrument",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:08:14.275673"
       }
     ]
   },
@@ -131905,9 +132120,12 @@
     "senses": [
       {
         "sense_id": "krant#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een krant is een gedrukt blad met nieuws dat elke dag of elke week verschijnt.",
+        "pos": "noun",
+        "examples": [
+          "Hij las de krant bij het ontbijt.",
+          "De krant ligt op de keukentafel."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -131918,20 +132136,20 @@
             "created_at": "2026-11-21T19:01:10.618493"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:01:08.097299",
-      "updated_at": "2026-11-21T19:01:10.618503",
+      "updated_at": "2026-11-22T19:16:23.092718",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:01:10.618503",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:11:43.493696",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:01:08.097552",
@@ -131940,6 +132158,10 @@
         {
           "timestamp": "2026-11-21T19:01:10.618503",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:11:43.493696",
+          "confidence": 1.0
         }
       ]
     },
@@ -131970,6 +132192,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:01:10.618500"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "krant#1",
+        "old_value": "unknown",
+        "new_value": "Een krant is een gedrukt blad met nieuws dat elke dag of elke week verschijnt.",
+        "timestamp": "2026-11-22T19:11:43.493693"
       }
     ]
   },
@@ -131977,9 +132207,12 @@
     "senses": [
       {
         "sense_id": "loep#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een loep is een vergrootglas, een lens waarmee je kleine dingen groter ziet.",
+        "pos": "noun",
+        "examples": [
+          "Hij bekeek de postzegel door een loep.",
+          "Met de loep zag ze elk streepje."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -131990,20 +132223,20 @@
             "created_at": "2026-11-21T19:01:18.611903"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:01:16.601570",
-      "updated_at": "2026-11-21T19:01:18.611912",
+      "updated_at": "2026-11-22T19:16:36.333643",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:01:18.611912",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:12:52.540653",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:01:16.601892",
@@ -132012,6 +132245,10 @@
         {
           "timestamp": "2026-11-21T19:01:18.611912",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:12:52.540653",
+          "confidence": 1.0
         }
       ]
     },
@@ -132042,6 +132279,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:01:18.611910"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "loep#1",
+        "old_value": "unknown",
+        "new_value": "Een loep is een vergrootglas, een lens waarmee je kleine dingen groter ziet.",
+        "timestamp": "2026-11-22T19:12:52.540651"
       }
     ]
   },
@@ -132169,9 +132414,12 @@
     "senses": [
       {
         "sense_id": "lijm#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Lijm is een kleverige stof waarmee je dingen aan elkaar bevestigt.",
+        "pos": "noun",
+        "examples": [
+          "Ze plakte de scherven aan elkaar met lijm.",
+          "De tube lijm is bijna leeg."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -132182,20 +132430,20 @@
             "created_at": "2026-11-21T19:01:33.474126"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:01:31.249292",
-      "updated_at": "2026-11-21T19:01:33.474136",
+      "updated_at": "2026-11-22T19:16:32.044564",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:01:33.474136",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:12:34.745808",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:01:31.249532",
@@ -132204,6 +132452,10 @@
         {
           "timestamp": "2026-11-21T19:01:33.474136",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:12:34.745808",
+          "confidence": 1.0
         }
       ]
     },
@@ -132234,6 +132486,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:01:33.474133"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "lijm#1",
+        "old_value": "unknown",
+        "new_value": "Lijm is een kleverige stof waarmee je dingen aan elkaar bevestigt.",
+        "timestamp": "2026-11-22T19:12:34.745806"
       }
     ]
   },
@@ -132289,9 +132549,12 @@
     "senses": [
       {
         "sense_id": "touw#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een touw is een dikke, sterke draad van gevlochten vezels waarmee je dingen vastbindt of optrekt.",
+        "pos": "noun",
+        "examples": [
+          "Hij bond de boot vast met een touw.",
+          "Het touw brak onder het gewicht."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -132302,20 +132565,20 @@
             "created_at": "2026-11-21T19:01:41.595348"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:01:39.373052",
-      "updated_at": "2026-11-21T19:01:41.595357",
+      "updated_at": "2026-11-22T19:17:14.375032",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:01:41.595357",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:14:51.727789",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:01:39.373356",
@@ -132324,6 +132587,10 @@
         {
           "timestamp": "2026-11-21T19:01:41.595357",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:14:51.727789",
+          "confidence": 1.0
         }
       ]
     },
@@ -132354,6 +132621,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:01:41.595355"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "touw#1",
+        "old_value": "unknown",
+        "new_value": "Een touw is een dikke, sterke draad van gevlochten vezels waarmee je dingen vastbindt of optrekt.",
+        "timestamp": "2026-11-22T19:14:51.727787"
       }
     ]
   },
@@ -132705,7 +132980,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-21T19:02:32.249762",
-      "updated_at": "2026-11-21T19:30:47.099824",
+      "updated_at": "2026-11-22T19:07:24.017183",
       "sources": [
         "auto"
       ],
@@ -132827,9 +133102,12 @@
     "senses": [
       {
         "sense_id": "rugzak#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een rugzak is een tas met schouderbanden die je op je rug draagt.",
+        "pos": "noun",
+        "examples": [
+          "Hij stopte zijn brood in de rugzak.",
+          "De wandelaar droeg een zware rugzak."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -132838,22 +133116,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:02:55.788382"
+          },
+          {
+            "type": "is_a",
+            "target": "tas",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:13:22.350772"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:02:39.460803",
-      "updated_at": "2026-11-21T19:02:55.788392",
+      "updated_at": "2026-11-22T19:16:48.361346",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:02:55.788392",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:13:22.258981",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:02:39.461080",
@@ -132862,6 +133148,10 @@
         {
           "timestamp": "2026-11-21T19:02:55.788392",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:13:22.258981",
+          "confidence": 1.0
         }
       ]
     },
@@ -132892,6 +133182,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:02:55.788389"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "rugzak#1",
+        "old_value": "unknown",
+        "new_value": "Een rugzak is een tas met schouderbanden die je op je rug draagt.",
+        "timestamp": "2026-11-22T19:13:22.258980"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "rugzak#1",
+        "relation": {
+          "type": "is_a",
+          "target": "tas",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:13:22.350791"
       }
     ]
   },
@@ -132899,9 +133208,12 @@
     "senses": [
       {
         "sense_id": "bezem#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een bezem is een stok met aan het uiteinde borstelharen, waarmee je vuil bijeenveegt.",
+        "pos": "noun",
+        "examples": [
+          "Hij veegde de keuken aan met een bezem.",
+          "De bezem staat in de hoek."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -132910,22 +133222,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:03:05.472968"
+          },
+          {
+            "type": "is_a",
+            "target": "stok",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:08:40.955366"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:03:03.262639",
-      "updated_at": "2026-11-21T19:03:05.472987",
+      "updated_at": "2026-11-22T19:15:55.012385",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:03:05.472987",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:08:40.864320",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:03:03.262911",
@@ -132934,6 +133254,10 @@
         {
           "timestamp": "2026-11-21T19:03:05.472987",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:08:40.864320",
+          "confidence": 1.0
         }
       ]
     },
@@ -132964,6 +133288,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:03:05.472982"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "bezem#1",
+        "old_value": "unknown",
+        "new_value": "Een bezem is een stok met aan het uiteinde borstelharen, waarmee je vuil bijeenveegt.",
+        "timestamp": "2026-11-22T19:08:40.864318"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "bezem#1",
+        "relation": {
+          "type": "is_a",
+          "target": "stok",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:08:40.955383"
       }
     ]
   },
@@ -133019,9 +133362,12 @@
     "senses": [
       {
         "sense_id": "dweil#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een dweil is een doek aan een steel, waarmee je de vloer nat schoonmaakt.",
+        "pos": "noun",
+        "examples": [
+          "Ze haalde de dweil door de gang.",
+          "De dweil hangt buiten te drogen.example dweil De dweil hangt buiten te drogen."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -133032,20 +133378,20 @@
             "created_at": "2026-11-21T19:03:13.836641"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:03:11.122796",
-      "updated_at": "2026-11-21T19:03:13.836651",
+      "updated_at": "2026-11-22T19:16:10.103296",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:03:13.836651",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:10:11.309015",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:03:11.123203",
@@ -133054,6 +133400,10 @@
         {
           "timestamp": "2026-11-21T19:03:13.836651",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:10:11.309015",
+          "confidence": 1.0
         }
       ]
     },
@@ -133084,6 +133434,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:03:13.836649"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "dweil#1",
+        "old_value": "unknown",
+        "new_value": "Een dweil is een doek aan een steel, waarmee je de vloer nat schoonmaakt.",
+        "timestamp": "2026-11-22T19:10:11.309012"
       }
     ]
   },
@@ -133139,9 +133497,12 @@
     "senses": [
       {
         "sense_id": "spons#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een spons is een zacht, poreus voorwerp dat water opzuigt en waarmee je schoonmaakt.",
+        "pos": "noun",
+        "examples": [
+          "Ze veegde de tafel af met een natte spons.",
+          "De spons zat vol zeep."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -133152,20 +133513,20 @@
             "created_at": "2026-11-21T19:03:22.553554"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:03:20.310370",
-      "updated_at": "2026-11-21T19:03:22.553564",
+      "updated_at": "2026-11-22T19:17:00.522732",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:03:22.553564",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:13:54.048374",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:03:20.310666",
@@ -133174,6 +133535,10 @@
         {
           "timestamp": "2026-11-21T19:03:22.553564",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:13:54.048374",
+          "confidence": 1.0
         }
       ]
     },
@@ -133204,6 +133569,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:03:22.553561"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "spons#1",
+        "old_value": "unknown",
+        "new_value": "Een spons is een zacht, poreus voorwerp dat water opzuigt en waarmee je schoonmaakt.",
+        "timestamp": "2026-11-22T19:13:54.048372"
       }
     ]
   },
@@ -133211,9 +133584,12 @@
     "senses": [
       {
         "sense_id": "blender#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een blender is een keukenapparaat met scherpe messen, waarmee je voedsel fijnmaakt en mengt.",
+        "pos": "noun",
+        "examples": [
+          "Ze maakte een smoothie in de blender.",
+          "De blender maakt veel lawaai."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -133222,22 +133598,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:03:30.209198"
+          },
+          {
+            "type": "is_a",
+            "target": "keukenapparaat",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:08:56.847310"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:03:27.795986",
-      "updated_at": "2026-11-21T19:03:30.209208",
+      "updated_at": "2026-11-22T19:15:59.272912",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:03:30.209208",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:08:56.755813",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:03:27.796305",
@@ -133246,6 +133630,10 @@
         {
           "timestamp": "2026-11-21T19:03:30.209208",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:08:56.755813",
+          "confidence": 1.0
         }
       ]
     },
@@ -133276,6 +133664,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:03:30.209205"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "blender#1",
+        "old_value": "unknown",
+        "new_value": "Een blender is een keukenapparaat met scherpe messen, waarmee je voedsel fijnmaakt en mengt.",
+        "timestamp": "2026-11-22T19:08:56.755810"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "blender#1",
+        "relation": {
+          "type": "is_a",
+          "target": "keukenapparaat",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:08:56.847328"
       }
     ]
   },
@@ -133331,9 +133738,12 @@
     "senses": [
       {
         "sense_id": "broodrooster#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een broodrooster is een keukenapparaat waarmee je sneden brood krokant en bruin maakt.",
+        "pos": "noun",
+        "examples": [
+          "De boterham sprong uit de broodrooster.",
+          "Zet de broodrooster even aan."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -133342,22 +133752,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:03:38.827231"
+          },
+          {
+            "type": "is_a",
+            "target": "keukenapparaat",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-22T19:09:37.173391"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:03:36.289293",
-      "updated_at": "2026-11-21T19:03:38.827240",
+      "updated_at": "2026-11-22T19:16:04.378558",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:03:38.827240",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:09:37.083550",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:03:36.289554",
@@ -133366,6 +133784,10 @@
         {
           "timestamp": "2026-11-21T19:03:38.827240",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:09:37.083550",
+          "confidence": 1.0
         }
       ]
     },
@@ -133396,6 +133818,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:03:38.827238"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "broodrooster#1",
+        "old_value": "unknown",
+        "new_value": "Een broodrooster is een keukenapparaat waarmee je sneden brood krokant en bruin maakt.",
+        "timestamp": "2026-11-22T19:09:37.083547"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "broodrooster#1",
+        "relation": {
+          "type": "is_a",
+          "target": "keukenapparaat",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-22T19:09:37.173408"
       }
     ]
   },
@@ -133451,9 +133892,12 @@
     "senses": [
       {
         "sense_id": "waterkoker#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een waterkoker is een elektrisch toestel waarmee je snel water aan de kook brengt.",
+        "pos": "noun",
+        "examples": [
+          "Ze zette de waterkoker aan voor de thee.",
+          "De waterkoker sloeg vanzelf uit."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -133464,20 +133908,20 @@
             "created_at": "2026-11-21T19:03:49.931044"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:03:47.716988",
-      "updated_at": "2026-11-21T19:03:49.931054",
+      "updated_at": "2026-11-22T19:17:43.723712",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:03:49.931054",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:15:05.331014",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:03:47.717294",
@@ -133486,6 +133930,10 @@
         {
           "timestamp": "2026-11-21T19:03:49.931054",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:15:05.331014",
+          "confidence": 1.0
         }
       ]
     },
@@ -133516,6 +133964,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:03:49.931052"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "waterkoker#1",
+        "old_value": "unknown",
+        "new_value": "Een waterkoker is een elektrisch toestel waarmee je snel water aan de kook brengt.",
+        "timestamp": "2026-11-22T19:15:05.331012"
       }
     ]
   },
@@ -133763,9 +134219,12 @@
     "senses": [
       {
         "sense_id": "strijkijzer#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een strijkijzer is een verwarmd toestel waarmee je kleren glad strijkt.",
+        "pos": "noun",
+        "examples": [
+          "Ze haalde het strijkijzer over het overhemd.",
+          "Zet het strijkijzer uit als je klaar bent."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -133776,20 +134235,20 @@
             "created_at": "2026-11-21T19:04:55.714263"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:04:53.253021",
-      "updated_at": "2026-11-21T19:04:55.714273",
+      "updated_at": "2026-11-22T19:17:06.470483",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:04:55.714273",
-      "usage_count": 2,
+      "last_used_at": "2026-11-22T19:14:23.661474",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:04:53.253346",
@@ -133798,6 +134257,10 @@
         {
           "timestamp": "2026-11-21T19:04:55.714273",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-22T19:14:23.661474",
+          "confidence": 1.0
         }
       ]
     },
@@ -133828,6 +134291,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:04:55.714270"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "strijkijzer#1",
+        "old_value": "unknown",
+        "new_value": "Een strijkijzer is een verwarmd toestel waarmee je kleren glad strijkt.",
+        "timestamp": "2026-11-22T19:14:23.661472"
       }
     ]
   },
