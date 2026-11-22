@@ -114,6 +114,12 @@ class ExpressionInjector:
     def _inject_puberal(self, text: str, tone: dict, personality: dict) -> str:
         expressiveness = tone.get("expressiveness", 0.5)
 
+        # personality["tone"] werd door generate_response_style() berekend
+        # maar door niemand gelezen. Enthousiast = meer kans op een uitroep.
+        kans = self.UITROEP_KANS
+        if personality.get("tone") == "enthousiast":
+            kans += 0.2
+
         # Bugfix (17 juli 2026): "...4 maanden.!" -- een "!" werd
         # zomaar achter een tekst geplakt die al op "." (of een ander
         # leesteken) eindigde, wat een lelijk dubbel leesteken gaf.
@@ -126,7 +132,7 @@ class ExpressionInjector:
         # sneller/directer op zinsniveau — een extra duwtje bovenop wat
         # expressiveness al doet, niet in de plaats ervan.
         if (personality.get("interrupts") and expressiveness > 0.6
-                and random.random() < self.UITROEP_KANS):
+                and random.random() < kans):
             return self._maak_uitroep(text)
 
         if expressiveness > 0.9:

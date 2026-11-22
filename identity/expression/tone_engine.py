@@ -116,6 +116,12 @@ class ToneEngine:
         # Impulsiviteit → meer expressie
         tone["expressiveness"] += impulsivity * 0.2
 
+        # expressiveness en emotional_color_intensity waren dode velden:
+        # niets las ze. Ze duwen nu allebei de expressiviteit, gecentreerd
+        # rond 0.5 zodat een neutrale waarde niets verandert.
+        tone["expressiveness"] += (traits.get("expressiveness", 0.5) - 0.5) * 0.5
+        tone["expressiveness"] += (traits.get("emotional_color_intensity", 0.5) - 0.5) * 0.3
+
         # Tempo hangt aan ENERGIE, niet aan impulsiviteit: anders zet een
         # hoge impulsiviteit élke toon op "snel" en verdwijnen de
         # _traag/_stil-profielen, inclusief de kalme focus-modus.

@@ -229,110 +229,128 @@
     "Seg, ge zijt terug, zeg!"
   ],
   "reflectie_voel_me": [
-    "Ewa… sinds wanneer voelt ge u {1}?",
-    "Wacht… wa maakt da ge u {1} voelt?",
-    "Hmm… hoe komt het da ge u {1} voelt?",
-    "Ewa… voelt ge u vaker {1}?"
+    "{1}? Sinds wanneer?",
+    "Serieus? {1}?",
+    "Hmm. {1} dus. Waardoor?",
+    "Awel. Al lang dat ge u {1} voelt?"
   ],
   "reflectie_ben": [
-    "Ewa… sinds wanneer zijt ge {1}?",
-    "Wacht… wa maakt da ge {1} zijt?",
-    "Hmm… hoe komt het da ge {1} zijt?"
+    "{1}? Serieus?",
+    "Hmm, {1} dus. Al lang?",
+    "Sinds wanneer zijt ge {1}?",
+    "{1}? Awel. Waarom?"
   ],
   "reflectie_heb": [
-    "Ewa… sinds wanneer hebt ge {1}?",
-    "Wacht… hoe komt da, da ge {1} hebt?",
-    "Hmm… hoe voelt het om {1} te hebben?"
+    "{1}? Serieus?",
+    "Hmm, ge hebt {1} dus.",
+    "Sinds wanneer hebt ge {1}?",
+    "{1}? Da's nie niks."
   ],
   "reflectie_wil": [
-    "Ewa… wa zou het betekenen als ge {1}?",
-    "Wacht… wa houdt u tegen om {1}?",
-    "Hmm… hoe belangrijk is het om {1}?"
+    "Ge wilt {1}? Doe het dan?",
+    "Hmm. Waarom nog nie?",
+    "{1}? Wa houdt u tegen?",
+    "Serieus, {1}? Doe maar."
   ],
   "reflectie_denk_dat": [
-    "Ewa… wa maakt da ge denkt da {1}?",
-    "Wacht… hoe zeker zijt ge da {1}?",
-    "Hmm… woar komt da vandaan, da {1}?"
+    "Denkt ge da? Waarom?",
+    "Hmm. Hoe zeker zijt ge daarvan?",
+    "Serieus? {1}?",
+    "Da's een gok, of nie?"
   ],
   "reflectie_vind": [
-    "Ewa… wa maakt da ge {1} vindt?",
-    "Wacht… hoe komt ge doarbij, da {1}?",
-    "Hmm… vindt ge da altijd al, da {1}?"
+    "Serieus? Waarom?",
+    "Hmm, ge vindt {1} dus.",
+    "Sinds wanneer vindt ge da?",
+    "{1}? Awel."
   ],
   "reflectie_had_moeten": [
-    "Ewa… wa maakt da ge denkt da ge {1} had moeten {2}?",
-    "Wacht… woarom twijfelt ge of ge {1} had moeten {2}?",
-    "Hmm… hoe had ge het liever anders gedaan?"
+    "Ge had {1} moeten {2}? Waarom dan?",
+    "Hmm. Hoe had ge het liever gedaan?",
+    "Twijfelt ge daarover? Waarom?",
+    "Serieus? Waarom twijfelt ge?"
   ],
   "reflectie_werk": [
-    "Ewa… ge werkt {1}… hoe komt da?",
-    "Wacht… {1}… te veel?",
-    "Hmm… wa maakt da ge {1} werkt?"
+    "{1}? Da's veel.",
+    "Hmm. Te veel werk?",
+    "Waarom {1}?",
+    "Serieus, {1}? En tijd?"
   ],
   "reflectie_vind_haar": [
-    "Ewa… ge vindt heur {1}?",
-    "Wacht… {1}… hoe lang al?",
-    "Hmm… wa maakt da ge heur {1} vindt?"
+    "Ge vindt heur {1}? Serieus?",
+    "Hmm. Al lang?",
+    "{1}? Vertel.",
+    "Awel. Waarom {1}?"
   ],
   "reflectie_kw_moe": [
-    "Ewa… ge klinkt moe. Wilt ge er iets over zeggen?",
-    "Hmm… al lang zo moe?",
-    "Tja… moe. Wa dan?"
+    "Moe? Waarom?",
+    "Serieus, moe? Al lang?",
+    "Da's klote. Waardoor?",
+    "Hmm. Ga efkes zitten?"
   ],
   "reflectie_kw_druk": [
-    "Ewa… klinkt druk. Wa is er?",
-    "Wacht… wa maakt het nu zo druk?"
+    "Druk? Waarmee?",
+    "Serieus? Wa is er?",
+    "Da's veel. Wa speelt er?",
+    "Hmm. Wa maakt het zo druk?"
   ],
   "reflectie_kw_blij": [
-    "Ewa… schoon. Wa maakt u blij?",
-    "Hmm… wa is er gebeurd?"
+    "Serieus? Wa is er gebeurd?",
+    "Schoon. Waarom?",
+    "Awel, vertel.",
+    "Blij? Goed zo. Waardoor?"
   ],
   "reflectie_kw_boos": [
-    "Ewa… da klinkt nie plezant. Wa is er gebeurd?",
-    "Wacht… woar zit het in?"
+    "Boos? Waarom?",
+    "Serieus, boos? Wa is er?",
+    "Da's klote. Wa is er gebeurd?",
+    "Hmm. Wa zit er in?"
   ],
   "reflectie_kw_dank": [
-    "Graag gedaan, zeg…",
-    "Ewa… geen probleem.",
-    "Hmm… altijd."
+    "Graag gedaan.",
+    "Geen probleem, toch?",
+    "Altijd."
   ],
   "reflectie_kw_frustratie_technisch": [
-    "Ewa… vervelend. Wa loopt er mis?",
-    "Wacht… wa werkt er nie?"
+    "Vervelend. Wa loopt er mis?",
+    "Serieus? Wa werkt er nie?",
+    "Kut. Wa gebeurt er?",
+    "Hmm. Wa zit er vast?"
   ],
   "reflectie_kw_geduld": [
-    "Ewa… uw geduld… wa speelt er?",
-    "Hmm… wa test het zo?"
+    "Geduld? Wa speelt er?",
+    "Serieus? Wa test dat?",
+    "Hmm. Wa houdt u bezig?"
   ],
   "reflectie_kw_werk": [
-    "Ewa… te veel werk? Wa speelt er?",
-    "Wacht… geen tijd… hoe komt da?",
-    "Hmm… achter… wa houdt u tegen?"
+    "Te veel werk? Waarmee?",
+    "Serieus? Wa speelt er?",
+    "Hmm. Geen tijd waarvoor?"
   ],
   "reflectie_kw_alleen": [
-    "Ewa… alleen… wilt ge er iets over zeggen?",
-    "Wacht… niemand… hoe komt da?",
-    "Hmm… ge mist iemand?"
+    "Alleen? Waarom?",
+    "Serieus? Wie mist ge?",
+    "Hmm. Da's niks plezant."
   ],
   "reflectie_kw_zenuwen": [
-    "Ewa… zenuwachtig… woarvoor?",
-    "Wacht… bang… wa is er?",
-    "Hmm… spannend… wilt ge erover praten?"
+    "Zenuwen? Waarvoor?",
+    "Serieus? Wa is er?",
+    "Hmm. Woar zit het?"
   ],
   "reflectie_kw_leuk": [
-    "Ewa… ge vindt heur plezant?",
-    "Wacht… verliefd… op heur?",
-    "Hmm… ge denkt aan heur?"
+    "Plezant? Serieus?",
+    "Ge vindt heur plezant? Vertel.",
+    "Hmm. Denkt ge aan heur?"
   ],
   "reflectie_kw_lichaam": [
-    "Ewa… pijn… woar?",
-    "Wacht… ziek… al lang?",
-    "Hmm… nie kunnen slapen… hoe komt da?"
+    "Pijn? Woar?",
+    "Ziek? Al lang?",
+    "Hmm. Nie kunnen slapen?"
   ],
   "reflectie_kw_twijfel": [
-    "Ewa… ge weet het nie… woarover?",
-    "Wacht… twijfel… wa houdt u tegen?",
-    "Hmm… ge snapt het nie… wa precies?"
+    "Ge weet het nie? Woarover?",
+    "Serieus? Wa houdt u tegen?",
+    "Hmm. Wa snapt ge nie?"
   ],
   "pauze_melding": {
     "opening": [
