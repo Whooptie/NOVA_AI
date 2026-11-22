@@ -116,6 +116,11 @@ class ToneEngine:
         if warmth > 0.6 and tone["tone"] not in ["geïrriteerd"]:
             tone["tone"] = "warm"
 
+        # Bravoure → brutale toon (de "brutaal_*"-profielen werden nog nooit gekozen).
+        # Enkel vanuit een neutrale basis; focus/irritatie/warm blijven ongemoeid.
+        if tone["tone"] == "neutraal" and traits.get("bravoure", 0.5) >= 0.65:
+            tone["tone"] = "brutaal"
+
         return tone
 
     # ---------------------------------------------------------

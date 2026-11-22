@@ -102,6 +102,14 @@ def get_help():
                                   Na elk label checkt Nova of de hertraining-drempel
                                   (10 nieuwe gelabelde zinnen) gehaald is.
 
+🗣️ BRUGSE STIJL (lichte West-Vlaamse woordkleur op Nova's antwoorden)
+  brugs aan                      (zet de Brugse stijl aan -- blijft bewaard na een reboot)
+  brugs uit                      (terug naar gewoon Nederlands)
+  brugs status                   (toont of de stijl aan staat, met een voorbeeldzin)
+                                  Regels (woorden, openers, slotwoorden) staan in
+                                  identity/expression/brugs_regels.json (woordkleur) en
+                                  brugs_sjablonen.json (vaste zinnen). Standaard UIT.
+
 🎯 INTENT CLASSIFIER (ML-fallback, Fase 1-6)
   intent debug                   (aantal voorbeelden, categorieën, laatste training)
   intent test <zin>               (test een zin rechtstreeks tegen de classifier)

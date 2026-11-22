@@ -52,6 +52,7 @@ class DebugCommands:
             (lambda t: t == "presence debug", self._presence_debug),
             (lambda t: t == "context", self._context),
             (lambda t: t == "topics debug", self._topics_debug),
+            (lambda t: t in ("brugs aan", "brugs uit", "brugs status"), self._brugs),
             (lambda t: t == "traits", self._traits),
             (lambda t: t == "emotie debug", self._emotie_debug),
             (lambda t: t.startswith("context geschiedenis"), self._context_geschiedenis),
@@ -816,6 +817,26 @@ class DebugCommands:
     # ------------------------------------------------------------------
     # Layer 6 — Personality
     # ------------------------------------------------------------------
+
+    def _brugs(self, user_input):
+        brugs = self.loader.loaded_modules.get("brugs_filter")
+        if brugs is None:
+            brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is None:
+            print(f"{C_RED}brugs_filter-module niet gevonden.{C_RESET}")
+            return
+
+        tekst = user_input.lower().strip()
+        if tekst == "brugs aan":
+            brugs.zet_modus(True)
+        elif tekst == "brugs uit":
+            brugs.zet_modus(False)
+
+        stand = "AAN" if brugs.aan else "UIT"
+        print(f"{C_CYAN}Brugse modus: {stand}{C_RESET}")
+        if brugs.aan:
+            voorbeeld = "Dat is niet waar, wat gaat dat snel."
+            print(f"{C_CYAN}  voorbeeld: {voorbeeld} -> {brugs.pas_toe(voorbeeld)}{C_RESET}")
 
     def _traits(self, user_input):
         resp_pipeline = self.loader.loaded_modules.get("response_pipeline")

@@ -321,6 +321,19 @@ class ResponseEngine:
         """
         varianten = self.templates[sjabloon_naam]
 
+        # Brugse stijl: staat "brugs aan", dan komen de zinnen uit
+        # identity/expression/brugs_sjablonen.json. Eigen sjabloon_naam
+        # ("..._brugs"), zodat de leerstatistieken apart blijven.
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is not None and getattr(brugs, "aan", False) is True:
+            try:
+                brugse = brugs.varianten(sjabloon_naam)
+            except Exception:
+                brugse = None
+            if isinstance(brugse, list) and brugse:
+                varianten = brugse
+                sjabloon_naam = sjabloon_naam + "_brugs"
+
         gewichten_module = self.layers.get("variant_feedback_logger")
         gekozen = kies_variant(
             varianten,

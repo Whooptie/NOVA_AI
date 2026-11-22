@@ -1095,6 +1095,20 @@ class WikipediaTeacher:
                                {"word": pending.get("titel") or pending["woord"]})
         return True
 
+    def _brugs_zin(self, sjabloon_naam, gewoon, **waarden):
+        """Brutale Brugse zin als "brugs aan" staat, anders (of bij een probleem) de gewone."""
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is None or getattr(brugs, "aan", False) is not True:
+            return gewoon
+        try:
+            import random
+            varianten = brugs.varianten(sjabloon_naam)
+            if isinstance(varianten, list) and varianten:
+                return random.choice(varianten).format(**waarden)
+        except Exception:
+            pass
+        return gewoon
+
     def on_wiki(self, data, event_type=None):
         # Bugfix #6 (18 juli 2026): defensief vangnet. chat.py stript
         # nu zelf al leestekens vóór dit event gepubliceerd wordt (zie
@@ -1114,7 +1128,8 @@ class WikipediaTeacher:
 
         # Feedback: Nova is aan het zoeken
         self.event_bus.publish("chat_response", {
-            "text": f"Even zoeken op Wikipedia voor '{word}'..."
+            "text": self._brugs_zin("wiki_zoeken",
+                                    f"Even zoeken op Wikipedia voor '{word}'...", word=word)
         })
 
         # 1. Wikipedia ophalen
@@ -1175,17 +1190,23 @@ class WikipediaTeacher:
                     # te lang maken voor Nova's typewriter-effect) — enkel
                     # de titels, kort en scanbaar.
                     self._pending_wiki_choice = {"woord": word, "kandidaten": kandidaten}
-                    vraag = f"'{word}' kan meerdere dingen betekenen. Welke bedoel je?\n"
+                    vraag = self._brugs_zin(
+                        "wiki_keuzevraag_kop",
+                        f"'{word}' kan meerdere dingen betekenen. Welke bedoel je?\n",
+                        word=word)
                     for i, k in enumerate(kandidaten, start=1):
                         vraag += f"  {i}. {k}\n"
-                    vraag += "Typ het nummer van je keuze."
+                    vraag += self._brugs_zin("wiki_keuze_slot", "Typ het nummer van je keuze.")
                     self.event_bus.publish("chat_response", {"text": vraag})
                     return
 
         if not summary:
             self.event_bus.publish("chat_response", {
-                "text": f"Ik kon geen bruikbare definitie vinden voor '{word}' op Wikipedia. "
-                        f"Leer het me met: teach {word} <betekenis>"
+                "text": self._brugs_zin(
+                    "wiki_niets_gevonden",
+                    f"Ik kon geen bruikbare definitie vinden voor '{word}' op Wikipedia. "
+                    f"Leer het me met: teach {word} <betekenis>",
+                    word=word)
             })
             return
 
@@ -1194,8 +1215,11 @@ class WikipediaTeacher:
 
         if not definition:
             self.event_bus.publish("chat_response", {
-                "text": f"Ik kon geen bruikbare definitie vinden voor '{word}' op Wikipedia. "
-                        f"Leer het me met: teach {word} <betekenis>"
+                "text": self._brugs_zin(
+                    "wiki_niets_gevonden",
+                    f"Ik kon geen bruikbare definitie vinden voor '{word}' op Wikipedia. "
+                    f"Leer het me met: teach {word} <betekenis>",
+                    word=word)
             })
             return
 

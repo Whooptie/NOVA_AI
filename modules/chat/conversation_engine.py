@@ -217,15 +217,18 @@ class ConversationEngine:
             return None  # gemiddelde staat, niets noemenswaardigs
 
         variant_logger = self.event_bus.modules.get("variant_feedback_logger")
+        varianten, sjabloon_naam = self._brugs_of_gewoon(varianten, sjabloon_naam)
         opening = kies_variant(
             varianten,
             sjabloon_naam=sjabloon_naam,
             event_bus=self.event_bus,
             variant_feedback_logger=variant_logger,
         )
+        mood_afsluitingen, mood_afsluiting_naam = self._brugs_of_gewoon(
+            self.MOOD_AFSLUITINGEN, "mood_afsluiting")
         afsluiting = kies_variant(
-            self.MOOD_AFSLUITINGEN,
-            sjabloon_naam="mood_afsluiting",
+            mood_afsluitingen,
+            sjabloon_naam=mood_afsluiting_naam,
             event_bus=self.event_bus,
             variant_feedback_logger=variant_logger,
         )
@@ -236,6 +239,18 @@ class ConversationEngine:
         self._sla_state_op()
 
         return volledige_tekst
+
+    def _brugs_of_gewoon(self, gewone_varianten, sjabloon_naam):
+        """Brugse varianten als "brugs aan" staat en die bestaan, anders de gewone."""
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is not None and getattr(brugs, "aan", False) is True:
+            try:
+                brugse = brugs.varianten(sjabloon_naam)
+            except Exception:
+                brugse = None
+            if isinstance(brugse, list) and brugse:
+                return brugse, sjabloon_naam + "_brugs"
+        return gewone_varianten, sjabloon_naam
 
     def probeer_activiteit_observatie(self):
         context_manager = self.event_bus.modules.get("context_manager")
@@ -262,23 +277,27 @@ class ConversationEngine:
         # uitsluiten_indices vermeden als duur_tekst ontbreekt, in
         # plaats van de lijst zelf te filteren (dat zou de betekenis
         # van elke index laten verschuiven tussen aanroepen).
+        openingen, opening_naam = self._brugs_of_gewoon(
+            self.ACTIVITEIT_OPENINGEN, "activiteit_observatie_opening")
         uit_te_sluiten = [
-            i for i, opening in enumerate(self.ACTIVITEIT_OPENINGEN)
+            i for i, opening in enumerate(openingen)
             if "{duur}" in opening
         ] if duur_tekst is None else None
 
         variant_logger = self.event_bus.modules.get("variant_feedback_logger")
         opening = kies_variant(
-            self.ACTIVITEIT_OPENINGEN,
-            sjabloon_naam="activiteit_observatie_opening",
+            openingen,
+            sjabloon_naam=opening_naam,
             event_bus=self.event_bus,
             variant_feedback_logger=variant_logger,
             entity=activiteit_raw,
             uitsluiten_indices=uit_te_sluiten,
         )
+        afsluitingen, afsluiting_naam = self._brugs_of_gewoon(
+            self.ACTIVITEIT_AFSLUITINGEN, "activiteit_observatie_afsluiting")
         afsluiting = kies_variant(
-            self.ACTIVITEIT_AFSLUITINGEN,
-            sjabloon_naam="activiteit_observatie_afsluiting",
+            afsluitingen,
+            sjabloon_naam=afsluiting_naam,
             event_bus=self.event_bus,
             variant_feedback_logger=variant_logger,
             entity=activiteit_raw,

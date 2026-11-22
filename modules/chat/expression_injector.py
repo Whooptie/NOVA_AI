@@ -37,6 +37,19 @@ class ExpressionInjector:
             return 0.0
 
     # ---------------------------------------------------------
+    # 0. Brugse stijl-laag (modules/chat/brugs_filter.py)
+    # ---------------------------------------------------------
+    def _brugs(self, text: str, response_style: str) -> str:
+        modules = getattr(self.event_bus, "modules", {}) or {}
+        brugs = modules.get("brugs_filter")
+        if brugs is None:
+            return text
+        try:
+            return brugs.pas_toe(text, response_style)
+        except Exception:
+            return text
+
+    # ---------------------------------------------------------
     # 1. Emoji-injectie
     # ---------------------------------------------------------
     def _inject_emojis(self, text: str, tone: dict) -> str:
@@ -157,6 +170,9 @@ class ExpressionInjector:
         personality = data.get("personality", {})
         emotion = data.get("emotion", {})
         response_style = data.get("response_style", "normaal")
+
+        # Brugse stijl-laag eerst: de rest (uitroep, gebaar, emoji) komt erna.
+        text = self._brugs(text, response_style)
 
         # Layer 5: "kort" betekent Kevin is duidelijk met iets anders
         # bezig (bv. actief aan het coderen) — dan GEEN extra flair,

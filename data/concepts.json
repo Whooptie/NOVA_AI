@@ -124276,7 +124276,7 @@
       {
         "sense_id": "schaar#1",
         "definition": "Een schaar is een gereedschap met twee scherpe bladen die langs elkaar bewegen, waarmee je papier, stof of haar knipt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij knipte het papier door met een schaar.",
           "De schaar ligt in de la."
@@ -124307,7 +124307,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:10.095633",
-      "updated_at": "2026-11-21T19:20:31.249340",
+      "updated_at": "2026-11-21T19:29:24.037046",
       "sources": [
         "auto"
       ],
@@ -124430,7 +124430,7 @@
       {
         "sense_id": "schroevendraaier#1",
         "definition": "Een schroevendraaier is een gereedschap met een steel en een platte of kruisvormige punt, waarmee je schroeven vast- of losdraait.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij draaide de schroef los met een schroevendraaier.",
           "De schroevendraaier ligt in de gereedschapskist."
@@ -124461,7 +124461,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:18.408754",
-      "updated_at": "2026-11-21T19:25:24.545380",
+      "updated_at": "2026-11-21T19:30:43.473567",
       "sources": [
         "auto"
       ],
@@ -124584,7 +124584,7 @@
       {
         "sense_id": "tang#1",
         "definition": "Een tang is een gereedschap met twee armen, waarmee je iets stevig vastpakt, vasthoudt of doorknipt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij trok de spijker met een tang uit de plank.",
           "Pak de moer vast met de tang."
@@ -124615,7 +124615,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:27.239402",
-      "updated_at": "2026-11-21T19:20:48.210883",
+      "updated_at": "2026-11-21T19:29:28.984159",
       "sources": [
         "auto"
       ],
@@ -124738,7 +124738,7 @@
       {
         "sense_id": "boor#1",
         "definition": "Een boor is een gereedschap met een scherpe, draaiende punt, waarmee je gaten maakt in hout, steen of metaal.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij zette een boor in de machine.",
           "Met deze boor maak je een gat in de muur."
@@ -124769,7 +124769,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:34.719542",
-      "updated_at": "2026-11-21T19:21:07.545148",
+      "updated_at": "2026-11-21T19:29:33.077551",
       "sources": [
         "auto"
       ],
@@ -124892,7 +124892,7 @@
       {
         "sense_id": "naald#1",
         "definition": "Een naald is een dun, puntig voorwerp met een oog, waarmee je draad door stof trekt om te naaien.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Ze rijgde de draad door het oog van de naald.",
           "Hij prikte zich aan een naald."
@@ -124915,7 +124915,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:45.848169",
-      "updated_at": "2026-11-21T19:21:29.479641",
+      "updated_at": "2026-11-21T19:29:37.399219",
       "sources": [
         "auto"
       ],
@@ -125027,7 +125027,7 @@
       {
         "sense_id": "kompas#1",
         "definition": "Een kompas is een instrument met een magnetische naald die naar het noorden wijst, waarmee je de richting bepaalt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "De wandelaar keek op zijn kompas.",
           "Zonder kompas raakten ze verdwaald in het bos."
@@ -125058,7 +125058,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:25:52.792334",
-      "updated_at": "2026-11-21T19:21:46.004890",
+      "updated_at": "2026-11-21T19:29:41.382779",
       "sources": [
         "auto"
       ],
@@ -125181,7 +125181,7 @@
       {
         "sense_id": "microscoop#1",
         "definition": "Een microscoop is een instrument waarmee je heel kleine dingen sterk uitvergroot kunt bekijken.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Onder de microscoop zagen we de cellen.",
           "De leraar stelde de microscoop scherp."
@@ -125212,7 +125212,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:00.972831",
-      "updated_at": "2026-11-21T19:22:01.904103",
+      "updated_at": "2026-11-21T19:29:59.968562",
       "sources": [
         "auto"
       ],
@@ -125335,7 +125335,7 @@
       {
         "sense_id": "telescoop#1",
         "definition": "Een telescoop is een instrument waarmee je ver verwijderde dingen, zoals sterren en planeten, groter en scherper ziet.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij keek door de telescoop naar de maan.",
           "De sterrenkundige richtte de telescoop op Jupiter."
@@ -125366,7 +125366,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:09.395196",
-      "updated_at": "2026-11-21T19:22:18.750205",
+      "updated_at": "2026-11-21T19:30:01.130056",
       "sources": [
         "auto"
       ],
@@ -125489,7 +125489,7 @@
       {
         "sense_id": "magneet#1",
         "definition": "Een magneet is een voorwerp dat ijzer en sommige andere metalen aantrekt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "De magneet bleef aan de koelkast hangen.",
           "Met een magneet raap je spijkers op."
@@ -125520,7 +125520,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:33.133535",
-      "updated_at": "2026-11-21T19:22:36.918069",
+      "updated_at": "2026-11-21T19:30:07.101300",
       "sources": [
         "auto"
       ],
@@ -125643,7 +125643,7 @@
       {
         "sense_id": "kachel#1",
         "definition": "Een kachel is een toestel dat een ruimte verwarmt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "De kachel staat aan in de woonkamer.",
           "Ze zette de kachel hoger."
@@ -125674,7 +125674,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:40.329120",
-      "updated_at": "2026-11-21T19:22:51.660329",
+      "updated_at": "2026-11-21T19:30:11.116810",
       "sources": [
         "auto"
       ],
@@ -125797,7 +125797,7 @@
       {
         "sense_id": "weegschaal#1",
         "definition": "Een weegschaal is een toestel waarmee je het gewicht van iets bepaalt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Ze woog de bloem af op de weegschaal.",
           "De pakketjes lagen op de weegschaal."
@@ -125828,7 +125828,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:26:47.188585",
-      "updated_at": "2026-11-21T19:23:20.363278",
+      "updated_at": "2026-11-21T19:30:15.378512",
       "sources": [
         "auto"
       ],
@@ -127219,7 +127219,7 @@
       {
         "sense_id": "kaars#1",
         "definition": "Een kaars is een staafje was met een lont dat brandt en licht geeft.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Ze stak een kaars aan op tafel.",
           "De kaars brandde langzaam op."
@@ -127242,7 +127242,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:33:39.507764",
-      "updated_at": "2026-11-21T19:23:35.926170",
+      "updated_at": "2026-11-21T19:30:19.772647",
       "sources": [
         "auto"
       ],
@@ -127402,7 +127402,7 @@
       {
         "sense_id": "verrekijker#1",
         "definition": "Een verrekijker is een instrument met twee lenzen waarmee je ver weg gelegen dingen dichterbij ziet.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij bekeek de vogels door de verrekijker.",
           "Neem de verrekijker mee naar het strand."
@@ -127433,7 +127433,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:34:37.014450",
-      "updated_at": "2026-11-21T19:23:54.063423",
+      "updated_at": "2026-11-21T19:30:23.585725",
       "sources": [
         "auto"
       ],
@@ -127508,7 +127508,7 @@
       {
         "sense_id": "liniaal#1",
         "definition": "Een liniaal is een lange, rechte lat met streepjes, waarmee je lijnen trekt en lengtes meet.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij trok een rechte lijn met de liniaal.",
           "De liniaal is dertig centimeter lang."
@@ -127531,7 +127531,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:34:44.060928",
-      "updated_at": "2026-11-21T19:24:11.201922",
+      "updated_at": "2026-11-21T19:30:27.651940",
       "sources": [
         "auto"
       ],
@@ -127595,7 +127595,7 @@
       {
         "sense_id": "zeef#1",
         "definition": "Een zeef is een schaal met kleine gaatjes, waarmee je vloeistof van vaste stof scheidt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Ze goot de pasta door een zeef.",
           "Met een zeef haalde hij de stukjes uit de soep."
@@ -127614,8 +127614,16 @@
             "target": "schaal",
             "confidence": 0.9,
             "source": "auto_extract",
-            "status": "unverified",
+            "status": "rejected",
             "created_at": "2026-11-21T19:24:15.654749"
+          },
+          {
+            "type": "is_a",
+            "target": "keukengerei",
+            "confidence": 1.0,
+            "source": "user",
+            "status": "confirmed",
+            "created_at": "2026-11-21T19:28:51.137571"
           }
         ],
         "source": "user",
@@ -127626,12 +127634,12 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:34:51.024470",
-      "updated_at": "2026-11-21T19:24:34.095759",
+      "updated_at": "2026-11-21T19:30:31.377009",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:24:15.561571",
-      "usage_count": 3,
+      "last_used_at": "2026-11-21T19:28:51.137581",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:34:51.024726",
@@ -127643,6 +127651,10 @@
         },
         {
           "timestamp": "2026-11-21T19:24:15.561571",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-21T19:28:51.137581",
           "confidence": 1.0
         }
       ]
@@ -127693,6 +127705,30 @@
           "confidence": 0.9
         },
         "timestamp": "2026-11-21T19:24:15.654764"
+      },
+      {
+        "event_type": "relation_rejected",
+        "source": "user",
+        "sense_id": "zeef#1",
+        "relation": {
+          "type": "is_a",
+          "target": "schaal"
+        },
+        "old_value": "unverified",
+        "new_value": "rejected",
+        "reason": "een zeef is geen schaal maar een keukengerei",
+        "timestamp": "2026-11-21T19:28:44.126443"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "user",
+        "sense_id": "zeef#1",
+        "relation": {
+          "type": "is_a",
+          "target": "keukengerei",
+          "confidence": 1.0
+        },
+        "timestamp": "2026-11-21T19:28:51.137579"
       }
     ]
   },
@@ -127701,7 +127737,7 @@
       {
         "sense_id": "trechter#1",
         "definition": "Een trechter is een kegelvormig voorwerp waarmee je vloeistof in een smalle opening giet.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij goot de olie met een trechter in de fles.",
           "De trechter paste precies in de opening."
@@ -127724,7 +127760,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:34:57.754653",
-      "updated_at": "2026-11-21T19:24:51.081111",
+      "updated_at": "2026-11-21T19:30:34.866890",
       "sources": [
         "auto"
       ],
@@ -127980,7 +128016,7 @@
       {
         "sense_id": "tandenborstel#1",
         "definition": "Een tandenborstel is een kleine borstel met een steel, waarmee je je tanden poetst.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Ze poetste haar tanden met een zachte tandenborstel.",
           "Vergeet je tandenborstel niet."
@@ -128003,7 +128039,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:35:36.797288",
-      "updated_at": "2026-11-21T19:25:07.969457",
+      "updated_at": "2026-11-21T19:30:39.583628",
       "sources": [
         "auto"
       ],
@@ -129637,7 +129673,7 @@
       {
         "sense_id": "vork#1",
         "definition": "Een vork is een eetgerei met een steel en meerdere punten, waarmee je voedsel prikt en naar je mond brengt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Hij prikte een stuk vlees aan zijn vork.",
           "De vork lag naast het bord."
@@ -129668,7 +129704,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-21T18:50:25.858624",
-      "updated_at": "2026-11-21T19:19:54.001377",
+      "updated_at": "2026-11-21T19:29:15.640161",
       "sources": [
         "auto"
       ],
@@ -129743,7 +129779,7 @@
       {
         "sense_id": "kam#1",
         "definition": "Een kam is een plat voorwerp met een rij tanden, waarmee je je haar ontward en in model brengt.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "Ze haalde een kam door haar haar.",
           "Mijn kam ligt op de wastafel."
@@ -129766,7 +129802,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-21T18:50:32.879623",
-      "updated_at": "2026-11-21T19:20:10.126321",
+      "updated_at": "2026-11-21T19:29:19.962296",
       "sources": [
         "auto"
       ],
@@ -132638,7 +132674,7 @@
       {
         "sense_id": "tent#1",
         "definition": "Een tent is een onderkomen van doek dat je opzet om buiten in te slapen.",
-        "pos": null,
+        "pos": "noun",
         "examples": [
           "We zetten onze tent op bij het meer.",
           "In de tent bleef het droog."
@@ -132669,7 +132705,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-21T19:02:32.249762",
-      "updated_at": "2026-11-21T19:25:41.576766",
+      "updated_at": "2026-11-21T19:30:47.099824",
       "sources": [
         "auto"
       ],

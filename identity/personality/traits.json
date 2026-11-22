@@ -1,9 +1,9 @@
 {
   "energy_level": 0.68,
-  "impulsivity": 0.32,
-  "expressiveness": 0.32,
+  "impulsivity": 0.42,
+  "expressiveness": 0.5,
   "emotional_color_intensity": 0.45,
-  "reactivity": 0.31,
+  "reactivity": 0.42,
   "curiosity": 0.875,
   "playfulness": 0.72,
   "associative_thinking": 0.825,

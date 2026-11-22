@@ -99,6 +99,18 @@
    "tests": 5272,
    "threads": 42,
    "zware_functies": 38
+  },
+  "2026-11-22": {
+   "antwoorden": 56.6,
+   "concepten": 1462,
+   "data_mb": 8455.2,
+   "opstart_s": 4.2,
+   "rooktest": 100.0,
+   "rss_mb": 815.5,
+   "taalbegrip": 97.9,
+   "tests": 5273,
+   "threads": 42,
+   "zware_functies": 38
   }
  },
  "versie": 1

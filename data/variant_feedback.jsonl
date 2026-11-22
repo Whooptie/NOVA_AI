@@ -706,3 +706,12 @@
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Serieus nog steeds?", "entity": "coding", "response_style": null, "moment": "2026-11-21T20:02:50.319332", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795287770.3189952, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795287770.3194597, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 4, "variant_tekst": "Ja {sender}, hey. Zeg het moar.", "entity": null, "response_style": "normaal", "moment": "2026-11-22T10:39:12.633286", "reactie_sentiment": null}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1795340352.6335533, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "onbekend_brugs", "gekozen_variant_index": 1, "variant_tekst": "Ewa, da zegt mij niks.", "entity": "pijp", "response_style": "normaal", "moment": "2026-11-22T10:39:33.300069", "reactie_sentiment": null}
+{"sjabloon_naam": "onbekend_brugs", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795340373.3002872, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "variant_tekst": "Wacht… nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-11-22T10:39:47.169267", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "variant_tekst": "Serieus nog steeds?", "entity": "coding", "response_style": null, "moment": "2026-11-22T10:39:47.169793", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1795340387.1694486, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795340387.1699338, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "onbekend_brugs", "gekozen_variant_index": 4, "variant_tekst": "Allez, wa is '{entity}' nu weer?", "entity": "pijp", "response_style": "normaal", "moment": "2026-11-22T10:49:44.825673", "reactie_sentiment": null}

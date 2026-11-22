@@ -136,7 +136,7 @@ class ResponsePipeline:
         tone = self.tone_engine.generate_tone(self.personality, self.emotion)
 
         # 3) Basis-tekst (zonder emoji’s / flair)
-        base = vervolg or f"Hey {sender}, leuk dat je er bent"
+        base = vervolg or self._groet_tekst(sender)
 
         # 4) Stuur ruwe data naar pipeline_response
         self.event_bus.publish("pipeline_response", {
@@ -146,6 +146,37 @@ class ResponsePipeline:
             "emotion_state": self.emotion.state,
             "response_style": self._get_response_style()
         })
+
+    def _brugs_of_gewoon(self, gewone_varianten, sjabloon_naam):
+        """Brugse varianten als "brugs aan" staat en die bestaan, anders de gewone."""
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        if brugs is not None and getattr(brugs, "aan", False) is True:
+            try:
+                brugse = brugs.varianten(sjabloon_naam)
+            except Exception:
+                brugse = None
+            if isinstance(brugse, list) and brugse:
+                return brugse, sjabloon_naam + "_brugs"
+        return gewone_varianten, sjabloon_naam
+
+    def _groet_tekst(self, sender):
+        """De gewone groet, of (bij "brugs aan") een brutale Brugse variant."""
+        gewoon = f"Hey {sender}, leuk dat je er bent"
+        varianten, naam = self._brugs_of_gewoon(None, "groet")
+        if not varianten:
+            return gewoon
+        try:
+            tekst = kies_variant(
+                varianten,
+                sjabloon_naam=naam,
+                event_bus=self.event_bus,
+                variant_feedback_logger=self.event_bus.modules.get("variant_feedback_logger"),
+                entity=None,
+                response_style=self._get_response_style(),
+            )
+            return tekst.format(sender=sender)
+        except Exception:
+            return gewoon
 
     # Punt 30 (10 november 2026): na het "welkom terug" van afwezigheid.py geen tweede
     # begroeting. Een gesloten lijst vaste zinnen (geen generatie), puberaal en bijdehand.
@@ -292,9 +323,11 @@ class ResponsePipeline:
 
         if base is None:
             response_style = self._get_response_style()
+            fallback_varianten, fallback_naam = self._brugs_of_gewoon(
+                self._sjablonen_fallback, "fallback_algemeen")
             base = kies_variant(
-                self._sjablonen_fallback,
-                sjabloon_naam="fallback_algemeen",
+                fallback_varianten,
+                sjabloon_naam=fallback_naam,
                 event_bus=self.event_bus,
                 variant_feedback_logger=self.event_bus.modules.get("variant_feedback_logger"),
                 entity=None,

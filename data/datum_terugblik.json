@@ -13,23 +13,23 @@
     "semantic": "2026-11-21"
   },
   "laatste_analyse": {
-    "datum": "2026-11-21",
-    "actieve_dagen": 89,
+    "datum": "2026-11-22",
+    "actieve_dagen": 90,
     "reden": null,
     "beste": {
       "afstand_maanden": 1,
       "woorden": [
-        "allemaal",
-        "concept",
-        "betekenissen"
+        "vogel",
+        "sluit",
+        "concept"
       ],
-      "score": 8.88
+      "score": 14.54
     },
     "afgewezen": [
       "3 mnd: 0 gedeeld opvallend woord(en), score 0.0 (te laag)",
-      "6 mnd: te weinig berichten rond 21 mei (0)",
-      "12 mnd: te weinig berichten rond 21 november (0)",
-      "24 mnd: te weinig berichten rond 21 november (0)"
+      "6 mnd: te weinig berichten rond 22 mei (0)",
+      "12 mnd: te weinig berichten rond 22 november (0)",
+      "24 mnd: te weinig berichten rond 22 november (0)"
     ]
   }
 }

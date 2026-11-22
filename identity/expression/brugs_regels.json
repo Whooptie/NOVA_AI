@@ -1,0 +1,42 @@
+{
+  "_uitleg": "Regels voor modules/chat/brugs_filter.py. Lichte West-Vlaamse/Brugse kleur: losse woordvervangingen, geen echt dialect. Voeg gerust woorden toe; hele woorden worden vervangen, hoofdletter blijft behouden.",
+  "woorden": {
+    "niet": "nie",
+    "dat": "da",
+    "wat": "wa",
+    "maar": "moar",
+    "naar": "noar",
+    "waar": "woar",
+    "waarom": "woarom",
+    "gaat": "goat",
+    "jij": "gie",
+    "ja": "jo",
+    "nou": "ewa",
+    "heel": "vree",
+    "goed": "goe",
+    "mooi": "schoon",
+    "leuk": "plezant",
+    "snel": "rap",
+    "niets": "niks"
+  },
+  "openers": [
+    "Ewa,",
+    "Allez,",
+    "Seg,",
+    "Ja doeg,",
+    "Pff,"
+  ],
+  "opener_kans": 0.25,
+  "opener_max_tekenlengte": 140,
+  "slotwoorden": [
+    ", zeg.",
+    ", ee.",
+    ", jo."
+  ],
+  "slot_kans": 0.15,
+  "slot_max_tekenlengte": 80,
+  "namen_niet_kleinmaken": [
+    "Kevin",
+    "Nova"
+  ]
+}

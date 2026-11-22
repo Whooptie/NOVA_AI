@@ -1,0 +1,150 @@
+{
+  "_uitleg": "Brutale Brugse varianten van Nova's vaste zinnen. Worden ALLEEN gebruikt als de Brugse modus aan staat ('brugs aan'). Elke variant moet exact dezelfde invulplekken gebruiken als het gewone sjabloon (zie de _plaatshouders hieronder), anders faalt .format(). Gebruik geen losse accolades of apostrofs rond woorden ('t); gebruik 'het'.",
+  "_plaatshouders": {
+    "groet": [
+      "sender"
+    ],
+    "fallback_algemeen": [],
+    "definitie": [
+      "entity",
+      "definition"
+    ],
+    "met_associatie": [
+      "entity",
+      "definition",
+      "associatie"
+    ],
+    "is_a_fallback": [
+      "entity",
+      "parent"
+    ],
+    "onbekend": [
+      "entity"
+    ],
+    "timing_hint": [
+      "uur"
+    ],
+    "activiteit_observatie_opening": [
+      "activiteit",
+      "duur"
+    ],
+    "activiteit_observatie_afsluiting": [],
+    "mood_energiek_opening": [],
+    "mood_rustig_opening": [],
+    "mood_overprikkeld_opening": [],
+    "mood_afsluiting": [],
+    "wiki_zoeken": [
+      "word"
+    ],
+    "wiki_keuzevraag_kop": [
+      "word"
+    ],
+    "wiki_keuze_slot": [],
+    "wiki_niets_gevonden": [
+      "word"
+    ]
+  },
+  "groet": [
+    "Ewa {sender}, ge zijt der weer.",
+    "Allez {sender}, wa is het?",
+    "Hey {sender}. Ja, ik ben der.",
+    "Seg {sender}, wa moet ge nu weer?",
+    "Ja {sender}, hey. Zeg het moar.",
+    "{sender}! Ge hebt tijd gevonden, zeg.",
+    "Ewa, {sender}. Ik zat nie op u te wachten, hoor."
+  ],
+  "fallback_algemeen": [
+    "Awel… geen idee.",
+    "Pff… da ken ik nie.",
+    "Wacht… doar kom ik nie uit.",
+    "Zoek da moar zelf op, zeg.",
+    "Whatever. Geen flauw idee.",
+    "Tja… da zegt mij niks, ee."
+  ],
+  "definitie": [
+    "'{entity}'? Da's: {definition}",
+    "Ewa, '{entity}' is: {definition}",
+    "Seg, '{entity}' ken ik als: {definition}",
+    "Da weet ge toch al? '{entity}': {definition}",
+    "Allez, '{entity}': {definition}"
+  ],
+  "met_associatie": [
+    "'{entity}'? Da's: {definition} Trouwens, ge zegt da vaak samen met '{associatie}'.",
+    "Ewa, '{entity}' is: {definition} Ge steekt da altijd bij '{associatie}', zeg.",
+    "'{entity}', ik ken da als: {definition} Bij u hoort da meestal bij '{associatie}'.",
+    "Allez, '{entity}': {definition} Ge denkt da blijkbaar vaak samen met '{associatie}'.",
+    "Seg, '{entity}' is: {definition} En ja, ik zie da vaak bij '{associatie}' staan."
+  ],
+  "is_a_fallback": [
+    "'{entity}' is een soort {parent}, meer weet ik nie.",
+    "'{entity}'? Hoort bij {parent}, geloof ik.",
+    "Ik weet nie exact wa '{entity}' is, moar het zit in de buurt van {parent}.",
+    "Allez, '{entity}' valt onder {parent}. Meer krijgt ge nie.",
+    "'{entity}', da's vooral een soort {parent}."
+  ],
+  "onbekend": [
+    "Pff… '{entity}' ken ik nie.",
+    "Ewa, da zegt mij niks.",
+    "'{entity}'? Nooit van gehoord.",
+    "Wacht… '{entity}' is nieuw voor mij.",
+    "Allez, wa is '{entity}' nu weer?"
+  ],
+  "timing_hint": [
+    "Trouwens, ge vraagt da meestal rond {uur}u.",
+    "Ge zijt hier vaak rond {uur}u mee bezig, ee.",
+    "Opvallend: da komt bij u meestal rond {uur}u."
+  ],
+  "activiteit_observatie_opening": [
+    "Ewa… ge zijt al een tijdje met {activiteit} bezig.",
+    "Pff… al {duur} aan het {activiteit}.",
+    "Wacht… nog steeds aan het {activiteit}?",
+    "Allez, ge zit al een poosje in {activiteit}.",
+    "Seg, nog altijd {activiteit}? Echt waar?"
+  ],
+  "activiteit_observatie_afsluiting": [
+    "Hoe goat het, ee?",
+    "Serieus, nog altijd?",
+    "Doe het dan zelf, zeg.",
+    "Pauze nemen mag ook, hoor."
+  ],
+  "mood_energiek_opening": [
+    "Ik zit vandaag vree vol energie, eerlijk gezegd.",
+    "Ik zit boordevol energie, zeg.",
+    "Ik voel mij nu vree levendig, ee."
+  ],
+  "mood_rustig_opening": [
+    "Ik ben nu wa rustiger, zeg.",
+    "Het is nu wa stiller binnen bij mij, zeg.",
+    "Ik zit nu in kalme modus."
+  ],
+  "mood_overprikkeld_opening": [
+    "Ik ben nu wa overprikkeld, eerlijk gezegd.",
+    "Der komt nu vree veel tegelijk binnen, zeg.",
+    "Ik kan alles nu moeilijker rustig verwerken, ee."
+  ],
+  "mood_afsluiting": [
+    "Hoe is het met u?",
+    "En bij u, hoe zit da?",
+    "Hoe zit het bij u?"
+  ],
+  "wiki_zoeken": [
+    "Ewa, ik zoek '{word}' wel even op Wikipedia...",
+    "Allez, '{word}' op Wikipedia... momentje.",
+    "Pff, {word}... ik zoek het op Wikipedia."
+  ],
+  "wiki_keuzevraag_kop": [
+    "'{word}' kan van alles zijn, zeg. Wa bedoelt ge?\n",
+    "Ewa, '{word}' kan meerdere dingen zijn. Welke bedoelt ge?\n",
+    "Allez, '{word}' is nie duidelijk. Welke bedoelt ge?\n"
+  ],
+  "wiki_keuze_slot": [
+    "Typ moar het nummer van uw keuze.",
+    "Typ gewoon het nummer, zeg.",
+    "Nummer typen, moar vlug."
+  ],
+  "wiki_niets_gevonden": [
+    "Ik vond niks bruikbaars voor '{word}' op Wikipedia. Leer het me met: teach {word} <betekenis>",
+    "Pff, '{word}' staat er nie echt op Wikipedia. Leer het me met: teach {word} <betekenis>",
+    "Doar vind ik niks over '{word}'. Leer het me moar met: teach {word} <betekenis>"
+  ]
+}
