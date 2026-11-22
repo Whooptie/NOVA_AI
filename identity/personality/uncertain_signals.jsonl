@@ -2332,3 +2332,5 @@
 {"text": "laat me", "signaal": "focus", "model_signaal": "focus", "marge": 0.0856, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:29.707903"}
 {"text": "nee", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:32.864838"}
 {"text": "boe", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:37.911445"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-22T12:35:37.213756"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-22T12:35:45.427744"}

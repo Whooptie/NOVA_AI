@@ -128,8 +128,8 @@ class ResponseEngine:
             "onbekend": [
                 "Pff, '{entity}' ken ik niet.",
                 "Geen idee wat '{entity}' is.",
-                "'{entity}'? Nooit van gehoord.",
-                "Hmm, dat is nieuw voor mij.",
+                "'{entity}'? Nooit van gehoord, kweenie.",
+                "Hmm, dat weet ik niet.",
                 "Kweenie, '{entity}' zegt me niks.",
             ],
             "timing_hint": [
@@ -494,6 +494,11 @@ class ResponseEngine:
                 definition = None
 
         if definition:
+            # De definitie is inhoud, geen stijl: tussen ⟦ ⟧ zodat
+            # brugs_filter.py er geen dialect van maakt (zie _BESCHERMD
+            # daar, en de strip in expression_injector._brugs()).
+            definition = f"⟦{definition}⟧"
+
             # --- Layer 1: is er een sterke, persoonlijke associatie? ---
             # We proberen dit ALLEEN als er al een definitie is gevonden
             # — een associatie zonder definitie zou een vreemde,

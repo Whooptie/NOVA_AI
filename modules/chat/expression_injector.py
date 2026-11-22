@@ -49,9 +49,10 @@ class ExpressionInjector:
         if brugs is None:
             return text
         try:
-            return brugs.pas_toe(text, response_style)
+            tekst = brugs.pas_toe(text, response_style)
         except Exception:
-            return text
+            tekst = text
+        return tekst.replace("⟦", "").replace("⟧", "")
 
     # ---------------------------------------------------------
     # 1. Emoji-injectie

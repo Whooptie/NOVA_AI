@@ -720,3 +720,6 @@
 {"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 5, "reactie_sentiment": "neutraal_gemengd", "moment": 1795341983.2807148, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 0, "variant_tekst": "Ewa… ge zijt al een tijdje met {activiteit} bezig.", "entity": "coding", "response_style": null, "moment": "2026-11-22T11:06:37.959234", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 1, "variant_tekst": "Serieus, nog altijd?", "entity": "coding", "response_style": null, "moment": "2026-11-22T11:06:37.959656", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795341997.9593954, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795341997.9597805, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 0, "variant_tekst": "Ewa {sender}, ge zijt der weer.", "entity": null, "response_style": "normaal", "moment": "2026-11-22T12:35:45.444915", "reactie_sentiment": null}
