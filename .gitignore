@@ -12,5 +12,5 @@ data/interactions.db
 data/models
 data/backups/
 data/interactions.jsonl
-
+data/brugs_modus.json
 interactions_*.jsonl

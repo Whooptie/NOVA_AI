@@ -2,154 +2,6 @@
  "versie": 1,
  "runs": [
   {
-   "tijd": "2026-11-14T10:10:09",
-   "modus": "volledig",
-   "bron": "commando",
-   "pyflakes": {
-    "beschikbaar": true,
-    "gelukt": true,
-    "meldingen": 66,
-    "ernstig_aantal": 0,
-    "ernstig": [],
-    "reden": null
-   },
-   "radon": {
-    "beschikbaar": true,
-    "gelukt": true,
-    "functies": 1893,
-    "gemiddelde": 5.1,
-    "zwaar": 41,
-    "zwaarste": [
-     {
-      "score": 101,
-      "bestand": "modules/math/math.py",
-      "naam": "MathModule._eval"
-     },
-     {
-      "score": 68,
-      "bestand": "core/intent_router.py",
-      "naam": "IntentRouter._route_intern"
-     },
-     {
-      "score": 60,
-      "bestand": "core/intent_router.py",
-      "naam": "IntentRouter.detect_definition"
-     }
-    ],
-    "onleesbaar": [],
-    "reden": null
-   },
-   "data": {
-    "json_gecontroleerd": 26,
-    "json_stuk": [],
-    "db": "ok"
-   },
-   "log": {
-    "gelukt": true,
-    "laatste_24u": 0,
-    "laatste": null,
-    "reden": null
-   },
-   "pytest": {
-    "gelukt": true,
-    "geslaagd": 4834,
-    "gefaald": 0,
-    "fouten": 0,
-    "overgeslagen": 1,
-    "mislukt": [],
-    "duur": 32.19,
-    "reden": null
-   },
-   "duur": 37.7,
-   "status": "ok",
-   "punten": [],
-   "vergelijking": [],
-   "vorige_tijd": "2026-11-14T03:30:34"
-  },
-  {
-   "tijd": "2026-11-14T10:26:08",
-   "modus": "snel",
-   "bron": "commando",
-   "pyflakes": {
-    "beschikbaar": true,
-    "gelukt": true,
-    "meldingen": 66,
-    "ernstig_aantal": 0,
-    "ernstig": [],
-    "reden": null
-   },
-   "data": {
-    "json_gecontroleerd": 26,
-    "json_stuk": [],
-    "db": "ok"
-   },
-   "log": {
-    "gelukt": true,
-    "laatste_24u": 0,
-    "laatste": null,
-    "reden": null
-   },
-   "backup": {
-    "nodig": true,
-    "gevonden": 7,
-    "nieuwste": "interactions_2026-11-14_102346.db",
-    "leeftijd_uur": 0.0,
-    "db_ok": true,
-    "rijen": 462297,
-    "reden": null
-   },
-   "schijf": {
-    "gelukt": true,
-    "vrij_gb": 819.4,
-    "vrij_procent": 84.9,
-    "data_mb": 8412.2,
-    "backups_mb": 1831.8,
-    "logs_mb": 0.2,
-    "reden": null
-   },
-   "modules": {
-    "gelukt": true,
-    "verwacht": 46,
-    "geladen": 67,
-    "ontbreekt": [],
-    "reden": null
-   },
-   "consistentie": {
-    "identity": "ok",
-    "concepten": 1264,
-    "kapot_aantal": 0,
-    "kapot": [],
-    "dubbel_aantal": 0,
-    "dubbel": [],
-    "relaties": 4732,
-    "onbekend_doel": 12,
-    "reden": null
-   },
-   "docs": {
-    "aanwezig": true,
-    "gebouwd": 25,
-    "ontbreekt_op_schijf": [],
-    "onbekende_status": [
-     "relevance_scorer.py (Nog niet gebovered)"
-    ],
-    "niet_beschreven_aantal": 40,
-    "niet_beschreven": [
-     "activity/session_watcher.py",
-     "body/body_state.py",
-     "chat/conversation_engine.py",
-     "chat/fallback_reflectie.py",
-     "context/afwezigheid.py"
-    ]
-   },
-   "duur": 4.8,
-   "status": "let_op",
-   "punten": [
-    "een rij in het modules-overzicht heeft een onbekende status: relevance_scorer.py (Nog niet gebovered)"
-   ],
-   "vergelijking": [],
-   "vorige_tijd": "2026-11-13T22:27:25"
-  },
-  {
    "tijd": "2026-11-14T10:27:15",
    "modus": "alles",
    "bron": "commando",
@@ -7871,6 +7723,312 @@
    "punten": [],
    "vergelijking": [],
    "vorige_tijd": "2026-11-22T11:09:18"
+  },
+  {
+   "tijd": "2026-11-22T17:16:37",
+   "modus": "volledig",
+   "bron": "commando",
+   "gebruik": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "rss_mb": 795.8,
+    "threads": 43,
+    "fds": 12,
+    "uptime_uur": 0.0,
+    "opstart_s": 4.4,
+    "reden": null
+   },
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 68,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "radon": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "functies": 2144,
+    "gemiddelde": 5.0,
+    "zwaar": 38,
+    "zwaarste": [
+     {
+      "score": 56,
+      "bestand": "scripts/koppelingen_audit.py",
+      "naam": "analyseer_bron"
+     },
+     {
+      "score": 52,
+      "bestand": "modules/body/body_state.py",
+      "naam": "BodyState.on_body"
+     },
+     {
+      "score": 51,
+      "bestand": "tools/run_benchmark.py",
+      "naam": "main"
+     }
+    ],
+    "onleesbaar": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 29,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 0,
+    "laatste": null,
+    "reden": null
+   },
+   "backup": {
+    "nodig": true,
+    "gevonden": 7,
+    "nieuwste": "interactions_2026-11-22_155653.db",
+    "leeftijd_uur": 1.3,
+    "db_ok": true,
+    "rijen": 495819,
+    "reden": null
+   },
+   "schijf": {
+    "gelukt": true,
+    "vrij_gb": 817.2,
+    "vrij_procent": 84.6,
+    "data_mb": 8456.3,
+    "backups_mb": 2128.2,
+    "logs_mb": 0.2,
+    "reden": null
+   },
+   "modules": {
+    "gelukt": true,
+    "verwacht": 48,
+    "geladen": 69,
+    "ontbreekt": [],
+    "reden": null
+   },
+   "consistentie": {
+    "identity": "ok",
+    "concepten": 1462,
+    "kapot_aantal": 0,
+    "kapot": [],
+    "dubbel_aantal": 0,
+    "dubbel": [],
+    "relaties": 4919,
+    "onbekend_doel": 23,
+    "reden": null
+   },
+   "docs": {
+    "aanwezig": true,
+    "gebouwd": 26,
+    "ontbreekt_op_schijf": [],
+    "onbekende_status": [],
+    "niet_beschreven_aantal": 41,
+    "niet_beschreven": [
+     "activity/session_watcher.py",
+     "body/body_state.py",
+     "chat/brugs_filter.py",
+     "chat/conversation_engine.py",
+     "chat/fallback_reflectie.py"
+    ]
+   },
+   "meldingen": {
+    "gelezen": true,
+    "hartslag": {
+     "aan": true,
+     "interval_min": 10,
+     "laatste_ok": "2026-11-22T17:09:24",
+     "laatste_poging": "2026-11-22T17:09:24",
+     "fouten_op_rij": 0,
+     "reden": null
+    },
+    "meldingstest": {
+     "aan": true,
+     "schema": "zondag 10:00",
+     "laatste_ok": "2026-11-22T10:00:01",
+     "laatste_poging": "2026-11-22T10:00:01",
+     "fouten_op_rij": 0,
+     "reden": null
+    },
+    "bijgewerkt": "2026-11-22T17:16:23",
+    "nu": "2026-11-22T17:16:43.321076"
+   },
+   "herstel": {
+    "nodig": true,
+    "gevonden": 7,
+    "nieuwste": "interactions_2026-11-22_155653.db",
+    "gelukt": true,
+    "integriteit": true,
+    "tabellen": 2,
+    "rijen": 559930,
+    "schema_gelijk": true,
+    "verschillen": [],
+    "duur": 0.7,
+    "reden": null
+   },
+   "pytest": {
+    "gelukt": true,
+    "geslaagd": 5372,
+    "gefaald": 0,
+    "fouten": 0,
+    "overgeslagen": 1,
+    "mislukt": [],
+    "duur": 33.54,
+    "reden": null
+   },
+   "benchmark": {
+    "taal": {
+     "beschikbaar": true,
+     "gelukt": true,
+     "goed": 137,
+     "fout": 105,
+     "crash": 0,
+     "niet_meetbaar": 0,
+     "onterecht": 0,
+     "router_begrepen": 237,
+     "router_totaal": 242,
+     "duur": 32.6,
+     "reden": null
+    },
+    "rook": {
+     "beschikbaar": true,
+     "gelukt": true,
+     "goed": 29,
+     "fout": 0,
+     "crash": 0,
+     "niet_meetbaar": 0,
+     "onterecht": 0,
+     "router_begrepen": null,
+     "router_totaal": null,
+     "duur": 19.2,
+     "reden": null
+    }
+   },
+   "duur": 93.6,
+   "status": "let_op",
+   "punten": [
+    "2 pyflakes-meldingen meer dan vorige keer",
+    "1 nieuwe module staat nog niet in het modules-overzicht"
+   ],
+   "vergelijking": [
+    "geslaagde tests 5273 → 5372",
+    "pyflakes-meldingen 66 → 68",
+    "modules zonder beschrijving 40 → 41",
+    "back-ups (MB) 2101.5 → 2128.2",
+    "geladen modules 68 → 69"
+   ],
+   "vorige_tijd": "2026-11-22T03:30:58"
+  },
+  {
+   "tijd": "2026-11-22T17:19:23",
+   "modus": "snel",
+   "bron": "opstart",
+   "gebruik": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "rss_mb": 788.5,
+    "threads": 42,
+    "fds": 13,
+    "uptime_uur": 0.05,
+    "opstart_s": 4.4,
+    "reden": null
+   },
+   "pyflakes": {
+    "beschikbaar": true,
+    "gelukt": true,
+    "meldingen": 68,
+    "ernstig_aantal": 0,
+    "ernstig": [],
+    "reden": null
+   },
+   "data": {
+    "json_gecontroleerd": 29,
+    "json_stuk": [],
+    "db": "ok"
+   },
+   "log": {
+    "gelukt": true,
+    "laatste_24u": 0,
+    "laatste": null,
+    "reden": null
+   },
+   "backup": {
+    "nodig": true,
+    "gevonden": 7,
+    "nieuwste": "interactions_2026-11-22_155653.db",
+    "leeftijd_uur": 1.4,
+    "db_ok": true,
+    "rijen": 495819,
+    "reden": null
+   },
+   "schijf": {
+    "gelukt": true,
+    "vrij_gb": 817.2,
+    "vrij_procent": 84.6,
+    "data_mb": 8456.7,
+    "backups_mb": 2128.2,
+    "logs_mb": 0.2,
+    "reden": null
+   },
+   "modules": {
+    "gelukt": true,
+    "verwacht": 48,
+    "geladen": 69,
+    "ontbreekt": [],
+    "reden": null
+   },
+   "consistentie": {
+    "identity": "ok",
+    "concepten": 1462,
+    "kapot_aantal": 0,
+    "kapot": [],
+    "dubbel_aantal": 0,
+    "dubbel": [],
+    "relaties": 4919,
+    "onbekend_doel": 23,
+    "reden": null
+   },
+   "docs": {
+    "aanwezig": true,
+    "gebouwd": 26,
+    "ontbreekt_op_schijf": [],
+    "onbekende_status": [],
+    "niet_beschreven_aantal": 41,
+    "niet_beschreven": [
+     "activity/session_watcher.py",
+     "body/body_state.py",
+     "chat/brugs_filter.py",
+     "chat/conversation_engine.py",
+     "chat/fallback_reflectie.py"
+    ]
+   },
+   "meldingen": {
+    "gelezen": true,
+    "hartslag": {
+     "aan": true,
+     "interval_min": 10,
+     "laatste_ok": "2026-11-22T17:09:24",
+     "laatste_poging": "2026-11-22T17:09:24",
+     "fouten_op_rij": 0,
+     "reden": null
+    },
+    "meldingstest": {
+     "aan": true,
+     "schema": "zondag 10:00",
+     "laatste_ok": "2026-11-22T10:00:01",
+     "laatste_poging": "2026-11-22T10:00:01",
+     "fouten_op_rij": 0,
+     "reden": null
+    },
+    "bijgewerkt": "2026-11-22T17:16:23",
+    "nu": "2026-11-22T17:19:28.054986"
+   },
+   "duur": 4.8,
+   "status": "ok",
+   "punten": [],
+   "vergelijking": [],
+   "vorige_tijd": "2026-11-22T12:38:38"
   }
  ],
  "laatste_nacht_datum": "2026-11-22"

@@ -103,12 +103,12 @@
   "2026-11-22": {
    "antwoorden": 56.6,
    "concepten": 1462,
-   "data_mb": 8455.6,
-   "opstart_s": 4.3,
+   "data_mb": 8456.7,
+   "opstart_s": 4.4,
    "rooktest": 100.0,
-   "rss_mb": 801.0,
+   "rss_mb": 788.5,
    "taalbegrip": 97.9,
-   "tests": 5273,
+   "tests": 5372,
    "threads": 42,
    "zware_functies": 38
   }

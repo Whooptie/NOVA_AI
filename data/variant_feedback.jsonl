@@ -723,3 +723,6 @@
 {"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795341997.9593954, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795341997.9597805, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 0, "variant_tekst": "Ewa {sender}, ge zijt der weer.", "entity": null, "response_style": "normaal", "moment": "2026-11-22T12:35:45.444915", "reactie_sentiment": null}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795347345.4451182, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 2, "variant_tekst": "Hey {sender}. Ja, ik ben der.", "entity": null, "response_style": "normaal", "moment": "2026-11-22T17:18:27.323209", "reactie_sentiment": null}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1795364307.3237615, "type": "sentiment_koppeling"}

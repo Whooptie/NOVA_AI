@@ -46,12 +46,12 @@ class ExpressionInjector:
     def _brugs(self, text: str, response_style: str) -> str:
         modules = getattr(self.event_bus, "modules", {}) or {}
         brugs = modules.get("brugs_filter")
-        if brugs is None:
-            return text
-        try:
-            tekst = brugs.pas_toe(text, response_style)
-        except Exception:
-            tekst = text
+        tekst = text
+        if brugs is not None:
+            try:
+                tekst = brugs.pas_toe(text, response_style)
+            except Exception:
+                tekst = text
         return tekst.replace("⟦", "").replace("⟧", "")
 
     # ---------------------------------------------------------

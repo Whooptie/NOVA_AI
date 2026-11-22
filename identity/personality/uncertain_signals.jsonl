@@ -2334,3 +2334,6 @@
 {"text": "boe", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T11:06:37.911445"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-22T12:35:37.213756"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-22T12:35:45.427744"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-22T17:16:21.665927"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-22T17:18:27.307932"}
+{"text": "hoe laat is het?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-11-22T17:18:31.597859"}

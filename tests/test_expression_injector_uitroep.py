@@ -155,3 +155,15 @@ def test_emoji_brugs_aan_zonder_brugse_lijst_valt_terug():
 
 def test_emoji_blijft_op_maximaal_drie():
     assert _emoji_met(False, {"emoji_style": ["a", "b", "c", "d"]}) == "Klaar a b c"
+
+
+def test_sentinel_lekt_niet_zonder_brugs_module():
+    bus = NepBusMetModules({})
+    inj = ExpressionInjector(bus)
+    tekst = inj._brugs("⟦python⟧ is een taal.", "normaal")
+    assert "⟦" not in tekst and "⟧" not in tekst
+
+
+def test_associatie_blijft_ongeschonden():
+    # met brugs aan: associatiewoord mag niet dialect worden
+    ...

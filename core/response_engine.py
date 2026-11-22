@@ -516,9 +516,9 @@ class ResponseEngine:
                 text = self._kies_variant(
                     "met_associatie",
                     response_style=response_style,
-                    entity=entity,
+                    entity=f"⟦{entity}⟧",
                     definition=definition,
-                    associatie=associatie_woord,
+                    associatie=f"⟦{associatie_woord}⟧",
                 )
                 text = self._voeg_timing_hint_toe(text, entity=entity)
                 return {
@@ -528,7 +528,7 @@ class ResponseEngine:
                 }
 
             text = self._kies_variant(
-                "definitie", response_style=response_style, entity=entity, definition=definition
+                "definitie", response_style=response_style, entity=f"⟦{entity}⟧", definition=definition
             )
             if not is_kort:
                 text = self._voeg_timing_hint_toe(text, entity=entity)
@@ -547,7 +547,10 @@ class ResponseEngine:
 
             if parents:
                 text = self._kies_variant(
-                    "is_a_fallback", response_style=response_style, entity=entity, parent=parents[0]
+                    "is_a_fallback",
+                    response_style=response_style,
+                    entity=f"⟦{entity}⟧",
+                    parent=f"⟦{parents[0]}⟧",
                 )
                 if not is_kort:
                     text = self._voeg_timing_hint_toe(text, entity=entity)
@@ -560,7 +563,7 @@ class ResponseEngine:
         # --- Stap 3: echt niets gevonden -> eerlijk toegeven ---
         # GEEN timing-hint hier: "ik weet het niet, trouwens je vraagt
         # hier vaak naar" zou een vreemde, ongepaste combinatie zijn.
-        text = self._kies_variant("onbekend", response_style=response_style, entity=entity)
+        text = self._kies_variant("onbekend", response_style=response_style, entity=f"⟦{entity}⟧")
         return {
             "text": text,
             "confidence": 0.2,
