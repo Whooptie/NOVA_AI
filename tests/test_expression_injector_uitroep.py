@@ -20,6 +20,7 @@ class NepEventBus:
 def injecteer(text, tone=None, personality=None, response_style="normaal"):
     bus = NepEventBus()
     inj = ExpressionInjector(bus)
+    inj.UITROEP_KANS = 1.0
     inj.on_expression_inject({
         "text": text,
         "tone": tone or {},
@@ -102,3 +103,55 @@ def test_lage_expressiveness_haalt_uitroep_weg():
 def test_emoji_komt_nog_steeds_achteraan():
     tone = {"expressiveness": 0.95, "emoji_style": ["🙂"]}
     assert injecteer("Toevallig?", tone=tone) == "Toevallig? 🙂"
+
+
+# ---------- emoji per brugs-modus ----------
+
+class NepBusMetModules(NepEventBus):
+    """NepEventBus met een .modules-dict, zodat de brugs-tak te testen is."""
+
+    def __init__(self, modules=None):
+        super().__init__()
+        self.modules = modules or {}
+
+
+class NepBrugs:
+    """Doet niets met de tekst; bestaat alleen zodat .aan uit te lezen is."""
+
+    def __init__(self, aan=True):
+        self.aan = aan
+
+    def pas_toe(self, tekst, response_style="normaal"):
+        return tekst
+
+
+def _emoji_met(brugs_aan, extra=None):
+    tone = {"emoji_style": ["🙂", "😌"]}
+    if extra:
+        tone.update(extra)
+    bus = NepBusMetModules({"brugs_filter": NepBrugs(brugs_aan)})
+    inj = ExpressionInjector(bus)
+    inj.UITROEP_KANS = 1.0
+    inj.on_expression_inject({
+        "text": "Klaar",
+        "tone": tone,
+        "personality": {},
+        "emotion": {},
+    })
+    return bus.gepubliceerd[-1][1]["text"]
+
+
+def test_emoji_brugs_aan_pakt_de_brugse_lijst():
+    assert _emoji_met(True, {"emoji_style_brugs": ["😌", "😏"]}) == "Klaar 😌 😏"
+
+
+def test_emoji_brugs_uit_pakt_de_gewone_lijst():
+    assert _emoji_met(False, {"emoji_style_brugs": ["😌", "😏"]}) == "Klaar 🙂 😌"
+
+
+def test_emoji_brugs_aan_zonder_brugse_lijst_valt_terug():
+    assert _emoji_met(True) == "Klaar 🙂 😌"
+
+
+def test_emoji_blijft_op_maximaal_drie():
+    assert _emoji_met(False, {"emoji_style": ["a", "b", "c", "d"]}) == "Klaar a b c"

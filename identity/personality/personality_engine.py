@@ -177,7 +177,9 @@ class PersonalityEngine:
         return {
             "pace": "snel" if energy > 0.8 else "normaal",
             "tone": "enthousiast" if expressiveness > 0.7 else "warm",
-            "interrupts": impulsivity > 0.7,
+            # Drempel binnen de adaptive_rules-range (max 0.65). De oude
+            # 0.7 lag boven het plafond en maakte deze tak onbereikbaar.
+            "interrupts": impulsivity > 0.40,
             "dramatic": self.state["dramatic_flair_state"] > 0.5
         }
 

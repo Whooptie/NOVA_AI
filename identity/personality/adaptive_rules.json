@@ -37,10 +37,10 @@
     "focus_hyperfocus_tendency": { "tempo": "middel", "min": 0.45, "max": 0.95 },
 
     "reactivity": { "tempo": "snel", "min": 0.15, "max": 0.65 },
-    "impulsivity": { "tempo": "snel", "min": 0.05, "max": 0.55 },
+    "impulsivity": { "tempo": "snel", "min": 0.05, "max": 0.65 },
     "chaotic_variability": { "tempo": "snel", "min": 0.05, "max": 0.40 },
     "energy_level": { "tempo": "snel", "min": 0.30, "max": 0.80 },
-    "dramatic_flair": { "tempo": "snel", "min": 0.05, "max": 0.40 }
+    "dramatic_flair": { "tempo": "snel", "min": 0.05, "max": 0.70 }
   },
 
   "uitgesloten_traits": {

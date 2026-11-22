@@ -8,6 +8,10 @@ class ExpressionInjector:
     Dit is de laatste stap in de Fase‑5 pipeline.
     """
 
+    # Hoe vaak een uitroep echt gezet wordt als de voorwaarden kloppen.
+    # Zekerheid gaf een "!" achter vrijwel elke zin; dit is de dial.
+    UITROEP_KANS = 0.4
+
     def __init__(self, event_bus):
         self.event_bus = event_bus
 
@@ -53,7 +57,9 @@ class ExpressionInjector:
     # 1. Emoji-injectie
     # ---------------------------------------------------------
     def _inject_emojis(self, text: str, tone: dict) -> str:
-        emojis = tone.get("emoji_style") or []
+        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
+        sleutel = "emoji_style_brugs" if brugs is not None and getattr(brugs, "aan", False) is True else "emoji_style"
+        emojis = tone.get(sleutel) or tone.get("emoji_style") or []
         if not emojis:
             return text
 
@@ -119,7 +125,8 @@ class ExpressionInjector:
         # personality_engine.generate_response_style()) maakt Nova iets
         # sneller/directer op zinsniveau — een extra duwtje bovenop wat
         # expressiveness al doet, niet in de plaats ervan.
-        if personality.get("interrupts") and expressiveness > 0.6:
+        if (personality.get("interrupts") and expressiveness > 0.6
+                and random.random() < self.UITROEP_KANS):
             return self._maak_uitroep(text)
 
         if expressiveness > 0.9:
@@ -147,7 +154,7 @@ class ExpressionInjector:
         if response_style == "kort":
             return text
 
-        if personality.get("dramatic"):
+        if personality.get("dramatic") and random.random() < self.UITROEP_KANS:
             return self._maak_uitroep(text)
 
         return text

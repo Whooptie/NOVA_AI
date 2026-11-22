@@ -113,9 +113,13 @@ class ToneEngine:
         impulsivity = traits.get("impulsivity", 0.5)
         warmth = traits.get("social_warmth", 0.5)
 
-        # Impulsiviteit → snellere pacing + meer expressie
+        # Impulsiviteit → meer expressie
         tone["expressiveness"] += impulsivity * 0.2
-        if impulsivity > 0.7:
+
+        # Tempo hangt aan ENERGIE, niet aan impulsiviteit: anders zet een
+        # hoge impulsiviteit élke toon op "snel" en verdwijnen de
+        # _traag/_stil-profielen, inclusief de kalme focus-modus.
+        if traits.get("energy_level", 0.5) > 0.60:
             tone["pace"] = "snel"
 
         # Warmte → zachtere toon

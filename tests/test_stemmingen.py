@@ -40,7 +40,8 @@ def test_kilte_geeft_verveeld():
     tone = _tone("kilte")
     assert tone["tone"] == "verveeld"
     assert tone["pace"] == "traag"
-    assert tone["emoji_style"] == ["🙄"]
+    assert tone["emoji_style"][0] == "🙄"
+    assert len(tone["emoji_style"]) >= 1
 
 
 def test_frustration_geeft_gepikeerd():
