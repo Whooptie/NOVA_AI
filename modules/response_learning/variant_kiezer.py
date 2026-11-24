@@ -137,3 +137,24 @@ def kies_variant(
             pass
 
     return gekozen
+
+def kies_brugs_of_gewoon(event_bus, gewone_varianten, sjabloon_naam):
+    """
+    Geeft de Brugse varianten onder dezelfde sjabloonnaam als "brugs aan"
+    staat, anders de meegegeven gewone lijst -- altijd als (lijst, naam).
+
+    De beslissing zelf zit op één plek: BrugsFilter.kies(). Dit is enkel
+    de opzoeking van die module, zodat geen enkele aanroeper nog zijn
+    eigen vlag-check, try/except en naam-suffix hoeft te schrijven.
+
+    Ontbreekt de module, staat ze uit of heeft ze geen kies() (bv. een
+    nep-object in een test), dan komt de gewone lijst ongewijzigd terug.
+    """
+    brugs = (getattr(event_bus, "modules", {}) or {}).get("brugs_filter")
+    kies = getattr(brugs, "kies", None)
+    if kies is None:
+        return gewone_varianten, sjabloon_naam
+    try:
+        return kies(gewone_varianten, sjabloon_naam)
+    except Exception:
+        return gewone_varianten, sjabloon_naam

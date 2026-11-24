@@ -728,3 +728,21 @@
 {"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1795364307.3237615, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 3, "variant_tekst": "Allez, ge zit al een poosje in {activiteit}.", "entity": "coding", "response_style": null, "moment": "2026-11-24T19:47:35.875103", "reactie_sentiment": null}
 {"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 3, "variant_tekst": "Pauze nemen mag ook, hoor.", "entity": "coding", "response_style": null, "moment": "2026-11-24T19:47:35.876077", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1795546055.8758311, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 3, "reactie_sentiment": "neutraal_gemengd", "moment": 1795546055.8761957, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 5, "variant_tekst": "{sender}! Ge hebt tijd gevonden, zeg.", "entity": null, "response_style": "normaal", "moment": "2026-11-24T21:17:51.064072", "reactie_sentiment": null}
+{"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 5, "reactie_sentiment": "positief", "moment": 1795551471.0643675, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "thanks_brugs", "gekozen_variant_index": 1, "variant_tekst": "Geen probleem, ee.", "entity": null, "response_style": null, "moment": "2026-11-24T21:18:03.476644", "reactie_sentiment": null}
+{"sjabloon_naam": "thanks_brugs", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795551483.4768472, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie_brugs", "gekozen_variant_index": 4, "variant_tekst": "Seg, '{entity}' is: {definition} En ja, ik zie da vaak bij '{associatie}' staan.", "entity": "⟦fiets⟧", "response_style": "normaal", "moment": "2026-11-24T21:18:11.996974", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie_brugs", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1795551491.9972289, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 2, "variant_tekst": "Wacht… nog steeds aan het {activiteit}?", "entity": "coding", "response_style": null, "moment": "2026-11-24T21:18:24.876231", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 1, "variant_tekst": "Serieus, nog altijd?", "entity": "coding", "response_style": null, "moment": "2026-11-24T21:18:24.876642", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1795551504.876387, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 1, "reactie_sentiment": "neutraal_gemengd", "moment": 1795551504.8767607, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "thanks", "gekozen_variant_index": 4, "variant_tekst": "Met plezier!", "entity": null, "response_style": null, "moment": "2026-11-24T21:19:11.992877", "reactie_sentiment": null}
+{"sjabloon_naam": "thanks", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1795551551.9931538, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 4, "variant_tekst": "{entity}: {definition}. Opvallend, altijd samen met '{associatie}'.", "entity": "⟦fiets⟧", "response_style": "normaal", "moment": "2026-11-24T21:19:16.619125", "reactie_sentiment": null}
+{"sjabloon_naam": "met_associatie", "gekozen_variant_index": 4, "reactie_sentiment": "neutraal_gemengd", "moment": 1795551556.619336, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "variant_tekst": "Awel… geen idee.", "entity": null, "response_style": "normaal", "moment": "2026-11-24T21:19:26.345690", "reactie_sentiment": null}
+{"sjabloon_naam": "fallback_algemeen", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795551566.3458521, "type": "sentiment_koppeling"}

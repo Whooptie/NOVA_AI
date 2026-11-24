@@ -45,7 +45,7 @@ import re
 from typing import Optional
 
 from modules.paths import get_project_root
-from modules.response_learning.variant_kiezer import kies_variant
+from modules.response_learning.variant_kiezer import kies_brugs_of_gewoon, kies_variant
 
 
 class FallbackReflectie:
@@ -238,16 +238,11 @@ class FallbackReflectie:
 
     # ------------------------------------------------------------
     def _brugs_of_gewoon(self, gewone_varianten, sjabloon_naam):
-        """Brugse varianten onder dezelfde sjabloon_naam als "brugs aan" staat, anders de gewone."""
-        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
-        if brugs is not None and getattr(brugs, "aan", False) is True:
-            try:
-                brugse = brugs.varianten(sjabloon_naam)
-            except Exception:
-                brugse = None
-            if isinstance(brugse, list) and brugse:
-                return brugse, sjabloon_naam + "_brugs"
-        return gewone_varianten, sjabloon_naam
+        """Brugse varianten onder dezelfde sjabloon_naam als "brugs aan" staat, anders de gewone.
+
+        De beslissing zelf zit in BrugsFilter.kies(); dit is enkel de opzoeking.
+        """
+        return kies_brugs_of_gewoon(self.event_bus, gewone_varianten, sjabloon_naam)
 
     # ------------------------------------------------------------
     def _probeer_keyword_reflectie(self, tekst_klein: str) -> Optional[str]:

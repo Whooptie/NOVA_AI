@@ -1097,17 +1097,16 @@ class WikipediaTeacher:
 
     def _brugs_zin(self, sjabloon_naam, gewoon, **waarden):
         """Brutale Brugse zin als "brugs aan" staat, anders (of bij een probleem) de gewone."""
-        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
-        if brugs is None or getattr(brugs, "aan", False) is not True:
+        from modules.response_learning.variant_kiezer import kies_brugs_of_gewoon
+
+        varianten, _ = kies_brugs_of_gewoon(self.event_bus, None, sjabloon_naam)
+        if not varianten:
             return gewoon
         try:
             import random
-            varianten = brugs.varianten(sjabloon_naam)
-            if isinstance(varianten, list) and varianten:
-                return random.choice(varianten).format(**waarden)
+            return random.choice(varianten).format(**waarden)
         except Exception:
-            pass
-        return gewoon
+            return gewoon
 
     def on_wiki(self, data, event_type=None):
         # Bugfix #6 (18 juli 2026): defensief vangnet. chat.py stript

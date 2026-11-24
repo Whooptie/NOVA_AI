@@ -24,7 +24,7 @@ import random
 import time
 
 from modules.paths import get_project_root
-from modules.response_learning.variant_kiezer import kies_variant
+from modules.response_learning.variant_kiezer import kies_brugs_of_gewoon, kies_variant
 
 
 class ConversationEngine:
@@ -241,16 +241,11 @@ class ConversationEngine:
         return volledige_tekst
 
     def _brugs_of_gewoon(self, gewone_varianten, sjabloon_naam):
-        """Brugse varianten als "brugs aan" staat en die bestaan, anders de gewone."""
-        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
-        if brugs is not None and getattr(brugs, "aan", False) is True:
-            try:
-                brugse = brugs.varianten(sjabloon_naam)
-            except Exception:
-                brugse = None
-            if isinstance(brugse, list) and brugse:
-                return brugse, sjabloon_naam + "_brugs"
-        return gewone_varianten, sjabloon_naam
+        """Brugse varianten als "brugs aan" staat en die bestaan, anders de gewone.
+
+        De beslissing zelf zit in BrugsFilter.kies(); dit is enkel de opzoeking.
+        """
+        return kies_brugs_of_gewoon(self.event_bus, gewone_varianten, sjabloon_naam)
 
     def probeer_activiteit_observatie(self):
         context_manager = self.event_bus.modules.get("context_manager")

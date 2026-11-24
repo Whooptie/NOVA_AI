@@ -96,6 +96,24 @@ class BrugsFilter:
             return list(lijst)
         return None
 
+    def kies(self, gewone_varianten, sjabloon_naam: str):
+        """
+        Centrale keuze: de Brugse varianten onder dezelfde naam als de modus
+        aan staat en ze bestaan, anders de meegegeven gewone lijst.
+
+        Geeft altijd een (lijst, naam)-tuple terug. Bij Brugs komt er "_brugs"
+        achter de naam, zodat de leerstatistieken van gewoon en Brugs apart
+        blijven (zie variant_kiezer.kies_variant). De gewone lijst wordt hier
+        enkel doorgegeven; deze klasse kent de inhoud van de sjablonen niet.
+        """
+        try:
+            brugse = self.varianten(sjabloon_naam)
+        except Exception:
+            brugse = None
+        if brugse:
+            return brugse, sjabloon_naam + "_brugs"
+        return gewone_varianten, sjabloon_naam
+
     def onderdelen(self, sjabloon_naam: str):
         """
         Voor sjablonen die uit losse delen bestaan (opening/midden/afsluiting):

@@ -2421,3 +2421,13 @@
 {"text": "teach waterkoker noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T20:17:43.713620"}
 {"text": "teach zeep noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T20:17:47.836646"}
 {"text": "µ", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-24T19:47:35.816375"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-24T21:05:35.729145"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-24T21:17:37.750575"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-24T21:17:51.043840"}
+{"text": "bedankt", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0166, "bron": "model_fallback", "tijdstip": "2026-11-24T21:18:03.465271", "label_auto": "waardering", "label_bron": "woordenlijst_strikt"}
+{"text": "blablabla", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-24T21:18:24.826565"}
+{"text": "wiki banaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-11-24T21:18:42.714828"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-24T21:18:57.798632"}
+{"text": "bedankt", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0166, "bron": "model_fallback", "tijdstip": "2026-11-24T21:19:11.983791", "label_auto": "waardering", "label_bron": "woordenlijst_strikt"}
+{"text": "blablabla", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-24T21:19:26.326277"}
+{"text": "wiki banaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-11-24T21:19:34.047362"}

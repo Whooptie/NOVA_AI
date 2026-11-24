@@ -50,6 +50,8 @@ import threading
 import time
 from datetime import datetime
 
+from modules.response_learning.variant_kiezer import kies_brugs_of_gewoon
+
 
 class AfwezigheidModule:
 
@@ -309,15 +311,9 @@ class AfwezigheidModule:
         if not lijst and duur_minuten < self.MIN_MINUTEN_VOOR_WELKOM:
             return None
 
-        openingen = self._WELKOM_OPENINGEN
-        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
-        if brugs is not None and getattr(brugs, "aan", False) is True:
-            try:
-                brugse = brugs.varianten("welkom_opening")
-            except Exception:
-                brugse = None
-            if isinstance(brugse, list) and brugse:
-                openingen = brugse
+        openingen, _ = kies_brugs_of_gewoon(
+            self.event_bus, self._WELKOM_OPENINGEN, "welkom_opening"
+        )
         delen = [random.choice(openingen)]
 
         if duur_minuten >= self.MIN_MINUTEN_VOOR_WELKOM:

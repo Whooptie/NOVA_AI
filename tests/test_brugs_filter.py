@@ -111,3 +111,52 @@ def test_woordenboek_is_netjes():
         assert sleutel != nieuw
         # een vervanging mag zelf geen nieuwe sleutel zijn (anders hangt de uitkomst van de volgorde af)
         assert nieuw not in woorden
+
+
+def test_kies_geeft_gewone_lijst_als_modus_uit_staat():
+    f = BrugsFilter(bewaar=False)
+    f.aan = False
+    assert f.kies(["gewoon"], "groet") == (["gewoon"], "groet")
+
+
+def test_kies_geeft_brugse_lijst_en_eigen_naam():
+    f = BrugsFilter(bewaar=False)
+    f.aan = True
+    lijst, naam = f.kies(["gewoon"], "groet")
+    assert lijst != ["gewoon"]
+    assert naam == "groet_brugs"
+
+
+def test_kies_valt_terug_bij_onbekend_sjabloon():
+    f = BrugsFilter(bewaar=False)
+    f.aan = True
+    assert f.kies(["gewoon"], "bestaat_niet") == (["gewoon"], "bestaat_niet")
+
+
+def test_kies_valt_terug_als_varianten_faalt(monkeypatch):
+    f = BrugsFilter(bewaar=False)
+    f.aan = True
+
+    def stuk(naam):
+        raise RuntimeError("stuk")
+
+    monkeypatch.setattr(f, "varianten", stuk)
+    assert f.kies(["gewoon"], "groet") == (["gewoon"], "groet")
+
+
+def test_kies_brugs_of_gewoon_zonder_module():
+    from modules.response_learning.variant_kiezer import kies_brugs_of_gewoon
+
+    class Bus:
+        modules = {}
+
+    assert kies_brugs_of_gewoon(Bus(), ["gewoon"], "groet") == (["gewoon"], "groet")
+
+
+def test_kies_brugs_of_gewoon_met_nep_object_zonder_kies():
+    from modules.response_learning.variant_kiezer import kies_brugs_of_gewoon
+
+    class Bus:
+        modules = {"brugs_filter": object()}
+
+    assert kies_brugs_of_gewoon(Bus(), ["gewoon"], "groet") == (["gewoon"], "groet")

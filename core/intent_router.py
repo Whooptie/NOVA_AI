@@ -1593,17 +1593,11 @@ class IntentRouter:
         beide paden exact dezelfde antwoordkeuze en variant-feedback
         gebruiken.
         """
-        from modules.response_learning.variant_kiezer import kies_variant
+        from modules.response_learning.variant_kiezer import kies_brugs_of_gewoon, kies_variant
         # Brugse stijl ("brugs aan"): eigen lijst en eigen leernaam ("thanks_brugs").
-        thanks_varianten, thanks_naam = self._THANKS_ANTWOORDEN, "thanks"
-        brugs = (getattr(self.event_bus, "modules", {}) or {}).get("brugs_filter")
-        if brugs is not None and getattr(brugs, "aan", False) is True:
-            try:
-                brugse = brugs.varianten("thanks")
-            except Exception:
-                brugse = None
-            if isinstance(brugse, list) and brugse:
-                thanks_varianten, thanks_naam = brugse, "thanks_brugs"
+        thanks_varianten, thanks_naam = kies_brugs_of_gewoon(
+            self.event_bus, self._THANKS_ANTWOORDEN, "thanks"
+        )
         tekst = kies_variant(
             varianten=thanks_varianten,
             sjabloon_naam=thanks_naam,
