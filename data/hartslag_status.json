@@ -1,12 +1,12 @@
 {
  "versie": 1,
  "opgestart": "2026-11-22T20:07:09",
- "bijgewerkt": "2026-11-24T19:40:52",
+ "bijgewerkt": "2026-11-24T20:50:53",
  "hartslag": {
   "aan": true,
   "interval_min": 10,
-  "laatste_ok": "2026-11-24T19:40:52",
-  "laatste_poging": "2026-11-24T19:40:52",
+  "laatste_ok": "2026-11-24T20:50:53",
+  "laatste_poging": "2026-11-24T20:50:53",
   "fouten_op_rij": 0,
   "reden": null
  },

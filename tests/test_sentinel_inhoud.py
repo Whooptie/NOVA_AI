@@ -2,6 +2,9 @@
 anders maakt de brugs-filter er dialect van. De tekens zelf mogen de
 gebruiker nooit bereiken."""
 
+import json
+from pathlib import Path
+
 from core.response_engine import ResponseEngine
 from modules.chat.brugs_filter import BrugsFilter
 from modules.chat.expression_injector import ExpressionInjector
@@ -71,7 +74,6 @@ def _filtertje_aan():
 
 def test_definitie_en_entity_staan_tussen_sentinel():
     eng = ResponseEngine(NepBus(), layers={"semantic": NepSemantic("een programmeertaal")})
-    eng.templates["definitie"] = ["{entity}? Dat is {definition}."]
     tekst = eng.generate("python")["text"]
     assert "⟦python⟧" in tekst
     assert "⟦een programmeertaal⟧" in tekst
@@ -79,7 +81,6 @@ def test_definitie_en_entity_staan_tussen_sentinel():
 
 def test_parent_staat_tussen_sentinel():
     eng = ResponseEngine(NepBus(), layers={"semantic": NepSemantic(None, ["dier"])})
-    eng.templates["is_a_fallback"] = ["'{entity}' valt onder {parent}. Meer krijg je niet."]
     tekst = eng.generate("hond")["text"]
     assert "⟦hond⟧" in tekst
     assert "⟦dier⟧" in tekst
@@ -87,10 +88,6 @@ def test_parent_staat_tussen_sentinel():
 
 def test_onbekend_wikkelt_entity_in_sentinel():
     eng = ResponseEngine(NepBus(), layers={"semantic": NepSemantic(None)})
-    # Eén van de vijf varianten ("Hmm, dat weet ik niet.") gebruikt
-    # {entity} niet. Forceer daarom de variant die hem wel gebruikt,
-    # anders is deze test willekeurig rood bij ongeveer 1 op 5 runs.
-    eng.templates["onbekend"] = ["Pff, '{entity}' ken ik niet."]
     tekst = eng.generate("flubber")["text"]
     assert "⟦flubber⟧" in tekst
 
@@ -148,3 +145,22 @@ def test_entity_blijft_als_variabele_schoon():
 
     assert patronen.gevraagd == ["topic_detected:definitie_python"]
     assert "⟦" not in patronen.gevraagd[0]
+
+
+def test_alle_varianten_noemen_de_entity():
+    """Elke variant van de groepen die de entity invullen moet {entity}
+    echt gebruiken. Zonder deze controle sluipt er ooit weer een variant
+    in zonder plaatshouder, en dan is de sentinel-assertie willekeurig
+    rood in plaats van meteen bij de invoer."""
+    groepen = ("definitie", "met_associatie", "is_a_fallback", "onbekend")
+
+    eng = ResponseEngine(NepBus())
+    for naam in groepen:
+        for variant in eng.templates[naam]:
+            assert "{entity}" in variant, f"{naam}: {variant}"
+
+    pad = Path(__file__).resolve().parents[1] / "identity" / "expression" / "brugs_sjablonen.json"
+    brugs = json.loads(pad.read_text(encoding="utf-8"))
+    for naam in groepen:
+        for variant in brugs[naam]:
+            assert "{entity}" in variant, f"{naam}_brugs: {variant}"

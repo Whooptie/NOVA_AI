@@ -134,7 +134,7 @@
   ],
   "onbekend": [
     "Pff… '{entity}' ken ik nie.",
-    "Ewa, da zegt mij niks.",
+    "Ewa, '{entity}' zegt mij niks.",
     "'{entity}'? Nooit van gehoord.",
     "Wacht… '{entity}' is nieuw voor mij.",
     "Allez, wa is '{entity}' nu weer?"
