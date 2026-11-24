@@ -2420,3 +2420,4 @@
 {"text": "teach touw noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T20:17:14.367376"}
 {"text": "teach waterkoker noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T20:17:43.713620"}
 {"text": "teach zeep noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-22T20:17:47.836646"}
+{"text": "µ", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-24T19:47:35.816375"}

@@ -726,3 +726,5 @@
 {"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 0, "reactie_sentiment": "neutraal_gemengd", "moment": 1795347345.4451182, "type": "sentiment_koppeling"}
 {"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 2, "variant_tekst": "Hey {sender}. Ja, ik ben der.", "entity": null, "response_style": "normaal", "moment": "2026-11-22T17:18:27.323209", "reactie_sentiment": null}
 {"sjabloon_naam": "groet_brugs", "gekozen_variant_index": 2, "reactie_sentiment": "neutraal_gemengd", "moment": 1795364307.3237615, "type": "sentiment_koppeling"}
+{"sjabloon_naam": "activiteit_observatie_opening_brugs", "gekozen_variant_index": 3, "variant_tekst": "Allez, ge zit al een poosje in {activiteit}.", "entity": "coding", "response_style": null, "moment": "2026-11-24T19:47:35.875103", "reactie_sentiment": null}
+{"sjabloon_naam": "activiteit_observatie_afsluiting_brugs", "gekozen_variant_index": 3, "variant_tekst": "Pauze nemen mag ook, hoor.", "entity": "coding", "response_style": null, "moment": "2026-11-24T19:47:35.876077", "reactie_sentiment": null}
