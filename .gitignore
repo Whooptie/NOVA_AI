@@ -3,14 +3,11 @@ __pycache__/
 *.pyc
 .env
 .pytest_cache/
+engines/
 engines/stockfish/*.exe
 *.xlsx
-engines/
-data/*.db-shm
-data/*.db-wal
-data/interactions.db
-data/models
-data/backups/
-data/interactions.jsonl
-data/brugs_modus.json
 interactions_*.jsonl
+
+# data/: alleen concepts.json gaat mee naar GitHub
+data/*
+!data/concepts.json
