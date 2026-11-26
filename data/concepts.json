@@ -124037,9 +124037,12 @@
     "senses": [
       {
         "sense_id": "aardbeving#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een aardbeving is een plotselinge trilling van de aardkorst, doordat er spanning in de ondergrond vrijkomt.",
+        "pos": "noun",
+        "examples": [
+          "De aardbeving was in het hele land voelbaar.",
+          "Door de aardbeving stortten veel huizen in."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -124058,20 +124061,20 @@
             "created_at": "2026-11-17T19:38:43.503956"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:24:25.799244",
-      "updated_at": "2026-11-17T19:38:43.503966",
+      "updated_at": "2026-11-26T22:42:54.795676",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:38:43.503966",
-      "usage_count": 3,
+      "last_used_at": "2026-11-26T22:36:27.832727",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:24:25.799576",
@@ -124084,6 +124087,10 @@
         {
           "timestamp": "2026-11-17T19:38:43.503966",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:36:27.832727",
+          "confidence": 1.0
         }
       ]
     },
@@ -124125,6 +124132,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:38:43.503963"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "aardbeving#1",
+        "old_value": "unknown",
+        "new_value": "Een aardbeving is een plotselinge trilling van de aardkorst, doordat er spanning in de ondergrond vrijkomt.",
+        "timestamp": "2026-11-26T22:36:27.832724"
       }
     ]
   },
@@ -124132,9 +124147,12 @@
     "senses": [
       {
         "sense_id": "tsunami#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een tsunami is een reusachtige golf in de zee, meestal veroorzaakt door een aardbeving onder water.",
+        "pos": "noun",
+        "examples": [
+          "De tsunami overspoelde de kust.",
+          "Na de tsunami werden de dorpen herbouwd."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -124153,20 +124171,20 @@
             "created_at": "2026-11-21T19:09:28.866866"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:24:25.883096",
-      "updated_at": "2026-11-21T19:09:28.866877",
+      "updated_at": "2026-11-26T22:44:12.386396",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:09:28.866877",
-      "usage_count": 3,
+      "last_used_at": "2026-11-26T22:42:07.195926",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:24:25.883438",
@@ -124179,6 +124197,10 @@
         {
           "timestamp": "2026-11-21T19:09:28.866877",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:42:07.195926",
+          "confidence": 1.0
         }
       ]
     },
@@ -124220,6 +124242,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:09:28.866874"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "tsunami#1",
+        "old_value": "unknown",
+        "new_value": "Een tsunami is een reusachtige golf in de zee, meestal veroorzaakt door een aardbeving onder water.",
+        "timestamp": "2026-11-26T22:42:07.195924"
       }
     ]
   },
@@ -126060,9 +126090,12 @@
     "senses": [
       {
         "sense_id": "erosie#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Erosie is het langzaam wegslijten of wegspoelen van grond of gesteente door water, wind of ijs.",
+        "pos": "noun",
+        "examples": [
+          "Door erosie werd de rotskust steeds smaller.",
+          "Planten beschermen de bodem tegen erosie."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -126073,20 +126106,20 @@
             "created_at": "2026-11-17T19:27:52.916671"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:27:44.484936",
-      "updated_at": "2026-11-17T19:27:52.916687",
+      "updated_at": "2026-11-26T22:43:10.968853",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:27:52.916687",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:38:22.460105",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:27:44.485222",
@@ -126095,6 +126128,10 @@
         {
           "timestamp": "2026-11-17T19:27:52.916687",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:38:22.460105",
+          "confidence": 1.0
         }
       ]
     },
@@ -126125,6 +126162,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:27:52.916682"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "erosie#1",
+        "old_value": "unknown",
+        "new_value": "Erosie is het langzaam wegslijten of wegspoelen van grond of gesteente door water, wind of ijs.",
+        "timestamp": "2026-11-26T22:38:22.460101"
       }
     ]
   },
@@ -126236,9 +126281,12 @@
     "senses": [
       {
         "sense_id": "griep#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Griep is een besmettelijke ziekte door een virus, met onder andere koorts, hoofdpijn en spierpijn.",
+        "pos": "noun",
+        "examples": [
+          "Ze lag een week in bed met griep.",
+          "De griep ging snel rond op school."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -126249,20 +126297,20 @@
             "created_at": "2026-11-17T19:28:00.249751"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:27:57.849529",
-      "updated_at": "2026-11-17T19:28:00.249761",
+      "updated_at": "2026-11-26T22:43:18.508982",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:28:00.249761",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:39:10.754592",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:27:57.849752",
@@ -126271,6 +126319,10 @@
         {
           "timestamp": "2026-11-17T19:28:00.249761",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:39:10.754592",
+          "confidence": 1.0
         }
       ]
     },
@@ -126301,6 +126353,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:28:00.249759"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "griep#1",
+        "old_value": "unknown",
+        "new_value": "Griep is een besmettelijke ziekte door een virus, met onder andere koorts, hoofdpijn en spierpijn.",
+        "timestamp": "2026-11-26T22:39:10.754589"
       }
     ]
   },
@@ -126356,9 +126416,12 @@
     "senses": [
       {
         "sense_id": "infectie#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een infectie is het binnendringen en vermenigvuldigen van een ziekteverwekker, zoals een bacterie of een virus, in het lichaam.",
+        "pos": "noun",
+        "examples": [
+          "De wond liep een infectie op.",
+          "Een infectie kan koorts veroorzaken."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -126377,20 +126440,20 @@
             "created_at": "2026-11-21T19:05:54.883052"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:06.373910",
-      "updated_at": "2026-11-21T19:05:54.883062",
+      "updated_at": "2026-11-26T22:43:26.828194",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:05:54.883062",
-      "usage_count": 3,
+      "last_used_at": "2026-11-26T22:39:40.801906",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:06.374213",
@@ -126403,6 +126466,10 @@
         {
           "timestamp": "2026-11-21T19:05:54.883062",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:39:40.801906",
+          "confidence": 1.0
         }
       ]
     },
@@ -126444,6 +126511,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:05:54.883060"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "infectie#1",
+        "old_value": "unknown",
+        "new_value": "Een infectie is het binnendringen en vermenigvuldigen van een ziekteverwekker, zoals een bacterie of een virus, in het lichaam.",
+        "timestamp": "2026-11-26T22:39:40.801904"
       }
     ]
   },
@@ -126523,9 +126598,12 @@
     "senses": [
       {
         "sense_id": "brand#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Brand is een vuur dat ongewild of ongecontroleerd ontstaat en schade aanricht.",
+        "pos": "noun",
+        "examples": [
+          "De brand verwoestte het hele dak.",
+          "De brandweer bluste de brand snel."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -126534,22 +126612,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:28:15.474759"
+          },
+          {
+            "type": "is_a",
+            "target": "vuur",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-26T22:37:39.110481"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:13.533152",
-      "updated_at": "2026-11-17T19:28:15.474768",
+      "updated_at": "2026-11-26T22:43:02.592958",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:28:15.474768",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:37:39.025371",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:13.533447",
@@ -126558,6 +126644,10 @@
         {
           "timestamp": "2026-11-17T19:28:15.474768",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:37:39.025371",
+          "confidence": 1.0
         }
       ]
     },
@@ -126588,6 +126678,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:28:15.474766"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "brand#1",
+        "old_value": "unknown",
+        "new_value": "Brand is een vuur dat ongewild of ongecontroleerd ontstaat en schade aanricht.",
+        "timestamp": "2026-11-26T22:37:39.025368"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "brand#1",
+        "relation": {
+          "type": "is_a",
+          "target": "vuur",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-26T22:37:39.110498"
       }
     ]
   },
@@ -126786,9 +126895,12 @@
     "senses": [
       {
         "sense_id": "lawine#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een lawine is een grote massa sneeuw, ijs of gesteente die plotseling van een berg naar beneden glijdt.",
+        "pos": "noun",
+        "examples": [
+          "Een lawine bedolf het skioord.",
+          "De skiërs ontsnapten net aan de lawine."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -126799,20 +126911,20 @@
             "created_at": "2026-11-17T19:28:29.538630"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:27.616459",
-      "updated_at": "2026-11-17T19:28:29.538639",
+      "updated_at": "2026-11-26T22:43:53.320881",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:28:29.538639",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:40:50.769786",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:27.616741",
@@ -126821,6 +126933,10 @@
         {
           "timestamp": "2026-11-17T19:28:29.538639",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:40:50.769786",
+          "confidence": 1.0
         }
       ]
     },
@@ -126851,6 +126967,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:28:29.538637"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "lawine#1",
+        "old_value": "unknown",
+        "new_value": "Een lawine is een grote massa sneeuw, ijs of gesteente die plotseling van een berg naar beneden glijdt.",
+        "timestamp": "2026-11-26T22:40:50.769784"
       }
     ]
   },
@@ -127050,9 +127174,12 @@
     "senses": [
       {
         "sense_id": "vulkaanuitbarsting#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een vulkaanuitbarsting is het naar buiten spuiten van lava, as en gas uit een vulkaan.",
+        "pos": "noun",
+        "examples": [
+          "De vulkaanuitbarsting zorgde voor een enorme aswolk.",
+          "Na de vulkaanuitbarsting werd het dorp ontruimd."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -127063,20 +127190,20 @@
             "created_at": "2026-11-17T19:29:07.002859"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:29:03.544566",
-      "updated_at": "2026-11-17T19:29:07.002869",
+      "updated_at": "2026-11-26T22:44:20.486241",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:29:07.002869",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:42:21.955131",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:29:03.544878",
@@ -127085,6 +127212,10 @@
         {
           "timestamp": "2026-11-17T19:29:07.002869",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:42:21.955131",
+          "confidence": 1.0
         }
       ]
     },
@@ -127115,6 +127246,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:29:07.002867"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "vulkaanuitbarsting#1",
+        "old_value": "unknown",
+        "new_value": "Een vulkaanuitbarsting is het naar buiten spuiten van lava, as en gas uit een vulkaan.",
+        "timestamp": "2026-11-26T22:42:21.955129"
       }
     ]
   },
@@ -128726,9 +128865,12 @@
     "senses": [
       {
         "sense_id": "verbranding#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Verbranding is een chemisch proces waarbij iets met zuurstof reageert en warmte en licht afgeeft.",
+        "pos": "noun",
+        "examples": [
+          "Bij de verbranding van hout komt warmte vrij.",
+          "Zonder zuurstof is er geen verbranding mogelijk."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -128739,20 +128881,20 @@
             "created_at": "2026-11-17T19:36:48.833883"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:36:45.277957",
-      "updated_at": "2026-11-17T19:36:48.833893",
+      "updated_at": "2026-11-26T22:44:16.676872",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:36:48.833893",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:42:39.742302",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:36:45.278241",
@@ -128761,6 +128903,10 @@
         {
           "timestamp": "2026-11-17T19:36:48.833893",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:42:39.742302",
+          "confidence": 1.0
         }
       ]
     },
@@ -128791,6 +128937,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:36:48.833890"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "verbranding#1",
+        "old_value": "unknown",
+        "new_value": "Verbranding is een chemisch proces waarbij iets met zuurstof reageert en warmte en licht afgeeft.",
+        "timestamp": "2026-11-26T22:42:39.742300"
       }
     ]
   },
@@ -129110,9 +129264,12 @@
     "senses": [
       {
         "sense_id": "kortsluiting#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een kortsluiting is een onbedoelde verbinding in een stroomkring, waardoor er plots veel stroom loopt.",
+        "pos": "noun",
+        "examples": [
+          "Door een kortsluiting vloog de zekering eruit.",
+          "De kortsluiting veroorzaakte een brandje."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -129123,20 +129280,20 @@
             "created_at": "2026-11-17T19:37:54.087163"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:37:50.298516",
-      "updated_at": "2026-11-17T19:37:54.087175",
+      "updated_at": "2026-11-26T22:43:31.137871",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:37:54.087175",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:39:56.204537",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:37:50.298783",
@@ -129145,6 +129302,10 @@
         {
           "timestamp": "2026-11-17T19:37:54.087175",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:39:56.204537",
+          "confidence": 1.0
         }
       ]
     },
@@ -129175,6 +129336,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:37:54.087173"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kortsluiting#1",
+        "old_value": "unknown",
+        "new_value": "Een kortsluiting is een onbedoelde verbinding in een stroomkring, waardoor er plots veel stroom loopt.",
+        "timestamp": "2026-11-26T22:39:56.204535"
       }
     ]
   },
@@ -131068,9 +131237,12 @@
     "senses": [
       {
         "sense_id": "kou#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Kou is een gevoel of toestand van weinig warmte, waardoor je het koud hebt.",
+        "pos": "noun",
+        "examples": [
+          "Ze beefde van de kou.",
+          "De kou kroop door zijn jas."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -131081,20 +131253,20 @@
             "created_at": "2026-11-21T18:54:44.967897"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:54:43.068736",
-      "updated_at": "2026-11-21T18:54:44.967906",
+      "updated_at": "2026-11-26T22:43:34.782360",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:54:44.967906",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:40:21.727564",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:54:43.069050",
@@ -131103,6 +131275,10 @@
         {
           "timestamp": "2026-11-21T18:54:44.967906",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:40:21.727564",
+          "confidence": 1.0
         }
       ]
     },
@@ -131133,6 +131309,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:54:44.967904"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kou#1",
+        "old_value": "unknown",
+        "new_value": "Kou is een gevoel of toestand van weinig warmte, waardoor je het koud hebt.",
+        "timestamp": "2026-11-26T22:40:21.727562"
       }
     ]
   },
@@ -131188,9 +131372,12 @@
     "senses": [
       {
         "sense_id": "hitte#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Hitte is een zeer hoge warmte in de lucht of op een plaats, waardoor je het erg warm hebt.",
+        "pos": "noun",
+        "examples": [
+          "De hitte maakte het bijna onmogelijk om te werken.",
+          "Ze zocht verkoeling tegen de hitte."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -131201,20 +131388,20 @@
             "created_at": "2026-11-21T18:54:54.886471"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:54:52.576721",
-      "updated_at": "2026-11-21T18:54:54.886481",
+      "updated_at": "2026-11-26T22:43:22.425509",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:54:54.886481",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:39:24.478522",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:54:52.577062",
@@ -131223,6 +131410,10 @@
         {
           "timestamp": "2026-11-21T18:54:54.886481",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:39:24.478522",
+          "confidence": 1.0
         }
       ]
     },
@@ -131253,6 +131444,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:54:54.886479"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "hitte#1",
+        "old_value": "unknown",
+        "new_value": "Hitte is een zeer hoge warmte in de lucht of op een plaats, waardoor je het erg warm hebt.",
+        "timestamp": "2026-11-26T22:39:24.478518"
       }
     ]
   },
@@ -131620,9 +131819,12 @@
     "senses": [
       {
         "sense_id": "lawaai#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Lawaai is een hard, storend geluid.",
+        "pos": "noun",
+        "examples": [
+          "Het lawaai van de bouwplaats hield hem wakker.",
+          "Kinderen maken vaak veel lawaai."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -131633,20 +131835,20 @@
             "created_at": "2026-11-21T18:55:59.660823"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:55:57.131044",
-      "updated_at": "2026-11-21T18:55:59.660832",
+      "updated_at": "2026-11-26T22:43:38.947806",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:55:59.660832",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:40:35.344528",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:55:57.131381",
@@ -131655,6 +131857,10 @@
         {
           "timestamp": "2026-11-21T18:55:59.660832",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:40:35.344528",
+          "confidence": 1.0
         }
       ]
     },
@@ -131685,6 +131891,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:55:59.660829"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "lawaai#1",
+        "old_value": "unknown",
+        "new_value": "Lawaai is een hard, storend geluid.",
+        "timestamp": "2026-11-26T22:40:35.344526"
       }
     ]
   },
@@ -134642,9 +134856,12 @@
     "senses": [
       {
         "sense_id": "lekkage#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een lekkage is het onbedoeld wegstromen van vloeistof of gas door een gaatje of scheur.",
+        "pos": "noun",
+        "examples": [
+          "De lekkage in het dak zorgde voor een natte vlek.",
+          "De loodgieter vond de lekkage onder de gootsteen."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -134655,20 +134872,20 @@
             "created_at": "2026-11-21T19:06:20.338744"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:06:18.038925",
-      "updated_at": "2026-11-21T19:06:20.338755",
+      "updated_at": "2026-11-26T22:43:56.945187",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:06:20.338755",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:41:05.427035",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:06:18.039188",
@@ -134677,6 +134894,10 @@
         {
           "timestamp": "2026-11-21T19:06:20.338755",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:41:05.427035",
+          "confidence": 1.0
         }
       ]
     },
@@ -134707,6 +134928,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:06:20.338752"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "lekkage#1",
+        "old_value": "unknown",
+        "new_value": "Een lekkage is het onbedoeld wegstromen van vloeistof of gas door een gaatje of scheur.",
+        "timestamp": "2026-11-26T22:41:05.427033"
       }
     ]
   },
@@ -135794,9 +136023,12 @@
     "senses": [
       {
         "sense_id": "explosie#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een explosie is een plotselinge, heftige uitbreiding van gas met een harde knal en veel kracht.",
+        "pos": "noun",
+        "examples": [
+          "De explosie was in de hele straat te horen.",
+          "Na de explosie steeg er rook op."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135807,20 +136039,20 @@
             "created_at": "2026-11-21T19:08:04.739570"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:02.629686",
-      "updated_at": "2026-11-21T19:08:04.739579",
+      "updated_at": "2026-11-26T22:43:14.952478",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:04.739579",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:38:42.763559",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:02.629974",
@@ -135829,6 +136061,10 @@
         {
           "timestamp": "2026-11-21T19:08:04.739579",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:38:42.763559",
+          "confidence": 1.0
         }
       ]
     },
@@ -135859,6 +136095,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:08:04.739577"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "explosie#1",
+        "old_value": "unknown",
+        "new_value": "Een explosie is een plotselinge, heftige uitbreiding van gas met een harde knal en veel kracht.",
+        "timestamp": "2026-11-26T22:38:42.763557"
       }
     ]
   },
@@ -136250,9 +136494,12 @@
     "senses": [
       {
         "sense_id": "regenval#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Regenval is de hoeveelheid water die als regen uit de lucht valt.",
+        "pos": "noun",
+        "examples": [
+          "Door de zware regenval stonden de straten blank.",
+          "De regenval was dit jaar hoog."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136263,20 +136510,20 @@
             "created_at": "2026-11-21T19:08:41.537445"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:39.450190",
-      "updated_at": "2026-11-21T19:08:41.537455",
+      "updated_at": "2026-11-26T22:44:08.386366",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:41.537455",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:41:53.258800",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:39.450520",
@@ -136285,6 +136532,10 @@
         {
           "timestamp": "2026-11-21T19:08:41.537455",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:41:53.258800",
+          "confidence": 1.0
         }
       ]
     },
@@ -136315,6 +136566,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:08:41.537453"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "regenval#1",
+        "old_value": "unknown",
+        "new_value": "Regenval is de hoeveelheid water die als regen uit de lucht valt.",
+        "timestamp": "2026-11-26T22:41:53.258798"
       }
     ]
   },
@@ -136322,9 +136581,12 @@
     "senses": [
       {
         "sense_id": "dijkbreuk#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een dijkbreuk is het doorbreken van een dijk, waardoor het water het land instroomt.",
+        "pos": "noun",
+        "examples": [
+          "Door de dijkbreuk liep het dorp onder water.",
+          "De dijkbreuk werd snel hersteld."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136335,20 +136597,20 @@
             "created_at": "2026-11-21T19:08:50.037212"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:47.825475",
-      "updated_at": "2026-11-21T19:08:50.037221",
+      "updated_at": "2026-11-26T22:43:07.055729",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:50.037221",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:38:00.706655",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:47.825793",
@@ -136357,6 +136619,10 @@
         {
           "timestamp": "2026-11-21T19:08:50.037221",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:38:00.706655",
+          "confidence": 1.0
         }
       ]
     },
@@ -136387,6 +136653,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:08:50.037219"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "dijkbreuk#1",
+        "old_value": "unknown",
+        "new_value": "Een dijkbreuk is het doorbreken van een dijk, waardoor het water het land instroomt.",
+        "timestamp": "2026-11-26T22:38:00.706652"
       }
     ]
   },
@@ -136394,9 +136668,12 @@
     "senses": [
       {
         "sense_id": "aardverschuiving#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een aardverschuiving is het plotseling naar beneden glijden van een grote massa grond of gesteente langs een helling.",
+        "pos": "noun",
+        "examples": [
+          "Een aardverschuiving blokkeerde de weg door de bergen.",
+          "Door de aardverschuiving verdween een deel van het dorp onder de modder."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136407,20 +136684,20 @@
             "created_at": "2026-11-21T19:08:57.303472"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:55.286532",
-      "updated_at": "2026-11-21T19:08:57.303482",
+      "updated_at": "2026-11-26T22:42:58.903759",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:57.303482",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:36:57.472473",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:55.286863",
@@ -136429,6 +136706,10 @@
         {
           "timestamp": "2026-11-21T19:08:57.303482",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:36:57.472473",
+          "confidence": 1.0
         }
       ]
     },
@@ -136459,6 +136740,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:08:57.303480"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "aardverschuiving#1",
+        "old_value": "unknown",
+        "new_value": "Een aardverschuiving is het plotseling naar beneden glijden van een grote massa grond of gesteente langs een helling.",
+        "timestamp": "2026-11-26T22:36:57.472470"
       }
     ]
   },
@@ -136466,9 +136755,12 @@
     "senses": [
       {
         "sense_id": "meteoriet#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een meteoriet is een brok steen of metaal uit de ruimte dat op de aarde terechtkomt.",
+        "pos": "noun",
+        "examples": [
+          "Een meteoriet sloeg in op een veld.",
+          "In het museum ligt een meteoriet te zien."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136479,20 +136771,20 @@
             "created_at": "2026-11-21T19:09:05.086839"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:09:03.061355",
-      "updated_at": "2026-11-21T19:09:05.086849",
+      "updated_at": "2026-11-26T22:44:01.034715",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:09:05.086849",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:41:23.068720",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:09:03.061672",
@@ -136501,6 +136793,10 @@
         {
           "timestamp": "2026-11-21T19:09:05.086849",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:41:23.068720",
+          "confidence": 1.0
         }
       ]
     },
@@ -136531,6 +136827,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:09:05.086847"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "meteoriet#1",
+        "old_value": "unknown",
+        "new_value": "Een meteoriet is een brok steen of metaal uit de ruimte dat op de aarde terechtkomt.",
+        "timestamp": "2026-11-26T22:41:23.068718"
       }
     ]
   },
@@ -136802,9 +137106,12 @@
     "senses": [
       {
         "sense_id": "orkaan#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een orkaan is een zeer zware storm met extreem harde wind boven warm zeewater.",
+        "pos": "noun",
+        "examples": [
+          "De orkaan trok over de kust.",
+          "Veel huizen werden verwoest door de orkaan."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136815,20 +137122,20 @@
             "created_at": "2026-11-21T19:09:43.398906"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:09:41.466068",
-      "updated_at": "2026-11-21T19:09:43.398916",
+      "updated_at": "2026-11-26T22:44:04.886759",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:09:43.398916",
-      "usage_count": 2,
+      "last_used_at": "2026-11-26T22:41:39.693167",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:09:41.466364",
@@ -136837,6 +137144,10 @@
         {
           "timestamp": "2026-11-21T19:09:43.398916",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-26T22:41:39.693167",
+          "confidence": 1.0
         }
       ]
     },
@@ -136867,6 +137178,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:09:43.398914"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "orkaan#1",
+        "old_value": "unknown",
+        "new_value": "Een orkaan is een zeer zware storm met extreem harde wind boven warm zeewater.",
+        "timestamp": "2026-11-26T22:41:39.693165"
       }
     ]
   }
