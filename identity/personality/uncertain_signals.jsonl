@@ -2434,3 +2434,4 @@
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-26T20:01:15.779608"}
 {"text": "hoe zien je tepels eruit?", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.003, "bron": "model_fallback", "tijdstip": "2026-11-26T20:01:53.683211"}
 {"text": "heb je fouten", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-11-26T20:10:18.078564"}
+{"text": "hoe laat is het?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-11-26T20:32:50.690109"}

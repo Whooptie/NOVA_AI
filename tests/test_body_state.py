@@ -30,9 +30,9 @@ def state(tmp_path, monkeypatch):
     monkeypatch.setattr(bs, "MAP_PAD", tmp_path / "map.json")
     monkeypatch.setattr(bs, "APPEARANCE_PAD", tmp_path / "app.json")
     (tmp_path / "map.json").write_text(json.dumps({"nodes": {
-        "vagina": {"gevoeligheid": 0.8, "comfort": 0.4},
-        "clitoris": {"gevoeligheid": 0.95, "comfort": 0.35},
-        "tepel_links": {"gevoeligheid": 0.9, "comfort": 0.45},
+        "vagina": {"gevoeligheid": 0.8, "comfort_zone": 0.4},
+        "clitoris": {"gevoeligheid": 0.95, "comfort_zone": 0.35},
+        "tepel_links": {"gevoeligheid": 0.9, "comfort_zone": 0.45},
     }}), encoding="utf-8")
     (tmp_path / "app.json").write_text("{}", encoding="utf-8")
     bus = FakeBus()
@@ -110,3 +110,13 @@ def test_fragmenten_herhalen_niet(state):
     zinnen = [d["text"] for e, d in bus.events if e == "body_reactie"]
     for a, b in zip(zinnen, zinnen[1:]):
         assert a != b
+
+
+def test_verlegenheid_triggert_maar_een_keer(state):
+    s, bus = state
+    s.persistent["bloos"] = 0.6
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+    triggers = [d for e, d in bus.events
+                if e == "emotion_trigger" and d.get("trigger") == "verlegenheid"]
+    assert len(triggers) == 1

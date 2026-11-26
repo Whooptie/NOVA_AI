@@ -14,6 +14,7 @@ from pathlib import Path
 
 from core import clock
 from core.state_store import StateStore
+from core.thresholds import Drempel
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 MAP_PAD = DATA_DIR / "body_map.json"
@@ -99,6 +100,8 @@ class BodyState:
         })
         self.persistent = self._store.get("body")
         self._laatste_publicatie = 0.0
+        self._verlegenheid = Drempel(0.7, 0.6)
+        self._verlegenheid.set(self.persistent.get("bloos", 0.0))
 
         zones = ["tepel_links", "tepel_rechts", "borst_links", "borst_rechts",
                  "vulva", "clitoris", "vagina", "anus_rand", "rectum", "benen"]
@@ -337,7 +340,7 @@ class BodyState:
 
         node = self.map.get("nodes", {}).get(zone, {})
         gevoeligheid = float(node.get("gevoeligheid", 0.5))
-        comfort = float(node.get("comfort", 0.5))
+        comfort_zone = float(node.get("comfort_zone", node.get("comfort", 0.5)))
 
         maagd = self.persistent["maagd"].get(zone, True)
         pijn = self.persistent["pijn"].get(zone, 0.0)
@@ -348,8 +351,8 @@ class BodyState:
         # --- verlegenheid: stijgt bij intimiteit, extra bij eerste keer en klinische woorden
         # asymptotisch: elke prikkel duwt een deel van de resterende
         # afstand weg, zodat ze niet na twee aanrakingen vastzit op 1.0
-        # lage comfortwaarde = intiemer = sneller verlegen
-        factor = max(0.10, min(0.45, 0.40 - (comfort - 0.30) * 0.5))
+        # lage comfort_zone = intiemer = sneller verlegen
+        factor = max(0.10, min(0.45, 0.40 - (comfort_zone - 0.30) * 0.5))
         if zone in ("clitoris", "vagina", "rectum"):
             factor += 0.10
         if maagd and zone not in RUSTIG:
@@ -372,8 +375,8 @@ class BodyState:
         )
         bloos = self.persistent["bloos"]
 
-        # bij het overschrijden van de grens de emotie echt triggeren
-        if bloos_vorig <= 0.7 < bloos:
+        # bij het overschrijden van de grens de emotie echt triggeren, één keer
+        if self._verlegenheid.kruist(bloos):
             self.event_bus.publish("emotion_trigger", {"trigger": "verlegenheid"})
 
         # --- nat: per zone, tepel/clitoris/vulva en penetratie drijven het op
@@ -383,8 +386,8 @@ class BodyState:
             self.persistent["nat"][zone] = max(0.0, nat - 0.02)
         nat = self.persistent["nat"][zone]
 
-        # lage comfortwaarde = eerder pijn bij dezelfde sterkte
-        sterkte_drempel = 0.5 + comfort * 0.5
+        # lage comfort_zone = eerder pijn bij dezelfde sterkte
+        sterkte_drempel = 0.5 + comfort_zone * 0.5
         hard = (zone in ("anus_rand", "rectum") and (diepte > 0.4 or rek > 0.5)) or sterkte > sterkte_drempel
 
         # --- klasse bepalen + pijn bijstellen
