@@ -2431,3 +2431,6 @@
 {"text": "bedankt", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0166, "bron": "model_fallback", "tijdstip": "2026-11-24T21:19:11.983791", "label_auto": "waardering", "label_bron": "woordenlijst_strikt"}
 {"text": "blablabla", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-24T21:19:26.326277"}
 {"text": "wiki banaan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0992, "bron": "model_fallback", "tijdstip": "2026-11-24T21:19:34.047362"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-26T20:01:15.779608"}
+{"text": "hoe zien je tepels eruit?", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.003, "bron": "model_fallback", "tijdstip": "2026-11-26T20:01:53.683211"}
+{"text": "heb je fouten", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-11-26T20:10:18.078564"}

@@ -11,7 +11,7 @@ class NepBus:
     def subscribe(self, *a, **k):
         pass
     def publish(self, naam, data=None):
-        if naam == "layer4_response":
+        if naam in ("layer4_response", "body_reactie"):
             self.berichten.append(data["text"])
 
 

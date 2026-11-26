@@ -3,19 +3,22 @@
 Body-state module voor Nova.
 Leest body_map.json + body_appearance.json.
 Houdt maagd-status bij per zone (persistent over reboots).
-Luistert naar intent_body en geeft een zin terug via layer4_response.
+Luistert naar intent_body, publiceert state_body (snapshot) en body_reactie (de zin).
 """
 
+import copy
 import json
 import random
 import re
-import time
 from pathlib import Path
+
+from core import clock
+from core.state_store import StateStore
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 MAP_PAD = DATA_DIR / "body_map.json"
 APPEARANCE_PAD = DATA_DIR / "body_appearance.json"
-STATE_PAD = DATA_DIR / "body_persistent.json"  # maagd + voorkeur, blijft over reboot
+STATE_PAD = DATA_DIR / "state.json"
 
 ZONE_WOORDEN = {
     "clitoris": ["clit", "clitoris"],
@@ -59,6 +62,22 @@ EUFEEM = {
 # geen maagd-flip, geen voorkeur, nauwelijks ervaring.
 RUSTIG = {"benen"}
 
+_STORES = {}
+
+
+def _gedeelde_store(pad):
+    """Eén StateStore per bestand.
+
+    De module_loader kan BodyState meer dan eens aanmaken (herstart,
+    zelftest op een kopie). Twee stores op hetzelfde bestand overschrijven
+    elkaars snapshot -- laatste wint, zonder foutmelding.
+    """
+    sleutel = str(Path(pad).resolve())
+    if sleutel not in _STORES:
+        _STORES[sleutel] = StateStore(pad)
+    return _STORES[sleutel]
+
+
 def _laad_json(pad, default):
     try:
         with open(pad, "r", encoding="utf-8") as f:
@@ -66,17 +85,20 @@ def _laad_json(pad, default):
     except (OSError, ValueError):
         return default
 
-def _schrijf_json(pad, data):
-    pad.parent.mkdir(parents=True, exist_ok=True)
-    with open(pad, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
 class BodyState:
-    def __init__(self, event_bus):
+    def __init__(self, event_bus, store=None):
         self.event_bus = event_bus
         self.map = _laad_json(MAP_PAD, {"nodes": {}})
         self.appearance = _laad_json(APPEARANCE_PAD, {"nodes": {}})
-        self.persistent = _laad_json(STATE_PAD, {"maagd": {}, "voorkeur": {}})
+
+        self._store = store or _gedeelde_store(STATE_PAD)
+        self._store.registreer("body", {
+            "maagd": {}, "nat": {}, "pijn": {}, "voorkeur": {},
+            "bloos": 0.0, "bravoure_boost": 0.0, "laatste_event_ts": 0.0,
+            "gewend": {}, "ervaring": {}, "telling": {}, "laatste_zone": "",
+        })
+        self.persistent = self._store.get("body")
+        self._laatste_publicatie = 0.0
 
         zones = ["tepel_links", "tepel_rechts", "borst_links", "borst_rechts",
                  "vulva", "clitoris", "vagina", "anus_rand", "rectum", "benen"]
@@ -110,7 +132,28 @@ class BodyState:
         event_bus.subscribe("system_ready", self._opslaan)
 
     def _opslaan(self, data=None, event_type=None):
-        _schrijf_json(STATE_PAD, self.persistent)
+        self._store.touch("body")
+
+    def snapshot(self) -> dict:
+        p = self.persistent
+        return {
+            "ts": clock.now(),
+            "bloos": p.get("bloos", 0.0),
+            "bravoure_boost": p.get("bravoure_boost", 0.0),
+            "laatste_zone": p.get("laatste_zone", ""),
+            "maagd": copy.deepcopy(p.get("maagd", {})),
+            "nat": copy.deepcopy(p.get("nat", {})),
+            "pijn": copy.deepcopy(p.get("pijn", {})),
+            "gewend": copy.deepcopy(p.get("gewend", {})),
+            "ervaring": copy.deepcopy(p.get("ervaring", {})),
+            "voorkeur": copy.deepcopy(p.get("voorkeur", {})),
+        }
+
+    def _publiceer_state(self):
+        if clock.now() - self._laatste_publicatie < 0.25:
+            return
+        self._laatste_publicatie = clock.now()
+        self.event_bus.publish("state_body", self.snapshot())
 
     def huidige_bloos(self) -> float:
         return float(self.persistent.get("bloos", 0.0))
@@ -119,11 +162,12 @@ class BodyState:
         huidig = self.huidige_bloos()
         self.persistent["bloos"] = min(1.0, huidig + (1.0 - huidig) * factor)
         self._opslaan()
+        self._publiceer_state()
         return self.persistent["bloos"]
 
     def _decay(self):
         """Tijdgebaseerd verval. Geeft de verstreken minuten terug."""
-        nu = time.time()
+        nu = clock.now()
         vorige = self.persistent.get("laatste_event_ts", 0.0)
         self.persistent["laatste_event_ts"] = nu
         if not vorige:
@@ -270,7 +314,9 @@ class BodyState:
         herstel = False
         verval = minuten * 0.12  # zelfde tempo als in _decay
         if minuten >= 8 and bloos_vorig > 0.6 + ervaring_max * 0.15 and bloos_vorig - verval < 0.3:
-            self.event_bus.publish("layer4_response", {"text": "Zo. Klaar met gênant doen."})
+            self.event_bus.publish("body_reactie", {
+                "text": "Zo. Klaar met gênant doen.", "zone": None, "klasse": "herstel",
+            })
             # halveren, niet wissen: gewenning van andere zones blijft staan
             for _z in self.persistent.get("gewend", {}):
                 self.persistent["gewend"][_z] *= 0.5
@@ -402,7 +448,10 @@ class BodyState:
 
         self._laatste_zin = zin  # ook de uiteindelijke zin onthouden
         self._opslaan()
-        self.event_bus.publish("layer4_response", {"text": zin})
+        self._publiceer_state()
+        self.event_bus.publish("body_reactie", {
+            "text": zin, "zone": zone, "klasse": klasse,
+        })
 
 def init_module(event_bus, sem=None):
     return BodyState(event_bus)

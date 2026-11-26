@@ -3,6 +3,13 @@ import time
 
 import pytest
 
+@pytest.fixture(autouse=True)
+def _lege_store_cache():
+    from modules.body import body_state
+    body_state._STORES.clear()
+    yield
+    body_state._STORES.clear()
+
 from modules.body import body_state as bs
 
 
@@ -74,7 +81,7 @@ def test_herstelzin_na_piek(state):
     s.persistent["bloos"] = 0.9
     s.persistent["laatste_event_ts"] = time.time() - 3600
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
-    teksten = [d["text"] for e, d in bus.events if e == "layer4_response"]
+    teksten = [d["text"] for e, d in bus.events if e == "body_reactie"]
     assert "Zo. Klaar met gênant doen." in teksten
 
 
@@ -90,7 +97,7 @@ def test_geen_dubbele_zin(state):
     for _ in range(12):
         s.persistent["bloos"] = 0.0
         s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
-    zinnen = [d["text"] for e, d in bus.events if e == "layer4_response"]
+    zinnen = [d["text"] for e, d in bus.events if e == "body_reactie"]
     for a, b in zip(zinnen, zinnen[1:]):
         assert a != b
 
@@ -100,6 +107,6 @@ def test_fragmenten_herhalen_niet(state):
     for _ in range(10):
         s.persistent["bloos"] = 0.95
         s.on_body({"text": "clitoris", "type": "aanraking", "sterkte": 0.4})
-    zinnen = [d["text"] for e, d in bus.events if e == "layer4_response"]
+    zinnen = [d["text"] for e, d in bus.events if e == "body_reactie"]
     for a, b in zip(zinnen, zinnen[1:]):
         assert a != b

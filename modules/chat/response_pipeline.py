@@ -67,6 +67,7 @@ class ResponsePipeline:
         event_bus.subscribe("intent_greeting", self.on_greeting)
         event_bus.subscribe("intent_fallback", self.on_fallback)
         event_bus.subscribe("layer4_response", self.on_layer4_response)
+        event_bus.subscribe("body_reactie", self.on_body_reactie)
         event_bus.subscribe("emotion_trigger", self.on_emotion_trigger)
 
         # Sjablonen voor de generieke fallback ("ik snap dat niet").
@@ -270,6 +271,24 @@ class ResponsePipeline:
             "personality_style": self.personality.generate_response_style(),
             "emotion_state": self.emotion.state,
             "response_style": self._get_response_style()
+        })
+
+    def on_body_reactie(self, data, event_type=None):
+        """Body-fragment: zelfde verrijking als layer4_response, met bron-label
+        zodat latere modules body-tekst van informatieve tekst kunnen scheiden."""
+        base = (data or {}).get("text", "")
+        if not base:
+            return
+        tone = self.tone_engine.generate_tone(self.personality, self.emotion)
+        self.event_bus.publish("pipeline_response", {
+            "base_text": base,
+            "tone": tone,
+            "personality_style": self.personality.generate_response_style(),
+            "emotion_state": self.emotion.state,
+            "response_style": self._get_response_style(),
+            "bron": "body",
+            "zone": (data or {}).get("zone"),
+            "klasse": (data or {}).get("klasse"),
         })
 
     def on_emotion_trigger(self, data, event_type=None):

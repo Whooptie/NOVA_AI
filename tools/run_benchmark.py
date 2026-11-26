@@ -97,7 +97,7 @@ BLIND_PAD = os.path.join(PROJECT_ROOT, "tests", "benchmark", "benchmark_taalbegr
 RESULTATEN_PAD = os.path.join(PROJECT_ROOT, "data", "benchmark_resultaten.jsonl")
 ECHT_CONCEPTS_PAD = os.path.join(PROJECT_ROOT, "data", "concepts.json")
 
-ANTWOORD_EVENTS = {"chat_response", "layer4_response"}
+ANTWOORD_EVENTS = {"chat_response", "layer4_response", "body_reactie"}
 ANTWOORD_OPEN = "antwoord-controle nog open"
 NEGEER_BIJ_KOPIE = (".git", "__pycache__", ".pytest_cache", "engines", "logs", "*.log", "*.pyc")
 TIJDSLIMIET_SECONDEN = 20

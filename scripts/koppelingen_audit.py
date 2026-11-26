@@ -49,7 +49,7 @@ LAAG_VAN_NAAM = {
 }
 LAAG_TITEL = {0: "Mem", 1: "Ass", 2: "Pat", 3: "Sem", 4: "Rsp", 5: "Ctx", 6: "Prs", 7: "Emg"}
 
-SPREEK_EVENTS = {"chat_response", "layer4_response"}
+SPREEK_EVENTS = {"chat_response", "layer4_response", "body_reactie"}
 LAAG5_TEKENS = ("can_interrupt", "mag_spreken", "layer5", "context_manager")
 # Waaraan herkennen we dat een FUNCTIE zelf een Layer 5-poort heeft?
 POORT_TEKENS = ("layer5", "mag_spreken", "mag_nu_spreken", "can_interrupt")
@@ -238,7 +238,7 @@ def lagen_van(info):
     """(directe lagen, indirecte lagen, eigen laag) van 1 bestand."""
     direct = {LAAG_VAN_NAAM[v] for v in info["verwijzingen"] if v in LAAG_VAN_NAAM}
     indirect = set()
-    if any(e == "layer4_response" for e in info["publiceert"]):
+    if any(e in ("layer4_response", "body_reactie") for e in info["publiceert"]):
         indirect.add(4)
     if (info["emit_topics"] or info["emit_prefixen"]
             or any(e.startswith(("topic_detected:", "activity_started:")) for e in info["publiceert"])):
