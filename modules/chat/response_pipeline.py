@@ -107,6 +107,13 @@ class ResponsePipeline:
         een neutrale, veilige standaardwaarde.
         """
         try:
+            bekeken = self.event_bus.modules.get("bekeken")
+            if bekeken is not None and bekeken.is_actief():
+                return "kort"
+        except Exception:
+            pass
+
+        try:
             ctx_mgr = self.event_bus.modules.get("context_manager")
             if ctx_mgr is None:
                 return "normaal"

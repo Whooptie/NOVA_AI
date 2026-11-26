@@ -120,3 +120,17 @@ def test_verlegenheid_triggert_maar_een_keer(state):
     triggers = [d for e, d in bus.events
                 if e == "emotion_trigger" and d.get("trigger") == "verlegenheid"]
     assert len(triggers) == 1
+
+
+def test_bekeken_verhoogt_bloos(state):
+    s, _ = state
+    begin = s.huidige_bloos()
+    s.on_bekeken({"actief": True})
+    assert s.huidige_bloos() > begin
+
+
+def test_bekeken_inactief_doet_niets(state):
+    s, _ = state
+    s.persistent["bloos"] = 0.5
+    s.on_bekeken({"actief": False})
+    assert s.huidige_bloos() == 0.5
