@@ -3,6 +3,8 @@ import time
 
 import pytest
 
+from modules.body.body_state import INSTORTING
+
 @pytest.fixture(autouse=True)
 def _lege_store_cache():
     from modules.body import body_state
@@ -134,3 +136,47 @@ def test_bekeken_inactief_doet_niets(state):
     s.persistent["bloos"] = 0.5
     s.on_bekeken({"actief": False})
     assert s.huidige_bloos() == 0.5
+
+
+def test_bravoure_gezet_bij_lage_bloos(state):
+    s, _ = state
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+    assert s.persistent["bravoure_boost"] >= 0.4
+
+
+def test_instorting_bij_overschrijding(state):
+    s, bus = state
+    s.persistent["bloos"] = 0.64
+    s.persistent["bravoure_boost"] = 0.4
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+    assert s.persistent["bravoure_boost"] == 0.0
+    assert len([d for e, d in bus.events if e == "bravoure_instorting"]) == 1
+    zinnen = [d["text"] for e, d in bus.events if e == "body_reactie"]
+    assert zinnen[-1] in INSTORTING
+
+
+def test_geen_instorting_zonder_bravoure(state):
+    s, bus = state
+    s.persistent["bloos"] = 0.64
+    s.persistent["bravoure_boost"] = 0.0
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+    assert not [d for e, d in bus.events if e == "bravoure_instorting"]
+    zinnen = [d["text"] for e, d in bus.events if e == "body_reactie"]
+    assert zinnen[-1] not in INSTORTING
+
+
+def test_instorting_herwapent(state):
+    s, bus = state
+    s.persistent["bloos"] = 0.64
+    s.persistent["bravoure_boost"] = 0.4
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+
+    s.persistent["bloos"] = 0.40
+    s.persistent["bravoure_boost"] = 0.4
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+
+    s.persistent["bloos"] = 0.64
+    s.persistent["bravoure_boost"] = 0.4
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+
+    assert len([d for e, d in bus.events if e == "bravoure_instorting"]) == 2

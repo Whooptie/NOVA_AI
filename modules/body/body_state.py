@@ -45,6 +45,9 @@ ZONE_FRAGMENT = {
 }
 GENERIEK_FRAGMENT = ["…", "Hm.", "Kijk niet zo.", "…zeg jij het maar.", "Wacht even.", "Even.", "Awel…"]
 
+# Als de bravoure instort: kort, droog, en vooral geen verdere uitleg.
+INSTORTING = ["…ja bon.", "Zie je wel. Of niet.", "Awel. Goed dan.", "Ja ja.", "…toch nie zo stoer."]
+
 # (verhuld, klinisch) -- bij bloos > 0.5 gebruikt ze het verhulde
 EUFEEM = {
     "vagina": ("daar beneden", "mijn vagina"),
@@ -102,6 +105,8 @@ class BodyState:
         self._laatste_publicatie = 0.0
         self._verlegenheid = Drempel(0.7, 0.6)
         self._verlegenheid.set(self.persistent.get("bloos", 0.0))
+        self._bravoure = Drempel(0.65, 0.55)
+        self._bravoure.set(self.persistent.get("bloos", 0.0))
 
         zones = ["tepel_links", "tepel_rechts", "borst_links", "borst_rechts",
                  "vulva", "clitoris", "vagina", "anus_rand", "rectum", "benen"]
@@ -232,6 +237,12 @@ class BodyState:
                 return zin
         return keuzes[0]
 
+    def _instorting_zin(self):
+        keuzes = [z for z in INSTORTING if z != getattr(self, "_laatste_zin", "")]
+        zin = random.choice(keuzes or INSTORTING)
+        self._laatste_zin = zin
+        return zin
+
     def _zin(self, klasse, zone, bloos=0.0, drempel=0.85):
         # extreem verlegen: geen opbouw, alleen een fragment.
         # Pijn is objectief en wint altijd van verlegenheid.
@@ -359,6 +370,13 @@ class BodyState:
         # asymptotisch: elke prikkel duwt een deel van de resterende
         # afstand weg, zodat ze niet na twee aanrakingen vastzit op 1.0
         # lage comfort_zone = intiemer = sneller verlegen
+        # bravoure is de beginhouding: zolang ze nog niet bloost, doet ze stoer.
+        # Dat is wat er straks kan instorten.
+        if bloos_vorig < 0.25:
+            self.persistent["bravoure_boost"] = max(
+                self.persistent.get("bravoure_boost", 0.0), 0.4
+            )
+
         factor = max(0.10, min(0.45, 0.40 - (comfort_zone - 0.30) * 0.5))
         if zone in ("clitoris", "vagina", "rectum"):
             factor += 0.10
@@ -385,6 +403,13 @@ class BodyState:
         # bij het overschrijden van de grens de emotie echt triggeren, één keer
         if self._verlegenheid.kruist(bloos):
             self.event_bus.publish("emotion_trigger", {"trigger": "verlegenheid"})
+
+        # de dekmantel valt: bravoure stort in precies wanneer het spannend wordt
+        instorting = False
+        if self.persistent.get("bravoure_boost", 0.0) > 0.3 and self._bravoure.kruist(bloos):
+            self.persistent["bravoure_boost"] = 0.0
+            instorting = True
+            self.event_bus.publish("bravoure_instorting", {"bloos": bloos, "zone": zone})
 
         # --- nat: per zone, tepel/clitoris/vulva en penetratie drijven het op
         if zone in ("tepel_links", "tepel_rechts", "clitoris", "vulva") or type_ == "penetratie":
@@ -447,7 +472,10 @@ class BodyState:
         if klasse == "ontmaagd" and self.persistent["voorkeur"].get(zone, 0) > 0.3:
             klasse = "glijdt" if random.random() < 0.4 else klasse
 
-        zin = self._zin(klasse, zone, bloos, 0.85 + ervaring * 0.08)
+        if instorting:
+            zin = self._instorting_zin()
+        else:
+            zin = self._zin(klasse, zone, bloos, 0.85 + ervaring * 0.08)
 
         # derde aanraking op dezelfde zone: één keer een extra zin, maar
         # in hetzelfde bericht in plaats van een tweede bubbel

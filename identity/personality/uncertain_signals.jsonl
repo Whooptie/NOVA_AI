@@ -2517,3 +2517,4 @@
 {"text": "teach verbranding noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-26T23:44:16.667580"}
 {"text": "teach vulkaanuitbarsting noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-26T23:44:20.478503"}
 {"text": "weerleg concept: vorm van het aardoppervlak", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0174, "bron": "model_fallback", "tijdstip": "2026-11-26T23:44:39.960742"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-26T23:51:43.247901"}

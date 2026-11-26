@@ -500,3 +500,4 @@
 | 497 | 4 | Life & Personality | emotion_engine.py | identity/emotion/ | Emotie-state en -regels. | Gebouwd |
 | 498 | 4 | Life & Personality | tone_engine.py | identity/expression/ | Toon/stijl-expressie op basis van style_profiles + gesture_profiles. | Gebouwd |
 | 499 | 2 | System & Control | watchdog.py | modules/diagnose/ | Levenssignaal naar buiten (healthchecks.io/Uptime Kuma) en wekelijkse ntfy-testmelding naar je gsm; schrijft data/hartslag_status.json. | Gebouwd |
+| 500 | 4 | Body | `modules/body/bekeken.py` | Bekeken-as: zelfbewustzijn bij observatie, los van aanraking | Gebouwd |

@@ -26,7 +26,7 @@ class NepBus:
     def __init__(self): self.b = []
     def subscribe(self, *a, **k): pass
     def publish(self, n, d=None):
-        iif n in ("layer4_response", "body_reactie"): self.b.append(d["text"])
+        if n in ("layer4_response", "body_reactie"): self.b.append(d["text"])
 bus = NepBus()
 wm = WeatherModule(bus, os.getenv("OPENWEATHER_API_KEY"))
 wm._ochtend_pad = lambda: Path("/tmp/weather_ochtend_test.json")
