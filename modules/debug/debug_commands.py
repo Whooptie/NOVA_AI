@@ -78,6 +78,7 @@ class DebugCommands:
             (lambda t: t == "label status", self._label_status),
             (lambda t: t.startswith("label signaal") or t.startswith("label sentiment"), self._label),
             (lambda t: t == "audit" or t.startswith("audit "), self._audit),
+            (lambda t: t == "handlers debug", self._handlers_debug),
             (self._is_zelftest, self._zelftest),
         ]
 
@@ -492,6 +493,21 @@ class DebugCommands:
     # ------------------------------------------------------------------
     # Roadmap punt 11 -- audit-log doorzoeken (modules/debug/audit_zoeken.py)
     # ------------------------------------------------------------------
+
+    def _handlers_debug(self, user_input):
+        """
+        Telt hoeveel functies er op events luisteren (alleen lezen).
+        De telling zelf zit in handler_overzicht.py; late import zodat een fout
+        daar nooit de andere debug-commando's raakt (zelfde patroon als _audit).
+        """
+        try:
+            from modules.debug import handler_overzicht
+        except Exception as e:
+            print(f"{C_RED}handler_overzicht kon niet geladen worden: {e}{C_RESET}")
+            return
+        subscribers = getattr(self.event_bus, "_subscribers", {})
+        aantal_geladen = len(getattr(self.loader, "loaded_modules", {}) or {})
+        print(f"{C_CYAN}{handler_overzicht.maak_tekst(subscribers, aantal_geladen)}{C_RESET}")
 
     def _audit(self, user_input):
         """

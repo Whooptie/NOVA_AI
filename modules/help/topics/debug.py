@@ -164,6 +164,8 @@ def get_help():
   zelftest trend                 (taalbegrip, antwoorden, rooktest, dekking, tests en concepten
                                    per dag, met sparklines en wat er sinds een week veranderde)
   zelftest samenvatting          (de laatste zelftest in een paar korte zinnen)
+  handlers debug                 (telt hoeveel functies er op events luisteren, in totaal en per bestand;
+                                   alleen lezen)
   test jezelf                    (zelfde als "zelftest")
                                   Automatisch via .env: ZELFTEST_OPSTART=aan|uit (korte controle
                                   3 minuten na het opstarten), ZELFTEST_NACHT=03:30|uit
