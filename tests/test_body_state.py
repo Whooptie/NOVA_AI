@@ -3,6 +3,8 @@ import time
 
 import pytest
 
+from core import clock
+
 from modules.body.body_state import INSTORTING
 
 @pytest.fixture(autouse=True)
@@ -165,21 +167,18 @@ def test_geen_instorting_zonder_bravoure(state):
     assert zinnen[-1] not in INSTORTING
 
 
-def test_instorting_herwapent(state):
-    s, bus = state
+def test_instorting_herwapent(state_met_klok):
+    s, fake = state_met_klok
     s.persistent["bloos"] = 0.64
     s.persistent["bravoure"] = 0.4
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+    assert _instortingen(s) == 1
 
-    s.persistent["bloos"] = 0.40
-    s.persistent["bravoure"] = 0.4
-    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+    fake.advance(400)  # _decay zakt ver onder de onderdrempel: de drempel herwapent
+    for _ in range(10):
+        s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
 
-    s.persistent["bloos"] = 0.64
-    s.persistent["bravoure"] = 0.4
-    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
-
-    assert len([d for e, d in bus.events if e == "bravoure_instorting"]) == 2
+    assert _instortingen(s) == 2
 
 
 def test_gewone_aanraking_zet_bravoure_boost_niet(state):
@@ -214,3 +213,24 @@ def test_geen_reset_bij_dezelfde_zone(state):
     s.persistent["gewend"] = {"clitoris": 2.0, "vagina": 1.0}
     s.on_body({"text": "clitoris", "type": "aanraking", "sterkte": 0.4})
     assert s.persistent["gewend"]["vagina"] == pytest.approx(1.0)
+
+
+@pytest.fixture
+def state_met_klok(tmp_path, monkeypatch):
+    fake = clock.FakeClock(100_000.0)
+    clock.set_provider(fake)
+    monkeypatch.setattr(bs, "STATE_PAD", tmp_path / "state.json")
+    monkeypatch.setattr(bs, "MAP_PAD", tmp_path / "map.json")
+    monkeypatch.setattr(bs, "APPEARANCE_PAD", tmp_path / "app.json")
+    (tmp_path / "map.json").write_text(json.dumps({"nodes": {
+        "tepel_links": {"gevoeligheid": 0.9, "comfort_zone": 0.45},
+        "clitoris": {"gevoeligheid": 0.95, "comfort_zone": 0.35},
+    }}), encoding="utf-8")
+    (tmp_path / "app.json").write_text("{}", encoding="utf-8")
+    s = bs.BodyState(FakeBus())
+    yield s, fake
+    clock.reset()
+
+
+def _instortingen(s):
+    return len([d for e, d in s.event_bus.events if e == "bravoure_instorting"])

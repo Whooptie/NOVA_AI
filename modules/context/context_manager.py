@@ -617,11 +617,12 @@ class ContextManager:
             )
 
         # Bekeken worden gaat vóór op de activiteit: ook als Kevin alle tijd
-        # heeft, wordt ze kort zodra ze zich bekeken voelt.
+        # heeft, wordt ze kort zodra ze zich bekeken voelt. Enkel een spoor
+        # in de reden; de stijl zelf zet _bepaal_response_style().
         try:
-            bekeken = self.event_bus.modules.get("bekeken")
+            bekeken = (getattr(self.event_bus, "modules", {}) or {}).get("bekeken")
             if bekeken is not None and bekeken.is_actief():
-                return self.RESPONSE_STYLE_KORT
+                score_onderdelen.append(("bekeken-as actief", 0))
         except Exception:
             pass
 
@@ -725,7 +726,15 @@ class ContextManager:
           "mogelijk_afwezig"/"waarschijnlijk_weg" (Kevin heeft dus
           tijd, geen druk venster open)? Dan uitgebreid mag.
         - Standaard: normaal.
+        - Bekeken-as actief? Dan kort, vóór alle andere regels.
         """
+        try:
+            bekeken = (getattr(self.event_bus, "modules", {}) or {}).get("bekeken")
+            if bekeken is not None and bekeken.is_actief():
+                return self.RESPONSE_STYLE_KORT
+        except Exception:
+            pass
+
         is_storingsgevoelige_activiteit = (
             activiteit_label in self.STORINGSGEVOELIGE_ACTIVITEITEN
             and activiteit_duur_minuten >= self.CODING_ONDERBREEK_DREMPEL_MINUTEN

@@ -14,6 +14,10 @@ class Drempel:
             raise ValueError("laag mag niet boven hoog liggen")
         self._actief = False
 
+    @property
+    def actief(self) -> bool:
+        return self._actief
+
     def set(self, waarde: float) -> None:
         """Initialiseer zonder te vuren, bv. bij het laden van bestaande state."""
         self._actief = waarde > self.hoog

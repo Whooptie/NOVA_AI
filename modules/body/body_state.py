@@ -390,7 +390,7 @@ class BodyState:
         # lage comfort_zone = intiemer = sneller verlegen
         # bravoure is de beginhouding: zolang ze nog niet bloost, doet ze stoer.
         # Dat is wat er straks kan instorten.
-        if bloos_vorig < 0.25:
+        if self.persistent["bloos"] < 0.25:
             self.persistent["bravoure"] = max(self.persistent.get("bravoure", 0.0), 0.4)
 
         factor = max(0.10, min(0.45, 0.40 - (comfort_zone - 0.30) * 0.5))

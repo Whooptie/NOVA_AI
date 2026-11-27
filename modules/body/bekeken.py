@@ -69,7 +69,10 @@ class Bekeken:
         return self._verval()
 
     def is_actief(self) -> bool:
-        return self._verval() > DREMPEL_LAAG
+        # Via de Drempel, zodat de band echt geldt: aan vanaf
+        # DREMPEL_HOOG, pas weer uit onder DREMPEL_LAAG.
+        self._drempel.kruist(self._verval())
+        return self._drempel.actief
 
     # ---------------- gedrag ----------------
     def on_trigger(self, data=None, event_type=None):
