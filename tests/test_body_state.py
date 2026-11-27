@@ -126,20 +126,6 @@ def test_verlegenheid_triggert_maar_een_keer(state):
     assert len(triggers) == 1
 
 
-def test_bekeken_verhoogt_bloos(state):
-    s, _ = state
-    begin = s.huidige_bloos()
-    s.on_bekeken({"actief": True})
-    assert s.huidige_bloos() > begin
-
-
-def test_bekeken_inactief_doet_niets(state):
-    s, _ = state
-    s.persistent["bloos"] = 0.5
-    s.on_bekeken({"actief": False})
-    assert s.huidige_bloos() == 0.5
-
-
 def test_bravoure_gezet_bij_lage_bloos(state):
     s, _ = state
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})

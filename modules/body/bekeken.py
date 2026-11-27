@@ -21,10 +21,10 @@ STATE_PAD = DATA_DIR / "state.json"
 
 TRIGGER_EVENTS = ("intent_uiterlijk", "bekeken_trigger")
 
-DREMPEL_HOOG = 0.30
-DREMPEL_LAAG = 0.22
-STIJGING = 0.18
-DAAL_PER_MINUUT = 0.05
+DREMPEL_HOOG = 0.45
+DREMPEL_LAAG = 0.35
+STIJGING = 0.15
+DAAL_PER_MINUUT = 0.035
 
 _STORES = {}
 
@@ -95,6 +95,9 @@ class Bekeken:
         self._store.touch("bekeken")
         return waarde
 
+        
+    def on_trigger(self, data=None, event_type=None):
+        self.verhoog()
 
 def init_module(event_bus, sem=None):
     return Bekeken(event_bus)

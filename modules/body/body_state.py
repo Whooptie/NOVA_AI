@@ -138,7 +138,6 @@ class BodyState:
 
         event_bus.subscribe("intent_body", self.on_body)
         event_bus.subscribe("system_ready", self._opslaan)
-        event_bus.subscribe("bekeken_changed", self.on_bekeken)
 
     def _opslaan(self, data=None, event_type=None):
         self._store.touch("body")
@@ -164,12 +163,6 @@ class BodyState:
             return
         self._laatste_publicatie = clock.now()
         self.event_bus.publish("state_body", self.snapshot())
-
-    def on_bekeken(self, data, event_type=None):
-        """Bekeken worden is een duwtje, geen aanraking: asymptotisch, dus
-        bij een hoge bloos komt er bijna niets meer bij."""
-        if (data or {}).get("actief"):
-            self.verhoog_bloos(0.05)
 
     def huidige_bloos(self) -> float:
         return float(self.persistent.get("bloos", 0.0))

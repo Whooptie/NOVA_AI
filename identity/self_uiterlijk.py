@@ -336,11 +336,11 @@ def get_beschrijving(deel, event_bus=None, feedback_logger=None, pad=None):
     bloos = _bloos(event_bus)
     ervaring = _ervaring(event_bus, deel)
     if intiem:
-        _bloos_bump(event_bus, 0.12 * (1.0 - ervaring * 0.5))
+        _bloos_bump(event_bus, 0.08 * (1.0 - ervaring * 0.5))
         bloos = _bloos(event_bus)
 
     # extreem verlegen: de voorbereide tekst valt weg
-    if intiem and bloos > 0.85 + ervaring * 0.08:
+    if intiem and bloos > 0.9 + ervaring * 0.08:
         return _aarzel()
 
     # verlegen: verhulde tekst in plaats van de volledige beschrijving
