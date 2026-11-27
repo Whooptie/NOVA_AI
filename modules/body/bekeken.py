@@ -3,11 +3,11 @@
 
 Adolescent zelfbewustzijn ("denkbeeldig publiek"): ze wordt hyperbewust van
 bekeken worden, ook als er niets aangeraakt wordt. Stijgt bij observatie,
-zakt met de tijd. Boven de drempel worden antwoorden kort en stijgt bloos
-licht mee.
+zakt met de tijd. Boven de drempel worden antwoorden kort.
 
-Los van body_state: eigen as, eigen decay. body_state leest hier niets van,
-bekeken publiceert alleen.
+Los van body_state: eigen as, eigen decay. De bloos komt uit
+identity/self_uiterlijk.py, niet van hier. `bekeken_changed` wordt
+gepubliceerd als leespad voor latere modules; vandaag leest niemand het.
 """
 
 from pathlib import Path
@@ -95,9 +95,6 @@ class Bekeken:
         self._store.touch("bekeken")
         return waarde
 
-        
-    def on_trigger(self, data=None, event_type=None):
-        self.verhoog()
 
 def init_module(event_bus, sem=None):
     return Bekeken(event_bus)
