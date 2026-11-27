@@ -2539,3 +2539,6 @@
 {"text": "hoe zien je borsten eruit?", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.003, "bron": "model_fallback", "tijdstip": "2026-11-27T14:04:39.069342"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-27T14:11:31.717651"}
 {"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-27T14:12:36.984781"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-27T19:00:09.560843"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-27T19:00:20.731887"}
+{"text": "toon volledige graaf", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-27T19:00:39.228857"}

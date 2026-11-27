@@ -492,8 +492,8 @@ function toonInspector(id) {
 var labelEls = {};
 function welkeLabels() {
   var ids = Object.keys(vis).filter(zichtbaar);
-  if (alleLabels || ids.length <= ALLE_LABELS_TOT) return ids;
-  return ids.filter(function (id) { return hubSet[id] || id === gekozen || (focus && focus[id]) || byId[id].n >= 14; });
+  if (alleLabels) return ids;
+  return ids.filter(function (id) { return id === gekozen; });
 }
 function maakLabels() {
   var cont = el("labels"), gewenst = {};
