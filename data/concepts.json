@@ -49311,12 +49311,12 @@
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-11-27T20:17:58.393580",
+      "updated_at": "2026-11-27T20:21:48.907272",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-11-27T20:17:58.393580",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:21:48.907272",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
@@ -49324,6 +49324,10 @@
         },
         {
           "timestamp": "2026-11-27T20:17:58.393580",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-27T20:21:48.907272",
           "confidence": 1.0
         }
       ]
@@ -123215,9 +123219,12 @@
     "senses": [
       {
         "sense_id": "vuurtoren#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een vuurtoren is een hoge toren aan de kust met een sterk licht dat schepen waarschuwt.",
+        "pos": "noun",
+        "examples": [
+          "De vuurtoren straalde over de zee.",
+          "Schepen gebruiken een vuurtoren om hun route te bepalen."
+        ],
         "relations": [
           {
             "type": "is_a",
@@ -123244,20 +123251,20 @@
             "created_at": "2026-11-21T18:37:35.255769"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-03T11:38:41.500128",
-      "updated_at": "2026-11-21T18:37:35.255779",
+      "updated_at": "2026-11-27T20:26:42.922566",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:37:35.255779",
-      "usage_count": 4,
+      "last_used_at": "2026-11-27T20:24:49.480970",
+      "usage_count": 5,
       "confidence_history": [
         {
           "timestamp": "2026-11-03T11:38:41.501013",
@@ -123274,6 +123281,10 @@
         {
           "timestamp": "2026-11-21T18:37:35.255779",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:24:49.480970",
+          "confidence": 1.0
         }
       ]
     },
@@ -123339,6 +123350,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:37:35.255776"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "vuurtoren#1",
+        "old_value": "unknown",
+        "new_value": "Een vuurtoren is een hoge toren aan de kust met een sterk licht dat schepen waarschuwt.",
+        "timestamp": "2026-11-27T20:24:49.480968"
       }
     ]
   },
@@ -126809,9 +126828,12 @@
     "senses": [
       {
         "sense_id": "vocht#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Vocht is een kleine hoeveelheid vloeistof, meestal water, in of op iets.",
+        "pos": "noun",
+        "examples": [
+          "Er zat vocht in de muur.",
+          "De handdoek nam het vocht op."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -126830,20 +126852,20 @@
             "created_at": "2026-11-21T18:55:51.596205"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:20.350360",
-      "updated_at": "2026-11-21T18:55:51.596214",
+      "updated_at": "2026-11-27T20:26:35.146614",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:55:51.596214",
-      "usage_count": 3,
+      "last_used_at": "2026-11-27T20:24:21.613087",
+      "usage_count": 4,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:20.350550",
@@ -126856,6 +126878,10 @@
         {
           "timestamp": "2026-11-21T18:55:51.596214",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:24:21.613087",
+          "confidence": 1.0
         }
       ]
     },
@@ -126897,6 +126923,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:55:51.596212"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "vocht#1",
+        "old_value": "unknown",
+        "new_value": "Vocht is een kleine hoeveelheid vloeistof, meestal water, in of op iets.",
+        "timestamp": "2026-11-27T20:24:21.613085"
       }
     ]
   },
@@ -127039,9 +127073,12 @@
     "senses": [
       {
         "sense_id": "wrijving#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Wrijving is de weerstand die twee oppervlakken tegen elkaar ondervinden als ze langs elkaar bewegen.",
+        "pos": "noun",
+        "examples": [
+          "Door wrijving worden je handen warm.",
+          "Olie vermindert de wrijving in de motor."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -127052,20 +127089,20 @@
             "created_at": "2026-11-17T19:28:40.744078"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:38.772963",
-      "updated_at": "2026-11-17T19:28:40.744087",
+      "updated_at": "2026-11-27T20:26:50.029789",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:28:40.744087",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:25:13.784209",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:38.773243",
@@ -127074,6 +127111,10 @@
         {
           "timestamp": "2026-11-17T19:28:40.744087",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:25:13.784209",
+          "confidence": 1.0
         }
       ]
     },
@@ -127104,6 +127145,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:28:40.744085"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "wrijving#1",
+        "old_value": "unknown",
+        "new_value": "Wrijving is de weerstand die twee oppervlakken tegen elkaar ondervinden als ze langs elkaar bewegen.",
+        "timestamp": "2026-11-27T20:25:13.784207"
       }
     ]
   },
@@ -128523,9 +128572,12 @@
     "senses": [
       {
         "sense_id": "vermoeidheid#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Vermoeidheid is het gevoel van weinig energie, waardoor je rust nodig hebt.",
+        "pos": "noun",
+        "examples": [
+          "Na de lange reis voelde hij grote vermoeidheid.",
+          "Vermoeidheid maakt het moeilijk om je te concentreren."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -128536,20 +128588,20 @@
             "created_at": "2026-11-21T19:06:02.671865"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:35:52.859826",
-      "updated_at": "2026-11-21T19:06:02.671875",
+      "updated_at": "2026-11-27T20:26:27.085676",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:06:02.671875",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:23:55.195996",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:35:52.860190",
@@ -128558,6 +128610,10 @@
         {
           "timestamp": "2026-11-21T19:06:02.671875",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:23:55.195996",
+          "confidence": 1.0
         }
       ]
     },
@@ -128588,6 +128644,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:06:02.671872"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "vermoeidheid#1",
+        "old_value": "unknown",
+        "new_value": "Vermoeidheid is het gevoel van weinig energie, waardoor je rust nodig hebt.",
+        "timestamp": "2026-11-27T20:23:55.195994"
       }
     ]
   },
@@ -128817,9 +128881,12 @@
     "senses": [
       {
         "sense_id": "virus#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een virus is een zeer klein deeltje dat zich in levende cellen vermenigvuldigt en ziektes kan veroorzaken.",
+        "pos": "noun",
+        "examples": [
+          "Het virus verspreidde zich snel.",
+          "Een virus is kleiner dan een bacterie."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -128830,20 +128897,20 @@
             "created_at": "2026-11-17T19:36:14.747111"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:36:12.751346",
-      "updated_at": "2026-11-17T19:36:14.747120",
+      "updated_at": "2026-11-27T20:26:30.859851",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:36:14.747120",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:24:08.563409",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:36:12.751555",
@@ -128852,6 +128919,10 @@
         {
           "timestamp": "2026-11-17T19:36:14.747120",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:24:08.563409",
+          "confidence": 1.0
         }
       ]
     },
@@ -128882,6 +128953,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:36:14.747117"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "virus#1",
+        "old_value": "unknown",
+        "new_value": "Een virus is een zeer klein deeltje dat zich in levende cellen vermenigvuldigt en ziektes kan veroorzaken.",
+        "timestamp": "2026-11-27T20:24:08.563407"
       }
     ]
   },
@@ -129159,9 +129238,12 @@
     "senses": [
       {
         "sense_id": "zuur#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een zuur is een stof met een scherpe smaak die met metaal en andere stoffen kan reageren.",
+        "pos": "noun",
+        "examples": [
+          "Citroensap bevat zuur.",
+          "Sterk zuur kan je huid beschadigen."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -129170,22 +129252,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-17T19:37:14.133011"
+          },
+          {
+            "type": "is_a",
+            "target": "stof",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:25:40.532982"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:37:10.593108",
-      "updated_at": "2026-11-17T19:37:14.133020",
+      "updated_at": "2026-11-27T20:26:57.725040",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:37:14.133020",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:25:40.440779",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:37:10.593437",
@@ -129194,6 +129284,10 @@
         {
           "timestamp": "2026-11-17T19:37:14.133020",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:25:40.440779",
+          "confidence": 1.0
         }
       ]
     },
@@ -129224,6 +129318,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:37:14.133017"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "zuur#1",
+        "old_value": "unknown",
+        "new_value": "Een zuur is een stof met een scherpe smaak die met metaal en andere stoffen kan reageren.",
+        "timestamp": "2026-11-27T20:25:40.440777"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "zuur#1",
+        "relation": {
+          "type": "is_a",
+          "target": "stof",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:25:40.532998"
       }
     ]
   },
@@ -129279,9 +129392,12 @@
     "senses": [
       {
         "sense_id": "zonlicht#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Zonlicht is het licht dat van de zon komt.",
+        "pos": "noun",
+        "examples": [
+          "Planten hebben zonlicht nodig om te groeien.",
+          "Het zonlicht scheen door het raam."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -129292,20 +129408,20 @@
             "created_at": "2026-11-17T19:37:27.444843"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:37:23.539146",
-      "updated_at": "2026-11-17T19:37:27.444851",
+      "updated_at": "2026-11-27T20:26:53.568191",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:37:27.444851",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:25:26.500872",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:37:23.539396",
@@ -129314,6 +129430,10 @@
         {
           "timestamp": "2026-11-17T19:37:27.444851",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:25:26.500872",
+          "confidence": 1.0
         }
       ]
     },
@@ -129344,6 +129464,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:37:27.444848"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "zonlicht#1",
+        "old_value": "unknown",
+        "new_value": "Zonlicht is het licht dat van de zon komt.",
+        "timestamp": "2026-11-27T20:25:26.500870"
       }
     ]
   },
@@ -131642,9 +131770,12 @@
     "senses": [
       {
         "sense_id": "verkeer#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Verkeer is het geheel van voertuigen en mensen die zich op de weg verplaatsen.",
+        "pos": "noun",
+        "examples": [
+          "Het verkeer stond stil bij de brug.",
+          "In de stad is het verkeer druk."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -131655,20 +131786,20 @@
             "created_at": "2026-11-21T18:55:03.036676"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:55:00.602790",
-      "updated_at": "2026-11-21T18:55:03.036693",
+      "updated_at": "2026-11-27T20:26:23.061208",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:55:03.036693",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:23:42.915672",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:55:00.603038",
@@ -131677,6 +131808,10 @@
         {
           "timestamp": "2026-11-21T18:55:03.036693",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:23:42.915672",
+          "confidence": 1.0
         }
       ]
     },
@@ -131707,6 +131842,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:55:03.036689"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "verkeer#1",
+        "old_value": "unknown",
+        "new_value": "Verkeer is het geheel van voertuigen en mensen die zich op de weg verplaatsen.",
+        "timestamp": "2026-11-27T20:23:42.915670"
       }
     ]
   },
@@ -134999,9 +135142,12 @@
     "senses": [
       {
         "sense_id": "voedseltekort#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Voedseltekort is een situatie waarin er te weinig eten beschikbaar is voor de mensen.",
+        "pos": "noun",
+        "examples": [
+          "Door de droogte ontstond voedseltekort.",
+          "De regering hielp mensen die voedseltekort hadden."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135010,22 +135156,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:06:10.576966"
+          },
+          {
+            "type": "is_a",
+            "target": "situatie",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:24:36.455469"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:06:08.291124",
-      "updated_at": "2026-11-21T19:06:10.576975",
+      "updated_at": "2026-11-27T20:26:39.202996",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:06:10.576975",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:24:36.369357",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:06:08.291412",
@@ -135034,6 +135188,10 @@
         {
           "timestamp": "2026-11-21T19:06:10.576975",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:24:36.369357",
+          "confidence": 1.0
         }
       ]
     },
@@ -135064,6 +135222,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:06:10.576973"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "voedseltekort#1",
+        "old_value": "unknown",
+        "new_value": "Voedseltekort is een situatie waarin er te weinig eten beschikbaar is voor de mensen.",
+        "timestamp": "2026-11-27T20:24:36.369354"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "voedseltekort#1",
+        "relation": {
+          "type": "is_a",
+          "target": "situatie",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:24:36.455487"
       }
     ]
   },
@@ -135302,9 +135479,12 @@
     "senses": [
       {
         "sense_id": "verdamping#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Verdamping is het veranderen van vloeistof in damp of gas.",
+        "pos": "noun",
+        "examples": [
+          "Door verdamping wordt de plas steeds kleiner.",
+          "Bij verdamping neemt water warmte op."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135315,20 +135495,20 @@
             "created_at": "2026-11-21T19:06:37.551091"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:06:35.203587",
-      "updated_at": "2026-11-21T19:06:37.551101",
+      "updated_at": "2026-11-27T20:26:19.586711",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:06:37.551101",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:23:28.778515",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:06:35.203823",
@@ -135337,6 +135517,10 @@
         {
           "timestamp": "2026-11-21T19:06:37.551101",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:23:28.778515",
+          "confidence": 1.0
         }
       ]
     },
@@ -135367,6 +135551,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:06:37.551099"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "verdamping#1",
+        "old_value": "unknown",
+        "new_value": "Verdamping is het veranderen van vloeistof in damp of gas.",
+        "timestamp": "2026-11-27T20:23:28.778513"
       }
     ]
   },
@@ -135605,9 +135797,12 @@
     "senses": [
       {
         "sense_id": "zuurstoftekort#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Zuurstoftekort is een situatie waarin het lichaam of een omgeving te weinig zuurstof heeft.",
+        "pos": "noun",
+        "examples": [
+          "Door zuurstoftekort werd hij duizelig.",
+          "Bergbeklimmers kunnen last krijgen van zuurstoftekort."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135616,22 +135811,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:07:02.804479"
+          },
+          {
+            "type": "is_a",
+            "target": "situatie",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:25:52.138482"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:07:00.482626",
-      "updated_at": "2026-11-21T19:07:02.804488",
+      "updated_at": "2026-11-27T20:27:01.979431",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:07:02.804488",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:25:52.043899",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:07:00.482902",
@@ -135640,6 +135843,10 @@
         {
           "timestamp": "2026-11-21T19:07:02.804488",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:25:52.043899",
+          "confidence": 1.0
         }
       ]
     },
@@ -135670,6 +135877,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:07:02.804486"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "zuurstoftekort#1",
+        "old_value": "unknown",
+        "new_value": "Zuurstoftekort is een situatie waarin het lichaam of een omgeving te weinig zuurstof heeft.",
+        "timestamp": "2026-11-27T20:25:52.043895"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "zuurstoftekort#1",
+        "relation": {
+          "type": "is_a",
+          "target": "situatie",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:25:52.138498"
       }
     ]
   },
@@ -135725,9 +135951,12 @@
     "senses": [
       {
         "sense_id": "stoot#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een stoot is een korte, krachtige beweging of klap.",
+        "pos": "noun",
+        "examples": [
+          "Hij gaf de bal een harde stoot.",
+          "Door de stoot viel het glas om."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135738,20 +135967,20 @@
             "created_at": "2026-11-21T19:07:11.200846"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:07:09.062423",
-      "updated_at": "2026-11-21T19:07:11.200862",
+      "updated_at": "2026-11-27T20:26:08.730050",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:07:11.200862",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:22:46.346601",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:07:09.062699",
@@ -135760,6 +135989,10 @@
         {
           "timestamp": "2026-11-21T19:07:11.200862",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:22:46.346601",
+          "confidence": 1.0
         }
       ]
     },
@@ -135790,6 +136023,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:07:11.200857"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "stoot#1",
+        "old_value": "unknown",
+        "new_value": "Een stoot is een korte, krachtige beweging of klap.",
+        "timestamp": "2026-11-27T20:22:46.346599"
       }
     ]
   },
@@ -135845,9 +136086,12 @@
     "senses": [
       {
         "sense_id": "wond#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een wond is een beschadiging van de huid of het lichaam, bijvoorbeeld door een snee of val.",
+        "pos": "noun",
+        "examples": [
+          "De wond werd gereinigd en verbonden.",
+          "Zijn wond genas langzaam."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135856,22 +136100,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:07:24.492124"
+          },
+          {
+            "type": "is_a",
+            "target": "beschadiging",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:25:01.858436"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:07:22.550740",
-      "updated_at": "2026-11-21T19:07:24.492133",
+      "updated_at": "2026-11-27T20:26:46.481897",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:07:24.492133",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:25:01.769850",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:07:22.551064",
@@ -135880,6 +136132,10 @@
         {
           "timestamp": "2026-11-21T19:07:24.492133",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:25:01.769850",
+          "confidence": 1.0
         }
       ]
     },
@@ -135910,6 +136166,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:07:24.492131"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "wond#1",
+        "old_value": "unknown",
+        "new_value": "Een wond is een beschadiging van de huid of het lichaam, bijvoorbeeld door een snee of val.",
+        "timestamp": "2026-11-27T20:25:01.769848"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "wond#1",
+        "relation": {
+          "type": "is_a",
+          "target": "beschadiging",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:25:01.858456"
       }
     ]
   },
@@ -136071,9 +136346,12 @@
     "senses": [
       {
         "sense_id": "stoom#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Stoom is waterdamp die ontstaat als water kookt.",
+        "pos": "noun",
+        "examples": [
+          "Er kwam stoom uit de pan.",
+          "De trein werd vroeger door stoom aangedreven."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136084,20 +136362,20 @@
             "created_at": "2026-11-21T19:07:40.972581"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:07:38.926668",
-      "updated_at": "2026-11-21T19:07:40.972590",
+      "updated_at": "2026-11-27T20:26:05.318017",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:07:40.972590",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:22:30.411503",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:07:38.926997",
@@ -136106,6 +136384,10 @@
         {
           "timestamp": "2026-11-21T19:07:40.972590",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:22:30.411503",
+          "confidence": 1.0
         }
       ]
     },
@@ -136136,6 +136418,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:07:40.972588"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "stoom#1",
+        "old_value": "unknown",
+        "new_value": "Stoom is waterdamp die ontstaat als water kookt.",
+        "timestamp": "2026-11-27T20:22:30.411501"
       }
     ]
   },
@@ -136452,9 +136742,12 @@
     "senses": [
       {
         "sense_id": "storing#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een storing is een onderbreking waardoor iets tijdelijk niet goed werkt.",
+        "pos": "noun",
+        "examples": [
+          "Door een storing deed de lift het niet.",
+          "De storing in het netwerk werd snel verholpen."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136463,22 +136756,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:08:11.967303"
+          },
+          {
+            "type": "is_a",
+            "target": "onderbreking",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:23:00.897565"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:09.852379",
-      "updated_at": "2026-11-21T19:08:11.967313",
+      "updated_at": "2026-11-27T20:26:12.611946",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:11.967313",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:23:00.810438",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:09.852689",
@@ -136487,6 +136788,10 @@
         {
           "timestamp": "2026-11-21T19:08:11.967313",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:23:00.810438",
+          "confidence": 1.0
         }
       ]
     },
@@ -136517,6 +136822,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:08:11.967310"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "storing#1",
+        "old_value": "unknown",
+        "new_value": "Een storing is een onderbreking waardoor iets tijdelijk niet goed werkt.",
+        "timestamp": "2026-11-27T20:23:00.810436"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "storing#1",
+        "relation": {
+          "type": "is_a",
+          "target": "onderbreking",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:23:00.897582"
       }
     ]
   },
@@ -137344,9 +137668,12 @@
     "senses": [
       {
         "sense_id": "stroomstoring#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een stroomstoring is een onderbreking in de elektriciteitsvoorziening, waardoor het licht en de apparaten uitvallen.",
+        "pos": "noun",
+        "examples": [
+          "Door de stroomstoring lag de hele straat in het donker.",
+          "Na de stroomstoring moest ik alle klokken opnieuw instellen."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -137357,20 +137684,20 @@
             "created_at": "2026-11-21T19:09:20.626378"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:09:18.376109",
-      "updated_at": "2026-11-21T19:09:20.626393",
+      "updated_at": "2026-11-27T20:26:16.216840",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:09:20.626393",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:23:15.025035",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:09:18.376429",
@@ -137379,6 +137706,10 @@
         {
           "timestamp": "2026-11-21T19:09:20.626393",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:23:15.025035",
+          "confidence": 1.0
         }
       ]
     },
@@ -137409,6 +137740,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:09:20.626389"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "stroomstoring#1",
+        "old_value": "unknown",
+        "new_value": "Een stroomstoring is een onderbreking in de elektriciteitsvoorziening, waardoor het licht en de apparaten uitvallen.",
+        "timestamp": "2026-11-27T20:23:15.025033"
       }
     ]
   },
