@@ -8,7 +8,9 @@ engines/stockfish/*.exe
 *.xlsx
 interactions_*.jsonl
 
-# data/: alleen concepts.json gaat mee naar GitHub
+# data/: alleen concepts.json en de overzichtsgraaf gaan mee naar GitHub
 data/*
 !data/concepts.json
+!data/graphs/
+data/graphs/*
 !data/graphs/alles_3d.html
