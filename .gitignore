@@ -11,3 +11,4 @@ interactions_*.jsonl
 # data/: alleen concepts.json gaat mee naar GitHub
 data/*
 !data/concepts.json
+!data/graphs/alles_3d.html
