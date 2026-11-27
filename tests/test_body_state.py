@@ -141,15 +141,15 @@ def test_bekeken_inactief_doet_niets(state):
 def test_bravoure_gezet_bij_lage_bloos(state):
     s, _ = state
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
-    assert s.persistent["bravoure_boost"] >= 0.4
+    assert s.persistent["bravoure"] >= 0.4
 
 
 def test_instorting_bij_overschrijding(state):
     s, bus = state
     s.persistent["bloos"] = 0.64
-    s.persistent["bravoure_boost"] = 0.4
+    s.persistent["bravoure"] = 0.4
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
-    assert s.persistent["bravoure_boost"] == 0.0
+    assert s.persistent["bravoure"] == 0.0
     assert len([d for e, d in bus.events if e == "bravoure_instorting"]) == 1
     zinnen = [d["text"] for e, d in bus.events if e == "body_reactie"]
     assert zinnen[-1] in INSTORTING
@@ -158,7 +158,7 @@ def test_instorting_bij_overschrijding(state):
 def test_geen_instorting_zonder_bravoure(state):
     s, bus = state
     s.persistent["bloos"] = 0.64
-    s.persistent["bravoure_boost"] = 0.0
+    s.persistent["bravoure"] = 0.0
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
     assert not [d for e, d in bus.events if e == "bravoure_instorting"]
     zinnen = [d["text"] for e, d in bus.events if e == "body_reactie"]
@@ -168,15 +168,49 @@ def test_geen_instorting_zonder_bravoure(state):
 def test_instorting_herwapent(state):
     s, bus = state
     s.persistent["bloos"] = 0.64
-    s.persistent["bravoure_boost"] = 0.4
+    s.persistent["bravoure"] = 0.4
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
 
     s.persistent["bloos"] = 0.40
-    s.persistent["bravoure_boost"] = 0.4
+    s.persistent["bravoure"] = 0.4
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
 
     s.persistent["bloos"] = 0.64
-    s.persistent["bravoure_boost"] = 0.4
+    s.persistent["bravoure"] = 0.4
     s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
 
     assert len([d for e, d in bus.events if e == "bravoure_instorting"]) == 2
+
+
+def test_gewone_aanraking_zet_bravoure_boost_niet(state):
+    """bravoure_boost is van expression_injector: alleen na een herstelpiek."""
+    s, _ = state
+    s.on_body({"text": "tepel", "type": "aanraking", "sterkte": 0.4})
+    assert s.persistent["bravoure"] >= 0.4
+    assert s.persistent["bravoure_boost"] == 0.0
+
+
+def test_cross_zone_reset(state):
+    s, _ = state
+    s.persistent["laatste_zone"] = "tepel_links"
+    s.persistent["gewend"] = {"tepel_links": 2.0, "clitoris": 1.0, "vagina": 1.0}
+    s.on_body({"text": "clitoris", "type": "aanraking", "sterkte": 0.4})
+    assert s.persistent["gewend"]["tepel_links"] == pytest.approx(1.2)
+    assert s.persistent["gewend"]["vagina"] == pytest.approx(0.6)
+    assert s.persistent["gewend"]["clitoris"] == pytest.approx(2.0)
+
+
+def test_geen_reset_bij_precies_een(state):
+    s, _ = state
+    s.persistent["laatste_zone"] = "tepel_links"
+    s.persistent["gewend"] = {"tepel_links": 1.0, "vagina": 1.0}
+    s.on_body({"text": "clitoris", "type": "aanraking", "sterkte": 0.4})
+    assert s.persistent["gewend"]["vagina"] == pytest.approx(1.0)
+
+
+def test_geen_reset_bij_dezelfde_zone(state):
+    s, _ = state
+    s.persistent["laatste_zone"] = "clitoris"
+    s.persistent["gewend"] = {"clitoris": 2.0, "vagina": 1.0}
+    s.on_body({"text": "clitoris", "type": "aanraking", "sterkte": 0.4})
+    assert s.persistent["gewend"]["vagina"] == pytest.approx(1.0)

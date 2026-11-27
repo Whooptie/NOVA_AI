@@ -21,8 +21,8 @@ STATE_PAD = DATA_DIR / "state.json"
 
 TRIGGER_EVENTS = ("intent_uiterlijk", "bekeken_trigger")
 
-DREMPEL_HOOG = 0.55
-DREMPEL_LAAG = 0.45
+DREMPEL_HOOG = 0.30
+DREMPEL_LAAG = 0.22
 STIJGING = 0.18
 DAAL_PER_MINUUT = 0.05
 
@@ -56,8 +56,11 @@ class Bekeken:
         waarde = float(self._state.get("waarde", 0.0))
 
         if vorige and nu > vorige:
-            waarde = max(0.0, waarde - (nu - vorige) / 60.0 * DAAL_PER_MINUUT)
-            self._state["waarde"] = waarde
+            nieuw = max(0.0, waarde - (nu - vorige) / 60.0 * DAAL_PER_MINUUT)
+            if nieuw != waarde:
+                self._state["waarde"] = nieuw
+                self._store.touch("bekeken")
+            waarde = nieuw
         if len_ts:
             self._state["laatste_ts"] = nu
         return waarde
@@ -74,6 +77,12 @@ class Bekeken:
 
     def verhoog(self, factor: float = 1.0) -> float:
         huidig = self._verval()
+
+        # Eerst herwapenen op de vervallen waarde. Anders blijft de drempel
+        # hangen wanneer de volgende trigger meteen weer boven komt.
+        if self._drempel.kruist(huidig):
+            self.event_bus.publish("bekeken_changed", {"waarde": huidig, "actief": True})
+
         self._state["waarde"] = min(1.0, huidig + STIJGING * factor)
         waarde = self._state["waarde"]
 

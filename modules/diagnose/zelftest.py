@@ -941,7 +941,8 @@ class Zelftest:
         return res
 
     def _stap_benchmark(self):
-        return {"taal": self._draai_benchmark(["--taal"]), "rook": self._draai_benchmark(["--niveau", "3"])}
+        return {"taal": self._draai_benchmark(["--taal", "--met-antwoordlaag"]),
+                "rook": self._draai_benchmark(["--niveau", "3"])}
 
     def _stap_extern(self, module, argumenten, parser, samenvoegen=True, timeout=TOOL_TIMEOUT):
         """Gedeelde stap voor vulture, bandit en pip-audit: ontbreekt het programma, dan melden we dat."""

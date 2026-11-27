@@ -253,7 +253,7 @@ Nova_AI/
 
 ## ⚠️ About the data files in this repository
 
-This repo contains **more than just code** — it also contains Nova's real, growing memory: files like `concepts.json`, `word_associations.json`, `patterns_layer2.json` and everything under `identity/personality/`. These are **not sample or test data** — this is Nova's accumulated knowledge and personality from real conversations with me.
+This repo contains code plus two things that are genuinely part of Nova: `data/concepts.json` (her concept graph) and everything under `identity/`. The rest of `data/` — word associations, behavioral patterns, runtime state, backups — stays local on my own hardware. These are **not sample or test data** — this is Nova's accumulated knowledge and personality from real conversations with me.
 
 This repository serves primarily as a **personal backup**, and has been made public so others can follow along with the project's development — not as a ready-to-use installable package for personal use.
 

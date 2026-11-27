@@ -220,7 +220,10 @@ class ExpressionInjector:
         # Nasleep: na een verlegen piek even extra brutaal
         if self._boost() > 0.3:
             text = text.rstrip("!.") + " " + random.choice(
-                ["Zo.", "Klaar.", "En nu verder.", "Niet meer over beginnen."]
+                [
+                    "Zo.", "Klaar.", "En nu verder.", "Niet meer over beginnen.",
+                    "Bon.", "Goed dan.", "Awel ja.", "Genoeg geweest.", "En nu gij.",
+                ]
             )
 
         # 1) Puberale flair (nu ook Layer 6-bewust via personality)

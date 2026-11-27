@@ -616,6 +616,16 @@ class ContextManager:
                 (f"{aantal_anomalieen} anomalie(ën) vandaag", aftrek)
             )
 
+        # Bekeken worden gaat vóór op de activiteit: ook als Kevin alle tijd
+        # heeft, wordt ze kort zodra ze zich bekeken voelt.
+        try:
+            bekeken = self.event_bus.modules.get("bekeken")
+            if bekeken is not None and bekeken.is_actief():
+                return self.RESPONSE_STYLE_KORT
+        except Exception:
+            pass
+
+
         # 2) Storingsgevoelige activiteit (bv. coding) + duur + focus
         is_storingsgevoelige_activiteit = (
             activiteit_label in self.STORINGSGEVOELIGE_ACTIVITEITEN

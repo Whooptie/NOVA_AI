@@ -99,7 +99,8 @@ ECHT_CONCEPTS_PAD = os.path.join(PROJECT_ROOT, "data", "concepts.json")
 
 ANTWOORD_EVENTS = {"chat_response", "layer4_response", "body_reactie"}
 ANTWOORD_OPEN = "antwoord-controle nog open"
-NEGEER_BIJ_KOPIE = (".git", "__pycache__", ".pytest_cache", "engines", "logs", "*.log", "*.pyc")
+NEGEER_BIJ_KOPIE = (".git", "__pycache__", ".pytest_cache", "engines", "logs", "*.log", "*.pyc",
+                    "models", "backups")
 TIJDSLIMIET_SECONDEN = 20
 
 # Volgorde telt: zone voor time (net als in module_loader.py).

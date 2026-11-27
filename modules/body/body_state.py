@@ -46,7 +46,7 @@ ZONE_FRAGMENT = {
 GENERIEK_FRAGMENT = ["…", "Hm.", "Kijk niet zo.", "…zeg jij het maar.", "Wacht even.", "Even.", "Awel…"]
 
 # Als de bravoure instort: kort, droog, en vooral geen verdere uitleg.
-INSTORTING = ["…ja bon.", "Zie je wel. Of niet.", "Awel. Goed dan.", "Ja ja.", "…toch nie zo stoer."]
+INSTORTING = ["…ja bon.", "Zie je wel. Of niet.", "Awel. Goed dan.", "Ja ja.", "…toch nie zo stoer, zeker."]
 
 # (verhuld, klinisch) -- bij bloos > 0.5 gebruikt ze het verhulde
 EUFEEM = {
@@ -98,7 +98,7 @@ class BodyState:
         self._store = store or _gedeelde_store(STATE_PAD)
         self._store.registreer("body", {
             "maagd": {}, "nat": {}, "pijn": {}, "voorkeur": {},
-            "bloos": 0.0, "bravoure_boost": 0.0, "laatste_event_ts": 0.0,
+            "bloos": 0.0, "bravoure": 0.0, "bravoure_boost": 0.0, "laatste_event_ts": 0.0,
             "gewend": {}, "ervaring": {}, "telling": {}, "laatste_zone": "",
         })
         self.persistent = self._store.get("body")
@@ -148,6 +148,7 @@ class BodyState:
         return {
             "ts": clock.now(),
             "bloos": p.get("bloos", 0.0),
+            "bravoure": p.get("bravoure", 0.0),
             "bravoure_boost": p.get("bravoure_boost", 0.0),
             "laatste_zone": p.get("laatste_zone", ""),
             "maagd": copy.deepcopy(p.get("maagd", {})),
@@ -198,6 +199,9 @@ class BodyState:
             self.persistent["nat"][z] = max(0.0, self.persistent["nat"][z] - minuten * 0.03)
         for z in self.persistent.get("gewend", {}):
             self.persistent["gewend"][z] = max(0.0, self.persistent["gewend"][z] - minuten * 0.25)
+        self.persistent["bravoure"] = max(
+            0.0, self.persistent.get("bravoure", 0.0) - minuten * 0.20
+        )
         self.persistent["bravoure_boost"] = max(
             0.0, self.persistent.get("bravoure_boost", 0.0) - minuten * 0.20
         )
@@ -225,6 +229,16 @@ class BodyState:
         if data.get("type") == "penetratie":
             return "vagina"
         return None
+
+    def _reset_andere_zones(self, vorige_zone, zone):
+        """Na een geoefende zone naar een nieuwe: de gewenning van de andere
+        zones zakt. Ze went snel aan wat ze kent en staat bij iets nieuws
+        weer helemaal opnieuw."""
+        if self.persistent["gewend"].get(vorige_zone, 0.0) <= 1.0:
+            return
+        for z in self.persistent["gewend"]:
+            if z != zone:
+                self.persistent["gewend"][z] *= 0.6
 
     def _fragment(self, zone):
         """Kort fragment bij extreme verlegenheid, zonder directe herhaling."""
@@ -349,6 +363,10 @@ class BodyState:
         zone = self._zone_uit_tekst(tekst, data)
         if not zone:
             return
+
+        vorige_zone = self.persistent.get("laatste_zone", "")
+        if vorige_zone and vorige_zone != zone:
+            self._reset_andere_zones(vorige_zone, zone)
         self.persistent["laatste_zone"] = zone
 
         type_ = data.get("type", "aanraking")
@@ -373,9 +391,7 @@ class BodyState:
         # bravoure is de beginhouding: zolang ze nog niet bloost, doet ze stoer.
         # Dat is wat er straks kan instorten.
         if bloos_vorig < 0.25:
-            self.persistent["bravoure_boost"] = max(
-                self.persistent.get("bravoure_boost", 0.0), 0.4
-            )
+            self.persistent["bravoure"] = max(self.persistent.get("bravoure", 0.0), 0.4)
 
         factor = max(0.10, min(0.45, 0.40 - (comfort_zone - 0.30) * 0.5))
         if zone in ("clitoris", "vagina", "rectum"):
@@ -406,8 +422,8 @@ class BodyState:
 
         # de dekmantel valt: bravoure stort in precies wanneer het spannend wordt
         instorting = False
-        if self.persistent.get("bravoure_boost", 0.0) > 0.3 and self._bravoure.kruist(bloos):
-            self.persistent["bravoure_boost"] = 0.0
+        if self.persistent.get("bravoure", 0.0) > 0.3 and self._bravoure.kruist(bloos):
+            self.persistent["bravoure"] = 0.0
             instorting = True
             self.event_bus.publish("bravoure_instorting", {"bloos": bloos, "zone": zone})
 

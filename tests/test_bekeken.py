@@ -54,7 +54,7 @@ def test_na_decay_weer_inactief(b):
     bk, fake = b
     for _ in range(4):
         bk.verhoog()
-    fake.advance(600)
+    fake.advance(700)
     assert bk.is_actief() is False
 
 
@@ -69,7 +69,7 @@ def test_herwapent_onder_de_onderdrempel(b):
     bk, fake = b
     for _ in range(4):
         bk.verhoog()
-    fake.advance(600)
+    fake.advance(700)
     bk.verhoog()  # herwapent, blijft onder de drempel
     bk.verhoog()  # tweede duwt hem er weer over
     assert len(bk.event_bus.van("bekeken_changed")) == 2
@@ -84,3 +84,10 @@ def test_trigger_event_verhoogt(b):
     bk, _ = b
     bk.event_bus.subs["intent_uiterlijk"]({"deel": "haar"})
     assert bk.waarde() > 0.0
+
+
+def test_twee_vragen_zijn_genoeg(b):
+    bk, _ = b
+    bk.verhoog()
+    bk.verhoog()
+    assert bk.is_actief() is True
