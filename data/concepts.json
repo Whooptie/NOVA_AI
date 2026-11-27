@@ -126092,28 +126092,44 @@
     "senses": [
       {
         "sense_id": "misoogst#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Een misoogst is een oogst die veel kleiner is dan normaal.",
+        "pos": "noun",
+        "examples": [
+          "Door de droogte was er een misoogst.",
+          "Boeren verloren geld door de misoogst."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "oogst",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:41:25.312033"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:27:34.256384",
-      "updated_at": "2026-11-17T19:27:34.256638",
+      "updated_at": "2026-11-27T20:43:18.843979",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:27:34.256638",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:41:25.218653",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:27:34.256638",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:41:25.218653",
+          "confidence": 1.0
         }
       ]
     },
@@ -126133,6 +126149,25 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:27:34.256636"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "misoogst#1",
+        "old_value": "unknown",
+        "new_value": "Een misoogst is een oogst die veel kleiner is dan normaal.",
+        "timestamp": "2026-11-27T20:41:25.218651"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "misoogst#1",
+        "relation": {
+          "type": "is_a",
+          "target": "oogst",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:41:25.312050"
       }
     ]
   },
@@ -126418,28 +126453,35 @@
     "senses": [
       {
         "sense_id": "koorts#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Koorts is een verhoogde lichaamswarmte, meestal door een infectie.",
+        "pos": "noun",
+        "examples": [
+          "Hij had koorts en bleef in bed.",
+          "De koorts zakte na een paar dagen."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:27:57.934276",
-      "updated_at": "2026-11-17T19:27:57.934532",
+      "updated_at": "2026-11-27T20:43:08.240174",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:27:57.934532",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:40:44.973994",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:27:57.934532",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:40:44.973994",
+          "confidence": 1.0
         }
       ]
     },
@@ -126459,6 +126501,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:27:57.934530"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "koorts#1",
+        "old_value": "unknown",
+        "new_value": "Koorts is een verhoogde lichaamswarmte, meestal door een infectie.",
+        "timestamp": "2026-11-27T20:40:44.973992"
       }
     ]
   },
@@ -126788,28 +126838,44 @@
     "senses": [
       {
         "sense_id": "rook#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Rook is een wolk van kleine deeltjes en gas die ontstaat bij verbranding.",
+        "pos": "noun",
+        "examples": [
+          "De rook steeg op uit de schoorsteen.",
+          "Door de rook kon ze niet ademen."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "wolk",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:41:50.751222"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:13.616024",
-      "updated_at": "2026-11-17T19:28:13.616264",
+      "updated_at": "2026-11-27T20:43:31.747368",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:28:13.616264",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:41:50.659597",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:13.616264",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:41:50.659597",
+          "confidence": 1.0
         }
       ]
     },
@@ -126829,6 +126895,25 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:28:13.616262"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "rook#1",
+        "old_value": "unknown",
+        "new_value": "Rook is een wolk van kleine deeltjes en gas die ontstaat bij verbranding.",
+        "timestamp": "2026-11-27T20:41:50.659594"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "rook#1",
+        "relation": {
+          "type": "is_a",
+          "target": "wolk",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:41:50.751239"
       }
     ]
   },
@@ -126946,28 +127031,35 @@
     "senses": [
       {
         "sense_id": "roest#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Roest is de bruinrode laag die ontstaat als ijzer reageert met zuurstof en water.",
+        "pos": "noun",
+        "examples": [
+          "Het hek zat vol roest.",
+          "Roest maakt het metaal broos."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:20.433841",
-      "updated_at": "2026-11-17T19:28:20.434149",
+      "updated_at": "2026-11-27T20:43:22.492923",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:28:20.434149",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:41:37.916328",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:20.434149",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:41:37.916328",
+          "confidence": 1.0
         }
       ]
     },
@@ -126987,6 +127079,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:28:20.434147"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "roest#1",
+        "old_value": "unknown",
+        "new_value": "Roest is de bruinrode laag die ontstaat als ijzer reageert met zuurstof en water.",
+        "timestamp": "2026-11-27T20:41:37.916326"
       }
     ]
   },
@@ -127255,28 +127355,44 @@
     "senses": [
       {
         "sense_id": "smog#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Smog is een mengsel van rook en mist dat de lucht vervuilt.",
+        "pos": "noun",
+        "examples": [
+          "In sommige steden hangt vaak smog.",
+          "De smog maakte het moeilijk om ver te zien."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "mengsel",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:42:02.963208"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:46.767527",
-      "updated_at": "2026-11-17T19:28:46.767802",
+      "updated_at": "2026-11-27T20:43:39.353738",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:28:46.767802",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:42:02.865645",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:46.767802",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:42:02.865645",
+          "confidence": 1.0
         }
       ]
     },
@@ -127296,6 +127412,25 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:28:46.767799"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "smog#1",
+        "old_value": "unknown",
+        "new_value": "Smog is een mengsel van rook en mist dat de lucht vervuilt.",
+        "timestamp": "2026-11-27T20:42:02.865643"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "smog#1",
+        "relation": {
+          "type": "is_a",
+          "target": "mengsel",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:42:02.963226"
       }
     ]
   },
@@ -128457,28 +128592,35 @@
     "senses": [
       {
         "sense_id": "kanker#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Kanker is een ziekte waarbij cellen ongecontroleerd groeien en gezond weefsel aantasten.",
+        "pos": "noun",
+        "examples": [
+          "De arts ontdekte kanker in een vroeg stadium.",
+          "Er wordt veel onderzoek gedaan naar kanker."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:35:45.140360",
-      "updated_at": "2026-11-17T19:35:45.140657",
+      "updated_at": "2026-11-27T20:43:04.749240",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:35:45.140657",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:40:31.237535",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:35:45.140657",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:40:31.237535",
+          "confidence": 1.0
         }
       ]
     },
@@ -128498,6 +128640,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:35:45.140655"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "kanker#1",
+        "old_value": "unknown",
+        "new_value": "Kanker is een ziekte waarbij cellen ongecontroleerd groeien en gezond weefsel aantasten.",
+        "timestamp": "2026-11-27T20:40:31.237533"
       }
     ]
   },
@@ -128766,28 +128916,35 @@
     "senses": [
       {
         "sense_id": "dronkenschap#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Dronkenschap is de toestand waarin iemand door alcohol zijn controle over zichzelf verliest.",
+        "pos": "noun",
+        "examples": [
+          "Dronkenschap achter het stuur is gevaarlijk.",
+          "Hij sliep zijn dronkenschap uit."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:35:59.595842",
-      "updated_at": "2026-11-17T19:35:59.596286",
+      "updated_at": "2026-11-27T20:42:33.731207",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:35:59.596286",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:38:36.228130",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:35:59.596286",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:38:36.228130",
+          "confidence": 1.0
         }
       ]
     },
@@ -128807,6 +128964,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:35:59.596284"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "dronkenschap#1",
+        "old_value": "unknown",
+        "new_value": "Dronkenschap is de toestand waarin iemand door alcohol zijn controle over zichzelf verliest.",
+        "timestamp": "2026-11-27T20:38:36.228128"
       }
     ]
   },
@@ -129364,28 +129529,35 @@
     "senses": [
       {
         "sense_id": "corrosie#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Corrosie is het langzaam aantasten en kapotgaan van metaal door een chemische reactie met zuurstof of vocht.",
+        "pos": "noun",
+        "examples": [
+          "Corrosie maakte de brug zwak.",
+          "Verf beschermt metaal tegen corrosie."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:37:10.676894",
-      "updated_at": "2026-11-17T19:37:10.677117",
+      "updated_at": "2026-11-27T20:42:26.042089",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:37:10.677117",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:35:54.069241",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:37:10.677117",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:35:54.069241",
+          "confidence": 1.0
         }
       ]
     },
@@ -129405,6 +129577,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-17T19:37:10.677115"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "corrosie#1",
+        "old_value": "unknown",
+        "new_value": "Corrosie is het langzaam aantasten en kapotgaan van metaal door een chemische reactie met zuurstof of vocht.",
+        "timestamp": "2026-11-27T20:35:54.069238"
       }
     ]
   },
@@ -131424,28 +131604,35 @@
     "senses": [
       {
         "sense_id": "gladheid#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Gladheid is de toestand waarin een oppervlak glad is, waardoor je makkelijk uitglijdt.",
+        "pos": "noun",
+        "examples": [
+          "Door gladheid gebeurden veel ongelukken.",
+          "Er werd zout gestrooid tegen de gladheid."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:54:17.013660",
-      "updated_at": "2026-11-21T18:54:17.013992",
+      "updated_at": "2026-11-27T20:42:45.697547",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:54:17.013992",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:39:14.875619",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:54:17.013992",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:39:14.875619",
+          "confidence": 1.0
         }
       ]
     },
@@ -131465,6 +131652,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T18:54:17.013989"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "gladheid#1",
+        "old_value": "unknown",
+        "new_value": "Gladheid is de toestand waarin een oppervlak glad is, waardoor je makkelijk uitglijdt.",
+        "timestamp": "2026-11-27T20:39:14.875616"
       }
     ]
   },
@@ -132051,28 +132246,35 @@
     "senses": [
       {
         "sense_id": "bloeding#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een bloeding is het wegstromen van bloed uit een bloedvat, binnen of buiten het lichaam.",
+        "pos": "noun",
+        "examples": [
+          "De bloeding stopte na een drukverband.",
+          "Bij een zware bloeding moet je hulp bellen."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:55:17.570713",
-      "updated_at": "2026-11-21T18:55:17.570941",
+      "updated_at": "2026-11-27T20:42:18.474591",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:55:17.570941",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:35:24.158304",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:55:17.570941",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:35:24.158304",
+          "confidence": 1.0
         }
       ]
     },
@@ -132092,6 +132294,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T18:55:17.570939"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "bloeding#1",
+        "old_value": "unknown",
+        "new_value": "Een bloeding is het wegstromen van bloed uit een bloedvat, binnen of buiten het lichaam.",
+        "timestamp": "2026-11-27T20:35:24.158301"
       }
     ]
   },
@@ -132099,28 +132309,35 @@
     "senses": [
       {
         "sense_id": "bosbrand#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een bosbrand is een grote, ongecontroleerde brand in een bos.",
+        "pos": "noun",
+        "examples": [
+          "De bosbrand verspreidde zich snel door de droge bomen.",
+          "De brandweer bestreed de bosbrand urenlang."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:55:25.384369",
-      "updated_at": "2026-11-21T18:55:25.384615",
+      "updated_at": "2026-11-27T20:42:22.247666",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:55:25.384615",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:35:38.153479",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:55:25.384615",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:35:38.153479",
+          "confidence": 1.0
         }
       ]
     },
@@ -132140,6 +132357,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T18:55:25.384613"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "bosbrand#1",
+        "old_value": "unknown",
+        "new_value": "Een bosbrand is een grote, ongecontroleerde brand in een bos.",
+        "timestamp": "2026-11-27T20:35:38.153476"
       }
     ]
   },
@@ -132234,28 +132459,44 @@
     "senses": [
       {
         "sense_id": "gehoorschade#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Gehoorschade is een beschadiging van het gehoor, bijvoorbeeld door te veel lawaai.",
+        "pos": "noun",
+        "examples": [
+          "Te harde muziek kan gehoorschade veroorzaken.",
+          "Hij droeg oordopjes tegen gehoorschade."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "beschadiging",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:39:03.007505"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:55:57.213955",
-      "updated_at": "2026-11-21T18:55:57.214328",
+      "updated_at": "2026-11-27T20:42:40.946763",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:55:57.214328",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:39:02.924185",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:55:57.214328",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:39:02.924185",
+          "confidence": 1.0
         }
       ]
     },
@@ -132275,6 +132516,25 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T18:55:57.214326"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "gehoorschade#1",
+        "old_value": "unknown",
+        "new_value": "Gehoorschade is een beschadiging van het gehoor, bijvoorbeeld door te veel lawaai.",
+        "timestamp": "2026-11-27T20:39:02.924183"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "gehoorschade#1",
+        "relation": {
+          "type": "is_a",
+          "target": "beschadiging",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:39:03.007522"
       }
     ]
   },
@@ -135027,28 +135287,44 @@
     "senses": [
       {
         "sense_id": "hooikoorts#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Hooikoorts is een allergie voor stuifmeel, met bijvoorbeeld niezen en jeukende ogen.",
+        "pos": "noun",
+        "examples": [
+          "In het voorjaar heeft ze last van hooikoorts.",
+          "Hij slikte een pilletje tegen zijn hooikoorts."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "allergie",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:40:00.534928"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:05:07.446926",
-      "updated_at": "2026-11-21T19:05:07.447234",
+      "updated_at": "2026-11-27T20:42:57.345136",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:05:07.447234",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:40:00.442402",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:05:07.447234",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:40:00.442402",
+          "confidence": 1.0
         }
       ]
     },
@@ -135068,6 +135344,25 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:05:07.447232"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "hooikoorts#1",
+        "old_value": "unknown",
+        "new_value": "Hooikoorts is een allergie voor stuifmeel, met bijvoorbeeld niezen en jeukende ogen.",
+        "timestamp": "2026-11-27T20:40:00.442400"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "hooikoorts#1",
+        "relation": {
+          "type": "is_a",
+          "target": "allergie",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:40:00.534946"
       }
     ]
   },
@@ -135268,28 +135563,35 @@
     "senses": [
       {
         "sense_id": "honger#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Honger is het gevoel dat je eten nodig hebt.",
+        "pos": "noun",
+        "examples": [
+          "Na de lange wandeling had ze veel honger.",
+          "Honger maakt je prikkelbaar."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:06:08.380639",
-      "updated_at": "2026-11-21T19:06:08.380966",
+      "updated_at": "2026-11-27T20:42:49.633216",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:06:08.380966",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:39:30.805800",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:06:08.380966",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:39:30.805800",
+          "confidence": 1.0
         }
       ]
     },
@@ -135309,6 +135611,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:06:08.380963"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "honger#1",
+        "old_value": "unknown",
+        "new_value": "Honger is het gevoel dat je eten nodig hebt.",
+        "timestamp": "2026-11-27T20:39:30.805798"
       }
     ]
   },
@@ -135721,28 +136031,35 @@
     "senses": [
       {
         "sense_id": "dauw#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Dauw is een dun laagje waterdruppels dat 's ochtends op planten en voorwerpen zit.",
+        "pos": "noun",
+        "examples": [
+          "Het gras was nat van de dauw.",
+          "De dauw verdampte in de zon."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:06:44.254242",
-      "updated_at": "2026-11-21T19:06:44.254470",
+      "updated_at": "2026-11-27T20:42:30.029068",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:06:44.254470",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:36:13.370136",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:06:44.254470",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:36:13.370136",
+          "confidence": 1.0
         }
       ]
     },
@@ -135762,6 +136079,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:06:44.254468"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "dauw#1",
+        "old_value": "unknown",
+        "new_value": "Dauw is een dun laagje waterdruppels dat 's ochtends op planten en voorwerpen zit.",
+        "timestamp": "2026-11-27T20:36:13.370133"
       }
     ]
   },
@@ -135769,28 +136094,35 @@
     "senses": [
       {
         "sense_id": "bevriezing#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Bevriezing is het veranderen van vloeistof in ijs of het bevriezen van een lichaamsdeel door extreme kou.",
+        "pos": "noun",
+        "examples": [
+          "De bevriezing van de plas gebeurde in één nacht.",
+          "Bij bevriezing kan de huid beschadigd raken."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:06:52.713837",
-      "updated_at": "2026-11-21T19:06:52.714169",
+      "updated_at": "2026-11-27T20:42:14.875728",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:06:52.714169",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:35:04.191544",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:06:52.714169",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:35:04.191544",
+          "confidence": 1.0
         }
       ]
     },
@@ -135810,6 +136142,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:06:52.714165"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "bevriezing#1",
+        "old_value": "unknown",
+        "new_value": "Bevriezing is het veranderen van vloeistof in ijs of het bevriezen van een lichaamsdeel door extreme kou.",
+        "timestamp": "2026-11-27T20:35:04.191541"
       }
     ]
   },
@@ -136540,28 +136880,35 @@
     "senses": [
       {
         "sense_id": "letsel#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Letsel is een lichamelijke beschadiging door een ongeluk of geweld.",
+        "pos": "noun",
+        "examples": [
+          "Hij liep ernstig letsel op bij het ongeluk.",
+          "Het letsel genas na enkele weken."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:07:46.028345",
-      "updated_at": "2026-11-21T19:07:46.028573",
+      "updated_at": "2026-11-27T20:43:15.319479",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:07:46.028573",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:41:11.554811",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:07:46.028573",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:41:11.554811",
+          "confidence": 1.0
         }
       ]
     },
@@ -136581,6 +136928,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:07:46.028571"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "letsel#1",
+        "old_value": "unknown",
+        "new_value": "Letsel is een lichamelijke beschadiging door een ongeluk of geweld.",
+        "timestamp": "2026-11-27T20:41:11.554809"
       }
     ]
   },
@@ -137090,28 +137445,35 @@
     "senses": [
       {
         "sense_id": "jeuk#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Jeuk is een prikkelend gevoel op de huid waardoor je wilt krabben.",
+        "pos": "noun",
+        "examples": [
+          "Ze kreeg jeuk van de muggenbeet.",
+          "De jeuk werd erger als ze eraan krabde."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:24.230658",
-      "updated_at": "2026-11-21T19:08:24.231031",
+      "updated_at": "2026-11-27T20:43:00.886481",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:24.231031",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:40:19.062172",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:24.231031",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:40:19.062172",
+          "confidence": 1.0
         }
       ]
     },
@@ -137131,6 +137493,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:08:24.231029"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "jeuk#1",
+        "old_value": "unknown",
+        "new_value": "Jeuk is een prikkelend gevoel op de huid waardoor je wilt krabben.",
+        "timestamp": "2026-11-27T20:40:19.062170"
       }
     ]
   },
@@ -137592,28 +137962,35 @@
     "senses": [
       {
         "sense_id": "krater#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een krater is een kom of putvormige uitholling in de grond, bijvoorbeeld bij een vulkaan of na een inslag.",
+        "pos": "noun",
+        "examples": [
+          "De vulkaan had een diepe krater.",
+          "De meteoriet maakte een krater in het veld."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:09:03.153195",
-      "updated_at": "2026-11-21T19:09:03.153465",
+      "updated_at": "2026-11-27T20:43:11.763631",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:09:03.153465",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:40:58.016356",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:09:03.153465",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:40:58.016356",
+          "confidence": 1.0
         }
       ]
     },
@@ -137633,6 +138010,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:09:03.153462"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "krater#1",
+        "old_value": "unknown",
+        "new_value": "Een krater is een kom of putvormige uitholling in de grond, bijvoorbeeld bij een vulkaan of na een inslag.",
+        "timestamp": "2026-11-27T20:40:58.016354"
       }
     ]
   },
@@ -137775,28 +138160,35 @@
     "senses": [
       {
         "sense_id": "duisternis#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Duisternis is de toestand waarin er geen of heel weinig licht is.",
+        "pos": "noun",
+        "examples": [
+          "In de duisternis zag ik niets.",
+          "De duisternis viel snel in de winter."
+        ],
         "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:09:18.469142",
-      "updated_at": "2026-11-21T19:09:18.469433",
+      "updated_at": "2026-11-27T20:42:37.275305",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:09:18.469433",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:38:50.869479",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:09:18.469433",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:38:50.869479",
+          "confidence": 1.0
         }
       ]
     },
@@ -137816,6 +138208,14 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:09:18.469430"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "duisternis#1",
+        "old_value": "unknown",
+        "new_value": "Duisternis is de toestand waarin er geen of heel weinig licht is.",
+        "timestamp": "2026-11-27T20:38:50.869476"
       }
     ]
   },
@@ -137823,28 +138223,44 @@
     "senses": [
       {
         "sense_id": "hongersnood#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
-        "relations": [],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "definition": "Hongersnood is een situatie waarin veel mensen langdurig te weinig te eten hebben.",
+        "pos": "noun",
+        "examples": [
+          "Door de droogte ontstond hongersnood.",
+          "Hulporganisaties brachten voedsel naar het gebied van de hongersnood."
+        ],
+        "relations": [
+          {
+            "type": "is_a",
+            "target": "situatie",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:39:43.603404"
+          }
+        ],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:09:33.980473",
-      "updated_at": "2026-11-21T19:09:33.980775",
+      "updated_at": "2026-11-27T20:42:53.293411",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:09:33.980775",
-      "usage_count": 1,
+      "last_used_at": "2026-11-27T20:39:43.517814",
+      "usage_count": 2,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:09:33.980775",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:39:43.517814",
+          "confidence": 1.0
         }
       ]
     },
@@ -137864,6 +138280,25 @@
         "old_value": null,
         "new_value": "unknown",
         "timestamp": "2026-11-21T19:09:33.980773"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "hongersnood#1",
+        "old_value": "unknown",
+        "new_value": "Hongersnood is een situatie waarin veel mensen langdurig te weinig te eten hebben.",
+        "timestamp": "2026-11-27T20:39:43.517812"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "hongersnood#1",
+        "relation": {
+          "type": "is_a",
+          "target": "situatie",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:39:43.603421"
       }
     ]
   },
