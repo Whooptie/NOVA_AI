@@ -2407,6 +2407,13 @@ class TeachEngine:
         if pos == "verb":
             return w
 
+        # Bugfix (27 nov 2026): een woord dat al als werkwoord in de
+        # woordenlijst staat (bv. "roken" met pos verb) mag nooit tot
+        # een naamwoord ("rok") worden platgeslagen.
+        bestaand = self.store.get_concept(w)
+        if bestaand and any(s.get("pos") == "verb" for s in bestaand.get("senses", [])):
+            return w
+
         # 0) Irregular plurals
         if w in self.IRREGULAR_PLURALS:
             return self.IRREGULAR_PLURALS[w]
