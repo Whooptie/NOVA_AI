@@ -49296,19 +49296,34 @@
         "confidence": 1.0,
         "audit_log": [],
         "status": "confirmed"
+      },
+      {
+        "sense_id": "rok#2",
+        "definition": "Roken is het inademen van de rook van een brandende sigaret of pijp.",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
+        "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-10-15T19:40:00.000000",
-      "updated_at": "2026-10-15T19:40:00.000000",
+      "updated_at": "2026-11-27T20:17:58.393580",
       "sources": [
         "user"
       ],
-      "last_used_at": "2026-10-15T19:40:00.000000",
-      "usage_count": 0,
+      "last_used_at": "2026-11-27T20:17:58.393580",
+      "usage_count": 1,
       "confidence_history": [
         {
           "timestamp": "2026-10-15T19:40:00.000000",
+          "confidence": 1.0
+        },
+        {
+          "timestamp": "2026-11-27T20:17:58.393580",
           "confidence": 1.0
         }
       ]
@@ -49329,6 +49344,14 @@
         "old_value": null,
         "new_value": "Een rok is een kledingstuk dat vanaf de taille om de benen hangt, zonder pijpen.",
         "timestamp": "2026-10-15T19:40:00.000000"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "user",
+        "sense_id": "rok#2",
+        "old_value": null,
+        "new_value": "Roken is het inademen van de rook van een brandende sigaret of pijp.",
+        "timestamp": "2026-11-27T20:17:58.393577"
       }
     ]
   },
@@ -126526,9 +126549,12 @@
     "senses": [
       {
         "sense_id": "ontsteking#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een ontsteking is een reactie van het lichaam op een beschadiging of infectie, vaak met zwelling, roodheid en pijn.",
+        "pos": "noun",
+        "examples": [
+          "De ontsteking in zijn keel deed pijn.",
+          "De arts gaf haar medicijnen tegen de ontsteking."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -126537,22 +126563,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:05:16.593235"
+          },
+          {
+            "type": "is_a",
+            "target": "reactie",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:17:15.119473"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:06.456654",
-      "updated_at": "2026-11-21T19:05:16.593245",
+      "updated_at": "2026-11-27T20:19:52.778637",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:05:16.593245",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:17:15.026081",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:06.456978",
@@ -126561,6 +126595,10 @@
         {
           "timestamp": "2026-11-21T19:05:16.593245",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:17:15.026081",
+          "confidence": 1.0
         }
       ]
     },
@@ -126591,6 +126629,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:05:16.593243"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "ontsteking#1",
+        "old_value": "unknown",
+        "new_value": "Een ontsteking is een reactie van het lichaam op een beschadiging of infectie, vaak met zwelling, roodheid en pijn.",
+        "timestamp": "2026-11-27T20:17:15.026079"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "ontsteking#1",
+        "relation": {
+          "type": "is_a",
+          "target": "reactie",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:17:15.119493"
       }
     ]
   },
@@ -127054,9 +127111,12 @@
     "senses": [
       {
         "sense_id": "luchtvervuiling#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Luchtvervuiling is het vuil worden van de lucht door schadelijke stoffen zoals rook en uitlaatgassen.",
+        "pos": "noun",
+        "examples": [
+          "In grote steden is de luchtvervuiling hoog.",
+          "Luchtvervuiling is slecht voor de longen."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -127067,20 +127127,20 @@
             "created_at": "2026-11-17T19:28:48.936484"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:28:46.686921",
-      "updated_at": "2026-11-17T19:28:48.936493",
+      "updated_at": "2026-11-27T20:19:37.873386",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:28:48.936493",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:15:59.315319",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:28:46.687243",
@@ -127089,6 +127149,10 @@
         {
           "timestamp": "2026-11-17T19:28:48.936493",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:15:59.315319",
+          "confidence": 1.0
         }
       ]
     },
@@ -127119,6 +127183,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:28:48.936490"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "luchtvervuiling#1",
+        "old_value": "unknown",
+        "new_value": "Luchtvervuiling is het vuil worden van de lucht door schadelijke stoffen zoals rook en uitlaatgassen.",
+        "timestamp": "2026-11-27T20:15:59.315316"
       }
     ]
   },
@@ -128242,8 +128314,11 @@
       {
         "sense_id": "roken#1",
         "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "pos": "verb",
+        "examples": [
+          "Roken is slecht voor je gezondheid.",
+          "Hij besloot te stoppen met roken."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -128262,7 +128337,7 @@
     ],
     "metadata": {
       "created_at": "2026-11-17T19:35:45.059370",
-      "updated_at": "2026-11-17T19:35:47.028566",
+      "updated_at": "2026-11-27T20:19:59.877454",
       "sources": [
         "auto"
       ],
@@ -128361,9 +128436,12 @@
     "senses": [
       {
         "sense_id": "slaaptekort#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Slaaptekort is het langdurig te weinig slapen.",
+        "pos": "noun",
+        "examples": [
+          "Door slaaptekort kon ze zich niet concentreren.",
+          "Slaaptekort maakt je moe."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -128374,20 +128452,20 @@
             "created_at": "2026-11-17T19:35:54.994865"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:35:52.775135",
-      "updated_at": "2026-11-17T19:35:54.994874",
+      "updated_at": "2026-11-27T20:20:07.013817",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:35:54.994874",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:18:31.244311",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:35:52.775390",
@@ -128396,6 +128474,10 @@
         {
           "timestamp": "2026-11-17T19:35:54.994874",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:18:31.244311",
+          "confidence": 1.0
         }
       ]
     },
@@ -128426,6 +128508,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:35:54.994871"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "slaaptekort#1",
+        "old_value": "unknown",
+        "new_value": "Slaaptekort is het langdurig te weinig slapen.",
+        "timestamp": "2026-11-27T20:18:31.244308"
       }
     ]
   },
@@ -128505,9 +128595,12 @@
     "senses": [
       {
         "sense_id": "alcohol#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Alcohol is een stof in bier, wijn en sterke drank die je gedrag en reactiesnelheid beïnvloedt.",
+        "pos": "noun",
+        "examples": [
+          "Wie moet rijden, drinkt geen alcohol.",
+          "Bier bevat een beetje alcohol."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -128518,20 +128611,20 @@
             "created_at": "2026-11-17T19:36:01.654795"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:35:59.512196",
-      "updated_at": "2026-11-17T19:36:01.654806",
+      "updated_at": "2026-11-27T20:19:05.602570",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:36:01.654806",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:13:17.444729",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:35:59.512429",
@@ -128540,6 +128633,10 @@
         {
           "timestamp": "2026-11-17T19:36:01.654806",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:13:17.444729",
+          "confidence": 1.0
         }
       ]
     },
@@ -128570,6 +128667,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:36:01.654803"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "alcohol#1",
+        "old_value": "unknown",
+        "new_value": "Alcohol is een stof in bier, wijn en sterke drank die je gedrag en reactiesnelheid beïnvloedt.",
+        "timestamp": "2026-11-27T20:13:17.444726"
       }
     ]
   },
@@ -128625,9 +128730,12 @@
     "senses": [
       {
         "sense_id": "ontbossing#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Ontbossing is het op grote schaal kappen van bos, zodat het bos verdwijnt.",
+        "pos": "noun",
+        "examples": [
+          "Door ontbossing verdwijnt de leefruimte van dieren.",
+          "Ontbossing is een groot probleem in het regenwoud."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -128638,20 +128746,20 @@
             "created_at": "2026-11-17T19:36:08.187962"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:36:06.085708",
-      "updated_at": "2026-11-17T19:36:08.187975",
+      "updated_at": "2026-11-27T20:19:49.096854",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:36:08.187975",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:16:58.408544",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:36:06.085995",
@@ -128660,6 +128768,10 @@
         {
           "timestamp": "2026-11-17T19:36:08.187975",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:16:58.408544",
+          "confidence": 1.0
         }
       ]
     },
@@ -128690,6 +128802,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:36:08.187972"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "ontbossing#1",
+        "old_value": "unknown",
+        "new_value": "Ontbossing is het op grote schaal kappen van bos, zodat het bos verdwijnt.",
+        "timestamp": "2026-11-27T20:16:58.408542"
       }
     ]
   },
@@ -128952,9 +129072,12 @@
     "senses": [
       {
         "sense_id": "botsing#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een botsing is het hard tegen elkaar aan komen van twee dingen.",
+        "pos": "noun",
+        "examples": [
+          "Bij de botsing raakten beide auto's zwaar beschadigd.",
+          "De botsing was niet te vermijden."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -128965,20 +129088,20 @@
             "created_at": "2026-11-17T19:37:01.022793"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-17T19:36:57.680657",
-      "updated_at": "2026-11-17T19:37:01.022803",
+      "updated_at": "2026-11-27T20:19:16.172430",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-17T19:37:01.022803",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:14:20.133802",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-17T19:36:57.680958",
@@ -128987,6 +129110,10 @@
         {
           "timestamp": "2026-11-17T19:37:01.022803",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:14:20.133802",
+          "confidence": 1.0
         }
       ]
     },
@@ -129017,6 +129144,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-17T19:37:01.022800"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "botsing#1",
+        "old_value": "unknown",
+        "new_value": "Een botsing is het hard tegen elkaar aan komen van twee dingen.",
+        "timestamp": "2026-11-27T20:14:20.133799"
       }
     ]
   },
@@ -131579,9 +131714,12 @@
     "senses": [
       {
         "sense_id": "bacterie#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een bacterie is een zeer klein, eencellig organisme dat je alleen met een microscoop kunt zien.",
+        "pos": "noun",
+        "examples": [
+          "Onder de microscoop zag ze een bacterie.",
+          "Een bacterie kan een infectie veroorzaken."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -131592,20 +131730,20 @@
             "created_at": "2026-11-21T18:55:11.662865"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:55:09.614576",
-      "updated_at": "2026-11-21T18:55:11.662877",
+      "updated_at": "2026-11-27T20:19:09.251189",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:55:11.662877",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:13:50.659391",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:55:09.614821",
@@ -131614,6 +131752,10 @@
         {
           "timestamp": "2026-11-21T18:55:11.662877",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:13:50.659391",
+          "confidence": 1.0
         }
       ]
     },
@@ -131644,6 +131786,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:55:11.662874"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "bacterie#1",
+        "old_value": "unknown",
+        "new_value": "Een bacterie is een zeer klein, eencellig organisme dat je alleen met een microscoop kunt zien.",
+        "timestamp": "2026-11-27T20:13:50.659388"
       }
     ]
   },
@@ -131651,9 +131801,12 @@
     "senses": [
       {
         "sense_id": "snee#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een snee is een wond door een scherp voorwerp.",
+        "pos": "noun",
+        "examples": [
+          "Hij kreeg een snee in zijn vinger.",
+          "De snee bloedde flink."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -131664,20 +131817,20 @@
             "created_at": "2026-11-21T18:55:19.845277"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T18:55:17.485903",
-      "updated_at": "2026-11-21T18:55:19.845287",
+      "updated_at": "2026-11-27T20:20:10.600387",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T18:55:19.845287",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:18:46.831646",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T18:55:17.486235",
@@ -131686,6 +131839,10 @@
         {
           "timestamp": "2026-11-21T18:55:19.845287",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:18:46.831646",
+          "confidence": 1.0
         }
       ]
     },
@@ -131716,6 +131873,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T18:55:19.845284"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "snee#1",
+        "old_value": "unknown",
+        "new_value": "Een snee is een wond door een scherp voorwerp.",
+        "timestamp": "2026-11-27T20:18:46.831644"
       }
     ]
   },
@@ -132108,9 +132273,12 @@
     "senses": [
       {
         "sense_id": "schep#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een schep is een gereedschap met een breed blad en een steel om materiaal mee op te scheppen.",
+        "pos": "noun",
+        "examples": [
+          "Hij groef het gat met een schep.",
+          "Ze deed een schep zand in de emmer."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -132119,22 +132287,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:00:37.675504"
+          },
+          {
+            "type": "is_a",
+            "target": "gereedschap",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:18:12.244190"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:00:35.335039",
-      "updated_at": "2026-11-21T19:00:37.675516",
+      "updated_at": "2026-11-27T20:20:03.381058",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:00:37.675516",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:18:12.151067",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:00:35.335346",
@@ -132143,6 +132319,10 @@
         {
           "timestamp": "2026-11-21T19:00:37.675516",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:18:12.151067",
+          "confidence": 1.0
         }
       ]
     },
@@ -132173,6 +132353,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:00:37.675514"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "schep#1",
+        "old_value": "unknown",
+        "new_value": "Een schep is een gereedschap met een breed blad en een steel om materiaal mee op te scheppen.",
+        "timestamp": "2026-11-27T20:18:12.151064"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "schep#1",
+        "relation": {
+          "type": "is_a",
+          "target": "gereedschap",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:18:12.244208"
       }
     ]
   },
@@ -132508,9 +132707,12 @@
     "senses": [
       {
         "sense_id": "gum#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een gum is een stukje zacht materiaal waarmee je potloodstrepen wegveegt.",
+        "pos": "noun",
+        "examples": [
+          "Ze gebruikte een gum om de fout te verwijderen.",
+          "Mijn gum ligt in mijn pennenzak."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -132521,20 +132723,20 @@
             "created_at": "2026-11-21T19:01:25.598890"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:01:23.467667",
-      "updated_at": "2026-11-21T19:01:25.598901",
+      "updated_at": "2026-11-27T20:19:34.036586",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:01:25.598901",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:15:43.677405",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:01:23.467981",
@@ -132543,6 +132745,10 @@
         {
           "timestamp": "2026-11-21T19:01:25.598901",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:15:43.677405",
+          "confidence": 1.0
         }
       ]
     },
@@ -132573,6 +132779,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:01:25.598899"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "gum#1",
+        "old_value": "unknown",
+        "new_value": "Een gum is een stukje zacht materiaal waarmee je potloodstrepen wegveegt.",
+        "timestamp": "2026-11-27T20:15:43.677403"
       }
     ]
   },
@@ -132946,9 +133160,12 @@
     "senses": [
       {
         "sense_id": "ritssluiting#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een ritssluiting is een sluiting met twee rijen tandjes die je dichttrekt met een schuifje.",
+        "pos": "noun",
+        "examples": [
+          "De ritssluiting van mijn jas is stuk.",
+          "Ze trok de ritssluiting van haar rugzak dicht."
+        ],
         "relations": [
           {
             "type": "used_for",
@@ -132957,22 +133174,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:01:59.806524"
+          },
+          {
+            "type": "is_a",
+            "target": "sluiting",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:17:43.291904"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:01:57.380600",
-      "updated_at": "2026-11-21T19:01:59.806534",
+      "updated_at": "2026-11-27T20:19:56.359997",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:01:59.806534",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:17:43.204064",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:01:57.380896",
@@ -132981,6 +133206,10 @@
         {
           "timestamp": "2026-11-21T19:01:59.806534",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:17:43.204064",
+          "confidence": 1.0
         }
       ]
     },
@@ -133011,6 +133240,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:01:59.806531"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "ritssluiting#1",
+        "old_value": "unknown",
+        "new_value": "Een ritssluiting is een sluiting met twee rijen tandjes die je dichttrekt met een schuifje.",
+        "timestamp": "2026-11-27T20:17:43.204062"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "ritssluiting#1",
+        "relation": {
+          "type": "is_a",
+          "target": "sluiting",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:17:43.291922"
       }
     ]
   },
@@ -134664,9 +134912,12 @@
     "senses": [
       {
         "sense_id": "botbreuk#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een botbreuk is een breuk of barst in een bot.",
+        "pos": "noun",
+        "examples": [
+          "Hij kreeg een botbreuk bij het voetballen.",
+          "De botbreuk kwam in het gips."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -134677,20 +134928,20 @@
             "created_at": "2026-11-21T19:05:25.009657"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:05:23.012974",
-      "updated_at": "2026-11-21T19:05:25.009667",
+      "updated_at": "2026-11-27T20:19:12.866732",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:05:25.009667",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:14:04.214467",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:05:23.013216",
@@ -134699,6 +134950,10 @@
         {
           "timestamp": "2026-11-21T19:05:25.009667",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:14:04.214467",
+          "confidence": 1.0
         }
       ]
     },
@@ -134729,6 +134984,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:05:25.009665"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "botbreuk#1",
+        "old_value": "unknown",
+        "new_value": "Een botbreuk is een breuk of barst in een bot.",
+        "timestamp": "2026-11-27T20:14:04.214464"
       }
     ]
   },
@@ -135159,9 +135422,12 @@
     "senses": [
       {
         "sense_id": "condensatie#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Condensatie is het veranderen van damp of gas in vloeistof.",
+        "pos": "noun",
+        "examples": [
+          "Door condensatie beslaan de ramen.",
+          "Op de koude fles zat condensatie."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135172,20 +135438,20 @@
             "created_at": "2026-11-21T19:06:46.363456"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:06:44.163839",
-      "updated_at": "2026-11-21T19:06:46.363466",
+      "updated_at": "2026-11-27T20:19:26.720874",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:06:46.363466",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:15:08.854242",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:06:44.164192",
@@ -135194,6 +135460,10 @@
         {
           "timestamp": "2026-11-21T19:06:46.363466",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:15:08.854242",
+          "confidence": 1.0
         }
       ]
     },
@@ -135224,6 +135494,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:06:46.363463"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "condensatie#1",
+        "old_value": "unknown",
+        "new_value": "Condensatie is het veranderen van damp of gas in vloeistof.",
+        "timestamp": "2026-11-27T20:15:08.854238"
       }
     ]
   },
@@ -135639,9 +135917,12 @@
     "senses": [
       {
         "sense_id": "brandwond#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een brandwond is een beschadiging van de huid door hitte, vuur of een hete vloeistof.",
+        "pos": "noun",
+        "examples": [
+          "Hij hield een brandwond over aan de hete pan.",
+          "Koel een brandwond met lauw water."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135650,22 +135931,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:07:32.605420"
+          },
+          {
+            "type": "is_a",
+            "target": "beschadiging",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:14:53.935022"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:07:30.452702",
-      "updated_at": "2026-11-21T19:07:32.605430",
+      "updated_at": "2026-11-27T20:19:23.291630",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:07:32.605430",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:14:53.840614",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:07:30.452963",
@@ -135674,6 +135963,10 @@
         {
           "timestamp": "2026-11-21T19:07:32.605430",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:14:53.840614",
+          "confidence": 1.0
         }
       ]
     },
@@ -135704,6 +135997,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:07:32.605427"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "brandwond#1",
+        "old_value": "unknown",
+        "new_value": "Een brandwond is een beschadiging van de huid door hitte, vuur of een hete vloeistof.",
+        "timestamp": "2026-11-27T20:14:53.840611"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "brandwond#1",
+        "relation": {
+          "type": "is_a",
+          "target": "beschadiging",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:14:53.935039"
       }
     ]
   },
@@ -135831,9 +136143,12 @@
     "senses": [
       {
         "sense_id": "ongeluk#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een ongeluk is een onverwachte gebeurtenis waarbij iemand gewond raakt of er schade ontstaat.",
+        "pos": "noun",
+        "examples": [
+          "Er gebeurde een ongeluk op de kruising.",
+          "Gelukkig liep het ongeluk goed af."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135844,20 +136159,20 @@
             "created_at": "2026-11-21T19:07:48.111369"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:07:45.941943",
-      "updated_at": "2026-11-21T19:07:48.111379",
+      "updated_at": "2026-11-27T20:19:45.188214",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:07:48.111379",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:16:36.708729",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:07:45.942241",
@@ -135866,6 +136181,10 @@
         {
           "timestamp": "2026-11-21T19:07:48.111379",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:16:36.708729",
+          "confidence": 1.0
         }
       ]
     },
@@ -135896,6 +136215,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:07:48.111377"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "ongeluk#1",
+        "old_value": "unknown",
+        "new_value": "Een ongeluk is een onverwachte gebeurtenis waarbij iemand gewond raakt of er schade ontstaat.",
+        "timestamp": "2026-11-27T20:16:36.708727"
       }
     ]
   },
@@ -135951,9 +136278,12 @@
     "senses": [
       {
         "sense_id": "aanrijding#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een aanrijding is een botsing tussen voertuigen of tussen een voertuig en een persoon of voorwerp.",
+        "pos": "noun",
+        "examples": [
+          "Bij de aanrijding raakte niemand gewond.",
+          "De aanrijding gebeurde op het kruispunt."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -135964,20 +136294,20 @@
             "created_at": "2026-11-21T19:07:57.426030"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:07:55.492108",
-      "updated_at": "2026-11-21T19:07:57.426041",
+      "updated_at": "2026-11-27T20:19:01.949348",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:07:57.426041",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:12:55.761949",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:07:55.492551",
@@ -135986,6 +136316,10 @@
         {
           "timestamp": "2026-11-21T19:07:57.426041",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:12:55.761949",
+          "confidence": 1.0
         }
       ]
     },
@@ -136016,6 +136350,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:07:57.426038"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "aanrijding#1",
+        "old_value": "unknown",
+        "new_value": "Een aanrijding is een botsing tussen voertuigen of tussen een voertuig en een persoon of voorwerp.",
+        "timestamp": "2026-11-27T20:12:55.761946"
       }
     ]
   },
@@ -136230,9 +136572,12 @@
     "senses": [
       {
         "sense_id": "file#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een file is een lange rij stilstaande of traag rijdende voertuigen op de weg.",
+        "pos": "noun",
+        "examples": [
+          "Door de file kwam hij te laat.",
+          "Op de snelweg stond een lange file."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136243,20 +136588,20 @@
             "created_at": "2026-11-21T19:08:19.392732"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:17.450757",
-      "updated_at": "2026-11-21T19:08:19.392742",
+      "updated_at": "2026-11-27T20:19:30.140446",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:19.392742",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:15:28.916137",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:17.451079",
@@ -136265,6 +136610,10 @@
         {
           "timestamp": "2026-11-21T19:08:19.392742",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:15:28.916137",
+          "confidence": 1.0
         }
       ]
     },
@@ -136295,6 +136644,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:08:19.392739"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "file#1",
+        "old_value": "unknown",
+        "new_value": "Een file is een lange rij stilstaande of traag rijdende voertuigen op de weg.",
+        "timestamp": "2026-11-27T20:15:28.916135"
       }
     ]
   },
@@ -136302,9 +136659,12 @@
     "senses": [
       {
         "sense_id": "muggenbeet#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een muggenbeet is een jeukende plek op de huid na een steek van een mug.",
+        "pos": "noun",
+        "examples": [
+          "Ze kreeg een muggenbeet op haar arm.",
+          "De muggenbeet begon vreselijk te jeuken."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136315,20 +136675,20 @@
             "created_at": "2026-11-21T19:08:26.196823"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:24.107542",
-      "updated_at": "2026-11-21T19:08:26.196831",
+      "updated_at": "2026-11-27T20:19:41.491043",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:26.196831",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:16:21.850006",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:24.107841",
@@ -136337,6 +136697,10 @@
         {
           "timestamp": "2026-11-21T19:08:26.196831",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:16:21.850006",
+          "confidence": 1.0
         }
       ]
     },
@@ -136367,6 +136731,14 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:08:26.196829"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "muggenbeet#1",
+        "old_value": "unknown",
+        "new_value": "Een muggenbeet is een jeukende plek op de huid na een steek van een mug.",
+        "timestamp": "2026-11-27T20:16:21.850004"
       }
     ]
   },
@@ -136422,9 +136794,12 @@
     "senses": [
       {
         "sense_id": "brandnetel#1",
-        "definition": "unknown",
-        "pos": null,
-        "examples": [],
+        "definition": "Een brandnetel is een plant met haartjes die bij aanraking een brandend gevoel op de huid geven.",
+        "pos": "noun",
+        "examples": [
+          "Ze liep per ongeluk in een brandnetel.",
+          "Langs de sloot groeide een brandnetel."
+        ],
         "relations": [
           {
             "type": "causes",
@@ -136433,22 +136808,30 @@
             "source": "user",
             "status": "confirmed",
             "created_at": "2026-11-21T19:08:33.286283"
+          },
+          {
+            "type": "is_a",
+            "target": "plant",
+            "confidence": 0.9,
+            "source": "auto_extract",
+            "status": "unverified",
+            "created_at": "2026-11-27T20:14:40.034671"
           }
         ],
-        "source": "auto",
-        "confidence": 0.1,
-        "status": "unverified",
+        "source": "user",
+        "confidence": 1.0,
+        "status": "confirmed",
         "audit_log": []
       }
     ],
     "metadata": {
       "created_at": "2026-11-21T19:08:31.322414",
-      "updated_at": "2026-11-21T19:08:33.286293",
+      "updated_at": "2026-11-27T20:19:19.959189",
       "sources": [
         "auto"
       ],
-      "last_used_at": "2026-11-21T19:08:33.286293",
-      "usage_count": 2,
+      "last_used_at": "2026-11-27T20:14:39.942930",
+      "usage_count": 3,
       "confidence_history": [
         {
           "timestamp": "2026-11-21T19:08:31.322670",
@@ -136457,6 +136840,10 @@
         {
           "timestamp": "2026-11-21T19:08:33.286293",
           "confidence": 0.1
+        },
+        {
+          "timestamp": "2026-11-27T20:14:39.942930",
+          "confidence": 1.0
         }
       ]
     },
@@ -136487,6 +136874,25 @@
           "confidence": 1.0
         },
         "timestamp": "2026-11-21T19:08:33.286291"
+      },
+      {
+        "event_type": "sense_upgrade",
+        "source": "user",
+        "sense_id": "brandnetel#1",
+        "old_value": "unknown",
+        "new_value": "Een brandnetel is een plant met haartjes die bij aanraking een brandend gevoel op de huid geven.",
+        "timestamp": "2026-11-27T20:14:39.942927"
+      },
+      {
+        "event_type": "relation_add",
+        "source": "auto_extract",
+        "sense_id": "brandnetel#1",
+        "relation": {
+          "type": "is_a",
+          "target": "plant",
+          "confidence": 0.9
+        },
+        "timestamp": "2026-11-27T20:14:40.034688"
       }
     ]
   },

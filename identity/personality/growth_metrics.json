@@ -5,14 +5,14 @@
   },
   "traits": {
     "social_warmth": {
-      "positive_count": 1,
-      "negative_count": 57,
+      "positive_count": 2,
+      "negative_count": 58,
       "total_shifts": 10,
       "last_shift": "2026-11-21T20:01:25.596524",
       "last_shift_direction": "negatief"
     },
     "loyalty": {
-      "positive_count": 46,
+      "positive_count": 47,
       "negative_count": 0,
       "total_shifts": 0,
       "last_shift": null,
@@ -48,7 +48,7 @@
     },
     "expressiveness": {
       "positive_count": 0,
-      "negative_count": 12,
+      "negative_count": 13,
       "total_shifts": 32,
       "last_shift": "2026-11-21T20:08:26.194463",
       "last_shift_direction": "negatief"
