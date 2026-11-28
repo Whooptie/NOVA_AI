@@ -792,6 +792,16 @@ Nova onderscheidt nu "dit was altijd al zo" van "dit is veranderd". 100% symboli
 
 ---
 
+## 🌸 Cyclus van Fleur — `modules/time/cyclus.py` (28 november 2026)
+
+Houdt Fleur's maandstonden bij en meldt ze. 100% symbolisch: datums, optellen en gewogen gemiddelden. Het is een kalenderschatting, geen meting en geen anticonceptie.
+
+- **Data:** `data/cyclus.json` (niet op GitHub). Startdatums, einddatums, de voorspelde datum per start, instellingen en wat al gemeld is.
+- **Commando's:** zie `help fleur`. Ze worden door `intent_router.detect_cyclus()` aan de module doorgegeven, vóór `_route_herschrijf`, zonder topic-event.
+- **Meldingen:** achtergrondthread (5 min), 08:00-21:00, vooraf / op de dag / te laat (max. 14 dagen), vruchtbaar venster optioneel.
+- **Nieuw onderdeel voor Fleur?** Voeg een sectie toe aan `SECTIES` in `modules/help/topics/fleur.py`.
+- **Tests:** `test_cyclus.py`, `test_cyclus_router.py`, `test_help_fleur.py`.
+
 ## 💬 `conversation_engine.py` — contextuele fallback-conversatie (Fase 1, afgerond 28 juli 2026)
 
 **Probleem dat dit oplost:** de generieke fallback (`response_pipeline.py`'s `on_fallback()`) gaf tot dit punt altijd een kale, contextloze zin ("Ik weet nog niet goed hoe ik daarop moet antwoorden...") bij elke onherkende intent — ook al kende Nova via Layer 5/6 de actuele context (bezig met coderen, ongewoon energiek, ...) prima.

@@ -19,9 +19,9 @@
 #     daarom na het omhullen opnieuw opgebouwd.
 #
 # EIGEN TIJD:
-#   Een omhulde functie die andere omhulde functies aanroept, telt hun tijd mee in
-#   "duur_ms". "eigen_ms" is de tijd zonder die kinderen, zodat de pagina niet de
-#   verkeerde module als traag aanwijst.
+#   Een omhulde functie die andere omhulde functies of EventBus-handlers aanroept, telt hun
+#   tijd mee in "duur_ms". "eigen_ms" is de tijd zonder die kinderen, zodat de pagina niet de
+#   verkeerde module als traag aanwijst. De stapel daarvoor zit in core/tracer.py.
 #
 # VEILIGHEID:
 #   - Staat de tracer uit, dan roept de omhulling direct de echte functie aan.
@@ -36,7 +36,6 @@
 
 import functools
 import inspect
-import threading
 
 # modules die we bewust NIET omhullen (bv. omdat ze zelf elke regel loggen)
 UITGESLOTEN_MODULES = {"logger"}
@@ -45,18 +44,12 @@ UITGESLOTEN_MODULES = {"logger"}
 ROUTER_NAAM = "intent_router"
 ROUTER_PREFIXEN = ("detect_", "_route_")
 
-_lokaal = threading.local()                 # stapel voor "eigen tijd" per thread
-
 
 def _maak_omhulling(tracer, label, origineel, met_treffer):
     @functools.wraps(origineel)
     def omhulling(*args, **kwargs):
         if not tracer.aan:
             return origineel(*args, **kwargs)
-        stapel = getattr(_lokaal, "stapel", None)
-        if stapel is None:
-            stapel = _lokaal.stapel = []
-        stapel.append(0.0)                  # tijd van de omhulde kinderen
         start = tracer.begin()
         treffer = None
         try:
@@ -68,15 +61,7 @@ def _maak_omhulling(tracer, label, origineel, met_treffer):
                     treffer = None
             return resultaat
         finally:
-            try:
-                duur = (tracer.begin() - start) * 1000.0
-                kinderen = stapel.pop()
-                if stapel:
-                    stapel[-1] += duur
-                tracer.trace(label, start, treffer=treffer,
-                             eigen_ms=round(max(0.0, duur - kinderen), 3))
-            except Exception:
-                pass                        # de tracer mag nooit iets stoppen
+            tracer.trace(label, start, treffer=treffer)   # berekent duur en eigen tijd zelf
     omhulling._getraceerd = True
     return omhulling
 

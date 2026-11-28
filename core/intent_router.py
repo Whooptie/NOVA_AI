@@ -3963,16 +3963,19 @@ class IntentRouter:
         return self._naar_enkelvoud(woord) or woord
 
     def detect_cyclus(self, text):
-        """Geeft de zin aan cyclus.py (als die geladen is). True = afgehandeld.
-        Bewust GEEN _emit_topic: gezondheidsinfo hoeft niet door Layer 2/7 gevolgd te worden."""
-        module = self.event_bus.modules.get("cyclus")
-        if module is None:
-            return False
-        try:
-            return bool(module.verwerk_zin(text))
-        except Exception as e:
-            dbg(f"{C_RED}cyclus-fout (genegeerd): {e}{C_RESET}")
-            return False
+        """Geeft de zin aan de Fleur-modules (cyclus.py, daarna fleur_kalender.py) die geladen
+        zijn. De eerste die de zin herkent wint. True = afgehandeld.
+        Bewust GEEN _emit_topic: persoonlijke info hoeft niet door Layer 2/7 gevolgd te worden."""
+        for naam in ("cyclus", "fleur_kalender"):
+            module = self.event_bus.modules.get(naam)
+            if module is None:
+                continue
+            try:
+                if module.verwerk_zin(text):
+                    return True
+            except Exception as e:
+                dbg(f"{C_RED}{naam}-fout (genegeerd): {e}{C_RESET}")
+        return False
 
     def detect_graaf(self, text):
         t = text.lower().strip().rstrip("?.! ").strip()

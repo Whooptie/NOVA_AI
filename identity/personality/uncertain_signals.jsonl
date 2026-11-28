@@ -2822,3 +2822,15 @@
 {"text": "cyclus overzicht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0542, "bron": "model_fallback", "tijdstip": "2026-11-28T13:35:24.880816"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T13:41:43.763522"}
 {"text": "fleur vruchtbaarheidsmeldingen aan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0014, "bron": "model_fallback", "tijdstip": "2026-11-28T13:42:33.395099"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T14:07:19.406880"}
+{"text": "fleur knuffelen op 26 november om 22:30 ik begon", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0133, "bron": "model_fallback", "tijdstip": "2026-11-28T14:07:27.489560"}
+{"text": "fleur tetjes op 26 november om 22:35 ik begon", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0133, "bron": "model_fallback", "tijdstip": "2026-11-28T14:08:24.290506"}
+{"text": "fleur poepie op 26 november om 22:40 ik begon", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0133, "bron": "model_fallback", "tijdstip": "2026-11-28T14:09:28.701038"}
+{"text": "fleur kutje op 26 november om 22:45 ik begon", "signaal": "frustratie", "model_signaal": "neutraal", "marge": 0.0133, "bron": "woordenlijst", "tijdstip": "2026-11-28T14:10:04.720982"}
+{"text": "fleur kalender", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-28T14:10:50.500203"}
+{"text": "fleur overzicht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0542, "bron": "model_fallback", "tijdstip": "2026-11-28T14:11:04.401615"}
+{"text": "fleur inzichten", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-28T14:11:13.859946"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T14:17:23.574124"}
+{"text": "waarom is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.014, "bron": "model_fallback", "tijdstip": "2026-11-28T14:17:49.324278"}
+{"text": "fleur kutje op 26 november om 22:45 maar ze wilde niet", "signaal": "frustratie", "model_signaal": "kilte", "marge": 0.0019, "bron": "woordenlijst", "tijdstip": "2026-11-28T14:22:27.120758"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T14:23:13.128812"}

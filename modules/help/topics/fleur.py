@@ -46,8 +46,37 @@ CYCLUS = {
     ],
 }
 
+KALENDER = {
+    "kop": "📅 FLEUR-KALENDER (jullie logboek, met haar toestemming)",
+    "module": "fleur_kalender",
+    "commando's": [
+        ("fleur knuffelen ik begon", "datum en uur van nu worden zelf ingevuld"),
+        ("fleur rug zij begon", "ook: samen / niets erbij"),
+        ("fleur seks samen", ""),
+        ("fleur poepie", "soorten: knuffelen, poepie, rug, tetjes, seks (en wat je zelf toevoegt)"),
+        ("fleur seks ik probeerde maar ze wilde niet", "wordt 'niet doorgegaan'; ook: zij probeerde maar ik wilde niet"),
+        ("fleur tetjes gisteren om 21:30", "datum en/of uur zelf opgeven (12 november, 12/11, 3 dagen geleden)"),
+        ("fleur kalender", "deze maand, per dag; ook: fleur kalender oktober / vorige maand"),
+        ("fleur overzicht", "tellers en verhoudingen; ook: fleur overzicht seks / deze maand / dit jaar"),
+        ("fleur inzichten", "wat Nova er zelf uit leert (weekdag, dagdeel, wie begint, cyclusfase)"),
+        ("fleur laatste", "de laatste 5 noteringen; ook: fleur laatste 10"),
+        ("fleur soorten", "alle soorten die Nova kent"),
+        ("fleur soort toevoegen massage", "zelf een soort toevoegen"),
+        ("fleur soort verwijderen massage", "oude noteringen blijven bewaard"),
+        ("fleur kalender laatste ongedaan", "haalt de laatste notering weg"),
+    ],
+    "goed om te weten": [
+        "Kent Nova een woord niet ('fleur massage ik begon'), dan vraagt ze het eerst: zeg 'ja'",
+        "(nieuwe soort), 'nee' (niets bewaard) of de naam van een bestaande soort (dan wordt het",
+        "een andere naam daarvoor). Je krijgt daarna een teller per soort en per maand.",
+        "Nova leert door te tellen en te vergelijken, nooit door te gokken: inzichten komen",
+        "alleen als je ze vraagt en pas vanaf genoeg gegevens. Het zijn tellingen, geen verklaringen.",
+        "Alles staat in data/fleur_kalender.json (niet op GitHub) en gaat nooit naar je gsm.",
+    ],
+}
+
 # Nieuwe onderdelen voor Fleur komen hier bij.
-SECTIES = [CYCLUS]
+SECTIES = [CYCLUS, KALENDER]
 
 
 def alle_commandos(module=None):

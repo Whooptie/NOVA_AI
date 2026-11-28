@@ -80,9 +80,21 @@ def antwoord_tekst(tracer, nummer=None):
     regels = [f"Antwoord #{nummer}: {len(keten)} stappen (zonder wildcard-ruis en niet-aanslaande detectoren)"]
     for r in keten:
         eigen = r.get("eigen_ms")
-        tijd = "" if eigen is None else f" {eigen:.1f} ms eigen"
+        duur = r.get("duur_ms")
+        tijd = ""
+        if eigen is not None:
+            tijd = f" {eigen:.1f} ms eigen"
+            if duur is not None and duur - eigen >= 1.0:
+                tijd += f" ({duur:.1f} ms totaal)"
         raak = " ✓" if r.get("treffer") else ""
         regels.append(f"  {r['module']:<26} {r['handler']:<44}{tijd}{raak}")
+    traagste = sorted((r for r in keten if (r.get("eigen_ms") or 0.0) >= 5.0),
+                      key=lambda r: r["eigen_ms"], reverse=True)[:3]
+    if traagste:
+        regels.append("")
+        regels.append("Traagste stappen (eigen tijd):")
+        for r in traagste:
+            regels.append(f"  {r['eigen_ms']:>8.1f} ms  {r['handler']}")
     return "\n".join(regels)
 
 

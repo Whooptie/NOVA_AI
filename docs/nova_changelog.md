@@ -4217,3 +4217,15 @@ Nieuw hulpbestand modules/diagnose/controles.py. Nieuwe controles: back-up (leef
 - Nieuw `core/trace_punten.py`: aanroepen die NIET via de EventBus lopen (achtergrondlussen in main.py, router -> `response_engine.generate`) worden omhuld zodat ze zichtbaar zijn in de tracer. Doet niets als de tracer uit staat.
 - Tracer-records hebben nu `start_t` (starttijd), nodig om flitsen in de juiste volgorde te tekenen.
 - Tests: `tests/test_tracer.py` (29), `tests/test_handler_overzicht.py` (15), `tests/test_trace_punten.py` (20, o.a. een controle dat elke aanroep in `achtergrond_loop` en `snelle_activiteit_loop` in de lijst staat: voeg je er later een toe zonder hem te registreren, dan wordt die test rood).
+
+## 28 nov 2026 — Cyclus-module: maandstonden en cyclus van Fleur (`modules/time/cyclus.py`)
+- Aanleiding: Kevin wil Fleur's maandstonden bijhouden, meldingen krijgen en weten in welke fase ze ongeveer zit.
+- Nieuw: `cyclus.py` (auto-discovery, `data/cyclus.json`, staat niet op GitHub), `help fleur` (`modules/help/topics/fleur.py`, uitbreidbaar met secties).
+- Commando's: startdatum noteren (vandaag/gisteren/N dagen geleden/12 november/12/11), einddatum, `ze is nog niet ongesteld` (morgen opnieuw vragen), verwachte datum, fase/vruchtbaarheid, `cyclus overzicht`, laatste ongedaan, `melding N dagen vooraf`, vruchtbaarheidsmelding aan/uit (standaard uit).
+- Leren = statistiek, geen ML: gewogen gemiddelde van de laatste 6 cycli (nieuwste zwaarst), kortste/langste, gemiddelde periodelengte, gemiddelde afwijking van de eigen voorspelling. Minder dan 3 cycli = "grove schatting".
+- Fase: kalendermethode, eisprong = verwachte start min 14 dagen, vruchtbaar venster = 5 dagen ervoor tot 1 dag erna. Schatting, geen meting, geen anticonceptie; Nova zegt dat zelf.
+- Meldingen: achtergrondthread elke 5 min, enkel 08:00-21:00, via `layer4_response` (dus door de stijlfilter en dan door ntfy naar de gsm). Vooraf (standaard 2 dagen), op de dag, elke dag te laat tot 14 dagen. Wat gemeld is staat in het bestand, een herstart herhaalt niks.
+- `intent_router.detect_cyclus()` staat VOOR `_route_herschrijf` (zodat "ze" niet herschreven wordt) en stuurt bewust geen topic-event (geen patronen over gezondheidsinfo in Layer 2/7).
+- Tests: `test_cyclus.py` (101), `test_cyclus_router.py` (11), `test_help_fleur.py` (20, controleert dat elk voorbeeldcommando echt herkend wordt). Suite op de server: 5655 geslaagd, 1 overgeslagen.
+- Live bevestigd (28 nov 2026): startdatum noteren, `cyclus overzicht`, `help fleur`, vruchtbaarheidsmelding aan.
+- Open: meldingen komen met de Brugse stijl en emoji op de gsm; zakelijke versie rechtstreeks via ntfy is mogelijk. Meer Fleur-onderdelen komen als sectie in `fleur.py`.

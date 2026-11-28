@@ -575,7 +575,8 @@ class CyclusModule:
 
         # --- instellingen en beheer (moeten Fleur/maandstonden/cyclus noemen) ---
         if re.search(rf"\b{naam}\b|\bmaandstonden\b|\bcyclus\b", t):
-            if re.search(r"\blaatste\b.*\bongedaan\b|\bongedaan\b.*\blaatste\b|\bverwijder\b.*\blaatste\b", t):
+            if (re.search(r"\blaatste\b.*\bongedaan\b|\bongedaan\b.*\blaatste\b|\bverwijder\b.*\blaatste\b", t)
+                    and re.search(r"\bmaandstonden?\b|\bcyclus\b|\bongesteld\b|\bmenstruatie\b", t)):
                 return self.laatste_ongedaan()
             m = re.search(r"vruchtbaarheid\w*\s*melding\w*\s*(aan|uit)|vruchtbaar\w*\s*melding\w*\s*(aan|uit)", t)
             if m:

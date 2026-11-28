@@ -114,18 +114,37 @@ class Tracer:
             self._uitzenden({"soort": "keten_eind", "keten": nummer, "event": event_type})
 
     # ---------- handlers (aangeroepen door EventBus._roep_aan) ----------
+    def _stapel(self):
+        """Per thread: de tijd (ms) die de omhulde kinderen van elke lopende aanroep al kostten."""
+        stapel = getattr(self._lokaal, "stapel", None)
+        if stapel is None:
+            stapel = self._lokaal.stapel = []
+        return stapel
+
+    def _sluit_af(self, duur):
+        """Haalt de lopende aanroep van de stapel; geeft de tijd van zijn kinderen terug."""
+        stapel = self._stapel()
+        kinderen = stapel.pop() if stapel else 0.0
+        if stapel:
+            stapel[-1] += duur
+        return kinderen
+
     def begin(self):
+        """Start een meting (handler of omhulde functie). Hoort bij eind() of trace(naam, start)."""
+        self._stapel().append(0.0)
         return self._klok()
 
     def eind(self, handler, event_type, start):
         try:
             duur = (self._klok() - start) * 1000.0
+            kinderen = self._sluit_af(duur)
             module = getattr(handler, "__module__", None) or "?"
             naam = getattr(handler, "__qualname__", None) or repr(handler)
             self._uitzenden({
                 "soort": "handler", "module": _korte_module(module), "pad": module,
                 "handler": naam, "event": event_type,
                 "duur_ms": round(duur, 3), "keten": self.keten_id(),
+                "treffer": None, "eigen_ms": round(max(0.0, duur - kinderen), 3),
             })
         except Exception:
             pass                                  # de tracer mag nooit iets stoppen
@@ -133,6 +152,15 @@ class Tracer:
     # ---------- code die niet via de bus loopt ----------
     def trace(self, naam, start=None, treffer=None, eigen_ms=None):
         """tracer.trace("session_watcher.check_pauze"): een signaal vanuit een lus."""
+        duur = None
+        if start is not None:                     # altijd van de stapel halen, ook als de tracer net uit ging
+            try:
+                duur = (self._klok() - start) * 1000.0
+                kinderen = self._sluit_af(duur)
+                if eigen_ms is None:
+                    eigen_ms = round(max(0.0, duur - kinderen), 3)
+            except Exception:
+                pass
         if not self.aan:
             return
         try:
@@ -141,7 +169,7 @@ class Tracer:
                 "soort": "trace", "module": module, "pad": module,
                 "handler": str(naam), "event": None,
                 "treffer": treffer, "eigen_ms": eigen_ms,
-                "duur_ms": None if start is None else round((self._klok() - start) * 1000.0, 3),
+                "duur_ms": None if duur is None else round(duur, 3),
                 "keten": self.keten_id(),
             })
         except Exception:

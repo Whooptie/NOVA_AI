@@ -160,12 +160,11 @@ def test_tracer_aan_zelfde_uitkomst_en_een_record():
 
 
 def test_fout_gaat_ongewijzigd_door_en_stapel_blijft_in_balans():
-    from core import trace_router
     bus, inst, _ = maak()
     bus.tracer.zet(True)
     with pytest.raises(ValueError):
         inst.kapot()
-    assert trace_router._lokaal.stapel == []
+    assert bus.tracer._stapel() == []
     assert [r["handler"] for r in bus.tracer.log if r["soort"] == "trace"] == ["voorbeeld.kapot"]
 
 
@@ -397,3 +396,58 @@ def test_trace_antwoord_toont_de_laatste_echte_vraag_op_volgorde():
 def test_trace_antwoord_zonder_records():
     from modules.debug.trace_overzicht import antwoord_tekst
     assert "Nog geen antwoord" in antwoord_tekst(Tracer())
+
+
+# ---------- eigen tijd telt ook EventBus-handlers als kinderen ----------
+
+def test_eigen_tijd_trekt_ook_bus_handlers_af():
+    tijd = [100.0]
+
+    class Router:
+        def detect_x(self, t):
+            tijd[0] += 0.001
+            self.bus.publish("evt", {})          # een handler die 20 ms kost
+            tijd[0] += 0.002
+            return True
+
+    class Luisteraar:
+        def op_evt(self, data):
+            tijd[0] += 0.020
+
+    bus = EventBus()
+    bus.tracer = Tracer(klok=lambda: tijd[0])
+    r = Router()
+    r.bus = bus
+    installeer_auto(bus, {"intent_router": r})
+    bus.subscribe("evt", Luisteraar().op_evt)
+    bus.tracer.zet(True)
+    r.detect_x("a")
+    recs = {x["handler"].rsplit(".<locals>.", 1)[-1]: x
+            for x in bus.tracer.log if x["soort"] in ("handler", "trace")}
+    assert recs["Luisteraar.op_evt"]["eigen_ms"] == pytest.approx(20.0)
+    assert recs["intent_router.detect_x"]["duur_ms"] == pytest.approx(23.0)
+    assert recs["intent_router.detect_x"]["eigen_ms"] == pytest.approx(3.0)
+
+
+def test_stapel_blijft_in_balans_als_de_tracer_midden_in_een_aanroep_uitgaat():
+    class M:
+        def werk(self):
+            self.bus.tracer.zet(False)
+
+    bus = EventBus()
+    m = M()
+    m.bus = bus
+    installeer_auto(bus, {"m": m})
+    bus.tracer.zet(True)
+    m.werk()
+    assert bus.tracer._stapel() == []
+
+
+def test_trace_antwoord_toont_totaal_en_traagste_stappen():
+    from modules.debug.trace_overzicht import antwoord_tekst
+    t = Tracer()
+    t.zet(True)
+    with t.keten("chat_message", {}):
+        t.trace("m.langzaam", None, treffer=True, eigen_ms=50.0)
+    assert "Traagste stappen" in antwoord_tekst(t)
+    assert "50.0 ms" in antwoord_tekst(t)

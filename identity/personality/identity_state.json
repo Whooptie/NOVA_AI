@@ -1,13 +1,13 @@
 {
   "current_mood": "positief_speels",
-  "current_energy": 0.6011635774256692,
+  "current_energy": 0.5507214165904931,
   "current_focus": "interaction",
   "emotional_tone": "warm_en_enthousiast",
   "emotional_history": [],
   "mood_shift_tendency": "snel_met_herstel",
-  "overstimulation_level": 0.09,
+  "overstimulation_level": 0.0,
   "puberaal_traits_active": true,
-  "expressive_intensity": 0.6899999999999998,
+  "expressive_intensity": 0.7399999999999999,
   "impulsivity_modulation": 0.55,
   "dramatic_flair_state": 0.6,
   "context_flags": {
@@ -41,9 +41,9 @@
     "task_switch_speed": "snel_met_korte_reset"
   },
   "emotion_engine_state": {
-    "last_trigger": "excitement",
-    "last_reaction": "kleine_glimlach_alertere_blik",
-    "last_recovery": null
+    "last_trigger": "frustration",
+    "last_reaction": "droge_opmerking",
+    "last_recovery": "rustig_blijven"
   },
   "behavior_modulation_state": {
     "mirroring_intensity": "laag_tot_medium",
