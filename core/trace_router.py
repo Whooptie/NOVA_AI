@@ -38,7 +38,7 @@ import functools
 import inspect
 
 # modules die we bewust NIET omhullen (bv. omdat ze zelf elke regel loggen)
-UITGESLOTEN_MODULES = {"logger"}
+UITGESLOTEN_MODULES = {"logger", "brein_stream"}
 
 # privé-functies van de router die wel meedoen
 ROUTER_NAAM = "intent_router"

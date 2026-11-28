@@ -59,8 +59,18 @@ KOUD = [
     "Awel, koud hè.",
 ]
 
+NIET_AAN = {
+    "algemeen": [
+        "Zit niet aan.",
+        "Die heb ik niet aan, zever.",
+        "Ligt ergens, hoor.",
+        "Niet aan.",
+    ],
+}
+
 _BAKKEN = {
     "los": LOS,
+    "niet_aan": NIET_AAN,
     "weiger": WEIGER,
     "uit": UIT,
     "aan": AAN,
@@ -92,7 +102,5 @@ def kies(soort, item=None):
         return _kies_uit(KOUD, "koud")
 
     bak = _BAKKEN.get(soort, {})
-    lijst = bak.get(item)
-    if lijst is None and soort == "weiger":
-        lijst = WEIGER["algemeen"]
+    lijst = bak.get(item) or bak.get("algemeen")
     return _kies_uit(lijst or [], f"{soort}:{item}")

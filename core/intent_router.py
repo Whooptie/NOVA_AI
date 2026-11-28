@@ -144,6 +144,44 @@ class IntentRouter:
         event_bus.subscribe("pending_question:answered", self._on_uitleg_oplossen_answered)
         dbg(f"{C_GREEN}IntentRouter geladen{C_RESET}")
 
+    def detect_kleding(self, text):
+        t = text.lower()
+        # Geen vraagvormen: "wat draag je", "hoe zit je short" blijven
+        # bij uiterlijk/definitie.
+        if re.match(r"^(wat|hoe|waar|waarom|welke|leg uit|wat is)\b", t):
+            return False
+        # Geen aanraakwoorden: "raak mijn short aan" is body, niet kleding.
+        if re.search(r"\b(?:raak|aai|wrijf|vrijf|streel|aanraak|steek)", t):
+            return False
+
+        items = {
+            "shortje": "short", "short": "short",
+            "hoodie": "hoodie",
+            "topje": "topje", "top": "topje",
+            "shirt": "shirt", "t-shirt": "shirt", "tshirt": "shirt",
+        }
+        gevonden = re.search(
+            r"\b(?:shortje|short|hoodie|topje|t-shirt|tshirt|shirt|top)\b", t
+        )
+        if not gevonden:
+            return False
+        item = items[gevonden.group(0)]
+
+        if re.search(r"\b(?:los|open|knoop)\b", t):
+            actie = "los"
+        elif re.search(r"\b(?:uit|uitdoen|af)\b", t):
+            actie = "uit"
+        elif re.search(r"\b(?:terug|aan|aandoen)\b", t):
+            actie = "aan"
+        elif re.search(r"\b(?:omhoog|opzij|hoger|schuif|verschuif|op)\b", t):
+            actie = "verschoven"
+        else:
+            return False
+
+        self.event_bus.publish("intent_kleding", {"item": item, "actie": actie})
+        self._emit_topic("kleding", bron="detect")
+        return True
+
     def detect_body(self, text):
         t = text.lower()
         # Woordgrenzen: "erin" mocht ook in "herinnering" matchen en "aai"
@@ -4525,6 +4563,7 @@ class IntentRouter:
             # eventueel al op een andere manier oppikt
             ("conversie",        self.detect_conversie),
             ("math",             self.detect_math),
+            ("kleding",          self.detect_kleding),
             ("body",             self.detect_body),
         ]
 

@@ -541,3 +541,4 @@
 {"timestamp": "2026-11-21T19:09:33.980482", "event_type": "concept_created", "word": "hongersnood", "source": "system", "new_value": {"word": "hongersnood"}}
 {"timestamp": "2026-11-21T19:09:41.466077", "event_type": "concept_created", "word": "orkaan", "source": "system", "new_value": {"word": "orkaan"}}
 {"timestamp": "2026-11-28T11:06:42.701303", "event_type": "concept_created", "word": "feestdag", "source": "system", "new_value": {"word": "feestdag"}}
+{"timestamp": "2026-11-28T13:29:43.295103", "event_type": "concept_created", "word": "draag", "source": "system", "new_value": {"word": "draag"}}

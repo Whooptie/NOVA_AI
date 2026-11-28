@@ -205,7 +205,7 @@ class Kleding:
         if actie == "aan":
             return self._naar_aan(item)
         if huidig == "uit":
-            return None
+            return self._publiceer(kies("niet_aan"), self._zone_van(item))
 
         hoger = self._hoger_aan(item)
         if hoger and self._regels.get("volgorde_breken", "weiger") == "weiger":

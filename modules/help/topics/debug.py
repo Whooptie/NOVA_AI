@@ -165,6 +165,8 @@ def get_help():
                                    per dag, met sparklines en wat er sinds een week veranderde)
   zelftest samenvatting          (de laatste zelftest in een paar korte zinnen)
   handlers dekking               (welke geladen modules de tracer nog nooit zag; zet eerst "trace aan")
+  brein status                   (staat de live brein-pagina aan, op welke poort, hoeveel kijkers)
+  brein link                     (de link om de brein-pagina te openen, MET token: laat hem aan niemand zien)
   trace aan | trace uit          (zet de tracer van de live brein-weergave aan of uit; standaard uit)
   trace status                   (aan of uit, aantal records, drukste modules, antwoord op Kevin of achtergrond)
   trace laatste [n] [alles]      (de laatste n aanroepen met module, functie, event, duur; alleen namen;

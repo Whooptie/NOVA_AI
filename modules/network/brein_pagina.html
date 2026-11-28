@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Nova — brein</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #04060c; overflow: hidden;
+               font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #9fb2d6; }
+  canvas { display: block; width: 100vw; height: 100vh; touch-action: none; cursor: grab; }
+  #hud { position: fixed; left: 12px; top: 10px; font-size: 12px; line-height: 1.5; opacity: .75;
+         pointer-events: none; text-shadow: 0 0 6px #000; user-select: none; }
+  #hud .punt { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #c0392b;
+               margin-right: 6px; }
+  #hud .punt.aan { background: #2ecc71; }
+  #hud .antwoord { color: #ffd479; opacity: 0; transition: opacity .15s; }
+  #hud .antwoord.aan { opacity: 1; }
+  #hint { position: fixed; right: 12px; bottom: 8px; font-size: 11px; opacity: .35; text-align: right;
+          pointer-events: none; user-select: none; }
+  #paneel { position: fixed; right: 12px; top: 10px; max-width: 260px; font-size: 12px; line-height: 1.45;
+            background: rgba(8, 12, 22, .82); border: 1px solid #1d2a47; border-radius: 8px;
+            padding: 8px 10px; display: none; }
+  #paneel b { color: #dbe6ff; }
+  #paneel .ev { color: #7f93bd; word-break: break-word; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><span class="punt" id="punt"></span><span id="status">verbinden…</span>
+  <div><span id="tempo">0</span> signalen/s <span class="antwoord" id="antwoord"> · antwoord</span></div></div>
+<div id="paneel"></div>
+<div id="hint">sleep = draaien · wiel/knijp = zoomen · tik op een module: wie luistert waarop · l luisteraars · n namen · r autodraaien · f scherm · h verbergen</div>
+
+<script>
+"use strict";
+(function () {
+  var canvas = document.getElementById("c");
+  var ctx = canvas.getContext("2d");
+  var elStatus = document.getElementById("status");
+  var elPunt = document.getElementById("punt");
+  var elTempo = document.getElementById("tempo");
+  var elAntwoord = document.getElementById("antwoord");
+  var elPaneel = document.getElementById("paneel");
+
+  var token = new URLSearchParams(location.search).get("token") || "";
+  var W = 0, H = 0, DPR = 1;
+
+  // ---- toestand ----
+  var nodes = {};          // naam -> node (met 3D-positie px,py,pz op een bol met straal ~1)
+  var alias = {};          // bestandsnaam of naam -> node
+  var lijnen = [];         // korte lichtpulsen van de hub naar een module (EventBus-handlers)
+  var ringen = [];         // uitdijende ringen bij een treffer
+  var alert = 0;           // 1 = Kevin vroeg net iets: alles feller
+  var toonLuisteraars = true, toonNamen = false, toonHud = true, autoDraai = true;
+  var gekozen = null;
+  var teller = 0, tempo = 0, tempoStart = Date.now();
+
+  // ---- camera: draaien, kantelen, zoomen ----
+  var yaw = 0.4, pitch = 0.35, zoom = 1.0;
+  var yawSnelheid = 0, pitchSnelheid = 0;
+  var laatsteAanraking = 0;
+  var CAMERA = 3.2;                                   // afstand van de camera tot het midden
+
+  var GROEP_KLEUR = {};
+  var TINTEN = [200, 160, 30, 280, 340, 90, 250, 190, 50, 310];
+  function tintVan(groep) {
+    if (!(groep in GROEP_KLEUR)) {
+      GROEP_KLEUR[groep] = TINTEN[Object.keys(GROEP_KLEUR).length % TINTEN.length];
+    }
+    return GROEP_KLEUR[groep];
+  }
+  function hsla(tint, s, l, a) { return "hsla(" + tint + "," + s + "%," + l + "%," + a + ")"; }
+
+  // ---- indeling: elke groep een gebied op een bol, de hub in het midden ----
+  function norm(v) {
+    var l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]) || 1;
+    return [v[0] / l, v[1] / l, v[2] / l];
+  }
+  function kruis(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+
+  function indeling() {
+    var groepen = {};
+    Object.keys(nodes).forEach(function (k) {
+      var g = nodes[k].groep;
+      (groepen[g] = groepen[g] || []).push(nodes[k]);
+    });
+    var namen = Object.keys(groepen).sort();
+    var G = namen.length;
+    if (!G) return;
+    namen.forEach(function (g, gi) {
+      // groepsmiddelpunten gelijkmatig over de bol (Fibonacci)
+      var y = G === 1 ? 0 : 1 - (gi + 0.5) / G * 2;
+      var r = Math.sqrt(Math.max(0, 1 - y * y));
+      var a = gi * 2.399963;
+      var midden = [Math.cos(a) * r, y, Math.sin(a) * r];
+      var hulp = Math.abs(midden[1]) > 0.9 ? [1, 0, 0] : [0, 1, 0];
+      var t1 = norm(kruis(midden, hulp)), t2 = kruis(midden, t1);
+      var leden = groepen[g].sort(function (m, n) { return m.naam < n.naam ? -1 : 1; });
+      var spreid = Math.min(0.95, 0.30 + 0.07 * Math.sqrt(leden.length) * (G > 6 ? 0.8 : 1.4));
+      leden.forEach(function (n, i) {
+        var hoek = i * 2.399963;
+        var d = spreid * Math.sqrt((i + 0.5) / leden.length);
+        var v = norm([midden[0] + (Math.cos(hoek) * t1[0] + Math.sin(hoek) * t2[0]) * d,
+                      midden[1] + (Math.cos(hoek) * t1[1] + Math.sin(hoek) * t2[1]) * d,
+                      midden[2] + (Math.cos(hoek) * t1[2] + Math.sin(hoek) * t2[2]) * d]);
+        var straal = 0.62 + 0.38 * ((i % 3) / 2);
+        n.px = v[0] * straal; n.py = v[1] * straal; n.pz = v[2] * straal;
+        n.tint = tintVan(g);
+      });
+    });
+  }
+
+  function maakNode(naam, bestand, groep, luistert) {
+    var n = nodes[naam];
+    if (!n) {
+      n = nodes[naam] = { naam: naam, bestand: bestand || naam, groep: groep || "overig", luistert: luistert || [],
+                          px: 0, py: 0, pz: 0, sx: 0, sy: 0, sz: 0, sc: 1, glow: 0, funcs: {}, aantal: 0, tint: 200 };
+    } else {
+      n.bestand = bestand || n.bestand; n.groep = groep || n.groep; n.luistert = luistert || n.luistert;
+    }
+    alias[naam] = n;
+    if (bestand) alias[bestand] = n;
+    return n;
+  }
+
+  // ---- projectie: draai de bol en teken met perspectief ----
+  var S = 400, cx = 0, cy = 0;
+  function projecteer() {
+    S = Math.min(W, H) * 0.40 * zoom;
+    cx = W / 2; cy = H / 2;
+    var cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    Object.keys(nodes).forEach(function (k) {
+      var n = nodes[k];
+      var x = n.px * cyw - n.pz * syw;
+      var z = n.px * syw + n.pz * cyw;
+      var y = n.py * cp - z * sp;
+      z = n.py * sp + z * cp;
+      var sc = CAMERA / (CAMERA + z);
+      n.sx = cx + x * sc * S; n.sy = cy + y * sc * S; n.sz = z; n.sc = sc;
+      n.diepte = Math.max(0, Math.min(1, 0.5 - z / 2));       // 1 = vooraan, 0 = achteraan
+    });
+  }
+
+  // ---- verbinding ----
+  function verbind() {
+    if (!token) { elStatus.textContent = "geen token in de link"; return; }
+    var es = new EventSource("/stream?token=" + encodeURIComponent(token));
+    es.addEventListener("open", function () { elPunt.className = "punt aan"; elStatus.textContent = "live"; });
+    es.addEventListener("error", function () {
+      elPunt.className = "punt"; elStatus.textContent = "verbinding weg, opnieuw proberen…";
+    });
+    es.addEventListener("topologie", function (e) {
+      try { ontvangTopologie(JSON.parse(e.data)); } catch (x) { /* kapot pakketje negeren */ }
+    });
+    es.addEventListener("batch", function (e) {
+      try { JSON.parse(e.data).forEach(verwerk); } catch (x) { /* idem */ }
+    });
+  }
+
+  function ontvangTopologie(t) {
+    (t.modules || []).forEach(function (m) { maakNode(m.n, m.a, m.g, m.l); });
+    indeling();
+  }
+
+  // ---- een signaal van de tracer ----
+  function verwerk(r) {
+    teller++;
+    if (r.s === "k0") { alert = 1; return; }
+    if (r.s === "k1") { return; }
+    var n = alias[r.m];
+    if (!n) { n = maakNode(r.m, r.m, "overig", []); indeling(); }
+    var sterkte = (r.k !== null && r.k !== undefined) ? 1.0 : 0.55;   // antwoord op Kevin = fel
+    var wildcard = !!r.w;
+    if (wildcard) sterkte = 0.24;                                       // memory/logger e.d.: zachte gloed
+    n.glow = Math.max(n.glow, sterkte);
+
+    var f = n.funcs[r.f];                                               // bubbel per functie, zonder naam
+    if (!f) {
+      var i = n.aantal++;
+      f = n.funcs[r.f] = { hoek: i * 2.399963, ring: i % 2, straal: 9 + 3.0 * Math.sqrt(i), glow: 0 };
+    }
+    f.glow = Math.max(f.glow, sterkte);
+
+    if (r.s === "h" && !wildcard) lijnen.push({ n: n, leven: 1, sterkte: sterkte });
+    if (r.tr) ringen.push({ n: n, leven: 1 });
+  }
+
+  // ---- tekenen ----
+  function tekenHub(nu) {
+    var puls = 0.5 + 0.5 * Math.sin(nu / 900);
+    var r = 7 + alert * 6 + puls * 1.5;
+    var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 6);
+    g.addColorStop(0, hsla(45, 100, 70, 0.30 + 0.5 * alert));
+    g.addColorStop(1, hsla(45, 100, 60, 0));
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(cx, cy, r * 6, 0, 7); ctx.fill();
+    ctx.fillStyle = hsla(45, 100, 78, 0.85);
+    ctx.beginPath(); ctx.arc(cx, cy, r * 0.55, 0, 7); ctx.fill();
+  }
+
+  function tekenLuisteraars() {
+    Object.keys(nodes).forEach(function (k) {
+      var n = nodes[k];
+      var aantal = n.luistert.length;
+      if (!aantal) return;
+      var a = Math.min(0.10, 0.015 + aantal / 600) * (0.35 + 0.65 * n.diepte);
+      var gekozenNode = gekozen && nodes[gekozen] === n;
+      ctx.strokeStyle = hsla(n.tint, 60, 60, gekozenNode ? 0.55 : a);
+      ctx.lineWidth = gekozenNode ? 1.6 : 0.6 + Math.min(1.4, aantal / 25);
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(n.sx, n.sy); ctx.stroke();
+    });
+  }
+
+  function tekenNodes(nu) {
+    var lijst = Object.keys(nodes).map(function (k) { return nodes[k]; });
+    lijst.sort(function (a, b) { return b.sz - a.sz; });                // achteraan eerst
+    lijst.forEach(function (n) {
+      n.glow *= 0.945;                                                  // flits, geen langzaam uitdoven
+      var d = 0.45 + 0.55 * n.diepte;                                   // verder weg = zwakker en kleiner
+      var a = (0.40 + 0.60 * Math.min(1, n.glow)) * d;
+      if (n.glow > 0.02) {
+        var gr = (12 + 50 * n.glow) * n.sc;
+        var g = ctx.createRadialGradient(n.sx, n.sy, 0, n.sx, n.sy, gr);
+        g.addColorStop(0, hsla(n.tint, 90, 65, 0.60 * n.glow * d));
+        g.addColorStop(1, hsla(n.tint, 90, 60, 0));
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(n.sx, n.sy, gr, 0, 7); ctx.fill();
+      }
+      ctx.fillStyle = hsla(n.tint, 75, 66, a);
+      ctx.beginPath(); ctx.arc(n.sx, n.sy, (4.2 + n.glow * 2.6) * n.sc, 0, 7); ctx.fill();
+
+      Object.keys(n.funcs).forEach(function (fk) {                       // per functie een bubbel
+        var f = n.funcs[fk];
+        f.glow *= 0.92;
+        var hoek = f.hoek + nu / 9000 * (f.ring % 2 ? 1 : -1);
+        var straal = f.straal * n.sc;
+        var x = n.sx + Math.cos(hoek) * straal, y = n.sy + Math.sin(hoek) * straal;
+        var fa = (0.24 + 0.76 * Math.min(1, f.glow)) * d;
+        if (f.glow > 0.03) {
+          var fr = (9 + 15 * f.glow) * n.sc;
+          var fg = ctx.createRadialGradient(x, y, 0, x, y, fr);
+          fg.addColorStop(0, hsla(n.tint, 95, 75, 0.70 * f.glow * d));
+          fg.addColorStop(1, hsla(n.tint, 95, 70, 0));
+          ctx.fillStyle = fg;
+          ctx.beginPath(); ctx.arc(x, y, fr, 0, 7); ctx.fill();
+        }
+        ctx.fillStyle = hsla(n.tint, 80, 78, fa);
+        ctx.beginPath(); ctx.arc(x, y, (1.6 + f.glow * 1.4) * n.sc, 0, 7); ctx.fill();
+      });
+
+      if (toonNamen || (gekozen && nodes[gekozen] === n)) {
+        ctx.fillStyle = "rgba(200,215,245," + (0.45 + 0.4 * n.diepte) + ")";
+        ctx.font = "11px system-ui, sans-serif";
+        ctx.fillText(n.naam, n.sx + 10, n.sy - 8);
+      }
+    });
+  }
+
+  function tekenLijnen() {
+    for (var i = lijnen.length - 1; i >= 0; i--) {
+      var l = lijnen[i];
+      l.leven -= 0.09;
+      if (l.leven <= 0) { lijnen.splice(i, 1); continue; }
+      var p = 1 - l.leven;                                              // de puls reist van hub naar module
+      var x = cx + (l.n.sx - cx) * p, y = cy + (l.n.sy - cy) * p;
+      ctx.strokeStyle = hsla(l.n.tint, 90, 70, 0.60 * l.leven * l.sterkte);
+      ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke();
+    }
+    for (var j = ringen.length - 1; j >= 0; j--) {
+      var r = ringen[j];
+      r.leven -= 0.04;
+      if (r.leven <= 0) { ringen.splice(j, 1); continue; }
+      ctx.strokeStyle = hsla(r.n.tint, 95, 78, 0.8 * r.leven);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(r.n.sx, r.n.sy, (8 + (1 - r.leven) * 38) * r.n.sc, 0, 7); ctx.stroke();
+    }
+  }
+
+  function beweeg(nu) {
+    var stil = (Date.now() - laatsteAanraking) > 4000;                  // 4 s na loslaten draait hij weer zelf
+    if (autoDraai && stil && !slepen) { yawSnelheid += (0.0016 - yawSnelheid) * 0.02; }
+    if (!slepen) {
+      yaw += yawSnelheid; pitch += pitchSnelheid;
+      yawSnelheid *= (autoDraai && stil) ? 1 : 0.95; pitchSnelheid *= 0.95;
+    }
+    pitch = Math.max(-1.4, Math.min(1.4, pitch));
+  }
+
+  function frame(nu) {
+    beweeg(nu);
+    projecteer();
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "#04060c";
+    ctx.fillRect(0, 0, W, H);
+    if (alert > 0.01) {                                                 // Kevin vroeg iets: achtergrond lichter
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.7);
+      g.addColorStop(0, hsla(45, 90, 60, 0.10 * alert));
+      g.addColorStop(1, hsla(45, 90, 60, 0));
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
+    ctx.globalCompositeOperation = "lighter";
+    if (toonLuisteraars) tekenLuisteraars();
+    tekenLijnen();
+    tekenNodes(nu);
+    tekenHub(nu);
+    ctx.globalCompositeOperation = "source-over";
+    alert *= 0.985;
+
+    if (Date.now() - tempoStart >= 1000) {
+      tempo = Math.round(teller * 1000 / (Date.now() - tempoStart));
+      teller = 0; tempoStart = Date.now();
+      elTempo.textContent = tempo;
+    }
+    elAntwoord.className = "antwoord" + (alert > 0.25 ? " aan" : "");
+    requestAnimationFrame(frame);
+  }
+
+  // ---- bediening: slepen = draaien, wiel of knijpen = zoomen, tikken = module kiezen ----
+  function pas() {
+    DPR = Math.max(1, window.devicePixelRatio || 1);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+  }
+  window.addEventListener("resize", pas);
+
+  var slepen = false, aanwijzers = {}, startX = 0, startY = 0, verplaatst = 0, laatsteAfstand = 0;
+
+  function aantalAanwijzers() { return Object.keys(aanwijzers).length; }
+  function afstand() {
+    var ids = Object.keys(aanwijzers);
+    var a = aanwijzers[ids[0]], b = aanwijzers[ids[1]];
+    return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+  }
+
+  canvas.addEventListener("pointerdown", function (e) {
+    aanwijzers[e.pointerId] = { x: e.clientX, y: e.clientY };
+    try { canvas.setPointerCapture(e.pointerId); } catch (x) { /* niet erg */ }
+    slepen = true; laatsteAanraking = Date.now();
+    yawSnelheid = 0; pitchSnelheid = 0;
+    startX = e.clientX; startY = e.clientY; verplaatst = 0;
+    if (aantalAanwijzers() === 2) laatsteAfstand = afstand();
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    var p = aanwijzers[e.pointerId];
+    if (!p) return;
+    var dx = e.clientX - p.x, dy = e.clientY - p.y;
+    p.x = e.clientX; p.y = e.clientY;
+    laatsteAanraking = Date.now();
+    verplaatst += Math.abs(dx) + Math.abs(dy);
+    if (aantalAanwijzers() === 2) {                                    // knijpen
+      var nieuw = afstand();
+      if (laatsteAfstand > 0) zoom = Math.max(0.4, Math.min(3.5, zoom * nieuw / laatsteAfstand));
+      laatsteAfstand = nieuw;
+      return;
+    }
+    yawSnelheid = dx * 0.0035; pitchSnelheid = dy * 0.0035;
+    yaw += dx * 0.0055; pitch += dy * 0.0055;
+  });
+  function los(e) {
+    var was = aanwijzers[e.pointerId];
+    delete aanwijzers[e.pointerId];
+    if (aantalAanwijzers() === 0) {
+      slepen = false; laatsteAanraking = Date.now();
+      if (was && verplaatst < 6) kies(e.clientX, e.clientY);          // gewoon getikt, niet gesleept
+    }
+  }
+  canvas.addEventListener("pointerup", los);
+  canvas.addEventListener("pointercancel", los);
+  canvas.addEventListener("wheel", function (e) {
+    e.preventDefault();
+    zoom = Math.max(0.4, Math.min(3.5, zoom * (e.deltaY < 0 ? 1.1 : 0.9)));
+    laatsteAanraking = Date.now();
+  }, { passive: false });
+
+  function paneel(n) {
+    if (!n) { elPaneel.style.display = "none"; return; }
+    elPaneel.textContent = "";
+    var kop = document.createElement("b");
+    kop.textContent = n.naam;                                           // altijd als tekst invoegen, nooit als HTML
+    elPaneel.appendChild(kop);
+    elPaneel.appendChild(document.createElement("br"));
+    elPaneel.appendChild(document.createTextNode(
+      "groep " + n.groep + " · " + Object.keys(n.funcs).length + " functies gezien · luistert op " + n.luistert.length + " events"));
+    if (n.luistert.length) {
+      var ev = document.createElement("div");
+      ev.className = "ev";
+      ev.textContent = n.luistert.slice(0, 14).join(", ") + (n.luistert.length > 14 ? " …" : "");
+      elPaneel.appendChild(ev);
+    }
+    elPaneel.style.display = "block";
+  }
+
+  function kies(x, y) {
+    var beste = null, d2 = 30 * 30;
+    Object.keys(nodes).forEach(function (k) {
+      var n = nodes[k], dx = n.sx - x, dy = n.sy - y, d = dx * dx + dy * dy;
+      if (d < d2 * n.sc) { d2 = d / n.sc; beste = k; }
+    });
+    gekozen = (beste === gekozen) ? null : beste;
+    paneel(gekozen ? nodes[gekozen] : null);
+  }
+
+  function volScherm() {
+    var el = document.documentElement;
+    if (document.fullscreenElement) { document.exitFullscreen(); }
+    else if (el.requestFullscreen) { el.requestFullscreen(); }
+  }
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "l") toonLuisteraars = !toonLuisteraars;
+    else if (e.key === "n") toonNamen = !toonNamen;
+    else if (e.key === "r") autoDraai = !autoDraai;
+    else if (e.key === "f") volScherm();
+    else if (e.key === "h") {
+      toonHud = !toonHud;
+      document.getElementById("hud").style.display = toonHud ? "" : "none";
+      document.getElementById("hint").style.display = toonHud ? "" : "none";
+    }
+  });
+  canvas.addEventListener("dblclick", volScherm);
+
+  pas();
+  verbind();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

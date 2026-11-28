@@ -384,3 +384,21 @@ def test_echt_databestand_dekt_elke_zone():
         kaart = json.load(bestand)
     nodes = set(kaart["nodes"] if "nodes" in kaart else kaart)
     assert set(data["zones"]) == nodes
+
+
+def test_omhoog_op_uit_stuk_zegt_dat_ze_het_niet_aan_heeft(k):
+    kl, bus, _, _ = k
+    kl.on_intent({"item": "hoodie", "actie": "verschoven"})
+    assert kl.staat("hoodie") == "uit"
+    assert bus.van("body_reactie")
+
+
+def test_los_op_uit_stuk_zegt_dat_ze_het_niet_aan_heeft(k):
+    kl, bus, _, _ = k
+    kl.on_intent({"item": "short", "actie": "uit"})
+    bus.events.clear()
+
+    kl.on_intent({"item": "short", "actie": "los"})
+
+    assert kl.staat("short") == "uit"
+    assert bus.van("body_reactie")

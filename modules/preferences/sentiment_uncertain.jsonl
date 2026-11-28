@@ -105,3 +105,5 @@
 {"text": "blablabla", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-24T21:19:26.324150"}
 {"text": "toon volledige graaf", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-27T19:00:09.558582"}
 {"text": "al een week", "categorie": "neutraal_gemengd", "marge": 0.0551, "grof_sentiment_regex": null, "tijdstip": "2026-11-28T10:42:00.526430"}
+{"text": "trek mijn short uit", "categorie": "positief", "marge": 0.0841, "grof_sentiment_regex": null, "tijdstip": "2026-11-28T14:30:38.654393"}
+{"text": "blablabla", "categorie": "neutraal_gemengd", "marge": 0.0356, "grof_sentiment_regex": null, "tijdstip": "2026-11-28T14:44:48.134970"}

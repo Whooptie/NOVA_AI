@@ -80,6 +80,7 @@ class DebugCommands:
             (lambda t: t == "audit" or t.startswith("audit "), self._audit),
             (lambda t: t == "handlers debug", self._handlers_debug),
             (lambda t: t == "handlers dekking", self._handlers_dekking),
+            (lambda t: t in ("brein status", "brein link"), self._brein),
             (lambda t: t in ("trace aan", "trace uit", "trace status", "trace leeg")
              or t == "trace laatste" or t.startswith("trace laatste ")
              or t == "trace antwoord" or t.startswith("trace antwoord "), self._trace),
@@ -535,6 +536,21 @@ class DebugCommands:
             print(f"{C_CYAN}{trace_overzicht.laatste_tekst(tracer, n, alles)}{C_RESET}")
         else:
             print(f"{C_CYAN}{trace_overzicht.status_tekst(tracer)}{C_RESET}")
+
+    def _brein(self, user_input):
+        """
+        brein status | brein link
+        De live brein-weergave (modules/network/brein_stream.py): status van de webpagina,
+        of de link om hem te openen. De link bevat het token: toon hem alleen in je eigen console.
+        """
+        brein = self.loader.loaded_modules.get("brein_stream")
+        if brein is None:
+            print(f"{C_RED}brein_stream-module niet gevonden.{C_RESET}")
+            return
+        if user_input.lower().strip() == "brein link":
+            print(f"{C_CYAN}{brein.link_tekst()}{C_RESET}")
+        else:
+            print(f"{C_CYAN}{brein.status_tekst()}{C_RESET}")
 
     def _handlers_dekking(self, user_input):
         """Welke geladen modules zag de tracer nog nooit? (zet eerst 'trace aan')"""

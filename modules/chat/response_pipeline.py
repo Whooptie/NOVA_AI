@@ -286,7 +286,7 @@ class ResponsePipeline:
             "personality_style": self.personality.generate_response_style(),
             "emotion_state": self.emotion.state,
             "response_style": self._get_response_style(),
-            "bron": "body",
+            "bron": (data or {}).get("bron", "body"),
             "zone": (data or {}).get("zone"),
             "klasse": (data or {}).get("klasse"),
         })
