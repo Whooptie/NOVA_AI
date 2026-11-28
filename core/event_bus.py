@@ -16,6 +16,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Callable, Dict, List, Any
 
+from core.tracer import Tracer
+
 # logs/handler_fouten.log naast de map "core" (in Docker: /app/logs/)
 _LOGBESTAND = Path(__file__).resolve().parent.parent / "logs" / "handler_fouten.log"
 _MAX_LOG_BYTES = 1_000_000
@@ -27,7 +29,8 @@ class EventBus:
         self.modules: Dict[str, Any] = {}
         self._aantal_args: Dict[Any, int] = {}   # cache: handler -> 1 of 2
         self.fouten = deque(maxlen=50)           # laatste 50 handler-fouten (voor Nova)
-        self.fout_teller = 0                     # telt ALLE fouten ooit (deque vergeet oude)
+        self.tracer = Tracer()                   # live-weergave (punt 79); standaard uit
+        self.fout_teller = 0            # telt ALLE fouten ooit (deque vergeet oude)
 
     # -----------------------------
     # Module-registratie
@@ -61,7 +64,22 @@ class EventBus:
                 positioneel += 1
         return 2 if positioneel >= 2 else 1
 
+    def trace(self, naam):
+        """Voor code die niet via de bus loopt: self.event_bus.trace("module.functie")."""
+        self.tracer.trace(naam)
+
     def _roep_aan(self, handler, data, event_type):
+        tracer = self.tracer
+        if not tracer.aan:
+            self._roep_aan_intern(handler, data, event_type)
+            return
+        start = tracer.begin()
+        try:
+            self._roep_aan_intern(handler, data, event_type)
+        finally:
+            tracer.eind(handler, event_type, start)
+
+    def _roep_aan_intern(self, handler, data, event_type):
         try:
             aantal = self._aantal_args.get(handler)
             if aantal is None:
@@ -103,6 +121,10 @@ class EventBus:
             pass                                  # loggen mag nooit zelf crashen
 
     def publish(self, event_type, data):
+        with self.tracer.keten(event_type, data):
+            self._publish_intern(event_type, data)
+
+    def _publish_intern(self, event_type, data):
         # 1. Specifieke handlers (kopie van de lijst: handlers mogen zich
         #    tijdens het publiceren (af)melden)
         for handler in list(self._subscribers.get(event_type, [])):

@@ -79,6 +79,10 @@ class DebugCommands:
             (lambda t: t.startswith("label signaal") or t.startswith("label sentiment"), self._label),
             (lambda t: t == "audit" or t.startswith("audit "), self._audit),
             (lambda t: t == "handlers debug", self._handlers_debug),
+            (lambda t: t == "handlers dekking", self._handlers_dekking),
+            (lambda t: t in ("trace aan", "trace uit", "trace status", "trace leeg")
+             or t == "trace laatste" or t.startswith("trace laatste ")
+             or t == "trace antwoord" or t.startswith("trace antwoord "), self._trace),
             (self._is_zelftest, self._zelftest),
         ]
 
@@ -493,6 +497,58 @@ class DebugCommands:
     # ------------------------------------------------------------------
     # Roadmap punt 11 -- audit-log doorzoeken (modules/debug/audit_zoeken.py)
     # ------------------------------------------------------------------
+
+    def _trace(self, user_input):
+        """
+        trace aan | trace uit | trace status | trace leeg | trace laatste [n] [alles] | trace antwoord [nr]
+        Zet de tracer van de live brein-weergave (core/tracer.py) aan of uit en
+        toont wat hij zag. Alleen namen en tijden, nooit wat Kevin typt.
+        """
+        try:
+            from modules.debug import trace_overzicht
+        except Exception as e:
+            print(f"{C_RED}trace_overzicht kon niet geladen worden: {e}{C_RESET}")
+            return
+        tracer = getattr(self.event_bus, "tracer", None)
+        if tracer is None:
+            print(f"{C_RED}Deze EventBus heeft geen tracer.{C_RESET}")
+            return
+        delen = user_input.lower().split()
+        actie = delen[1] if len(delen) > 1 else "status"
+        if actie == "aan":
+            tracer.zet(True)
+            print(f"{C_CYAN}Tracer staat AAN.{C_RESET}")
+        elif actie == "uit":
+            tracer.zet(False)
+            print(f"{C_CYAN}Tracer staat uit.{C_RESET}")
+        elif actie == "leeg":
+            tracer.leeg()
+            print(f"{C_CYAN}Tracer leeggemaakt.{C_RESET}")
+        elif actie == "antwoord":
+            nummer = int(delen[2]) if len(delen) > 2 and delen[2].isdigit() else None
+            print(f"{C_CYAN}{trace_overzicht.antwoord_tekst(tracer, nummer)}{C_RESET}")
+        elif actie == "laatste":
+            n = 15
+            if len(delen) > 2 and delen[2].isdigit():
+                n = max(1, min(200, int(delen[2])))
+            alles = "alles" in delen
+            print(f"{C_CYAN}{trace_overzicht.laatste_tekst(tracer, n, alles)}{C_RESET}")
+        else:
+            print(f"{C_CYAN}{trace_overzicht.status_tekst(tracer)}{C_RESET}")
+
+    def _handlers_dekking(self, user_input):
+        """Welke geladen modules zag de tracer nog nooit? (zet eerst 'trace aan')"""
+        try:
+            from modules.debug import trace_overzicht
+        except Exception as e:
+            print(f"{C_RED}trace_overzicht kon niet geladen worden: {e}{C_RESET}")
+            return
+        tracer = getattr(self.event_bus, "tracer", None)
+        if tracer is None:
+            print(f"{C_RED}Deze EventBus heeft geen tracer.{C_RESET}")
+            return
+        geladen = getattr(self.loader, "loaded_modules", {}) or {}
+        print(f"{C_CYAN}{trace_overzicht.dekking_tekst(tracer, geladen)}{C_RESET}")
 
     def _handlers_debug(self, user_input):
         """

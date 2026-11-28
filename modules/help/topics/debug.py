@@ -164,6 +164,13 @@ def get_help():
   zelftest trend                 (taalbegrip, antwoorden, rooktest, dekking, tests en concepten
                                    per dag, met sparklines en wat er sinds een week veranderde)
   zelftest samenvatting          (de laatste zelftest in een paar korte zinnen)
+  handlers dekking               (welke geladen modules de tracer nog nooit zag; zet eerst "trace aan")
+  trace aan | trace uit          (zet de tracer van de live brein-weergave aan of uit; standaard uit)
+  trace status                   (aan of uit, aantal records, drukste modules, antwoord op Kevin of achtergrond)
+  trace laatste [n] [alles]      (de laatste n aanroepen met module, functie, event, duur; alleen namen;
+                                  "alles" toont ook de detect_*() die niets vonden en de wildcard-luisteraars)
+  trace antwoord [nr]            (alles wat in EEN antwoord op Kevin gebeurde, in volgorde; zonder nr het laatste echte antwoord)
+  trace leeg                     (wist de bewaarde records)
   handlers debug                 (telt hoeveel functies er op events luisteren, in totaal en per bestand;
                                    alleen lezen)
   test jezelf                    (zelfde als "zelftest")

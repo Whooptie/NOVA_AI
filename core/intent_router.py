@@ -3962,6 +3962,18 @@ class IntentRouter:
         """Meervoud -> enkelvoud als dat als concept bestaat; anders het woord zoals het is."""
         return self._naar_enkelvoud(woord) or woord
 
+    def detect_cyclus(self, text):
+        """Geeft de zin aan cyclus.py (als die geladen is). True = afgehandeld.
+        Bewust GEEN _emit_topic: gezondheidsinfo hoeft niet door Layer 2/7 gevolgd te worden."""
+        module = self.event_bus.modules.get("cyclus")
+        if module is None:
+            return False
+        try:
+            return bool(module.verwerk_zin(text))
+        except Exception as e:
+            dbg(f"{C_RED}cyclus-fout (genegeerd): {e}{C_RESET}")
+            return False
+
     def detect_graaf(self, text):
         t = text.lower().strip().rstrip("?.! ").strip()
 
@@ -5696,6 +5708,14 @@ class IntentRouter:
         if self._route_pending(text):
             return
         if self._route_commando(text):
+            return
+
+        # Maandstonden/cyclus van Fleur (modules/time/cyclus.py). Bewust VOOR
+        # _route_herschrijf: voornaamwoorden als "ze" mogen niet door de
+        # context-resolver in iets anders veranderd worden, en zinnen als
+        # "wanneer is ze weer ongesteld" mogen niet door de datum- of
+        # kennisstappen opgevangen worden.
+        if self.detect_cyclus(text):
             return
 
         text = self._route_herschrijf(text)

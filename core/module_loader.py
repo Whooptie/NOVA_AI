@@ -265,6 +265,17 @@ class ModuleLoader:
             if mod == "variant_feedback_logger":
                 continue
 
+            # context_manager wordt hierna handmatig geladen (stap 3C, met een
+            # "layers"-dictionary i.p.v. "sem"). Zelfde reden als hierboven: de
+            # generieke lus zou init_module(event_bus, sem) aanroepen, wat GEEN
+            # TypeError geeft (layers heeft een default), dus er ontstond een
+            # EERSTE, FOUTE instantie (sem als "layers") die ook aan de EventBus
+            # hing, naast de goede uit stap 3C. Gezien op 28 november 2026 met
+            # "trace laatste" (elke Kevin-bericht liep _on_kevin_typte twee keer)
+            # en "handlers debug" (context_manager: 2 handlers, 4 abonnementen).
+            if mod == "context_manager":
+                continue
+
             # Zacht falen: een kapotte module mag Nova niet meer plat leggen (zie
             # _probeer_te_laden). De fout komt in de banner, het log en op de gsm.
             self._probeer_te_laden(full_name, group, mod, sem)

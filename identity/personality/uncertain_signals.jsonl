@@ -2775,3 +2775,50 @@
 {"text": "teach rook noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-27T21:43:31.737794"}
 {"text": "teach smog noun", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-27T21:43:39.344058"}
 {"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-27T22:19:29.993780"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-28T09:57:58.925474"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T10:12:55.345030"}
+{"text": "he", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-28T10:13:09.869821"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-28T10:13:12.753075"}
+{"text": "hoe laat is het?", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-11-28T10:13:19.808518"}
+{"text": "wat is een hond", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-28T10:13:30.361319"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T10:23:11.265111"}
+{"text": "hey nova", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-28T10:24:00.982597"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T10:34:34.397588"}
+{"text": "hey", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0951, "bron": "model_fallback", "tijdstip": "2026-11-28T10:37:00.555687"}
+{"text": "hoeveel is 5+5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-11-28T10:40:35.955763"}
+{"text": "wat is een kat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-28T10:40:56.181476"}
+{"text": "hoe laat is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-11-28T10:41:12.547189"}
+{"text": "welke dieren ken je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0033, "bron": "model_fallback", "tijdstip": "2026-11-28T10:41:21.342516"}
+{"text": "ik ben moeµ", "signaal": "focus", "model_signaal": "focus", "marge": 0.0919, "bron": "model_fallback", "tijdstip": "2026-11-28T10:41:48.619619"}
+{"text": "ik ben moe", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0005, "bron": "model_fallback", "tijdstip": "2026-11-28T10:41:54.266831"}
+{"text": "al een week", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0036, "bron": "model_fallback", "tijdstip": "2026-11-28T10:42:00.528563"}
+{"text": "welke dag is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0925, "bron": "model_fallback", "tijdstip": "2026-11-28T10:42:15.844086"}
+{"text": "hoe oud ben je", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0018, "bron": "model_fallback", "tijdstip": "2026-11-28T10:42:20.499558"}
+{"text": "hoe werk je", "signaal": "waardering", "model_signaal": "waardering", "marge": 0.0276, "bron": "model_fallback", "tijdstip": "2026-11-28T10:42:27.634995"}
+{"text": "hoe zien je ogen eruit?", "signaal": "interesse", "model_signaal": "interesse", "marge": 0.003, "bron": "model_fallback", "tijdstip": "2026-11-28T10:42:38.843691"}
+{"text": "waarom is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.014, "bron": "model_fallback", "tijdstip": "2026-11-28T10:43:04.841244"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T10:58:03.710594"}
+{"text": "wat is een kat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-28T10:58:21.810172"}
+{"text": "waarom is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.014, "bron": "model_fallback", "tijdstip": "2026-11-28T10:58:33.833367"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T11:32:14.970191"}
+{"text": "hoeveel is 5+5", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0609, "bron": "model_fallback", "tijdstip": "2026-11-28T11:34:18.747062"}
+{"text": "hoe laat is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0731, "bron": "model_fallback", "tijdstip": "2026-11-28T11:34:34.595640"}
+{"text": "welke dag is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0925, "bron": "model_fallback", "tijdstip": "2026-11-28T11:34:40.226535"}
+{"text": "wat is een kat", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0979, "bron": "model_fallback", "tijdstip": "2026-11-28T11:34:46.546854"}
+{"text": "waarom is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.014, "bron": "model_fallback", "tijdstip": "2026-11-28T11:35:00.848125"}
+{"text": "welke dag is het", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0925, "bron": "model_fallback", "tijdstip": "2026-11-28T11:35:11.430506"}
+{"text": "welke week zijn we", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.056, "bron": "model_fallback", "tijdstip": "2026-11-28T11:35:23.744296"}
+{"text": "ik hou van koffie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0383, "bron": "model_fallback", "tijdstip": "2026-11-28T11:35:30.813872"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T11:59:09.621644"}
+{"text": "waarom is een hond een dier", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.014, "bron": "model_fallback", "tijdstip": "2026-11-28T11:59:27.154738"}
+{"text": "welke feestdag is de volgende", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0432, "bron": "model_fallback", "tijdstip": "2026-11-28T12:06:42.657199"}
+{"text": "wanneer is het feestdag", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0925, "bron": "model_fallback", "tijdstip": "2026-11-28T12:06:55.108082"}
+{"text": "wanneer is de paasvakantie", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0432, "bron": "model_fallback", "tijdstip": "2026-11-28T12:07:06.357698"}
+{"text": "hoe zeker ben je dat hond een dier is", "signaal": "verwarring", "model_signaal": "verwarring", "marge": 0.0085, "bron": "model_fallback", "tijdstip": "2026-11-28T12:07:19.289986"}
+{"text": "wanneer ontstond python", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-28T12:07:34.475193"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T13:34:07.246397"}
+{"text": "fleur", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0368, "bron": "model_fallback", "tijdstip": "2026-11-28T13:34:20.663844"}
+{"text": "fleur is 25 november ongesteld geworden", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.035, "bron": "model_fallback", "tijdstip": "2026-11-28T13:34:51.927659"}
+{"text": "cyclus overzicht", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0542, "bron": "model_fallback", "tijdstip": "2026-11-28T13:35:24.880816"}
+{"text": "/reboot", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0635, "bron": "model_fallback", "tijdstip": "2026-11-28T13:41:43.763522"}
+{"text": "fleur vruchtbaarheidsmeldingen aan", "signaal": "neutraal", "model_signaal": "neutraal", "marge": 0.0014, "bron": "model_fallback", "tijdstip": "2026-11-28T13:42:33.395099"}

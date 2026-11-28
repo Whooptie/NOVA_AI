@@ -540,3 +540,4 @@
 {"timestamp": "2026-11-21T19:09:18.469162", "event_type": "concept_created", "word": "duisternis", "source": "system", "new_value": {"word": "duisternis"}}
 {"timestamp": "2026-11-21T19:09:33.980482", "event_type": "concept_created", "word": "hongersnood", "source": "system", "new_value": {"word": "hongersnood"}}
 {"timestamp": "2026-11-21T19:09:41.466077", "event_type": "concept_created", "word": "orkaan", "source": "system", "new_value": {"word": "orkaan"}}
+{"timestamp": "2026-11-28T11:06:42.701303", "event_type": "concept_created", "word": "feestdag", "source": "system", "new_value": {"word": "feestdag"}}

@@ -138388,5 +138388,53 @@
         "timestamp": "2026-11-26T22:41:39.693165"
       }
     ]
+  },
+  "feestdag": {
+    "senses": [
+      {
+        "sense_id": "feestdag#1",
+        "definition": "unknown",
+        "pos": "noun",
+        "examples": [],
+        "relations": [],
+        "source": "auto",
+        "confidence": 0.1,
+        "status": "unverified",
+        "audit_log": []
+      }
+    ],
+    "metadata": {
+      "created_at": "2026-11-28T11:06:42.701289",
+      "updated_at": "2026-11-28T11:06:42.702681",
+      "sources": [
+        "auto"
+      ],
+      "last_used_at": "2026-11-28T11:06:42.702681",
+      "usage_count": 1,
+      "confidence_history": [
+        {
+          "timestamp": "2026-11-28T11:06:42.702681",
+          "confidence": 0.1
+        }
+      ]
+    },
+    "audit_log": [
+      {
+        "event_type": "concept_created",
+        "source": "system",
+        "new_value": {
+          "word": "feestdag"
+        },
+        "timestamp": "2026-11-28T11:06:42.701299"
+      },
+      {
+        "event_type": "sense_created",
+        "source": "auto",
+        "sense_id": "feestdag#1",
+        "old_value": null,
+        "new_value": "unknown",
+        "timestamp": "2026-11-28T11:06:42.702679"
+      }
+    ]
   }
 }

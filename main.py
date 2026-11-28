@@ -41,6 +41,8 @@ if os.name == "nt":
 from core.event_bus import EventBus
 from core.module_loader import ModuleLoader
 from core import opstarttijd
+from core.trace_punten import installeer as installeer_trace_punten
+from core.trace_router import installeer_auto as installeer_trace_auto
 
 # ANSI kleurcodes
 GREEN = "\033[92m"
@@ -806,6 +808,14 @@ def main():
     # Modules laden
     loader = ModuleLoader(bus)
     loader.discover_and_load()
+
+    # Live brein-weergave (punt 79): de aanroepen die niet via de EventBus lopen
+    # (achtergrondlussen, eigen threads, router -> response_engine) melden zich
+    # bij de tracer. Zie core/trace_punten.py. Doet niets zolang de tracer uit staat.
+    installeer_trace_punten(bus, loader.loaded_modules)
+    # Idem voor de router en alle andere modules: elke publieke functie, automatisch
+    # (dus ook van modules die je later bijbouwt). Zie core/trace_router.py.
+    installeer_trace_auto(bus, loader.loaded_modules)
 
     # Afwezigheid (3 oktober 2026): zie on_chat_response().
     _afwezigheid_module = loader.loaded_modules.get("afwezigheid")
